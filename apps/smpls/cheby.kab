@@ -1,0 +1,18 @@
+numfmt 0 5
+a = 0
+b = 1
+n = 10
+len coef[] n
+len cheby[] n
+for i range n
+  coef[i] = cos (180 / pi * (cos (180 / n * (i + 1 / 2)) * (b - a) / 2 + (b + a) / 2))
+.
+for i range n
+  w = 0
+  for j range n
+    w += coef[j] * cos (180 / n * i * (j + 1 / 2))
+  .
+  cheby[i] = w * 2 / n
+  print cheby[i]
+.
+

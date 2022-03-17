@@ -1,0 +1,8 @@
+#!/bin/sh
+for i in 15 16 17 18 19 20 21; do
+	cd aoc$i
+	../test_aoc
+	cd ..
+	echo
+done
+

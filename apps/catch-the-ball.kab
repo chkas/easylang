@@ -1,0 +1,89 @@
+# Catch the ball
+# 
+subr new_ball
+  x_pos = 50
+  y_pos = 50
+  x_speed = 0.4 + 0.2 * points + (randomf - 0.5)
+  y_speed = 0.4 + 0.2 * points + (randomf - 0.5)
+  col = 0
+  for j range 3
+    col = col * 10 + random 8 + 2
+  .
+.
+subr start
+  rad = 16
+  mouse_cursor 1
+  points = 0
+  lives = 3
+  textsize 6
+  call new_ball
+.
+background 000
+subr backgr
+  clear
+  color 222
+  move 0 0
+  line 100 0
+  line 100 100
+  line 0 100
+  line 0 0
+  color 995
+  move 4 4
+  text "Points: " & points
+  move 4 12
+  text "Lives: " & lives
+.
+on animate
+  if lives > 0
+    call backgr
+    color col
+    move x_pos y_pos
+    circle rad
+    x_pos += x_speed
+    y_pos += y_speed
+    if x_pos < rad or x_pos > 100 - rad
+      x_speed = -x_speed
+    .
+    if y_pos < rad or y_pos > 100 - rad
+      y_speed = -y_speed
+    .
+  .
+.
+subr catch
+  dx = abs (mouse_x - x_pos)
+  dy = abs (mouse_y - y_pos)
+  if dx * dx + dy * dy < rad * rad
+    # sound [ 440 0.1 494 0.1 523 0.2 ]
+    points += 1
+    if points mod 3 = 0
+      lives += 1
+    .
+    call new_ball
+  else
+    lives -= 1
+    # sound [ 262 0.2 ]
+    if lives = 0
+      call backgr
+      textsize 10
+      move 20 40
+      text "Game over"
+      mouse_cursor 0
+    .
+  .
+.
+on timer
+  locked = 0
+.
+on mouse_down
+  if locked = 0
+    locked = 1
+    timer 1
+    if lives = 0
+      call start
+    else
+      call catch
+    .
+  .
+.
+call start
+

@@ -1,0 +1,225 @@
+# 1x1 trainer
+# 
+len n[] 10
+len m[] 10
+subr init_vars
+  n = 0
+  m = 0
+  state = 0
+  sz = 10
+  ind = -1
+  t = 0
+  row = -1
+  res = 0
+.
+func disp col s$ . .
+  color col
+  move 3 3
+  rect 94 21
+  color 888
+  move 7 7
+  textsize 12
+  text s$
+.
+func show_quest . .
+  j = random sz
+  sz -= 1
+  if row < 10
+    n = n[j]
+    n[j] = n[sz]
+    n[sz] = n
+    m = row
+  else
+    n = n[sz]
+    m = m[sz]
+  .
+  call disp 030 n & " * " & m & " = _"
+  res = 0
+.
+func sel_row . .
+  if ind <= 10
+    t = systime
+    row = ind
+    if ind < 10
+      for i range 10
+        n[i] = i + 1
+      .
+    else
+      for i range 10
+        n[i] = random 8 + 2
+        m[i] = random 8 + 2
+      .
+    .
+    sz = 10
+    call show_quest
+  .
+.
+func draw_key . .
+  s$ = strchar (ind + 48)
+  h = ind
+  if h < 10 and h > 0
+    h -= 1
+    x = h mod 3 * 24 + 3
+    y = h div 3 * 24 + 3 + 24
+  else
+    x = 3 * 24 + 3
+    if h = 0
+      y = 1
+    elif h = 10
+      y = 0
+      s$ = "×"
+    else
+      y = 2
+      s$ = "✓"
+    .
+    y = y * 24 + 3 + 24
+  .
+  move x y
+  rect 22 22
+  move x + 5 y + 3
+  color 888
+  textsize 16
+  text s$
+.
+background 010
+func init . .
+  call init_vars
+  clear
+  for ind range 12
+    color 020
+    call draw_key
+  .
+  ind = -1
+  call disp 030 "Which row?"
+.
+func sel_inp . .
+  if ind = 11
+    state = 1
+    if n * m = res
+      col = 050
+      timer 0.5
+    else
+      sz += 1
+      col = 500
+      timer 5
+    .
+    h$ = n * m
+  else
+    if ind = 10
+      res = res div 10
+      h$ = res
+      if res = 0
+        h$ = "_"
+      .
+    else
+      if res >= 10
+        res = 0
+      .
+      res = res * 10 + ind
+      h$ = res
+    .
+    col = 030
+  .
+  call disp col n & " * " & m & " = " & h$
+.
+func handle_key2 . .
+  if row = -1
+    call sel_row
+  else
+    call sel_inp
+  .
+.
+func handle_key . .
+  c = mouse_x div 25
+  r = (mouse_y - 25) div 25
+  if c < 3
+    ind = r * 3 + c + 1
+  else
+    if r = 1
+      ind = 0
+    elif r = 0
+      ind = 10
+    else
+      ind = 11
+    .
+  .
+  color 040
+  call draw_key
+  call handle_key2
+.
+on key
+  ind = strcode keybkey - 48
+  if state = 0
+    if ind >= 0 and ind <= 9
+    elif ind = 21
+      ind = 11
+    elif ind = 18 or ind = 20
+      ind = 10
+    else
+      ind = -1
+    .
+    if ind >= 0
+      call handle_key2
+    .
+  elif state = 3
+    call init
+  .
+.
+on mouse_down
+  if state = 3
+    call init
+  elif state = 0 and mouse_y >= 25
+    call handle_key
+  .
+.
+on mouse_up
+  if ind >= 0
+    color 020
+    call draw_key
+    ind = -1
+  .
+.
+func done . .
+  t = floor (systime - t)
+  move 3 3
+  color 030
+  rect 94 94
+  color 888
+  move 10 6
+  textsize 10
+  text "Well done"
+  move 10 20
+  s$ = "All"
+  if row < 10
+    s$ = row
+  .
+  text "Row: " & s$
+  move 10 34
+  text "Time: " & t
+  if t <= 60
+    move 65 70
+    color 983
+    circle 19
+    color 000
+    move 58 63
+    circle 2
+    move 72 63
+    circle 2
+    linewidth 2
+    curve [ 58 77 65 83 72 77 ]
+  .
+.
+on timer
+  if state = 2
+    state = 3
+  elif sz = 0
+    state = 2
+    timer 2
+    call done
+  else
+    call show_quest
+    state = 0
+  .
+.
+call init
+

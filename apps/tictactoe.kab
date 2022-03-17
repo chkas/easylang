@@ -1,0 +1,156 @@
+# Tic tac toe
+# 
+len f[] 9
+state = 0
+textsize 14
+# 
+func init . .
+  linewidth 2
+  clear
+  color 666
+  move 34 4
+  line 34 80
+  move 62 4
+  line 62 80
+  move 10 28
+  line 86 28
+  move 10 56
+  line 86 56
+  linewidth 2.5
+  for i range 9
+    f[i] = 0
+  .
+  if state = 1
+    timer 0.2
+  .
+.
+func draw ind . .
+  c = ind mod 3
+  r = ind div 3
+  x = c * 28 + 20
+  y = r * 28 + 14
+  if f[ind] = 4
+    color 900
+    move x - 7 y - 7
+    line x + 7 y + 7
+    move x + 7 y - 7
+    line x - 7 y + 7
+  elif f[ind] = 1
+    color 009
+    move x y
+    circle 10
+    color -2
+    circle 7.5
+  .
+.
+func sum3 a d . st .
+  for i range 3
+    s += f[a]
+    a += d
+  .
+  if s = 3
+    st = -1
+  elif s = 12
+    st = 1
+  .
+.
+func rate . res done .
+  res = 0
+  for i range 3
+    call sum3 i * 3 1 res
+  .
+  for i range 3
+    call sum3 i 3 res
+  .
+  call sum3 0 4 res
+  call sum3 2 2 res
+  cnt = 1
+  for i range 9
+    if f[i] = 0
+      cnt += 1
+    .
+  .
+  res *= cnt
+  done = 1
+  if res = 0 and cnt > 1
+    done = 0
+  .
+.
+func minmax player alpha beta . rval rmov .
+  call rate rval done
+  if done = 1
+    if player = 1
+      rval = -rval
+    .
+  else
+    rval = alpha
+    start = random 9
+    mov = start
+    repeat
+      if f[mov] = 0
+        f[mov] = player
+        call minmax (5 - player) (-beta) (-rval) val h
+        val = -val
+        f[mov] = 0
+        if val > rval
+          rval = val
+          rmov = mov
+        .
+      .
+      mov = (mov + 1) mod 9
+      until mov = start or rval >= beta
+    .
+  .
+.
+func show_result val . .
+  color 555
+  move 16 84
+  if val < 0
+    # this never happens
+    text "You won"
+  elif val > 0
+    text "You lost"
+  else
+    text "Tie"
+  .
+  state += 2
+.
+func computer . .
+  call minmax 4 -11 11 val mov
+  f[mov] = 4
+  call draw mov
+  call rate val done
+  state = 0
+  if done = 1
+    call show_result val
+  .
+.
+func human . .
+  mov = floor ((mouse_x - 6) / 28) + 3 * floor (mouse_y / 28)
+  if f[mov] = 0
+    f[mov] = 1
+    call draw mov
+    state = 1
+    timer 0.5
+  .
+.
+on timer
+  call rate val done
+  if done = 1
+    call show_result val
+  else
+    call computer
+  .
+.
+on mouse_down
+  if state = 0
+    if mouse_x > 6 and mouse_x < 90 and mouse_y < 84
+      call human
+    .
+  elif state >= 2
+    state -= 2
+    call init
+  .
+.
+call init
+

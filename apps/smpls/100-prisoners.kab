@@ -1,0 +1,63 @@
+for i range 100
+	drawer[] &= i
+	sampler[] &= i
+.
+subr shuffle_drawer
+	for i = len drawer[] downto 2
+		r = random i
+		swap drawer[r] drawer[i - 1]
+	.
+.
+subr play_random
+	call shuffle_drawer
+	found = 1
+	prisoner = 0
+	while prisoner < 100 and found = 1
+		found = 0
+		i = 0
+		while i < 50 and found = 0
+			r = random (100 - i)
+			card = drawer[sampler[r]]
+			swap sampler[r] sampler[100 - i - 1]
+			if card = prisoner
+				found = 1
+			.
+			i += 1
+		.
+		prisoner += 1
+	.
+.
+subr play_optimal
+	call shuffle_drawer
+	found = 1
+	prisoner = 0
+	while prisoner < 100 and found = 1
+		reveal = prisoner
+		found = 0
+		i = 0
+		while i < 50 and found = 0
+			card = drawer[reveal]
+			if card = prisoner
+				found = 1
+			.
+			reveal = card
+			i += 1
+		.
+		prisoner += 1
+	.
+.
+n = 10000
+win = 0
+for round range n
+	call play_random
+	win += found
+.
+print "random: " & 100.0 * win / n & "%"
+# 
+win = 0
+for round range n
+	call play_optimal
+	win += found
+.
+print "optimal: " & 100.0 * win / n & "%"
+

@@ -1,0 +1,75 @@
+<!doctype html>
+<meta charset=utf-8><title>Reaction tester</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="Reaction tester - the examples are written in an easy programming language with a focus on graphics">
+<link rel="icon" href="../icon.png" type="image/x-png">
+
+<div id=tut><b>Loading ...</b></div>
+<script src=easy.js></script>
+<script src=easy_tut.js></script>
+
+<script>
+
+txt_tutor=`* Reaction tester
+
+# Reaction test
+# 
+txt$ = ""
+func show col s$ . .
+  color col
+  move 0 0
+  rect 100 100
+  color 000
+  move 20 30
+  text s$
+  txt$ = s$
+.
+subr wait
+  call show 500 "WAIT"
+  timer 1.5 + 2 * randomf
+.
+on timer
+  call show 060 "PRESS"
+  time0 = systime
+.
+on mouse_down
+  if txt$ = "PRESS"
+    call show 060 systime - time0
+  else
+    if txt$ = "WAIT"
+      sound [ 440 0.1 ]
+    .
+    call wait
+  .
+.
+textsize 20
+call wait
+
++ A URL can be created, that can start a *code runner* with the program encoded in a URL parameter. 
+
++ Inside the *code runner* our program can be stored and run offline. The code runner is a *PWA* (Progressive Web App). Therefore it works like a native app on the mobile device.
+` 
+var url
+
+function createURL() {
+	var h = encodeURIComponent(pre.innerText)
+	url.href = location.origin + "/run/?code=" + h
+	url.target = '_blank'
+	url.innerHTML = "Run and install it on code runner"
+}
+
+function hook() {
+	append(tut, "p")
+	var h = create("button")
+	h.innerText = "Create a start URL"
+	h.onclick = createURL
+	tut.appendChild(h)
+	append(tut, "p")
+
+	url = create("a")
+	tut.appendChild(url)
+}
+
+</script>
+
+

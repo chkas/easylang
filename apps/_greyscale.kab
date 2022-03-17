@@ -1,0 +1,14 @@
+n = 8
+for row range 4
+  sz = 100 / n
+  for i range n
+    c = i / (n - 1)
+    if row mod 2 = 1
+      c = 1 - c
+    .
+    color3 c c c
+    move sz * i row * 25
+    rect sz + 1 25
+  .
+  n *= 2
+.

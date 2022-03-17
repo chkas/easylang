@@ -1,0 +1,158 @@
+repeat
+  s$ = input
+  until s$ = ""
+  in$[] &= s$
+.
+repeat
+  s$ = input
+  until s$ = ""
+  in2$[] &= s$
+.
+# 
+# len rule[][] len in$[]
+len rule[][] 50
+global a b maxlen .
+# 
+func init . .
+  for i range len in$[]
+    l$[] = str_split in$[i] " "
+    ind = number substr l$[0] 0 len l$[0] - 1
+    if l$[1] = "\"a\""
+      a = ind
+    elif l$[1] = "\"b\""
+      b = ind
+    else
+      for j = 1 to len l$[] - 1
+        s$ = l$[j]
+        if s$ = "|"
+          rl[] &= -1
+        else
+          rl[] &= number l$[j]
+        .
+      .
+    .
+    swap rule[ind][] rl[]
+  .
+  for i range len in2$[]
+    if len in2$[i] > maxlen
+      maxlen = len in2$[i]
+    .
+  .
+.
+call init
+pr maxlen
+# 
+# 
+func prod s$ . nr[] res .
+  #  pr "prod " & s$ & " " & nr[]
+  if len nr[] = 0
+    for i range len in2$[]
+      if s$ = in2$[i]
+        pr s$
+        res += 1
+      .
+    .
+  elif len s$ > maxlen
+    # pr "maxlen"
+  else
+    i = 0
+    while i < len nr[] and (nr[i] = a or nr[i] = b)
+      if nr[i] = a
+        s$ &= "a"
+      elif nr[i] = b
+        s$ &= "b"
+      .
+      i += 1
+    .
+    double = 0
+    if i < len nr[]
+      ind = nr[i]
+      for j range len rule[ind][]
+        h = rule[ind][j]
+        if h = -1
+          double = 1
+          break 1
+        .
+        nnr[] &= h
+      .
+      if double = 1
+        for j = j + 1 to len rule[ind][] - 1
+          nnr2[] &= rule[ind][j]
+        .
+      .
+    .
+    i += 1
+    while i < len nr[]
+      h = nr[i]
+      nnr[] &= h
+      if double = 1
+        nnr2[] &= h
+      .
+      i += 1
+    .
+    call prod s$ nnr[] res
+    if double = 1
+      call prod s$ nnr2[] res
+    .
+  .
+.
+nr0[] = [ 0 ]
+call prod "" nr0[] res
+print res
+# 
+rule[8][] = [ 42 -1 42 8 ]
+rule[11][] = [ 42 31 -1 42 11 31 ]
+call prod "" nr0[] res
+print res
+pr time
+# 
+input_data
+42: 9 14 | 10 1
+9: 14 27 | 1 26
+10: 23 14 | 28 1
+1: "a"
+11: 42 31
+5: 1 14 | 15 1
+19: 14 1 | 14 14
+12: 24 14 | 19 1
+16: 15 1 | 14 14
+31: 14 17 | 1 13
+6: 14 14 | 1 14
+2: 1 24 | 14 4
+0: 8 11
+13: 14 3 | 1 12
+15: 1 | 14
+17: 14 2 | 1 7
+23: 25 1 | 22 14
+28: 16 1
+4: 1 1
+20: 14 14 | 1 15
+3: 5 14 | 16 1
+27: 1 6 | 14 18
+14: "b"
+21: 14 1 | 1 14
+25: 1 1 | 1 14
+22: 14 14
+8: 42
+26: 14 22 | 1 20
+18: 15 15
+7: 14 5 | 1 21
+24: 14 1
+
+abbbbbabbbaaaababbaabbbbabababbbabbbbbbabaaaa
+bbabbbbaabaabba
+babbbbaabbbbbabbbbbbaabaaabaaa
+aaabbbbbbaaaabaababaabababbabaaabbababababaaa
+bbbbbbbaaaabbbbaaabbabaaa
+bbbababbbbaaaaaaaabbababaaababaabab
+ababaaaaaabaaab
+ababaaaaabbbaba
+baabbaaaabbaaaababbaababb
+abbbbabbbbaaaababbbbbbaaaababb
+aaaaabbaabaaaaababaa
+aaaabbaaaabbaaa
+aaaabbaabbaaaaaaabbbabbbaaabbaabaaa
+babaaabbbaaabaababbaabababaaab
+aabbbbbaabbbaaaaaabbbbbababaaaaabbaaabba
+.
+

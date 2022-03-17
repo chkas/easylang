@@ -1,0 +1,305 @@
+# AoC-18 - Day 2: Inventory Management System
+# 
+repeat
+  s$ = input
+  until s$ = ""
+  s$[] &= s$
+.
+# 
+len let[] 26
+for ii range len s$[]
+  a$[] = strchars s$[ii]
+  for i range len a$[]
+    let[strcode a$[i] - strcode "a"] += 1
+  .
+  for i range len let[]
+    if let[i] = 2
+      s2 = 1
+    elif let[i] = 3
+      s3 = 1
+    .
+    let[i] = 0
+  .
+  s2all += s2
+  s3all += s3
+  s2 = 0
+  s3 = 0
+.
+print s2all * s3all
+# 
+for ii range len s$[]
+  a$[] = strchars s$[ii]
+  for ij = ii + 1 to len s$[] - 1
+    b$[] = strchars s$[ij]
+    cnt = 0
+    for i range len a$[]
+      if a$[i] <> b$[i]
+        pos = i
+        cnt += 1
+        if cnt = 2
+          break 1
+        .
+      .
+    .
+    if cnt = 1
+      a$[pos] = ""
+      print strjoin a$[]
+      break 2
+    .
+  .
+.
+# 
+# 
+input_data
+jplenqtlagxhivmwmscfukzodp
+jbrehqtlagxhivmeyscfuvzodp
+jbreaqtlagxzivmwysofukzodp
+jxrgnqtlagxhivmwyscfukwodp
+jbrenqtwagjhivmwysxfukzodp
+jbrenqplagxhivmwyscfuazoip
+jbrenqtlagxhivzwyscfldzodp
+jbrefqtlagxhizmwyfcfukzodp
+jbrenqtlagxhevmwfsafukzodp
+jbrunqtlagxrivmsyscfukzodp
+jbrenqtlaguhivmwyhlfukzodp
+jbrcnstsagxhivmwyscfukzodp
+jbrenqtlagozivmwyscbukzodp
+jbrenqwlagxhivswysrfukzodp
+jbrenstlagxhuvmiyscfukzodp
+jbranqtlhgxhivmwysnfukzodp
+jbrenqtvagxhinmxyscfukzodp
+jbrenqtlagdhivmwyscfukxody
+jbrenqtlagelavmwyscfukzodp
+jbrenqtlagxhtvmwyhcfukzbdp
+jbrenqwlagxhivmwyscfutzopp
+jbrenqtlavxhibmtyscfukzodp
+jbronqtlagxnivmwyscfuzzodp
+jbredqtlagxhppmwyscfukzodp
+jbrcnqtlogxhivmwysxfukzodp
+jbremqtlagehivswyscfukzodp
+jbrenqolagxhivmcyscfukzokp
+jbrehqtlacxhgvmwyscfukzodp
+fbrlnqtlagxhivmwyscbukzodp
+zbrfnqtlagxhivrwyscfukzodp
+jbregqtlagxnivmwyscfhkzodp
+jbrenqtllgxnivmwystfukzodp
+jurenqtlagxhivmwyscfulzoup
+jbrenitdagxhivmwyxcfukzodp
+jbrenqtlagxqivmwyscvuszodp
+jbqenqwlagxhivmwyscfckzodp
+jbrenqtlagxhivmwxscqupzodp
+jbrenqtlagxhivmwysciuqiodp
+jbrjnjtlagxhivmwyscfukzode
+jbrenqtlagxhuvmwqscfukzods
+jbrenqtlagxhuvmuyscfukzudp
+ibrenqtlagxhivmwyscfuktokp
+jbsenqtlagxhivcwyscfuksodp
+jbrfnntlagxhivmwnscfukzodp
+jzrenqulagxhivmwyscfukzodx
+jbrenqtqygxhivmwyscfukzwdp
+jbrenqtlagxfixmwyscfukzcdp
+jbrenqaoagxhivmwyshfukzodp
+jbrenqtlazxhivmworcfukzodp
+jbrenqtlagxhicowyscfukrodp
+jbrqnqtlagxhivzwyzcfukzodp
+jbrenqtlalxhuvxwyscfukzodp
+jbrenqtlqgxhhviwyscfukzodp
+jbrenqtuggxhivmoyscfukzodp
+jbrenqtlagxpivmwyscfukkodw
+zbrenqhlagxhivmwyscdukzodp
+jbrenutlagxxivmwyscfukzoqp
+obrenqtlagxhivmwxscfuszodp
+jbrenqtlagxhlvmwyscfuixodp
+rbrenqtlagdhixmwyscfukzodp
+jbrenqtlagxhivmwescfyszodp
+jbrfnqtlagxhivmwyscaukzhdp
+jbrenqtiagxhivmbyscfuxzodp
+cbrrnqtuagxhivmwyscfukzodp
+jbkenqtlagxhigmwysufukzodp
+jbjewqtlagxhivmwyscfuqzodp
+jbrznqtlagxvivmwyscfukzovp
+jbrenttlacxhivmwyscfhkzodp
+jblenqtlagxhivmwylcfukaodp
+jbrenqtlagxhivmqysiftkzodp
+jbrenqtlagwhikmwyscfukqodp
+jbrenqtlegxhivmwvsckukzodp
+jbrenqwzagxhiamwyscfukzodp
+jbrenqtlagxhivcwyscfgkzodc
+jbrenqtlagxxhvmwxscfukzodp
+jbrenqtlngxhivmwyscfukoowp
+jbreomtlagxhivmwpscfukzodp
+jfrenqtlagxhivmwyscnumzodp
+jbrenqtlagphipmwyscfukfodp
+jvrenqtlagxhivmwyscfmkzodw
+jbrenqtlaxxoiemwyscfukzodp
+jbrenqtlagxhivmwyscemkzpdp
+jbrenyjldgxhivmwyscfukzodp
+jbrenqtlagxhivfvyspfukzodp
+kbrenctlakxhivmwyscfukzodp
+jbrmhqtlagxhivmwyscfuizodp
+jbjenqtlagxlivmbyscfukzodp
+jbrenqtlaaxhivmmyshfukzodp
+jbronqtlagxhirmvyscfukzodp
+jbcrnqtlagxwivmwyscfukzodp
+jxrenszlagxhivmwyscfukzodp
+jbpenqtlagxhivmwyscfukkody
+jbrewqtlawxhivmwyscfukzhdp
+jbrenqylagxhivmwlxcfukzodp
+jbrenqtlagxxivtwywcfukzodp
+jbrenqtlagxhcvgayscfukzodp
+jbrenitlagxhivmwiscfukzohp
+jbrenutlagxhivmwyscbukvodp
+nbrenqtlagxhivmwysnfujzodp
+jbrenqtlagxhivmwyqcfupzoop
+jbrenqtrarxhijmwyscfukzodp
+jbrenqtlagxhivmwysdfukzovy
+jbrrnqtlagxhivmwyvcfukzocp
+jbrenqtlagxhivmwyscfuvzzhp
+jbhenitlagxhivmwysufukzodp
+jbrenqtlagxhivmwyscfuwzoqx
+kbrenqtlagxhivmwysqfdkzodp
+jbrenqtlagxhivmwyxmfukzodx
+jbcenatlagxxivmwyscfukzodp
+jbrenhtlagvhdvmwyscfukzodp
+jxrenqtlafxhivfwyscfukzodp
+jbreaztlpgxhivmwyscfukzodp
+tqrenqtlagxfivmwyscfukzodp
+jbrenqgllgxhwvmwyscfukzodp
+jbrejjtlagxhivmgyscfukzodp
+jbrenqtlagxhivmwyscvukzoqv
+jbrvnqtlagxsibmwyscfukzodp
+jbrenqttagxhuvmwyscfukvodp
+jbrenqteagxhivmwcscfukqodp
+jbrenqtsabxhivmwyspfukzodp
+jbbenqtlagxhivmwyscjukztdp
+jnrenqtlagxhiimwydcfukzodp
+jbrenqtlagxhfvmwyscxukzodu
+jbrenqtluyxhiomwyscfukzodp
+jbrenqvlagxhivmwyscuukzolp
+ebrenqtlagxnivmwysrfukzodp
+jbreeqtlatxhigmwyscfukzodp
+jbrenqtvxgxhivmwyscfukzedp
+jbrmnqtlagxhivmwywcfuklodp
+jbreeqtvagxhivmwyscfukzody
+jbrenptlagxhivmxyscfumzodp
+jbrenqtlagxhivmwysgfukzfsp
+jurenqtlagjhivmwkscfukzodp
+jbrenntlagxhivmwtscffkzodp
+jbrenqglagxhivmwyocfokzodp
+wbrenqtlagxhivmwhscfukiodp
+jbrenqtligxhivmqascfukzodp
+jbrenqtlagxhivmwxscfukpojp
+jurenqtlagxhivmmyscfbkzodp
+jbrenqtmagxhivmwyscfrbzodp
+jcrenqtlagxhivmwysefukzodm
+jbrenqtlagxhicmwywcfukzodl
+jbvanqtlagfhivmwyscfukzodp
+jbmenqjlagxhivmwyscfdkzodp
+jbrenqtlagohivvwysctukzodp
+jbrenqtdagxdivmwyscfckzodp
+kbrefqtlagxhivmwyscfuazodp
+jbrwnqtoagxhivmwyswfukzodp
+jjhenqtlagxhivmwyscfukzorp
+jbgsnqtlagxhivkwyscfukzodp
+jbrynqtlagxhivmsyspfukzodp
+jbrenftlmkxhivmwyscfukzodp
+nbrenqtxagxhmvmwyscfukzodp
+jbrunqtlagxhijmwysmfukzodp
+jbrenqtlagmaivmwyscfukzowp
+jbrerqtlagxhihmwyscfukzudp
+jbrenqtlagahivmwysckukzokp
+kbrenqtlagxhirmwyscfupzodp
+jbrrnqtlagxhivmwyecfukzodz
+jbrenqtlavxhivmwyscfusiodp
+jnrenqtlagxhivmwyhcfukzodw
+jbretqtlagfhivmwyscfukzrdp
+jbreoqtnagxhivmwyscfukzopp
+jbrenbtllgxhivmwsscfukzodp
+jbrenqtlmgxhivmwyscfuwzedp
+jbnenqtlagxhivbwyscfukzokp
+jbrenqslagxhivmvyscfukzndp
+jbrenqtlagxzivmwuscfukztdp
+gbrenqtlagxhyvmwyscfukjodp
+jbrenqteagxhivmwyscfuszedp
+jbrenqtlaglhivmwysafukkodp
+jbrenqtlagxhcvmwascfukzogp
+jbrenqtlagxhsvmkcscfukzodp
+jbrenqslbgxhivmwyscfufzodp
+cbrenqtlagxhivkwtscfukzodp
+jbrenqtltgxhivmzyscfukzodj
+jbrgnqtlagihivmwyycfukzodp
+vbrenqauagxhivmwyscfukzodp
+jbrqnqtlagjhivmwyscfqkzodp
+jbrenqtlakxhivmwyscfukvobp
+jcrenqelagxhivmwtscfukzodp
+jbrrnqtlagxhlvmwyscfukzodw
+jbrenqtlagxhivmwkscaumzodp
+jbrenqdlagxhivmiescfukzodp
+jhrenqtlagxhqvmwyscmukzodp
+jbrenqtlaghhivmwyscfukkoyp
+jowenqtlagxyivmwyscfukzodp
+jbrenitaagxhivmwyscfqkzodp
+jbrenqtlagxhivmwyscfnkbudp
+jbyenqtlagxhivmiyscfukzhdp
+jbrenitlagxhibjwyscfukzodp
+jbrenqtlavxhjvmwpscfukzodp
+jbrenqyaagxhivmwyscflkzodp
+jbrenqylagxhivmwyicfupzodp
+jbrenqtlagxmevmwylcfukzodp
+lbrenqtlagxhiqmwyscfikzodp
+jbrenqtnarxhivmwyscfmkzodp
+jbrenqtlamxhivmwyscfnkzorp
+jbbenqtlavxhivmwyscjukztdp
+jbrenqtlagxhivmwyscfnliodp
+jbwenetlagxhivmwyscfukzodt
+jbrenatlagxhivmwysmfujzodp
+jbrsnstlagxhivmwyscfukgodp
+jbwvnitlagxhivmwyscfukzodp
+jbrenqtbagxhkvmwypcfukzodp
+jbrlnqtlafxhivmwyscfukdodp
+jbrenztlanxhivmwyscjukzodp
+jbrepqtlagxhivmwudcfukzodp
+jbrenqtlagxiivmwdscfskzodp
+jbrdjqtlagxhivmwyschukzodp
+jbrenqtoaguhivmwyccfukzodp
+jdrexqjlagxhivmwyscfukzodp
+jbrenqtlagxhovmwysckukaodp
+pbrfnqblagxhivmwyscfukzodp
+jbrenqtlagxrivgiyscfukzodp
+jbrelqtgagxhivmryscfukzodp
+jbrenqtlagxhicmwjscfikzodp
+jbrenqjlagxhivmwyscfmkjodp
+jbrenqtlagxpivmwzscgukzodp
+jbienqzlagxpivmwyscfukzodp
+jbrenqvlagxhivmwdscfukzodx
+owrenqtlagxhivmwyicfukzodp
+gbrenqtlaathivmwyscfukzodp
+jbgenqtlafxhivmwysqfukzodp
+jbrenqtlagxhivtwsscfukzokp
+jbrnnqylanxhivmwyscfukzodp
+ebrenqolagxhivmcyscfukzodp
+jbrenqtlarnhivgwyscfukzodp
+jbmenqtlagxhivmvyscfukzgdp
+jbrevqtlaglhivmwystfukzodp
+jbrenqplanthivmwyscfukzodp
+jbrenqtlagxhivmkyscbukzosp
+jbrenqtlagxaivmwyscfugzodo
+jbrenqplagxhnvmwyscfjkzodp
+jbrenqtlagxhivgwyscfusrodp
+cbrenqtlagxhivmwysmfukzody
+jbrenquwaexhivmwyscfukzodp
+jbredqtlagxhdvmwyscfukzoup
+jbrxnqtlagxhivmwysczukaodp
+jbrenqtlafnhivmwyscfuczodp
+jbbdkqtlagxhivmwyscfukzodp
+ubrenqtlagxhivkwyucfukzodp
+ebjenqtlagxhivmwyscfukzodj
+jbgenqtlugxxivmwyscfukzodp
+jbrenqtoagxqivmwdscfukzodp
+bbeenqtlagxhivmwyscfumzodp
+jbfeeqtlagxhivmwmscfukzodp
+jbrlnqtlagxhiimwescfukzodp
+jbrenqtlagwoivmwyscfukhodp
+jbrenqtlagnhivmwyscfuszovp
+
+

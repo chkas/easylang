@@ -1,0 +1,25 @@
+len f[] 100 * 100
+func show . .
+  for y range 100
+    for x range 100
+      if f[y * 100 + x] = 1
+        move x y
+        rect 1 1
+      .
+    .
+  .
+.
+func run x y dir . .
+  dx[] = [ 0 1 0 -1 ]
+  dy[] = [ -1 0 1 0 ]
+  while x >= 0 and x < 100 and y >= 0 and y < 100
+    v = f[y * 100 + x]
+    f[y * 100 + x] = 1 - v
+    dir = (dir + 1 + 2 * v) mod 4
+    x += dx[dir]
+    y += dy[dir]
+  .
+.
+call run 70 40 0
+call show
+

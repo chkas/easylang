@@ -1,0 +1,14 @@
+{
+	"name": "nBasic",
+	"icons": [{
+		"src": "/ide/icon.png",
+		"type": "image/png",
+		"sizes": "256x256",
+		"purpose": "any maskable"
+	}],
+	"start_url": "/ide/",
+	"display": "standalone",
+	"background_color": "#bdb",
+	"theme_color": "#bdb"
+}
+

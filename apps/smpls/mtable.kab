@@ -1,0 +1,33 @@
+n = 12
+func out h . .
+  if h < 10
+    write "  "
+  elif h < 100
+    write " "
+  .
+  write " "
+  write h
+.
+write "     "
+for i = 1 to n
+  call out i
+.
+print ""
+write "     "
+for i = 1 to n
+  write "----"
+.
+print ""
+for i = 1 to n
+  call out i
+  write "|"
+  for j = 1 to n
+    if j < i
+      write "    "
+    else
+      call out i * j
+    .
+  .
+  print ""
+.
+

@@ -1,0 +1,15 @@
+sz = 100
+color 000
+linewidth 3
+while x <= 64
+  b = 1.0 - x / 70
+  color3 b * 0.7 b b * 0.7
+  move x x
+  rect sz sz
+  sz -= 6
+  x += 4
+.
+textsize 4
+move 60 93
+text "easylang.online"
+

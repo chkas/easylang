@@ -1,0 +1,238 @@
+# Math trainer
+# 
+ind = 0
+q$ = ""
+subr init_vars
+  resok = 0
+  res = 0
+  t = systime
+  state = 1
+  op = ind
+  if op < 2
+    todo = 10
+  else
+    todo = 5
+  .
+.
+func disp col s$ . .
+  color col
+  move 3 3
+  rect 94 21
+  color 888
+  move 7 7
+  textsize 12
+  text s$
+.
+func show_quest . .
+  if res = resok
+    if op = 0
+      a = random 8 + 2
+      b = random 8 + 2
+      q$ = a & " * " & b & " = "
+      resok = a * b
+    elif op = 1
+      b = random 8 + 2
+      resok = random 8 + 2
+      a = b * resok
+      q$ = a & " / " & b & " = "
+    elif op = 2
+      a = random 77 + 11
+      b = random (89 - a) + 11
+      q$ = a & " + " & b & " = "
+      resok = a + b
+    elif op = 3
+      a = random 70 + 30
+      b = random (a - 11) + 11
+      q$ = a & " - " & b & " = "
+      resok = a - b
+    .
+  .
+  call disp 030 q$ & "_"
+  res = 0
+.
+func draw_key c ind . .
+  color c
+  s$ = strchar (ind + 48)
+  h = ind
+  if h < 10 and h > 0
+    h -= 1
+    x = h mod 3 * 24 + 3
+    y = h div 3 * 24 + 3 + 24
+  else
+    x = 3 * 24 + 3
+    if h = 0
+      y = 1
+    elif h = 10
+      y = 0
+      s$ = "×"
+    else
+      y = 2
+      s$ = "✓"
+    .
+    y = y * 24 + 3 + 24
+  .
+  move x y
+  rect 22 22
+  move x + 5 y + 3
+  color 888
+  textsize 16
+  text s$
+.
+background 010
+func start . .
+  call init_vars
+  clear
+  for ind range 12
+    call draw_key 020 ind
+  .
+  call show_quest
+.
+func handle_key2 . .
+  if ind = 11
+    state = 2
+    if res = resok
+      col = 050
+      todo -= 1
+      timer 0.5
+    else
+      col = 500
+      todo += 1
+      timer 5
+    .
+    call disp col q$ & resok
+  else
+    if ind = 10
+      res = res div 10
+      h$ = res
+      if res = 0
+        h$ = "_"
+      .
+    else
+      if res >= 10
+        res = 0
+      .
+      res = res * 10 + ind
+      h$ = res
+    .
+    call disp 030 q$ & h$
+  .
+.
+func handle_key . .
+  c = mouse_x div 25
+  r = (mouse_y - 25) div 25
+  if c < 3
+    ind = r * 3 + c + 1
+  else
+    if r = 1
+      ind = 0
+    elif r = 0
+      ind = 10
+    else
+      ind = 11
+    .
+  .
+  call draw_key 040 ind
+  call handle_key2
+.
+menu$[] = [ "Multiply" "Divide" "Add" "Subtract" ]
+func draw_menu_key col i . .
+  y = i * 24 + 3
+  move 3 y
+  color col
+  rect 94 22
+  move 8 y + 4
+  color 888
+  text menu$[i]
+.
+func draw_menu . .
+  clear
+  textsize 14
+  for i range 4
+    call draw_menu_key 020 i
+  .
+  state = 0
+.
+on key
+  ind = strcode keybkey - 48
+  if state = 1
+    if ind >= 0 and ind <= 9
+    elif ind = 21
+      ind = 11
+    elif ind = 18 or ind = 20
+      ind = 10
+    else
+      ind = -1
+    .
+    if ind >= 0
+      call handle_key2
+    .
+  elif state = 0
+    if ind >= 1 and ind <= 4
+      ind -= 1
+      call start
+    .
+  elif state = 4
+    call draw_menu
+  .
+.
+on mouse_down
+  if state = 0
+    ind = mouse_y div 25
+    call draw_menu_key 030 ind
+  elif state = 1 and mouse_y >= 25
+    call handle_key
+  elif state = 4
+    call draw_menu
+  .
+.
+on mouse_up
+  if ind >= 0
+    if state = 0
+      call start
+    elif state = 1 or state = 2
+      call draw_key 020 ind
+    .
+    ind = -1
+  .
+.
+subr draw_smiley
+  move 65 70
+  color 983
+  circle 19
+  color 000
+  move 58 63
+  circle 2
+  move 72 63
+  circle 2
+  linewidth 2
+  curve [ 58 77 65 83 72 77 ]
+.
+func show_result . .
+  state = 3
+  timer 2
+  t = floor (systime - t)
+  move 3 3
+  color 030
+  rect 94 94
+  color 888
+  move 10 8
+  textsize 10
+  text "Well done"
+  move 10 24
+  text "Time: " & t
+  if t <= 60
+    call draw_smiley
+  .
+.
+on timer
+  if state = 3
+    state = 4
+  elif state = 2 and todo = 0
+    call show_result
+  elif state = 2
+    call show_quest
+    state = 1
+  .
+.
+call draw_menu
+

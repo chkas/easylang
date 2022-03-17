@@ -1,0 +1,56 @@
+# maze generation
+# 
+size = 20
+n = 2 * size + 1
+endpos = n * n - 2
+startpos = n + 1
+# 
+f = 100 / (n - 0.5)
+len m[] n * n
+# 
+background 000
+func show_maze . .
+  clear
+  for i range len m[]
+    if m[i] = 0
+      x = i mod n
+      y = i div n
+      color 777
+      move x * f - f / 2 y * f - f / 2
+      rect f * 1.5 f * 1.5
+    .
+  .
+  sleep 0.001
+.
+offs[] = [ 1 n -1 (-n) ]
+brdc[] = [ n - 2 -1 1 -1 ]
+brdr[] = [ -1 n - 2 -1 1 ]
+# 
+func m_maze pos . .
+  m[pos] = 0
+  call show_maze
+  d[] = [ 0 1 2 3 ]
+  for i = 3 downto 0
+    d = random (i + 1)
+    dir = d[d]
+    d[d] = d[i]
+    r = pos div n
+    c = pos mod n
+    posn = pos + 2 * offs[dir]
+    if c <> brdc[dir] and r <> brdr[dir] and m[posn] <> 0
+      posn = pos + 2 * offs[dir]
+      m[(pos + posn) div 2] = 0
+      call m_maze posn
+    .
+  .
+.
+func make_maze . .
+  for i range len m[]
+    m[i] = 1
+  .
+  call m_maze startpos
+  m[endpos] = 0
+.
+call make_maze
+call show_maze
+

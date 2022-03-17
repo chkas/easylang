@@ -1,0 +1,15 @@
+#/bin/sh
+../../main/native/runc 1.el
+t0=$(date +%s.%2N)
+for i in $(seq 1 25); do 
+	grep "0x67452301" $i.el >/dev/null && continue
+	test $1 && echo $i
+#	../../main/native/runc -f $i.el >/tmp/run$$.el
+#	../../main/native/runc /tmp/run$$.el >>/tmp/sol$$.txt
+	../../main/native/runc $i.el >>/tmp/sol$$.txt
+	echo >>/tmp/sol$$.txt
+done
+diff /tmp/sol$$.txt sol.txt
+rm /tmp/sol$$.txt
+echo "$(date +%s.%2N) - $t0" | bc -l
+

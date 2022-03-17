@@ -1,0 +1,39 @@
+c = 797
+color c
+rect 100 100
+color 000
+linewidth 6
+move 24 22
+line 76 22
+line 76 64
+line 24 64
+line 24 22
+linewidth 10
+move 20 72
+line 80 72
+# 
+linewidth 2
+y = 30
+move 30 y
+line 45 y
+y += 5
+move 30 y
+line 45 y
+y += 5
+move 40 y
+line 55 y
+y += 5
+move 40 y
+line 55 y
+y += 5
+move 30 y
+line 45 y
+y += 5
+move 30 y
+line 45 y
+# 
+color c
+move 75 64
+circle 2
+sysfunc "id:10"
+

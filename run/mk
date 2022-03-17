@@ -1,0 +1,440 @@
+#!/bin/sh
+
+cd ../apps
+
+odir=$HOME/out/easylang/run
+mkdir -p $odir
+
+idir=$odir/../ide
+v=$(cat $idir/wvers)
+cp $idir/easyw$v.wasm $idir/easyw$v.js $odir
+
+cp ../run/icon.png $odir/
+
+cat >$odir/mfst.json <<EOF
+{
+	"name": "CodeRunner",
+	"icons": [{
+		"src": "/run/icon.png",
+		"type": "image/png",
+		"sizes": "256x256",
+		"purpose": "any maskable"
+	}],
+	"start_url": "/run/",
+	"display": "standalone",
+	"background_color": "#bdb",
+	"theme_color": "#bdb"
+}
+EOF
+
+echo "var CACHE = 'r$(date +%y%m%d-%H%M)'" > $odir/sw.js
+echo "var VERS = '$v'" >>$odir/sw.js
+cat >>$odir/sw.js <<EOF
+var urls = [
+	"/run/",
+	"/run/easyw" + VERS + ".wasm",
+	"/run/easyw" + VERS + ".js",
+	"/run/icon.png",
+	"/run/mfst.json",
+]
+
+console.log("sw " + CACHE)
+
+self.addEventListener("install", evt => {
+	console.log("install")
+	evt.waitUntil(
+		caches.open(CACHE).then(cache => Promise.all(
+			urls.map(url => {
+				var f = url
+				if (f == "/run/") f += "?" + CACHE
+				return fetch(f).then(resp => {
+					if (!resp.ok) {
+						console.log(f + " missing")
+						return
+					}
+					return cache.put(url, resp)
+				})
+			})
+		))
+	)
+})
+
+self.addEventListener("fetch", evt => {
+	evt.respondWith(async function() {
+		var cache = await caches.open(CACHE)
+		var res = await cache.match(evt.request, {ignoreSearch: true})
+		if (res) return res
+		console.log("fetch " + evt.request.url)
+		return fetch(evt.request.url)
+	}())
+})
+
+self.addEventListener("activate", function(evt) {
+	evt.waitUntil(
+		caches.keys().then(function(keys) {
+			return Promise.all(
+				keys.map(function(k) {
+					if (k != CACHE && k[0] == CACHE[0]) return caches.delete(k)
+				})
+			)
+		})
+	)
+})
+
+self.addEventListener("message", function (evt) {
+	if (evt.data.action == "skipWaiting") self.skipWaiting()
+})
+EOF
+
+#--------------------------------------------------
+
+exec > $odir/index.html
+
+cat <<'xxx'
+<!doctype html> 
+<meta charset=utf-8>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="code runner">
+<title>Code Runner</title>
+<link rel="icon" href="icon.png" type="image/x-png">
+<link rel="manifest" href="mfst.json">
+
+<style>
+body {
+	background-color:#000;
+	color:#ddd;
+	font-family:sans-serif;
+	margin:0px;
+	user-select:none;
+}
+a { color: #ddd }
+
+#noti {
+	display: none;
+	cursor: pointer;
+	text-decoration: underline;
+}
+.lnk {
+	padding:5px;
+	font-size: 90%;
+	cursor: pointer;
+	text-decoration: underline;
+	display:inline;
+}
+.lnk:hover {
+	background-color:#444;
+}
+select {
+	color:#fff; 
+	background-color:#444; 
+	font-size:120%;
+	height:32px;
+	width:150px;
+	border-radius:4px;
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	padding:3px 3px;
+	margin:2px 2px;
+	border:1px solid #666;
+	cursor: pointer;
+}
+select:hover {background-color:#666}
+
+#left {
+	margin:8px;
+	width:180px;
+	float:left
+}
+#canv {
+	margin:8px;
+	outline:none;
+}
+</style>
+
+<div>
+	<div id=left>
+		<div id=info style="display:none">
+			<h3>Code Runner</h3>
+			<p>There are no apps installed.
+			<p><a href=list.html>Install apps and games</a>
+		</div>
+
+		<div id=noti>Click here to update to new version<br></div>
+
+		<p><select id=sel></select>
+		<h3 id=namef></h3>
+		<p>
+		<div id=edit class=lnk>Code</div> 
+		<div id=inst class=lnk>Keep</div>
+		<div id=rm class=lnk>Delete</div>
+		<div id=disc class=lnk>Discard</div>
+		<div id=more class=lnk>More</div> 
+		<p>
+	</div>
+	<canvas id=canv></canvas>
+</div>
+
+<script>
+
+if ("serviceWorker" in navigator) {
+	window.addEventListener("load", function() {
+		navigator.serviceWorker.register("sw.js").then(function(reg) {
+			console.log("sw scope: ", reg.scope)
+			reg.addEventListener("updatefound", () => {
+				noti.nsw = reg.installing
+				noti.nsw.addEventListener("statechange", () => {
+					switch (noti.nsw.state) {
+					case "installed":
+						if (navigator.serviceWorker.controller) {
+							noti.style.display = "inline"
+						}
+						break
+					}
+				})
+			})
+		})
+	})
+	navigator.serviceWorker.addEventListener("controllerchange", function () {
+		if (noti.inRefresh) return
+		window.location.reload()
+		noti.inRefresh = true
+	})
+	noti.onclick = function(){
+		noti.nsw.postMessage({ action: "skipWaiting" })
+	}
+}
+
+xxx
+cat $idir/vers_easy.js
+
+cat <<'xxx'
+var code0 = `
+rad = 25
+x = 50
+y = 25
+vx = 0.5
+linewidth 2
+on animate
+	clear
+	color 422
+	move 0 22
+	line 0 100
+	line 100 100
+	line 100 22
+	move x y
+	color 422
+	circle rad
+	color 888
+	move x - 11 y - 12
+	text "Code"
+	move x - 15 y
+	text "Runner"
+	if x > 100 - rad or x < rad
+		vx = -vx
+	.
+	x += vx
+	if y > 100 - rad
+		vy = -vy
+	else
+		vy += 0.03125
+	.
+	y += vy
+.
+`
+
+var aspr = 1
+
+window.onresize = function() {
+	var vh = window.innerHeight
+	var vw = window.innerWidth
+
+	if (vw < vh) vh -= 120
+	else vw -= 220
+
+	var w = vw - 16
+	var h = w * aspr
+
+	if (h > vh - 22) {
+		h = vh - 22
+		w = h / aspr
+	}
+	canv.style.width = Math.floor(w) + "px"
+	canv.style.height = Math.floor(h) + "px"
+}
+
+window.onresize()
+
+function run(s) {
+	easystop()
+	canv.width = 800 / aspr
+	canv.height = 800
+	window.onresize()
+	var c = canv.getContext("2d")
+	c.clearRect(0, 0, canv.width, canv.height)
+	easyrun(s, canv)
+}
+
+err = `
+clear
+textsize 5
+move 5 30
+text "This app is not compatible :-("
+move 5 40
+text "You should reinstall it."
+`
+function msgf(a, b) {
+	if (a == "error") easyrun(err, canv)
+}
+easyinit(canv, out = null, msgf) 
+
+window.name = "easylang_run"
+var appn = null
+var code = null
+
+function getCodeInfo() {
+	aspr = 1
+	var an = Math.floor(Date.now() / 1000) - 1577833200
+	if (code[0] == "#") {
+		var i = code.indexOf("\n")
+		if (i != -1) {
+			an = code.substr(2, i - 2)
+			i = an.indexOf(":w")
+			if (i != -1) {
+				aspr = 100 / Number(an.substr(i + 2))
+				an = an.substr(0, i)
+			}
+		}
+	}
+	if (appn == null) appn = an
+}
+
+function ready() {
+
+	fillsel(null)
+	if (location.search.startsWith("?code=")) {
+		code = decodeURIComponent(location.search.substring(6))
+		history.replaceState(null, "", location.protocol + "//" + location.host + location.pathname)
+	}
+	else if (window.localStorage.getItem("xrunsel") == -1) {
+		code = window.localStorage.getItem("xruncode")
+	}
+	if (code) {
+		appn = null
+		getCodeInfo()
+		sel.style.display = "none"
+		rm.style.display = "none"
+		more.style.display = "none"
+		namef.innerHTML = appn
+		run(code)
+	}
+	else {
+		inst.style.display = "none"
+		disc.style.display = "none"
+		sel.selectedIndex = window.localStorage.getItem("xrunsel")
+		if (!window.navigator.onLine) more.style.display = "none"
+		updsel()
+	}
+}
+
+ready()
+
+function change() {
+	this.blur()
+	appn = sel.options[sel.selectedIndex].value
+	code = window.localStorage.getItem("a" + appn)
+	getCodeInfo()
+	run(code)
+}
+
+sel.onchange = change
+
+function fillsel(nm) {
+	while (sel.options.length) sel.options.remove(0)
+	var ar = Object.keys(window.localStorage || {})
+	ar.sort()
+	sel.selectedIndex = 0
+	for (var i = 0; i < ar.length; i++) {
+		var k = ar[i]
+		if (k[0] != "a") break
+		var option = document.createElement("option")
+		option.text = k.substr(1)
+		option.value = k.substr(1)
+		sel.add(option)
+		if (option.value == nm) {
+			sel.selectedIndex = sel.options.length - 1
+		}
+	}
+}
+function updsel() {
+	disc.style.display = "none"
+	inst.style.display = "none"
+	namef.style.display = "none"
+	if (!sel.options.length) {
+		info.style.display = ""
+		edit.style.display = "none"
+		rm.style.display = "none"
+		more.style.display = "none"
+		sel.style.display = "none"
+		aspr = 1
+		run(code0)
+	}
+	else {
+		info.style.display = "none"
+		edit.style.display = ""
+		rm.style.display = ""
+		sel.style.display = ""
+		if (window.navigator.onLine) more.style.display = ""
+		change()
+	}
+}
+edit.onclick = function() {
+	window.open("../ide/?code=" + encodeURIComponent(code))
+//	window.open(location.origin + "/ide/?code=" + encodeURIComponent(code))
+}
+more.onclick = function() {
+	window.open("./list.html", "_self")
+//	window.open(location.origin + "/run/list.html", "_self")
+//	window.open(location.origin + "/run/list.html", "easylang_games")
+}
+inst.onclick = function() {
+	window.localStorage.setItem("a" + appn, code)
+	fillsel(appn)
+	updsel()
+}
+var rmt
+function rmreset() {
+	rm.innerHTML = "Delete"
+	rmt = null
+}
+rm.onclick = function() {
+    if (!rmt) {
+		rm.innerHTML = "Really?"
+		rmt = setTimeout(rmreset, 3000)
+	}
+	else {
+		clearTimeout(rmt)
+		rmreset();
+		window.localStorage.removeItem("a" + appn)
+		window.localStorage.removeItem("i" + appn)
+		fillsel(null)
+		updsel()
+	}
+}
+disc.onclick = function() {
+	updsel()
+}
+window.onbeforeunload = function(e) {
+	if (!inst.style.display) {
+		window.localStorage.setItem("xrunsel", -1)
+		window.localStorage.setItem("xruncode", code)
+	}
+	else window.localStorage.setItem("xrunsel", sel.selectedIndex)
+}
+
+window.addEventListener("online", () => { if (!sel.style.display) more.style.display = ""} );
+window.addEventListener("offline", () => more.style.display = "none");
+
+</script>
+xxx
+
+

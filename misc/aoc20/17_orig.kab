@@ -1,0 +1,146 @@
+# AoC-20 - Day 17: Conway Cubes
+# 
+repeat
+  s$ = input
+  until s$ = ""
+  in$[] &= s$
+.
+ln0 = len in$[]
+# n = size + 2 * iterations + border
+n = ln0 + 2 * 6 + 2
+len f[] n * n * n * (n - ln0 + 1)
+len p[] len f[]
+n2 = n * n
+n3 = n * n * n
+# 
+# ------------- Part 1 -------------
+# 
+ln = ln0
+y = 7
+for ii range len in$[]
+  s$[] = str_chars in$[ii]
+  x = 7
+  for j range len s$[]
+    i = x + y * n + 7 * n2
+    if s$[j] = "#"
+      f[i] = 1
+    .
+    x += 1
+  .
+  y += 1
+.
+subr update1
+  swap f[] p[]
+  for x = s0 to s0 + ln - 1
+    for y = s0 to s0 + ln - 1
+      for z = s0 to s0 + ln - ln0
+        i = x + y * n + z * n2
+        s = 0
+        for xp = x - 1 to x + 1
+          for yp = y - 1 to y + 1
+            for zp = z - 1 to z + 1
+              ip = xp + yp * n + zp * n2
+              s += p[ip]
+            .
+          .
+        .
+        s -= p[i]
+        if s = 3
+          f[i] = 1
+        elif s = 2 and p[i] = 1
+          f[i] = 1
+        else
+          f[i] = 0
+        .
+      .
+    .
+  .
+.
+s0 = 7
+for k range 6
+  s0 -= 1
+  ln += 2
+  call update1
+.
+for i range len f[]
+  sum += f[i]
+  f[i] = 0
+  p[i] = 0
+.
+print sum
+# 
+# ------------- Part 2 -------------
+# 
+y = 7
+for ii range len in$[]
+  s$[] = str_chars in$[ii]
+  x = 7
+  for j range len s$[]
+    i = x + y * n + 7 * n2 + 7 * n3
+    if s$[j] = "#"
+      f[i] = 1
+    .
+    x += 1
+  .
+  y += 1
+.
+subr update
+  swap f[] p[]
+  for x = s0 to s0 + ln - 1
+    for y = s0 to s0 + ln - 1
+      for z = s0 to s0 + ln - ln0
+        for w = s0 to s0 + ln - ln0
+          i = x + y * n + z * n2 + w * n3
+          s = 0
+          pw = (w - 1) * n3
+          for tw range 3
+            pz = pw + (z - 1) * n2
+            for tz range 3
+              py = pz + (y - 1) * n + x - 1
+              for ty range 3
+                for ip = py to py + 2
+                  s += p[ip]
+                .
+                py += n
+              .
+              pz += n2
+            .
+            pw += n3
+          .
+          s -= p[i]
+          if s = 3
+            f[i] = 1
+          elif s = 2 and p[i] = 1
+            f[i] = 1
+          else
+            f[i] = 0
+          .
+        .
+      .
+    .
+  .
+.
+ln = ln0
+s0 = 7
+for k range 6
+  s0 -= 1
+  ln += 2
+  call update
+.
+sum = 0
+for i range len f[]
+  sum += f[i]
+.
+print sum
+# 
+input_data
+....#...
+.#..###.
+.#.#.###
+.#....#.
+...#.#.#
+#.......
+##....#.
+.##..#.#
+
+

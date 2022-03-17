@@ -1,0 +1,600 @@
+#!/bin/sh
+
+dom="easylang.online"
+test $1 && dom=$1
+
+src=$(pwd)
+
+o=$HOME/out/easylang/apps
+mkdir -p $o
+
+for i in *.html *.js; do
+	if test  ! -e  $o/$i -o $i -nt $o/$i; then
+		echo cp -p $i $o
+		cp -p $i $o
+	fi
+done
+
+mk_tut() {
+	n=$(echo $1 | tr "A-Z " a-z_)
+	cat >$o/tutorial_$n.html <<xxx
+<!doctype html>
+<meta charset=utf-8><title>$1</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<link rel="icon" href="../icon.png" type="image/x-png">
+
+<div id=tut><b>Loading ...</b></div>
+<script src=easy.js></script>
+<script src=easy_code.js></script>
+<script src=easy_tut2.js></script>
+<script>
+if (typeof WebAssembly != 'object') {
+	tut.innerHTML = "You need a browser with WebAssembly support for this website."
+}
+xxx
+	if test $2 = learn; then
+		cat >>$o/tutorial_$n.html <<'xxx'
+txt_locale = "de"
+txt_tutor=`
+* Learn programming
+
+*de Programmieren lernen
+
+xxx
+		l=$(grep -n Trace ../main/web/tut_learn.js | head -1 | cut -f1 -d:)
+		head -$((l-1)) ../main/web/tut_learn.js | tail +8 >>$o/tutorial_$n.html
+		tail +$((l+4)) ../main/web/tut_learn.js  >>$o/tutorial_$n.html
+
+	elif test "$3"; then
+		echo "txt_tutor=\`" >>$o/tutorial_$n.html
+		echo "* $3" >>$o/tutorial_$n.html
+		echo  >>$o/tutorial_$n.html
+		if test "$4"; then
+			echo "+ $4" >>$o/tutorial_$n.html
+			echo  >>$o/tutorial_$n.html
+		fi
+		tail +5 ../main/web/tut_$2.js >>$o/tutorial_$n.html
+	else
+		echo "txt_tutor=\`" >>$o/tutorial_$n.html
+		echo "* $1" >>$o/tutorial_$n.html
+		if test $2 != learn; then
+			echo  >>$o/tutorial_$n.html
+			lnk="@ ./tutorial_learn_programming.html@A more basic tutorial for beginners can be found here."
+			echo $lnk >>$o/tutorial_$n.html
+		fi
+		tail +4 ../main/web/tut_$2.js >>$o/tutorial_$n.html
+	fi
+
+	if test "$5" = runner; then
+		cat >>$o/tutorial_$n.html <<'xxx'
+var url
+function createURL() {
+	var h = encodeURIComponent(pres[pres.length - 1].innerText)
+	url.href = location.origin + "/run/?code=" + h
+	url.target = '_blank'
+	url.innerHTML = "Run and install it on code runner"
+}
+function hook() {
+	tut.insertAdjacentHTML("beforeend", `
+
+<h3>Code runner and web app</h3>
+A URL can be created, that can start a <i>code runner</i> with the program encoded in a URL parameter.
+<p>
+Inside the <i>code runner</i> our program can be stored and run offline. The code runner is a <i>PWA</i> 
+(Progressive Web App). Therefore it works like a native app on the mobile device.
+`)
+	append(tut, "p")
+	var h = create("button")
+	h.innerText = "Create a start URL"
+	h.onclick = createURL
+	tut.appendChild(h)
+	append(tut, "p")
+
+	url = create("a")
+	tut.appendChild(url)
+
+	var dom = window.location.host
+	tut.insertAdjacentHTML("beforeend", `
+<p><hr>
+<p>
+When copying the files <a href=easyw.wasm><i>easyw.wasm</i></a>, <a href=easyw.js><i>easyw.js</i></a>
+and <a href=easy.js><i>easy.js</i></a> to a web directory, you can embed this game in a
+<a href=letter-memory.html>web page</a>.
+
+<p><hr>
+<p>The examples were created with <a href=..>${dom}<a>. This tutorial is integrated in the <a href=../ide/>IDE<a>
+<p><small>christof.kaser@gmail.com</small>
+`)
+}
+</script>
+xxx
+	else
+
+		if test $2 = mcarlo; then
+			cat >>$o/tutorial_$n.html <<'xxx'
+txt_tutor+=`
+* Blackjack
+
++ With blackjack, it's a completely different story.
+
+@ ./tut_blackj.html@Blackjack - Probabilities, Strategy, Card Counting
+`
+xxx
+		fi
+		cat >>$o/tutorial_$n.html <<'xxx'
+function hook() {
+	var dom = window.location.host
+	tut.insertAdjacentHTML("beforeend", `
+<p><hr><p>
+The examples were created with <a href=..>${dom}<a>. This tutorial is integrated in the <a href=../ide/>IDE<a>
+<p><small>christof.kaser@gmail.com</small>
+`)
+}
+</script>
+xxx
+	fi
+}
+
+mk_tut "Documentation and code snippets" docu 
+mk_tut "Monte Carlo methods" mcarlo "Monte Carlo Methods or Why it's a Bad Idea to Go to the Casino"
+mk_tut "Functions and recursion" func 
+mk_tut "Sorting algorithms" sorting "Sorting algorithms" "There is some textual explanation of the different sorting algorithms. For a better understanding it is very helpful to study pictorial representations of the algorithms located at Wikipedia or at other sites."
+
+mk_tut "Programming a letter memory game" game "" "" "runner" 
+mk_tut "Learn programming" learn 
+sed -i s/555/222/g $o/tutorial_learn_programming.html
+
+cd ../main/web
+for i in easy.js; do
+	if test $i -nt $o/$i -o ! -e $o/$i; then
+		echo cp -p $i $o
+		cp -p $i $o
+	fi
+done
+cd $o/..
+for i in easyw.js easyw.wasm; do
+	if test $i -nt $o/$i -o ! -e $o/$i; then
+		echo cp -p $i $o
+		cp -p $i $o
+	fi
+done
+
+# --------------------------------------------------------------
+
+cd $src
+
+for k in *.kab; do
+	i=${k%.*}.html
+	f=$(echo $i | cut -c1 | tr a-z A-Z)
+	n=$f$(echo ${i%.*} | cut -c2- | tr '-' ' ')
+
+	test $(echo $n|cut -c1-1) = '_' && n=$(echo $n|cut -c2-)
+
+#	echo $k:$i:$n >&2
+
+	exec >$o/$i
+
+cat <<xxx
+<!doctype html><meta charset=utf-8>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="example web applications">
+<link rel="icon" href="../icon.png" type="image/x-png">
+<title>$n</title>
+
+<style>
+xxx
+
+col="body{ background-color:#000; color:#ccc;}"
+for j in clock pendulum; do
+	test $j.kab = $k && col=''
+done
+echo $col
+
+
+cat <<xxx
+.lnk {
+	cursor: pointer;
+	text-decoration: underline;
+	display:inline;
+}
+canvas {
+	width:calc(100vh - 64px);
+	height:calc(100vh - 64px);
+	max-width:calc(100vw - 16px);
+	max-height:calc(100vw - 16px);
+	display:block;
+	margin:auto;
+	outline:none;
+}
+a {color:#888}
+
+</style>
+
+<b>$n</b> - 
+<small>
+xxx
+
+sz=$(ls -l $k | cut -f5 -d' ')
+if test $sz -lt 50000; then
+cat <<xxx
+	<div id=edit class=lnk>Code</div> - <div id=install class=lnk>Install</div>
+xxx
+else
+cat <<xxx
+	<a href=https://$dom/ide/>$dom</a>
+	<div id=edit></div>
+	<div id=install></div>
+xxx
+fi
+
+if expr $k : _aoc >/dev/null; then
+cat <<xxx
+	- <a href=https://$dom/aoc/>AOC solutions</a>
+xxx
+fi
+
+
+cat <<xxx
+	- <a href=.>More samples</a>
+</small>
+<p>
+<canvas></canvas>
+
+<script>
+edit.onclick = function() {
+	window.open('../ide/?code=' + encodeURIComponent(easyscript))
+}
+install.onclick = function() {
+	window.open('../run/?code=' + encodeURIComponent(easyscript))
+}
+
+xxx
+
+echo -n "easyscript = \`"
+
+cat $k
+
+cat << "xxx"
+`
+</script>
+<script src=easy.js></script>
+xxx
+
+done
+
+# --------------------------------------------------------------------------
+
+exec > $o/index.html
+
+cat <<xxx
+<!doctype html><title>$dom examples</title>
+<meta name="description" content="web apps for $dom - an easy programming language">
+<meta charset=utf-8>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<link rel="icon" href="../icon.png" type="image/x-png">
+
+<style>
+body{
+  background-color:#eee;
+  font:normal normal normal 16px/1.4 Arial,sans-serif;
+  margin-left:16px;margin-right:16px;
+  max-width:730px;
+}
+
+pre{
+	white-space:pre-wrap;
+	background-color:#ffe;
+	border:1px solid gray;
+	border-radius:5px;
+	padding:5px;
+	font:normal normal normal 11.5px/1.3 monospace;
+}
+textarea {
+	background-color:#ffe;
+	margin-bottom:10px;
+	border:1px solid gray;
+	border-radius:5px;
+	padding:5px;
+	font:normal normal normal 11.5px/1.3 monospace;
+}
+
+h2 {background-color:#bdb;padding:7px;padding-left:12px}
+h3 {background-color:#bdb;padding:5px;padding-left:12px;margin-top:20px}
+
+a:hover {background-color:#bdb}
+a {color: #000}
+a:visited {color: #000}
+
+button {
+	background-color: #dfd;
+	cursor: pointer;
+	padding: 4px 4px;
+	margin: 4px 8px;
+	font-size: 100%;
+	border:1px solid gray;
+	border-radius:8px;
+}
+button:enabled:hover {background-color:#cec}
+button:enabled:active {background-color:#484}
+
+.flex {
+	display:inline-flex;
+	flex-wrap:wrap
+}
+
+#pre1 {
+	width:330px;
+}
+#canv {
+	width:330px;
+	height:330px;
+	margin-left:10px
+}
+
+
+#canv2 {
+	width:330px;
+	height:330px
+}
+
+.url {
+	font-size: 60%;
+	padding:10px
+}
+.col { columns:auto 8em }
+</style>
+
+
+<h2>$dom</h2>
+
+<p id=err style="font-weight:bold;color:#d00"></p>
+
+<canvas id=canv1 style="float:right;width:150px;height:150px"></canvas>
+
+This simple programming language with built-in graphical functions and an easy to use and offline usable browser IDE is well suited as a teaching and learning language. You can also use it to write graphical applications that you can embed in a web page.
+
+<p><b><a href="../ide/">Browser based development environment</a></b>
+
+<p><small>
+A language that doesn’t have everything is actually easier to program in than some that do. -- Dennis M. Ritchie
+</small>
+
+<h3>Interactive tutorials and blogs</h3>
+
+<p><a href="tutorial_learn_programming.html">Learn Programming Basics</a>
+<p><a href="tutorial_programming_a_letter_memory_game.html">Programming a Letter Memory Game</a>
+<p><a href="tutorial_documentation_and_code_snippets.html">Documentation and Code Snippets</a>
+<p><a href="tutorial_functions_and_recursion.html">Functions and Recursion</a>
+<p><a href="tutorial_sorting_algorithms.html">Sorting Algorithms</a>
+<p><a href="tutorial_monte_carlo_methods.html">Monte Carlo Methods or Why it's a Bad Idea to Go to the Casino</a>
+<p><a href="tut_blackj.html">Blackjack - Probabilties, Card Counting</a>
+<br><br>
+
+<h3>Web demos</h3>
+
+Some of these examples are solved tasks of 
+<a href=https://rosettacode.org/wiki/Category:EasyLang>Rosetta Code</a>
+<p>
+<div class=col>
+xxx
+
+for k in [^_]*.kab; do
+	i=${k%.*}.html
+	f=$(echo $i | cut -c1 | tr a-z A-Z)
+	n=$f$(echo ${i%.*} | cut -c2- | tr '-' ' ')
+	echo "<a href=$i>$n</a><p>"
+done
+
+cat <<'xxx'
+</div>
+<p>
+<hr>
+<p>
+<div class=col>
+<a href="../sky/">Starry sky</a><p>
+<a href="progfun.html">Programming fun</a>
+</div>
+
+<br>
+
+<h3>Embedding in a web page</h3>
+
+When copying the files <a href=easyw.wasm><i>easyw.wasm</i></a>, <a href=easyw.js><i>easyw.js</i></a>
+and <a href=easy.js><i>easy.js</i></a> to your web directory, you can embed a script in a web page.
+
+<p>
+<div class=flex>
+<pre id=pre1></pre>
+
+<canvas id=canv></canvas>
+</div>
+
+<script>
+src1 = `func tree x y deg n . .
+  linewidth n * 0.4
+  move x y
+  x += cos deg * n * 1.4 * (randomf + 0.5)
+  y += sin deg * n * 1.4 * (randomf + 0.5)
+  line x y
+  if n > 1
+    call tree x y deg - 20 n - 1
+    call tree x y deg + 20 n - 1
+  .
+.
+call tree 50 95 -90 10
+`
+
+var htxt = `<canvas style="width:95vh;height:95vh">
+</canvas><script>
+easyscript = `
+htxt += "`\n\n" + src1 + '\n`\n<\/script><script src=easy.js><\/script>'
+
+pre1.innerText = htxt
+
+if (typeof WebAssembly != 'object') {
+	err.innerHTML = "You need a browser with WebAssembly support for this website."
+}
+
+function showx(s) {
+	canv2.width = 300
+	canv2.height = 150
+	easystop()
+	easyrun(s, canv2)
+}
+
+function show(s) {
+	code1.value = s.substring(1)
+	showx(s)
+}
+
+s2 = `
+xxx
+cat clock.kab
+cat <<'xxx'
+`
+function runClock() {
+  show(s2)
+}
+
+function runBall() {
+  show(`
+# Ball
+#
+on animate
+  clear
+  color 555
+  move 0 15
+  line 0 100
+  line 100 100
+  line 100 15
+  move 10 50
+  text "programming fun"
+  color 700
+  move x y
+  circle rad
+  if x > 100 - rad or x < rad
+    vx = -vx
+  .
+  x += vx
+  if y > 100 - rad
+    vy = -vy
+  else
+    vy += 0.1
+  .
+  y += vy
+.
+rad = 12
+x = 50
+y = 15
+vx = 1.5`)
+}
+
+function runMandel() {
+	show(`
+xxx
+cat mandelbrot.kab
+cat <<'xxx'
+`)
+}
+
+function runPendel() {
+	show(`
+xxx
+cat pendulum.kab
+cat <<'xxx'
+`)
+}
+
+function runTic() {
+	show(`
+xxx
+cat tictactoe.kab
+cat <<'xxx'
+`)
+}
+
+</script>
+
+<h3>Embedding examples</h3>
+
+<div class=flex>
+<div style="width:330px;float:left;margin-right:10px">
+	<a href=javascript:runClock()>Clock</a>
+	<p><a href=javascript:runPendel()>Pendulum</a>
+	<p><a href=javascript:runBall()>Jumping ball</a>
+	<p><a href=javascript:runTic()>Tic-tac-toe</a>
+	<p><a href=javascript:runMandel()>Mandelbrot</a>
+	<hr style="width:100px;margin-left:4px">
+	<p>
+	<textarea id=code1 cols=36 rows=6 autocomplete=off 
+		autocorrect=off autocapitalize=off spellcheck=false></textarea>
+	<br>
+	<button onclick="showx(code1.value)">Show</button>
+</div>
+
+<canvas id=canv2></canvas>
+</div>
+
+<script src=easy.js></script>
+<script>
+easyrun(src1, canv)
+easyrun(src1, canv1)
+show(s2)
+
+function createURL() {
+	var h = encodeURIComponent(code1.value)
+	url.href = location.origin + "/run/?code=" + h
+	url.target = '_blank'
+	url.innerHTML = "Run and install it on code runner"
+}
+</script>
+
+<hr>
+<p>
+A URL can be created, that can start a <i>code runner</i> with the program encoded in a URL parameter.
+<p>
+Inside the <i>code runner</i> our program can be stored and run offline. The code runner is a <i>PWA</i> 
+(Progressive Web App). Therefore it works like a native app on the mobile device.
+
+<p>
+
+<button onclick=createURL()>Create a start URL</button>
+<p>
+<a id=url></a>
+
+xxx
+
+
+cat <<xxx
+
+<h3>More</h3>
+
+<a href=https://rosettacode.org/wiki/Category:EasyLang>$dom on <i>Rosetta Code</i></a>
+<p>
+<a href=../aoc/><i>Advent Of Code</i> with <i>easylang</i></a>
+<p>
+<a href=https://learnxinyminutes.com/docs/easylang/>Learn X in Y minutes Where X=Easylang</a>
+
+<h3>Technical</h3>
+
+<i>easylang</i>  is statically typed and has as data types only strings and numbers (floating point), arrays of strings and numbers, and arrays of arrays. Arrays can grow. Programs compiled into an AST tree run in the browser or in the browser IDE. There are built-in features for canvas graphics.
+
+<h3>Free</h3>
+
+<i>easylang</i> is free of charge: free to use, free to copy and requires no registration or login. It is also OpenSource.
+
+<p>
+<a href=https://github.com/chkas/easylang>Source on GitHub</a>
+
+<p>
+If you like it, recommend it to others.
+<p>
+
+<hr>
+<small><small>christof.kaser@gmail.com 
+- <a href=https://$dom/>$dom</a>
+</small></small>
+xxx
+
+
+

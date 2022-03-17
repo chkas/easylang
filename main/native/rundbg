@@ -1,0 +1,31 @@
+#!/bin/sh
+
+n=runc
+S=`dirname $0`/..
+D=$HOME/.cache/easylang
+
+mkdir -p $D
+
+test ! -e $D/$n && compile=1
+h="$S/kafunc.h $S/kalib.h $S/kalex.h $0"
+f="$S/kabas.c"
+for i in $f $h; do
+  test $i -nt $D/$n && compile=1 
+done
+
+if test $compile; then
+  rm -f $D/$n
+  cc=clang
+  which $cc >/dev/null || cc=gcc
+  echo "Compiling easylang (with $cc) ..." >&2
+
+  $cc -Wall -g -D__NOSDL__ -I$S -O $f -lm -o $D/$n
+  echo "done" >&2
+fi
+
+if test -x $D/$n; then
+#	gdb -ex=run --batch --args $D/$n $*
+#	valgrind --leak-check=full --show-leak-kinds=all $D/$n $*
+	valgrind $D/$n $*
+fi
+

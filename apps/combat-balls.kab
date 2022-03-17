@@ -1,0 +1,120 @@
+# Combat balls
+# 
+rad = 2
+n = 50
+speed = 0.3
+# 
+rad2 = rad * 2
+radrad4 = rad2 * rad2
+len x[] n ; len y[] n
+len vx[] n ; len vy[] n
+len col[] n ; len t[] n
+# 
+subr init
+  for i range n
+    x[i] = randomf * (100 - rad2) + rad
+    y[i] = randomf * (100 - rad2) + rad
+    vx[i] = randomf * speed * 2 - speed
+    vy[i] = randomf * speed * 2 - speed
+    col[i] = 660
+    if mode = 0 and i < n / 2
+      col[i] = 600
+    .
+  .
+  if mode = 1
+    col[0] = 600
+    t[0] = systime
+    timer 0.1
+  else
+    timer -1
+  .
+.
+call init
+on mouse_down
+  mode = (mode + 1) mod 2
+  call init
+.
+# 
+subr collide
+  d = sqrt dxxyy
+  dx /= d ; dy /= d
+  v = (vx[i] - vx[j]) * dx + (vy[i] - vy[j]) * dy
+  if v < 0
+    dx *= v ; dy *= v
+    vx[i] -= dx ; vy[i] -= dy
+    vx[j] += dx ; vy[j] += dy
+    # 
+    if mode = 0
+      if randomf < 0.5
+        col[i] = col[j]
+      else
+        col[j] = col[i]
+      .
+    else
+      if col[j] = 600
+        swap i j
+      .
+      if col[i] = 600 and col[j] = 660
+        col[j] = 600
+        t[j] = systime
+      .
+    .
+  .
+.
+on timer
+  for i range n
+    if col[i] = 600 and systime - t[i] > 5
+      col[i] = 630
+    .
+  .
+  timer 0.1
+.
+background 000
+textsize 3
+# 
+on animate
+  clear
+  color 222
+  move 0 0
+  line 100 0
+  line 100 100
+  line 0 100
+  line 0 0
+  color 333
+  move 2 95
+  if mode = 0
+    text "Battle - click to change"
+  else
+    text "Virus - click to change"
+  .
+  for i range n
+    color col[i]
+    move x[i] y[i]
+    circle rad
+    x[i] += vx[i] ; y[i] += vy[i]
+  .
+  for i range n
+    x = x[i] ; y = y[i]
+    for j = i + 1 to n - 1
+      if abs (x - x[j]) < rad2 and abs (y - y[j]) < rad2
+        dx = x - x[j]
+        dy = y - y[j]
+        dxxyy = dx * dx + dy * dy
+        if dxxyy < radrad4
+          call collide
+        .
+      .
+    .
+    if x > 100 - rad
+      vx[i] = -abs vx[i]
+    elif x < rad
+      vx[i] = abs vx[i]
+    .
+    if y > 100 - rad
+      vy[i] = -abs vy[i]
+    elif y < rad
+      vy[i] = abs vy[i]
+    .
+  .
+.
+

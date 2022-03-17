@@ -1,0 +1,7 @@
+col[] = [ 000 900 090 909 099 990 999 ]
+w = 100.0 / len col[]
+for i range len col[]
+  color col[i]
+  move w * i 0
+  rect w 100
+.

@@ -1,0 +1,192 @@
+<!doctype html> 
+<meta charset=utf-8>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="easy and fun programming">
+<title>easylang show</title>
+<link rel="icon" href="icon.png" type="image/x-png">
+
+<style>
+body {
+	background-color:#000;
+	color:#ddd;
+	font-family:sans-serif;
+	margin:0px;
+	user-select:none;
+}
+a { color: #ddd }
+
+pre u {font-weight:bold;text-decoration:none;color:#fff; background:#666}
+span.high {background-color:#666}
+
+#left {
+	margin:4px;
+	width:322px;
+	float:left
+}
+#canv {
+	margin:6px;
+	outline:none;
+}
+#out {
+	background-color:#000;
+	color:#ddd;
+	font-size:100%;
+	resize:none;
+	border:1px solid #333;
+	padding:2px;
+	margin:0px;
+	margin:0px 2px 6px 2px;
+	outline:none
+}
+
+#code {
+	margin:2px 2px 0px 2px;
+	font-size:100%;
+	overflow-y:auto;
+}
+
+.lnk {
+	margin-left:10px;
+	cursor:pointer;
+	text-decoration:underline;
+}
+.lnk:hover{background:#666}
+a:hover{background:#666}
+
+* {scrollbar-color:#666 #222}
+::-webkit-scrollbar{ width:10px;height:10px;cursor:pointer}
+::-webkit-scrollbar-track {background: #222} 
+::-webkit-scrollbar-thumb {background: #666}
+::-webkit-scrollbar-thumb:hover {background: #888}
+
+</style>
+
+
+<div>
+	<div id=left>
+		<pre id=code></pre>
+		<textarea id=out readonly spellcheck=false></textarea>
+		<div id=lnk><small>
+			<span class=lnk id=runlnk>run</span>
+			&nbsp;&nbsp;
+			<span class=lnk id=nextlnk>next</span>
+			<span id=edit class=lnk style="float:right">IDE</span>
+			&nbsp;
+		</small></div>
+	</div>
+	<canvas id=canv></canvas>
+</div>
+
+<script src=easy.js></script>
+<script src=easy_code.js></script>
+<script>
+
+window.onresize = function() {
+	var vh = window.innerHeight
+	var vw = window.innerWidth
+	var cw, pw, ph
+	if (vw > 3 / 4 * vh) {
+		cw = vw - 340 - 16
+		pw = 320
+		ph = vh - 42
+		if (cw > vh - 16) cw = vh - 16
+	}
+	else {
+		pw = vw - 20
+		ph = 200
+		cw = vw - 16
+	}
+	canv.style.width = cw + "px"
+	canv.style.height = cw + "px"
+	code.style.width = pw + "px"
+	code.style.height = ph - 42 + "px"
+	out.style.width = pw - 6 + "px"
+	out.style.height = "42px"
+}
+
+window.onresize()
+initPre(code)
+
+var demo = `ang = 45
+color 663
+#
+on animate
+  clear
+  move 50 50
+  circle 1
+  x = 50 + 40 * sin ang
+  y = 50 - 40 * cos ang
+  line x y
+  circle 6
+  vel += sin ang / 5
+  ang += vel
+.
+`
+
+function showRun() {}
+
+var disabled
+
+function disableShort() {
+	disabled = true
+	setTimeout(function() { 
+		disabled = false
+	}, 1000);
+}
+
+runlnk.onclick = function() {
+	if (!disabled) {
+		run(code.innerText, canv, out)
+		disableShort()
+	}
+}
+edit.onclick = function() {
+	window.open("../ide/?code=" + encodeURIComponent(code.innerText))
+}
+runCB = runlnk.onclick
+
+easyinit(canv, out, msgfCode)
+
+function load(file) {
+	easystop()
+	var req = new XMLHttpRequest()
+	setTimeout(function() { 
+		if (req.status == 0) code.innerHTML = "Loading ..."
+	}, 500);
+
+	req.open("GET", file)
+	req.addEventListener("load", function(event) {
+		if (req.status >= 200 && req.status < 300) {
+			code.innerHTML = req.responseText
+			run(code.innerText, canv, out)
+		} else {
+			code.innerHTML = "# error on loading"
+		}
+	})
+	req.send();
+}
+
+var files
+
+nextlnk.onclick = function() {
+	if (!disabled) {
+		files.push(files.shift());
+		load(files[0], canv)
+		disableShort()
+	}
+}
+
+if (location.search.startsWith("?f=")) {
+	files = location.search.substr(3).split(",")
+	load(files[0])
+}
+else {
+	code.innerText = demo
+	runlnk.onclick()
+}
+if (!files || files.length == 1) {
+	nextlnk.style.display = "none"
+}
+
+</script>
+

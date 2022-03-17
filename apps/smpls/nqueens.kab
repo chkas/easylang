@@ -1,0 +1,50 @@
+subr show_sol
+  print "Solution " & n_sol
+  print ""
+  for i range n
+    write "  "
+    for j range n
+      if j = x[i]
+        write "Q "
+      else
+        write ". "
+      .
+    .
+    print ""
+  .
+  print ""
+.
+subr test
+  ok = 1
+  for i range y
+    if x[y] = x[i] or abs (x[i] - x[y]) = abs (y - i)
+      ok = 0
+    .
+  .
+.
+n = 8
+len x[] n
+y = 0
+x[0] = 0
+while y >= 0
+  call test
+  if ok = 1 and y + 1 <> n
+    y += 1
+    x[y] = 0
+  else
+    if ok = 1
+      n_sol += 1
+      if n_sol <= 1
+        call show_sol
+      .
+    .
+    while y >= 0 and x[y] = n - 1
+      y -= 1
+    .
+    if y >= 0
+      x[y] += 1
+    .
+  .
+.
+print n_sol & " solutions"
+

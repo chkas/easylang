@@ -1,0 +1,235 @@
+<!doctype html> 
+<meta charset=utf-8>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="easy and fun programming">
+<title>programming fun</title>
+<link rel="icon" href="icon.png" type="image/x-png">
+
+<style>
+body {
+	background-color:#000;
+	color:#ddd;
+	font-family:sans-serif;
+	margin:0px;
+	user-select:none;
+}
+a { color: #ddd }
+
+pre u {font-weight:bold;text-decoration:none;color:#fff; background:#666}
+span.high {background-color:#666}
+
+#left {
+	margin:4px;
+	width:322px;
+	float:left
+}
+#canv {
+	margin:0px;
+	outline:none;
+}
+#code {
+	margin: 6px;
+	font-size: 15px;
+	overflow-y:auto;
+	outline: none;
+}
+
+.lnk {
+	margin-left:10px;
+	cursor:pointer;
+	text-decoration:underline;
+}
+.lnk:hover{background:#666}
+a:hover{background:#666}
+
+* {scrollbar-color:#666 #222}
+::-webkit-scrollbar{ width:10px;height:10px;cursor:pointer}
+::-webkit-scrollbar-track {background: #222} 
+::-webkit-scrollbar-thumb {background: #666}
+::-webkit-scrollbar-thumb:hover {background: #888}
+
+</style>
+
+
+<div>
+	<div id=left>
+		<pre id=code></pre>
+		<div id=lnk><small>
+			&nbsp;
+			<span class=lnk id=runlnk>run</span>
+			&nbsp;&nbsp;
+			<span class=lnk id=nextlnk>next</span>
+			<a href=https://easylang.online style="float:right;margin-right:10px">easylang.online</a>
+		</small></div>
+	</div>
+	<canvas id=canv></canvas>
+</div>
+
+<script src=easy.js></script>
+<script src=easy_code.js></script>
+<script>
+
+window.onresize = function() {
+	var vh = window.innerHeight
+	var vw = window.innerWidth
+	var cw, pw, ph
+	if (vw > 3 / 4 * vh) {
+		pw = 360
+		cw = vw - pw - 24
+		ph = vh - 50
+		if (cw > vh - 16) cw = vh - 16
+	}
+	else {
+		pw = vw - 20
+		ph = 200
+		cw = vw - 16
+	}
+	left.style.width = pw + 4 + "px"
+	canv.style.width = cw + "px"
+	canv.style.height = cw + "px"
+	code.style.width = pw + "px"
+	code.style.height = ph + "px"
+}
+
+window.onresize()
+initPre(code)
+var src = []
+
+src.push(`on animate
+  clear
+  for c range 1320
+    h = c + tick
+    x = sin (6 * h / pi) + sin (3 * h)
+    h = c + tick * 2
+    y = cos (6 * h / pi) + cos (3 * h)
+    move 20 * x + 50 20 * y + 50
+    circle 0.5
+  .
+  tick += 1
+.
+`)
+
+src.push(`ang = 45
+color 661
+#
+on animate
+  clear
+  move 50 50
+  circle 1
+  x = 50 + 40 * sin ang
+  y = 50 - 40 * cos ang
+  line x y
+  circle 6
+  vel += sin ang / 5
+  ang += vel
+.
+`)
+
+src.push(`rad = 8
+n = 3
+# 
+rad2 = rad * 2
+for i range n
+  x[] &= rad2 + i * rad2
+  y[] &= 25 + randomf
+  vx[] &= randomf - 0.5
+  vy[] &= 0
+  col[] &= 800 + i * 30
+.
+# 
+subr collide
+  d = sqrt dxxyy
+  dx /= d ; dy /= d
+  v = (vx[i] - vx[j]) * dx + (vy[i] - vy[j]) * dy
+  if v < 0
+    dx *= v ; dy *= v
+    vx[i] -= dx ; vy[i] -= dy
+    vx[j] += dx ; vy[j] += dy
+  .
+.
+background 111
+on animate
+  clear
+  for i range n
+    color col[i]
+    move x[i] y[i]
+    circle rad
+    x[i] += vx[i] ; y[i] += vy[i]
+  .
+  for i range n
+    x = x[i] ; y = y[i]
+    for j = i + 1 to n - 1
+      dx = x - x[j]
+      dy = y - y[j]
+      dxxyy = dx * dx + dy * dy
+      if dxxyy < rad2 * rad2
+        call collide
+      .
+    .
+    if x > 100 - rad or x < rad
+      vx[i] = -vx[i]
+    .
+    if y > 100 - rad
+      vy[i] = -vy[i]
+    else
+      vy[i] += 0.1
+    .
+  .
+.
+`)
+
+src.push(`func tree x y l w ang dp . .
+  move x y
+  x += l * cos ang
+  y -= l * sin ang
+  if dp <= 2
+    color3 0 0.2 + randomf / 4 0
+  else
+    color3 0.15 + randomf / 8 0.1 0
+  .
+  linewidth w
+  line x y
+  if dp = 1
+    break 1
+  .
+  nb = 2 + if dp < 9
+  for i range nb
+    an = ang + (i - nb / 2 + 0.5) * 20
+    an += (randomf - 0.5) * 60
+    ln = l * (0.7 + randomf * 0.3)
+    call tree x y ln w * 0.7 an dp - 1
+  .
+.
+background 668
+textsize 3
+subr new
+  clear
+  move 2 96
+  color 000
+  text "Click for new tree"
+  call tree 50 100 15 5 90 10
+.
+on mouse_down
+  call new
+.
+call new
+`)
+
+
+function showRun() {}
+
+nextlnk.onclick = function() {
+	src.push(src.shift());
+	run(src[0], canv)
+}
+runlnk.onclick = function() {
+	run(code.innerText, canv)
+}
+runCB = runlnk.onclick
+
+easyinit(canv, null, msgfCode)
+
+run(src[0], canv)
+
+</script>
+
