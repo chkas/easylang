@@ -631,6 +631,8 @@ static double op_bitshift(struct op* op) {
 }
 // ------------------------------------
 
+static double time_start;
+
 static struct str str_sysfunc(struct str* s) {
 
 	struct str r;
@@ -647,6 +649,11 @@ static struct str str_sysfunc(struct str* s) {
 #else
 		strcpy(r.d, "en");
 #endif
+	}
+	else if (strcmp(p, "time") == 0) {
+		char buf[16];
+		sprintf(buf, "%.2f", sys_time() - time_start);
+		str_append(&r, buf);
 	}
 	else if (strcmp(p, "created by") == 0) {
 		str_init_const(&r, "\0christof.kaser@gmail.com");
@@ -1681,6 +1688,7 @@ static void op_sound(struct op* op) {
 	free(arr.pnum);
 }
 
+/*
 static double time_start;
 
 static void op_sysfuncx(struct op* op) {
@@ -1704,6 +1712,7 @@ static void op_sysfuncx(struct op* op) {
 	}
 	str_free(&s);
 }
+*/
 
 static void op_background(struct op* op) {
 	int h = (int)numf(op->o1);

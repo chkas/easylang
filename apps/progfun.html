@@ -59,7 +59,7 @@ a:hover{background:#666}
 			<span class=lnk id=runlnk>run</span>
 			&nbsp;&nbsp;
 			<span class=lnk id=nextlnk>next</span>
-			<a href=https://easylang.online style="float:right;margin-right:10px">easylang.online</a>
+			<a href=https://easylang.online style="float:right;margin-right:10px">easylang</a>
 		</small></div>
 	</div>
 	<canvas id=canv></canvas>
@@ -110,7 +110,7 @@ src.push(`on animate
 `)
 
 src.push(`ang = 45
-color 661
+color 881
 #
 on animate
   clear
@@ -120,7 +120,7 @@ on animate
   y = 50 - 40 * cos ang
   line x y
   circle 6
-  vel += sin ang / 5
+  vel += sin ang / 7
   ang += vel
 .
 `)
@@ -131,14 +131,11 @@ n = 3
 rad2 = rad * 2
 for i range n
   x[] &= rad2 + i * rad2
-  y[] &= 25 + randomf
+  y[] &= 30 + randomf
   vx[] &= randomf - 0.5
   vy[] &= 0
-  col[] &= 800 + i * 30
 .
-# 
 subr collide
-  d = sqrt dxxyy
   dx /= d ; dy /= d
   v = (vx[i] - vx[j]) * dx + (vy[i] - vy[j]) * dy
   if v < 0
@@ -151,25 +148,24 @@ background 111
 on animate
   clear
   for i range n
-    color col[i]
+    color 700 + i * 30
     move x[i] y[i]
     circle rad
     x[i] += vx[i] ; y[i] += vy[i]
   .
   for i range n
-    x = x[i] ; y = y[i]
     for j = i + 1 to n - 1
-      dx = x - x[j]
-      dy = y - y[j]
-      dxxyy = dx * dx + dy * dy
-      if dxxyy < rad2 * rad2
+      dx = x[i] - x[j]
+      dy = y[i] - y[j]
+      d = sqrt (dx * dx + dy * dy)
+      if d < rad2
         call collide
       .
     .
-    if x > 100 - rad or x < rad
+    if x[i] > 100 - rad or x[i] < rad
       vx[i] = -vx[i]
     .
-    if y > 100 - rad
+    if y[i] > 100 - rad
       vy[i] = -vy[i]
     else
       vy[i] += 0.1

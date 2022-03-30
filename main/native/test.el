@@ -12,5 +12,5 @@ n = 36
 print "Calculating recursive fibonacci of " & n
 call fib n r
 print "Result: " & r
-print "Time: " &systime - t0
+print "Time: " & systime - t0
 

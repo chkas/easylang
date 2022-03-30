@@ -1,11 +1,10 @@
 # source $HOME/emsdk/emsdk_env.sh
 
-v = 251
+v = 252
 
 #--------------------------------------------------------------------
 
 #CC = emcc -g -gsource-map -s -Wall 
-#CC = emcc -g -gsource-map -s -Wall -O3
 #LD = emcc -g -gsource-map --source-map-base=http://localhost:8000/ -s WASM=1 -s EXPORTED_FUNCTIONS="['_parse','_exec','_format', '_errstr', '_k_free', '_caret', '_evt_mouse', '_evt_func', '_main']" -s EXPORTED_RUNTIME_METHODS="['ccall']" -s ALLOW_MEMORY_GROWTH=1
 CC = emcc -O3 -Wall
 LD = emcc -O3 -s WASM=1 -s EXPORTED_FUNCTIONS="['_parse','_exec','_format', '_errstr', '_k_free', '_caret', '_evt_mouse', '_evt_func', '_main']" -s EXPORTED_RUNTIME_METHODS="['ccall']" -s ALLOW_MEMORY_GROWTH=1

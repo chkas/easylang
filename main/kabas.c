@@ -2147,7 +2147,7 @@ static ushort parse_sequ() {
 				codp[o].vf = op_clear;
 				prog_props |= 1;
 			}
-			else if ((tok >= t_print && tok <= t_curve) || tok == t_sysfunc) {
+			else if (tok >= t_print && tok <= t_curve) {
 				csb_tok_spc_nt();
 				if (cod) {
 					if (tokpr == t_sleep) {
@@ -2190,9 +2190,6 @@ static ushort parse_sequ() {
 					else if (tokpr == t_text) {
 						codp[o].vf = op_text;
 						prog_props |= 5;
-					}
-					else if (tokpr == t_sysfunc) {
-						codp[o].vf = op_sysfuncx;
 					}
 					else if (tokpr == t_print || tokpr == t_pr) {
 						codp[o].vf = op_print;

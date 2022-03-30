@@ -20,7 +20,7 @@ func init . .
 .
 call init
 # 
-func move pos dir . res .
+func movex pos dir . res .
   moves += 1
   res = 0
   if brd$[pos] = "●" and brd$[pos + dir] = "●" and brd$[pos + 2 * dir] = "○"
@@ -39,7 +39,7 @@ func solve . res .
   for pos range len brd$[]
     if brd$[pos] = "●"
       for dir in [ -1 (-nc) 1 nc ]
-        call move pos dir moved
+        call movex pos dir moved
         if moved = 1
           call solve solved
           call unmove pos dir

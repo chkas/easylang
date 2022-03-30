@@ -52,6 +52,7 @@ static bool exists(const char* name) {
 double textsize;
 
 void gr_textsize(double sz) {
+	if (fontname == NULL) return;
 	textsize = sz;
 	if (font) TTF_CloseFont(font);
 	int h = (int)(FX * sz + 0.5);

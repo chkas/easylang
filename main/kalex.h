@@ -35,7 +35,7 @@ static const char* token_list[] = {
 	"input", "sysfunc", "keybkey", "strchar", "timestr", "strjoin", "substr",
 
 	"+", "-", "*", "/", "#", "<", ">", ".", "=", "&",
-	"(", ")", "[", "]", "][", "<>", "<=", ">=", "&=", "+=", "*=",  "/=", "-=",
+	"(", ")", "[", "]", "][", "<>", "<=", ">=", "&=", "+=", "*=", "/=", "-=",
 
 	"number", "string", 
 	"name", "string variable",
@@ -465,7 +465,6 @@ static void nexttok() {
 		return;
 	}
 
-	int i = 0;
 	if (c == '"') {
 		tok = t_lstr;
 		return;
@@ -477,6 +476,7 @@ static void nexttok() {
 		return;
 	}
 	if (isalpha(c) || c == '_') {
+		int i = 0;
 		while (1) {
 			if (i < 15) tval[i++] = c;
 			else error("name to long");
@@ -500,13 +500,12 @@ static void nexttok() {
 			int fc = tval[0];
 			if (fc >= 'a' && fc <= 'w') {
 				int* tbl = tbl_all[fc - 'a'];
-				i = 0;
-				while (tbl[i]) {
-					if (strcmp(token_list[tbl[i]], tval) == 0) {
-						tok = tbl[i];
+				while (*tbl) {
+					if (strcmp(token_list[*tbl], tval) == 0) {
+						tok = *tbl;
 						return;
 					}
-					i += 1;
+					tbl += 1;
 				}
 			}
 		}
@@ -552,34 +551,44 @@ static void nexttok() {
 		}
 		return;
 	}
-
-	tval[i++] = c;
-	tval[i] = 0;
 	nextc();
-	if ((c == '=' && (cp == '+' || cp == '-' || cp == '/' || cp == '*' || cp == '&' || cp == '<' || cp == '>'))
-		|| (cp == '<' && c == '>') || (cp == ']' && c == '[')) {
-
-		tval[i++] = c;
-		tval[i] = 0;
-		nextc();
+	tval[0] = cp;
+	tval[1] = c;
+	tval[2] = 0;
+	if (c == '=') {
+		for (int ti = t_le; ti <= t_mineq; ti++) {
+			if (token_list[ti][0] == cp) {
+				tok = ti;
+				nextc();
+				return;
+			}
+		}
+		if (cp == '!') {
+			tval[0] = cp = '<';
+			tval[1] = c = '>';
+		}
+		else if (cp == '=') {
+			nextc();
+		}
 	}
-	else if (cp == '!' && c == '=') {
-		strcpy(tval, "<>");
+	if (c == '>' && cp == '<') {
+		tok = t_neq;
 		nextc();
+		return;
 	}
-	else if (cp == '=' && c == '=') {
-		strcpy(tval, "=");
+	if (c == '[' && cp == ']') {
+		tok = t_brrl;
 		nextc();
+		return;
+	}
+	tval[1] = 0;
+	for (int ti = t_plus; ti <= t_brr; ti++) {
+		if (token_list[ti][0] == cp) {
+			tok = ti;
+			return;
+		}
 	}
 	tok = t_default;
-	int ti = t_plus;
-	while (ti <= t_mineq) {
-		if (strcmp(token_list[ti], tval) == 0) {
-			tok = ti;
-			break;
-		}
-		ti += 1;
-	}
 }
 
 // -------------------------------------------------------------------------------
@@ -730,21 +739,6 @@ static struct vname* add_vname(struct func* f, const char* name, char typ, ushor
 	p->srcpos = pos;
 	return p;
 }
-
-/*
-static void prog_init(void) {
-	seq.mouse_down = UMO;
-	seq.mouse_up = UMO;
-	seq.mouse_move = UMO;
-	seq.key_down = UMO;
-	seq.animate = UMO;
-	seq.timer = UMO;
-	prog_props = 0;
-
-	func_free();
-	func = func_add("_GLOBAL_");
-}
-*/
 
 enum varaccess { WR = 1, RD, RW };
 
@@ -935,7 +929,6 @@ static void parse_clean() {
 	code_free();
 
 	func_free();
-//	prog_init();
 
 	free(opln_p);
 	opln_p = NULL;

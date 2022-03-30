@@ -18,22 +18,22 @@ or with `$HOME/$DATA/easylang*/main/native/runc test.el`
 
 ~~~
 $HOME/$DATA/easylang*/main/native/run <<'EOF'
-set_linewidth 4
-set_color 900
+linewidth 4
+color 900
 # 
-move_pen 10 10
-draw_text "Paint"
+move 10 10
+text "Paint"
 on mouse_down
   down = 1
-  move_pen mouse_x mouse_y
-  draw_circle 2
+  move mouse_x mouse_y
+  circle 2
 .
 on mouse_up
   down = 0
 .
 on mouse_move
   if down = 1
-    draw_line mouse_x mouse_y
+    line mouse_x mouse_y
   .
 .
 EOF

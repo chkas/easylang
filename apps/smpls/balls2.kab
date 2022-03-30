@@ -1,0 +1,46 @@
+rad = 8
+n = 5
+# 
+rad2 = rad * 2
+for i range n
+  x[] &= rad2 + i * rad2
+  y[] &= 30
+  vx[] &= 4 * randomf - 2
+  vy[] &= 4 * randomf - 2
+.
+subr collide
+  dx /= d ; dy /= d
+  v = (vx[i] - vx[j]) * dx + (vy[i] - vy[j]) * dy
+  if v < 0
+    dx *= v ; dy *= v
+    vx[i] -= dx ; vy[i] -= dy
+    vx[j] += dx ; vy[j] += dy
+  .
+.
+background 111
+on animate
+  clear
+  for i range n
+    color 700 + i * 30
+    move x[i] y[i]
+    circle rad
+    x[i] += vx[i] ; y[i] += vy[i]
+  .
+  for i range n
+    for j = i + 1 to n - 1
+      dx = x[i] - x[j]
+      dy = y[i] - y[j]
+      d = sqrt (dx * dx + dy * dy)
+      if d < rad2
+        call collide
+      .
+    .
+    if x[i] > 100 - rad or x[i] < rad
+      vx[i] = -vx[i]
+    .
+    if y[i] > 100 - rad or y[i] < rad
+      vy[i] = -vy[i]
+    .
+  .
+.
+
