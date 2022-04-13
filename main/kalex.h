@@ -20,7 +20,7 @@ static const char* token_list[] = {
 
 	"print", "pr", "write", "text",
 	"sleep", "timer", "textsize", "linewidth", "coord_rotate", "circle", 
-	"color", "background", "mouse_cursor", 
+	"color", "background", "mouse_cursor", "random_seed",
 	"move", "line", "coord_translate", "rect", "numfmt",
 	"color3", "circlearc",
 
@@ -55,7 +55,7 @@ enum token_tok {
 
 	t_print, t_pr, t_write, t_text, 
 	t_sleep, t_timer, t_textsize, t_linewidth, t_rotate, t_circle,
-	t_color, t_background, t_mouse_cursor, 
+	t_color, t_background, t_mouse_cursor, t_random_seed,
 	t_move, t_line, t_translate, t_rect, t_numfmt,
 	t_rgb, t_arc,
 
@@ -429,7 +429,7 @@ static int tbl_n[] = { t_not, t_numfmt, t_number, 0 };
 static int tbl_o[] = { t_or, t_on, 0 };
 static int tbl_p[] = { t_print, t_pr, t_pi, t_pow, t_polygon, t_prefix, 0 };
 static int tbl_q[] = { 0 };
-static int tbl_r[] = { t_repeat, t_randomf, t_random, t_rect, 0 };
+static int tbl_r[] = { t_repeat, t_randomf, t_random, t_rect, t_random_seed, 0 };
 static int tbl_s[] = { t_subr, t_swap, t_sleep, t_systime, t_sqrt, t_sin, t_str_ord, t_str_compare, t_sysfunc, t_str_chr, t_strjoin, t_substr, t_sign, t_sound, 0 };
 static int tbl_t[] = { t_tan, t_timestr, t_text, t_timer, t_textsize, 0 };
 static int tbl_u[] = { t_until, 0 };

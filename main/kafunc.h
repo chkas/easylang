@@ -182,10 +182,11 @@ static double op_sys_time(struct op* op) {
 }
 
 static double op_random(struct op* op) {
-#ifdef __EMSCRIPTEN__
+//#ifdef __EMSCRIPTEN__
+#if 0
 	double f = (double)emscripten_random();
 #else
-	double f = ((double)rand() / (RAND_MAX + 1.));
+	double f = ((double)rand() / (RAND_MAX + 1.0));
 #endif
 	int h = (int)numf(op->o1);
 	int r = (int)(f * h);
@@ -254,7 +255,8 @@ static double op_mouse_y(struct op* op) {
 
 static double op_randomf(struct op* op) {
 
-#ifdef __EMSCRIPTEN__
+//#ifdef __EMSCRIPTEN__
+#if 0
 	double f = (double)emscripten_random();
 #else
 	double f = ((double)rand() / RAND_MAX);
@@ -1752,6 +1754,11 @@ static void op_color(struct op* op) {
 		gr_sys(4);
 	}
 	else gr_color(0, 0, 0);
+}
+
+static void op_random_seed(struct op* op) {
+	int h = (int)numf(op->o1);
+	srand(h);
 }
 
 static void op_numfmt(struct op* op) {

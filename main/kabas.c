@@ -2217,6 +2217,9 @@ static ushort parse_sequ() {
 						codp[o].vf = op_sound;
 						prog_props |= 2;
 					}
+					else if (tokpr == t_random_seed) {
+						codp[o].vf = op_random_seed;
+					}
 					else if (tokpr == t_translate) {
 						codp[o].vf = op_translate;
 					}
@@ -2383,6 +2386,8 @@ static const char* progname = "";
 
 extern int exec(int dbg, const char* args) {
 
+	srand(sys_time() * 1000);
+
 	freecodestr();
 	rt.args = args;
 	init_rt();
@@ -2438,7 +2443,6 @@ static void err_exit(void) {
 
 int main(int argc, const char* argv[]) {
 
-	srand(time(NULL));
 	int form = 0;
 
 	int i = 1;

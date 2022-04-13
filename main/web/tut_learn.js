@@ -381,9 +381,11 @@ print "The number was " & n
 
 i = 0
 while i < 100
+  print i
   color i
   move 0 i
   rect 100 10
+  sleep 1
   i += 10
 end
 

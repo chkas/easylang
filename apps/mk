@@ -275,7 +275,7 @@ cat <<xxx
 
 <style>
 body{
-  background-color:#eee;
+  background-color:#fff;
   font:normal normal normal 16px/1.4 Arial,sans-serif;
   margin-left:16px;margin-right:16px;
   max-width:730px;
