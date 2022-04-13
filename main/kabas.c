@@ -2386,8 +2386,7 @@ static const char* progname = "";
 
 extern int exec(int dbg, const char* args) {
 
-	srand(sys_time() * 1000);
-
+	srand((int)(long long)(sys_time() * 1000));
 	freecodestr();
 	rt.args = args;
 	init_rt();
