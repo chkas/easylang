@@ -430,7 +430,7 @@ function doTutChng() {
 	txt_locale = txt_locale_id
 	txt_tutor = txt_tutor_id
 	tutUpd()
-
+/*
 	append(tut, "p")
 	append(tut, "hr")
 	lnk = create("a")
@@ -439,6 +439,7 @@ function doTutChng() {
 	appendTxt(lnk, "More about easylang")
 	tut.appendChild(lnk)
 	append(tut, "p")
+*/
 	tutf = null
 }
 
@@ -1003,25 +1004,7 @@ function selectLine(l) {
 	}
 	scrollToLine(lc, ln)
 }
-/*
-function canvClearDbg() {
-	var c = canv.getContext("2d")
-	var sz = canv.width
-	c.lineWidth = 0.2
-	c.clearRect(0, 0, sz, sz)
-	c.beginPath()
-	var i
-	for (i = 1; i < 10; i++) {
-		c.moveTo(0, 10 * i)
-		c.lineTo(sz, 10 * i)
-		c.moveTo(10 * i, 0)
-		c.lineTo(10 * i, sz)
-	}
-	c.strokeStyle = "#444"
-	c.stroke()
-	canv.className = "run"
-}
-*/
+
 function showCanv() {
 	if (!isVisible(canv)) {
 		show(fullBtn)

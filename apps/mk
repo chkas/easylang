@@ -590,6 +590,16 @@ cat <<xxx
 If you like it, recommend it to others.
 <p>
 
+
+<hr>
+The name of some built-in commands has changed. Easylang code can be adapted to the new syntax with this tool.
+<p>
+<p><a href=conv.html>Syntax converter</a>
+<p>
+
+
+
+
 <hr>
 <small><small>christof.kaser@gmail.com 
 - <a href=https://$dom/>$dom</a>

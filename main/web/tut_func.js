@@ -44,13 +44,13 @@ print res
 + It can also be calculated recursively
 
 # factorial recursive
-#
+# 
 func fact n . res .
-  if n > 1
+  if n = 1
+    res = 1
+  else
     call fact n - 1 h
     res = n * h
-  else
-    res = 1
   .
 .
 call fact 6 res
@@ -79,31 +79,30 @@ call tree 50 95 -90 10
 
 * Quicksort
 
-func qsort left right . data[] .
+func qsort left right . d[] .
   # 
   subr partition
-    swap data[(left + right) / 2] data[left]
     mid = left
     for i = left + 1 to right
-      if data[i] < data[left]
+      if d[i] < d[left]
         mid += 1
-        swap data[i] data[mid]
+        swap d[i] d[mid]
       .
     .
-    swap data[left] data[mid]
+    swap d[left] d[mid]
   .
   # 
   if left < right
     call partition
-    call qsort left mid - 1 data[]
-    call qsort mid + 1 right data[]
+    call qsort left mid - 1 d[]
+    call qsort mid + 1 right d[]
   .
 .
 for i range 100
-  data[] &= random 1000
+  d[] &= random 1000
 .
-call qsort 0 len data[] - 1 data[]
-print data[]
+call qsort 0 len d[] - 1 d[]
+print d[]
 
 + The subroutine *partition* is defined within the function *sort*. In the subroutine *partition*, access to the local variables of the function *sort* is then also possible.
 

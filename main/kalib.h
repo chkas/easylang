@@ -188,10 +188,15 @@ inline static void str_append(struct str* d, const char* s) {
 	uint ls = strlen(s);
 	str_append_n(d, s, ls);
 }
+/*
 inline static int str_cmp(struct str* a, struct str* b) {
-	if (a->typ == IS_PTR && b->typ == IS_PTR && a->p == b->p) {
-		return 0;
-	}
+	const char* pa = str_ptr(a);
+	const char* pb = str_ptr(b);
+	if (pa == pb) return 0;
+	return strcmp(pa, pb);
+}
+*/
+inline static int str_cmp(struct str* a, struct str* b) {
 	return strcmp(str_ptr(a), str_ptr(b));
 }
 

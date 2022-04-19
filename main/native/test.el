@@ -7,10 +7,8 @@ func fib n . res .
     res = a + b
   .
 .
-t0 = systime
-n = 36
-print "Calculating recursive fibonacci of " & n
-call fib n r
-print "Result: " & r
-print "Time: " & systime - t0
+time0 = systime
+print "Calculating ..."
+call fib 33 r
+print r & " - " & systime - time0
 
