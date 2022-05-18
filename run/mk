@@ -315,10 +315,10 @@ function ready() {
 		code = decodeURIComponent(location.search.substring(6))
 		history.replaceState(null, "", location.protocol + "//" + location.host + location.pathname)
 	}
-	else if (window.localStorage.getItem("xrunsel") == -1) {
-		code = window.localStorage.getItem("xruncode")
-	}
+	else code = window.localStorage.getItem("xruncode")
+
 	if (code) {
+		window.localStorage.removeItem("xruncode")
 		appn = null
 		getCodeInfo()
 		sel.style.display = "none"
@@ -340,7 +340,9 @@ ready()
 
 function change() {
 	this.blur()
-	appn = sel.options[sel.selectedIndex].value
+	//?
+	var ind = sel.selectedIndex >= 0 ? sel.selectedIndex : 0
+	appn = sel.options[ind].value
 	code = window.localStorage.getItem("a" + appn)
 	getCodeInfo()
 	run(code)
@@ -425,7 +427,7 @@ disc.onclick = function() {
 }
 window.onbeforeunload = function(e) {
 	if (!inst.style.display) {
-		window.localStorage.setItem("xrunsel", -1)
+		window.localStorage.removeItem("xrunsel")
 		window.localStorage.setItem("xruncode", code)
 	}
 	else window.localStorage.setItem("xrunsel", sel.selectedIndex)

@@ -336,12 +336,11 @@ func qsort left right . d[] .
     call qsort mid + 1 right d[]
   .
 .
-subr sort
+func sort . d[] .
   call qsort 0 len d[] - 1 d[]
 .
-#
 d[] = [ 29 4 72 44 55 26 27 77 92 5 ]
-call sort
+call sort d[]
 print d[]
 
 + With the previous iterative variant and the reserved space for the uncompleted tasks we could make sure we were able to sort an array of a certain size. This is not possible with this recursive version - with a long list and "first element is pivot"  we get probably a stack overflow.
@@ -370,11 +369,11 @@ func qsort left right . d[] .
     .
   .
 .
-subr sort
+func sort . d[] .
   call qsort 0 len d[] - 1 d[]
 .
 d[] = [ 29 4 72 44 55 26 27 77 92 5 ]
-call sort
+call sort d[]
 print d[]
 `
 

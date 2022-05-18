@@ -581,10 +581,14 @@ cat <<xxx
 
 <h3>Free</h3>
 
-<i>easylang</i> is free of charge: free to use, free to copy and requires no registration or login. It is also OpenSource.
+<i>easylang</i> is free of charge: free to use, free to copy and requires no registration or login. It is also Open Source.
 
 <p>
 <a href=https://github.com/chkas/easylang>Source on GitHub</a>
+
+
+<p>
+<a href=https://www.reddit.com/r/easylang/>Discussion, questions, etc. on Reddit</a>
 
 <p>
 If you like it, recommend it to others.
