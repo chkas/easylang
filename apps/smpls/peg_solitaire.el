@@ -20,7 +20,7 @@ func init . .
 .
 call init
 # 
-func move pos dir . res .
+func domove pos dir . res .
   moves += 1
   res = 0
   if brd$[pos] = "●" and brd$[pos + dir] = "●" and brd$[pos + 2 * dir] = "○"
@@ -41,7 +41,7 @@ func solve . res .
     if brd$[pos] = "●"
       for idir range 4
         dir = dirs[idir]
-        call move pos dir moved
+        call domove pos dir moved
         if moved = 1
           call solve solved
           call unmove pos dir
