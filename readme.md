@@ -13,8 +13,9 @@ An easy programming language that runs in the browser
 Download Emscripten SDK and install it
 
 ~~~
-curl https://github.com/emscripten-core/emsdk/archive/refs/heads/main.zip >emsdk.zip
-unzip emsdk.zip
+rm -f main.zip
+wget https://github.com/emscripten-core/emsdk/archive/refs/heads/main.zip
+unzip main.zip
 mv emsdk-main emsdk
 ~~~
 
@@ -29,8 +30,9 @@ emsdk install latest ; emsdk activate latest
 ### Build
 
 ~~~
-curl https://github.com/chkas/easylang/archive/refs/heads/main.zip >easylang.zip
-unzip easylang.zip
+rm -f main.zip
+wget https://github.com/chkas/easylang/archive/refs/heads/main.zip
+unzip main.zip
 mv easylang-main easylang
 ~~~
 
