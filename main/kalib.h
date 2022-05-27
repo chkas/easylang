@@ -254,7 +254,51 @@ inline static struct str str_add(struct str* a, struct str* b) {
 	return r;
 }
 
+static uint ulen(byte lb) {
+	if ((lb & 0x80) == 0) return 1;
+	if ((lb & 0xe0) == 0xc0) return 2;
+	if ((lb & 0xf0) == 0xe0) return 3;
+	if ((lb & 0xf8) == 0xf0) return 4;
+	return 5;
+}
+
+static int str_ulen(const char* p) {
+	uint i = 0;
+	uint ind = 0;
+	while (i < strlen(p)) {
+		i += ulen(p[i]);
+		ind++;
+	}
+	return ind;
+}
+
+static int str_upos(const char* p, uint start, uint nchars, uint max) {
+	uint i = start;
+	uint ind = 0;
+	while (i < max && ind < nchars) {
+		i += ulen(p[i]);
+		ind++;
+	}
+	return i;
+}
+
+
 inline static struct str str_substr(struct str* s, int a, int l) {
+	// utf8 safe, therefor slow
+	//
+	uint sl = str_len(s);
+	uint ca = str_upos(str_ptr(s), 0, a, sl);
+	uint cb = str_upos(str_ptr(s), ca, l, sl);
+
+	struct str r;
+	str_init(&r);
+	str_append_n(&r, str_ptr(s) + ca, cb - ca);
+
+	return r;
+}
+
+/*
+inline static struct str cstr_substr(struct str* s, int a, int l) {
 	struct str r;
 	str_init(&r);
 	uint sl = str_len(s);
@@ -269,6 +313,7 @@ inline static struct str str_substr(struct str* s, int a, int l) {
 	str_append_n(&r, str_ptr(s) + a, l);
 	return r;
 }
+*/
 
 /*
 inline static void pr(char* format, ...) {

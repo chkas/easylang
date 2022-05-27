@@ -211,37 +211,24 @@ static double op_floor(struct op* op) {
 	return floor(numf(op->o1));
 }
 
+//kc
 static double op_str_ord(struct op* op) {
 	struct str s = strf(op->o1);
 	const char* utf8 = str_ptr(&s);
 	if(!(utf8[0] & 0x80)) return utf8[0];
 	else if ((utf8[0] & 0xe0) == 0xc0) return (((utf8[0] & 0x1f) << 6) | (utf8[1] & 0x3f));
-	else if((utf8[0] & 0xf0) == 0xe0)  
-		return (((utf8[0] & 0x0f) << 12) | ((utf8[1] & 0x3f) << 6) | (utf8[2] & 0x3f));
+	else if((utf8[0] & 0xf0) == 0xe0) {
+		int h = (((utf8[0] & 0x0f) << 12) | ((utf8[1] & 0x3f) << 6) | (utf8[2] & 0x3f));
+		if (h == 0xffff) h = 0;
+		return h;
+	}
 	else
 		return -1;
 }
 
-static int ulen(const char* p) {
-	uint i = 0;
-	uint ind = 0;
-	while (i < strlen(p)) {
-		byte lb = p[i];
-		if ((lb & 0x80) == 0) i++;
-		else if ((lb & 0xe0) == 0xc0) i += 2;
-		else if ((lb & 0xf0) == 0xe0) i += 3;
-		else if ((lb & 0xf8) == 0xf0) i += 4;
-		else {
-			i++;
-		}
-		ind++;
-	}
-	return ind;
-}
-
 static double op_str_len(struct op* op) {
 	struct str s = strf(op->o1);
-	int h = ulen(str_ptr(&s));
+	int h = str_ulen(str_ptr(&s));
 	str_free(&s);
 	return h;
 }
@@ -870,6 +857,10 @@ static struct str op_str_chr(struct op* op) {
 	str_init(&str);
 
 	int code = (int)numf(op->o1);
+
+	// map to 0 to some reserved unicode char - because auf C strings 
+	if (code == 0) code = 0xffff;
+
 	if (code <= 0x7f) {
 		str.d[0] = code;
 		str.d[1] = 0;
@@ -1498,7 +1489,7 @@ static struct arr op_str_chars(struct op* op) {
 	const char* p = str_ptr(&s);
 
 	struct arr res;
-	res.len = ulen(p);
+	res.len = str_ulen(p);
 	res.typ = ARR_STR;
 	res.p = malloc(res.len * sizeof(struct str));
 	if (res.p == NULL) {
@@ -1511,6 +1502,8 @@ static struct arr op_str_chars(struct op* op) {
 	uint i = 0;
 	uint l;
 	while (ind < res.len) {
+		l = ulen(p[i]);
+/*
 		byte lb = p[i];
 		if ((lb & 0x80) == 0) l = 1;
 		else if ((lb & 0xe0) == 0xc0) l = 2;
@@ -1519,6 +1512,7 @@ static struct arr op_str_chars(struct op* op) {
 		else {
 			l = 1;
 		}
+*/
 		str_init(res.pstr + ind);
 
 		uint h = 0;

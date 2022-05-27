@@ -3,7 +3,6 @@ len p5[] n
 for i range n
   p5[i] = i * i * i * i * i
 .
-sysfunc "time"
 func search a b s . y .
   y = -1
   while a + 1 < b
@@ -32,5 +31,5 @@ for x0 range n
     .
   .
 .
-sysfunc "time"
+print sysfunc "time"
 
