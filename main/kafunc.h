@@ -218,9 +218,7 @@ static double op_str_ord(struct op* op) {
 	if(!(utf8[0] & 0x80)) return utf8[0];
 	else if ((utf8[0] & 0xe0) == 0xc0) return (((utf8[0] & 0x1f) << 6) | (utf8[1] & 0x3f));
 	else if((utf8[0] & 0xf0) == 0xe0) {
-		int h = (((utf8[0] & 0x0f) << 12) | ((utf8[1] & 0x3f) << 6) | (utf8[2] & 0x3f));
-		if (h == 0xffff) h = 0;
-		return h;
+		return (((utf8[0] & 0x0f) << 12) | ((utf8[1] & 0x3f) << 6) | (utf8[2] & 0x3f));
 	}
 	else
 		return -1;
@@ -857,9 +855,6 @@ static struct str op_str_chr(struct op* op) {
 	str_init(&str);
 
 	int code = (int)numf(op->o1);
-
-	// map to 0 to some reserved unicode char - because auf C strings 
-	if (code == 0) code = 0xffff;
 
 	if (code <= 0x7f) {
 		str.d[0] = code;
@@ -1503,16 +1498,6 @@ static struct arr op_str_chars(struct op* op) {
 	uint l;
 	while (ind < res.len) {
 		l = ulen(p[i]);
-/*
-		byte lb = p[i];
-		if ((lb & 0x80) == 0) l = 1;
-		else if ((lb & 0xe0) == 0xc0) l = 2;
-		else if ((lb & 0xf0) == 0xe0) l = 3;
-		else if ((lb & 0xf8) == 0xf0) l = 4;
-		else {
-			l = 1;
-		}
-*/
 		str_init(res.pstr + ind);
 
 		uint h = 0;
