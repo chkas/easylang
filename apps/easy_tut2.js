@@ -4,7 +4,7 @@ style.innerHTML = `
 body{
 	background-color:#f8f8f8;
 	font:normal normal normal 16px/1.5 Arial,sans-serif;
-	margin-left:10px;margin-right:10px;max-width:730px;
+	margin-left:10px;margin-right:10px;max-width:1110px;
 }
 
 pre{
@@ -14,14 +14,14 @@ pre{
 	padding:5px;
 	font:normal normal normal 14px/1.3 monospace;
 	width:calc(100vw - 48px);
-	max-width:700px;
+	max-width:1080px;
 	overflow-y:auto;
 }
 
 pre.code {
-	width:calc(100vw - 400px);
-	max-width:380px;
-	max-height:80vh;
+	width:calc(100vw - 480px);
+	max-width:680px;
+	max-height:85vh;
 	min-height:128px;
 }
 textarea {
@@ -30,7 +30,7 @@ textarea {
 	border:1px solid gray;
 	padding:5px;
 	font:normal normal normal 14px/1.3 monospace;
-	width:310px;
+	width:390px;
 	resize:none;
 }
 canvas.run { outline-style:solid;outline-color:#a00;outline-width:1px }
@@ -39,8 +39,8 @@ textarea.run { background-color:#eee }
 canvas {
 	margin-left:12px;
 	border:1px solid gray;
-	width:320px;
-	height:320px;
+	width:400px;
+	height:400px;
 }
 @media only screen and (max-width: 600px) {
 	textarea {
@@ -255,7 +255,7 @@ function tutUpd() {
 				out.readOnly = true
 			}
 			if (out == null || s.search("color ") != -1) {
-				if (!phone) pre.style.minHeight = "332px"
+				if (!phone) pre.style.minHeight = "412px"
 				canv = create("canvas")
 				canv.style.background = "#fff"
 				canv.width = 800
@@ -306,7 +306,7 @@ function tutUpd() {
 			btn.canv = canv
 			if (out) {
 				if (phone || canv) {
-					if (!phone) pre.style.minHeight = "448px"
+					if (!phone) pre.style.minHeight = "532px"
 					out.rows = 5
 				}
 				else {

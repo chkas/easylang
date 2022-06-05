@@ -368,6 +368,7 @@ A language that doesn’t have everything is actually easier to program in than 
 <p><a href="tutorial_sorting_algorithms.html">Sorting Algorithms</a>
 <p><a href="tutorial_monte_carlo_methods.html">Monte Carlo Methods or Why it's a Bad Idea to Go to the Casino</a>
 <p><a href="tut_blackj.html">Blackjack - Probabilties, Card Counting</a>
+<p><a href="tut_cipher.html">Symmetric Cipher - What can you do wrong with it</a>
 <br><br>
 
 <h3>Web demos</h3>
