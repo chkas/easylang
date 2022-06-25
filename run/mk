@@ -93,7 +93,7 @@ exec > $odir/index.html
 cat <<'xxx'
 <!doctype html> 
 <meta charset=utf-8>
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="code runner">
 <title>Code Runner</title>
 <link rel="icon" href="icon.png" type="image/x-png">
@@ -106,6 +106,7 @@ body {
 	font-family:sans-serif;
 	margin:0px;
 	user-select:none;
+	-webkit-user-select:none;
 }
 a { color: #ddd }
 
@@ -120,6 +121,8 @@ a { color: #ddd }
 	cursor: pointer;
 	text-decoration: underline;
 	display:inline;
+	user-select:none;
+	-webkit-user-select:none;
 }
 .lnk:hover {
 	background-color:#444;
@@ -133,6 +136,7 @@ select {
 	border-radius:4px;
 	-moz-appearance: none;
 	-webkit-appearance: none;
+	appearance: none;
 	padding:3px 3px;
 	margin:2px 2px;
 	border:1px solid #666;

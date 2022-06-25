@@ -87,6 +87,24 @@ func start . .
   .
   call show_quest
 .
+menu$[] = [ "Multiply" "Divide" "Add" "Subtract" ]
+func draw_menu_key col i . .
+  y = i * 24 + 3
+  move 3 y
+  color col
+  rect 94 22
+  move 8 y + 4
+  color 888
+  text menu$[i]
+.
+func draw_menu . .
+  clear
+  textsize 14
+  for i range 4
+    call draw_menu_key 020 i
+  .
+  state = 0
+.
 func handle_key2 . .
   if ind = 11
     state = 2
@@ -102,6 +120,11 @@ func handle_key2 . .
     call disp col q$ & resok
   else
     if ind = 10
+      if res = 0
+        ind = -1
+        call draw_menu
+        break 1
+      .
       res = res div 10
       h$ = res
       if res = 0
@@ -133,24 +156,6 @@ func handle_key . .
   .
   call draw_key 040 ind
   call handle_key2
-.
-menu$[] = [ "Multiply" "Divide" "Add" "Subtract" ]
-func draw_menu_key col i . .
-  y = i * 24 + 3
-  move 3 y
-  color col
-  rect 94 22
-  move 8 y + 4
-  color 888
-  text menu$[i]
-.
-func draw_menu . .
-  clear
-  textsize 14
-  for i range 4
-    call draw_menu_key 020 i
-  .
-  state = 0
 .
 on key
   ind = strcode keybkey - 48

@@ -106,22 +106,11 @@ body{
 	background:#333;
 	color:#fe9;
 	user-select:none;
+	-webkit-user-select:none;
 	margin:0px;
 	overflow: hidden; 
 }
 canvas:focus{outline: none}
-button {
-	background:#444;
-	color:#fe9;
-	cursor:pointer;
-	padding:6px;
-	margin:4px;
-	border:1px solid gray;
-	border-radius:8px;
-	user-select:none;
-}
-button:hover {background:#666}
-button:active {background:#888} 
 
 .btn {
 	background:#444;
@@ -132,10 +121,10 @@ button:active {background:#888}
 	padding:6px;
 	margin:4px;
 	text-align:center;
-	font-size:90%;
-	height:20px;
-	min-width:20px;
+	height:22px;
+	min-width:40px;
 	user-select:none;
+	-webkit-user-select:none;
 	touch-action:none;
 }
 .btn:hover {background:#666}
@@ -157,19 +146,18 @@ button:active {background:#888}
 
 <div id=noti class=lnk style="margin-top:10px">Click here to update to new version<br></div>
 
-<span style="white-space: nowrap">
- <div style="margin-left:8px;margin-top:10px" class=btn id=b_up>▲</div>
- <div class=btn id=b_down>▼</div>
- <div class=btn id=b_left>◀</div>
- <div class=btn id=b_right>▶</div>
- <button style="margin-left:16px" onclick='key(this, "n")'>Info</button>
- <button onclick='key(this, "v")'>Vis</button>
-</span>
-<p>
-<div style="margin-left:8px" class=btn id=b_time>Minute+</div>
+<div style="margin-top:8px;margin-left:8px" class=btn id=b_up>▲&#xFE0E;</div>
+<div class=btn id=b_down>▼&#xFE0E;</div>
+<div class=btn id=b_left>◀&#xFE0E;</div>
+<div class=btn id=b_right>▶&#xFE0E;</div>
+<br>
+<div style="margin-top:8px;margin-left:8px" class=btn id=b_time>Minute+</div>
 <div class=btn id=b_day>Day+</div>
-<button onclick='key(this, " ")'>Now</button>
-<button style="margin-left:16px" onclick=getpos()>GPS</button>
+<div class=btn onclick='key(this, " ")'>Now</div>
+<br>
+<div style="margin-top:8px;margin-left:8px" class=btn onclick='key(this, "n")'>Text</div>
+<div class=btn onclick='key(this, "v")'>Visible</div>
+<div class=btn style="margin-left:16px" onclick=getpos()>GPS</div>
 
 <script src=easy.js></script>
 <script>
@@ -220,15 +208,11 @@ window.onresize()
 
 function reg(btn, key) {
 	btn.key = key
-	if ('ontouchstart' in document.documentElement) {
-		btn.ontouchstart = function (e) { mdown(this, this.key) }
-		btn.ontouchend = mup
-	}
-	else {
-		btn.onmousedown = function (e) { mdown(this, this.key) }
-		btn.onmouseup = mup
-		btn.onmouseleave = mup
-	}
+	btn.ontouchstart = function (e) { mdown(this, this.key) }
+	btn.ontouchend = mup
+	btn.onmousedown = function (e) { mdown(this, this.key) }
+	btn.onmouseup = mup
+	btn.onmouseleave = mup
 }
 
 reg(b_up, "ArrowUp")

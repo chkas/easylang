@@ -231,19 +231,22 @@ rect 15 19
 
 # sine wave
 # 
-move 4 5
-text "Sine wave"
+linewidth 0.1
+move 50 0
+line 50 100
+move 0 50
+line 100 50
+# 
 color 800
 linewidth 0.5
-while x < 100
-  deg = x / 100 * 360
+for x = 0 step 0.5 to 100
+  deg = x / 100 * 360 - 180
   y = 50 - 30 * sin deg
   if x = 0
     move x y
   else
     line x y
   .
-  x += 0.5
 .
 
 + Coordinates are specified in floating point values and can also take intermediate values. *linewidth* sets the line width.

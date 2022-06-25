@@ -86,6 +86,7 @@ function showFull() {
 	var div = create("div")
 	div.style.margin = "12px"
 	div.style.cssFloat = "left"
+	div.style.width = "180px"
 
 	var btn = create("button")
 	btn.innerHTML = "Edit code"
@@ -99,7 +100,6 @@ function showFull() {
 		resizeAll()
 	}
 	div.appendChild(btn)
-	append(div, "p")
 	incol.removeChild(runBtn)
 	div.appendChild(runBtn)
 	append(div, "p")
@@ -110,6 +110,8 @@ function showFull() {
 	lnk.target = "_blank"
 	appendTxt(lnk, "Code runner")
 	div.appendChild(lnk)
+	append(div, "p")
+	appendTxt(div, "You can email this link to your smartphone and run the program there.")
 	fr.appendChild(div)
 	fr.appendChild(canv)
 	document.body.appendChild(fr)
