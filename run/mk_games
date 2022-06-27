@@ -39,8 +39,7 @@ For fun and learning
 <script>
 var s = []
 function inst(id) {
-	window.open("https://easylang.online/run/?code=" + encodeURIComponent(s[id]), "_self")
-//	window.open("https://easylang.online/run/?code=" + encodeURIComponent(s[id]), "easylang_run")
+	window.open("https://easylang.online/run/#code=" + encodeURIComponent(s[id]), "_self")
 }
 xxx
 

@@ -53,7 +53,7 @@ var url
 
 function createURL() {
 	var h = encodeURIComponent(pre.innerText)
-	url.href = location.origin + "/run/?code=" + h
+	url.href = location.origin + "/run/#code=" + h
 	url.target = '_blank'
 	url.innerHTML = "Run and install it on code runner"
 }

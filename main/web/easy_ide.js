@@ -104,7 +104,7 @@ function showFull() {
 	div.appendChild(runBtn)
 	append(div, "p")
 	var p = location.pathname.slice(0, -5)
-	var u = location.origin + p + "/run/?code=" + encodeURIComponent(inp.innerText)
+	var u = location.origin + p + "/run/#code=" + encodeURIComponent(inp.innerText)
 	var lnk = create("a")
 	lnk.href = u
 	lnk.target = "_blank"
@@ -432,16 +432,6 @@ function doTutChng() {
 	txt_locale = txt_locale_id
 	txt_tutor = txt_tutor_id
 	tutUpd()
-/*
-	append(tut, "p")
-	append(tut, "hr")
-	lnk = create("a")
-
-	lnk.href = "https://easylang.online"
-	appendTxt(lnk, "More about easylang")
-	tut.appendChild(lnk)
-	append(tut, "p")
-*/
 	tutf = null
 }
 
@@ -1199,8 +1189,8 @@ moreBtn.onmousedown = function() {
 }
 
 urlBtn.onclick = function() {
-	var s = "?code="
-	if (isVisible(canv)) s = "?run="
+	var s = "#code="
+	if (isVisible(canv)) s = "#run="
 	var url = location.origin + "/ide/" + s + encodeURIComponent(inp.innerText)
 	out.value = url
 	moreShow(false)
@@ -1258,7 +1248,8 @@ function main() {
 	}
 	resizeAll()
 
-	var q = location.search.substring(1)
+	var q = location.hash.substring(1)
+	if (q == "") q = location.search.substring(1)
 	if (q != "") {
 		var vs = q.split("&")
 		for (var i = 0; i < vs.length; i++) {

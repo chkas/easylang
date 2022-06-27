@@ -70,7 +70,7 @@ xxx
 var url
 function createURL() {
 	var h = encodeURIComponent(pres[pres.length - 1].innerText)
-	url.href = location.origin + "/run/?code=" + h
+	url.href = location.origin + "/run/#code=" + h
 	url.target = '_blank'
 	url.innerHTML = "Run and install it on code runner"
 }
@@ -78,10 +78,9 @@ function hook() {
 	tut.insertAdjacentHTML("beforeend", `
 
 <h3>Code runner and web app</h3>
-A URL can be created, that can start a <i>code runner</i> with the program encoded in a URL parameter.
+A URL can be created that can launch a code runner with the program encoded in a URL parameter.
 <p>
-Inside the <i>code runner</i> our program can be stored and run offline. The code runner is a <i>PWA</i> 
-(Progressive Web App). Therefore it works like a native app on the mobile device.
+The code runner is a PWA (Progressive Web App), which makes it look like a native app on smartphones. You can send the program URL to your phone via email, for example. There it can be stored and run even offline.
 `)
 	append(tut, "p")
 	var h = create("button")
@@ -89,7 +88,6 @@ Inside the <i>code runner</i> our program can be stored and run offline. The cod
 	h.onclick = createURL
 	tut.appendChild(h)
 	append(tut, "p")
-
 	url = create("a")
 	tut.appendChild(url)
 
@@ -242,10 +240,10 @@ cat <<xxx
 
 <script>
 edit.onclick = function() {
-	window.open('../ide/?code=' + encodeURIComponent(easyscript))
+	window.open('../ide/#code=' + encodeURIComponent(easyscript))
 }
 install.onclick = function() {
-	window.open('../run/?code=' + encodeURIComponent(easyscript))
+	window.open('../run/#code=' + encodeURIComponent(easyscript))
 }
 
 xxx
@@ -544,7 +542,7 @@ show(s2)
 
 function createURL() {
 	var h = encodeURIComponent(code1.value)
-	url.href = location.origin + "/run/?code=" + h
+	url.href = location.origin + "/run/#code=" + h
 	url.target = '_blank'
 	url.innerHTML = "Run and install it on code runner"
 }

@@ -315,8 +315,12 @@ function getCodeInfo() {
 function ready() {
 
 	fillsel(null)
-	if (location.search.startsWith("?code=")) {
-		code = decodeURIComponent(location.search.substring(6))
+
+	var q = location.hash.substring(1)
+	if (q == "") q = location.search.substring(1)
+
+	if (q.startsWith("code=")) {
+		code = decodeURIComponent(q.substring(5))
 		history.replaceState(null, "", location.protocol + "//" + location.host + location.pathname)
 	}
 	else code = window.localStorage.getItem("xruncode")
@@ -394,13 +398,10 @@ function updsel() {
 	}
 }
 edit.onclick = function() {
-	window.open("../ide/?code=" + encodeURIComponent(code))
-//	window.open(location.origin + "/ide/?code=" + encodeURIComponent(code))
+	window.open("../ide/#code=" + encodeURIComponent(code))
 }
 more.onclick = function() {
 	window.open("./list.html", "_self")
-//	window.open(location.origin + "/run/list.html", "_self")
-//	window.open(location.origin + "/run/list.html", "easylang_games")
 }
 inst.onclick = function() {
 	window.localStorage.setItem("a" + appn, code)

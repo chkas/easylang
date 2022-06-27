@@ -31,6 +31,12 @@ for i in easyw.js easyw.wasm; do
 	fi
 done
 
+cd aoc
+for i in 16 17 18 19 20 21; do
+	ln -s ../aoc$i $i
+done
+
+
 # --------------------------------------------------------------
 
 
@@ -352,7 +358,7 @@ button:hover {background-color:#ccc}
 <script>
 
 edit.onclick = function() {
-	window.open("../ide/?code=" + encodeURIComponent(txt.value))
+	window.open("../ide/#code=" + encodeURIComponent(txt.value))
 }
 aoc.onclick = function() {
 	window.open("https://adventofcode.com/20$i/day/" + day)
