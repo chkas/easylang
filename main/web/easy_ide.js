@@ -89,7 +89,7 @@ function showFull() {
 	div.style.width = "180px"
 
 	var btn = create("button")
-	btn.innerHTML = "Edit code"
+	btn.textContent = "Edit code"
 	btn.div = div
 	btn.onclick = function() {
 		incol.insertBefore(runBtn, stBtn)
@@ -197,7 +197,7 @@ function tutUpd() {
 				kaFormat(s, pres.push(pre) - 1)
 				var btn = create("button")
 				btn.className = "tut"
-				btn.innerHTML = "Load"
+				btn.textContent = "Load"
 				btn.pre = pre
 				btn.onclick = function() {
 					loadClick(this, true)
@@ -213,7 +213,7 @@ function tutUpd() {
 
 function runCode(code, caret) {
 	moreShow(false)
-	dbg.innerHTML = ""
+	dbg.textContent = ""
 	tailSrc = null
 	stepBtn.disabled = true
 //	canvClear()
@@ -252,7 +252,7 @@ var loadBtn
 function loadClick(btn, istut) {
 	if (!initDone) return
 	if (loadBtn) {
-		loadBtn.innerHTML = "Load"
+		loadBtn.textContent = "Load"
 		clearTimeout(loadBtn.timeout)
 	}
 	if (stBtn.disabled || loadBtn == btn) {
@@ -271,9 +271,9 @@ function loadClick(btn, istut) {
 		return
 	}
 	loadBtn = btn
-	btn.innerHTML = "Overwrite?"
+	btn.textContent = "Overwrite?"
 	btn.timeout = setTimeout(function() {
-		loadBtn.innerHTML = "Load"
+		loadBtn.textContent = "Load"
 		loadBtn = null
 	}, 3000)
 }
@@ -282,7 +282,7 @@ var delBtn
 
 function delClick(btn) {
 	if (delBtn) {
-		delBtn.innerHTML = "Delete"
+		delBtn.textContent = "Delete"
 		clearTimeout(delBtn.timeout)
 	}
 	if (delBtn == btn) {
@@ -292,22 +292,22 @@ function delClick(btn) {
 		return
 	}
 	delBtn = btn
-	btn.innerHTML = "Really?"
+	btn.textContent = "Really?"
 	btn.timeout = setTimeout(function() {
-		delBtn.innerHTML = "Delete"
+		delBtn.textContent = "Delete"
 		delBtn = null
 	}, 3000)
 }
 
 function expandClick(btn) {
-	if (btn.innerHTML == "Expand") {
+	if (btn.textContent == "Expand") {
 		btn.preview = btn.pre.innerText
 		btn.pre.innerText = window.localStorage[btn.ref]
-		btn.innerHTML = "Collapse"
+		btn.textContent = "Collapse"
 	}
 	else {
 		btn.pre.innerText = btn.preview
-		btn.innerHTML = "Expand"
+		btn.textContent = "Expand"
 	}
 }
 
@@ -333,7 +333,7 @@ function storeUpd() {
 		if (runBtn) {
 			btn = create("button")
 			btn.className = "tut"
-			btn.innerHTML = "Load"
+			btn.textContent = "Load"
 			btn.ref = k
 
 			btn.onclick = function() {
@@ -343,7 +343,7 @@ function storeUpd() {
 		}
 		btn = create("button")
 		btn.className = "del"
-		btn.innerHTML = "Delete"
+		btn.textContent = "Delete"
 		btn.ref = k
 
 		btn.onclick = function() {
@@ -353,7 +353,7 @@ function storeUpd() {
 
 		btn = create("button")
 		btn.className = "del"
-		btn.innerHTML = "Expand"
+		btn.textContent = "Expand"
 		btn.ref = k
 		btn.pre = pre
 
@@ -1026,8 +1026,8 @@ function showRun(on = true) {
 	sel.disabled = !on
 	if (on) {
 		out.className = ""
-		runBtn.innerHTML = "Run"
-		stepBtn.innerHTML = "Trace"
+		runBtn.textContent = "Run"
+		stepBtn.textContent = "Trace"
 		stepBtn.disabled = false
 		hide(step2Btn)
 		hide(step3Btn)
@@ -1038,7 +1038,7 @@ function showRun(on = true) {
 		out.value = ""
 		canv.className = "run"
 		out.className = "run"
-		runBtn.innerHTML = "Stop"
+		runBtn.textContent = "Stop"
 	}
 }
 
@@ -1132,11 +1132,11 @@ window.addEventListener("keydown", function(e) {
 
 function runDebug() {
 	removeCnd()
-	dbg.innerHTML = ""
+	dbg.textContent = ""
 	var h = sel.selectedIndex
 	if (h == 0 && !window["sab"]) h = 3
 	if (h == 0) {
-		stepBtn.innerHTML = "Step"
+		stepBtn.textContent = "Step"
 		show(step2Btn)
 		show(step3Btn)
 		h = 6

@@ -332,7 +332,7 @@ function ready() {
 		sel.style.display = "none"
 		rm.style.display = "none"
 		more.style.display = "none"
-		namef.innerHTML = appn
+		namef.textContent = appn
 		run(code)
 	}
 	else {
@@ -410,12 +410,12 @@ inst.onclick = function() {
 }
 var rmt
 function rmreset() {
-	rm.innerHTML = "Delete"
+	rm.textContent = "Delete"
 	rmt = null
 }
 rm.onclick = function() {
     if (!rmt) {
-		rm.innerHTML = "Really?"
+		rm.textContent = "Really?"
 		rmt = setTimeout(rmreset, 3000)
 	}
 	else {
