@@ -9,8 +9,6 @@ if (lang == "de") {
 		"Dokumentation - Code-Beispiele",
 		"Funktionen and Rekursion",
 		"Ein Spiel programmieren",
-		"Monte-Carlo-Methoden",
-		"Sortier-Algorithmen"
 	]
 } else {
 	txt_header = "<p>Easy programming - <a href=..>More about<a></p><h3>Tutorials</h3>"
@@ -19,8 +17,6 @@ if (lang == "de") {
 		"Documentation - Code snippets",
 		"Functions and recursion",
 		"Making a game",
-		"Monte Carlo Methods",
-		"Sorting algorithms"
 	]
 }
 
@@ -29,8 +25,6 @@ tut_file = [
 	"tut_docu" + VERS + ".js",
 	"tut_func" + VERS + ".js",
 	"tut_game" + VERS + ".js",
-	"tut_mcarlo" + VERS + ".js",
-	"tut_sorting" + VERS + ".js"
 ]
 
 txt_locale_id = "de"

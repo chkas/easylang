@@ -1,6 +1,6 @@
 # source $HOME/emsdk/emsdk_env.sh
 
-v = 260
+v = 261
 
 #--------------------------------------------------------------------
 
@@ -19,7 +19,7 @@ $(o):
 	mkdir -p $(o)
 
 main: $(o)/easy_ide.js $(o)/easyw.js $(o)/easy.js $(o)/ide.html
-tut: $(o)/tut_id.js $(o)/tut_docu.js $(o)/tut_learn.js $(o)/tut_mcarlo.js $(o)/tut_game.js $(o)/tut_sorting.js $(o)/tut_func.js
+tut: $(o)/tut_id.js $(o)/tut_docu.js $(o)/tut_learn.js $(o)/tut_game.js $(o)/tut_func.js
 
 $(o)/%.o: $(o)/%.c $(o)/kalib.h $(o)/kalex.h $(o)/kafunc.h $(o)/kabasw.h
 	$(CC) -c $< -o $@
@@ -56,7 +56,7 @@ $(or)/2:
 
 apps: $(or)/easyw.js $(or)/easy.js
 mainr: $(or)/index.html $(or)/2/index.html $(or)/icon.png $(or)/sw.js $(or)/mfst.json $(or)/easyw$(v).js $(or)/wvers
-tutr: $(or)/tut_id$(v).js $(or)/tut_docu$(v).js $(or)/tut_learn$(v).js $(or)/tut_mcarlo$(v).js $(or)/tut_game$(v).js $(or)/tut_sorting$(v).js $(or)/tut_func$(v).js
+tutr: $(or)/tut_id$(v).js $(or)/tut_docu$(v).js $(or)/tut_learn$(v).js $(or)/tut_game$(v).js $(or)/tut_func$(v).js
 extr: $(or)/vers_easy.js
 
 $(or)/easyw.js: $(o)/easyw.js

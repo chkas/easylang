@@ -64,7 +64,6 @@ static void parse_numfunc(ushort o) {
 
 	ushort h;
 	csb_tok_nt();
-//	if (cod) codp[o].numf = numf[tokpr - t_systime];
 	if (cod) codp[o].numf = numf[tokpr - t_systime];
 
 	if (tokpr <= t_pi) {
@@ -776,13 +775,16 @@ static void parse_subr(void) {
 	p->id = code_len;	// could be recursive
 	h = parse_sequ_end();
 //kc
-	if (h == UMO) p->id = UMO; // could be empty
+//	if (h == UMO) p->id = UMO; // could be empty
+	p->id = h; // could be empty
 
 	nexttok();
 	loop_level -= 1;
 }
 
 static ushort parse_func_header(ushort mode) {
+
+	// mode:0 funcdecl
 
 	stat_begin();
 	if (tok != t_name) error_tok(t_name);
@@ -931,9 +933,12 @@ static void parse_func(void) {
 	ushort ox = parse_func_header(1);
 	if (ox == UMO) return;
 
-	ushort h = parse_sequ_end();		// can be empty (UMO)
-	func->start = h;
-
+	ushort h = parse_sequ_end();
+	if (h == UMO) {
+		ushort o = code_add();
+		codp[o].vf = op_nop;
+		codp[o].next = UMO;
+	}
 	codp[ox].bx0 = func->varcnt[0];
 	codp[ox].bx1 = func->varcnt[1];
 	codp[ox].bx2 = func->varcnt[2];

@@ -478,6 +478,21 @@ print a[][]
 a[][] &= [ 40 41 42 ]
 print a[][]
 
++ Selection sort
+
+func sort . d[] .
+  for i = 0 to len d[] - 2
+    for j = i + 1 to len d[] - 1
+      if d[j] < d[i]
+        swap d[j] d[i]
+      .
+    .
+  .
+.
+d[] = [ 29 4 72 44 55 26 27 77 92 5 ]
+call sort d[]
+print d[]
+
 * More about loops, input data
 
 + With *input_data* a text section is defined whose lines can be read with *input*.

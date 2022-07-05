@@ -1,0 +1,141 @@
+# Dice test
+# 
+background 000
+subr vars
+  d[] = [ ]
+  ind = -1
+  stat = 0
+.
+func test . ok .
+  len cnt[] 6
+  for i range 7
+    cnt[d[i] - 1] += 1
+  .
+  ok = 10
+  for i range 6
+    if cnt[i] >= 5
+      ok -= 20
+    .
+    if cnt[i] = 0
+      n_null += 1
+    .
+  .
+  if n_null = 0 or n_null >= 4
+    ok -= 20
+  .
+.
+func test_random . .
+  for t range 1000
+    d[] = [ ]
+    for i range 7
+      d[] &= random 6 + 1
+    .
+    call test ok
+    if ok > 0
+      n_ok += 1
+    .
+  .
+  print n_ok
+.
+call test_random
+func drawl . .
+  color 000
+  move 8 24
+  rect 94 10
+  color 888
+  textsize 9
+  for i range 7
+    move i * 11 + 11 24
+    if i < len d[]
+      text d[i]
+    else
+      text "_"
+    .
+  .
+.
+func drawk . .
+  x = ind mod 3 * 24 + 14
+  y = ind div 3 * 24 + 44
+  move x y
+  rect 22 22
+  color 888
+  textsize 17
+  move x + 5 y + 3
+  text ind + 1
+.
+func init . .
+  call vars
+  clear
+  textsize 11
+  color 888
+  move 14 5
+  text "Dice test"
+  call drawl
+  for ind range 6
+    color 111
+    call drawk
+  .
+  ind = -1
+.
+# 
+func handle_key . .
+  c = (mouse_x - 14) div 24
+  r = (mouse_y - 44) div 24
+  ind = c + r * 3
+  d[] &= ind + 1
+  call drawl
+  color 333
+  call drawk
+  if len d[] = 7
+    stat = 1
+    timer 1
+  .
+.
+on timer
+  if stat = 1
+    stat = 2
+    move 0 40
+    color 000
+    rect 100 60
+    color 888
+    # 
+    ok = 1
+    call test ok
+    #  ok = 1
+    textsize 8
+    if ok > 0
+      s1$ = "Thanks for playing."
+      s2$ = "Good dice."
+    else
+      s1$ = "I got you!"
+      s2$ = "That wasn't dice."
+    .
+    move 8 46
+    text s1$
+    move 8 60
+    text s2$
+    timer 2
+  else
+    stat = 3
+  .
+.
+on mouse_down
+  if stat = 0
+    if mouse_y >= 44 and mouse_y < 92
+      if mouse_x >= 14 and mouse_x < 86
+        call handle_key
+      .
+    .
+  elif stat = 3
+    call init
+  .
+.
+on mouse_up
+  if ind >= 0
+    color 111
+    call drawk
+    ind = -1
+  .
+.
+call init
+

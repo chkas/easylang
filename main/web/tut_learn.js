@@ -65,9 +65,9 @@ line 50 40
 
 -
 
-+ Try to finish drawing the square!
++ 🤔 Try to finish drawing the square!
 
-+de Versuche das Quadrat fertig zu zeichnen!
++de 🤔 Versuche das Quadrat fertig zu zeichnen!
 
 move 10 20
 line 30 20
@@ -95,9 +95,9 @@ color 993
 move 40 50
 rect 40 40
 
-+ There are 1000 possible colors - from 000 to 999, mixed from the primary colours red, green and blue. The left digit specifies the red component, the middle digit the green component and the right digit the blue component.
++ There are 1000 possible colors - from 000 to 999, mixed from the primary colours red, green and blue. The left digit specifies the red component, the middle digit the green component and the right digit the blue component. These are some possible colors.
 
-+de Es gibt 1000 mögliche Farben - und zwar von 000 bis 999. Die Farben werden dabei aus den Grundfarben Rot, Grün und Blau gemischt. Die linke Ziffer gibt den Rotanteil, die mittlere den Grünanteil und die rechte den Blauanteil an.
++de Es gibt 1000 mögliche Farben - und zwar von 000 bis 999. Die Farben werden dabei aus den Grundfarben Rot, Grün und Blau gemischt. Die linke Ziffer gibt den Rotanteil, die mittlere den Grünanteil und die rechte den Blauanteil an. Dies sind einige mögliche Farben.
 
 ##
 col[] = [ 900 700 966 990 995 960 090 070 696 099 599 690 009 007 669 909 959 609 777 444 000 999 432 765 ]
@@ -155,9 +155,9 @@ rect 10 10
 
 +de Das *#*-Zeichen erlaubt es, Kommentare in das Programm einzufügen.
 
-+ *Task:* Draw the missing door.
++ 🤔 Draw the missing door.
 
-+de *Aufgabe:* Zeichne die fehlende Tür.
++de 🤔 Zeichne die fehlende Tür.
 
 + In *Trace* mode, you can watch the computer execute its instructions one by one.
 
@@ -191,9 +191,9 @@ color 333
 move 10 80
 line 15 80
 
-+ *Task:* Draw this car.
++ 🤔 Draw this car.
 
-+de *Aufgabe:* Zeichne dieses Auto.
++de 🤔 Zeichne dieses Auto.
 
 ##24
 linewidth 8
@@ -222,40 +222,41 @@ pr 13 * 7
 
 -
 
-+ You can store a number in a variables and then work with this variable.
++ You can store a number in a variable and then work with this variable. The *=* here is an assignment command, not an equality expression.
 
-+de Eine Zahl kann man in einer Variablen speichern und dann mit dieser Variablen arbeiten.
++de Eine Zahl kann man in einer Variablen speichern und dann mit dieser Variablen arbeiten. Das *=* hier ist ein Zuweisungsbefehl, kein Gleichheitsausdruck.
 
 a = 4
-a = 2 * a
-print a
+b = a * a
+print b
 
 -
 
-+ Strings are texts enclosed in quotation marks. The *&* character can be used to concatenate strings. Numbers are automatically converted to strings.
++ Strings are texts enclosed in quotation marks. The *&* character can be used to join strings. Numbers are thereby automatically converted to strings.
 
-+de Zeichenketten (Strings) sind in Anführungszeichen eingeschlossene Texte. Mit dem *&*-Zeichen kann man Zeichenketten zusammenfügen. Zahlen werden automatisch in Strings umgewandelt.
++de Zeichenketten (Strings) sind in Anführungszeichen eingeschlossene Texte. Mit dem *&*-Zeichen kann man Zeichenketten zusammenfügen. Zahlen werden dabei automatisch in Strings umgewandelt.
 
 a = 5
-print a & "² = " & a * a
+b = a * a
+print a & "² = " & b
 
 -
 
-+ A variable can easily be incremented by a value: *a += 1* is short for *a = a + 1*
++ A variable can easily be incremented by a value: *a = a + 1*
 
 +de Eine Variable kann man ganz einfach um einen Wert erhöhen: *a += 1* ist die Kurzform für *a = a + 1*
 
 a = 1
-a += 1
+a = a + 1
 print a
 
 * Conditional statements, loops
 
 *de Bedingte Anweisungen, Schleifen
 
-+ With *if* you can make the execution of actions dependent on a comparison. *end* (or a dot) marks the end of the dependent actions.
++ With *if* you can make the execution of actions dependent on a comparison. *end* marks the end of the dependent actions.
 
-+de Mittels *if* kann man die Ausführung von Aktionen von einem Vergleich abhängig machen. *end* (oder ein Punkt) markiert das Ende der abhängigen Aktionen.
++de Mittels *if* kann man die Ausführung von Aktionen von einem Vergleich abhängig machen. *end* markiert das Ende der abhängigen Aktionen.
 
 a = 7
 a = 10 * a
@@ -263,7 +264,7 @@ if a > 20
   print "WOW!"
   print "a is large."
 end
-print a
+print "a: " & a
 
 ##
 color 555
@@ -296,7 +297,7 @@ func cod n$ v v$ . .
 call cod "a ← 7 " 7 ""
 call cod "a ← 10 * a " 70 ""
 call cod "a > 20 ?" -1 "YES"
-call cod "a is large" -1 ""
+call cod "\\"a is large\\"" -1 ""
 
 -
 
@@ -310,7 +311,7 @@ if a > 20
 else
   print "a is not large."
 end
-print a
+print "a: " & a
 
 -
 
@@ -321,12 +322,12 @@ print a
 i = 1
 while i <= 4
   print i * i
-  i += 1
+  i = i + 1
 end
 
-+ *Task:* Write a program that adds up the numbers from 1 to 10. (Result: 55)
++ 🤔 Write a program that adds up the numbers from 1 to 10. (Result: 55)
 
-+de *Aufgabe:* Schreibe ein Programm, das die Zahlen von 1 bis 10 zusammenzählt. (Ergebnis: 55)
++de 🤔 Schreibe ein Programm, das die Zahlen von 1 bis 10 zusammenzählt. (Ergebnis: 55)
 
 -
 
@@ -338,9 +339,9 @@ c = 10
 f = c * 1.8 + 32
 print c & "°C = " & f & "°F"
 
-+ *Task:* Extend the program with a loop so that it outputs the values in Fahrenheit from 0°C to 30°C.
++ 🤔 Extend the program with a loop so that it outputs the values in Fahrenheit from 0°C to 30°C.
 
-+de *Aufgabe:* Erweitere das Programm mit einer Schleife so, dass es von 0°C bis 30°C die Werte in Fahrenheit ausgibt.
++de 🤔 Erweitere das Programm mit einer Schleife so, dass es von 0°C bis 30°C die Werte in Fahrenheit ausgibt.
 
 -
 
@@ -369,9 +370,9 @@ print "The number was " & n
 
 +de *random 10* liefert eine Zufallszahl von 0 - 9. *input* liest einen String von der Tastatur ein, der dann mit *number*  in eine Zahl umgewandelt wird. *write* ist wie *print* nur dass nach der Ausgabe nicht in eine neue Zeile gesprungen wird. *sleep 1* legt eine Pause von einer Sekunde ein. *elif* ist eine Kombination von *else* und *if*.
 
-+ *Task:* Just one try and that's it - it's no fun. You should be able to guess until you have guessed the number. This requires a loop.
++ 🤔 Just one try and that's it - it's no fun. You should be able to guess until you have guessed the number. For this you need .... - yeah right - a loop.
 
-+de *Aufgabe:* Nur ein Versuch und das war's - das macht keinen Spaß. Man sollte so lange raten können, bis man die Zahl erraten hat. Dazu ist eine Schleife erforderlich.
++de 🤔 Nur ein Versuch und das war's - das macht keinen Spaß. Man sollte so lange raten können, bis man die Zahl erraten hat. Hierfür brauchst du .... - ja richtig - eine Schleife.
 
 -
 
@@ -386,7 +387,7 @@ while i < 100
   move 0 i
   rect 100 10
   sleep 1
-  i += 10
+  i = i + 10
 end
 
 * Animation
@@ -425,24 +426,24 @@ while x <= 100
   # wait half a second
   sleep 0.5
   # change drawing position
-  x += 5
+  x = x + 5
 end
 
-+ *Task 1:* Try to make the animation smoother by incrementing the drawing position only by 1 or 0.5 each time and displaying the car for a shorter time.
++ 🤔 Try to make the animation smoother by incrementing the drawing position only by 1 or 0.5 each time and displaying the car for a shorter time.
 
-+ *Task 2:* Stop the car before it touches the right edge.
++ 🤔 Stop the car before it touches the right edge.
 
-+ *Task 3:* Let the car drive back.
++ 🤔 Let the car drive back.
 
-+ *Task 4:* Draw the house from above as background.
++ 🤔 Draw the house from above as background.
 
-+de *Aufgabe 1:* Versuche die Animation flüssiger zu machen, indem du die Zeichenposition jedesmal nur um 1 oder 0.5 erhöhst und das Auto für eine kürzere Zeit anzeigst.
++de 🤔 Versuche die Animation flüssiger zu machen, indem du die Zeichenposition jedesmal nur um 1 oder 0.5 erhöhst und das Auto für eine kürzere Zeit anzeigst.
 
-+de *Aufgabe 2:* Halte das Auto an, bevor es die rechte Kante berührt.
++de 🤔 Halte das Auto an, bevor es die rechte Kante berührt.
 
-+de *Aufgabe 3:* Lasse das Auto wieder zurück fahren.
++de 🤔 Lasse das Auto wieder zurück fahren.
 
-+de *Aufgabe 4:* Zeichne das Haus von oben als Hintergrund.
++de 🤔 Zeichne das Haus von oben als Hintergrund.
 
 * Event-driven programming
 
@@ -496,9 +497,9 @@ on key
   text keybkey
 end
 
-+ *Task:* Use the keyboard keys to change the colors of the previous painting program!
++ 🤔 Use the keyboard keys to change the colors of the previous painting program!
 
-+de *Aufgabe:* Verwende die Keyboard-Tasten, um die Farben des vorherigen Malprogramms zu ändern!
++de 🤔 Verwende die Keyboard-Tasten, um die Farben des vorherigen Malprogramms zu ändern!
 
 -
 
@@ -518,16 +519,16 @@ on animate
   circle 3.5
   move x + 16 97
   circle 3.5
-  x += 0.4 * dir
+  x = x + 0.4 * dir
 end
 
-+ *Task 1:* Insert the missing code!
++ 🤔 Insert the missing code!
 
-+ *Task 2:* Try to control the speed with the keyboard keys!
++ 🤔 Try to control the speed with the keyboard keys!
 
-+de *Aufgabe 1:* Füge den fehlenden Code ein!
++de 🤔 Füge den fehlenden Code ein!
 
-+de *Aufgabe 2:* Versuche mit den Keyboard-Tasten die Geschwindigkeit zu steuern!
++de 🤔 Versuche mit den Keyboard-Tasten die Geschwindigkeit zu steuern!
 
 * Random numbers, arrays
 
@@ -549,9 +550,9 @@ while i < 50
   i += 1
 end
 
-+ *random 100* returns a random integer from 0 to 99.
++ *random 100* returns a random integer from 0 to 99. *i += 1* is short for *i = i + 1*.
 
-+de *random 100* liefert eine zufällige Ganzzahl von 0 bis 99.
++de *random 100* liefert eine zufällige Ganzzahl von 0 bis 99. *i += 1* ist die Kurzform für *i = i + 1*.
 
 -
 
@@ -588,13 +589,13 @@ end
 
 -
 
-+ *Task 1:* On the starry sky you can see the constellation *Big Dipper*. If you draw connected lines through the stars 3, 7, 1, 25, 12, 11, 2 and 25 (position in the array), you can make it visible. The star at position 4 is the Pole Star (Polaris).
++ 🤔 On the starry sky you can see the constellation *Big Dipper*. If you draw connected lines through the stars 3, 7, 1, 25, 12, 11, 2 and 25 (position in the array), you can make it visible. The star at position 4 is the Pole Star (Polaris).
 
-+de *Aufgabe 1:* Auf dem Sternenhimmel gibt es das Sternbild *Großer Wagen* zu sehen. Wenn man verbundene Linien durch die Sterne 3, 7, 1, 25, 12, 11, 2 and 25 (Position im Array) zieht, kann man es sichtbar machen. Der Stern an der Position 4 ist der Polarstern (Polaris).
++de 🤔 Auf dem Sternenhimmel gibt es das Sternbild *Großer Wagen* zu sehen. Wenn man verbundene Linien durch die Sterne 3, 7, 1, 25, 12, 11, 2 and 25 (Position im Array) zieht, kann man es sichtbar machen. Der Stern an der Position 4 ist der Polarstern (Polaris).
 
-+ *Task 2:* Connect the stars of the constellation *Cassiopeia*, which can easily be recognized by its W-shape. To find the indices of the stars, output them using *text i* when drawing the star map.
++ 🤔 Connect the stars of the constellation *Cassiopeia*, which can easily be recognized by its W-shape. To find the indices of the stars, output them using *text i* when drawing the star map.
 
-+de *Aufgabe 2:* Verbinde die Sterne des Sternbildes *Cassiopeia*, welches man leicht an seiner W-Form erkennen kann. Um die Indizes der Sterne zu ermitteln, gibst du diese beim Zeichnen der Sternkarte einfach mittels *text i* aus.
++de 🤔 Verbinde die Sterne des Sternbildes *Cassiopeia*, welches man leicht an seiner W-Form erkennen kann. Um die Indizes der Sterne zu ermitteln, gibst du diese beim Zeichnen der Sternkarte einfach mittels *text i* aus.
 
 ##
 x[] = [ 7 81 86 76 50 55 23 77 17 23 16 93 91 13 27 44 29 93 1 53 26 38 35 23 54 85 33 87 7 13 2 20 18 ]
@@ -648,6 +649,10 @@ while i < len data[]
 end
 print min
 
++ 🤔 We now also want to know what the biggest number is.
+
++de 🤔 Wir wollen nun auch wissen, was die größte Zahl ist.
+
 -
 
 + Now we want to put the smallest number on the first position. For this we additionally remember the position of the smallest element. Then we just have to copy the first element to the position of the smallest element and put the smallest number to the first position.
@@ -671,9 +676,9 @@ print data[]
 
 -
 
-+ *Task:* We can move the smallest element to the first place. With the same procedure we can move the smallest element starting from the second position to the second position. When we did that for all positions, the array is sorted.
++ 🤔 We can move the smallest element to the first place. With the same procedure we can move the smallest element starting from the second position to the second position. When we did that for all positions, the array is sorted.
 
-+de *Aufgabe:* Wir können das kleinste Element an die erste Stelle befördern. Mit dem gleiche Verfahren können wir das kleinste Elemente ab der zweiten Stelle an die zweite Position bringen. Wann wir das für alle Positionen gemacht haben, ist das Array sortiert.
++de 🤔 Wir können das kleinste Element an die erste Stelle befördern. Mit dem gleiche Verfahren können wir das kleinste Elemente ab der zweiten Stelle an die zweite Position bringen. Wann wir das für alle Positionen gemacht haben, ist das Array sortiert.
 
 data[] = [ 44 72 55 26 27 4 99 7 ]
 pos = 0

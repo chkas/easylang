@@ -1,21 +1,24 @@
-# My memory
+# Letter memory
 # 
 func draw_square ind col s$ . .
   x = ind mod 4 * 24 + 3
   y = ind div 4 * 24 + 3
-  color col
+  color col + 111
   move x y
   rect 22 22
-  move x + 5 y + 3
+  color col
+  move x + 2 y + 2
+  rect 18 18
+  move x + 5.5 y + 3.5
   color 000
   text s$
-end
+.
 subr init_vars
   card1 = -1
   card2 = -1
   opencards = 0
   time0 = systime
-end
+.
 cards$[] = strchars "AABBDDEEFFGGHHII"
 len open[] 16
 background 000
@@ -26,13 +29,13 @@ func init . .
   for i range 16
     open[i] = 0
     call draw_square i 353 ""
-  end
+  .
   # shuffle
   for i = 2 to 16
     r = random i
     swap cards$[r] cards$[i - 1]
-  end
-end
+  .
+.
 func open ind . .
   open[ind] = 1
   call draw_square ind 575 cards$[ind]
@@ -56,10 +59,10 @@ func open ind . .
         move 5 20
         color 575
         text "Time: " & floor (systime - time0)
-      end
-    end
-  end
-end
+      .
+    .
+  .
+.
 on timer
   # cover cards
   open[card1] = 0
@@ -68,23 +71,23 @@ on timer
   open[card2] = 0
   call draw_square card2 353 ""
   card2 = -1
-end
+.
 func search_card . .
   c = mouse_x div 25
   r = mouse_y div 25
   ind = r * 4 + c
   if open[ind] = 0
     call open ind
-  end
-end
+  .
+.
 on mouse_down
   if opencards = 16
     # new game
     call init
   elif card2 = -1
     call search_card
-  end
-end
+  .
+.
 textsize 16
 call init
 

@@ -1,6 +1,17 @@
-txt_tutor=`+ Monte Carlo Methods - Why It Is a Bad Idea to Go to the Casino
+<!doctype html>
+<meta charset=utf-8><title>Monte Carlo Methods</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="Monte Carlo Methods - Roulette">
+<link rel="icon" href="../icon.png" type="image/x-png">
 
--
+<div id=tut><b>Loading ...</b></div>
+<script src=easy.js></script>
+<script src=easy_code.js></script>
+<script src=easy_tut2.js></script>
+
+<script>
+
+txt_tutor=`* Monte Carlo Methods or Why It Is a Bad Idea to Go to the Casino
 
 + A *Monte Carlo method* is a fairly simple way to get an answer to a task without having to analyze it mathematically. The solution is to simulate the task and see what happens. And this is best done with a computer program.
 
@@ -204,34 +215,37 @@ while cash < 20000 and cash >= 10
 print "Day " & day & ": $" & cash
 print "-------------"
 
-+ Most often, we lose.
++ Most of the time we lose. But with this strategy we seem to be able to win more often. We'll just try this 100 times in a row and see how often it works out.
 
--
-
-+ Some European casinos are not so greedy, they return half the bet when the ball rolls to zero (La Partage).
-
-cash = 1000
-day = 1
-while cash < 2000 and cash >= 10
-  game += 1
-  cash -= 10
-  numb = random 37
-  if numb >= 19
-    cash += 20
-  elif numb = 0
-    cash += 5
-  .
-  if game = 500
-    print "Day " & day & ": $" & cash
-    day += 1
-    game = 1
-    sleep 1.5
+subr session
+  cash = 10000
+  bet = 10
+  while cash < 20000 and cash >= 10
+    cash -= bet
+    numb = random 37
+    if numb >= 19
+      cash += 2 * bet
+      bet = 10
+    else
+      bet *= 2
+      if bet > 1000
+        bet = 1000
+      .
+      if bet > cash
+        bet = cash
+      .
+    .
   .
 .
-print "Day " & day & ": $" & cash
-print "-------------"
+for i range 1000
+  call session
+  if cash >= 20000
+    n_win += 1
+  .
+.
+print n_win / 1000 * 100
 
-+ Losing is than slower and sometimes we can even win.
++ Only in about 14 percent of the attempts we can win with this strategy.
 
 -
 
@@ -311,4 +325,22 @@ for i range 50000
   .
 .
 print hit / i * 4
+
+* Blackjack
+
++ With blackjack, it's a completely different story.
+
+@ ./tut_blackj.html@Blackjack - Probabilities, Strategy, Card Counting
 `
+
+function hook() {
+	var dom = window.location.host
+	tut.insertAdjacentHTML("beforeend", `
+<p><hr><p>
+The examples were created with <a href=..>${dom}<a>
+<p><small>christof.kaser@gmail.com</small>
+`)
+}
+</script>
+
+

@@ -1,7 +1,5 @@
 # Particles
 # 
-# inspired by slicker.me/javascript/particles.htm
-# 
 n_part = 40
 thres = 15
 # 
@@ -11,40 +9,40 @@ subr connect
   if dist < thres
     lw = (thres - dist) / 30
     linewidth lw
-    move px py
-    line px[j] py[j]
+    move x y
+    line x[j] y[j]
   .
 .
 on animate
   clear
   for i range n_part
-    px = px[i]
-    py = py[i]
-    move px py
+    x = x[i]
+    y = y[i]
+    move x y
     circle 0.3125
     for j range i
-      dx = abs (px[j] - px)
+      dx = abs (x[j] - x)
       if dx < thres
-        dy = abs (py[j] - py)
+        dy = abs (y[j] - y)
         if dy < thres
           call connect
         .
       .
     .
-    if px > 100 or px < 0
-      pvx[i] = -pvx[i]
+    if x > 100 or x < 0
+      vx[i] = -vx[i]
     .
-    if py > 100 or py < 0
-      pvy[i] = -pvy[i]
+    if y > 100 or y < 0
+      vy[i] = -vy[i]
     .
-    px[i] += pvx[i]
-    py[i] += pvy[i]
+    x[i] += vx[i]
+    y[i] += vy[i]
   .
 .
 for i range n_part
-  px[] &= randomf * 100
-  py[] &= randomf * 100
-  pvx[] &= (0.5 - randomf) / 3
-  pvy[] &= (0.5 - randomf) / 3
+  x[] &= randomf * 100
+  y[] &= randomf * 100
+  vx[] &= (0.5 - randomf) / 3
+  vy[] &= (0.5 - randomf) / 3
 .
 

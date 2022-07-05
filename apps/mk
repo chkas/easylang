@@ -16,10 +16,18 @@ for i in *.html *.js; do
 done
 
 mk_tut() {
-	n=$(echo $1 | tr "A-Z " a-z_)
-	cat >$o/tutorial_$n.html <<xxx
+#	n=$(echo $1 | tr "A-Z " a-z_)
+	n=$2
+	cat >$o/tut_$n.html <<xxx
 <!doctype html>
 <meta charset=utf-8><title>$1</title>
+xxx
+	if test "$3"; then
+	cat >>$o/tut_$n.html <<xxx
+<meta name="description" content="$3">
+xxx
+	fi
+	cat >>$o/tut_$n.html <<xxx
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <link rel="icon" href="../icon.png" type="image/x-png">
 
@@ -33,7 +41,7 @@ if (typeof WebAssembly != 'object') {
 }
 xxx
 	if test $2 = learn; then
-		cat >>$o/tutorial_$n.html <<'xxx'
+		cat >>$o/tut_$n.html <<'xxx'
 txt_locale = "de"
 txt_tutor=`
 * Learn programming
@@ -42,31 +50,22 @@ txt_tutor=`
 
 xxx
 		l=$(grep -n Trace ../main/web/tut_learn.js | head -1 | cut -f1 -d:)
-		head -$((l-1)) ../main/web/tut_learn.js | tail +8 >>$o/tutorial_$n.html
-		tail +$((l+4)) ../main/web/tut_learn.js  >>$o/tutorial_$n.html
+		head -$((l-1)) ../main/web/tut_learn.js | tail +8 >>$o/tut_$n.html
+		tail +$((l+4)) ../main/web/tut_learn.js  >>$o/tut_$n.html
 
-	elif test "$3"; then
-		echo "txt_tutor=\`" >>$o/tutorial_$n.html
-		echo "* $3" >>$o/tutorial_$n.html
-		echo  >>$o/tutorial_$n.html
-		if test "$4"; then
-			echo "+ $4" >>$o/tutorial_$n.html
-			echo  >>$o/tutorial_$n.html
-		fi
-		tail +5 ../main/web/tut_$2.js >>$o/tutorial_$n.html
 	else
-		echo "txt_tutor=\`" >>$o/tutorial_$n.html
-		echo "* $1" >>$o/tutorial_$n.html
+		echo "txt_tutor=\`" >>$o/tut_$n.html
+		echo "* $1" >>$o/tut_$n.html
 		if test $2 != learn; then
-			echo  >>$o/tutorial_$n.html
-			lnk="@ ./tutorial_learn_programming.html@A more basic tutorial for beginners can be found here."
-			echo $lnk >>$o/tutorial_$n.html
+			echo  >>$o/tut_$n.html
+			lnk="@ ./tut_learn.html@A more basic tutorial for beginners can be found here."
+			echo $lnk >>$o/tut_$n.html
 		fi
-		tail +4 ../main/web/tut_$2.js >>$o/tutorial_$n.html
+		tail +4 ../main/web/tut_$2.js >>$o/tut_$n.html
 	fi
 
 	if test "$5" = runner; then
-		cat >>$o/tutorial_$n.html <<'xxx'
+		cat >>$o/tut_$n.html <<'xxx'
 var url
 function createURL() {
 	var h = encodeURIComponent(pres[pres.length - 1].innerText)
@@ -107,19 +106,7 @@ and <a href=easy.js><i>easy.js</i></a> to a web directory, you can embed this ga
 </script>
 xxx
 	else
-
-		if test $2 = mcarlo; then
-			cat >>$o/tutorial_$n.html <<'xxx'
-txt_tutor+=`
-* Blackjack
-
-+ With blackjack, it's a completely different story.
-
-@ ./tut_blackj.html@Blackjack - Probabilities, Strategy, Card Counting
-`
-xxx
-		fi
-		cat >>$o/tutorial_$n.html <<'xxx'
+		cat >>$o/tut_$n.html <<'xxx'
 function hook() {
 	var dom = window.location.host
 	tut.insertAdjacentHTML("beforeend", `
@@ -133,14 +120,11 @@ xxx
 	fi
 }
 
-mk_tut "Documentation and code snippets" docu 
-mk_tut "Monte Carlo methods" mcarlo "Monte Carlo Methods or Why it's a Bad Idea to Go to the Casino"
-mk_tut "Functions and recursion" func 
-mk_tut "Sorting algorithms" sorting "Sorting algorithms" "There is some textual explanation of the different sorting algorithms. For a better understanding it is very helpful to study pictorial representations of the algorithms located at Wikipedia or at other sites."
-
-mk_tut "Programming a letter memory game" game "" "" "runner" 
-mk_tut "Learn programming" learn 
-sed -i s/555/222/g $o/tutorial_learn_programming.html
+mk_tut "Documentation and code snippets" docu "easylang documentation" 
+mk_tut "Functions and recursion" func "recursive functions"
+mk_tut "Programming a letter memory game" game "canvas game, smartphone" "" "runner" 
+mk_tut "Learn programming" learn "learn programming"
+sed -i s/555/222/g $o/tut_learn.html
 
 cd ../main/web
 for i in easy.js; do
@@ -175,7 +159,7 @@ for k in *.kab; do
 cat <<xxx
 <!doctype html><meta charset=utf-8>
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="description" content="example web applications">
+<meta name="description" content="$n">
 <link rel="icon" href="../icon.png" type="image/x-png">
 <title>$n</title>
 
@@ -359,12 +343,12 @@ A language that doesn’t have everything is actually easier to program in than 
 
 <h3>Interactive tutorials and blogs</h3>
 
-<p><a href="tutorial_learn_programming.html">Learn Programming Basics</a>
-<p><a href="tutorial_programming_a_letter_memory_game.html">Programming a Letter Memory Game</a>
-<p><a href="tutorial_documentation_and_code_snippets.html">Documentation and Code Snippets</a>
-<p><a href="tutorial_functions_and_recursion.html">Functions and Recursion</a>
-<p><a href="tutorial_sorting_algorithms.html">Sorting Algorithms</a>
-<p><a href="tutorial_monte_carlo_methods.html">Monte Carlo Methods or Why it's a Bad Idea to Go to the Casino</a>
+<p><a href="tut_learn.html">Learn Programming Basics</a>
+<p><a href="tut_docu.html">Documentation and Code Snippets</a>
+<p><a href="tut_func.html">Functions and Recursion</a>
+<p><a href="tut_game.html">Programming a Letter Memory Game</a>
+<p><a href="tut_sorting.html">Sorting Algorithms</a>
+<p><a href="tut_mcarlo.html">Monte Carlo Methods or Why it's a Bad Idea to Go to the Casino</a>
 <p><a href="tut_blackj.html">Blackjack - Probabilties, Card Counting</a>
 <p><a href="tut_cipher.html">Symmetric Cipher - What can you do wrong with it</a>
 <br><br>

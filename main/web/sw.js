@@ -9,8 +9,6 @@ var urls = [
 	"/ide/tut_learn" + VERS + ".js",
 	"/ide/tut_docu" + VERS + ".js",
 	"/ide/tut_func" + VERS + ".js",
-	"/ide/tut_sorting" + VERS + ".js",
-	"/ide/tut_mcarlo" + VERS + ".js",
 	"/ide/tut_game" + VERS + ".js",
 	"/ide/icon.png",
 	"/ide/mfst.json"

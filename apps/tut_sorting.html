@@ -1,6 +1,19 @@
-txt_tutor=`+ Sorting algorithms
+<!doctype html>
+<meta charset=utf-8><title>Sorting algorithms</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="Sorting algorithms">
+<link rel="icon" href="../icon.png" type="image/x-png">
 
--
+<div id=tut><b>Loading ...</b></div>
+<script src=easy.js></script>
+<script src=easy_code.js></script>
+<script src=easy_tut2.js></script>
+
+<script>
+
+txt_tutor=`* Sorting algorithms
+
++ There is some textual explanation of the different sorting algorithms. For a better understanding it is very helpful to study pictorial representations of the algorithms located at Wikipedia or at other sites.
 
 * Selection sort - easy to understand
 
@@ -376,4 +389,15 @@ d[] = [ 29 4 72 44 55 26 27 77 92 5 ]
 call sort d[]
 print d[]
 `
+
+function hook() {
+	var dom = window.location.host
+	tut.insertAdjacentHTML("beforeend", `
+<p><hr><p>
+The examples were created with <a href=..>${dom}<a>
+<p><small>christof.kaser@gmail.com</small>
+`)
+}
+</script>
+
 
