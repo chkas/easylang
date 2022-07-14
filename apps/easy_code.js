@@ -203,6 +203,19 @@ function gotSrcErr(src, res, pos, err) {
 }
 
 // ------------------
+function doEnter() {
+	var p = getCaret()
+	var inps = inp.innerText
+	if (p != 0 && inps[p - 1] != "\n") {
+		while (p < inps.length && inps[p] != "\n") p++
+	}
+	var s =inps.substring(0, p)
+	tailSrc = inps.substring(p)
+	if ((s.length == 0 || s[s.length - 1] == "\n") && tailSrc[0] != "\n") {
+		tailSrc = "\n" + tailSrc
+	}
+	kaFormat(s)
+}
 
 function preKey(pre, e) {
 	inp = pre
@@ -225,23 +238,10 @@ function preKey(pre, e) {
 		e.preventDefault()
 	}
 	else if (k === 13) {
-		if (kaRunning()) {
-			e.preventDefault()
-			stop()
-			return
-		}
-		var p = getCaret()
-		var inps = inp.innerText
-		if (p != 0 && inps[p - 1] != "\n") {
-			while (p < inps.length && inps[p] != "\n") p++
-		}
-		var s =inps.substring(0, p)
-		tailSrc = inps.substring(p)
-		if ((s.length == 0 || s[s.length - 1] == "\n") && tailSrc[0] != "\n") {
-			tailSrc = "\n" + tailSrc
-		}
-		kaFormat(s)
 		e.preventDefault()
+		if (e.shiftKey) runCB()
+		else if (kaRunning()) stop()
+		else doEnter()
 	}
 }
 

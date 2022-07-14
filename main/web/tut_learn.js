@@ -73,9 +73,9 @@ move 10 20
 line 30 20
 line 30 40
 
-+ You can start the program with the *Run* button, with *Ctrl+R* or with *Ctrl+Enter*.
++ You can start the program with the *Run* button, with *Ctrl+R* or with *Shift+Enter*.
 
-+de Das Programm kann mit dem *Run*-Button, mit *Strg+R* oder *Strg+Enter* gestartet werden.
++de Das Programm kann mit dem *Run*-Button, mit *Strg+R* oder *Shift+Enter* gestartet werden.
 
 -
 
@@ -91,9 +91,9 @@ color 900
 move 10 10
 rect 20 20
 # 
-color 993
-move 40 50
-rect 40 40
+color 990
+move 30 50
+rect 50 30
 
 + There are 1000 possible colors - from 000 to 999, mixed from the primary colours red, green and blue. The left digit specifies the red component, the middle digit the green component and the right digit the blue component. These are some possible colors.
 
@@ -122,6 +122,10 @@ for i range len col[]
   text s$
 .
 
++ 🤔 Can you place a small green square at top right?
+
++de 🤔 Kannst du oben rechts ein kleines grünes Quadrat platzieren?
+
 -
 
 + Drawing a house
@@ -147,9 +151,9 @@ rect 10 10
 move 55 60
 rect 10 10
 
-+ *text* writes a text to the drawing area. *polygon [x1 y1 x2 y2 ..]* draws a filled polygon with the given coordinates.
++ *text* writes a text to the drawing area. *polygon [x1 y1 x2 y2 ..]* draws a filled polygon, for example a triangle, with the specified coordinates.
 
-+de *text* schreibt einen Text auf die Zeichenfläche. *polygon [x1 y1 x2 y2 ..]* zeichnet ein gefülltes Polygon mit den angegebenen Koordinaten.
++de *text* schreibt einen Text auf die Zeichenfläche. *polygon [x1 y1 x2 y2 ..]* zeichnet ein gefülltes Polygon, zum Beispiel ein Dreieck, mit den angegebenen Koordinaten.
 
 + The *#* character allows you to insert comments into the program.
 
@@ -157,7 +161,11 @@ rect 10 10
 
 + 🤔 Draw the missing door.
 
++ 🤔 If you want, you can use a blue background as a sky and let a sun shine.
+
 +de 🤔 Zeichne die fehlende Tür.
+
++de 🤔 Wenn du willst, kannst du einen blauen Hintergrund als Himmel verwenden und eine Sonne scheinen lassen.
 
 + In *Trace* mode, you can watch the computer execute its instructions one by one.
 
@@ -209,9 +217,9 @@ circle 3.5
 move 36 17
 circle 3.5
 
-* Calculating, variables
+* Calculating, variable
 
-*de Rechnen, Variablen
+*de Rechnen, Variable
 
 + With *print* (or *pr*) you can print numbers and text in the text output window.
 
@@ -222,13 +230,14 @@ pr 13 * 7
 
 -
 
-+ You can store a number in a variable and then work with this variable. The *=* here is an assignment command, not an equality expression.
++ You can store a number in a variable and then work with this variable. The *=* here is an assignment command, not an equality expression. 
 
 +de Eine Zahl kann man in einer Variablen speichern und dann mit dieser Variablen arbeiten. Das *=* hier ist ein Zuweisungsbefehl, kein Gleichheitsausdruck.
 
-a = 4
-b = a * a
-print b
+l = 4
+w = 5
+a = l * w
+print a
 
 -
 
@@ -236,23 +245,23 @@ print b
 
 +de Zeichenketten (Strings) sind in Anführungszeichen eingeschlossene Texte. Mit dem *&*-Zeichen kann man Zeichenketten zusammenfügen. Zahlen werden dabei automatisch in Strings umgewandelt.
 
-a = 5
-b = a * a
-print a & "² = " & b
+s = 5
+a = s * s
+print s & "² = " & a
 
 -
 
 + A variable can easily be incremented by a value: *a = a + 1*
 
-+de Eine Variable kann man ganz einfach um einen Wert erhöhen: *a += 1* ist die Kurzform für *a = a + 1*
++de Eine Variable kann man ganz einfach um einen Wert erhöhen: *a = a + 1*
 
 a = 1
 a = a + 1
 print a
 
-* Conditional statements, loops
+* Conditional statement
 
-*de Bedingte Anweisungen, Schleifen
+*de Bedingte Anweisung
 
 + With *if* you can make the execution of actions dependent on a comparison. *end* marks the end of the dependent actions.
 
@@ -313,7 +322,9 @@ else
 end
 print "a: " & a
 
--
+* Loop
+
+*de Schleife
 
 + *while* works similar to *if*, except that the conditional actions are executed again and again as long as the condition is fulfilled. This is called a *loop*.
 
@@ -321,11 +332,15 @@ print "a: " & a
 
 i = 1
 while i <= 4
-  print i * i
+  print i
   i = i + 1
 end
 
++ 🤔 Write a program that prints the square numbers up to 10 (1, 4, 9 ...)
+
 + 🤔 Write a program that adds up the numbers from 1 to 10. (Result: 55)
+
++de 🤔 Schreibe ein Programm, das die Quadratzahlen bis 10 ausgibt (1, 4, 9 ...). 
 
 +de 🤔 Schreibe ein Programm, das die Zahlen von 1 bis 10 zusammenzählt. (Ergebnis: 55)
 
@@ -386,62 +401,77 @@ while i < 100
   color i
   move 0 i
   rect 100 10
-  sleep 1
+  sleep 0.5
   i = i + 10
 end
+
++ 🤔 Can you create another pattern using a loop?
+
++de 🤔 Kannst du ein anderes Muster mit Hilfe einer Schleife erstellen?
 
 * Animation
 
 *de Animation
 
-+ A moving car - how does it work?
++ A rolling ball - how does it work?
 
-+ Draw a car, wait briefly, clear the screen, move the position slightly, draw again, and so on. This creates the impression of movement.
++ Draw the ball, wait briefly, clear the screen, move the position slightly, draw again, and so on. This creates the impression of movement.
 
 + The waiting time in *sleep* is specified in seconds.
 
-+de Ein fahrendes Auto - wie geht das?
++de Ein rollender Ball - wie funktioniert das?
 
-+de Auto zeichnen, kurz warten, Bildschirm löschen, die Position leicht verändern, und wieder zeichnen, und so fort. So entsteht der Eindruck einer Bewegung.
++de Den Ball zeichnen, kurz warten, Bildschirm löschen, die Position leicht verändern, und wieder zeichnen, und so fort. So entsteht der Eindruck einer Bewegung.
 
 +de Die Wartezeit in *sleep* wird in Sekunden angegeben.
 
-x = -15
-while x <= 100
+color 900
+x = -10
+while x <= 110
   # clear the drawing area
   clear
-  # draw the car at position x
-  linewidth 8
-  color 333
-  move x + 9 86
-  line x + 13 86
-  color 900
-  move x + 4 91
-  line x + 18 91
-  color 333
-  move x + 5 97
-  circle 3.5
-  move x + 16 97
-  circle 3.5
+  # draw the ball at position x
+  move x 90
+  circle 10
   # wait half a second
   sleep 0.5
   # change drawing position
   x = x + 5
 end
 
-+ 🤔 Try to make the animation smoother by incrementing the drawing position only by 1 or 0.5 each time and displaying the car for a shorter time.
++ 🤔 Try to make the animation smoother by incrementing the drawing position only by 1 or 0.5 each time and displaying the ball for a shorter time.
 
-+ 🤔 Stop the car before it touches the right edge.
++ 🤔 Stop the ball when it touches the right edge.
 
-+ 🤔 Let the car drive back.
++ 🤔 Let the ball roll back again.
+
++de 🤔 Versuche die Animation flüssiger zu machen, indem du die Zeichenposition jedesmal nur um 1 oder 0.5 erhöhst und den Ball für eine kürzere Zeit anzeigst.
+
++de 🤔 Halte den Ball an, wenn er die rechte Kante berührt.
+
++de 🤔 Lass den Ball wieder zurückrollen.
+
+-
+
++ 🤔 Let the car drive
+
++de 🤔 Lass das Auto fahren
+
+x = 0
+linewidth 8
+color 333
+move x + 9 86
+line x + 13 86
+color 900
+move x + 4 91
+line x + 18 91
+color 333
+move x + 5 97
+circle 3.5
+move x + 16 97
+circle 3.5
 
 + 🤔 Draw the house from above as background.
-
-+de 🤔 Versuche die Animation flüssiger zu machen, indem du die Zeichenposition jedesmal nur um 1 oder 0.5 erhöhst und das Auto für eine kürzere Zeit anzeigst.
-
-+de 🤔 Halte das Auto an, bevor es die rechte Kante berührt.
-
-+de 🤔 Lasse das Auto wieder zurück fahren.
 
 +de 🤔 Zeichne das Haus von oben als Hintergrund.
 
@@ -530,9 +560,9 @@ end
 
 +de 🤔 Versuche mit den Keyboard-Tasten die Geschwindigkeit zu steuern!
 
-* Random numbers, arrays
+* Array
 
-*de Zufallszahlen, Felder
+*de Array (Feld)
 
 + We draw a starry sky. The position and magnitude (brightness) of the stars are generated randomly.
 
@@ -626,9 +656,9 @@ for s range len si[][]
   .
 .
 
-* Working with arrays, sorting
+* Working with an array, sorting
 
-*de Mit Arrays arbeiten, Sortieren
+*de Mit einem Array arbeiten, Sortieren
 
 + How can you find the smallest number in an array?
 

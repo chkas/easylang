@@ -2,7 +2,7 @@ txt_tutor=`+ Documentation - Code snippets
 
 -
 
-+ The program can be started with the "Run" button, with Ctrl+R, with Ctrl+Enter or with a double press on Enter.
++ The program can be started with the "Run" button, with Ctrl+R, with Shift+Enter or with a double press on Enter.
 
 i = 1
 while i <= 10
@@ -113,12 +113,12 @@ a = number a$
 if error <> 0
   print a$ & " is not a number"
 else
-  pr a & " * " & a & " = " & a * a
+  print a & " * " & a & " = " & a * a
 .
 
 + String variables end with the *$* character. *input* requests an input from the user. *number* converts a string to an integer. *error* indicates a conversion error. Strings are concatenated with the *&* character.
 
-+ *print* outputs a string to the text console with a line feed. Numbers are converted to strings. *pr* is a shortcut for *print*.
++ *print* (or *pr*) outputs a string to the text console with a line feed. Numbers are converted to strings.
 
 * Subroutines, Functions
 

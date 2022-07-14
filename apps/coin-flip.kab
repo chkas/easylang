@@ -8,12 +8,12 @@ subr vars
 .
 func test . ok .
   ok = 1
-  for d = 1 to 4
+  for d = 1 to 2
     n = 0
     for i range 20 - d
       n += abs (d[i] - d[i + d])
     .
-    if (n < 4 or n >= 14)
+    if (n < 4 or n >= 12 + d)
       ok = 0
     .
   .

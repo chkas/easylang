@@ -782,9 +782,8 @@ inp.onkeydown = function(e) {
 	if (e.ctrlKey) {
 		if (k == 86 || k == 88) {
 			stBtn.disabled = false
-			return
 		}
-		if (k == 82 || k == 13) {
+		else if (k == 82 || k == 13) {
 			e.preventDefault()
 			runx()
 		}
@@ -796,7 +795,7 @@ inp.onkeydown = function(e) {
 			e.preventDefault()
 			search()
 		}
-		if (k == 85 || k == 79 || k == 219 || k == 72 
+		else if (k == 85 || k == 79 || k == 219 || k == 72 
 				|| k == 74 || k == 75 || k == 76 || k == 66) {
 			e.preventDefault()
 		}
@@ -804,6 +803,10 @@ inp.onkeydown = function(e) {
 	}
 	if (k == 13) {
 		e.preventDefault()
+		if (e.shiftKey) {
+			runx()
+			return
+		}
 		if (!runBtn.run) {
 			todoEnter = true
 			doStop()
