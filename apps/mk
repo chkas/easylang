@@ -3,6 +3,7 @@
 dom="easylang.online"
 test $1 && dom=$1
 
+
 src=$(pwd)
 
 o=$HOME/out/easylang/apps
@@ -552,19 +553,19 @@ cat <<xxx
 
 <h3>More</h3>
 
-<a href=https://rosettacode.org/wiki/Category:EasyLang>$dom on <i>Rosetta Code</i></a>
+<a href=https://rosettacode.org/wiki/Category:EasyLang><i>${dom%.*}</i> on <i>Rosetta Code</i></a>
 <p>
-<a href=../aoc/><i>Advent Of Code</i> with <i>easylang</i></a>
+<a href=../aoc/><i>Advent Of Code</i> with <i>${dom%.*}</i></a>
 <p>
 <a href=https://learnxinyminutes.com/docs/easylang/>Learn X in Y minutes Where X=Easylang</a>
 
 <h3>Technical</h3>
 
-<i>easylang</i>  is statically typed and has as data types only strings and numbers (floating point), arrays of strings and numbers, and arrays of arrays. Arrays can grow. Programs compiled into an AST tree run in the browser or in the browser IDE. There are built-in features for canvas graphics.
+<i>${dom%.*}</i> is statically typed and has as data types only strings and numbers (floating point), arrays of strings and numbers, and arrays of arrays. Arrays can grow. Programs compiled into an AST tree run in the browser or in the browser IDE. There are built-in features for canvas graphics.
 
 <h3>Free</h3>
 
-<i>easylang</i> is free of charge: free to use, free to copy and requires no registration or login. It is also Open Source.
+<i>${dom%.*}</i> is free of charge: free to use, free to copy and requires no registration or login. It is also Open Source.
 
 <p>
 <a href=https://github.com/chkas/easylang>Source on GitHub</a>
@@ -579,7 +580,7 @@ If you like it, recommend it to others.
 
 
 <hr>
-The name of some built-in commands has changed. Easylang code can be adapted to the new syntax with this tool.
+The name of some built-in commands has changed. Old code can be adapted to the new syntax with this tool.
 <p>
 <p><a href=conv.html>Syntax converter</a>
 <p>

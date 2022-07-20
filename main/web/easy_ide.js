@@ -18,7 +18,7 @@ var stBtn = eid("stBtn")
 var tab0 = eid("tab0")
 var tab1 = eid("tab1")
 var tab2 = eid("tab2")
-var sel = eid("sel")
+var dbgSel = eid("dbgSel")
 var inp = eid("inp")
 var tut = eid("tut")
 var incol = eid("incol")
@@ -1026,7 +1026,7 @@ function gotSrc(src, res, pos) {
 
 function showRun(on = true) {
 	runBtn.run = on
-	sel.disabled = !on
+	dbgSel.disabled = !on
 	if (on) {
 		out.className = ""
 		runBtn.textContent = "Run"
@@ -1136,16 +1136,18 @@ window.addEventListener("keydown", function(e) {
 function runDebug() {
 	removeCnd()
 	dbg.textContent = ""
-	var h = sel.selectedIndex
-	if (h == 0 && !window["sab"]) h = 3
+	var h = dbgSel.selectedIndex
+	if (h == 0 && !window["sab"]) h = 1
 	if (h == 0) {
 		stepBtn.textContent = "Step"
 		show(step2Btn)
 		show(step3Btn)
 		h = 6
 	}
-	else stepBtn.disabled = true
-
+	else {
+		h = 5 - h
+		stepBtn.disabled = true
+	}
 	hide(trSpn)
 	h <<= 8
 	inp.contentEditable = false

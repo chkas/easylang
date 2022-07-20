@@ -43,25 +43,25 @@ line 90 10
 line 90 90
 line 10 90
 line 10 10
-move 14 22
-text "10/20"
-move 46 43
-text "50/40"
+move 12 30
+text "10/30"
+move 44 52
+text "50/50"
 color 833
 linewidth 2
 move 18 26
-line 50 42
+line 50 50
 
 + The drawing area is 100 times 100 units. The origin is top left. The first value (the X coordinate) is the distance from the left edge, the second value (the Y coordinate) is the distance from the top edge.
 
 +de Die Zeichenfläche beträgt 100 mal 100 Einheiten. Der Ursprung ist oben links. Der erste Wert (die X-Koordinate) ist der Abstand vom linken Rand, der zweite Wert (die Y-Koordinate) ist der Abstand vom oberen Rand.
 
-move 10 20
-line 50 40
+move 10 30
+line 50 50
 
-+ We set the drawing pen with *move* to position (10 20), that is 10 from the left and 20 from above. From there, we draw with *line* a line to position (50 40).
++ We set the drawing pen with *move* to position (10 30), that is 10 from the left and 30 from above. From there, we draw with *line* a line to position (50 50) - to the center of the drawing area.
 
-+de Wir setzen mit *move* den Zeichenstift auf die Position (10 20), das ist 10 von links und 20 von oben. Von dort ziehen wir dann mit *line* eine Linie auf die Position (50 40).
++de Wir setzen mit *move* den Zeichenstift auf die Position (10 30), das ist 10 von links und 30 von oben. Von dort ziehen wir dann mit *line* eine Linie auf die Position (50 50) - zur Mitte der Zeichenfläche.
 
 -
 
@@ -385,9 +385,9 @@ print "The number was " & n
 
 +de *random 10* liefert eine Zufallszahl von 0 - 9. *input* liest einen String von der Tastatur ein, der dann mit *number*  in eine Zahl umgewandelt wird. *write* ist wie *print* nur dass nach der Ausgabe nicht in eine neue Zeile gesprungen wird. *sleep 1* legt eine Pause von einer Sekunde ein. *elif* ist eine Kombination von *else* und *if*.
 
-+ 🤔 Just one try and that's it - it's no fun. You should be able to guess until you have guessed the number. For this you need .... - yeah right - a loop.
++ 🤔 Just one try and that's it - it's no fun. You should be able to guess until you have guessed the number. For this you need .... - yeah right - a loop. Hint: *<>* stands for not equal.
 
-+de 🤔 Nur ein Versuch und das war's - das macht keinen Spaß. Man sollte so lange raten können, bis man die Zahl erraten hat. Hierfür brauchst du .... - ja richtig - eine Schleife.
++de 🤔 Nur ein Versuch und das war's - das macht keinen Spaß. Man sollte so lange raten können, bis man die Zahl erraten hat. Hierfür brauchst du .... - ja richtig - eine Schleife. Hinweis: *<>* steht für nicht gleich.
 
 -
 
@@ -395,14 +395,16 @@ print "The number was " & n
 
 +de Ein einfaches Muster
 
-i = 0
-while i < 100
-  print i
-  color i
-  move 0 i
++ The waiting time in *sleep* is specified in seconds.
+
++de Die Wartezeit in *sleep* wird in Sekunden angegeben.
+
+while i < 10
+  color i * 10
+  move 0 i * 10
   rect 100 10
-  sleep 0.5
-  i = i + 10
+  sleep 0.2
+  i = i + 1
 end
 
 + 🤔 Can you create another pattern using a loop?
@@ -417,13 +419,9 @@ end
 
 + Draw the ball, wait briefly, clear the screen, move the position slightly, draw again, and so on. This creates the impression of movement.
 
-+ The waiting time in *sleep* is specified in seconds.
-
 +de Ein rollender Ball - wie funktioniert das?
 
 +de Den Ball zeichnen, kurz warten, Bildschirm löschen, die Position leicht verändern, und wieder zeichnen, und so fort. So entsteht der Eindruck einer Bewegung.
-
-+de Die Wartezeit in *sleep* wird in Sekunden angegeben.
 
 color 900
 x = -10
@@ -439,17 +437,21 @@ while x <= 110
   x = x + 5
 end
 
-+ 🤔 Try to make the animation smoother by incrementing the drawing position only by 1 or 0.5 each time and displaying the ball for a shorter time.
++ 🤔 Try to make the animation smoother by increasing the x-position of the circle only by 1 or 0.5 each time and shortening the pause to the next frame.
 
 + 🤔 Stop the ball when it touches the right edge.
 
 + 🤔 Let the ball roll back again.
 
-+de 🤔 Versuche die Animation flüssiger zu machen, indem du die Zeichenposition jedesmal nur um 1 oder 0.5 erhöhst und den Ball für eine kürzere Zeit anzeigst.
++ 🤔 Let the ball roll back and forth three times.
+
++de 🤔 Versuche, die Animation flüssiger zu machen, indem du die x-Position des Kreises jedes Mal nur um 1 oder 0,5 erhöhst und die Pause zum nächsten Bild verkürzt.
 
 +de 🤔 Halte den Ball an, wenn er die rechte Kante berührt.
 
 +de 🤔 Lass den Ball wieder zurückrollen.
+
++de 🤔 Lass den Ball dreimal hin und her rollen.
 
 -
 

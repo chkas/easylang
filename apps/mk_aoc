@@ -47,17 +47,17 @@ make_big() {
 
 	cat <<xxx
 <!doctype html>
-<meta charset=utf-8><title>easylang.online - AoC-$1</title>
+<meta charset=utf-8><title>$dom - AoC-$1</title>
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <link rel="icon" href="../icon.png" type="image/x-png">
 
-<h3><a href=https://adventofcode.com/20$1/>AoC 20$1</a> done with easylang</h3>
+<h3><a href=https://adventofcode.com/20$1/>AoC 20$1</a> done with ${dom%.*}</h3>
 
-<i>easylang</i> does not have many features and has a simple syntax. It is statically typed and has as data types only strings and numbers (floating point), arrays of strings and numbers, and arrays of arrays. Arrays can grow. Programs compiled into an AST tree run in the browser or in the browser IDE. There are built-in features for canvas graphics.
+<i>${dom%.*}</i> does not have many features and has a simple syntax. It is statically typed and has as data types only strings and numbers (floating point), arrays of strings and numbers, and arrays of arrays. Arrays can grow. Programs compiled into an AST tree run in the browser or in the browser IDE. There are built-in features for canvas graphics.
 <p>
 It can be useful as a teaching and learning language due to its reduced feature set, simple syntax, browser IDE, and built-in graphics.
 <p>
-However, since <i>easylang</i> has no built-in functions for special things like sorting or hashmaps, you have to program them yourself, which makes the programs longer, but in a way more informative. 
+However, since <i>${dom%.*}</i> has no built-in functions for special things like sorting or hashmaps, you have to program them yourself, which makes the programs longer, but in a way more informative. 
 
 <div id=tut><b>Loading ...</b></div>
 <script src=easy.js></script>
@@ -116,7 +116,7 @@ exec > $o/index.html
 
 cat <<xxx
 <!doctype html><title>$dom examples</title>
-<meta name="description" content="aoc solutions for easylang - an easy programming language">
+<meta name="description" content="aoc solutions for ${dom%.*} - an easy programming language">
 <meta charset=utf-8>
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <link rel="icon" href="../icon.png" type="image/x-png">
@@ -137,9 +137,9 @@ h3 {background-color:#bdb;padding:5px;padding-left:12px;margin-top:20px}
 
 </style>
 
-<h2><a href=https://adventofcode.com/>AoC</a> done with easylang</a></h2>
+<h2><a href=https://adventofcode.com/>AoC</a> done with ${dom%.*}</a></h2>
 
-<i>easylang</i> is a simple programming language with built-in graphical functions and an easy to use and offline usable <a href="../ide/">browser IDE</a> is well suited as a teaching and learning language.  You can also use it to write graphical applications that you can embed in a web page.
+<i>${dom%.*}</i> is a simple programming language with built-in graphical functions and an easy to use and offline usable <a href="../ide/">browser IDE</a> is well suited as a teaching and learning language.  You can also use it to write graphical applications that you can embed in a web page.
 
 <a href="../">More ...</a>
 
@@ -150,13 +150,13 @@ A language that doesn’t have everything is actually easier to program in than 
 <h3>Solutions</h3>
 
 <div class=col>
-<a href=../aoc15/>2015</a><p>
-<a href=../aoc16/>2016</a><p>
-<a href=../aoc17/>2017</a><p>
-<a href=../aoc18/>2018</a><p>
-<a href=../aoc19/>2019</a><p>
-<a href=../aoc20/>2020</a><p>
-<a href=../aoc21/>2021</a>
+<a href=../aoc/15/>2015</a><p>
+<a href=../aoc/16/>2016</a><p>
+<a href=../aoc/17/>2017</a><p>
+<a href=../aoc/18/>2018</a><p>
+<a href=../aoc/19/>2019</a><p>
+<a href=../aoc/20/>2020</a><p>
+<a href=../aoc/21/>2021</a>
 </div>
 xxx
 
@@ -249,7 +249,7 @@ cat >$o/../aoc$i/index.html <<xxx
 <!doctype html> 
 <meta charset=utf-8>
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>easylang.online - aoc20$i</title>
+<title>$dom - aoc20$i</title>
 
 <style>
 * {
@@ -358,7 +358,7 @@ button:hover {background-color:#ccc}
 <script>
 
 edit.onclick = function() {
-	window.open("../ide/#code=" + encodeURIComponent(txt.value))
+	window.open("/ide/#code=" + encodeURIComponent(txt.value))
 }
 aoc.onclick = function() {
 	window.open("https://adventofcode.com/20$i/day/" + day)
