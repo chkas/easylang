@@ -43,13 +43,13 @@ line 90 10
 line 90 90
 line 10 90
 line 10 10
-move 12 30
+move 12 28
 text "10/30"
 move 44 52
 text "50/50"
 color 833
 linewidth 2
-move 18 26
+move 18 34
 line 50 50
 
 + The drawing area is 100 times 100 units. The origin is top left. The first value (the X coordinate) is the distance from the left edge, the second value (the Y coordinate) is the distance from the top edge.
