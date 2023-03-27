@@ -1,0 +1,32 @@
+lpos = 0
+len list[] 100000
+func xxinsert id cost . .
+  lpos += 2
+  i = lpos
+  while i > 1 and list[i - 1] < cost
+    list[i + 1] = list[i - 1]
+    list[i] = list[i - 2]
+    i -= 2
+  .
+  list[i] = id
+  list[i + 1] = cost
+  #  pr list[]
+.
+func xxtake_min . id cost .
+  if lpos < 0
+    id = -1
+  else
+    id = list[lpos]
+    cost = list[lpos + 1]
+    lpos -= 2
+  .
+.
+func xxinit_list id cost . .
+  list[0] = id
+  list[1] = cost
+  lpos = 0
+.
+# 
+
+
+

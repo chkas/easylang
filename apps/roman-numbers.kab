@@ -1,0 +1,184 @@
+# Roman numbers
+# 
+global ans$ sol$ state ind cnt pts same .
+func disp col s$ . .
+   color col
+   move 3 76
+   rect 94 21
+   color 888
+   move 7 80
+   textsize 12
+   text s$
+.
+func disp2 col s$ . .
+   color col
+   move 3 51
+   rect 70 22
+   color 888
+   move 7 56
+   textsize 12
+   text s$
+.
+func num2rom num . rom$ .
+   values[] = [ 1000 900 500 400 100 90 50 40 10 9 5 4 1 ]
+   symbol$[] = [ "M" "CM" "D" "CD" "C" "XC" "L" "XL" "X" "IX" "V" "IV" "I" ]
+   rom$ = ""
+   for i = 1 to len values[]
+      while num >= values[i]
+         rom$ &= symbol$[i]
+         num -= values[i]
+      .
+   .
+.
+func new_quest . .
+   repeat
+      num = random 2500
+      call num2rom num sol$
+      until len sol$ <= 12
+   .
+   ans$ = ""
+   call disp2 030 num
+   call disp 030 "_"
+.
+sym$[] = [ "M" "D" "C" "L" "X" "V" "I" ]
+func draw_key . .
+   h = ind
+   if h <= 0
+      s$ = "⌫"
+   elif h <= 7
+      s$ = sym$[ind]
+   else
+      s$ = "✓"
+   .
+   h += 3
+   x = h mod 4 * 24 + 3
+   y = 50 - h div 4 * 24 + 1
+   move x y
+   rect 22 22
+   move x + 5 y + 5
+   color 888
+   textsize 16
+   text s$
+.
+background 010
+func init . .
+   state = 0
+   cnt = 5
+   pts = 0
+   clear
+   for ind = 0 to 8
+      color 020
+      call draw_key
+   .
+   call new_quest
+   call disp 030 "_"
+.
+func handle_key . .
+   if ind = 8
+      if ans$ = sol$
+         cnt -= 1
+         pts += 1 - same
+         same = 0
+         col = 050
+         state = 1
+         timer 2
+      else
+         same = 1
+         ans$ = sol$
+         col = 500
+         state = 2
+         timer 5
+      .
+   else
+      if ind = 0
+         ans$ = substr ans$ 1 len ans$ - 1
+      else
+         if len ans$ < 12
+            ans$ &= sym$[ind]
+         .
+      .
+      col = 030
+   .
+   h$ = ans$
+   if state = 0 and len h$ < 12
+      h$ &= "_"
+   .
+   call disp col h$
+.
+func handle_inp r c . .
+   if r = 0
+      ind = 0
+   else
+      ind = (r - 1) * 4 + c + 1
+   .
+   color 040
+   call draw_key
+   call handle_key
+.
+on mouse_down
+   if state = 3
+      ind = -1
+      call init
+   else
+      c = mouse_x div 25
+      r = (75 - mouse_y) div 25
+      if r < 0
+         if ans$ = ""
+            ind = -1
+            call disp 050 "New game"
+            call disp2 030 ""
+            state = 4
+            timer 2
+         .
+      elif state = 0
+         call handle_inp r c
+      .
+   .
+.
+on mouse_up
+   if ind >= 0
+      color 020
+      call draw_key
+      ind = -1
+   .
+.
+func done . .
+   clear
+   color 888
+   move 8 78
+   text "Well done"
+   move 8 62
+   text pts & " Points"
+   if pts = 5
+      move 65 30
+      color 983
+      circle 19
+      color 000
+      move 58 37
+      circle 2
+      move 72 37
+      circle 2
+      linewidth 2
+      curve [ 58 23 65 17 72 23 ]
+   .
+.
+on timer
+   if state = 1
+      if cnt = 0
+         state = 3
+         timer 2
+         call done
+      else
+         call new_quest
+         state = 0
+      .
+   elif state = 2
+      ans$ = ""
+      call disp 030 "_"
+      state = 0
+   elif state = 4
+      call init
+   .
+.
+call init
+

@@ -1,0 +1,31 @@
+#!/bin/sh
+
+n=run
+N=`dirname $0`
+S=$N/../ide
+D=$HOME/.cache/easylang
+
+mkdir -p $D
+
+test ! -e $D/$n && compile=1
+h="$S/kafunc.h $S/kalib.h $S/kalex.h $N/kabgr.c $0"
+f="$S/kabas.c"
+for i in $f $h; do
+  test $i -nt $D/$n && compile=1 
+done
+
+if test $compile; then
+  rm -f $D/$n
+  cc=clang
+  which $cc >/dev/null || cc=gcc
+  echo "Compiling easylang (with $cc) ..." >&2
+  $cc -Wall -O2 -D__SDL__ -I$S -O $f -lSDL2 -lSDL2_ttf -lm -o $D/$n
+  echo "done" >&2
+fi
+
+if test -x $D/$n; then
+#	t0=$(date +%s.%2N)
+	$D/$n $*
+#	echo "$(date +%s.%2N) - $t0" | bc -l
+fi
+

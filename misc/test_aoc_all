@@ -1,0 +1,11 @@
+#!/bin/sh
+for i in 15 16 17 18 19 20 21 22; do
+	if test -x aoc$i; then
+		echo "---- aoc $i ----"
+		cd aoc$i
+		../test_aoc
+		cd ..
+		echo
+	fi
+done
+

@@ -1,0 +1,53 @@
+name: Deploy Easylang
+
+on:
+  push:
+    branches: ["mainx"]
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install
+        run: |
+          sudo apt-get update        
+          sudo apt-get install emscripten default-jdk
+          v=20220502
+          wget -q https://repo1.maven.org/maven2/com/google/javascript/closure-compiler/v20220502/closure-compiler-v$v.jar
+          mv closure-compiler-v$v.jar $HOME/closure-compiler.jar
+      - name: Clone
+        run: |
+          pwd
+          cd
+          pwd
+          wget -q https://github.com/chkas/easylang/archive/refs/heads/main.zip
+          unzip -q main.zip
+          mv easylang-main easylang
+          cd easylang
+          ./mk
+          (cd apps; ./mk_aoc)
+          rm -rf $HOME/easylang/wrk
+          cp $HOME/easylang/misc/index.html $HOME/out/easylang/
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: /home/runner/out/easylang
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
+

@@ -1,0 +1,17 @@
+#!/bin/sh
+n=$(basename $(pwd))
+o=$HOME/out/easylang/$n
+mkdir -p $o
+
+for i in *; do
+	if test ! -e $o/$i -o $o/$i -ot $i; then
+		echo cp -p $i $o
+		cp -p $i $o
+		new=1
+	fi
+done
+if test $new; then
+	cd ../../apps
+	./mk_show
+fi
+

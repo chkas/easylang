@@ -1,0 +1,8 @@
+#/bin/sh
+t0=$(date +%s.%2N)
+for i in $(seq 1 25); do 
+	test $1 && echo $i
+	../../main/native/runc -f $i.el >/dev/null
+done
+echo "$(date +%s.%2N) - $t0" | bc -l
+

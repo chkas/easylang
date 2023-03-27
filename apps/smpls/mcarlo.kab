@@ -1,0 +1,25 @@
+textsize 6
+n = 50000
+while i < n
+  x = randomf
+  y = randomf
+  if x * x + y * y < 1
+    hit += 1
+    color 900
+  else
+    color 000
+  .
+  move x * 100 y * 92
+  circle 0.2
+  if i mod 100 = 0
+    move 0 92
+    color 777
+    rect 40 + i / n * 60 8
+    move 5 93
+    color 000
+    text "PI:" & hit / i * 4
+    sleep 0.01
+  .
+  i += 1
+.
+

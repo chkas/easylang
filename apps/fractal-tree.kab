@@ -1,0 +1,31 @@
+background 668
+func tree x y l w ang dp . .
+  move x y
+  x += l * cos ang
+  y += l * sin ang
+  if dp <= 2
+    color3 0 0.2 + randomf / 4 0
+  else
+    color3 0.15 + randomf / 8 0.1 0
+  .
+  linewidth w
+  line x y
+  if dp = 1
+    break 1
+  .
+  nb = 2 + if dp < 9
+  for i = 1 to nb
+    an = ang + (i - nb / 2 - 0.5) * 20
+    an += (randomf - 0.5) * 60
+    ln = l * (0.7 + randomf * 0.3)
+    call tree x y ln w * 0.7 an dp - 1
+  .
+.
+on timer
+  clear
+  call tree 50 0 15 5 90 10
+#  call tree 50 100 15 5 90 10
+  timer 5
+.
+timer 0
+

@@ -1,0 +1,1676 @@
+<!doctype html>
+<meta charset=utf-8><title>Blackjack probabilities</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="Blackjack - Probabilties, Card Counting">
+<link rel="icon" href="../icon.png" type="image/x-png">
+
+<div id=tut><b>Loading ...</b></div>
+<script src=easy_code2.js></script>
+<script src=easy_tut2.js></script>
+
+<script>
+
+txt_tutor=`* Blackjack - Probabilities, Strategy, Card Counting
+
++ We will calculate here what are the probabilities of winning at *blackjack*. Unfortunately, there are different rule variations. The following rules are used here.
+
+* Rules
+
++ The dealer draws cards up to 16 and stands at 17, also on the soft hand.. You can double down on 9, 10 and ace. You can split all cards, with ace you get only one card, split cards you can not split again and you can not double. A blackjack is paid 1.5 times the bet. The dealer does not peek for a blackjack.
+
++ Okay, so how can I calculate an optimal strategy and what do my winning propositions look like?
+
+* Probabilities Dealer
+
++ We start with the dealer. There is a simple rule: Buy to 16. For simplicity we assume fixed probabilities for the card values, i.e. the probability of getting a 9 is 1/13. This is usually only exactly correct for the first card of a full deck. The probability of getting a card depends, of course, on which card has already been turned over and how many card decks are used. These changing probabilities can be used to your advantage, as we will see later. Since you usually play with at least 6 decks, this is a good approximation.
+
++ In our calculations only the card value is taken into account, i.e. a 10, Jacks, Queens and Kings count as 10. But the probability for this card value is then of course 4/13.
+
++ The dealer serves a card, which from now on we will call *dealer_card*. Based on this card and your own cards, you can then make your own game decision.
+
++ First we calculate for each *dealer_card* the probabilities that the dealer stops at 17, 18, 19, 20 or 21 or bust with 22 or more. The dealer keeps drawing cards until 17 or more is reached. The probability for the reached sum is multiplied over all cards (except the first one).
+
++ For each *dealer_card* we store these probabilities in the field *p_dealer[]*.
+
+len p_card[] 11
+# 
+func prepare . .
+  # probabilities to get a card from 1 to 11 
+  for i = 1 to 11
+    p_card[i] = 1 / 13
+  .
+  p_card[10] = 4 / 13
+.
+# 
+call prepare
+# 
+func dealer_draw p card cardsum n_ace . p_dealer[] .
+  if card = 11
+    n_ace += 1
+  .
+  cardsum += card
+  if cardsum > 21 and n_ace > 0
+    cardsum -= 10
+    n_ace -= 1
+  .
+  if cardsum >= 17
+    cardsum = lower cardsum 22
+    p_dealer[cardsum] += p
+  elif p > 0.00001
+    for i = 2 to 11
+      call dealer_draw p * p_card[i] i cardsum n_ace p_dealer[]
+    .
+  .
+.
+func p_dealer . .
+  len p_dealer[] 22
+  numfmt 5 0
+  write "  "
+  for i = 17 to 22
+    write i
+  .
+  print ""
+  for dealer_card = 2 to 11
+    for i = 17 to 22
+      p_dealer[i] = 0
+    .
+    call dealer_draw 1 dealer_card 0 0 p_dealer[]
+    # 
+    numfmt 2 0
+    write dealer_card & ":"
+    numfmt 5 2
+    for i = 17 to 22
+      write p_dealer[i] & ""
+    .
+    print ""
+  .
+.
+call p_dealer
+
++ We see that probilities for the dealers first card 2 to 6 are relatively high to bust. Therefore, the players game strategy can be more cautious for these constellations.
+
+* Strategy Hard Hand
+
++ Now we try to determine an optimal playing strategy based on the probabilities of getting a card. The first part deals with the hard hand, i.e. we have a card sum without an ace (with an ace it is a soft hand because a ace can count 1 instead of 11) - and we then make a decision to take a card (hit) or not (stand). We do this by the expected value, if we stand say at 18 and the dealer has a 7, then the expected value is the sum of the probabilities, where we win
+
+~ p_dealer[7][17] + p_dealer[7][22]
+
++ minus the probabilities where we lose
+
+~ p_dealer[7][19] + p_dealer[7][20] + p_dealer[7][21]
+
++ Now we calculate the expected value if we take a card. This is the sum of the expected values of the card sums to which we get if we add the card values from 1 to 11, each multiplied by the chance to get there, which is 1/13 and at 10 4/13. For 22 and above the expected value is of course -1.
+
++ Then we choose the path with the best prediction (with the best expected value).
+
+# Strategy Hard Hand
+# 
+len p_card[] 11
+len ev_stand[][] 11
+len ev_hard[][] 11
+len strat_hard$[][] 11
+# 
+func prepare . .
+  for i = 1 to 11
+    p_card[i] = 1 / 13
+  .
+  p_card[10] = 4 / 13
+  # 
+  for i = 2 to 11
+    len ev_stand[i][] 21
+    len ev_hard[i][] 21
+    len strat_hard$[i][] 21
+  .
+.
+call prepare
+# 
+func dealer_draw p card cardsum n_ace . p_dealer[] .
+  if card = 11
+    n_ace += 1
+  .
+  cardsum += card
+  if cardsum > 21 and n_ace > 0
+    cardsum -= 10
+    n_ace -= 1
+  .
+  if cardsum >= 17
+    cardsum = lower cardsum 22
+    p_dealer[cardsum] += p
+  elif p > 0.00001
+    for i = 2 to 11
+      call dealer_draw p * p_card[i] i cardsum n_ace p_dealer[]
+    .
+  .
+.
+func ev_stand . .
+  len p_dealer[] 22
+  for dealer_card = 2 to 11
+    len ev_stand[dealer_card][] 21
+    for i = 17 to 22
+      p_dealer[i] = 0
+    .
+    call dealer_draw 1 dealer_card 0 0 p_dealer[]
+    # 
+    for cardsum = 21 downto 11
+      ev_stand[dealer_card][cardsum] = p_dealer[22]
+      for i = 17 to cardsum - 1
+        ev_stand[dealer_card][cardsum] += p_dealer[i]
+      .
+      for i = cardsum + 1 to 21
+        ev_stand[dealer_card][cardsum] -= p_dealer[i]
+      .
+    .
+  .
+.
+call ev_stand
+# 
+for dealer_card = 2 to 11
+  for cardsum = 21 downto 12
+    ev_hit = 0.0
+    for i = 1 to 21 - cardsum
+      ev_hit += p_card[i] * ev_hard[dealer_card][i + cardsum]
+    .
+    for i = 21 - cardsum + 1 to 10
+      ev_hit -= p_card[i]
+    .
+    if ev_hit > ev_stand[dealer_card][cardsum]
+      strat_hard$[dealer_card][cardsum] = "H"
+      ev_hard[dealer_card][cardsum] = ev_hit
+    else
+      strat_hard$[dealer_card][cardsum] = "-"
+      ev_hard[dealer_card][cardsum] = ev_stand[dealer_card][cardsum]
+    .
+  .
+.
+# 
+func out_strat . .
+  numfmt 2 2
+  print "Strategy Hard Hand:"
+  print ""
+  write "    "
+  for dealer_card = 2 to 11
+    s$ = dealer_card & " "
+    if dealer_card = 11
+      s$ = " A "
+    .
+    write s$
+  .
+  print ""
+  print "     ----------------------------"
+  for i = 12 to 20
+    write i & ":  "
+    for dealer_card = 2 to 11
+      write strat_hard$[dealer_card][i] & "  "
+    .
+    print ""
+  .
+.
+call out_strat
+
++ We see that if the dealer has a six, you should not take a card with a sum of 12. If the dealer has a 7, you have to risk another card until you have more than 16.
+
+~      6  7
+     -----
+12:  -  H
+13:  -  H
+14:  -  H
+15:  -  H
+16:  -  H
+17:  -  -
+18:  -  -
+19:  -  -
+20:  -  -
+
++ Generally, buy to 16 if the dealer has at least a 7.
+
+* Strategy Soft Hand
+
++ Now let's deal with the *soft hand*, which is a sum with an ace, 11 point count. If we bust, then the ace counts 1 and we have a *hard hand*.
+
+# Strategy Soft Hand
+# 
+len p_card[] 11
+len ev_hard[][] 11
+len ev_stand[][] 11
+len ev_soft[][] 11
+len strat_soft$[][] 11
+# 
+func prepare . .
+  for i = 1 to 11
+    p_card[i] = 1 / 13
+  .
+  p_card[10] = 4 / 13
+  # 
+  for i = 2 to 11
+    len ev_stand[i][] 21
+    len ev_hard[i][] 21
+    len ev_soft[i][] 21
+    len strat_soft$[i][] 21
+  .
+.
+call prepare
+#
+func dealer_draw p card cardsum n_ace . p_dealer[] .
+  if card = 11
+    n_ace += 1
+  .
+  cardsum += card
+  if cardsum > 21 and n_ace > 0
+    cardsum -= 10
+    n_ace -= 1
+  .
+  if cardsum >= 17
+    cardsum = lower cardsum 22
+    p_dealer[cardsum] += p
+  elif p > 0.00001
+    for i = 2 to 11
+      call dealer_draw p * p_card[i] i cardsum n_ace p_dealer[]
+    .
+  .
+.
+func ev_stand . .
+  len p_dealer[] 22
+  for dealer_card = 2 to 11
+    len ev_stand[dealer_card][] 22
+    for i = 17 to 22
+      p_dealer[i] = 0
+    .
+    call dealer_draw 1 dealer_card 0 0 p_dealer[]
+    # 
+    for cardsum = 21 downto 11
+      ev_stand[dealer_card][cardsum] = p_dealer[22]
+      for i = 17 to cardsum - 1
+        ev_stand[dealer_card][cardsum] += p_dealer[i]
+      .
+      for i = cardsum + 1 to 21
+        ev_stand[dealer_card][cardsum] -= p_dealer[i]
+      .
+    .
+  .
+.
+call ev_stand
+# 
+func calc_ev . .
+  for dealer_card = 2 to 11
+    # 
+    # hard hand
+    # 
+    for cardsum = 21 downto 12
+      ev_hit = 0.0
+      for i = 21 - cardsum + 1 to 10
+        ev_hit -= p_card[i]
+      .
+      for i = 1 to 21 - cardsum
+        ev_hit += p_card[i] * ev_hard[dealer_card][i + cardsum]
+      .
+      ev_hard[dealer_card][cardsum] = higher ev_hit ev_stand[dealer_card][cardsum]
+    .
+    # 
+    # soft hand
+    # 
+    for cardsum = 21 downto 12
+      ev_stand = ev_stand[dealer_card][cardsum]
+      if cardsum = 11
+        ev_stand = ev_stand[dealer_card][16]
+      .
+      ev_hit = 0.0
+      if cardsum = 11
+        for i = 1 to 20 - cardsum
+          ev_hit += p_card[i] * ev_soft[dealer_card][i + cardsum]
+        .
+        # black jack
+        ev_hit += p_card[10] * 1.5 * ev_soft[dealer_card][21]
+      else
+        for i = 1 to 21 - cardsum
+          ev_hit += p_card[i] * ev_soft[dealer_card][i + cardsum]
+        .
+        for i = 21 - cardsum + 1 to 10
+          ev_hit += p_card[i] * ev_hard[dealer_card][i + cardsum - 10]
+        .
+      .
+      if ev_hit > ev_stand
+        strat_soft$[dealer_card][cardsum] = "H"
+      else
+        strat_soft$[dealer_card][cardsum] = "-"
+      .
+      ev_soft[dealer_card][cardsum] = higher ev_hit ev_stand
+    .
+  .
+.
+call calc_ev
+# 
+func out_strat . .
+  numfmt 2 2
+  print "Strategy Soft Hand:"
+  print ""
+  write "    "
+  for dealer_card = 2 to 11
+    s$ = dealer_card & " "
+    if dealer_card = 11
+      s$ = " A "
+    .
+    write s$
+  .
+  print ""
+  print "     ----------------------------"
+  for i = 12 to 20
+    write i & ":  "
+    for dealer_card = 2 to 11
+      write strat_soft$[dealer_card][i] & "  "
+    .
+    print ""
+  .
+.
+call out_strat
+
++ Buy up to 17, if the dealer has at least 9 also buy at 18.
+
+* Strategy Double Down
+
++ If we get 9, 10 or 11 with 2 cards. We can double the bet. But then we get only one card. Depending on the *dealer_card*, this often makes the expected value higher.
+
+# Strategy - Double Down
+# 
+len p_card[] 11
+len ev_stand[][] 11
+len ev_hard[][] 11
+len ev_soft[][] 11
+len ev_dbl[][] 11
+len strat_dbl$[][] 11
+# 
+func prepare . .
+  for i = 1 to 11
+    p_card[i] = 1 / 13
+  .
+  p_card[10] = 4 / 13
+  for i = 2 to 11
+    len ev_stand[i][] 21
+    len ev_hard[i][] 21
+    len ev_soft[i][] 21
+    len ev_dbl[i][] 11
+    len strat_dbl$[i][] 11
+  .
+.
+call prepare
+#
+func dealer_draw p card cardsum n_ace . p_dealer[] .
+  if card = 11
+    n_ace += 1
+  .
+  cardsum += card
+  if cardsum > 21 and n_ace > 0
+    cardsum -= 10
+    n_ace -= 1
+  .
+  if cardsum >= 17
+    cardsum = lower cardsum 22
+    p_dealer[cardsum] += p
+  elif p > 0.00001
+    for i = 2 to 11
+      call dealer_draw p * p_card[i] i cardsum n_ace p_dealer[]
+    .
+  .
+.
+func ev_stand . .
+  len p_dealer[] 22
+  for dealer_card = 2 to 11
+    len ev_stand[dealer_card][] 22
+    for i = 17 to 22
+      p_dealer[i] = 0
+    .
+    call dealer_draw 1 dealer_card 0 0 p_dealer[]
+    # 
+    for cardsum = 21 downto 11
+      ev_stand[dealer_card][cardsum] = p_dealer[22]
+      for i = 17 to cardsum - 1
+        ev_stand[dealer_card][cardsum] += p_dealer[i]
+      .
+      for i = cardsum + 1 to 21
+        ev_stand[dealer_card][cardsum] -= p_dealer[i]
+      .
+    .
+  .
+.
+call ev_stand
+# 
+func calc_ev . .
+  for dealer_card = 2 to 11
+    # 
+    # hard hand
+    # 
+    for cardsum = 21 downto 12
+      ev_hit = 0.0
+      for i = 21 - cardsum + 1 to 10
+        ev_hit -= p_card[i]
+      .
+      for i = 1 to 21 - cardsum
+        ev_hit += p_card[i] * ev_hard[dealer_card][i + cardsum]
+      .
+      ev_hard[dealer_card][cardsum] = higher ev_hit ev_stand[dealer_card][cardsum]
+    .
+    # 
+    # soft hand
+    # 
+    for cardsum = 21 downto 12
+      ev_stand = ev_stand[dealer_card][cardsum]
+      if cardsum = 11
+        ev_stand = ev_stand[dealer_card][16]
+      .
+      ev_hit = 0.0
+      if cardsum = 11
+        for i = 1 to 20 - cardsum
+          ev_hit += p_card[i] * ev_soft[dealer_card][i + cardsum]
+        .
+        # black jack
+        ev_hit += p_card[10] * 1.5 * ev_soft[dealer_card][21]
+      else
+        for i = 1 to 21 - cardsum
+          ev_hit += p_card[i] * ev_soft[dealer_card][i + cardsum]
+        .
+        for i = 21 - cardsum + 1 to 10
+          ev_hit += p_card[i] * ev_hard[dealer_card][i + cardsum - 10]
+        .
+      .
+      ev_soft[dealer_card][cardsum] = higher ev_hit ev_stand
+    .
+    # 
+    # expected values for cardsum 9, 10, 11
+    # 
+    for cardsum = 11 downto 9
+      ev_hit = 0.0
+      if cardsum = 11
+        for i = 1 to 10
+          ev_hit += p_card[i] * ev_hard[dealer_card][i + 11]
+        .
+      else
+        for i = 2 to 10
+          ev_hit += p_card[i] * ev_hard[dealer_card][i + cardsum]
+        .
+        ev_hit += p_card[11] * ev_soft[dealer_card][cardsum + 11]
+      .
+      ev_hard[dealer_card][cardsum] = ev_hit
+    .
+    # 
+    # expected values for double
+    # 
+    for cardsum = 9 to 11
+      ev_dbl = 0.0
+      if cardsum = 9 or cardsum = 10
+        for i = 2 to 11
+          ev_dbl += p_card[i] * ev_stand[dealer_card][i + cardsum]
+        .
+      else
+        for i = 1 to 10
+          ev_dbl += p_card[i] * ev_stand[dealer_card][i + cardsum]
+        .
+      .
+      ev_dbl *= 2
+      if ev_dbl > ev_hard[dealer_card][cardsum]
+        strat_dbl$[dealer_card][cardsum] = "D"
+      else
+        strat_dbl$[dealer_card][cardsum] = "-"
+      .
+    .
+  .
+.
+call calc_ev
+# 
+func out_strat . .
+  numfmt 2 2
+  print "Strategy Double Down"
+  print ""
+  write "    "
+  for dealer_card = 2 to 11
+    s$ = dealer_card & " "
+    if dealer_card = 11
+      s$ = " A "
+    .
+    write s$
+  .
+  print ""
+  print "     ----------------------------"
+  for i = 9 to 11
+    write i & ":  "
+    for dealer_card = 2 to 11
+      write strat_dbl$[dealer_card][i] & "  "
+    .
+    print ""
+  .
+.
+call out_strat
+
++ Double down on a 10 or an ace, unless the dealer has a 10 or an ace. On a 9 only if the dealer has a poor card (3 to 6).
+
+* Strategy Split
+
++ If we get 2 equal cards, we can split them and continue playing with each card. Depending on the dealer first card, this can also be advantageous.
+
+# Strategy Split
+# 
+len p_card[] 11
+len ev_stand[][] 11
+len ev_hard[][] 11
+len ev_soft[][] 11
+len strat_split$[][] 11
+# 
+func prepare . .
+  for i = 1 to 11
+    p_card[i] = 1 / 13
+  .
+  p_card[10] = 4 / 13
+  for i = 2 to 11
+    len ev_stand[i][] 21
+    len ev_hard[i][] 21
+    len ev_soft[i][] 21
+    len strat_split$[i][] 11
+  .
+.
+call prepare
+#
+func dealer_draw p card cardsum n_ace . p_dealer[] .
+  if card = 11
+    n_ace += 1
+  .
+  cardsum += card
+  if cardsum > 21 and n_ace > 0
+    cardsum -= 10
+    n_ace -= 1
+  .
+  if cardsum >= 17
+    cardsum = lower cardsum 22
+    p_dealer[cardsum] += p
+  elif p > 0.00001
+    for i = 2 to 11
+      call dealer_draw p * p_card[i] i cardsum n_ace p_dealer[]
+    .
+  .
+.
+func ev_stand . .
+  len p_dealer[] 22
+  for dealer_card = 2 to 11
+    len ev_stand[dealer_card][] 22
+    for i = 17 to 22
+      p_dealer[i] = 0
+    .
+    call dealer_draw 1 dealer_card 0 0 p_dealer[]
+    # 
+    for cardsum = 21 downto 11
+      ev_stand[dealer_card][cardsum] = p_dealer[22]
+      for i = 17 to cardsum - 1
+        ev_stand[dealer_card][cardsum] += p_dealer[i]
+      .
+      for i = cardsum + 1 to 21
+        ev_stand[dealer_card][cardsum] -= p_dealer[i]
+      .
+    .
+  .
+.
+call ev_stand
+# 
+func calc_ev . .
+  for dealer_card = 2 to 11
+    # 
+    # hard hand
+    # 
+    for cardsum = 21 downto 12
+      ev_hit = 0.0
+      for i = 21 - cardsum + 1 to 10
+        ev_hit -= p_card[i]
+      .
+      for i = 1 to 21 - cardsum
+        ev_hit += p_card[i] * ev_hard[dealer_card][i + cardsum]
+      .
+      ev_hard[dealer_card][cardsum] = higher ev_hit ev_stand[dealer_card][cardsum]
+    .
+    # 
+    # soft hand
+    # 
+    for cardsum = 21 downto 12
+      ev_stand = ev_stand[dealer_card][cardsum]
+      if cardsum = 11
+        ev_stand = ev_stand[dealer_card][16]
+      .
+      ev_hit = 0.0
+      if cardsum = 11
+        for i = 1 to 20 - cardsum
+          ev_hit += p_card[i] * ev_soft[dealer_card][i + cardsum]
+        .
+        # black jack
+        ev_hit += p_card[10] * 1.5 * ev_soft[dealer_card][21]
+      else
+        for i = 1 to 21 - cardsum
+          ev_hit += p_card[i] * ev_soft[dealer_card][i + cardsum]
+        .
+        for i = 21 - cardsum + 1 to 10
+          ev_hit += p_card[i] * ev_hard[dealer_card][i + cardsum - 10]
+        .
+      .
+      ev_soft[dealer_card][cardsum] = higher ev_hit ev_stand
+    .
+    # 
+    # normal expected values for cardsum 2 to 11
+    # 
+    for cardsum = 11 downto 2
+      ev_hit = 0.0
+      if cardsum = 11
+        for i = 1 to 10
+          ev_hit += p_card[i] * ev_hard[dealer_card][i + 11]
+        .
+      else
+        for i = 2 to 10
+          ev_hit += p_card[i] * ev_hard[dealer_card][i + cardsum]
+        .
+        ev_hit += p_card[11] * ev_soft[dealer_card][cardsum + 11]
+      .
+      ev_hard[dealer_card][cardsum] = ev_hit
+    .
+    # 
+    # expected values for split
+    # 
+    for card = 2 to 11
+      if card = 11
+        # only one more card
+        ev_split = 0.0
+        for i = 1 to 10
+          ev_split += p_card[i] * ev_stand[dealer_card][i + card]
+        .
+        ev_split *= 2
+        ev_hit = ev_soft[dealer_card][12]
+      else
+        ev_split = 2 * ev_hard[dealer_card][card]
+        ev_hit = ev_hard[dealer_card][2 * card]
+      .
+      if ev_split > ev_hit
+        strat_split$[dealer_card][card] = "X"
+      else
+        strat_split$[dealer_card][card] = "-"
+      .
+    .
+  .
+.
+call calc_ev
+#
+func out_strat . .
+  numfmt 2 2
+  print "Strategy Split:"
+  print ""
+  write "    "
+  for dealer_card = 2 to 11
+    s$ = dealer_card & " "
+    if dealer_card = 11
+      s$ = " A "
+    .
+    write s$
+  .
+  print ""
+  print "     ----------------------------"
+  for i = 2 to 11
+    write i & ":  "
+    for dealer_card = 2 to 11
+      write strat_split$[dealer_card][i] & "  "
+    .
+    print ""
+  .
+.
+call out_strat
+
++ We see that we should never split two 10-values, aces always unless the dealer also has an ace.
+
+* Total Expected Value
+
++ We now have an optimal playing strategy,. The question is now do we win at blackjack with this strategy. For this we calculate the expected value.
+
++ We calculate for all combinations of three cards, one from the dealer and two from us, the expected values - which we got when calculating the optimal strategy - multiplied by the probability of getting these 3 cards.
+
+# Total Expected Value
+# 
+len p_card[] 11
+len ev_stand[][] 11
+len ev_hard[][] 11
+len ev_soft[][] 11
+len ev_dbl[][] 11
+len ev_split[][] 11
+# 
+func prepare . .
+  for i = 1 to 11
+    p_card[i] = 1 / 13
+  .
+  p_card[10] = 4 / 13
+  for i = 2 to 11
+    len ev_stand[i][] 21
+    len ev_hard[i][] 21
+    len ev_soft[i][] 21
+    len ev_dbl[i][] 11
+    len ev_split[i][] 11
+  .
+.
+call prepare
+# 
+# 
+func dealer_draw p card cardsum n_ace . p_dealer[] .
+  if card = 11
+    n_ace += 1
+  .
+  cardsum += card
+  if cardsum > 21 and n_ace > 0
+    cardsum -= 10
+    n_ace -= 1
+  .
+  if p = -1
+    p = 1
+  else
+    p *= p_card[card]
+  .
+  if p > 0.00000001
+    if cardsum >= 17
+      if cardsum > 22
+        cardsum = 22
+      .
+      p_dealer[cardsum] += p
+    else
+      for i = 2 to 11
+        call dealer_draw p i cardsum n_ace p_dealer[]
+      .
+    .
+  .
+.
+func ev_stand . .
+  len p_dealer[] 22
+  for dealer_card = 2 to 11
+    for i = 17 to 22
+      p_dealer[i] = 0
+    .
+    call dealer_draw -1 dealer_card 0 0 p_dealer[]
+    # 
+    for cardsum = 21 downto 11
+      ev_stand[dealer_card][cardsum] = p_dealer[22]
+      for i = 17 to cardsum - 1
+        ev_stand[dealer_card][cardsum] += p_dealer[i]
+      .
+      for i = cardsum + 1 to 21
+        ev_stand[dealer_card][cardsum] -= p_dealer[i]
+      .
+    .
+  .
+.
+# 
+func calc_ev . .
+  call ev_stand
+  #
+  for dealer_card = 2 to 11
+    # 
+    # hard hand
+    # 
+    for cardsum = 21 downto 11
+      ev_stand = ev_stand[dealer_card][cardsum]
+      ev_hit = 0.0
+      for i = 21 - cardsum + 1 to 10
+        ev_hit -= p_card[i]
+      .
+      for i = 1 to 21 - cardsum
+        ev_hit += p_card[i] * ev_hard[dealer_card][i + cardsum]
+      .
+      ev_hard[dealer_card][cardsum] = higher ev_hit ev_stand
+    .
+    # 
+    # soft hand
+    # 
+    for cardsum = 21 downto 12
+      ev_stand = ev_stand[dealer_card][cardsum]
+      ev_hit = 0.0
+      for i = 1 to 21 - cardsum
+        ev_hit += p_card[i] * ev_soft[dealer_card][i + cardsum]
+      .
+      for i = 21 - cardsum + 1 to 10
+        ev_hit += p_card[i] * ev_hard[dealer_card][i + cardsum - 10]
+      .
+      ev_soft[dealer_card][cardsum] = higher ev_hit ev_stand
+    .
+    # 
+    # normal expected values for cardsum 2 to 11
+    # 
+    for cardsum = 11 downto 2
+      ev_hit = 0.0
+      if cardsum = 11
+        for i = 1 to 10
+          ev_hit += p_card[i] * ev_hard[dealer_card][i + 11]
+        .
+      else
+        for i = 2 to 10
+          ev_hit += p_card[i] * ev_hard[dealer_card][i + cardsum]
+        .
+        ev_hit += p_card[11] * ev_soft[dealer_card][cardsum + 11]
+      .
+      ev_hard[dealer_card][cardsum] = ev_hit
+    .
+    # 
+    # expected values for double
+    # 
+    for cardsum = 9 to 11
+      ev_dbl = 0.0
+      if cardsum = 9 or cardsum = 10
+        for i = 2 to 11
+          ev_dbl += p_card[i] * ev_stand[dealer_card][i + cardsum]
+        .
+      else
+        for i = 1 to 10
+          ev_dbl += p_card[i] * ev_stand[dealer_card][i + cardsum]
+        .
+      .
+      ev_dbl *= 2
+      ev_dbl[dealer_card][cardsum] = higher ev_dbl ev_hard[dealer_card][cardsum]
+    .
+    # 
+    # expected values for split
+    # 
+    for card = 2 to 11
+      if card = 11
+        # only one more card
+        ev_split = 0.0
+        for i = 1 to 10
+          ev_split += p_card[i] * ev_stand[dealer_card][i + card]
+        .
+        ev_split *= 2
+        ev_hit = ev_soft[dealer_card][12]
+      else
+        ev_split = 2 * ev_hard[dealer_card][card]
+        ev_hit = ev_hard[dealer_card][2 * card]
+      .
+      ev_split[dealer_card][card] = higher ev_split ev_hit
+    .
+  .
+  # 
+  # total expected value
+  # 
+  ev_total = 0.0
+  for i = 2 to 11
+    for j = 2 to 11
+      f = p_card[i] * p_card[j]
+      cardsum = i + j
+      if cardsum = 22
+        cardsum = 12
+      .
+      for dealer_card = 2 to 11
+        f1 = p_card[dealer_card]
+        if cardsum = 21
+          if dealer_card < 10
+            ev_total += f * f1 * 1.5
+          elif dealer_card = 10
+            ev_total += f * f1 * 1.5 * (1 - p_card[11])
+          elif dealer_card = 11
+            ev_total += f * f1 * 1.5 * (1 - p_card[10])
+          .
+        elif 9 <= cardsum and cardsum <= 11
+          ev_total += f * f1 * ev_dbl[dealer_card][cardsum]
+        elif i = j
+          ev_total += f * f1 * ev_split[dealer_card][i]
+        elif i = 11 or j = 11
+          ev_total += f * f1 * ev_soft[dealer_card][cardsum]
+        else
+          ev_total += f * f1 * ev_hard[dealer_card][cardsum]
+        .
+      .
+    .
+  .
+  numfmt 0 4
+  print "EV: " & ev_total
+.
+#
+call calc_ev
+
++ Okay, we got a negative number, which means we lose at blackjack even if we play optimally.  But at least we don't lose as much as in roulette, where the expected value is actually *-0.027*.
+
++ In many casinos continuous shuffling machines are used, which shuffle the played cards after each round, so that the probabilities almost do not change.
+
+* Simulation
+
++ We simulate 500000 games. We bet $10 each time. There are 6 decks. After each round, the cards played are shuffled back in.
+
+# Simulation
+# 
+n_deck = 6
+len cards[] 52 * n_deck
+# 
+len strat_hard$[][] 11
+len strat_soft$[][] 11
+len strat_dbl$[][] 11
+len strat_split$[][] 11
+# 
+func init . .
+  for dealer_card = 2 to 11
+    len strat_hard$[dealer_card][] 21
+    len strat_soft$[dealer_card][] 21
+    len strat_dbl$[dealer_card][] 11
+    len strat_split$[dealer_card][] 11
+  .
+  s$ = input
+  for cardsum = 12 to 20
+    s$ = input
+    for dealer_card = 2 to 11
+      strat_hard$[dealer_card][cardsum] = substr s$ dealer_card * 3 1
+    .
+  .
+  s$ = input
+  for cardsum = 12 to 20
+    s$ = input
+    for dealer_card = 2 to 11
+      strat_soft$[dealer_card][cardsum] = substr s$ dealer_card * 3 1
+    .
+  .
+  s$ = input
+  for cardsum = 9 to 11
+    s$ = input
+    for dealer_card = 2 to 11
+      strat_dbl$[dealer_card][cardsum] = substr s$ dealer_card * 3 1
+    .
+  .
+  s$ = input
+  for cardsum = 2 to 11
+    s$ = input
+    for dealer_card = 2 to 11
+      strat_split$[dealer_card][cardsum] = substr s$ dealer_card * 3 1
+    .
+  .
+  for i = 1 to n_deck * 52
+    card = (i - 1) div (n_deck * 4) + 2
+    if card > 11
+      card = 10
+    .
+    cards[i] = card
+  .
+.
+call init
+# 
+global n_cards .
+#
+func shuffle . .
+  while n_cards < n_deck * 52
+    n_cards += 1
+    j = random n_cards
+    swap cards[j] cards[n_cards]
+  .
+.
+call shuffle
+# 
+subr game_init
+  dealer_sum = 0
+  dealer_ace = 0
+  dealer_blackj = 0
+  player_sum = 0
+  player_ace = 0
+  player_blackj = 0
+.
+# 
+func take . card .
+  card = cards[n_cards]
+  n_cards -= 1
+.
+# 
+func dealer_take . .
+  call take card
+  if card = 11
+    dealer_ace += 1
+  .
+  dealer_sum += card
+  if dealer_sum > 21 and dealer_ace > 0
+    dealer_ace -= 1
+    dealer_sum -= 10
+  .
+.
+func dealer_turn . .
+  call dealer_take
+  if dealer_sum = 21
+    dealer_blackj = 1
+  .
+  while dealer_sum < 17
+    call dealer_take
+  .
+.
+func player_take . .
+  call take card
+  if card = 11
+    player_ace += 1
+  .
+  player_sum += card
+  if player_sum > 21 and player_ace > 0
+    player_ace -= 1
+    player_sum -= 10
+  .
+.
+func player_turn . .
+  while 1 = 1
+    if player_ace = 0
+      h$ = strat_hard$[dealer_sum][player_sum]
+    else
+      h$ = strat_soft$[dealer_sum][player_sum]
+    .
+    if h$ = "-" or player_sum = 21
+      break 1
+    .
+    call player_take
+    if player_sum > 21
+      break 1
+    .
+  .
+.
+func play n_games . .
+  money = 0
+  for games = 1 to n_games
+    call shuffle
+    set = 10
+    call game_init
+    call player_take
+    player_card1 = player_sum
+    call player_take
+    if player_sum = 21
+      player_blackj = 1
+    .
+    call dealer_take
+    #  
+    player_sum_spl = 0
+    if player_sum >= 9 and player_sum <= 11 and strat_dbl$[dealer_sum][player_sum] = "D"
+      set *= 2
+      call player_take
+      # 
+    elif player_card1 * 2 = player_sum and strat_split$[dealer_sum][player_card1] = "X"
+      player_sum = player_card1
+      call player_turn
+      player_sum_spl = player_sum
+      # 
+      player_sum = player_card1
+      player_ace = 0
+      call player_turn
+    elif player_card1 = 11 and player_sum = 12 and strat_split$[dealer_sum][11] = "X"
+      # split 2 aces, therefor only one card each
+      player_sum = 11
+      call player_take
+      player_sum_spl = player_sum
+      # 
+      player_sum = 11
+      call player_take
+    else
+      call player_turn
+    .
+    call dealer_turn
+    # 
+    if player_blackj = 1 and dealer_blackj = 0
+      money += 3 * set / 2
+    elif player_sum > 21
+      money -= set
+    elif dealer_sum > 21 or player_sum > dealer_sum
+      money += set
+    elif player_sum < dealer_sum
+      money -= set
+    .
+    if player_sum_spl > 0
+      if player_sum_spl > 21
+        money -= set
+      elif dealer_sum > 21 or player_sum_spl > dealer_sum
+        money += set
+      elif player_sum_spl < dealer_sum
+        money -= set
+      .
+    .
+  .
+  print "$" & money
+  numfmt 0 4
+  print "EV: " & money / (10 * n_games)
+.
+call play 500000
+# 
+input_data
+     ----------------------------
+12:  H  H  -  -  -  H  H  H  H  H  
+13:  -  -  -  -  -  H  H  H  H  H  
+14:  -  -  -  -  -  H  H  H  H  H  
+15:  -  -  -  -  -  H  H  H  H  H  
+16:  -  -  -  -  -  H  H  H  H  H  
+17:  -  -  -  -  -  -  -  -  -  -  
+18:  -  -  -  -  -  -  -  -  -  -  
+19:  -  -  -  -  -  -  -  -  -  -  
+20:  -  -  -  -  -  -  -  -  -  -  
+     ----------------------------
+12:  H  H  H  H  H  H  H  H  H  H  
+13:  H  H  H  H  H  H  H  H  H  H  
+14:  H  H  H  H  H  H  H  H  H  H  
+15:  H  H  H  H  H  H  H  H  H  H  
+16:  H  H  H  H  H  H  H  H  H  H  
+17:  H  H  H  H  H  H  H  H  H  H  
+18:  -  -  -  -  -  -  -  H  H  H  
+19:  -  -  -  -  -  -  -  -  -  -  
+20:  -  -  -  -  -  -  -  -  -  -  
+     ----------------------------
+ 9:  -  D  D  D  D  -  -  -  -  -  
+10:  D  D  D  D  D  D  D  D  -  -  
+11:  D  D  D  D  D  D  D  D  -  -  
+     ----------------------------
+ 2:  -  -  X  X  X  X  -  -  -  -  
+ 3:  -  -  X  X  X  X  -  -  -  -  
+ 4:  -  -  -  -  -  -  -  -  -  -  
+ 5:  -  -  -  -  -  -  -  -  -  -  
+ 6:  -  X  X  X  X  -  -  -  -  -  
+ 7:  X  X  X  X  X  X  -  -  -  -  
+ 8:  X  X  X  X  X  X  X  X  -  -  
+ 9:  X  X  X  X  X  -  X  X  -  -  
+10:  -  -  -  -  -  -  -  -  -  -  
+11:  X  X  X  X  X  X  X  X  X  -  
+
++ The simulated expected value is quite close to the calculated expected value.
+
+* A Stack with Good Cards
+
++ If the deck, which often consists of 6 decks of 52 cards, is not shuffled again until about a quarter of the cards are left, the probabilities of getting certain cards change as the game progresses. Perhaps the expected value can also change to plus.
+
++ Let's assume that in the course of the game 5 cards from cards 2 to 7 were played, 4 cards from cards 8 to 9, and 3 cards from the others (all 10 values together 12). In a stack with 6 decks, the probability of drawing a card is calculated as follows.
+
+len p_card[] 11
+removed_cards[] = [ 0 5 5 5 5 5 5 4 4 12 3 ]
+# 
+n_deck = 6
+n_cards = n_deck * 52
+for i = 2 to 11
+  n_cards -= removed_cards[i]
+.
+for i = 2 to 11
+  p_card[i] = (n_deck * 4 - removed_cards[i]) / n_cards
+.
+p_card[10] = (n_deck * 16 - removed_cards[10]) / n_cards
+# 
+numfmt 0 3
+print p_card[]
+
++ Now we calculate the expected value with this stack of cards.
+
+# Good cards
+# 
+len p_card[] 11
+len ev_stand[][] 11
+len ev_hard[][] 11
+len ev_soft[][] 11
+len ev_dbl[][] 11
+len ev_split[][] 11
+# 
+func prepare . .
+  for i = 1 to 11
+    p_card[i] = 1 / 13
+  .
+  p_card[10] = 4 / 13
+  for i = 2 to 11
+    len ev_stand[i][] 21
+    len ev_hard[i][] 21
+    len ev_soft[i][] 21
+    len ev_dbl[i][] 11
+    len ev_split[i][] 11
+  .
+.
+call prepare
+# 
+# 
+func dealer_draw p card cardsum n_ace . p_dealer[] .
+  if card = 11
+    n_ace += 1
+  .
+  cardsum += card
+  if cardsum > 21 and n_ace > 0
+    cardsum -= 10
+    n_ace -= 1
+  .
+  if p = -1
+    p = 1
+  else
+    p *= p_card[card]
+  .
+  if p > 0.00000001
+    if cardsum >= 17
+      if cardsum > 22
+        cardsum = 22
+      .
+      p_dealer[cardsum] += p
+    else
+      for i = 2 to 11
+        call dealer_draw p i cardsum n_ace p_dealer[]
+      .
+    .
+  .
+.
+func ev_stand . .
+  len p_dealer[] 22
+  for dealer_card = 2 to 11
+    for i = 17 to 22
+      p_dealer[i] = 0
+    .
+    call dealer_draw -1 dealer_card 0 0 p_dealer[]
+    # 
+    for cardsum = 21 downto 11
+      ev_stand[dealer_card][cardsum] = p_dealer[22]
+      for i = 17 to cardsum - 1
+        ev_stand[dealer_card][cardsum] += p_dealer[i]
+      .
+      for i = cardsum + 1 to 21
+        ev_stand[dealer_card][cardsum] -= p_dealer[i]
+      .
+    .
+  .
+.
+# 
+func calc_ev . .
+  call ev_stand
+  #
+  for dealer_card = 2 to 11
+    # 
+    # hard hand
+    # 
+    for cardsum = 21 downto 11
+      ev_stand = ev_stand[dealer_card][cardsum]
+      ev_hit = 0.0
+      for i = 21 - cardsum + 1 to 10
+        ev_hit -= p_card[i]
+      .
+      for i = 1 to 21 - cardsum
+        ev_hit += p_card[i] * ev_hard[dealer_card][i + cardsum]
+      .
+      ev_hard[dealer_card][cardsum] = higher ev_hit ev_stand
+    .
+    # 
+    # soft hand
+    # 
+    for cardsum = 21 downto 12
+      ev_stand = ev_stand[dealer_card][cardsum]
+      ev_hit = 0.0
+      for i = 1 to 21 - cardsum
+        ev_hit += p_card[i] * ev_soft[dealer_card][i + cardsum]
+      .
+      for i = 21 - cardsum + 1 to 10
+        ev_hit += p_card[i] * ev_hard[dealer_card][i + cardsum - 10]
+      .
+      ev_soft[dealer_card][cardsum] = higher ev_hit ev_stand
+    .
+    # 
+    # normal expected values for cardsum 2 to 11
+    # 
+    for cardsum = 11 downto 2
+      ev_hit = 0.0
+      if cardsum = 11
+        for i = 1 to 10
+          ev_hit += p_card[i] * ev_hard[dealer_card][i + 11]
+        .
+      else
+        for i = 2 to 10
+          ev_hit += p_card[i] * ev_hard[dealer_card][i + cardsum]
+        .
+        ev_hit += p_card[11] * ev_soft[dealer_card][cardsum + 11]
+      .
+      ev_hard[dealer_card][cardsum] = ev_hit
+    .
+    # 
+    # expected values for double
+    # 
+    for cardsum = 9 to 11
+      ev_dbl = 0.0
+      if cardsum = 9 or cardsum = 10
+        for i = 2 to 11
+          ev_dbl += p_card[i] * ev_stand[dealer_card][i + cardsum]
+        .
+      else
+        for i = 1 to 10
+          ev_dbl += p_card[i] * ev_stand[dealer_card][i + cardsum]
+        .
+      .
+      ev_dbl *= 2
+      ev_dbl[dealer_card][cardsum] = higher ev_dbl ev_hard[dealer_card][cardsum]
+    .
+    # 
+    # expected values for split
+    # 
+    for card = 2 to 11
+      if card = 11
+        # only one more card
+        ev_split = 0.0
+        for i = 1 to 10
+          ev_split += p_card[i] * ev_stand[dealer_card][i + card]
+        .
+        ev_split *= 2
+        ev_hit = ev_soft[dealer_card][12]
+      else
+        ev_split = 2 * ev_hard[dealer_card][card]
+        ev_hit = ev_hard[dealer_card][2 * card]
+      .
+      ev_split[dealer_card][card] = higher ev_split ev_hit
+    .
+  .
+  # 
+  # total expected value
+  # 
+  ev_total = 0.0
+  for i = 2 to 11
+    for j = 2 to 11
+      f = p_card[i] * p_card[j]
+      cardsum = i + j
+      if cardsum = 22
+        cardsum = 12
+      .
+      for dealer_card = 2 to 11
+        f1 = p_card[dealer_card]
+        if cardsum = 21
+          if dealer_card < 10
+            ev_total += f * f1 * 1.5
+          elif dealer_card = 10
+            ev_total += f * f1 * 1.5 * (1 - p_card[11])
+          elif dealer_card = 11
+            ev_total += f * f1 * 1.5 * (1 - p_card[10])
+          .
+        elif 9 <= cardsum and cardsum <= 11
+          ev_total += f * f1 * ev_dbl[dealer_card][cardsum]
+        elif i = j
+          ev_total += f * f1 * ev_split[dealer_card][i]
+        elif i = 11 or j = 11
+          ev_total += f * f1 * ev_soft[dealer_card][cardsum]
+        else
+          ev_total += f * f1 * ev_hard[dealer_card][cardsum]
+        .
+      .
+    .
+  .
+  numfmt 0 4
+  print "EV: " & ev_total
+.
+#
+func change_stack . removed_cards[] .
+  n_deck = 6
+  n_cards = n_deck * 52
+  for i = 2 to 11
+    n_cards -= removed_cards[i]
+  .
+  for i = 2 to 11
+    p_card[i] = (n_deck * 4 - removed_cards[i]) / n_cards
+  .
+  p_card[10] = (n_deck * 16 - removed_cards[10]) / n_cards
+  p_card[1] = (n_deck * 4 - removed_cards[11]) / n_cards
+.
+# 
+removed_cards[] = [ 0 5 5 5 5 5 5 4 4 12 3 ]
+call change_stack removed_cards[]
+call calc_ev
+
++ Whoopee, the expected value is positive. We can win at blackjack if, as long as the expected value is negative, we do not play or bet only the minimum and when it becomes positive, then bet higher amounts. 
+
+* Card Counting
+
++ This is the principle of card counting in blackjack. Only we need a simpler method - which can be used in the mind - to determine or estimate when the expected value becomes positive.
+
++ A simple method is the *Hi-Lo* strategy. When there are many 10s and aces in the stack, the expected value increases. You start counting at 0, for each high card (10s or Aces) you decrease the counter, for each low card (2 to 6) you increase the counter by 1. 
+
+~ if card >= 2 and card <= 6
+  count += 1
+elif card >= 10
+  count -= 1
+.
+
++ A positive value counts more if there are fewer cards in the game. We therefore multiply the *count* by the number of cards in the deck divided by the cards currently present - this can also be estimated. If this value, the *true count*, is at least 6, we place the largest possible bet.
+
+~ set = 10
+true_count = count * (n_deck * 52 / n_cards) 
+if true_count >= 6
+  set = 1000
+.
+
++ We simulate 500000 games. If the *true count* is at least 6, we bet $1000, otherwise $10. There are 6 decks that are shuffled when three quarters of the cards have been played. We also adjusted the game strategy a bit to the card probabilities at positive expected value.
+
+# Card counting simulation
+# 
+n_deck = 6
+len cards[] 52 * n_deck
+# 
+len strat_hard$[][] 11
+len strat_soft$[][] 11
+len strat_dbl$[][] 11
+len strat_split$[][] 11
+# 
+func init . .
+  for dealer_card = 2 to 11
+    len strat_hard$[dealer_card][] 21
+    len strat_soft$[dealer_card][] 21
+    len strat_dbl$[dealer_card][] 11
+    len strat_split$[dealer_card][] 11
+  .
+  s$ = input
+  for cardsum = 12 to 20
+    s$ = input
+    for dealer_card = 2 to 11
+      strat_hard$[dealer_card][cardsum] = substr s$ dealer_card * 3 1
+    .
+  .
+  s$ = input
+  for cardsum = 12 to 20
+    s$ = input
+    for dealer_card = 2 to 11
+      strat_soft$[dealer_card][cardsum] = substr s$ dealer_card * 3 1
+    .
+  .
+  s$ = input
+  for cardsum = 9 to 11
+    s$ = input
+    for dealer_card = 2 to 11
+      strat_dbl$[dealer_card][cardsum] = substr s$ dealer_card * 3 1
+    .
+  .
+  s$ = input
+  for cardsum = 2 to 11
+    s$ = input
+    for dealer_card = 2 to 11
+      strat_split$[dealer_card][cardsum] = substr s$ dealer_card * 3 1
+    .
+  .
+  for i = 1 to n_deck * 52
+    card = (i - 1) div (n_deck * 4) + 2
+    if card > 11
+      card = 10
+    .
+    cards[i] = card
+  .
+.
+call init
+# 
+global count n_cards .
+# 
+func shuffle . .
+  while n_cards < n_deck * 52
+    n_cards += 1
+    j = random n_cards
+    swap cards[j] cards[n_cards]
+  .
+  count = 0
+.
+call shuffle
+# 
+subr game_init
+  dealer_sum = 0
+  dealer_ace = 0
+  dealer_blackj = 0
+  player_sum = 0
+  player_ace = 0
+  player_blackj = 0
+.
+# 
+func take . card .
+  card = cards[n_cards]
+  n_cards -= 1
+  # 
+  if card >= 2 and card <= 6
+    count += 1
+  elif card >= 10
+    count -= 1
+  .
+.
+# 
+func dealer_take . .
+  call take card
+  if card = 11
+    dealer_ace += 1
+  .
+  dealer_sum += card
+  if dealer_sum > 21 and dealer_ace > 0
+    dealer_ace -= 1
+    dealer_sum -= 10
+  .
+.
+func dealer_turn . .
+  call dealer_take
+  if dealer_sum = 21
+    dealer_blackj = 1
+  .
+  while dealer_sum < 17
+    call dealer_take
+  .
+.
+func player_take . .
+  call take card
+  if card = 11
+    player_ace += 1
+  .
+  player_sum += card
+  if player_sum > 21 and player_ace > 0
+    player_ace -= 1
+    player_sum -= 10
+  .
+.
+func player_turn . .
+  while 1 = 1
+    if player_ace = 0
+      h$ = strat_hard$[dealer_sum][player_sum]
+    else
+      h$ = strat_soft$[dealer_sum][player_sum]
+    .
+    if h$ = "-" or player_sum = 21
+      break 1
+    .
+    call player_take
+    if player_sum > 21
+      break 1
+    .
+  .
+.
+func play . .
+  money = 0
+  for games = 1 to 500000
+    if n_cards < n_deck * 52 / 4
+      call shuffle
+    .
+    set = 10
+    true_count = count * (n_deck * 52 / n_cards)
+    if true_count >= 6
+      set = 1000
+    .
+    call game_init
+    call player_take
+    player_card1 = player_sum
+    call player_take
+    if player_sum = 21
+      player_blackj = 1
+    .
+    call dealer_take
+    #  
+    player_sum_spl = 0
+    if player_sum >= 9 and player_sum <= 11 and strat_dbl$[dealer_sum][player_sum] = "D"
+      set *= 2
+      call player_take
+      # 
+    elif player_card1 * 2 = player_sum and strat_split$[dealer_sum][player_card1] = "X"
+      player_sum = player_card1
+      call player_turn
+      player_sum_spl = player_sum
+      # 
+      player_sum = player_card1
+      player_ace = 0
+      call player_turn
+    elif player_card1 = 11 and player_sum = 12 and strat_split$[dealer_sum][11] = "X"
+      # split 2 aces, therefor only one card each
+      player_sum = 11
+      call player_take
+      player_sum_spl = player_sum
+      # 
+      player_sum = 11
+      call player_take
+    else
+      call player_turn
+    .
+    call dealer_turn
+    # 
+    if player_blackj = 1 and dealer_blackj = 0
+      money += 3 * set / 2
+    elif player_sum > 21
+      money -= set
+    elif dealer_sum > 21 or player_sum > dealer_sum
+      money += set
+    elif player_sum < dealer_sum
+      money -= set
+    .
+    if player_sum_spl > 0
+      if player_sum_spl > 21
+        money -= set
+      elif dealer_sum > 21 or player_sum_spl > dealer_sum
+        money += set
+      elif player_sum_spl < dealer_sum
+        money -= set
+      .
+    .
+  .
+  print "$" & money
+.
+call play
+# 
+input_data
+     ----------------------------
+12:  H  H  -  -  -  H  H  H  H  H  
+13:  -  -  -  -  -  H  H  H  H  H  
+14:  -  -  -  -  -  H  H  H  H  H  
+15:  -  -  -  -  -  H  H  H  H  H  
+16:  -  -  -  -  -  H  H  H  H  H  
+17:  -  -  -  -  -  -  -  -  -  -  
+18:  -  -  -  -  -  -  -  -  -  -  
+19:  -  -  -  -  -  -  -  -  -  -  
+20:  -  -  -  -  -  -  -  -  -  -  
+     ----------------------------
+12:  H  H  H  H  H  H  H  H  H  H  
+13:  H  H  H  H  H  H  H  H  H  H  
+14:  H  H  H  H  H  H  H  H  H  H  
+15:  H  H  H  H  H  H  H  H  H  H  
+16:  H  H  H  H  H  H  H  H  H  H  
+17:  H  H  H  H  H  H  H  H  H  H  
+18:  -  -  -  -  -  -  -  H  H  H  
+19:  -  -  -  -  -  -  -  -  -  -  
+20:  -  -  -  -  -  -  -  -  -  -  
+     ----------------------------
+ 9:  D  D  D  D  D  -  -  -  -  -  
+10:  D  D  D  D  D  D  D  D  -  -  
+11:  D  D  D  D  D  D  D  D  D  -  
+     ----------------------------
+ 2:  -  -  X  X  X  X  -  -  -  -  
+ 3:  -  -  X  X  X  X  -  -  -  -  
+ 4:  -  -  -  -  -  -  -  -  -  -  
+ 5:  -  -  -  -  -  -  -  -  -  -  
+ 6:  -  X  X  X  X  -  -  -  -  -  
+ 7:  X  X  X  X  X  X  -  -  -  -  
+ 8:  X  X  X  X  X  X  X  X  -  -  
+ 9:  X  X  X  X  X  -  X  X  -  -  
+10:  -  -  -  -  -  -  -  -  -  -  
+11:  X  X  X  X  X  X  X  X  X  -  
+
++ So in blackjack you can win if you have a lot of time and the conditions are right (no continuous shuffler, counters are not kicked out).
+
++ With roulette, it's a completely different story.
+
+@ ./tut_mcarlo.html@Monte Carlo Methods or Why it's a Bad Idea to Go to the Casino
+`
+
+function hook() {
+	var dom = window.location.host
+	tut.insertAdjacentHTML("beforeend", `
+<p><hr><p>
+The examples were created with <a href=..>${dom}<a>
+<p><small>christof.kaser@gmail.com</small>
+`)
+}
+</script>
+
+

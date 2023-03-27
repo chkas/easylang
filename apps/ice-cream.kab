@@ -1,0 +1,184 @@
+# Ice cream
+# 
+if sysfunc "lang" = "de"
+   alpha$[] = strchars "ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ"
+   words$[] = [ "MAUS" "KATZE" "HUND" "ELEFANT" "PFERD" "NASHORN" "SPINNE" "AMEISE" "TIGER" "GEPARD" "SCHLANGE" "KUH" "SCHWEIN" "KROKODIL" "RATTE" "HUHN" "GIRAFFE" "SKORPION" "WAL" "DELFIN" "EIDECHSE" "FLIEGE" "RABE" "ADLER" "AMSEL" "SPECHT" "PINGUIN" "ESEL" "ZIEGE" "SCHAF" "ENTE" "SCHWAN" "MAULWURF" "BIENE" "WESPE" "ZECKE" "SCHNECKE" "FUCHS" "WOLF" "HAI" "FORELLE" "TAUBE" "BÄR" "DACHS" "EULE" "ERDMÄNNCHEN" "EICHHÖRNCHEN" "FROSCH" "FLEDERMAUS" "GOLDFISCH" "GEIER" "GANS" "GORILLA" "SCHIMPANSE" "HORNISSE" "HAMSTER" "HASE" "REH" "HIRSCH" "MURMELTIER" "IGEL" "KÄFER" "KAMEL" "KÄNGURU" "KREBS" "LÖWE" "LUCHS" "LAMA" "MOLCH" "NASHORN" "PAPAGEI" "PANDABÄR" "PAVIAN" "QUALLE" "REGENWURM" "SCHILDKRÖTE" "STINKTIER" "SEEPFERDCHEN" "ZEBRA" "BIBER" "ANTILOPE" "SEESTERN" "MUSCHEL" "CHAMÄLEON" "FAULTIER" "FLAMINGO" "KANINCHEN" "KOALABÄR" "KRÖTE" ]
+else
+   alpha$[] = strchars "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+   words$[] = [ "MOUSE" "CAT" "DOG" "ELEPHANT" "HORSE" "RHINO" "SPIDER" "ANT" "TIGER" "CHEETAH" "SNAKE" "COW" "PIG" "CROCODILE" "RAT" "MONKEY" "CHICKEN" "GIRAFFE" "SCORPION" "WHALE" "DOLPHIN" "LIZARD" "FLY" "RAVEN" "EAGLE" "BLACKBIRD" "WOODPECKER" "PENGUIN" "DONKEY" "GOAT" "SHEEP" "DUCK" "SWAN" "MOLE" "BEE" "WASP" "TICK" "SNAIL" "FOX" "WOLF" "SHARK" "TROUT" "DOVE" "BEAR" "BADGER" "OWL" "MEERKAT" "SQUIRREL" "FROG" "BAT" "GOLDFISH" "VULTURE" "GOOSE" "GORILLA" "CHIMPANZEE" "HORNET" "HAMSTER" "HARE" "DEER" "MARMOT" "HEDGEHOG" "BEETLE" "CAMEL" "KANGAROO" "CRAB" "LION" "LYNX" "LLAMA" "NEWT" "RHINO" "PARROT" "PANDA" "BABOON" "JELLYFISH" "EARTHWORM" "TURTLE" "SKUNK" "SEAHORSE" "ZEBRA" "BEAVER" "ANTELOPE" "STARFISH" "MUSSEL" "CHAMELEON" "SLOTH" "FLAMINGO" "RABBIT" "KOALA" "TOAD" ]
+.
+sys topleft
+len sel[] len alpha$[]
+# 
+subr init
+   for i to len sel[]
+      sel[i] = 0
+   .
+   w$[] = strchars words$[random len words$[]]
+   game_stat = 0
+.
+func ice x y col . .
+   color col
+   move x y
+   circle 3
+   color 432
+   polygon [ x y + 8 x - 3.5 y + 1 x + 3.5 y + 1 ]
+.
+call ice 30 60 900
+func draw_ice try . .
+   color 990
+   if try < 1
+      call ice 72 57 900
+   .
+   if try < 2
+      call ice 92 57 449
+   .
+   if try < 3
+      call ice 82 52 990
+   .
+   if try < 4
+      call ice 72 42 733
+   .
+   if try < 5
+      call ice 92 42 950
+   .
+   if try < 6
+      call ice 82 37 765
+   .
+   if try < 7
+      call ice 72 27 096
+   .
+   if try < 8
+      call ice 92 27 888
+   .
+   if try < 9
+      call ice 82 22 080
+   .
+   if try < 10
+      call ice 72 12 900
+   .
+   if try < 11
+      call ice 92 12 990
+   .
+.
+background 000
+global gind .
+func drawkey ind col k$ . .
+   textsize 9
+   r = (ind - 1) div 5
+   c = (ind - 1) mod 5
+   color col
+   move c * 13 r * 14
+   rect 12 13
+   color 997
+   move 2 + c * 13 1.8 + r * 14
+   text k$
+.
+func draw . .
+   clear
+   linewidth 1
+   color 997
+   for i to len w$[]
+      move i * 8 - 6 98
+      line i * 8 98
+   .
+   try = 0
+   found = 0
+   for ind to len sel[]
+      k$ = alpha$[ind]
+      if sel[ind] = 0
+         call drawkey ind 040 k$
+      else
+         call drawkey ind 040 ""
+         in = 0
+         for pos to len w$[]
+            if w$[pos] = k$
+               in = 1
+               move pos * 8 - 6 88
+               text w$[pos]
+               found += 1
+            .
+         .
+         if in = 0
+            try += 1
+         .
+      .
+   .
+   call draw_ice try
+   color 997
+   if found = len w$[]
+      game_stat = 2
+      timer 1
+   elif try > 10
+      game_stat = 3
+      timer 1
+   .
+.
+func smiley st . .
+   move 80 73
+   color 983
+   circle 7
+   color 000
+   move 77 71
+   circle 1
+   move 83 71
+   circle 1
+   linewidth 1
+   if st = 2
+      curve [ 77 75 80 79 83 75 ]
+   else
+      curve [ 77 77 80 74 83 77 ]
+   .
+.
+func sel . .
+   call draw
+   if game_stat > 1
+      for i to len w$[]
+         move i * 8 - 6 88
+         text w$[i]
+      .
+      move 60 70
+      textsize 8
+      call smiley game_stat
+   .
+.
+on timer
+   if game_stat = 1
+      game_stat = 0
+      call sel
+   elif game_stat >= 2
+      game_stat = 4
+   .
+.
+on mouse_up
+   if gind <> -1
+      call drawkey gind 040 ""
+   .
+.
+func search_letter . .
+   c = mouse_x div 13
+   r = mouse_y div 14
+   gind = c + r * 5 + 1
+   if gind <= len sel[] and sel[gind] = 0
+      sel[gind] = 1
+      call drawkey gind 060 alpha$[gind]
+      game_stat = 1
+      timer 0.5
+   else
+      gind = -1
+   .
+.
+on mouse_down
+   gind = -1
+   if game_stat = 0
+      if mouse_x < 65 and mouse_y < 84
+         call search_letter
+      .
+   elif game_stat = 4
+      call init
+      call draw
+   .
+.
+call init
+call draw
+

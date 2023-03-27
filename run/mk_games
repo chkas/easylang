@@ -1,0 +1,128 @@
+#!/bin/sh
+
+cd ../apps
+odir=$HOME/out/easylang/games
+mkdir -p $odir
+
+cp ../run/icon.png $odir
+
+exec >$odir/index.html
+cat <<xxx
+<!doctype html>
+<meta charset=utf-8>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="keywords" content="learning games kids">
+<meta name="description" content="learning games for kids">
+<link rel="icon" href="icon.png" type="image/x-png">
+<title>Games & Apps</title>
+
+<style>
+body { 
+	background:#222; 
+	color:#fff;
+	max-width:600px;
+}
+a {color:#fff;}
+a:hover {background-color:#4a4}
+h2 {background-color:#484;padding:7px;padding-left:12px}
+h3 {background-color:#484;padding:5px;padding-left:12px}
+img {float:left;padding-right:10px}
+div {clear:left;padding:10px}
+</style>
+
+<h2>Learning Apps, Learning Games and Games</h2>
+
+For fun and learning
+
+<script>
+var s = []
+function inst(id) {
+	window.open("../run/#code=" + encodeURIComponent(s[id]), "_self")
+}
+xxx
+
+
+apps1="1x1-trainer math-trainer roman-numbers learning-clock piano"
+
+apps2="ice-cream letter-memory paint"
+
+apps3="mastermind mine-sweeper monster-maze tictactoe reaction-test catch-the-ball"
+
+wrcode() {
+	f=$(echo $1 | cut -c1 | tr a-z A-Z)
+	n=$f$(echo $1 | cut -c2- | tr '-' ' ')
+
+	echo -n "s[$i] = \`"
+	cat $1.kab
+	echo  "\`"
+	i=$((i+1))
+}
+
+i=0
+for k in $apps1; do
+	wrcode $k
+done
+for k in $apps2; do
+	wrcode $k
+done
+for k in $apps3; do
+	wrcode $k
+done
+
+
+echo "</script>"
+
+wrlnk() {
+	f=$(echo $1 | cut -c1 | tr a-z A-Z)
+	n=$f$(echo $1 | cut -c2- | tr '-' ' ')
+
+	echo $1:$f:$n >&2
+
+	echo "<p><div>"
+
+	if test -f $1.png; then
+		cp $1.png $odir 
+		echo "<p><a href=javascript:inst($i)><img src=$1.png alt=$n></a>"
+		echo "<p><a href=javascript:inst($i)><p><b>$n</b></a>"
+#		echo "<p><b>$n</b>"
+	else
+		echo "<a href=javascript:inst($i)>$n</a>"
+	fi
+	echo "</div>"
+	
+	i=$((i+1))
+}
+
+i=0
+echo "<h3>Learning apps</h3>"
+for k in $apps1; do
+	wrlnk $k
+done
+echo "<div></div>"
+
+echo "<h3>Learning games</h3>"
+for k in $apps2; do
+	wrlnk $k
+done
+echo "<div></div>"
+
+echo "<h3>Games</h3>"
+for k in $apps3; do
+	wrlnk $k
+done
+echo "<div></div>"
+
+
+cp easyide.png $odir
+cat <<xxx
+<p>
+<h3>Make your own game</h3>
+<a href="../ide/">An easy programming language and development environment.</a> These games were created with it.
+<div>
+<a href="../ide/"><img src=easyide.png alt=easylang.online></a>
+</div>
+<div></div>
+<hr>
+<small>christof.kaser@gmail.com</small>
+xxx
+

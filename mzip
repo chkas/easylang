@@ -1,0 +1,10 @@
+#!/bin/sh
+cd ~/daten
+d=$(date --rfc-3339=date)
+if test -e ~/archiv/easylang$d.zip; then
+	rm ~/archiv/easylang.zip
+else
+	mv ~/archiv/easylang.zip ~/archiv/easylang$d.zip
+fi
+zip -r ~/archiv/easylang.zip easylang/apps/ easylang/misc/ easylang/run/ easylang/ide/ easylang/native/ easylang/readme.md
+

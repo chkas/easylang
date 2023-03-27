@@ -1,0 +1,55 @@
+x = -10
+while x <= 110
+  # clear the drawing area
+  clear
+  # draw the ball at position x
+  move x 90
+  circle 10
+  # wait half a second
+  sleep 0.5
+  # change drawing position
+  x = x + 5
+end
+
+
+x = -15
+while x <= 100
+  # clear the drawing area
+  clear
+  # draw the car at position x
+  linewidth 8
+  color 333
+  move x + 9 86
+  line x + 13 86
+  color 900
+  move x + 4 91
+  line x + 18 91
+  color 333
+  move x + 5 97
+  circle 3.5
+  move x + 16 97
+  circle 3.5
+  # wait half a second
+  sleep 0.5
+  # change drawing position
+  x = x + 5
+end
+
+
++ 🤔 Try to make the animation smoother by incrementing the drawing position only by 1 or 0.5 each time and displaying the car for a shorter time.
+
++ 🤔 Stop the car before it touches the right edge.
+
++ 🤔 Let the car drive back.
+
++ 🤔 Draw the house from above as background.
+
++de 🤔 Versuche die Animation flüssiger zu machen, indem du die Zeichenposition jedesmal nur um 1 oder 0.5 erhöhst und das Auto für eine kürzere Zeit anzeigst.
+
++de 🤔 Halte das Auto an, bevor es die rechte Kante berührt.
+
++de 🤔 Lasse das Auto wieder zurück fahren.
+
++de 🤔 Zeichne das Haus von oben als Hintergrund.
+
+

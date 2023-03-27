@@ -1,0 +1,91 @@
+# Letter memory
+# 
+func draw_square ind col s$ . .
+  ind -= 1
+  x = ind mod 4 * 24 + 3
+  y = ind div 4 * 24 + 3
+  color col
+  move x y
+  rect 22 22
+  move x + 5 y + 5
+  color 000
+  text s$
+end
+subr init_vars
+  card1 = 0
+  card2 = 0
+  opencards = 0
+  time0 = systime
+end
+cards$[] = strchars "AABBDDEEFFGGHHII"
+len open[] 16
+background 000
+func init . .
+  call init_vars
+  clear
+  # display covered cards
+  for i = 1 to 16
+    open[i] = 0
+    call draw_square i 353 ""
+  end
+  # shuffle
+  for i = 2 to 16
+    r = random i
+    swap cards$[r] cards$[i]
+  end
+end
+func open ind . .
+  open[ind] = 1
+  call draw_square ind 575 cards$[ind]
+  if card1 = 0
+    # first card
+    card1 = ind
+  else
+    # second card
+    card2 = ind
+    if cards$[card2] <> cards$[card1]
+      # cards are covered after one second
+      timer 1
+    else
+      # two matching cards found
+      card1 = 0
+      card2 = 0
+      opencards += 2
+      if opencards = 16
+        # done
+        clear
+        move 5 50
+        color 575
+        text "Time: " & floor (systime - time0)
+      end
+    end
+  end
+end
+on timer
+  # cover cards
+  open[card1] = 0
+  call draw_square card1 353 ""
+  card1 = 0
+  open[card2] = 0
+  call draw_square card2 353 ""
+  card2 = 0
+end
+func search_card . .
+  c = mouse_x div 25
+  r = mouse_y div 25
+  ind = r * 4 + c + 1
+  if open[ind] = 0
+    call open ind
+  end
+end
+on mouse_down
+  if opencards = 16
+    # new game
+    call init
+  elif card2 = 0
+    call search_card
+  end
+end
+textsize 16
+call init
+

@@ -1,0 +1,170 @@
+[2022 Day 14][easylang] Sand in browser with editable code
+https://easylang.online/aoc/show.html?f=22/14.el
+
+
+*[Easylang](https://easylang.online)*
+
+[Solution](https://easylang.online/aoc/22/?day=22)
+
+
+###############################################################
+
+repeat
+   s$ = input
+   until s$ = ""
+   sum += number s$
+   ar[] &= sum
+.
+pr ar[]
+input_data
+
+###############################################################
+
+repeat
+   s$ = input
+   until s$ = ""
+   inp$[] &= s$
+.
+for s$ in inp$[]
+   a = (strcode substr s$ 1 1) - strcode "A" + 1
+   b = (strcode substr s$ 3 1) - strcode "X" + 1
+   pr a
+   pr b
+.
+input_data
+A X
+B Z
+
+###############################################################
+
+func sort . d[] .
+   for i = 1 to len d[] - 1
+      for j = i + 1 to len d[]
+         if d[j] < d[i]
+            swap d[j] d[i]
+         .
+      .
+   .
+.
+d[] = [ 29 4 72 44 55 26 27 77 92 5 ]
+call sort d[]
+print d[]
+
+###############################################################
+
+name$[] = [ ]
+func name2id n$ . id .
+   for id = 1 to len name$[]
+      if name$[id] = n$
+         break 2
+      .
+   .
+   name$[] &= n$
+.
+for s$ in [ "alice" "bob" "trudy" "bob" ]
+   call name2id s$ id
+   print s$ & ": " & id
+.
+
+###############################################################
+
+for gi = 1 to 3
+   perm[] &= gi
+.
+global permlist[][] .
+func mk_permlist k . .
+   for i = k to len perm[]
+      swap perm[i] perm[k]
+      call mk_permlist k + 1
+      swap perm[k] perm[i]
+   .
+   if k = len perm[]
+      permlist[][] &= perm[]
+   .
+.
+call mk_permlist 1
+# 
+print permlist[][]
+
+###############################################################
+
+#hashsz = 1999993
+hashsz = 199999
+#
+len hashind[] hashsz
+len hashv[] hashsz
+# 
+func hashget key . val .
+  hi = key mod hashsz + 1
+  repeat
+    if hashind[hi] = ind
+      val = hashv[hi]
+      break 2
+    .
+    until hashind[hi] = 0
+    hi = hi mod hashsz + 1
+  .
+  val = -1
+.
+func hashset key val . .
+  hi = key mod hashsz + 1
+  while hashind[hi] <> 0
+    hi = hi mod hashsz + 1
+  .
+  hashind[hi] = key
+  hashv[hi] = val
+.
+
+??????
+hashsz = 1999993
+# hashsz = 19999999
+len hashkey[] hashsz
+len hashval[] hashsz
+# 
+func hashinit . .
+   len hashkey[] 0
+   len hashval[] 0
+   len hashkey[] hashsz
+   len hashval[] hashsz
+.
+func hashget key . val .
+   ind = key mod hashsz + 1
+   while hashkey[ind] <> key and hashkey[ind] <> 0
+      ind = ind mod hashsz + 1
+   .
+   val = -1
+   if hashkey[ind] = key
+      val = hashval[ind]
+   .
+.
+func hashset key val . .
+   ind = key mod hashsz + 1
+   while hashkey[ind] <> key and hashkey[ind] <> 0
+      ind = ind mod hashsz + 1
+   .
+   hashkey[ind] = key
+   hashval[ind] = val
+.
+
+
+
+################################
+ 
+func out . .
+   i = 1
+   while i <= len m[]
+      if m[i] = -1
+         write "#"
+      elif m[i] = 0
+         write "."
+      else
+         write m[i]
+      .
+      if i mod nc = 0
+         print ""
+      .
+      i += 1
+   .
+   print ""
+.
+

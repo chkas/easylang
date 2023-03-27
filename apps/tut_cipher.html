@@ -1,0 +1,925 @@
+<!doctype html>
+<meta charset=utf-8><title>Symmetric Cipher</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="symmetric encryption, speck, block modes, brute-force, nonce reuse">
+<link rel="icon" href="../icon.png" type="image/x-png">
+
+<div id=tut><b>Loading ...</b></div>
+<script src=easy_code2.js></script>
+<script src=easy_tut2.js></script>
+
+<script>
+
+txt_tutor=`* Symmetric Cipher
+
++ Symmetric ciphers use the same key (generally a very large number) 
+to encrypt and decrypt the data. This key must be kept secret.  
+
+* XOR Encryption
+
++ XOR encryption with a repeating key is simple, but not secure.
+
+func str2bytes s$ . ar[] .
+  ar[] = [ ]
+  for c$ in strchars s$
+    ar[] &= strcode c$
+  .
+.
+func bytes2str ar[] . s$ .
+  s$ = ""
+  for b in ar[]
+    s$ &= strchar b
+  .
+.
+func xorcrypt key in[] . out[] .
+  out[] = [ ]
+  for i = 1 to 4
+    k[] &= bitand key 0xff
+    key = bitshift key -8
+  .
+  for i = 1 to len in[]
+    out[] &= bitxor in[i] k[(i - 1) mod 4 + 1]
+  .
+.
+msg$ = "Hi Alice. We have a surprise birthday party for Trudy. Bob"
+call str2bytes msg$ msg[]
+print msg[]
+print ""
+# 
+secrkey = 0x01164a34
+# 
+call xorcrypt secrkey msg[] encr[]
+print encr[]
+print ""
+call bytes2str encr[] s$
+print s$
+print ""
+call xorcrypt secrkey encr[] r[]
+call bytes2str r[] s$
+print s$
+# 
+print ""
+msg[] = [ 0 0 0 0 0 0 0 0 ]
+call xorcrypt 0x09080602 msg[] encr[]
+print encr[]
+
+* Cracking XOR
+
++ If data is repeatedly encrypted with the same
+XOR key, the encryption can be easily cracked: 
+The partial keys, e.g. always 8 bits, that encrypt
+a character are varied independently until they 
+"fit" the data they decrypt - a text, for example, 
+contains many lowercase letters. 
+
+func bytes2str ar[] . s$ .
+  s$ = ""
+  for b in ar[]
+    s$ &= strchar b
+  .
+.
+func xorcrypt key in[] . out[] .
+  out[] = [ ]
+  for i = 1 to 4
+    k[] &= bitand key 0xff
+    key = bitshift key -8
+  .
+  for i = 1 to len in[]
+    out[] &= bitxor in[i] k[(i - 1) mod 4 + 1]
+  .
+.
+encr[] = [ 124 35 54 64 88 35 117 100 26 106 65 100 20 34 119 119 81 106 119 33 71 63 100 113 70 35 101 100 20 40 127 115 64 34 114 96 77 106 102 96 70 62 111 33 82 37 100 33 96 56 99 101 77 100 54 67 91 40 ]
+#  
+func crack_xor in[] . .
+  len k[] 4
+  for ki = 1 to 4
+    for b = 0 to 0xff
+      k[ki] = b
+      key = k[1] + 0x100 * k[2] + 0x10000 * k[3] + 0x1000000 * k[4]
+      call xorcrypt key in[] out[]
+      m = 0
+      for i = ki step 4 to len out[] - 1
+        if out[i] = 32 or out[i] >= 97 and out[i] <= 122
+          m += 1
+        .
+      .
+      if m > len out[] / 5
+        print "Partial key " & ki & " : " & b
+        call xorcrypt key encr[] out[]
+        call bytes2str out[] s$
+        print s$
+        print ""
+        break 1
+      .
+    .
+  .
+  print "Key: " & key
+.
+call crack_xor encr[]
+
+* Block Cipher
+
++ *AES* is the most commonly used block cipher. The block size is 128 bits and the key size is usually 128 bits. It is somewhat complicated for micro-controllers and for teaching purposes.
+
++ The rather unknown *Speck* is well suited for these purposes. This is also a block cipher with different block sizes and key lengths. We use it here for demo purposes with a 64-bit block size, with a 64-bit key length (which is not specified for this block size) and 22 rounds. (The key length is reduced to 53 bits by using a double variable).
+
++ Blocks of 8 bytes are encrypted together. If two blocks have the same input, they give the same output. This is called *Electronic Codebook (ECB)* mode. To prevent this, the output of one cipher can be combined with the input of the next cipher (*Cipher Block Chaining*).
+
++ Encryption is done by the basic operations rotation, XOR and addition with the key as parameter in several rounds. For decryption, these steps must be performed in reverse order.
+
+func str2bytes s$ . ar[] .
+  ar[] = [ ]
+  for c$ in strchars s$
+    ar[] &= strcode c$
+  .
+.
+func bytes2str ar[] . s$ .
+  s$ = ""
+  for b in ar[]
+    s$ &= strchar b
+  .
+.
+# 
+func rot k . x y .
+  x = bitor bitshift x 3 bitshift x -29
+  x += y
+  x = bitxor x k
+  x = bitor bitshift x 8 bitshift x -24
+  y = bitxor y x
+.
+global spkb[] .
+func sp_prepkey key . .
+  a = key div 0x100000000
+  b = key mod 0x100000000
+  spkb[] = [ b ]
+  for i = 0 to 21
+    call rot i a b
+    spkb[] &= b
+  .
+.
+func sp_block . x y .
+  call rot spkb[1] x y
+  for i = 2 to 23
+    call rot spkb[i] x y
+  .
+.
+func rotrev k . x y .
+  y = bitxor y x
+  x = bitor bitshift x -8 bitshift x 24
+  x = bitxor x k
+  x = (x - y) mod 0x100000000
+  x = bitor bitshift x -3 bitshift x 29
+.
+func sp_blockrev . x y .
+  for i = 23 downto 2
+    call rotrev spkb[i] x y
+  .
+  call rotrev spkb[1] x y
+.
+# 
+func sp_encr key . in[] out[] .
+  call sp_prepkey key
+  # padding
+  if len in[] mod 8 <> 0
+    len in[] len in[] + 8 - len in[] mod 8
+  .
+  out[] = [ ]
+  for i = 1 to len in[]
+    x = bitor bitshift y 24 bitshift x -8
+    y = bitor bitshift in[i] 24 bitshift y -8
+    if i mod 8 = 0
+      call sp_block x y
+      for j = 1 to 8
+        out[] &= x mod 0x100
+        x = bitxor bitshift y 24 bitshift x -8
+        y = bitshift y -8
+      .
+    .
+  .
+.
+func sp_decr key . in[] out[] .
+  call sp_prepkey key
+  out[] = [ ]
+  for i = 1 to len in[]
+    x = bitor bitshift y 24 bitshift x -8
+    y = bitor bitshift in[i] 24 bitshift y -8
+    if i mod 8 = 0
+      call sp_blockrev x y
+      for j = 1 to 8
+        out[] &= x mod 0x100
+        x = bitxor bitshift y 24 bitshift x -8
+        y = bitshift y -8
+      .
+    .
+  .
+.
+msg$ = "Hi Alice. We have a surprise birthday party for Trudy. Bob"
+call str2bytes msg$ msg[]
+# 
+secrkey = 18238004
+# 
+call sp_encr secrkey msg[] encr[]
+print encr[]
+print ""
+call sp_decr secrkey encr[] r[]
+call bytes2str r[] s$
+print s$
+#  
+# 
+print ""
+print "ECB demo:"
+msg$ = "Hi Bob! Hi Joe! Hi Bob! "
+call str2bytes msg$ msg[]
+call sp_encr 1234567890 msg[] encr[]
+print encr[]
+
+* Brute Force
+
++ Every encryption can be cracked by trying all keys. With a key length of 53 bits, that is about 9000 trillion attempts, which is doable with some effort. With 128 bit key length, it would take many billions of years even with the fastest parallel hardware.
+
++ For a brute force attack, you don't need to know the result you are looking for. The key is the correct one if the decrypted data matches the expected format. In this example, if there are many lowercase letters and spaces.
+
++ To shorten the search time in this example, we start the key search near the key.
+
+func str2bytes s$ . ar[] .
+  ar[] = [ ]
+  for c$ in strchars s$
+    ar[] &= strcode c$
+  .
+.
+func bytes2str ar[] . s$ .
+  s$ = ""
+  for b in ar[]
+    s$ &= strchar b
+  .
+.
+# 
+func rot k . x y .
+  x = bitor bitshift x 3 bitshift x -29
+  x += y
+  x = bitxor x k
+  x = bitor bitshift x 8 bitshift x -24
+  y = bitxor y x
+.
+global spkb[] .
+func sp_prepkey key . .
+  a = key div 0x100000000
+  b = key mod 0x100000000
+  spkb[] = [ b ]
+  for i = 0 to 21
+    call rot i a b
+    spkb[] &= b
+  .
+.
+func rotrev k . x y .
+  y = bitxor y x
+  x = bitor bitshift x -8 bitshift x 24
+  x = bitxor x k
+  x = (x - y) mod 0x100000000
+  x = bitor bitshift x -3 bitshift x 29
+.
+func sp_blockrev . x y .
+  for i = 23 downto 2
+    call rotrev spkb[i] x y
+  .
+  call rotrev spkb[1] x y
+.
+# 
+func sp_decr key . in[] out[] .
+  call sp_prepkey key
+  out[] = [ ]
+  for i = 1 to len in[]
+    x = bitor bitshift y 24 bitshift x -8
+    y = bitor bitshift in[i] 24 bitshift y -8
+    if i mod 8 = 0
+      call sp_blockrev x y
+      for j = 1 to 8
+        out[] &= x mod 0x100
+        x = bitxor bitshift y 24 bitshift x -8
+        y = bitshift y -8
+      .
+    .
+  .
+.
+encr_data[] = [ 192 253 254 121 108 155 118 170 155 152 106 191 207 145 206 162 65 231 185 62 171 54 146 147 249 45 24 91 114 114 175 5 17 202 184 36 86 78 210 131 71 28 71 74 8 147 221 148 39 117 92 147 180 203 178 147 22 84 137 109 136 209 111 137 ]
+# 
+func brute_force in[] . key .
+  len in[] 16
+  for key = 18000000 to 9007199254740991
+    if key mod 10000 = 0
+      write "."
+    .
+    call sp_decr key in[] out[]
+    m = 0
+    for i = 1 to len out[]
+      if out[i] >= 97 and out[i] <= 122
+        m += 1
+      elif out[i] = 32
+        m += 3
+      .
+    .
+    if m > len out[]
+      break 1
+    .
+  .
+.
+call brute_force encr_data[] key
+print ""
+print "Key: " & key
+call sp_decr key encr_data[] data[]
+call bytes2str data[] s$
+print s$
+
++ Who can crack this secret message?
+
+~ [ 143 175 181 116 217 0 174 94 226 184 167 49 30 41 203 116 82 113 237 56 254 212 62 90 64 104 255 100 77 170 125 165 85 248 158 169 178 179 187 95 210 37 77 113 22 62 156 142 106 204 62 95 238 205 184 30 144 35 60 27 145 174 168 227 ]
+
+* Cypher Block Chaining
+
++ Before a block is encrypted, it is XORed with the last encrypted block. The 
+initialization vector *IV* is used for the first block. After decrypting a 
+block, the same XOR operation must be applied.
+
++ Equal input blocks do not lead to equal output blocks. But if the blocks at 
+the beginning are equal, the encryption in these blocks is also equal. 
+This can be avoided by using a random IV to which the first block is 
+XORed. This IV must be transmitted (or stored) together with the ciphertext. 
+Conveniently, it is added as the first block.
+
+func str2bytes s$ . ar[] .
+  ar[] = [ ]
+  for c$ in strchars s$
+    ar[] &= strcode c$
+  .
+.
+func bytes2str ar[] . s$ .
+  s$ = ""
+  for b in ar[]
+    s$ &= strchar b
+  .
+.
+# 
+func rot k . x y .
+  x = bitor bitshift x 3 bitshift x -29
+  x += y
+  x = bitxor x k
+  x = bitor bitshift x 8 bitshift x -24
+  y = bitxor y x
+.
+global spkb[] .
+func sp_prepkey key . .
+  a = key div 0x100000000
+  b = key mod 0x100000000
+  spkb[] = [ b ]
+  for i = 0 to 21
+    call rot i a b
+    spkb[] &= b
+  .
+.
+func sp_block . x y .
+  call rot spkb[1] x y
+  for i = 2 to 23
+    call rot spkb[i] x y
+  .
+.
+func rotrev k . x y .
+  y = bitxor y x
+  x = bitor bitshift x -8 bitshift x 24
+  x = bitxor x k
+  x = (x - y) mod 0x100000000
+  x = bitor bitshift x -3 bitshift x 29
+.
+func sp_blockrev . x y .
+  for i = 23 downto 2
+    call rotrev spkb[i] x y
+  .
+  call rotrev spkb[1] x y
+.
+# 
+func sp_encr key . in[] out[] .
+  call sp_prepkey key
+  # padding
+  if len in[] mod 8 <> 0
+    len in[] len in[] + 8 - len in[] mod 8
+  .
+  # IV
+  x = random 0x100000000
+  y = random 0x100000000
+  out[] = [ ]
+  i = 1
+  repeat
+    if i mod 8 = 1
+      x0 = x
+      y0 = y
+      for j = 1 to 8
+        out[] &= x mod 0x100
+        x = bitxor bitshift y 24 bitshift x -8
+        y = bitshift y -8
+      .
+    .
+    until i > len in[]
+    x = bitor bitshift y 24 bitshift x -8
+    y = bitor bitshift in[i] 24 bitshift y -8
+    i += 1
+    if i mod 8 = 1
+      x = bitxor x x0
+      y = bitxor y y0
+      call sp_block x y
+    .
+  .
+.
+func sp_decr key . in[] out[] .
+  call sp_prepkey key
+  out[] = [ ]
+  for i = 1 to len in[]
+    x0 = bitor bitshift y0 24 bitshift x0 -8
+    y0 = bitor bitshift in[i] 24 bitshift y0 -8
+    if i mod 8 = 0
+      if i > 8
+        x = x0
+        y = y0
+        call sp_blockrev x y
+        x = bitxor x xp
+        y = bitxor y yp
+        for j = 1 to 8
+          out[] &= x mod 0x100
+          x = bitxor bitshift y 24 bitshift x -8
+          y = bitshift y -8
+        .
+      .
+      xp = x0
+      yp = y0
+    .
+  .
+.
+msg$ = "Hi Alice. We have a surprise birthday party for Trudy. Bob"
+call str2bytes msg$ msg[]
+# 
+secrkey = 18238004
+# 
+call sp_encr secrkey msg[] encr[]
+print encr[]
+print ""
+call sp_decr secrkey encr[] r[]
+call bytes2str r[] s$
+print s$
+
+* Counter Mode
+
++ If you encrypt a continuous counter with a block cipher, you 
+get a bit sequence that cannot be predicted without knowing the 
+key. With this sequence then the input data is XORed and you 
+get a stream cipher. 
+
++ The counter must not occur more than once for the same key, 
+otherwise the encryption is vulnerable. The counter does not 
+have to be kept secret. It can be transmitted together with 
+the encrypted data. 
+
++ The start counter is also called *Nonce* ("Number Once"). The 
+actual counter can also be combined with a start value in a 
+different way (XOR, concatenate).
+
+func str2bytes s$ . ar[] .
+  ar[] = [ ]
+  for c$ in strchars s$
+    ar[] &= strcode c$
+  .
+.
+func bytes2str ar[] . s$ .
+  s$ = ""
+  for b in ar[]
+    s$ &= strchar b
+  .
+.
+# 
+func rot k . x y .
+  x = bitor bitshift x 3 bitshift x -29
+  x += y
+  x = bitxor x k
+  x = bitor bitshift x 8 bitshift x -24
+  y = bitxor y x
+.
+global spkb[] .
+func sp_prepkey key . .
+  a = key div 0x100000000
+  b = key mod 0x100000000
+  spkb[] = [ b ]
+  for i = 0 to 21
+    call rot i a b
+    spkb[] &= b
+  .
+.
+func sp_block . x y .
+  call rot spkb[1] x y
+  for i = 2 to 23
+    call rot spkb[i] x y
+  .
+.
+func sp_ctrmode key ctr . in[] out[] .
+  call sp_prepkey key
+  out[] = [ ]
+  for i = 1 to len in[]
+    if i mod 8 = 1
+      dx = ctr mod 0x100000000
+      dy = ctr div 0x100000000
+      call sp_block dx dy
+      ctr += 1
+    .
+    out[] &= bitxor in[i] (dx mod 0x100)
+    dx = bitor bitshift dx -8 bitshift dy 24
+    dy = bitshift dy -8
+  .
+.
+msg$ = "Hi Alice. We have a surprise birthday party for Trudy. Bob"
+call str2bytes msg$ msg[]
+# 
+secrkey = 18238004
+counter = 1423
+# 
+call sp_ctrmode secrkey counter msg[] encr[]
+print encr[]
+print ""
+call sp_ctrmode secrkey counter encr[] r[]
+call bytes2str r[] s$
+print s$
+
+* The counter is important in counter mode.
+
++ Bob and Alice exchange secret messages. A fatal mistake 
+happens to them doing so.
+
+func str2bytes s$ . ar[] .
+  ar[] = [ ]
+  for c$ in strchars s$
+    ar[] &= strcode c$
+  .
+.
+func rot k . x y .
+  x = bitor bitshift x 3 bitshift x -29
+  x += y
+  x = bitxor x k
+  x = bitor bitshift x 8 bitshift x -24
+  y = bitxor y x
+.
+global spkb[] .
+func sp_prepkey key . .
+  a = key div 0x100000000
+  b = key mod 0x100000000
+  spkb[] = [ b ]
+  for i = 0 to 21
+    call rot i a b
+    spkb[] &= b
+  .
+.
+func sp_block . x y .
+  call rot spkb[1] x y
+  for i = 2 to 23
+    call rot spkb[i] x y
+  .
+.
+func sp_ctrmode key ctr . in[] out[] .
+  call sp_prepkey key
+  out[] = [ ]
+  for i = 1 to len in[]
+    if i mod 8 = 1
+      dx = ctr mod 0x100000000
+      dy = ctr div 0x100000000
+      call sp_block dx dy
+      ctr += 1
+    .
+    out[] &= bitxor in[i] (dx mod 0x100)
+    dx = bitor bitshift dx -8 bitshift dy 24
+    dy = bitshift dy -8
+  .
+.
+secrkey = 18238004
+counter = 0
+# 
+msg$[] &= "Hi Alice. We are going to have a surprise birthday party for Trudy. Bob"
+msg$[] &= "Hi Bob! Great. Hopefully she won't be able to decode the message. Alice"
+msg$[] &= "Hi Alice! We use encryption. It takes millions of years to crack it. Bob"
+msg$[] &= "Hi Bob! Yes, but you know Trudy is very smart about these things. Alice"
+msg$[] &= "Hi Alice! Yes I know. But trust me. This time nothing will go wrong. Bob"
+msg$[] &= "Hi Bob. Well, what do you say we meet at the mall tomorrow midday? Alice"
+msg$[] &= "Hi Alice. Good idea. Well then see you tomorrow. Have a nice evening. Bob"
+# 
+for i = 1 to len msg$[]
+  call str2bytes msg$[i] msg[]
+  call sp_ctrmode secrkey counter msg[] encr[]
+  print encr[]
+  print ""
+.
+
++ Trudy can intercept the encrypted messages and tests if she can 
+find a common bit sequence for the different messages that decrypt 
+the messages. She uses a letter frequency analysis for this.
+
+c[][] &= [ 12 67 227 52 44 5 27 158 4 144 246 29 87 128 24 2 48 13 173 45 88 198 156 154 54 63 113 130 53 242 209 115 53 92 1 182 115 235 120 107 176 211 16 68 87 33 77 234 163 139 191 205 212 80 233 27 16 60 93 190 197 111 42 63 25 254 106 136 240 91 194 ]
+c[][] &= [ 12 67 227 55 47 14 89 219 109 194 196 25 3 207 74 47 127 26 167 34 67 205 208 151 121 108 113 134 99 224 158 124 50 91 84 166 102 185 112 122 185 150 82 89 74 117 65 235 161 157 251 216 149 86 245 7 16 55 87 191 150 90 63 47 83 167 5 196 219 87 197 ]
+c[][] &= [ 12 67 227 52 44 5 27 158 11 144 246 29 87 148 25 2 48 15 172 39 68 216 204 154 48 112 119 205 99 222 133 50 97 78 31 161 112 185 124 113 185 159 27 66 75 38 5 225 164 210 230 216 212 80 238 66 68 53 18 175 151 90 59 33 93 238 48 134 146 118 207 140 ]
+c[][] &= [ 12 67 227 55 47 14 89 219 115 213 210 84 87 131 31 19 48 19 173 49 22 202 210 129 46 63 77 145 54 243 136 50 124 92 84 178 102 235 104 56 166 158 19 95 81 117 68 236 173 135 235 157 193 74 248 17 85 122 70 164 140 85 63 57 83 167 5 196 219 87 197 ]
+c[][] &= [ 12 67 227 52 44 5 27 158 11 144 248 29 4 193 35 71 123 4 173 51 24 129 254 155 45 63 109 145 54 228 133 50 120 74 90 228 87 241 120 107 245 135 27 64 64 117 75 225 182 154 246 211 210 2 234 11 92 54 18 171 138 27 47 56 18 233 35 134 146 118 207 140 ]
+c[][] &= [ 12 67 227 55 47 14 86 219 125 213 205 20 91 193 29 15 113 30 226 32 89 129 197 129 44 63 106 130 58 183 134 119 53 66 17 161 119 185 112 108 245 135 26 72 5 56 68 226 174 210 235 210 216 77 239 16 95 45 18 161 140 95 60 43 4 184 100 233 222 93 195 139 ]
+c[][] &= [ 12 67 227 52 44 5 27 158 4 144 230 23 24 133 74 14 116 15 163 106 22 246 217 130 53 63 109 139 38 249 209 97 112 74 84 189 108 236 49 108 186 158 29 95 87 58 82 160 226 186 254 203 208 2 252 66 94 51 81 169 197 94 46 47 19 238 42 207 156 20 226 129 49 ]
+#  
+func bytes2str ar[] . s$ .
+  s$ = ""
+  for b in ar[]
+    s$ &= strchar b
+  .
+.
+func crack_xor . key[] .
+  key[] = [ ]
+  for pos = 1 to 66
+    max = 1
+    maxcnt = 0
+    for b = 0 to 0xff
+      out[] = [ ]
+      for i = 1 to len c[][]
+        out[] &= bitxor c[i][pos] b
+      .
+      m = 0
+      for o in out[]
+        o$ = strchar o
+        if o >= 65 and o <= 90
+          m += 3
+        elif o >= 97 and o <= 122
+          m += 6
+        elif o < 32
+          m -= 5
+        .
+        if o$ = "e"
+          m += 3
+        elif o$ = "a" or o$ = "t"
+          m += 2
+        elif o$ = "n" or o$ = "o" or o$ = "r" or o$ = "s" or o$ = "i" or o$ = "h" or o$ = "i"
+          m += 1
+        elif o$ = " "
+          m += 9
+        elif o$ = "."
+          m += 6
+        elif o$ = "k" or o$ = "v" or o$ = "b"
+          m -= 1
+        elif o$ = "z" or o$ = "x" or o$ = "q" or o$ = "j"
+          m -= 2
+        .
+      .
+      if m >= max
+        maxcnt += 1
+        if m > max
+          maxcnt = 1
+          max = m
+          maxb = b
+        .
+      .
+    .
+    if maxcnt = 1
+      key[] &= maxb
+    else
+      key[] &= -1
+    .
+  .
+.
+call crack_xor key[]
+# 
+func decrypt encr[] key[] . .
+  out[] = [ ]
+  for i = 1 to len key[]
+    if key[i] <> -1
+      out[] &= bitxor encr[i] key[i]
+    else
+      out[] &= strcode "_"
+    .
+  .
+  call bytes2str out[] s$
+  print s$
+  print ""
+.
+for i = 1 to len c[][]
+  call decrypt c[i][] key[]
+.
+
++ That worked. Alice and Bob obviously messed up and generated the 
+same XOR bit sequence in a stream cipher for all messages - they 
+didn't know what the counter was for, so they just set it to 0.
+
++ The first and last characters of the messages could not be 
+decoded, because they differed too little between the messages.
+
++ Trudy can complete the first message even further without a 
+computer and thus also determine the XOR key sequence and thus 
+also decode the further messages almost completely.
+
+c[][] &= [ 12 67 227 52 44 5 27 158 4 144 246 29 87 128 24 2 48 13 173 45 88 198 156 154 54 63 113 130 53 242 209 115 53 92 1 182 115 235 120 107 176 211 16 68 87 33 77 234 163 139 191 205 212 80 233 27 16 60 93 190 197 111 42 63 25 254 106 136 240 91 194 ]
+c[][] &= [ 12 67 227 55 47 14 89 219 109 194 196 25 3 207 74 47 127 26 167 34 67 205 208 151 121 108 113 134 99 224 158 124 50 91 84 166 102 185 112 122 185 150 82 89 74 117 65 235 161 157 251 216 149 86 245 7 16 55 87 191 150 90 63 47 83 167 5 196 219 87 197 ]
+c[][] &= [ 12 67 227 52 44 5 27 158 11 144 246 29 87 148 25 2 48 15 172 39 68 216 204 154 48 112 119 205 99 222 133 50 97 78 31 161 112 185 124 113 185 159 27 66 75 38 5 225 164 210 230 216 212 80 238 66 68 53 18 175 151 90 59 33 93 238 48 134 146 118 207 140 ]
+c[][] &= [ 12 67 227 55 47 14 89 219 115 213 210 84 87 131 31 19 48 19 173 49 22 202 210 129 46 63 77 145 54 243 136 50 124 92 84 178 102 235 104 56 166 158 19 95 81 117 68 236 173 135 235 157 193 74 248 17 85 122 70 164 140 85 63 57 83 167 5 196 219 87 197 ]
+c[][] &= [ 12 67 227 52 44 5 27 158 11 144 248 29 4 193 35 71 123 4 173 51 24 129 254 155 45 63 109 145 54 228 133 50 120 74 90 228 87 241 120 107 245 135 27 64 64 117 75 225 182 154 246 211 210 2 234 11 92 54 18 171 138 27 47 56 18 233 35 134 146 118 207 140 ]
+c[][] &= [ 12 67 227 55 47 14 86 219 125 213 205 20 91 193 29 15 113 30 226 32 89 129 197 129 44 63 106 130 58 183 134 119 53 66 17 161 119 185 112 108 245 135 26 72 5 56 68 226 174 210 235 210 216 77 239 16 95 45 18 161 140 95 60 43 4 184 100 233 222 93 195 139 ]
+c[][] &= [ 12 67 227 52 44 5 27 158 4 144 230 23 24 133 74 14 116 15 163 106 22 246 217 130 53 63 109 139 38 249 209 97 112 74 84 189 108 236 49 108 186 158 29 95 87 58 82 160 226 186 254 203 208 2 252 66 94 51 81 169 197 94 46 47 19 238 42 207 156 20 226 129 49 ]
+#  
+func str2bytes s$ . ar[] .
+  ar[] = [ ]
+  for c$ in strchars s$
+    ar[] &= strcode c$
+  .
+.
+func bytes2str ar[] . s$ .
+  s$ = ""
+  for b in ar[]
+    s$ &= strchar b
+  .
+.
+func decrypt encr[] key[] . .
+  out[] = [ ]
+  for i = 1 to len key[]
+    if key[i] <> -1
+      out[] &= bitxor encr[i] key[i]
+    else
+      out[] &= strcode "_"
+    .
+  .
+  call bytes2str out[] s$
+  print s$
+  print ""
+.
+print ""
+txt$ = "______ __ We are going to have a surprise birthday party for Trudy."
+call str2bytes txt$ b[]
+key[] = [ ]
+for i = 1 to len b[]
+  if b[i] = strcode "_"
+    key[] &= -1
+  else
+    key[] &= bitxor b[i] c[1][i]
+  .
+.
+for i = 1 to len c[][]
+  call decrypt c[i][] key[]
+.
+
++ Trudy did not crack the key, but only the bit sequence with 
+which the data was XORed.
+
++ This attack also works with other stream ciphers if you use the same 
+key, or the same (key,counter) pair, for encrypting different inputs. 
+
+* Key generation
+
++ We can use our symmetric cipher to generate a 64-bit output from an input of any length. To do this, we encrypt the output one by one using each 64-bit part of the input as the key, starting at 0. This is a cryptographic hash. 
+
++ We use this to generate a 53-bit key from a variable-length text key. The data is then encrypted with our easy-to-use block cipher in CBC mode - which doesn't go wrong as easily as stream ciphers.
+
+func str2bytes s$ . ar[] .
+  ar[] = [ ]
+  for c$ in strchars s$
+    ar[] &= strcode c$
+  .
+.
+func bytes2str ar[] . s$ .
+  s$ = ""
+  for b in ar[]
+    s$ &= strchar b
+  .
+.
+# 
+func rot k . x y .
+  x = bitor bitshift x 3 bitshift x -29
+  x += y
+  x = bitxor x k
+  x = bitor bitshift x 8 bitshift x -24
+  y = bitxor y x
+.
+global spkb[] .
+func sp_prepkey a b . .
+  spkb[] = [ b ]
+  for i = 0 to 21
+    call rot i a b
+    spkb[] &= b
+  .
+.
+func sp_block . x y .
+  call rot spkb[1] x y
+  for i = 2 to 23
+    call rot spkb[i] x y
+  .
+.
+func rotrev k . x y .
+  y = bitxor y x
+  x = bitor bitshift x -8 bitshift x 24
+  x = bitxor x k
+  x = (x - y) mod 0x100000000
+  x = bitor bitshift x -3 bitshift x 29
+.
+func sp_blockrev . x y .
+  for i = 23 downto 2
+    call rotrev spkb[i] x y
+  .
+  call rotrev spkb[1] x y
+.
+# 
+func sp_encr key . in[] out[] .
+  call sp_prepkey key div 0x100000000 key mod 0x100000000
+  # padding
+  if len in[] mod 8 <> 0
+    len in[] len in[] + 8 - len in[] mod 8
+  .
+  # IV
+  x = random 0x100000000
+  y = random 0x100000000
+  out[] = [ ]
+  i = 1
+  repeat
+    if i mod 8 = 1
+      x0 = x
+      y0 = y
+      for j = 1 to 8
+        out[] &= x mod 0x100
+        x = bitxor bitshift y 24 bitshift x -8
+        y = bitshift y -8
+      .
+    .
+    until i > len in[]
+    x = bitor bitshift y 24 bitshift x -8
+    y = bitor bitshift in[i] 24 bitshift y -8
+    i += 1
+    if i mod 8 = 1
+      x = bitxor x x0
+      y = bitxor y y0
+      call sp_block x y
+    .
+  .
+.
+func sp_decr key . in[] out[] .
+  call sp_prepkey key div 0x100000000 key mod 0x100000000
+  out[] = [ ]
+  for i = 1 to len in[]
+    x0 = bitor bitshift y0 24 bitshift x0 -8
+    y0 = bitor bitshift in[i] 24 bitshift y0 -8
+    if i mod 8 = 0
+      if i > 8
+        x = x0
+        y = y0
+        call sp_blockrev x y
+        x = bitxor x xp
+        y = bitxor y yp
+        for j = 1 to 8
+          out[] &= x mod 0x100
+          x = bitxor bitshift y 24 bitshift x -8
+          y = bitshift y -8
+        .
+      .
+      xp = x0
+      yp = y0
+    .
+  .
+.
+func genkey s$ . k .
+  call str2bytes s$ b[]
+  if len b[] mod 8 <> 0
+    len b[] len b[] + 8 - len b[] mod 8
+  .
+  for i = 1 to len b[]
+    a = bitor bitshift b 24 bitshift a -8
+    b = bitor bitshift b[i] 24 bitshift b -8
+    if i mod 8 = 0
+      xp = x
+      yp = y
+      call sp_prepkey a b
+      call sp_block x y
+      x = bitxor x xp
+      y = bitxor y yp
+    .
+  .
+  # make a 53 bit value for the "double" variable
+  k = x + y mod 2097152 * 0x100000000
+.
+# 
+call genkey "That is a very long password!!" key
+print key
+print ""
+msg$ = "Hi Alice. We have a surprise birthday party for Trudy. Bob"
+call str2bytes msg$ msg[]
+# 
+call sp_encr key msg[] encr[]
+print encr[]
+print ""
+call sp_decr key encr[] r[]
+call bytes2str r[] s$
+print s$
+
++ There are special functions for cryptographic hashes that basically work in the same way. The hashes are then at least 128 bits (MD5) or better 256 bits (SHA256).
+`
+
+function hook() {
+	var dom = window.location.host
+	tut.insertAdjacentHTML("beforeend", `
+<p><hr><p>
+The examples were created with <a href=..>${dom}<a>
+<p><small>christof.kaser@gmail.com</small>
+`)
+}
+</script>
+
+

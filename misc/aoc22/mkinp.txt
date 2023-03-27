@@ -1,0 +1,11 @@
+# 8
+el <<xx
+random_seed 0
+for i range0 80
+	for j range0 80
+		write random 10 - 1
+	.
+	print ""
+.
+xx
+

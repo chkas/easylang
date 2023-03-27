@@ -1,0 +1,299 @@
+#!/bin/sh
+
+test -d ../sky && cd ../sky
+test -d sky && cd sky
+
+odir=$HOME/out/easylang/sky
+mkdir -p $odir
+
+adir=$odir/../apps
+cp $adir/easyw.wasm $adir/easyw.js $adir/easy.js $odir
+
+cp icon.png $odir/
+
+cat >$odir/mfst.json <<EOF
+{
+	"name": "StarrySky",
+	"icons": [{
+		"src": "/sky/icon.png",
+		"type": "image/png",
+		"sizes": "256x256",
+		"purpose": "any maskable"
+	}],
+	"start_url": "/sky/",
+	"display": "standalone",
+	"background_color": "#bdb",
+	"theme_color": "#bdb"
+}
+EOF
+
+echo "var CACHE = 'sky_$(date +%m%d-%H%M%S)'" > $odir/sw.js
+cat >>$odir/sw.js <<EOF
+var urls = [
+	"/sky/",
+	"/sky/easy.js",
+	"/sky/easyw.wasm",
+	"/sky/easyw.js",
+	"/sky/icon.png",
+	"/sky/mfst.json",
+]
+
+console.log("sw " + CACHE)
+
+self.addEventListener("install", evt => {
+	console.log("install")
+	evt.waitUntil(
+		caches.open(CACHE).then(cache => Promise.all(
+			urls.map(url => {
+				var f = url
+				if (f == "/sky/") f += "?" + CACHE
+				return fetch(f).then(resp => {
+					if (!resp.ok) {
+						console.log(f + " missing")
+						return
+					}
+					return cache.put(url, resp)
+				})
+			})
+		))
+	)
+})
+
+self.addEventListener("fetch", evt => {
+	evt.respondWith(async function() {
+		var cache = await caches.open(CACHE)
+		var res = await cache.match(evt.request, {ignoreSearch: true})
+		if (res) return res
+		console.log("fetch " + evt.request.url)
+		return fetch(evt.request.url)
+	}())
+})
+
+self.addEventListener("activate", function(evt) {
+	evt.waitUntil(
+		caches.keys().then(function(keys) {
+			return Promise.all(
+				keys.map(function(k) {
+					if (k != CACHE && k[0] == CACHE[0]) return caches.delete(k)
+				})
+			)
+		})
+	)
+})
+
+self.addEventListener("message", function (evt) {
+	if (evt.data.action == "skipWaiting") self.skipWaiting()
+})
+EOF
+
+cat >$odir/index.html <<'EOF'
+<!doctype html><meta charset=utf-8>
+<title>Starry Sky</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="starry sky - interactive star sky map">
+<link rel="icon" href="../icon.png" type="image/x-png">
+<link rel="manifest" href="mfst.json">
+
+<!--
+www.atlasoftheuniverse.com/stars.html
+ssd.jpl.nasa.gov/?planet_pos
+Atlas of Surface Marine Data 1994: Algorithms and procedures
+-->
+
+<style>
+body{
+	background:#333;
+	color:#fe9;
+	user-select:none;
+	-webkit-user-select:none;
+	margin:0px;
+	overflow: hidden; 
+}
+canvas:focus{outline: none}
+
+.btn {
+	background:#444;
+	border-radius:8px;
+	display:inline-block;
+	border:1px solid gray;
+	cursor:pointer;
+	padding:6px;
+	margin:4px;
+	text-align:center;
+	height:22px;
+	min-width:40px;
+	user-select:none;
+	-webkit-user-select:none;
+	touch-action:none;
+}
+.btn:hover {background:#666}
+.btn:active {background:#888} 
+.lnk {
+	cursor: pointer;
+	text-decoration: underline;
+	color:#fe9;
+	display:inline;
+}
+.lnk:hover {background:#666}
+#noti {display:none}
+
+</style>
+
+<div style="float:left">
+<canvas id=canv></canvas>
+</div>
+
+<div id=noti class=lnk style="margin-top:10px">Click here to update to new version<br></div>
+
+<div style="margin-top:8px;margin-left:8px" class=btn id=b_up>▲&#xFE0E;</div>
+<div class=btn id=b_down>▼&#xFE0E;</div>
+<div class=btn id=b_left>◀&#xFE0E;</div>
+<div class=btn id=b_right>▶&#xFE0E;</div>
+<br>
+<div style="margin-top:8px;margin-left:8px" class=btn id=b_time>Min+</div>
+<div class=btn id=b_hour>Hour+</div>
+<div class=btn id=b_day>Day+</div>
+<div class=btn onclick='key(this, " ")'>Now</div>
+<br>
+<div style="margin-top:8px;margin-left:8px" class=btn onclick='key(this, "n")'>Text</div>
+<div class=btn onclick='key(this, "v")'>Visible</div>
+<div class=btn style="margin-left:16px" onclick=getpos()>GPS</div>
+
+<script src=easy.js></script>
+<script>
+
+if ("serviceWorker" in navigator) {
+	window.addEventListener("load", function() {
+		navigator.serviceWorker.register("sw.js").then(function(reg) {
+			reg.addEventListener("updatefound", () => {
+				noti.nsw = reg.installing
+				noti.nsw.addEventListener("statechange", () => {
+					switch (noti.nsw.state) {
+					case "installed":
+						if (navigator.serviceWorker.controller) {
+							noti.style.display = "inline"
+						}
+						break
+					}
+				})
+			})
+		})
+	})
+	navigator.serviceWorker.addEventListener("controllerchange", function () {
+		if (noti.inRefresh) return
+		window.location.reload()
+		noti.inRefresh = true
+	})
+	noti.onclick = function(){
+		noti.nsw.postMessage({ action: "skipWaiting" })
+	}
+}
+
+window.onresize = function() {
+	var h = window.innerHeight
+	var w = window.innerWidth
+	if (w - 340 > h - 116) {
+		if (h > w - 340) h = w - 340
+		w = h
+	}
+	else {
+		if (w > h - 116) w = h - 116
+	}
+	canv.style.width = Math.floor(w) + "px"
+	canv.style.height = Math.floor(w) + "px"
+}
+
+window.onresize()
+
+
+function reg(btn, key) {
+	btn.key = key
+	btn.ontouchstart = function (e) { 
+		e.preventDefault()
+		mdown(this, this.key) 
+	}
+	btn.ontouchend  = function (e) {
+		e.preventDefault()
+		mup()
+	}
+	btn.onmousedown = function (e) { mdown(this, this.key) }
+	btn.onmouseup = mup
+	btn.onmouseleave = mup
+}
+
+reg(b_up, "ArrowUp")
+reg(b_down, "ArrowDown")
+reg(b_left, "ArrowLeft")
+reg(b_right, "ArrowRight")
+reg(b_time, "m")
+reg(b_hour, "h")
+reg(b_day, "d")
+
+var intId
+var tmId
+function timerf(k) {
+	tmId = null
+	intId = setInterval(easykey, 50, k)
+	easykey(k)
+}
+function mdown(btn, k) {
+	btn.blur()
+	tmId = setTimeout(timerf, 500, k)
+	easykey(k)
+}
+function mup() {
+	if (tmId) clearTimeout(tmId)
+	else clearInterval(intId)
+}
+function key(btn, k) {
+	btn.blur()
+	easykey(k)
+}
+
+function getpos() {
+	if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(posfunc);
+	}
+}
+function posfunc(pos) {
+	lat = pos.coords.latitude
+	long = pos.coords.longitude
+	easykey("p:" + lat + " " + long)
+	window.localStorage.setItem("x_starry_sky", "" + lat + " " + long)
+}
+
+window.addEventListener("keydown", function(e) {
+		if (e.target.tagName === 'BODY') {
+		var v = e.keyCode
+		if (v >= 37 && v <= 40 || v == 32 || v >= 65 && v <= 90) {
+			easykey(e.key)
+			e.preventDefault()
+		}
+	}
+})
+
+s = `
+EOF
+
+cat sky.el >>$odir/index.html
+
+cat >>$odir/index.html <<'EOF'
+`
+
+function msgf(m) {
+	if (m == "ready") {
+		easyrun(s, canv)
+		var h = window.localStorage.getItem("x_starry_sky")
+		if (h != null) {
+			var a = h.split(" ")
+			easykey("p:" + a[0] + " " + a[1])
+		}
+		else getpos()
+	}
+}
+
+easyinit(canv, null, msgf)
+
+</script>
+EOF
+

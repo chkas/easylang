@@ -1,0 +1,131 @@
+# Coin flip test
+# 
+background 000
+subr vars
+  d[] = [ ]
+  ind = -1
+  stat = 0
+.
+func test . ok .
+  ok = 1
+  for d = 1 to 2
+    n = 0
+    for i range 20 - d
+      n += abs (d[i] - d[i + d])
+    .
+    if (n < 4 or n >= 12 + d)
+      ok = 0
+    .
+  .
+.
+func test_random . .
+  for t range 10000
+    d[] = [ ]
+    for i range 20
+      d[] &= random 2
+    .
+    call test ok
+    if ok > 0
+      n_ok += 1
+    .
+  .
+  print n_ok
+.
+call test_random
+# 
+func drawl . .
+  color 000
+  move 0 24
+  rect 100 8
+  color 888
+  textsize 5
+  for i range 20
+    move i * 4.75 + 3 24
+    if i < len d[]
+      text d[i]
+    else
+      text "_"
+    .
+  .
+.
+func drawk bg fg . .
+  color bg
+  x = ind * 40 + 10
+  move x + 2 52
+  rect 36 36
+  color fg
+  textsize 28
+  move x + 12 56
+  text ind
+.
+func init . .
+  call vars
+  clear
+  textsize 7
+  color 888
+  move 5 5
+  text "Flip a coin 20 times"
+  call drawl
+  for ind range 2
+    call drawk 111 888
+  .
+  ind = -1
+.
+# 
+func handle_key . .
+  ind = (mouse_x - 10) div 40
+  d[] &= ind
+  call drawl
+  call drawk 333 999
+  if len d[] = 20
+    stat = 1
+    timer 1
+  .
+.
+on timer
+  if stat = 1
+    stat = 2
+    move 0 40
+    color 000
+    rect 100 60
+    color 888
+    # 
+    ok = 1
+    call test ok
+    #  ok = 1
+    textsize 7
+    if ok > 0
+      s1$ = "Good flips! Thanks"
+      s2$ = "for playing."
+    else
+      s1$ = "I caught you. These"
+      s2$ = "weren't coin tosses."
+    .
+    move 8 46
+    text s1$
+    move 8 60
+    text s2$
+    timer 2
+  else
+    stat = 3
+  .
+.
+on mouse_down
+  if stat = 0
+    if mouse_y >= 50 and mouse_y < 90
+      if mouse_x >= 10 and mouse_x < 90
+        call handle_key
+      .
+    .
+  elif stat = 3
+    call init
+  .
+.
+on mouse_up
+  if ind >= 0
+    call drawk 111 888
+    ind = -1
+  .
+.
+call init
+

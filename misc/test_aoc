@@ -1,0 +1,20 @@
+#/bin/sh
+../../native/runc 1.el
+t0=$(date +%s.%2N)
+for i in $(seq 1 25); do 
+	grep "0x67452301" $i.el >/dev/null && continue
+	if test $1; then
+		echo "--- $i ---"
+	fi
+	../../native/runc $i.el >/tmp/sol$$
+	if test $1; then
+		cat /tmp/sol$$
+	fi
+	cat /tmp/sol$$ >> /tmp/sol$$.txt
+	echo >>/tmp/sol$$.txt
+done
+test -e sol.txt || cp /tmp/sol$$.txt sol.txt
+diff /tmp/sol$$.txt sol.txt
+rm /tmp/sol$$ /tmp/sol$$.txt
+echo "$(date +%s.%2N) - $t0" | bc -l
+

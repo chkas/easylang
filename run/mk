@@ -1,0 +1,602 @@
+#!/bin/sh
+
+cd ../apps
+
+odir=$HOME/out/easylang/run
+mkdir -p $odir
+
+wdir=$odir/../wrk
+idir=$odir/../ide
+v=$(cat $wdir/wvers)
+cp $idir/easyw$v.wasm $idir/easyw$v.js $odir
+
+cp ../run/icon.png $odir/
+
+cat >$odir/mfst.json <<EOF
+{
+	"name": "CodeRunner",
+	"icons": [{
+		"src": "/run/icon.png",
+		"type": "image/png",
+		"sizes": "256x256",
+		"purpose": "any maskable"
+	}],
+	"start_url": "/run/",
+	"display": "standalone",
+	"background_color": "#bdb",
+	"theme_color": "#bdb"
+}
+EOF
+
+echo "var CACHE = 'r$(date +%y%m%d-%H%M)'" > $odir/sw.js
+echo "var VERS = '$v'" >>$odir/sw.js
+cat >>$odir/sw.js <<EOF
+var urls = [
+	"/run/",
+	"/run/easyw" + VERS + ".wasm",
+	"/run/easyw" + VERS + ".js",
+	"/run/icon.png",
+	"/run/mfst.json",
+]
+
+console.log("sw " + CACHE)
+
+self.addEventListener("install", evt => {
+	console.log("install")
+	evt.waitUntil(
+		caches.open(CACHE).then(cache => Promise.all(
+			urls.map(url => {
+				var f = url
+				if (f == "/run/") f += "?" + CACHE
+				return fetch(f).then(resp => {
+					if (!resp.ok) {
+						console.log(f + " missing")
+						return
+					}
+					return cache.put(f, resp)
+				})
+			})
+		))
+	)
+})
+
+self.addEventListener("fetch", evt => {
+	evt.respondWith(async function() {
+		var cache = await caches.open(CACHE)
+		var res = await cache.match(evt.request, {ignoreSearch: true})
+		if (res) return res
+		console.log("fetch " + evt.request.url)
+		return fetch(evt.request)
+	}())
+})
+
+self.addEventListener("activate", function(evt) {
+	evt.waitUntil(
+		caches.keys().then(function(keys) {
+			return Promise.all(
+				keys.map(function(k) {
+					if (k != CACHE && k[0] == CACHE[0]) return caches.delete(k)
+				})
+			)
+		})
+	)
+})
+
+self.addEventListener("message", function (evt) {
+	if (evt.data.action == "skipWaiting") self.skipWaiting()
+})
+EOF
+
+#--------------------------------------------------
+
+exec > $odir/index.html
+
+cat <<'xxx'
+
+<!doctype html> 
+<meta charset=utf-8>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="code runner">
+<title>Code Runner</title>
+<link rel="icon" href="icon.png" type="image/x-png">
+<link rel="manifest" href="mfst.json">
+
+<style>
+body {
+	background-color:#000;
+	color:#ddd;
+	font-family:sans-serif;
+	margin:0px;
+	user-select:none;
+	-webkit-user-select:none;
+}
+a { color: #ddd }
+
+#noti {
+	cursor:pointer;
+	text-decoration:underline;
+}
+.lnk2 {
+	padding:5px;
+	cursor: pointer;
+	text-decoration: underline;
+	display:inline;
+	user-select:none;
+	-webkit-user-select:none;
+}
+.lnk2:hover {
+	background-color:#888;
+}
+.lnk {
+	padding:5px;
+	cursor: pointer;
+	text-decoration: underline;
+	display:inline;
+	user-select:none;
+	-webkit-user-select:none;
+}
+.lnk:hover {
+	background-color:#444;
+}
+select {
+	color:#fff; 
+	background-color:#444; 
+	font-size:120%;
+	height:32px;
+	width:150px;
+	border-radius:4px;
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	appearance: none;
+	padding:3px 3px;
+	margin:2px 8px;
+	border:1px solid #666;
+	cursor: pointer;
+}
+select:hover {background-color:#666}
+
+#left {
+	margin:8px;
+	width:100%;
+}
+#canv {
+	margin:2px;
+	outline:none;
+}
+#codew {
+	width:calc(100vw - 4px);
+	height:calc(100vh - 30px);
+	margin:2px;
+	margin-left:4px;
+	font-size:15px;
+	overflow-y:auto;
+	outline:none;
+	user-select:text;
+	-webkit-user-select:text;
+}
+.menu {
+	height:24px;
+	background-color:#444;
+}
+pre u {font-weight:bold;text-decoration:none;color:#fff; background:#666}
+span.high {background-color:#666}
+
+
+#dropbtn {
+	color:#fff; 
+	background-color:#444; 
+	border-radius:4px;
+	padding:2px;
+	border:1px solid #666;
+	cursor: pointer;
+	float:right;
+	margin-bottom:8px;
+}
+
+#dropbtn:hover,#dropbtn:focus {
+	background-color:#666;
+}
+.hamb {
+	border-radius:2px;
+	width:18px;
+	height:2px;
+	background-color:#fff;
+	margin:4px;
+}
+
+#dropd { 
+	margin:16px 8px 8px 8px;
+	float:right;
+}
+#keepd { 
+	margin:2px 8px;
+	float:left; 
+}
+</style>
+
+<div id=runner>
+	<div id=left>
+
+	<div id=info style="display:none">
+		<h3>Code Runner</h3>
+		<p>There are no apps installed.
+		<p><a href=../games/>Install apps and games</a>
+	</div>
+
+	<div id=noti style=display:none>Click here to update to new version<br></div>
+	<p>
+	<div id=keepd style=display:none>
+		<big><b id=namef></b></big>
+		<p>
+		<div id=keep class=lnk>Keep</div>
+		<div id=disc class=lnk>Discard</div>
+	</div>
+	<select id=sel></select>
+
+
+	<div id=dropbtn onclick="dropdf()">
+		<div class=hamb></div>
+		<div class=hamb></div>
+		<div class=hamb></div>
+	</div>
+	<div id=dropd style="display:none">
+		<div id=edit class=lnk>Code</div> 
+		<div id=remove class=lnk>Delete</div>
+		<div id=inst class=lnk>Install</div>
+	</div>
+	<p>
+	</div>
+	<canvas id=canv></canvas>
+</div>
+
+<div id=editor style="display:none">
+	<div class=menu>
+		<div id=savelnk class=lnk2>Run</div>
+		<div id=canclnk class=lnk2>Cancel</div>
+		<div id=idelnk class=lnk2>IDE</div>
+	</div>
+	<pre id=codew></pre>
+</div>
+
+
+<script>
+
+function show(e) { e.style.display = "" }
+function hide(e) { e.style.display = "none" }
+function isVisible(e) { return e.style.display == "" }
+
+function dropdf() {
+	if (isVisible(dropd)) hide(dropd)
+	else show(dropd)
+}
+
+window.onclick = function(evt) {
+	if (evt.target != dropbtn && evt.target != remove) {
+		hide(dropd)
+	}
+} 
+
+
+function show(e) { e.style.display = "" }
+function hide(e) { e.style.display = "none" }
+function isVisible(e) { return e.style.display == "" }
+
+if ("serviceWorker" in navigator) {
+	window.addEventListener("load", function() {
+		navigator.serviceWorker.register("sw.js").then(function(reg) {
+			console.log("sw scope: ", reg.scope)
+			reg.addEventListener("updatefound", () => {
+				noti.nsw = reg.installing
+				noti.nsw.addEventListener("statechange", () => {
+					switch (noti.nsw.state) {
+					case "installed":
+						if (navigator.serviceWorker.controller) {
+							show(noti)
+						}
+						break
+					}
+				})
+			})
+		})
+	})
+	navigator.serviceWorker.addEventListener("controllerchange", function () {
+		if (noti.inRefresh) return
+		window.location.reload()
+		noti.inRefresh = true
+	})
+	noti.onclick = function(){
+		noti.nsw.postMessage({ action: "skipWaiting" })
+	}
+}
+
+xxx
+
+#cat $wdir/vers_easy.js
+#cat $wdir/../apps/easy_code.js
+
+cat $wdir/vers_easy_code.js
+
+cat <<'xxx'
+var code0 = `
+rad = 25
+x = 50
+y = 25
+vx = 0.5
+linewidth 2
+on animate
+	clear
+	color 422
+	move 0 22
+	line 0 100
+	line 100 100
+	line 100 22
+	move x y
+	color 422
+	circle rad
+	color 888
+	move x - 11 y - 12
+	text "Code"
+	move x - 15 y
+	text "Runner"
+	if x > 100 - rad or x < rad
+		vx = -vx
+	.
+	x += vx
+	if y > 100 - rad
+		vy = -vy
+	else
+		vy += 0.03125
+	.
+	y += vy
+.
+`
+
+var aspr = 1
+
+window.onresize = function() {
+	var vh = window.innerHeight
+	var vw = window.innerWidth
+
+	var lw
+	if (vw - 200 < vh) {
+		vh -= 80
+		lw = "100%"
+	}
+	else {
+		vw -= 220
+		lw = "220px"
+	}
+	var w = vw - 4
+	var h = Math.floor(w * aspr)
+
+	if (h > vh) {
+		h = vh
+		w = Math.floor(h / aspr)
+	}
+	canv.style.width = w + "px"
+	canv.style.height = h + "px"
+	canv.style.marginTop = ""
+	if (lw == "100%") {
+		left.style.float = ""
+		dropbtn.style.margin = "2px 8px"
+		dropbtn.style.float = "right"
+		if (vh - 40 > h) canv.style.marginTop = "36px"
+	}
+	else {
+		left.style.float = "left"
+		dropbtn.style.margin = "20px"
+		dropbtn.style.float = "left"
+	}
+	left.style.width = lw
+}
+
+window.onresize()
+
+function runr(s) {
+	easystop()
+	canv.width = 800 / aspr
+	canv.height = 800
+	window.onresize()
+	var c = canv.getContext("2d")
+	c.clearRect(0, 0, canv.width, canv.height)
+	easyrun(s, canv)
+}
+
+err = `
+clear
+textsize 5
+move 5 60
+text "This app is not compatible :-("
+move 5 50
+text "You should reinstall it."
+`
+easyinit(canv, null, msgf)
+
+window.name = "easylang_run"
+var appn = null
+var code = null
+
+function getCodeInfo() {
+	aspr = 1
+	var an = Math.floor(Date.now() / 1000) - 1577833200
+	if (code[0] == "#") {
+		var i = code.indexOf("\n")
+		if (i != -1) {
+			an = code.substr(2, i - 2)
+			i = an.indexOf(":w")
+			if (i != -1) {
+				aspr = 100 / Number(an.substr(i + 2))
+				an = an.substr(0, i)
+			}
+		}
+	}
+	if (appn == null) appn = an
+}
+
+function newCode() {
+	window.localStorage.removeItem("xruncode")
+	appn = null
+	getCodeInfo()
+	hide(sel)
+	hide(dropbtn)
+	namef.textContent = appn
+	show(keepd)
+}
+
+function ready() {
+
+	fillsel(null)
+
+	var q = location.hash.substring(1)
+	if (q == "") q = location.search.substring(1)
+
+	if (q.startsWith("code=")) {
+		code = decodeURIComponent(q.substring(5))
+		history.replaceState(null, "", location.protocol + "//" + location.host + location.pathname)
+	}
+	else code = window.localStorage.getItem("xruncode")
+
+	if (code) {
+		newCode()
+		runr(code)
+	}
+	else {
+		sel.selectedIndex = window.localStorage.getItem("xrunsel")
+		if (!window.navigator.onLine) hide(inst)
+		updsel()
+	}
+}
+
+ready()
+
+function change() {
+	var ind = sel.selectedIndex >= 0 ? sel.selectedIndex : 0
+	appn = sel.options[ind].value
+	code = window.localStorage.getItem("a" + appn)
+	getCodeInfo()
+	runr(code)
+}
+
+sel.onchange = change
+
+function fillsel(nm) {
+	while (sel.options.length) sel.options.remove(0)
+	var ar = Object.keys(window.localStorage || {})
+	ar.sort()
+	sel.selectedIndex = 0
+	for (var i = 0; i < ar.length; i++) {
+		var k = ar[i]
+		if (k[0] != "a") break
+		var option = document.createElement("option")
+		option.text = k.substr(1)
+		option.value = k.substr(1)
+		sel.add(option)
+		if (option.value == nm) {
+			sel.selectedIndex = sel.options.length - 1
+		}
+	}
+}
+function updsel() {
+	hide(keepd)
+	if (!sel.options.length) {
+		show(info)
+		hide(dropbtn)
+		hide(sel)
+		aspr = 1
+		runr(code0)
+	}
+	else {
+		hide(info)
+		show(dropbtn)
+		show(sel)
+		change()
+	}
+}
+inst.onclick = function() {
+//	window.open("./list.html", "_self")
+	window.open("../games/", "_self")
+}
+keep.onclick = function() {
+	window.localStorage.setItem("a" + appn, code)
+	fillsel(appn)
+	updsel()
+}
+var rmt
+function rmreset() {
+	remove.textContent = "Delete"
+	rmt = null
+}
+remove.onclick = function() {
+    if (!rmt) {
+		remove.textContent = "Really?"
+		rmt = setTimeout(rmreset, 3000)
+	}
+	else {
+		hide(dropd)
+		clearTimeout(rmt)
+		rmreset();
+		window.localStorage.removeItem("a" + appn)
+		window.localStorage.removeItem("i" + appn)
+		fillsel(null)
+		updsel()
+	}
+}
+disc.onclick = function() {
+	updsel()
+}
+window.onbeforeunload = function(e) {
+	if (!keepd.style.display) {
+		window.localStorage.removeItem("xrunsel")
+		window.localStorage.setItem("xruncode", code)
+	}
+	else window.localStorage.setItem("xrunsel", sel.selectedIndex)
+}
+
+window.addEventListener("online", () => { if (!sel.style.display) show(inst)} );
+window.addEventListener("offline", () => hide(inst));
+
+edit.onclick = function() {
+	easystop()
+	hide(canv)
+	hide(runner)
+	show(editor)
+	codew.innerText = code
+	kaFormat(code)
+}
+idelnk.onclick = function() {
+	window.open("../ide/#code=" + encodeURIComponent(codew.innerText))
+}
+savelnk.onclick = function() {
+	codeRun(codew, canv)
+}
+codeInit(codew, savelnk.onclick)
+
+canclnk.onclick = function() {
+	codew.innerText = null
+	hide(editor)
+	show(canv)
+	show(runner)
+	updsel()
+}
+
+function msgf(m, a) {
+	if (isVisible(editor)) {
+		codeMsgF(m, a)
+		if (m == "src") {
+			code = codew.innerText
+			codew.innerText = null
+			hide(editor)
+			show(canv)
+			show(runner)
+			show(namef)
+			newCode()
+		}
+	}
+	else if (m == "error" || m == "selline") easyrun(err, canv)
+}
+
+</script>
+
+xxx
+
+

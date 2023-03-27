@@ -1,0 +1,81 @@
+# AoC-20 - Day 7: Handy Haversacks
+# 
+global col$[] cont_col[][] cont_cnt[][] .
+# 
+func col_id s$ . col .
+   for col to len col$[]
+      if col$[col] = s$
+         break 2
+      .
+   .
+   col$[] &= s$
+   cont_col[][] &= [ ]
+   cont_cnt[][] &= [ ]
+.
+func read_inp . .
+   repeat
+      inp$ = input
+      until inp$ = ""
+      s$[] = strsplit inp$ " "
+      call col_id s$[1] & " " & s$[2] s
+      if s$[5] <> "no"
+         i = 5
+         while i <= len s$[]
+            cnt = number s$[i]
+            call col_id s$[i + 1] & " " & s$[i + 2] col
+            cont_col[s][] &= col
+            cont_cnt[s][] &= cnt
+            i += 4
+         .
+      .
+   .
+.
+call read_inp
+call col_id "shiny gold" gold
+# 
+func search i . fnd .
+   for j to len cont_col[i][]
+      col = cont_col[i][j]
+      if col = gold
+         fnd = 1
+         break 1
+      else
+         call search col fnd
+      .
+   .
+.
+func part1 . .
+   for i to len cont_col[][]
+      fnd = 0
+      call search i fnd
+      sum += fnd
+   .
+   print sum
+.
+call part1
+# 
+func get_sum col . sum .
+   sum = 0
+   for i to len cont_col[col][]
+      call get_sum cont_col[col][i] s
+      h = cont_cnt[col][i]
+      sum += h + h * s
+   .
+.
+func part2 . .
+   call get_sum gold sum
+   print sum
+.
+call part2
+# 
+input_data
+light red bags contain 1 bright white bag, 2 muted yellow bags.
+dark orange bags contain 3 bright white bags, 4 muted yellow bags.
+bright white bags contain 1 shiny gold bag.
+muted yellow bags contain 2 shiny gold bags, 9 faded blue bags.
+shiny gold bags contain 1 dark olive bag, 2 vibrant plum bags.
+dark olive bags contain 3 faded blue bags, 4 dotted black bags.
+vibrant plum bags contain 5 faded blue bags, 6 dotted black bags.
+faded blue bags contain no other bags.
+dotted black bags contain no other bags.
+

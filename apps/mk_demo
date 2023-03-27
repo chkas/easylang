@@ -1,0 +1,81 @@
+#!/bin/sh
+
+dom="easylang.online"
+test $1 && dom=$1
+
+src=$HOME/daten/easylang/apps
+o=$HOME/out/easylang/apps
+
+
+make_it() {
+	cd $src
+
+	exec >$o/demos.html
+
+	cat <<xxx
+<!doctype html>
+<meta charset=utf-8><title>easylang.online - Demos</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<link rel="icon" href="../icon.png" type="image/x-png">
+
+<h3>easylang.online - Demos</h3>
+
+<div id=tut><b>Loading ...</b></div>
+<script src=easy.js></script>
+<script src=easy_tut.js></script>
+
+<script>
+xxx
+
+	cat <<'xxx'
+txt_split = "\n*\n"
+
+txt_tutor=`-
+*
+xxx
+
+f=" 
+bouncing-balls
+clock pendulum
+fractal-tree
+particles
+game-of-life
+forest-fire
+combat-balls
+mandelbrot
+julia-set
+barnsley-fern
+_r_maze
+reaction-test
+letter-memory
+"
+
+	for i in $f; do
+		if test -f $i.kab; then
+			s=$(head -1 $i.kab | cut -c3-)
+			echo "* $s"
+			echo "*"
+			cat $i.kab | tr '\\' '\\\\'
+			echo "*"
+		fi
+	done
+	cat <<'xxx'
++ Have fun :-)
+`
+function hook() {
+	var dom = window.location.host
+	tut.insertAdjacentHTML("beforeend", `
+<p><hr><p>
+The examples were created with <a href=..>${dom}<a>.
+<p><small>christof.kaser@gmail.com</small>
+`)
+}
+</script>
+xxx
+
+}
+
+make_it
+
+
+

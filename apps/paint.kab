@@ -1,0 +1,113 @@
+# Paint
+#
+sys topleft
+col[] = [ 900 090 009 990 620 000 888 ]
+thick[] = [ 1 2 4 ]
+sel_thick = 2
+sel_col = 1
+state = 0
+down = 0
+# 
+func showpen . .
+  color 444
+  move 0 0
+  rect 100 8
+  move 2 2
+  color 834
+  rect 4 2
+  move 2 4
+  color 247
+  rect 4 2
+  for i = 1 to len col[]
+    color col[i]
+    move i * 8 + 4 4
+    if i = sel_col
+      circle 4
+    else
+      circle 3
+    .
+  .
+  for i = 1 to len thick[]
+    color 555
+    if i = sel_thick
+      color col[sel_col]
+    .
+    move 72 + i * 8 - 4 4
+    circle thick[i] * 0.75
+  .
+  color col[sel_col]
+  linewidth thick[sel_thick]
+.
+c[] = [ 9 0 0 ]
+func picker . .
+  col = col[sel_col]
+  for i = 2 downto 0
+    c[i + 1] = col mod 10
+    col = col div 10
+  .
+  for i = 0 to 9
+    f = 100
+    for j = 0 to 2
+      move 10 + i * 8 16 + j * 6.6
+      color i * f
+      rect 8 6.6
+      f = f div 10
+    .
+  .
+  color 666
+  for i = 0 to 2
+    move c[i + 1] * 8 + 14 16 + i * 6.6 + 3.3
+    circle 1
+  .
+.
+func action x y . .
+  if state = 0
+    if y < 8
+      if x < 8
+        state = 1
+        background -1
+        call picker
+      elif x < 64
+        sel_col = x div 8
+      elif x > 72 and x < 96
+        sel_thick = (x - 72) div 8 + 1
+      .
+      call showpen
+    else
+      down = 1
+      move x y
+      line x y
+    .
+  else
+    if y < 8 and x > 8 and x < 64
+      sel_col = x div 8
+      call showpen
+      call picker
+    elif y > 16 and y < 35.8 and x > 10 and x < 90
+      i = floor ((y - 16) / 6.6)
+      c[i + 1] = floor (x - 10) div 8
+      col[sel_col] = c[1] * 100 + c[2] * 10 + c[3]
+      call showpen
+      call picker
+    else
+      state = 0
+      clear
+      call showpen
+    .
+  .
+.
+on mouse_down
+  call action mouse_x mouse_y
+.
+on mouse_up
+  down = 0
+.
+on mouse_move
+  if down = 1 and mouse_y > 8 + thick[sel_thick] / 2
+    line mouse_x mouse_y
+  .
+.
+color 888
+rect 100 100
+call showpen
+

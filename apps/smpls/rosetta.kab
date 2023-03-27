@@ -1,0 +1,165 @@
+#
+# Babbage_problem
+while n * n mod 1000000 <> 269696
+  n += 1
+.
+print n
+#
+# Character_codes
+print strcode "a"
+print strchar 97
+#
+# Combinations
+n = 5
+m = 3
+len result[] m
+# 
+func combinations pos val . .
+  if pos <= m
+    for i = val to n - m
+      result[pos] = pos + i
+      call combinations pos + 1 i
+    .
+  else
+    print result[]
+  .
+.
+call combinations 1 0
+#
+# print ""
+# Combinations_with_repetitions
+#
+items$[] = [ "iced" "jam" "plain" ]
+n = len items$[]
+k = 2
+len result[] k
+n_results = 0
+# 
+func output . .
+  n_results += 1
+  if len items$[] > 0
+    s$ = ""
+    for i = 1 to k
+      s$ &= items$[result[i]] & " "
+    .
+    print s$
+  .
+.
+func combine pos val . .
+  if pos > k
+    call output
+  else
+    for i = val to n
+      result[pos] = i
+      call combine pos + 1 i
+    .
+  .
+.
+call combine 1 1
+# 
+n = 10
+k = 3
+len result[] k
+items$[] = [ ]
+n_results = 0
+call combine 1 1
+print ""
+print n_results & " results with 10 donuts"
+#
+print ""
+# Convert_seconds_to_compound_duration
+func split sec . s$ .
+  divs[] = [ 60 60 24 7 ]
+  n$[] = [ "sec" "min" "hr" "d" "wk" ]
+  len r[] 5
+  for i = 1 to 4
+    r[i] = sec mod divs[i]
+    sec = sec div divs[i]
+  .
+  r[5] = sec
+  s$ = ""
+  for i = 5 downto 1
+    if r[i] <> 0
+      if s$ <> ""
+        s$ &= ", "
+      .
+      s$ &= r[i] & " " & n$[i]
+    .
+  .
+.
+call split 7259 s$
+print s$
+call split 86400 s$
+print s$
+call split 6000000 s$
+print s$
+#
+pr ""
+# Ethiopian_multiplication
+x = 17
+y = 34
+tot = 0
+while x >= 1
+  write x
+  write "\t"
+  if (x + 1) mod 2 = 0
+    tot += y
+    print y
+  else
+    print ""
+  .
+  x = x div 2
+  y = 2 * y
+.
+write "=\t"
+print tot
+#
+pr ""
+#
+func factorial n . r .
+  r = 1
+  i = 2
+  while i <= n
+    r = r * i
+    i += 1
+  .
+.
+call factorial 7 r
+print r
+#
+pr ""
+#
+n = 720
+for i = 1 to n
+  if n mod i = 0
+    factors[] &= i
+  .
+.
+print factors[]
+#
+pr ""
+#
+# Nth_root
+#
+func power x n . r .
+  r = 1
+  for i = 1 to n
+    r *= x
+  .
+.
+func nth_root x n . r .
+  r = 2
+  repeat
+    call power r n - 1 p
+    d = (x / p - r) / n
+    r += d
+    until abs d < 0.0001
+  .
+.
+call power 3.1416 10 x
+call nth_root x 10 r
+numfmt 0 4
+print r
+#
+
+

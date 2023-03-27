@@ -1,0 +1,36 @@
+<!doctype html>
+<title>easylang.online</title>
+<canvas id=canv style="width:95vh;height:95vh">
+</canvas><script src=easy.js></script>
+
+<script>
+s = `
+func tree x y deg n . .
+  if n > 0
+    linewidth n * 0.4
+    move x y
+    x += cos deg * n * 1.4 * (randomf + 0.5)
+    y += sin deg * n * 1.4 * (randomf + 0.5)
+    line x y
+    call tree x y deg - 20 n - 1
+    call tree x y deg + 20 n - 1
+  .
+.
+call tree 50 90 -90 10
+`
+err = `
+clear
+textsize 6
+move 5 10
+text "This app is not compatible"
+`
+function msgf(a, b) {
+	if (a == "ready") easyrun(s, canv)
+	else if (a == "error") easyrun(err, canv)
+	console.log(a)
+}
+easyinit(canv, out = null, msgf) 
+
+
+
+</script>
