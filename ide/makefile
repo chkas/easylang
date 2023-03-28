@@ -1,6 +1,6 @@
 # source $HOME/emsdk/emsdk_env.sh
 
-v = 315
+v = 316
 
 #--------------------------------------------------------------------
 # DBG = true
@@ -118,7 +118,7 @@ $(wrk)/tmp_ide.js: easy_ide.js easy.js makefile
 	echo "const WORKER = 'easyw$v.js'" >$(wrk)/tmp.js
 	tail +2 easy.js >>$(wrk)/tmp.js
 	cat easy_ide.js >>$(wrk)/tmp.js
-	$(CLOSURE)  --compilation_level ADVANCED --js $(wrk)/tmp.js --js_output_file $@
+	$(CLOSURE) --compilation_level ADVANCED --js $(wrk)/tmp.js --js_output_file $@
 
 
 $(or)/index.html: $(wrk)/ide.html $(wrk)/tmp_ide.js

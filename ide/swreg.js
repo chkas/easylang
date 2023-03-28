@@ -16,6 +16,13 @@ if ("serviceWorker" in navigator) {
 			})
 		})
 	})
+	navigator.serviceWorker.ready.then(function(reg) {
+		console.log("sw ready")
+		if (!crossOriginIsolated && !navigator.serviceWorker.controller) {
+			console.log("reload")
+			window.location.reload()
+		}
+	})
 	navigator.serviceWorker.addEventListener("controllerchange", function () {
 		if (notiUpd.inRefresh) return
 		window.location.reload()
@@ -23,10 +30,6 @@ if ("serviceWorker" in navigator) {
 	})
 	notiUpd.onclick = function(){
 		notiUpd.nsw.postMessage({ action: "skipWaiting" })
-	}
-	if (!crossOriginIsolated && !navigator.serviceWorker.controller) {
-		console.log("reload")
-		window.location.reload()
 	}
 }
 
