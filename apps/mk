@@ -178,7 +178,8 @@ mk_tut "Documentation and code snippets" docu "easylang documentation"
 mk_tut "Functions and recursion" func "recursive functions"
 mk_tut "Programming a letter memory game" game "canvas game, smartphone" "" "runner" 
 mk_tut "Programming basics" learn "learn programming basics"
-sed -i s/555/222/g $o/tut_learn.html
+sed s/555/222/g $o/tut_learn.html > $o/tmp.html
+mv $o/tmp.html $o/tut_learn.html
 
 # --------------------------------------------------------------
 
@@ -235,8 +236,11 @@ a {color:#888}
 <small>
 xxx
 
-sz=$(ls -l $k | cut -f5 -d' ')
-if test $sz -lt 50000; then
+#sz=$(ls -l $k | cut -f5 -d' ')
+# if test $sz -lt 50000; then
+set -- $(ls -l $k)
+if test $5 -lt 50000; then
+
 cat <<xxx
 	<div id=edit class=lnk>Code</div> - <div id=install class=lnk>Install</div>
 xxx
