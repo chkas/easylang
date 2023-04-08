@@ -28,6 +28,8 @@ end
 
 ### Dependencies
 
+MacOS: Xcode Command Line Tools
+
 JDK, Emscripten
 
 Download Emscripten WASM SDK and install it

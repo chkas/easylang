@@ -61,7 +61,9 @@ for inp to len inp$[]
             for j = 2 to 7
                h = strcode x$[j]
                if h >= strcode "0" and h <= strcode "9"
+                 #
                elif h >= strcode "a" and h <= strcode "f"
+                 #
                else
                   valid = 0
                .

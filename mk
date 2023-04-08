@@ -18,13 +18,13 @@ while test $# != 0; do
 	if test $1 = ide; then
 		(cd ide; make ide)
 		(cd run; ./mk)
-		rm -f /u/out/easylang/src.zip
-		zip -r /u/out/easylang/src.zip ide run native >/dev/null
+		rm -f $HOME/out/easylang/src.zip
+		zip -r $HOME/out/easylang/src.zip ide run native >/dev/null
 	elif test $1 = apps; then
 		(cd ide; make ide)
 		(cd apps; ./mk)
-		rm -f /u/out/easylang/apps_src.zip
-		zip -r /u/out/easylang/apps_src.zip apps >/dev/null
+		rm -f $HOME/out/easylang/apps_src.zip
+		zip -r $HOME/out/easylang/apps_src.zip apps >/dev/null
 	elif test $1 = games; then
 		(cd run; ./mk_games)
 	elif test $1 = sky; then

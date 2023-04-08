@@ -78,9 +78,8 @@ struct str {
 			uint len;
 			ushort spc;
 		};
-		char d[15];
+		char d[16];
 	};
-	char typ;
 };
 
 // #define IS_PTR 1
@@ -88,7 +87,7 @@ struct str {
 
 inline static void str_init(struct str* s) {
 	s->d[0] = 0;
-	s->typ = 0;
+	s->d[15] = 0;
 }
 
 // str_init_const(&s, "\0Hello world");
@@ -96,41 +95,42 @@ inline static void str_init(struct str* s) {
 inline static void str_init_const(struct str* s, char* p) {
 	uint len = strlen(p + 1);
 	if (len > 15) {
-		s->typ = IS_PTR;
+		s->d[15] = IS_PTR;
 		s->len = len;
+		s->spc = 0;
 		s->p = p;
 	}
 	else {
-		strcpy(s->d, p + 1);
-		s->typ = 0;
+		memcpy(s->d, p + 1, len + 1);
+		s->d[15] = 0;
 	}
 }
 
 inline static void str_free(struct str* s) {
 
-	if (s->typ == IS_PTR) {
+	if (s->d[15] == IS_PTR) {
 		if (s->p[0] > 0) {
 			s->p[0] -= 1;
 			if (s->p[0] == 0) free(s->p);
 		}
 	}
 	s->d[0] = 0;
-	s->typ = 0;
+	s->d[15] = 0;
 }
 
 inline static const char* str_ptr(struct str* s) {
-	if (s->typ == 0) return s->d;
+	if (s->d[15] == 0) return s->d;
 	else return s->p + 1;
 }
 
 inline static uint str_len(struct str* s) {
-	if (s->typ == 0) return strlen(s->d);
+	if (s->d[15] == 0) return strlen(s->d);
 	else return s->len;
 }
 
 inline static struct str str_str(struct str* s) {
 	struct str r;
-	if (s->typ == IS_PTR && s->p[0] != 0) {
+	if (s->d[15] == IS_PTR && s->p[0] != 0) {
 		if ((byte)s->p[0] == 255) {
 			r = *s;
 			s->p[0] = (char)128;
@@ -147,12 +147,12 @@ inline static void str_append_n(struct str* d, const char* s, uint ls) {
 	const ushort spc_inc = 30;
 	uint ld = str_len(d);
 
-	if (ls + ld < 15 && d->typ == 0) {
+	if (ls + ld < 15 && d->d[15] == 0) {
 		memcpy(d->d + ld, s, ls);
 		*(d->d + ld + ls) = 0;
 		return;
 	}
-	if (d->typ == IS_PTR) {
+	if (d->d[15] == IS_PTR) {
 		uint spc;
 		if  (d->p[0] != 1) {
 			char* p = d->p;
@@ -160,7 +160,10 @@ inline static void str_append_n(struct str* d, const char* s, uint ls) {
 			spc = ls + ld + spc_inc;
 			d->p = _realloc(NULL, spc);
 			d->p[0] = 1;
-			strcpy(d->p + 1, p + 1);
+
+			// strcpy(d->p + 1, p + 1);
+			// todo test
+			memcpy(d->p + 1, p + 1, ld);
 		}
 		else {
 			spc = d->len + d->spc;
@@ -177,7 +180,7 @@ inline static void str_append_n(struct str* d, const char* s, uint ls) {
 		p[0] = 1;
 		d->p = p;
 		d->spc = spc_inc;
-		d->typ = IS_PTR;
+		d->d[15] = IS_PTR;
 	}
 	memcpy(d->p + ld + 1, s, ls);
 	*(d->p + ld + 1 + ls) = 0;
@@ -257,7 +260,7 @@ inline static struct str str_add(struct str* a, struct str* b) {
 	return r;
 }
 
-static uint ulen(byte lb) {
+inline static uint ulen(byte lb) {
 	if ((lb & 0x80) == 0) return 1;
 	if ((lb & 0xe0) == 0xc0) return 2;
 	if ((lb & 0xf0) == 0xe0) return 3;
@@ -265,7 +268,7 @@ static uint ulen(byte lb) {
 	return 5;
 }
 
-static int str_ulen(const char* p) {
+inline static int str_ulen(const char* p) {
 	uint i = 0;
 	uint ind = 0;
 	while (i < strlen(p)) {
@@ -275,7 +278,7 @@ static int str_ulen(const char* p) {
 	return ind;
 }
 
-static int str_upos(const char* p, uint start, uint nchars, uint max) {
+inline static int str_upos(const char* p, uint start, uint nchars, uint max) {
 	uint i = start;
 	uint ind = 0;
 	while (i < max && ind < nchars) {

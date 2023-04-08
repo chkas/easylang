@@ -18,8 +18,9 @@ if test $compile; then
   rm -f $D/$n
   cc=clang
   which $cc >/dev/null || cc=gcc
+  HB=/opt/homebrew
   echo "Compiling easylang (with $cc) ..." >&2
-  $cc -Wall -O2 -D__SDL__ -I$S -O $f -lSDL2 -lSDL2_ttf -lm -o $D/$n
+  $cc -Wall -O2 -D__SDL__ -I$S -I$HB/include -L$HB/lib -O $f -lSDL2 -lSDL2_ttf -lm -o $D/$n
   echo "done" >&2
 fi
 

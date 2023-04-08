@@ -145,18 +145,18 @@ void gr_init(const char* progname, int mask) {
 	}
 	if (mask & 256) {
 
-#ifdef __linux__ 
-		const char* fontnames[] = {
-			"/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf",
-			"/usr/share/fonts/truetype/ttf-bitstream-vera/VeraMoBd.ttf",
-		};
-#elif _WIN32
+// #ifdef __linux__ 
+
+#ifdef _WIN32
 		const char* fontnames[] = {
 			"c:\\Windows\\Fonts\\courbd.ttf",
 			"c:\\Windows\\Fonts\\cour.ttf"
 		};
 #else
-#error Platform Not Supported
+		const char* fontnames[] = {
+			"/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf",
+			"/usr/share/fonts/truetype/ttf-bitstream-vera/VeraMoBd.ttf",
+		};
 #endif
 		int n = sizeof(fontnames) / sizeof(fontnames[0]);
 		int i;

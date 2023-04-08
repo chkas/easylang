@@ -302,29 +302,54 @@ text "PI: " & 4.0 * hit / i
 
 * Event-drivern programming
 
-# simple drawing
+# drawing under watching
 #
+background 777
+clear
+col = 0
+func eye x y . .
+   color 999
+   move x y
+   circle 6.5
+   color col
+   cx = mouse_x - x
+   cy = mouse_y - y
+   f = sqrt (cy * cy + cx * cx) / 2
+   move x + cx / f y + cy / f
+   circle 3
+.
+subr eyes
+   mx = mouse_x
+   my = mouse_y
+   call eye 10 90
+   call eye 30 90
+.
+linewidth 2
+on mouse_move
+   if down = 1
+      move mx my
+      line mouse_x mouse_y
+   .
+   call eyes
+.
 on mouse_down
    down = 1
    move mouse_x mouse_y
    circle 1
+   call eyes
 .
 on mouse_up
    down = 0
 .
-on mouse_move
-   if down = 1
-      line mouse_x mouse_y
-   .
-.
 on key
    if keybkey = "r"
-      color 900
+      col = 900
    else
-      color 000
+      col = 000
    .
+   call eyes
 .
-linewidth 2
+call eyes
 
 + The *mouse* events are triggered after the corresponding mouse actions. *mouse_x* and *mouse_y* return the mouse position as floating point numbers.
 
@@ -337,24 +362,24 @@ linewidth 2
 c[] = [ 9 0 0 ]
 func picker . .
    for i = 0 to 9
-      f = 100
+      f = 1
       for j = 0 to 2
          move i * 10 j * 10
          color i * f
          rect 10 10
-         f = f / 10
+         f *= 10
       .
    .
    color 666
    for i = 0 to 2
-      move c[i + 1] * 10 + 5 10 * i + 5
+      move c[i + 1] * 10 + 5 10 * (2 - i) + 5
       circle 1.5
       col = col * 10 + c[i + 1]
    .
    color col
    move 0 30
    rect 100 70
-   move 20 50
+   move 30 60
    color 000
    if c[1] + c[2] + c[3] < 15
       color 888
@@ -363,8 +388,7 @@ func picker . .
 .
 on mouse_down
    if mouse_y < 30
-      i = mouse_y div 10
-      c[i + 1] = mouse_x div 10
+      c[3 - mouse_y div 10] = mouse_x div 10
       call picker
    .
 .
@@ -377,22 +401,22 @@ call picker
 # simple clock
 # 
 on timer
-    if t <> floor systime
-         t = floor systime
-         clear
-         h$ = timestr t
-         move 10 30
-         text substr h$ 1 10
-         move 15 15
-         text substr h$ 12 8
-    .
-    timer 0.1
+   if t <> floor systime
+      t = floor systime
+      clear
+      h$ = timestr t
+      move 10 30
+      text substr h$ 1 10
+      move 15 15
+      text substr h$ 12 8
+   .
+   timer 0.1
 .
 while i <= 100
-    color3 0 i / 100 0
-    move 0 i
-    line 100 i
-    i += 1
+   color3 0 i / 100 0
+   move 0 i
+   line 100 i
+   i += 1
 .
 background -1
 textsize 12

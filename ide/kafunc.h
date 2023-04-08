@@ -414,10 +414,16 @@ static void arr_len(struct op* op, int sz, int typ) {
 	}
 	else {
 		free_arr_members(arr, h);
-		p = realloc(arr->p, h * sz);
-		if (p == NULL && h) {
-			out_of_mem(op);
-			return;
+		if (h) {
+			p = realloc(arr->p, h * sz);
+			if (p == NULL) {
+				out_of_mem(op);
+				return;
+			}
+		} 
+		else {
+			free(arr->p);
+			p = NULL;
 		}
 		arr->p = p;
 	}
@@ -1431,7 +1437,7 @@ static struct arr o_arrx(struct op* op, int typ, int sz) {
 	}
 
 	res.len = arr->len;
-	res.p = _realloc(NULL, res.len * sz);
+	res.p = realloc(NULL, res.len * sz);
 	res.typ = typ;
 	res.base = arr->base;
 	if (res.p == NULL) {
@@ -1467,7 +1473,7 @@ static struct arr op_varrarr(struct op* op) {
 	res.len = arr->len;
 	res.typ = ARR_ARR;
 	res.base = arr->base;
-	res.p = _realloc(NULL, res.len * sizeof(struct arr));
+	res.p = realloc(NULL, res.len * sizeof(struct arr));
 	if (res.p == NULL) {
 		out_of_mem(op);
 		res.len = 0;
@@ -1479,10 +1485,10 @@ static struct arr op_varrarr(struct op* op) {
 		r.typ = a->typ;
 		r.base = a->base;
 		if (r.typ == ARR_STR) {
-			r.p = _realloc(NULL, r.len * sizeof(struct str));
+			r.p = realloc(NULL, r.len * sizeof(struct str));
 		}
 		else {
-			r.p = _realloc(NULL, r.len * sizeof(double));
+			r.p = realloc(NULL, r.len * sizeof(double));
 		}
 		if (r.p == NULL) {
 			out_of_mem(op);
@@ -1507,7 +1513,7 @@ static struct arr o_arr_init(struct op* op, int typ, int sz) {
 		res.len += 1;
 		o = (codp + o)->next;
 	}
-	res.p = _realloc(NULL, res.len * sz);
+	res.p = realloc(NULL, res.len * sz);
 //	res.p = calloc(sz, res.len);
 	if (res.p == NULL) {
 		out_of_mem(op);
@@ -1545,7 +1551,7 @@ static struct arr op_str_chars(struct op* op) {
 	res.len = str_ulen(p);
 	res.typ = ARR_STR;
 	res.base = 1;
-	res.p = _realloc(NULL, res.len * sizeof(struct str));
+	res.p = realloc(NULL, res.len * sizeof(struct str));
 	if (res.p == NULL) {
 		out_of_mem(op);
 		res.len = 0;
@@ -2435,7 +2441,7 @@ static struct arr op_map_number(struct op* op) {
 	res.len = arr.len;
 	res.typ = ARR_NUM;
 	res.base = arr.base;
-	res.p = _realloc(NULL, res.len * sizeof(double));
+	res.p = realloc(NULL, res.len * sizeof(double));
 	if (res.p == NULL) {
 		out_of_mem(op);
 		res.len = 0;
@@ -2516,6 +2522,7 @@ static void out_of_mem0(void) {
 static void init_rt(void) {
 
 	int h;
+	out_of_memf = out_of_mem0;
 	h = func_p->varcnt[0] * sizeof(double);
 	rt_nums = (double*)_realloc(NULL, h);
 	memset(rt_nums, 0, h);
@@ -2539,7 +2546,6 @@ static void init_rt(void) {
 
 	rt.sys_error = 0;
 	rt.func = UMO;
-	out_of_memf = out_of_mem0;
 
 	rt.input_data_pos = 0;
 	stop_flag = 0;

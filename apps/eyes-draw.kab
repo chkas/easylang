@@ -1,0 +1,40 @@
+# Eyes draw
+# 
+background 777
+clear
+col = 0
+func eye x y . .
+   color 999
+   move x y
+   circle 6.5
+   color col
+   cx = mouse_x - x
+   cy = mouse_y - y
+   f = sqrt (cy * cy + cx * cx) / 2
+   move x + cx / f y + cy / f
+   circle 3
+.
+subr eyes
+   mx = mouse_x
+   my = mouse_y
+   call eye 20 80
+   call eye 40 80
+.
+linewidth 2
+on mouse_move
+   if down = 1
+      move mx my
+      line mouse_x mouse_y
+   .
+   call eyes
+.
+on mouse_down
+   down = 1
+   move mouse_x mouse_y
+   circle 1
+   call eyes
+.
+on mouse_up
+   down = 0
+.
+call eyes

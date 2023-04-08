@@ -825,9 +825,12 @@ static void parse_subr(void) {
 	stat_begin_nest();
 	if (tok != t_name) error_tok(t_name);
 	const char* name = getn(tval);
-	struct vname* p = get_vname(func_p, name, VAR_SUBR);
+//kc
+	struct vname* p = get_vname(func, name, VAR_SUBR);
+//	struct vname* p = get_vname(func_p, name, VAR_SUBR);
 	if (p != NULL) error("already defined");
-	p = add_vname(func_p, name, VAR_SUBR, code_utf8len);
+//	p = add_vname(func_p, name, VAR_SUBR, code_utf8len);
+	p = add_vname(func, name, VAR_SUBR, code_utf8len);
 	cs_tok_nt();
 	p->id = code_len;	// could be recursive
 	h = parse_sequ_end();
@@ -1951,20 +1954,23 @@ static void parse_call_stat(ushort o) {
 
 	expt(t_name);
 	const char* name = getn(tval);
-	struct vname* pf = get_vname(func_p, name, VAR_SUBR);
-	if (pf != NULL) {
+
+	struct func* p = func_get(name);
+
+	if (p == NULL) {
+		struct vname* pf = get_vname(func, name, VAR_SUBR);
+		if (pf == NULL && func != func_p) pf = get_vname(func_p, name, VAR_SUBR);
+		if (pf == NULL) {
+			error("not defined");
+			return;
+		}
 		cs_tok_nt();
 		codp[o].o1 = pf->id;
 		codp[o].vf = op_callsubr;
 		return;
 	}
-	struct func* p = func_get(name);
-	if (p == NULL) {
-		error("not defined");
-		return;
-	}
-	cs_tok_nt();
 
+	cs_tok_nt();
 	codp[o].o1 = p->start;
 	if (p->start == UMO) {
 		funcdecl = realloc(funcdecl, sizeof(struct funcdecl) * (funcdecl_len + 1));
@@ -2568,6 +2574,7 @@ static const char* progname = "";
 
 extern int exec(int dbg, const char* args) {
 
+	//printf("exec %lu\n", sizeof(struct str));
 	srand((int)(long long)(sys_time() * 1000));
 	freecodestr();
 	rt.args = args;

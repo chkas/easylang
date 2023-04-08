@@ -268,7 +268,7 @@ install.onclick = function() {
 
 xxx
 
-echo -n "easyscript = \`"
+printf "easyscript = \`"
 
 cat $k
 
