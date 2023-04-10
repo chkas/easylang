@@ -2572,7 +2572,7 @@ extern void k_free(void) {
 
 static const char* progname = "";
 
-extern int exec(int dbg, const char* args) {
+extern int exec(int opt, const char* args) {
 
 	//printf("exec %lu\n", sizeof(struct str));
 	srand((int)(long long)(sys_time() * 1000));
@@ -2582,6 +2582,7 @@ extern int exec(int dbg, const char* args) {
 	gr_init(progname, onstats | (prog_props << 6));
 	rt.slow = 0;
 
+	int dbg = opt >> 1; 
 	if (dbg) {
 		rt.slow = 1 << (dbg - 1);
 		exec_sequ_slow(func_p->start);
@@ -2589,6 +2590,8 @@ extern int exec(int dbg, const char* args) {
 	}
 	else {
 		exec_sequ(func_p->start);
+// show debug out on run in IDE
+		if (opt & 1) dbg_outvars();
 	}
 #ifdef __EMSCRIPTEN__
 	if (!onstats) free_rt();

@@ -31,14 +31,15 @@ else
 
 + We flip a coin 1000 times and count how often heads come
 
-for i = 1 to 1000
+n = 1000
+for i = 1 to n
   flip = random 2
   if flip = 1
     heads += 1
   .
 .
 print "We got " & heads & " heads"
-print "That is " & 100.0 * heads / i & "%"
+print "That is " & 100.0 * heads / n & "%"
 
 + We get roughly about 500 times head, so that's about 50% of all flips.
 
@@ -46,14 +47,15 @@ print "That is " & 100.0 * heads / i & "%"
 
 + If we increase the number of flips to a million, the percentage of heads comes very close to 50%.
 
-for i = 1 to 1000000
+n = 1000000
+for i = 1 to n
   flip = random 2
   if flip = 1
     heads += 1
   .
 .
 print "We got " & heads & " heads"
-print "That is " & 100.0 * heads / i & "%"
+print "That is " & 100.0 * heads / n & "%"
 
 + This is called the *Law of large numbers*
 
@@ -231,13 +233,13 @@ subr session
     .
   .
 .
-for i = 1 to 1000
+for i = 1 to 100
   call session
   if cash >= 20000
     n_win += 1
   .
 .
-print n_win / 1000 * 100
+print n_win
 
 + Only in about 14 percent of the attempts we can win with this strategy.
 
@@ -292,18 +294,20 @@ print "6 correct after " & week div 52 & " years"
 
 + You fire random points at a square and count the number of points within the quarter circle. This can easily be determined with the theorem of Pythagoras. This proportion times four is close to PI.
 
-for i = 1 to 100000
+n = 100000
+for i = 1 to n
   x = randomf
   y = randomf
   if x * x + y * y < 1
     hit += 1
   .
 .
-print "PI: " & hit / i * 4
+print "PI: " & hit / n * 4
 
 + With visualisation
 
-for i = 1 to 50000
+n = 50000
+for i = 1 to n
   x = randomf
   y = randomf
   if x * x + y * y < 1
@@ -318,7 +322,7 @@ for i = 1 to 50000
     sleep 0.01
   .
 .
-print hit / i * 4
+print hit / n * 4
 
 * Blackjack
 

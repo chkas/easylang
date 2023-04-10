@@ -296,7 +296,7 @@ for i = 1 to 100000
 .
 color 000
 move 10 10
-text "PI: " & 4.0 * hit / i
+text "PI: " & 4.0 * hit / 100000
 
 + The drawing area is updated when *sleep* is called.
 

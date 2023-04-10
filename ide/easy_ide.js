@@ -74,7 +74,7 @@ function isVisible(e) { return e.style.display == "" }
 
 themeBtn.onclick = function() {
 	chngTheme()
-	moreShow(false)
+//	moreShow(false)
 	inp.focus()
 }
 
@@ -216,12 +216,12 @@ function tutUpd() {
 }
 
 function runCode(code, caret) {
-	moreShow(false)
+//	moreShow(false)
 	dbg.textContent = ""
 	tailSrc = null
 	stepBtn.disabled = true
 	showRun(false)
-	kaRun(code, 2, caret)
+	kaRun(code, 256 + 2, caret)
 }
 
 var codeToRun
@@ -1249,7 +1249,7 @@ function runDebug() {
 		stepBtn.disabled = true
 	}
 	hide(trSpn)
-	h <<= 8
+	h <<= 9
 	inp.contentEditable = false
 	tailSrc = null
 	showRun(false)
@@ -1297,7 +1297,7 @@ urlBtn.onclick = function() {
 	//if (isVisible(canv)) s = "#run="
 	var url = location.origin + "/ide/" + s + encodeURIComponent(inp.innerText)
 	out.value = url
-	moreShow(false)
+//	moreShow(false)
 }
 
 tutchng.onclick = onTutChng

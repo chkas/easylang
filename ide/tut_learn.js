@@ -280,16 +280,6 @@ print a
 
 -
 
-+ Strings are texts enclosed in quotation marks. The *&* character can be used to join strings. Numbers are thereby automatically converted to strings.
-
-+de Zeichenketten (Strings) sind in Anführungszeichen eingeschlossene Texte. Mit dem *&*-Zeichen kann man Zeichenketten zusammenfügen. Zahlen werden dabei automatisch in Strings umgewandelt.
-
-s = 5
-a = s * s
-print s & "² = " & a
-
--
-
 + A variable can easily be incremented by a value: *a = a + 1*
 
 +de Eine Variable kann man ganz einfach um einen Wert erhöhen: *a = a + 1*
@@ -297,6 +287,40 @@ print s & "² = " & a
 a = 1
 a = a + 1
 print a
+
+* Strings
+
+*de Zeichenketten (Strings)
+
++ Strings are texts enclosed in quotation marks.
+
++de Zeichenketten (Strings) sind in Anführungszeichen eingeschlossene Texte.
+
+print "What is your name?"
+n$ = input
+print "Hello " & n$
+
++ *input* reads a string from the keyboard.
+
++de *input* liest einen String von der Tastatur ein.
+
++ You can also store strings in variables. The variable name then ends with a "$" character. The *&* character can be used to join strings.
+
++de Du kannst auch Zeichenketten in Variablen speichern. Der Variablenname endet dann mit einem "$"-Zeichen. Mit dem *&*-Zeichen kann man Zeichenketten zusammenfügen.
+
+-
+
+print "Area of a square"
+print "----------------"
+write "Side: "
+s = number input
+print s
+a = s * s
+print "Area: " & a
+
++ *number* converts a string to a number. *write* is like *print* except that it does not jump to a new line after output. With *&* you can also join strings and numbers.
+
++de *number* konvertiert eine Zeichenkette in eine Zahl. *write* ist wie *print*, nur dass es nach der Ausgabe nicht in eine neue Zeile springt. Mit *&* kannst du auch Zeichenketten und Zahlen verbinden.
 
 * Conditional statement
 
@@ -474,9 +498,9 @@ end
 sleep 1
 print "The number was " & n
 
-+ *random 10* returns a random number from 1 - 10. *input* reads a string from the keyboard, which is then converted to a number with *number*. *write* is like *print* except that after output it does not jump to a new line. *sleep 1* puts a pause of one second.
++ *random 10* returns a random number from 1 - 10. *sleep 1* puts a pause of one second.
 
-+de *random 10* liefert eine Zufallszahl von 1 - 10. *input* liest einen String von der Tastatur ein, der dann mit *number* in eine Zahl umgewandelt wird. *write* ist wie *print* nur dass nach der Ausgabe nicht in eine neue Zeile gesprungen wird. *sleep 1* legt eine Pause von einer Sekunde ein.
++de *random 10* liefert eine Zufallszahl von 1 - 10. *sleep 1* legt eine Pause von einer Sekunde ein.
 
 + 🤔🤔 Just one try and that's it - it's no fun. You should be able to guess until you have guessed the number. For this you need .... - yeah right - a loop. Hint: *<>* stands for not equal.
 
@@ -715,11 +739,15 @@ end
 
 -
 
-+ Now let's draw a starry sky from a star map. For this we need something like a list. We use an *array* for this. The field elements can be accessed using square brackets and a position specification, also called index. The first element is at position 1, *len* returns the number of elements in the array.
++ Now let's draw a starry sky from a star map. For this we need something like a list.
 
-+de Jetzt wollen wir einen Sternenhimmel nach einer Sternenkarte zeichnen. Dazu brauchen wir so etwas wie eine Liste. Wir verwenden dazu ein *Feld* (engl. *Array*). Auf die Feldelemente kann über eckige Klammern und eine Positionsangabe, auch Index genannt, zugegriffen werden. Das erste Element steht an der Position 1. *len* gibt die Anzahl der Elemente im Array zurück.
++ We use an *array* for this. The field elements can be accessed using square brackets and a position specification, also called index. The first element is at position 1, *len* returns the number of elements in the array.
 
-a[] = [ 4 7 2 8 ]
++de Jetzt wollen wir einen Sternenhimmel nach einer Sternenkarte zeichnen. Dazu brauchen wir so etwas wie eine Liste. 
+
++de Wir verwenden dazu ein *Feld* (engl. *Array*). Auf die Feldelemente kann über eckige Klammern und eine Positionsangabe, auch Index genannt, zugegriffen werden. Das erste Element steht an der Position 1. *len* gibt die Anzahl der Elemente im Array zurück.
+
+a[] = [ 4 7 8 2 ]
 for i = 1 to len a[]
    print i & ": " & a[i]
 end
@@ -747,13 +775,17 @@ func dr ind v . .
   line 40 y
   y += 18
 .
-a[] = [ 4 7 2 8 ]
+a[] = [ 4 7 8 2 ]
 for i = 1 to len a[]
   call dr i a[i]
 .
 textsize 9
 move 4 10
 text "a[]"
+
++ 🤔 Can you extend the program to output the largest number at the end?
+
++de 🤔 Kannst du das Programm so erweitern, dass es am Ende die größte Zahl ausgibt?
 
 -
 

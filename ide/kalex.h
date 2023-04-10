@@ -626,16 +626,17 @@ static uint cstrs_add(const char* s) {
 struct vname {
 	char name[16];
 	short id;
+	ushort srcpos;
 	char typ;
 	char access;
-	ushort srcpos;
 };
 
 struct func {
 	struct vname *vname_p;
 	char name[16];
 	char parms[9];
-	unsigned vname_len;
+	ushort vname_len;
+//	unsigned vname_len;
 	ushort start;
 // float, str, (intarr + numarr + strarr)
 	ushort varcnt[3];
