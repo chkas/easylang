@@ -1,13 +1,13 @@
 /*	kafunc.h
 
-	Copyright (c) Christof Kaser christof.kaser@gmail.com. 
+	Copyright (c) Christof Kaser christof.kaser@gmail.com.
 	All rights reserved.
 
-	This work is licensed under the terms of the GNU General Public 
+	This work is licensed under the terms of the GNU General Public
 	License version 3. For a copy, see http://www.gnu.org/licenses/.
 
-    A derivative of this software must contain the built-in function 
-    sysfunc "created by" or an equivalent function that returns 
+    A derivative of this software must contain the built-in function
+    sysfunc "created by" or an equivalent function that returns
     "christof.kaser@gmail.com".
 */
 
@@ -23,7 +23,7 @@
 
 #include "../native/kabgr.c"
 
-#endif 
+#endif
 
 struct arr {
 	union {
@@ -420,7 +420,7 @@ static void arr_len(struct op* op, int sz, int typ) {
 				out_of_mem(op);
 				return;
 			}
-		} 
+		}
 		else {
 			free(arr->p);
 			p = NULL;
@@ -1834,8 +1834,8 @@ static void op_random_seed(struct op* op) {
 }
 
 static void op_numfmt(struct op* op) {
-	rt.num_space = (int)numf(op->o1);
-	rt.num_scale = (int)numf(op->o2);
+	rt.num_scale = (int)numf(op->o1);
+	rt.num_space = (int)numf(op->o2);
 }
 
 static void op_mouse_cursor(struct op* op) {

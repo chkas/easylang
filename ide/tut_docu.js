@@ -14,9 +14,9 @@ while i <= 10
 
 -
 
-# play 10000 times 
+# play 10000 times
 # roulette betting on 13
-# 
+#
 cash = 0
 for i = 1 to 10000
    cash -= 10
@@ -45,10 +45,10 @@ print "Max: " & max
 
 * Floating point
 
-# calculate PI using the 
+# calculate PI using the
 # Leibniz formula
-# 
-numfmt 0 4
+#
+numfmt 4 0
 i = 1
 while i < 1000
    s += 1 / i
@@ -59,13 +59,13 @@ while i < 1000
 s += 1 / i / 2
 print "PI: " & s * 4
 
-+ *numfmt* sets the fill space and the number of decimal places when a number is converted to a string. The default values are *0 2*.
++ *numfmt* sets the number of decimal places and the fill space when a number is converted to a string. The default values are *2 0*.
 
 -
 
 # calculate PI using
 # Monte Carlo method
-# 
+#
 for i = 1 to 100000
    x = randomf
    y = randomf
@@ -79,9 +79,9 @@ print "PI: " & 4.0 * hit / 100000
 
 -
 
-# get primes using the 
+# get primes using the
 # Sieve of Eratosthenes
-# 
+#
 len divisible[] 100
 max = sqrt len divisible[]
 for tst = 2 to max
@@ -134,7 +134,7 @@ print res
 
 -
 
-func gcd a b . res . 
+func gcd a b . res .
    while b <> 0
       h = b
       b = a mod b
@@ -150,12 +150,12 @@ print r
 * Sound
 
 # morse code
-# 
+#
 txt$ = "sos sos"
-# 
+#
 chars$[] = strchars "abcdefghijklmnopqrstuvwxyz "
 code$[] = [ ".-" "-..." "-.-." "-.." "." "..-." "--." "...." ".." ".---" "-.-" ".-.." "--" "-." "---" ".--." "--.-" ".-." "..." "-" "..-" "...-" ".--" "-..-" "-.--" "--.." " " ]
-# 
+#
 func morse ch$ . .
    ind = 1
    while ind <= len chars$[] and chars$[ind] <> ch$
@@ -187,14 +187,14 @@ for ch$ in strchars txt$
 
 + *strchars* creates from a string a string array containing the individual characters.
 
-+ The *for in loop* iterates over each item in an array 
++ The *for in loop* iterates over each item in an array
 
 + *write* prints a string without line feed.
 
 * Graphics
 
 # drawing a house
-# 
+#
 color 993
 move 20 0
 rect 60 45
@@ -211,9 +211,9 @@ move 5 85
 textsize 8
 text "MY HOUSE"
 
-+ Graphic coordinates: 0/0 is bottom left, 100/100 is top right. 
++ Graphic coordinates: 0/0 is bottom left, 100/100 is top right.
 
-+ The colors are coded from 0 to 999, with the left digit specifying the red component, the middle digit the green component and the right digit the blue component. 
++ The colors are coded from 0 to 999, with the left digit specifying the red component, the middle digit the green component and the right digit the blue component.
 
 + *color -1* sets the foreground color and *color -2* the background color as drawing color.
 
@@ -222,13 +222,13 @@ text "MY HOUSE"
 -
 
 # sine wave
-# 
+#
 linewidth 0.1
 move 50 0
 line 50 100
 move 0 50
 line 100 50
-# 
+#
 color 800
 linewidth 0.5
 for x = 0 step 0.5 to 100
@@ -246,9 +246,9 @@ for x = 0 step 0.5 to 100
 -
 
 # turtle graphics
-# 
+#
 deg = 0 ; x = 50 ; y = 50 ; down = 0
-# 
+#
 move x y
 func forward n . .
    x += cos deg * n
@@ -262,7 +262,7 @@ func forward n . .
 func turn a . .
    deg -= a
 .
-# 
+#
 call forward 35
 call turn 90
 down = 1
@@ -276,9 +276,9 @@ for i = 1 to 18
 
 -
 
-# visualization of the 
+# visualization of the
 # Monte Carlo algorithm
-# 
+#
 for i = 1 to 100000
    x = randomf
    y = randomf
@@ -302,7 +302,7 @@ text "PI: " & 4.0 * hit / 100000
 
 * Event-drivern programming
 
-# drawing under watching
+# watching your drawing
 #
 background 777
 clear
@@ -321,8 +321,8 @@ func eye x y . .
 subr eyes
    mx = mouse_x
    my = mouse_y
-   call eye 10 90
-   call eye 30 90
+   call eye 20 80
+   call eye 40 80
 .
 linewidth 2
 on mouse_move
@@ -358,7 +358,7 @@ call eyes
 -
 
 # color picker
-# 
+#
 c[] = [ 9 0 0 ]
 func picker . .
    for i = 0 to 9
@@ -399,7 +399,7 @@ call picker
 * Timer, Animation
 
 # simple clock
-# 
+#
 on timer
    if t <> floor systime
       t = floor systime
@@ -435,11 +435,11 @@ timer 0
 -
 
 # bouncing ball
-# 
+#
 rad = 12 ; x = 50 ; y = 50
 vx = randomf * 4 - 2
 vy = randomf * 4 - 2
-# 
+#
 on animate
    if systime > timeout
       # every 4 seconds
@@ -560,9 +560,9 @@ for s$ in [ "alice" "bob" "trudy" "bob" ]
 + Namespaces are implemented with the *prefix* directive. All names - variables, functions, subroutines - within the range specified are prefixed with the specified string.
 
 pos = 12345
-# 
+#
 prefix st_
-# 
+#
 len stack[] 100
 pos = 1
 func push v . .
@@ -578,7 +578,7 @@ func pop . v .
    .
 .
 prefix
-# 
+#
 call st_push 200
 call st_push 100
 call st_pop v ; print v
@@ -637,7 +637,7 @@ a[] = [ 10 20 30 ]
 arrbase a[] 0
 print a[0]
 print ""
-# 
+#
 for i range0 len a[]
     print a[i]
 .

@@ -1,6 +1,6 @@
 # source $HOME/emsdk/emsdk_env.sh
 
-v = 318
+v = 319
 
 #--------------------------------------------------------------------
 # DBG = true
@@ -15,8 +15,8 @@ endif
 LD = emcc -O3 -s WASM=1 -s EXPORTED_FUNCTIONS="['_parse','_exec','_format', '_errstr', '_k_free', '_caret', '_evt_mouse', '_evt_func', '_main']" -s EXPORTED_RUNTIME_METHODS="['ccall']" -s ALLOW_MEMORY_GROWTH=1 $(LDOPT)
 
 ifeq ($(DBG), true)
-	CC := $(CC) -g -gsource-map 
-	LD := $(LD) -g -gsource-map --source-map-base=http://localhost:8000/ 
+	CC := $(CC) -g -gsource-map
+	LD := $(LD) -g -gsource-map --source-map-base=http://localhost:8000/
 endif
 
 ifeq ($(origin EMSDK),undefined)

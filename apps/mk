@@ -174,9 +174,9 @@ xxx
 
 }
 
-mk_tut "Documentation and code snippets" docu "easylang documentation" 
+mk_tut "Documentation and code snippets" docu "easylang documentation"
 mk_tut "Functions and recursion" func "recursive functions"
-mk_tut "Programming a letter memory game" game "canvas game, smartphone" "" "runner" 
+mk_tut "Programming a letter memory game" game "canvas game, smartphone" "" "runner"
 mk_tut "Programming basics" learn "learn programming basics"
 sed s/555/222/g $o/tut_learn.html > $o/tmp.html
 mv $o/tmp.html $o/tut_learn.html
@@ -232,7 +232,7 @@ a {color:#888}
 
 </style>
 
-<b>$n</b> - 
+<b>$n</b> -
 <small>
 xxx
 
@@ -393,7 +393,7 @@ A language that doesn’t have everything is actually easier to program in than 
 
 <h3>Web demos</h3>
 
-Some of these examples are solved tasks of 
+Some of these examples are solved tasks of
 <a href=https://rosettacode.org/wiki/Category:EasyLang>Rosetta Code</a>
 <p>
 <div class=col>
@@ -470,7 +470,7 @@ function show(s) {
 
 s2 = `
 xxx
-cat clock.kab
+cat clock.kab | tail +3
 cat <<'xxx'
 `
 function runClock() {
@@ -479,8 +479,6 @@ function runClock() {
 
 function runBall() {
   show(`
-# Ball
-#
 on animate
   clear
   color 555
@@ -514,7 +512,7 @@ vx = 1.5`)
 function runMandel() {
 	show(`
 xxx
-cat mandelbrot.kab
+cat mandelbrot.kab | tail +3
 cat <<'xxx'
 `)
 }
@@ -522,7 +520,7 @@ cat <<'xxx'
 function runPendel() {
 	show(`
 xxx
-cat pendulum.kab
+cat pendulum.kab | tail +3
 cat <<'xxx'
 `)
 }
@@ -530,7 +528,7 @@ cat <<'xxx'
 function runTic() {
 	show(`
 xxx
-cat tictactoe.kab
+cat tictactoe.kab | tail +3
 cat <<'xxx'
 `)
 }
@@ -548,7 +546,7 @@ cat <<'xxx'
 	<p><a href=javascript:runMandel()>Mandelbrot</a>
 	<hr style="width:100px;margin-left:4px">
 	<p>
-	<textarea id=code1 cols=36 rows=6 autocomplete=off 
+	<textarea id=code1 cols=36 rows=8 autocomplete=off
 		autocorrect=off autocapitalize=off spellcheck=false></textarea>
 	<br>
 	<button onclick="showx(code1.value)">Show</button>
@@ -575,7 +573,7 @@ function createURL() {
 <p>
 A URL can be created, that can start a <i>code runner</i> with the program encoded in a URL parameter.
 <p>
-Inside the <i>code runner</i> our program can be stored and run offline. The code runner is a <i>PWA</i> 
+Inside the <i>code runner</i> our program can be stored and run offline. The code runner is a <i>PWA</i>
 (Progressive Web App). Therefore it works like a native app on the mobile device.
 
 <p>
@@ -618,9 +616,9 @@ If you like it, recommend it to others.
 
 
 <hr>
-The name of some built-in commands has changed (February 2022). Old code can be adapted to the new syntax with this tool.
+The default origin of the coordinate system is now bottom left (March 2023). With the command <tt>sys topleft</tt> you can reset the origin to top left.
 <p>
-<p><a href=conv.html>Syntax converter</a>
+The name of some built-in commands has changed (February 2022). Old code can be adapted to the new syntax with <a href=conv.html>this tool</a>
 <p>
 
 

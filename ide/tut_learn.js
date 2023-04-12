@@ -122,7 +122,7 @@ line 30 50
 color 900
 move 10 15
 rect 20 20
-# 
+#
 color 990
 move 30 45
 rect 50 30
@@ -175,13 +175,13 @@ polygon [ 50 70 15 45 85 45 ]
 color 444
 move 30 10
 rect 10 10
-# 
+#
 move 30 30
 rect 10 10
 #
 move 60 30
 rect 10 10
-# text 
+# text
 move 5 85
 textsize 8
 text "MY HOUSE"
@@ -212,7 +212,7 @@ text "MY HOUSE"
 
 + *linewidth* sets the line width. The lines are rounded at the ends.
 
-+de Mit dem Befehl *circle* wird ein gefüllter Kreis an der aktuellen Position gezeichnet. 
++de Mit dem Befehl *circle* wird ein gefüllter Kreis an der aktuellen Position gezeichnet.
 
 +de *linewidth* stellt die Linienstärke ein. Die Linien sind an den Enden abgerundet.
 
@@ -220,16 +220,16 @@ move 10 80
 circle 4
 move 30 80
 circle 6
-# 
+#
 linewidth 3
 move 10 60
 line 30 60
-# 
+#
 linewidth 8
 color 900
 move 10 40
 line 25 40
-# 
+#
 color 333
 move 10 20
 line 15 20
@@ -265,7 +265,7 @@ pr 13 * 7
 
 -
 
-+ You can store a number in a variable and then work with this variable. The *=* here is an assignment command, not an equality expression. 
++ You can store a number in a variable and then work with this variable. The *=* here is an assignment command, not an equality expression.
 
 +de Eine Zahl kann man in einer Variablen speichern und dann mit dieser Variablen arbeiten. Das *=* hier ist ein Zuweisungsbefehl, kein Gleichheitsausdruck.
 
@@ -290,11 +290,11 @@ print a
 
 * Strings
 
-*de Zeichenketten (Strings)
+*de Strings
 
 + Strings are texts enclosed in quotation marks.
 
-+de Zeichenketten (Strings) sind in Anführungszeichen eingeschlossene Texte.
++de Strings sind in Anführungszeichen eingeschlossene Texte.
 
 print "What is your name?"
 n$ = input
@@ -306,7 +306,7 @@ print "Hello " & n$
 
 + You can also store strings in variables. The variable name then ends with a "$" character. The *&* character can be used to join strings.
 
-+de Du kannst auch Zeichenketten in Variablen speichern. Der Variablenname endet dann mit einem "$"-Zeichen. Mit dem *&*-Zeichen kann man Zeichenketten zusammenfügen.
++de Du kannst auch Strings in Variablen speichern. Der Variablenname endet dann mit einem "$"-Zeichen. Mit dem *&*-Zeichen kann man Strings zusammenfügen.
 
 -
 
@@ -320,7 +320,7 @@ print "Area: " & a
 
 + *number* converts a string to a number. *write* is like *print* except that it does not jump to a new line after output. With *&* you can also join strings and numbers.
 
-+de *number* konvertiert eine Zeichenkette in eine Zahl. *write* ist wie *print*, nur dass es nach der Ausgabe nicht in eine neue Zeile springt. Mit *&* kannst du auch Zeichenketten und Zahlen verbinden.
++de *number* konvertiert einen String in eine Zahl. *write* ist wie *print*, nur dass es nach der Ausgabe nicht in eine neue Zeile springt. Mit *&* kannst du auch Strings und Zahlen verbinden.
 
 * Conditional statement
 
@@ -403,7 +403,7 @@ end
 
 + 🤔🤔 Write a program that adds up the numbers from 1 to 10. (Result: 55)
 
-+de 🤔 Schreibe ein Programm, das die Quadratzahlen bis 10 ausgibt (1, 4, 9 ...). 
++de 🤔 Schreibe ein Programm, das die Quadratzahlen bis 10 ausgibt (1, 4, 9 ...).
 
 +de 🤔🤔 Schreibe ein Programm, das die Zahlen von 1 bis 10 zusammenzählt. (Ergebnis: 55)
 
@@ -411,28 +411,28 @@ end
 
 move 10 10
 line 90 10
-# 
+#
 move 10 20
 line 90 20
-# 
+#
 move 10 30
 line 90 30
-# 
+#
 move 10 40
 line 90 40
-# 
+#
 move 10 50
 line 90 50
-# 
+#
 move 10 60
 line 90 60
-# 
+#
 move 10 70
 line 90 70
-# 
+#
 move 10 80
 line 90 80
-# 
+#
 move 10 90
 line 90 90
 
@@ -473,9 +473,9 @@ print c & "°C = " & f & "°F"
 
 -
 
-+ A little game - number guessing 
++ A little game - number guessing
 
-+de Ein kleines Spiel - Zahlenraten 
++de Ein kleines Spiel - Zahlenraten
 
 n = random 10
 print "------------------------------------"
@@ -610,7 +610,7 @@ subr drawcar
    circle 3.5
    sleep 0.05
 end
-# 
+#
 x = -25
 while x <= 120
    call drawcar
@@ -743,7 +743,7 @@ end
 
 + We use an *array* for this. The field elements can be accessed using square brackets and a position specification, also called index. The first element is at position 1, *len* returns the number of elements in the array.
 
-+de Jetzt wollen wir einen Sternenhimmel nach einer Sternenkarte zeichnen. Dazu brauchen wir so etwas wie eine Liste. 
++de Jetzt wollen wir einen Sternenhimmel nach einer Sternenkarte zeichnen. Dazu brauchen wir so etwas wie eine Liste.
 
 +de Wir verwenden dazu ein *Feld* (engl. *Array*). Auf die Feldelemente kann über eckige Klammern und eine Positionsangabe, auch Index genannt, zugegriffen werden. Das erste Element steht an der Position 1. *len* gibt die Anzahl der Elemente im Array zurück.
 
@@ -898,10 +898,10 @@ print data[]
 
 data[] = [ 44 72 55 26 27 4 99 7 ]
 for pos = 1 to len data[] - 1
-   # 
+   #
    # TODO: search minimum starting from
    #       pos and move it to pos
-   #    
+   #
 end
 print data[]
 `
