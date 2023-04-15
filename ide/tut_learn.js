@@ -36,10 +36,6 @@ circle 3.5
 
 *de Grafik
 
-+ If you have looked at this course before, please note: The origin of the coordinate system has changed. It is now in the lower left corner.
-
-+de Wenn du dir diesen Kurs schon einmal angeschaut hast, beachte bitte: Der Ursprung des Koordinatensystems hat sich geändert. Er befindet sich jetzt in der unteren linken Ecke.
-
 + First we look at the commands that can be used to create graphics on the screen.
 
 +de Zuerst schauen wir uns die Befehle an, mit denen Grafiken auf dem Bildschirm erstellt werden können.
@@ -234,9 +230,9 @@ color 333
 move 10 20
 line 15 20
 
-+ 🤔 Draw this car.
++ 🤔 Try to draw this car.
 
-+de 🤔 Zeichne dieses Auto.
++de 🤔 Versuche dieses Auto zu zeichnen.
 
 ##24
 linewidth 8
@@ -326,9 +322,9 @@ print "Area: " & a
 
 *de Bedingte Anweisung
 
-+ With *if* you can make the execution of actions dependent on a comparison. *end* marks the end of the dependent actions.
++ With *if* you can instruct the computer to execute a block of commands only if a condition is met. The end of the block is indicated by *end*.
 
-+de Mittels *if* kann man die Ausführung von Aktionen von einem Vergleich abhängig machen. *end* markiert das Ende der abhängigen Aktionen.
++de Mit *if* kannst du dem Computer sagen, dass er einen Block von Befehlen nur ausführen soll, wenn eine Bedingung erfüllt ist. Das Ende des Blocks wird durch *end* angezeigt.
 
 a = 7
 a = 9 * a
@@ -339,7 +335,7 @@ end
 print "a: " & a
 
 ##
-color 555
+color 543
 textsize 6
 linewidth 0.5
 y = 75
@@ -358,8 +354,8 @@ func cod n$ v v$ . .
       line 72 y + 6
       line 72 y + 13.5
       line 59 y + 13.5
-      line 59 y + 7
-      move 62 y + 7
+      line 59 y + 6
+      move 62 y + 8
       text v
    else
       text v$
@@ -582,7 +578,7 @@ end
 
 + 🤔🤔 Let the ball roll back again.
 
-+de 🤔 Versuche, die Animation flüssiger zu machen, indem du die x-Position des Kreises jedes Mal nur um 1 oder 0,5 erhöhst und die Pause zum nächsten Bild verkürzt.
++de 🤔 Versuche, die Animation flüssiger zu machen, indem du die x-Position des Kreises jedes Mal nur um 1 oder 0.5 erhöhst und die Pause zum nächsten Bild verkürzt.
 
 +de 🤔 Halte den Ball an, wenn er die rechte Kante berührt.
 
@@ -608,14 +604,14 @@ subr drawcar
    circle 3.5
    move x + 16 3
    circle 3.5
-   sleep 0.05
+   sleep 0.5
 end
-#
-x = -25
-while x <= 120
-   call drawcar
-   x += 1
-end
+# 
+call drawcar
+x += 10
+call drawcar
+x += 10
+call drawcar
 
 + With *subr* you can combine actions that can be called from different places using *call*. This is called a *subroutine*.
 
@@ -624,6 +620,10 @@ end
 + With *func* you can also create *functions* with parameters and local variables, but this is not covered in this beginner course.
 
 +de Mit *func* kann man auch *Funktionen* mit Parametern und lokalen Variablen erstellen, das wird aber in diesem Einsteiger-Kurs nicht behandelt.
+
++ 🤔 Let the car move.
+
++de 🤔 Lass das Auto fahren.
 
 + 🤔🤔 Let the car move back and forth three times.
 
@@ -786,6 +786,12 @@ text "a[]"
 + 🤔 Can you extend the program to output the largest number at the end?
 
 +de 🤔 Kannst du das Programm so erweitern, dass es am Ende die größte Zahl ausgibt?
+
++ 🤔 Can you extend the program to output the largest number at the end?
+
++🤔🤔 Can you find the average of these numbers?
+
++de 🤔🤔 Kannst du den Mittelwert dieser Zahlen ermitteln?
 
 -
 

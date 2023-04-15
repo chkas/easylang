@@ -431,15 +431,15 @@ and <a href=easy.js><i>easy.js</i></a> to your web directory, you can embed a sc
 </div>
 
 <script>
-src1 = `func tree x y angle depth . .
-   linewidth depth * 0.4
+src1 = `func tree x y a d . .
+   linewidth d * 0.4
    move x y
-   x += cos angle * depth * 1.4 * (randomf + 0.5)
-   y += sin angle * depth * 1.4 * (randomf + 0.5)
+   x += cos a * d * 1.4 * (randomf + 0.5)
+   y += sin a * d * 1.4 * (randomf + 0.5)
    line x y
-   if depth > 1
-      call tree x y angle - 20 depth - 1
-      call tree x y angle + 20 depth - 1
+   if d > 1
+      call tree x y a - 20 d - 1
+      call tree x y a + 20 d - 1
    .
 .
 call tree 50 5 90 10
@@ -470,7 +470,7 @@ function show(s) {
 
 s2 = `
 xxx
-cat clock.kab | tail +3
+cat clock.kab
 cat <<'xxx'
 `
 function runClock() {
@@ -479,6 +479,8 @@ function runClock() {
 
 function runBall() {
   show(`
+# Ball
+# 
 on animate
   clear
   color 555
@@ -512,7 +514,7 @@ vx = 1.5`)
 function runMandel() {
 	show(`
 xxx
-cat mandelbrot.kab | tail +3
+cat mandelbrot.kab
 cat <<'xxx'
 `)
 }
@@ -520,7 +522,7 @@ cat <<'xxx'
 function runPendel() {
 	show(`
 xxx
-cat pendulum.kab | tail +3
+cat pendulum.kab
 cat <<'xxx'
 `)
 }
@@ -528,7 +530,7 @@ cat <<'xxx'
 function runTic() {
 	show(`
 xxx
-cat tictactoe.kab | tail +3
+cat tictactoe.kab
 cat <<'xxx'
 `)
 }
@@ -620,8 +622,6 @@ The default origin of the coordinate system is now bottom left (March 2023). Wit
 <p>
 The name of some built-in commands has changed (February 2022). Old code can be adapted to the new syntax with <a href=conv.html>this tool</a>
 <p>
-
-
 
 
 <hr>
