@@ -90,7 +90,6 @@ function canvInit() {
 	c.setTransform(1,0,0,1,0,0)
 	c.translate(0.04, 0.04)
 	c.scale(8, 8)
-//	botLeft = false
 	botLeft = true
 }
 var doTrace = false
@@ -99,7 +98,7 @@ function kaRun(s, opt = 0, pos = -1) {
 	eCan = canv0
 	eOut = out0
 	if (eCan) canvInit()
-	if (opt > 255) {
+	if (opt > 511) {
 		imgTrace = null
 		doTrace = true
 	}

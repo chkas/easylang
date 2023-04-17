@@ -747,9 +747,14 @@ end
 
 +de Wir verwenden dazu ein *Feld* (engl. *Array*). Auf die Feldelemente kann über eckige Klammern und eine Positionsangabe, auch Index genannt, zugegriffen werden. Das erste Element steht an der Position 1. *len* gibt die Anzahl der Elemente im Array zurück.
 
-a[] = [ 4 7 8 2 ]
+a[] = [ 3 7 2 8 ]
+print len a[]
+print a[1]
+print a[2]
+#
+print ""
 for i = 1 to len a[]
-   print i & ": " & a[i]
+   print a[i]
 end
 
 ##85
@@ -775,7 +780,7 @@ func dr ind v . .
   line 40 y
   y += 18
 .
-a[] = [ 4 7 8 2 ]
+a[] = [ 3 7 2 8 ]
 for i = 1 to len a[]
   call dr i a[i]
 .
@@ -783,15 +788,30 @@ textsize 9
 move 4 10
 text "a[]"
 
-+ 🤔 Can you extend the program to output the largest number at the end?
++ How can you find the smallest number in this array?
 
-+de 🤔 Kannst du das Programm so erweitern, dass es am Ende die größte Zahl ausgibt?
++ First take the first element as the smallest number. Then go through all the numbers and compare them to the current smallest number. If a number is smaller, it is the new smallest number.
 
-+ 🤔 Can you extend the program to output the largest number at the end?
++de Wie kann man die kleinste Zahl in diesem Array finden?
 
-+🤔🤔 Can you find the average of these numbers?
++de Nimm zuerst das erste Element als kleinste Zahl. Gehe dann alle Zahlen durch und vergleiche sie mit der aktuellen kleinsten Zahl. Wenn eine Zahl kleiner ist, ist das die neue kleinste Zahl.
 
-+de 🤔🤔 Kannst du den Mittelwert dieser Zahlen ermitteln?
+a[] = [ 3 7 2 8 ]
+min = a[1]
+for i = 2 to len a[]
+   if a[i] < min
+      min = a[i]
+   end
+end
+print min
+
++ 🤔 We now also want to know what the biggest number is.
+
++de 🤔 Wir wollen nun auch wissen, was die größte Zahl ist.
+
++🤔🤔 Can you find the mean (average) of these numbers? The mean is the sum of all elements divided by the number of elements.
+
++de 🤔🤔 Kannst du den Mittelwert (Durchschnitt) dieser Zahlen ermitteln? Der Mittelwert ist die Summe aller Elemente geteilt durch die Anzahl der Elemente.
 
 -
 
@@ -856,32 +876,9 @@ for s = 1 to len si[][]
 
 *de Mit einem Array arbeiten, Sortieren
 
-+ How can you find the smallest number in an array?
++ We want to put the smallest number on the first position. For this we remember the position of the smallest element. Then we just have to copy the first element to the position of the smallest element and put the smallest number to the first position.
 
-+ First take the first element as the smallest number. Then go through all the numbers and compare them to the current smallest number. If a number is smaller, it is the new smallest number.
-
-+de Wie kann man die kleinste Zahl in einem Array finden?
-
-+de Nimm zuerst das erste Element als kleinste Zahl. Gehe dann alle Zahlen durch und vergleiche sie mit der aktuellen kleinsten Zahl. Wenn eine Zahl kleiner ist, ist das die neue kleinste Zahl.
-
-data[] = [ 44 72 55 26 27 4 99 7 ]
-min = data[1]
-for i = 2 to len data[]
-   if data[i] < min
-      min = data[i]
-   end
-end
-print min
-
-+ 🤔 We now also want to know what the biggest number is.
-
-+de 🤔 Wir wollen nun auch wissen, was die größte Zahl ist.
-
--
-
-+ Now we want to put the smallest number on the first position. For this we additionally remember the position of the smallest element. Then we just have to copy the first element to the position of the smallest element and put the smallest number to the first position.
-
-+de Nun wollen wir die kleinste Zahl auf die erste Position setzen. Dazu merken wir uns zusätzlich die Position des kleinsten Elements. Dann müssen wir nur noch das erste Element an die Position des kleinsten Elements kopieren und die kleinste Zahl an die erste Position setzen.
++de Wir wollen die kleinste Zahl auf die erste Position setzen. Dazu merken wir uns die Position des kleinsten Elements. Dann müssen wir nur noch das erste Element an die Position des kleinsten Elements kopieren und die kleinste Zahl an die erste Position setzen.
 
 data[] = [ 44 72 55 26 27 4 99 7 ]
 min = data[1]

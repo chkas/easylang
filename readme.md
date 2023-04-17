@@ -18,7 +18,7 @@ on animate
 end
 ~~~
 
-### Website
+## Website
 
 **[easylang.online](https://easylang.online/)**
 
@@ -73,11 +73,11 @@ Test it locally
 
 [localhost:8000/ide/](http://localhost:8000/ide/)
 
-### Build with Github Actions
+## Build with Github Actions
 
 [github.com/chkas/chkas.github.io](https://github.com/chkas/chkas.github.io)
 
-### Build native version
+## Build native version
 
 ~~~
 easylang/native/readme.md
