@@ -737,6 +737,10 @@ for i = 1 to 50
    circle mag / 100
 end
 
++ 🤔 You can create a confetti pattern by using a random color each time and drawing the circles larger.
+
++de 🤔 Du kannst ein Konfettimuster erstellen, indem du jedes Mal eine zufällige Farbe verwendest und die Kreise größer zeichnest.
+
 -
 
 + Now let's draw a starry sky from a star map. For this we need something like a list.
@@ -788,30 +792,21 @@ textsize 9
 move 4 10
 text "a[]"
 
-+ How can you find the smallest number in this array?
++ How can we find the mean (average) of these numbers? The mean is the sum of all elements divided by the number of elements.
 
-+ First take the first element as the smallest number. Then go through all the numbers and compare them to the current smallest number. If a number is smaller, it is the new smallest number.
++ For these 4 numbers it is quite simple.
 
-+de Wie kann man die kleinste Zahl in diesem Array finden?
++de Wie kann man den Mittelwert (Durchschnitt) dieser Zahlen ermitteln? Der Mittelwert ist die Summe aller Elemente geteilt durch die Anzahl der Elemente.
 
-+de Nimm zuerst das erste Element als kleinste Zahl. Gehe dann alle Zahlen durch und vergleiche sie mit der aktuellen kleinsten Zahl. Wenn eine Zahl kleiner ist, ist das die neue kleinste Zahl.
++de Für diese 4 Zahlen ist das ganz einfach.
 
 a[] = [ 3 7 2 8 ]
-min = a[1]
-for i = 2 to len a[]
-   if a[i] < min
-      min = a[i]
-   end
-end
-print min
+m = (a[1] + a[2] + a[3] + a[4]) / 4
+print "Mean: " & m
 
-+ 🤔 We now also want to know what the biggest number is.
++ 🤔 Try to find a solution that works also for arrays of other sizes.
 
-+de 🤔 Wir wollen nun auch wissen, was die größte Zahl ist.
-
-+🤔🤔 Can you find the mean (average) of these numbers? The mean is the sum of all elements divided by the number of elements.
-
-+de 🤔🤔 Kannst du den Mittelwert (Durchschnitt) dieser Zahlen ermitteln? Der Mittelwert ist die Summe aller Elemente geteilt durch die Anzahl der Elemente.
++de 🤔 Versuche, eine Lösung zu finden, die auch für Arrays anderer Größen funktioniert.
 
 -
 
@@ -876,9 +871,30 @@ for s = 1 to len si[][]
 
 *de Mit einem Array arbeiten, Sortieren
 
-+ We want to put the smallest number on the first position. For this we remember the position of the smallest element. Then we just have to copy the first element to the position of the smallest element and put the smallest number to the first position.
++ How can you find the smallest number in this array?
 
-+de Wir wollen die kleinste Zahl auf die erste Position setzen. Dazu merken wir uns die Position des kleinsten Elements. Dann müssen wir nur noch das erste Element an die Position des kleinsten Elements kopieren und die kleinste Zahl an die erste Position setzen.
++ First take the first element as the smallest number. Then go through all the numbers and compare them to the current smallest number. If a number is smaller, it is the new smallest number.
+
++de Wie kann man die kleinste Zahl in diesem Array finden?
+
++de Nimm zuerst das erste Element als kleinste Zahl. Gehe dann alle Zahlen durch und vergleiche sie mit der aktuellen kleinsten Zahl. Wenn eine Zahl kleiner ist, ist das die neue kleinste Zahl.
+
+data[] = [ 44 72 55 26 27 4 99 7 ]
+min = a[1]
+for i = 2 to len a[]
+   if a[i] < min
+      min = a[i]
+   end
+end
+print min
+
++ 🤔 We now also want to know what the biggest number is.
+
++de 🤔 Wir wollen nun auch wissen, was die größte Zahl ist.
+
++ Now we want to put the smallest number on the first position. For this we remember the position of the smallest element. Then we just have to copy the first element to the position of the smallest element and put the smallest number to the first position.
+
++de Jetzt wollen wir die kleinste Zahl auf die erste Position setzen. Dazu merken wir uns die Position des kleinsten Elements. Dann müssen wir nur noch das erste Element an die Position des kleinsten Elements kopieren und die kleinste Zahl an die erste Position setzen.
 
 data[] = [ 44 72 55 26 27 4 99 7 ]
 min = data[1]
