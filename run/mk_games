@@ -52,7 +52,7 @@ wrcode() {
 	f=$(echo $1 | cut -c1 | tr a-z A-Z)
 	n=$f$(echo $1 | cut -c2- | tr '-' ' ')
 
-	echo -n "s[$i] = \`"
+	printf "s[$i] = \`"
 	cat $1.kab
 	echo  "\`"
 	i=$((i+1))
