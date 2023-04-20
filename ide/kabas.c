@@ -254,7 +254,7 @@ static ushort parse_lenfunc(ushort mode) {
 		else {
 			if (tok == t_brrl) {
 				cs_tok_nt();
-				// len arr[0][] or arr[0][0]
+				// len arr[1][] or arr[1][1]
 				if (tok == t_brr) {
 					codp[o].o1 = get_var(VAR_NUMARRARR, RD, s, pos);
 					cs_tok_nt();
@@ -268,7 +268,7 @@ static ushort parse_lenfunc(ushort mode) {
 				}
 			}
 			else if (tok == t_brr) {
-				// arr[0]
+				// arr[1]
 				codp[o].o1 = get_var(VAR_NUMARR, RD, s, pos);
 				cs_tok_nt();
 				codp[o].numf = op_vnumael;
