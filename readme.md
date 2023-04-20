@@ -1,4 +1,4 @@
-##  easylang.online
+##  Easylang
 
 Easylang is a simple open-source programming language with built-in graphical features and a user-friendly browser IDE that can be used also offline. It was developed to make learning to program as easy and accessible as possible. You can also use Easylang to write simple graphical programs that can be embedded in a web page.
 
@@ -20,7 +20,7 @@ end
 
 ## Website
 
-**[easylang.online](https://easylang.online/)**
+**[easylang.dev](https://easylang.dev/)**
 
 **[chkas.github.io](https://chkas.github.io/)**
 
