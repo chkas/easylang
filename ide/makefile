@@ -1,6 +1,6 @@
 # source $HOME/emsdk/emsdk_env.sh
 
-v = 321
+v = 323
 
 #--------------------------------------------------------------------
 # DBG = true
@@ -105,7 +105,7 @@ $(or)/tut_id$(v).js: tut_id.js
 
 $(or)/easyw$(v).js: $(wrk)/kabas.o kabasw.js
 #$(or)/easyw$(v).js: $(wrk)/kabas.o kabasw.js makefile
-	echo "console.log('easylang.online v$v - free to use - christof.kaser@gmail.com')" >$(wrk)/tmp_kabasw.js
+	echo "console.log('Easylang v$v - free to use - christof.kaser@gmail.com')" >$(wrk)/tmp_kabasw.js
 	cat kabasw.js >>$(wrk)/tmp_kabasw.js
 	$(LD) --post-js $(wrk)/tmp_kabasw.js $(wrk)/kabas.o -o $@
 	rm $(wrk)/tmp_kabasw.js

@@ -119,6 +119,7 @@ static void space_sub() {
 
 static char syntax_high;
 
+/*
 static int utf8len(const char* s) {
 	int len = 0;
 	while (*s) {
@@ -127,6 +128,22 @@ static int utf8len(const char* s) {
 	}
 	return len;
 }
+*/
+static int utf8len(const char* s) {
+	int len = 0;
+	while (1) {
+		int c = (unsigned char)*s;
+		if (!c) break;
+		if (c < 0x80) len++;
+		else if (c >= 0xc0) {
+			len++;
+			if (c >= 0xf0) len++;	// js is utf16
+		}
+		s++;
+	}
+	return len;
+}
+
 
 static int codestrspc;
 static int codestrln;

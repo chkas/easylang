@@ -108,12 +108,23 @@ function showFull() {
 	div.appendChild(runBtn)
 	append(div, "p")
 	var p = location.pathname.slice(0, -5)
-	var u = location.origin + p + "/run/#code=" + encodeURIComponent(inp.innerText)
+	var url = location.origin + p + "/run/#code=" + encodeURIComponent(inp.innerText)
 	var lnk = create("a")
-	lnk.href = u
+	lnk.href = url
 	lnk.target = "_blank"
 	appendTxt(lnk, "Code runner")
 	div.appendChild(lnk)
+
+	btn = create("button")
+	btn.textContent = "Copy link"
+	btn.div = div
+	btn.onclick = function() {
+		navigator.clipboard.writeText(url);
+	}
+	append(div, "p")
+	div.appendChild(btn)
+
+
 	append(div, "p")
 	appendTxt(div, "You can email this link to your smartphone and run the program there.")
 	fr.appendChild(div)
@@ -333,7 +344,7 @@ function storeUpd() {
 			if (i2 != -1) ind = i2
 		}
 		var pre = create("pre")
-		appendTxt(pre, st.substr(0, ind))
+		appendTxt(pre, st.substring(0, ind))
 
 		var btn
 		if (runBtn) {
@@ -800,11 +811,11 @@ var searchS = ""
 function search() {
 	if (window.getSelection() != "") searchS = window.getSelection().toString()
 	var p = getCaret()
-	var s = inp.innerText.substr(p + 1)
+	var s = inp.innerText.substring(p + 1)
 	var m = s.search(searchS)
 	if (m != -1) m = p + m + 1
 	else {
-		s = inp.innerText.substr(0, p)
+		s = inp.innerText.substring(0, p)
 		m = s.search(searchS)
 	}
 	if (m != -1) {
@@ -817,24 +828,24 @@ inp.onkeydown = function(e) {
 	var k = e.keyCode
 	if (cnd.act) {
 		removeCnd()
-		if (k == 8) {
+		if (k == 8) {		// backspace
 			e.preventDefault()
 			return
 		}
 	}
 	if (e.ctrlKey) {
-		if (k == 86 || k == 88) {
+		if (k == 86 || k == 88) {	// v x
 			stBtn.disabled = false
 		}
-		else if (k == 82 || k == 13) {
+		else if (k == 82 || k == 13) {	// r enter
 			e.preventDefault()
 			runx()
 		}
-		else if (k == 83) {
+		else if (k == 83) {		// s
 			e.preventDefault()
 			if (!stBtn.disabled) store()
 		}
-		else if (k == 70) {
+		else if (k == 70) {		// f
 			e.preventDefault()
 			search()
 		}
@@ -845,13 +856,13 @@ inp.onkeydown = function(e) {
 			test()
 		}
 */
-		else if (k == 85 || k == 79 || k == 219 || k == 72 
-				|| k == 74 || k == 75 || k == 76 || k == 66) {
+		else if (k == 85 || k == 79 || k == 219 || k == 72 		// u o [ h
+				|| k == 74 || k == 75 || k == 76 || k == 66) { 	// j k l b
 			e.preventDefault()
 		}
 		return
 	}
-	if (k == 13) {
+	if (k == 13) {		// enter
 		e.preventDefault()
 		if (e.shiftKey) {
 			runx()
@@ -864,10 +875,11 @@ inp.onkeydown = function(e) {
 		}
 		enter()
 	}
-	else if (k == 9) {
+	else if (k == 9) {	// tab
 		document.execCommand("insertHTML", false, "  ")
 		e.preventDefault()
 	}
+	// delete space tab
 	if (stBtn.disabled && (k >= 46 || k == 32 || k <= 9)) stBtn.disabled = false
 }
 
@@ -965,11 +977,11 @@ function setCaret(pos, showCnd = true) {
 
 	if (showCnd) {
 		var p = nd.parentNode
-		var n = document.createTextNode(nd.nodeValue.substr(0, pos))
+		var n = document.createTextNode(nd.nodeValue.substring(0, pos))
 		p.insertBefore(n, nd)
 		cnd.act = true
 		p.insertBefore(cnd, nd)
-		n = document.createTextNode(nd.nodeValue.substr(pos))
+		n = document.createTextNode(nd.nodeValue.substring(pos))
 		p.insertBefore(n, nd)
 		p.removeChild(nd)
 		caret(n, 0)
@@ -1005,8 +1017,8 @@ function showError(err, pos) {
 }
 
 function gotSrcNl(src, res, pos, err) {
-	inp.innerHTML = src.substr(0, res)
-	appendTxt(inp, src.substr(res) + tailSrc)
+	inp.innerHTML = src.substring(0, res)
+	appendTxt(inp, src.substring(res) + tailSrc)
 	setCaret(pos)
 	if (err) showError(err, pos)
 	else if (tailSrc.length < 10) {
@@ -1016,8 +1028,8 @@ function gotSrcNl(src, res, pos, err) {
 	
 function gotSrcErr(src, res, pos, err) {
 	if (doco) onTab(3)
-	inp.innerHTML = src.substr(0, res)
-	appendTxt(inp, src.substr(res))
+	inp.innerHTML = src.substring(0, res)
+	appendTxt(inp, src.substring(res))
 	showRun()
 	setCaret(pos)
 	showError(err, pos)
@@ -1058,8 +1070,8 @@ function selectLine(sel) {
 		if (i >= -1) {
 			if (i == s.length && uNd) uNd.appendChild(nd)
 			else if (ln == sel) {
-				var s1 = s.substr(0, i)
-				var s2 = s.substr(i + 1)
+				var s1 = s.substring(0, i)
+				var s2 = s.substring(i + 1)
 				if (!uNd) {
 					if (ln != 1) {
 						n = document.createTextNode(s1 + "\n")
@@ -1068,9 +1080,9 @@ function selectLine(sel) {
 					uNd = create("U")
 					var h = s2.indexOf("\n")
 					if (h >= 0) {
-						appendTxt(uNd, s2.substr(0, h))
+						appendTxt(uNd, s2.substring(0, h))
 						inp.insertBefore(uNd, nd)
-						n = document.createTextNode(s2.substr(h))
+						n = document.createTextNode(s2.substring(h))
 						inp.replaceChild(n, nd)
 						break
 					}
@@ -1200,7 +1212,7 @@ function ideMsgFunc(msg, d) {
 
 input.onkeydown = function(e) {
 	var k = e.keyCode
-	if (k == 13 || k == 68 && e.ctrlKey) {
+	if (k == 13 || k == 68 && e.ctrlKey) {	// enter ctrl-d
 		if (k == 13) easyinp(input.value)
 		else easyinp(null)
 		hide(labinp)
@@ -1228,7 +1240,7 @@ function doStop() {
 }
 
 window.addEventListener("keydown", function(e) {
-	if (e.keyCode == 82 && e.ctrlKey || e.keyCode == 116) {
+	if (e.keyCode == 82 && e.ctrlKey || e.keyCode == 116) {	// ctrl-r f5
 		e.preventDefault()
 	}
 })
@@ -1348,12 +1360,25 @@ window.onbeforeunload = function(e) {
 	}
 }
 
+function testReload() {
+
+	var nav = performance.getEntriesByType("navigation")[0]
+	if (nav && nav.type == "reload") {
+		for (var h = 0; h < tut_file.length; h++) {
+			if (tut_file[h] == history.state) {
+				initTut = h + 1
+				break
+			}
+		}
+		history.replaceState(null, "")
+	}
+}
+
 function main() {
 
 	var tabn = 1
 	if (window.localStorage.getItem("x2col") == "true") {
 		collapseEdit()
-//		resize2()
 		show(expnd)
 		tabn = 3
 	}
@@ -1388,8 +1413,7 @@ function main() {
 		}
 		history.replaceState(null, "", location.pathname)
 	}
-	if (performance.navigation.type == 1 && history.state) history.replaceState(null, "")
-
+	if (history.state) testReload()
 	doTutChng()
 	onTab(tabn)
 

@@ -27,37 +27,37 @@ func ice x y col . .
 call ice 30 60 900
 func draw_ice try . .
    color 990
-   if try < 1
+   if try < 11
       call ice 72 57 900
    .
-   if try < 2
+   if try < 10
       call ice 92 57 449
    .
-   if try < 3
+   if try < 9
       call ice 82 52 990
    .
-   if try < 4
+   if try < 8
       call ice 72 42 733
    .
-   if try < 5
+   if try < 7
       call ice 92 42 950
    .
    if try < 6
       call ice 82 37 765
    .
-   if try < 7
+   if try < 5
       call ice 72 27 096
    .
-   if try < 8
+   if try < 4
       call ice 92 27 888
    .
-   if try < 9
+   if try < 3
       call ice 82 22 080
    .
-   if try < 10
+   if try < 2
       call ice 72 12 900
    .
-   if try < 11
+   if try < 1
       call ice 92 12 990
    .
 .
@@ -181,4 +181,3 @@ on mouse_down
 .
 call init
 call draw
-

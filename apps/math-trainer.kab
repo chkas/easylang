@@ -94,19 +94,22 @@ func start . .
    .
    call show_quest
 .
-menu$[] = [ "Mul *" "Div /" "Add ++" "Sub --" "Mul **" ]
+menu$[] = [ "Mul 🤔" "Div 🤔" "Add 🤔🤔" "Sub 🤔🤔" "Mul 🤔🤔" ]
 func draw_menu_key col i . .
    y = (5 - i) * 19 + 3
    move 3 y
    color col
    rect 94 17
-   move 24 y + 5
    color 888
-   text menu$[i]
+   textsize 12
+   move 16 y + 5
+   text substr menu$[i] 1 3
+   textsize 7
+   move 50 y + 5
+   text substr menu$[i] 4 -1
 .
 func draw_menu . .
    clear
-   textsize 12
    for i = 1 to 5
       call draw_menu_key 020 i
    .
@@ -255,4 +258,3 @@ on timer
    .
 .
 call draw_menu
-
