@@ -879,7 +879,7 @@ for s = 1 to len si[][]
 
 +de Nimm zuerst das erste Element als kleinste Zahl. Gehe dann alle Zahlen durch und vergleiche sie mit der aktuellen kleinsten Zahl. Wenn eine Zahl kleiner ist, ist das die neue kleinste Zahl.
 
-data[] = [ 44 72 55 26 27 4 99 7 ]
+a[] = [ 44 72 55 26 27 4 99 7 ]
 min = a[1]
 for i = 2 to len a[]
    if a[i] < min
@@ -896,18 +896,18 @@ print min
 
 +de Jetzt wollen wir die kleinste Zahl auf die erste Position setzen. Dazu merken wir uns die Position des kleinsten Elements. Dann müssen wir nur noch das erste Element an die Position des kleinsten Elements kopieren und die kleinste Zahl an die erste Position setzen.
 
-data[] = [ 44 72 55 26 27 4 99 7 ]
-min = data[1]
+a[] = [ 44 72 55 26 27 4 99 7 ]
+min = a[1]
 min_pos = 1
-for i = 2 to len data[]
-   if data[i] < min
-      min = data[i]
+for i = 2 to len a[]
+   if a[i] < min
+      min = a[i]
       min_pos = i
    end
 end
-data[min_pos] = data[1]
-data[1] = min
-print data[]
+a[min_pos] = a[1]
+a[1] = min
+print a[]
 
 -
 
@@ -915,13 +915,13 @@ print data[]
 
 +de 🤔🤔 Wir können das kleinste Element an die erste Stelle befördern. Mit dem gleiche Verfahren können wir das kleinste Elemente ab der zweiten Stelle an die zweite Position bringen. Wann wir das für alle Positionen gemacht haben, ist das Array sortiert.
 
-data[] = [ 44 72 55 26 27 4 99 7 ]
-for pos = 1 to len data[] - 1
+a[] = [ 44 72 55 26 27 4 99 7 ]
+for pos = 1 to len a[] - 1
    #
    # TODO: search minimum starting from
    #       pos and move it to pos
    #
 end
-print data[]
+print a[]
 `
 
