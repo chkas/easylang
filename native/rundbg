@@ -17,8 +17,11 @@ if test -d /System; then
   if test $compile; then
     rm -f $D/$n
     echo "Compiling easylang debug ..." >&2
-    clang -Wall -g -D__NOSDL__ -I$S -O $f -lm -o $D/$n
-#    clang -Wall -fsanitize=address -g -D__NOSDL__ -I$S -O $f -lm -o $D/$n
+    fl="-g3 -Wall -Wextra" 
+    fl="$fl -Wdouble-promotion -Wno-unused-parameter"
+    fl="$fl -fsanitize=undefined"
+    #fl="$fl -fsanitize=undefined,address"
+    clang $fl -D__NOSDL__ -I$S -O $f -lm -o $D/$n
     echo "done" >&2
   fi
 

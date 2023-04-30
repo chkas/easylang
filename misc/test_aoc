@@ -6,7 +6,8 @@ for i in $(seq 1 25); do
 	if test $1; then
 		echo "--- $i ---"
 	fi
-	../../native/runc $i.el >/tmp/sol$$
+	../../native/rundbg $i.el >/tmp/sol$$
+#	../../native/runc $i.el >/tmp/sol$$
 	if test $1; then
 		cat /tmp/sol$$
 	fi

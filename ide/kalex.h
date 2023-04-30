@@ -747,6 +747,7 @@ enum vartyp { VAR_NUM, VAR_STR,
 static struct vname* get_vname(struct func* f, const char* name, char typ) {
 
 	struct vname *p = f->vname_p;
+	if (!f->vname_p) return NULL;   // because NULL + 0 is UB
 	while (p < f->vname_p + f->vname_len) {
 		if (p->typ == typ && strcmp(name, p->name) == 0) return p;
 		p += 1;

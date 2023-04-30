@@ -300,7 +300,7 @@ static ushort parse_fac(void) {
 		double f = tvalf;
 		cs_tok_nt();
 		float fh = f;
-		if (f == fh) {
+		if (f == (double)fh) {
 			codp[o].numf = op_const_fl;
 			codp[o].cfl = fh;
 		}
@@ -2531,14 +2531,16 @@ extern int parse(const char* str, int opt, int pos) {
 	func = func_p;
 	while (func < func_p + func_len) {
 		struct vname *p = func->vname_p;
-		while (p < func->vname_p + func->vname_len) {
-			if (p->typ <= VAR_NUMARRARR && p->access != RW) {
-				if (p->access == RD) error_pos("never set", p->srcpos);
-				else error_pos("never used", p->srcpos);
-				caret_pos = code_utf8len;
-				return codestrln;
+		if (func->vname_p) {	// because NULL + 0 is UB
+			while (p < func->vname_p + func->vname_len) {
+				if (p->typ <= VAR_NUMARRARR && p->access != RW) {
+					if (p->access == RD) error_pos("never set", p->srcpos);
+					else error_pos("never used", p->srcpos);
+					caret_pos = code_utf8len;
+					return codestrln;
+				}
+				p += 1;
 			}
-			p += 1;
 		}
 		func += 1;
 	}

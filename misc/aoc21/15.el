@@ -128,5 +128,3 @@ for cost = 0 to 99999
 .
 # 
 input_data
-
-

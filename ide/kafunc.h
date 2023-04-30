@@ -545,7 +545,7 @@ static void op_arrarr_ass(struct op* op) {
 // ------------ double factor --------------------------
 
 static double op_const_fl(struct op* op) {
-	return op->cfl;
+	return (double)op->cfl;
 }
 static double op_const_flx(struct op* op) {
 	return (op +  1)->cdbl;
@@ -1558,14 +1558,14 @@ static struct arr op_str_chars(struct op* op) {
 		return res;
 	}
 
-	uint ind = 0;
-	uint i = 0;
-	uint l;
+	int ind = 0;
+	int i = 0;
+	int l;
 	while (ind < res.len) {
 		l = ulen(p[i]);
 		str_init(res.pstr + ind);
 
-		uint h = 0;
+		int h = 0;
 		while (h < l) {
 			res.pstr[ind].d[h] = p[i + h];
 			h++;
