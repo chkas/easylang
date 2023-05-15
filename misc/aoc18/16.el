@@ -9,20 +9,13 @@ func read . .
    repeat
       s$ = input
       until s$ = ""
-      b[1] = number substr s$ 10 1
-      b[2] = number substr s$ 13 1
-      b[3] = number substr s$ 16 1
-      b[4] = number substr s$ 19 1
+      b[] = number strsplit substr s$ 10 -1 " "
       o[] = number strsplit input " "
-      s$ = input
-      a[1] = number substr s$ 10 1
-      a[2] = number substr s$ 13 1
-      a[3] = number substr s$ 16 1
-      a[4] = number substr s$ 19 1
+      a[] = number strsplit substr input 10 -1 " "
       b[][] &= b[]
       o[][] &= o[]
       a[][] &= a[]
-      _$ = input
+      s$ = input
    .
 .
 call read
@@ -103,12 +96,7 @@ func part1 . .
          r[] = b[tst][]
          arrbase r[] 0
          call opf op o[tst][2] o[tst][3] o[tst][4]
-         for i range0 4
-            if r[i] <> a[tst][i + 1]
-               break 1
-            .
-         .
-         if i = 4
+         if r[] = a[tst][]
             ok += 1
          .
       .
@@ -140,10 +128,8 @@ func part2 . .
                         r[] = b[tst][]
                         arrbase r[] 0
                         call opf op o[tst][2] o[tst][3] o[tst][4]
-                        for i range0 4
-                           if r[i] <> a[tst][i + 1]
-                              break 2
-                           .
+                        if r[] <> a[tst][]
+                           break 2
                         .
                      .
                   .

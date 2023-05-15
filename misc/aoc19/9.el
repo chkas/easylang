@@ -1,6 +1,7 @@
 # AoC-19 - Day 9: Sensor Boost
 # 
 code[] = number strsplit input ","
+arrbase code[] 0
 # 
 global base mem[] .
 # 
@@ -18,7 +19,6 @@ func mem_ind mo ind . rind .
 .
 func run inp . .
    mem[] = code[]
-   arrbase mem[] 0
    base = 0
    pc = 0
    repeat

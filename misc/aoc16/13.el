@@ -77,8 +77,3 @@ print part2
 # 
 input_data
 10
-
-
-
-
-

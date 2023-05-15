@@ -22,6 +22,7 @@ func md5 inp$ . s$ .
    .
    s[] = [ 7 12 17 22 7 12 17 22 7 12 17 22 7 12 17 22 5 9 14 20 5 9 14 20 5 9 14 20 5 9 14 20 4 11 16 23 4 11 16 23 4 11 16 23 4 11 16 23 6 10 15 21 6 10 15 21 6 10 15 21 6 10 15 21 ]
    arrbase s[] 0
+   #
    inp[] = [ ]
    inp4 = 1
    for i to len inp$
@@ -97,12 +98,12 @@ print "That takes some time ..."
 inp$ = input
 for i range0 9999999
    call md5 inp$ & i h$
-   if substr h$ 0 5 = "00000"
+   if substr h$ 1 5 = "00000"
       if printed = 0
          print i
          printed = 1
       .
-      if substr h$ 0 6 = "000000"
+      if substr h$ 1 6 = "000000"
          print i
          break 1
       .

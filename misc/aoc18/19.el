@@ -1,9 +1,8 @@
 # AoC-18 - Day 19: Go With The Flow
 # 
-global ipr .
+global ipr cd[] .
 # 
 memn$[] = [ "addr" "addi" "mulr" "muli" "banr" "bani" "borr" "bori" "setr" "seti" "gtir" "gtri" "gtrr" "eqir" "eqri" "eqrr" ]
-arrbase cd[] 0
 func read . .
    ipr = number substr input 5 1
    repeat
@@ -96,8 +95,8 @@ func opf op a b c . .
 func part1 . .
    ip = 0
    repeat
-      ind = ip * 4
-      until ind >= len cd[]
+      ind = ip * 4 + 1
+      until ind > len cd[]
       r[ipr] = ip
       call opf cd[ind] cd[ind + 1] cd[ind + 2] cd[ind + 3]
       ip = r[ipr]
@@ -112,7 +111,7 @@ func part2 . .
    arrbase r[] 0
    ip = 0
    repeat
-      ind = ip * 4
+      ind = ip * 4 + 1
       r[ipr] = ip
       call opf cd[ind] cd[ind + 1] cd[ind + 2] cd[ind + 3]
       ip = r[ipr]

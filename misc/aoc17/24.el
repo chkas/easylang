@@ -1,5 +1,7 @@
 # AoC-17 - Day 24: Electromagnetic Moat
 # 
+# base0
+s0$ = input
 repeat
    s$ = input
    until s$ = ""
@@ -7,6 +9,9 @@ repeat
    a[] &= h[1]
    b[] &= h[2]
 .
+h[] = number strsplit s0$ "/"
+a[] &= h[1]
+b[] &= h[2]
 n = len a[]
 len used[] n
 # 

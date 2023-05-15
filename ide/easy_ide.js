@@ -1138,7 +1138,6 @@ function showRun(on = true) {
 	runBtn.run = on
 	dbgSel.disabled = !on
 	if (on) {
-		out.className = ""
 		runBtn.textContent = "Run"
 		stepBtn.textContent = "Trace"
 		stepBtn.disabled = false
@@ -1150,7 +1149,6 @@ function showRun(on = true) {
 	else {
 		out.value = ""
 		canv.className = "run"
-		out.className = "run"
 		runBtn.textContent = "Stop"
 	}
 }

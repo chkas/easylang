@@ -6,6 +6,7 @@ repeat
    until s$ = ""
    m$[] &= s$
 .
+#   
 subr run
    while 1 = 1
       if pc >= len m$[]

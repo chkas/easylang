@@ -9,21 +9,20 @@ repeat
    for i to nc
       c$ = substr s$ i 1
       if c$ = "#"
-         m[] &= -1
+         h = -1
       elif c$ = "."
-         m[] &= 0
+         h = 0
       elif c$ = "0"
          pos0 = len m[]
-         m[] &= 0
+         h = 0
       else
          h = strcode c$ - 48
          pos[h] = len m[]
-         m[] &= h
          max = higher max h
       .
+      m[] &= h
    .
 .
-# 
 arrbase m[] 0
 # 
 pos = pos0

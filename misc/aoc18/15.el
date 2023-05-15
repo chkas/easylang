@@ -13,18 +13,19 @@ func read . .
       for i = 1 to nc
          h$ = substr s$ i 1
          if h$ = "."
-            f0[] &= -1
+            f = -1
          elif h$ = "#"
-            f0[] &= -2
+            f = -2
          elif h$ = "E"
             un0[] &= 1
             hp0[] &= 200
-            f0[] &= len un0[]
+            f = len un0[]
          elif h$ = "G"
             un0[] &= 2
             hp0[] &= 200
-            f0[] &= len un0[]
+            f = len un0[]
          .
+         f0[] &= f
       .
    .
    arrbase f0[] 0

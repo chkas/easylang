@@ -1,5 +1,5 @@
 # AoC-16 - Day 21: Scrambled Letters and Hash
-#  
+#
 repeat
    ii$ = input
    until ii$ = ""

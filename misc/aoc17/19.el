@@ -3,8 +3,8 @@
 visualization = 1
 # 
 sys topleft
-arrbase m[] 0
 # 
+arrbase m[] 0
 repeat
    s$ = input
    until s$ = ""
@@ -20,13 +20,16 @@ repeat
       .
    .
 .
+# 
+len m[] nc * nc
+#
 for pos range0 nc
    if m[pos] > 0
       break 1
    .
 .
 # 
-len m[] nc * nc
+# 
 f = 94 / nc
 background 000
 vis = 0
@@ -97,7 +100,6 @@ input_data
  F---|----E|--+ 
      |  |  |  D 
      +B-+  +--+ 
-
 
 
 

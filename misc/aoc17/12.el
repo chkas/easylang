@@ -1,19 +1,21 @@
 # AoC-17 - Day 12: Digital Plumber
 # 
 arrbase r[][] 0
-arrbase con[] 0
+len r[][] 2000
 # 
+
 repeat
    s$ = input
    until s$ = ""
-   r[][] &= [ ]
    s$[] = strsplit s$ " "
    for i = 3 to len s$[]
-      r[len r[][] - 1][] &= number s$[i]
+      r[number s$[1]][] &= number s$[i]
    .
+   n+=1
 .
-len con[] len r[][]
-for i range0 len con[]
+len con[] n
+arrbase con[] 0
+for i range0 n
    if con[i] = 0
       groups += 1
       todo[] = [ i ]

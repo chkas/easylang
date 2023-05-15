@@ -2,8 +2,11 @@
 # 
 m$[] = strsplit input ","
 np = 16
+len prog[] np
+len ind[] np
 arrbase prog[] 0
 arrbase ind[] 0
+#
 subr tostr
    prog$ = ""
    for i range0 np
@@ -12,8 +15,8 @@ subr tostr
    .
 .
 for i range0 np
-   prog[] &= i
-   ind[] &= i
+   prog[i] = i
+   ind[i] = i
 .
 call tostr
 prog$[] &= prog$

@@ -56,6 +56,7 @@ static struct {
 	ushort slow;
 	ushort sys;
 	uint input_data_pos;
+	int randseed;
 } rt;
 
 static volatile int stop_flag;
@@ -191,9 +192,10 @@ static double op_sys_time(struct op* op) {
 }
 
 static double op_random(struct op* op) {
-//#ifdef __EMSCRIPTEN__
-#if 0
-	double f = (double)emscripten_random();
+#ifdef __EMSCRIPTEN__
+	double f;
+	if (rt.randseed == -1) f = (double)emscripten_random();
+	else f = ((double)rand() / (RAND_MAX + 1.0));
 #else
 	double f = ((double)rand() / (RAND_MAX + 1.0));
 #endif
@@ -249,9 +251,10 @@ static double op_mouse_y(struct op* op) {
 
 static double op_randomf(struct op* op) {
 
-//#ifdef __EMSCRIPTEN__
-#if 0
-	double f = (double)emscripten_random();
+#ifdef __EMSCRIPTEN__
+	double f;
+	if (rt.randseed == -1) f = (double)emscripten_random();
+	else f = ((double)rand() / (RAND_MAX + 1.0));
 #else
 	double f = ((double)rand() / RAND_MAX);
 #endif
@@ -476,7 +479,7 @@ static struct arr* arrael_append(struct op* op, int arrtyp, int sz) {
 	int h = (int)numf(op->o2) - arr->base;
 	if (h < 0 || h >= arr->len) {
 		out_of_bounds(op);
-		return NULL;
+		return 0;
 	}
 	arr = arr->parr + h;
 	arr->typ = arrtyp;
@@ -562,7 +565,6 @@ static double op_lvnum(struct op* op) {
 }
 
 static double op_vnumael(struct op* op) {
-//x
 	struct arr* arr = garr(op->o1);
 	int h = (int)numf(op->o2) - arr->base;
 	if (h < 0 || h >= arr->len) {
@@ -1349,7 +1351,11 @@ static void op_swapnumael(struct op* op) {
 	struct arr* arr = garr(op->o1);
 	int h1 = (int)numf(op->o2) - arr->base;
 	int h2 = (int)numf(op->o3) - arr->base;
-	if (h1 < 0 || h1 >= arr->len || h2 < 0 || h2 >= arr->len) {
+	if (h1 < 0 || h1 >= arr->len) {
+		out_of_bounds(op);
+		return;
+	}
+	if (h2 < 0 || h2 >= arr->len) {
 		out_of_bounds(op);
 		return;
 	}
@@ -1370,7 +1376,11 @@ static void op_swapstrael(struct op* op) {
 	struct arr* arr = garr(op->o1);
 	int h1 = (int)numf(op->o2) - arr->base;
 	int h2 = (int)numf(op->o3) - arr->base;
-	if (h1 < 0 || h1 >= arr->len || h2 < 0 || h2 >= arr->len) {
+	if (h1 < 0 || h1 >= arr->len) {
+		out_of_bounds(op);
+		return;
+	}
+	if (h2 < 0 || h2 >= arr->len) {
 		out_of_bounds(op);
 		return;
 	}
@@ -1830,6 +1840,7 @@ static void op_color(struct op* op) {
 
 static void op_random_seed(struct op* op) {
 	int h = (int)numf(op->o1);
+	rt.randseed = h;
 	srand(h);
 }
 
@@ -2549,6 +2560,7 @@ static void init_rt(void) {
 
 	rt.input_data_pos = 0;
 	stop_flag = 0;
+	rt.randseed = -1;
 }
 
 static void free_rt(void) {

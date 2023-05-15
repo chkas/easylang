@@ -1,7 +1,7 @@
 # AoC-17 - Day 10: Knot Hash
 # 
 inp$ = input
-global inp[] .
+global inp[] l[] .
 arrbase l[] 0
 func init . .
    len l[] 256
@@ -28,6 +28,8 @@ func run rounds . .
 inp[] = number strsplit inp$ ","
 call init
 call run 1
+
+#call run 1
 print l[0] * l[1]
 # 
 call init

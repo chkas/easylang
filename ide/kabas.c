@@ -2577,7 +2577,9 @@ static const char* progname = "";
 extern int exec(int opt, const char* args) {
 
 	//printf("exec %lu\n", sizeof(struct str));
+#ifndef __EMSCRIPTEN__	
 	srand((int)(long long)(sys_time() * 1000));
+#endif
 	freecodestr();
 	rt.args = args;
 	init_rt();

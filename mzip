@@ -1,6 +1,8 @@
 #!/bin/sh
 cd ~/daten
 # d=$(date --rfc-3339=date)
-d=$(expr $(date +%s) - 1672531200)
-zip -r ~/archiv/easylang$d.zip easylang/apps/ easylang/misc/ easylang/run/ easylang/ide/ easylang/native/ easylang/readme.md
+h=$(date +%s)
+d=$(expr $h - 1672531200)
+echo $d
+zip -qr ~/archiv/easylang$d.zip easylang/apps/ easylang/misc/ easylang/run/ easylang/ide/ easylang/native/ easylang/readme.md
 

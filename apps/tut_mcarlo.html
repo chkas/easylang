@@ -1,7 +1,7 @@
 <!doctype html>
-<meta charset=utf-8><title>Monte Carlo Methods</title>
+<meta charset=utf-8><title>The Law of Large Numbers</title>
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="description" content="Monte Carlo Methods - Roulette">
+<meta name="description" content="The Law of Large Numbers, Monte Carlo Methods, Roulette">
 <link rel="icon" href="../icon.png" type="image/x-png">
 
 <div id=tut><b>Loading ...</b></div>
@@ -10,9 +10,9 @@
 
 <script>
 
-txt_tutor=`* Monte Carlo Methods or Why It Is a Bad Idea to Go to the Casino
+txt_tutor=`* The Law of Large Numbers, or Why It Is a Bad Idea to Go to the Casino
 
-+ A *Monte Carlo method* is a fairly simple way to get an answer to a task without having to analyze it mathematically. The solution is to simulate the task and see what happens. And this is best done with a computer program.
++ A fairly simple way to get an answer to a task without having to analyze it mathematically is to simulate the task and see what happens. And this is best done with a computer program. These methods are also called *Monte Carlo methods* - in reference to the fact that one can also simulate gambling.
 
 * Coin flipping
 
@@ -241,7 +241,7 @@ for i = 1 to 100
 .
 print n_win
 
-+ Only in about 14 percent of the attempts we can win with this strategy.
++ We win about 14 times in 100 tries with this strategy.
 
 -
 
@@ -292,7 +292,7 @@ print "6 correct after " & week div 52 & " years"
 
 + There are other things you can do with Monte Carlo methods. For example, you can approximate the value of *PI*. 
 
-+ You fire random points at a square and count the number of points within the quarter circle. This can easily be determined with the theorem of Pythagoras. This proportion times four is close to PI.
++ Fire random points at a square with side length 1 and count the number of points inside the quarter circle. This can be easily determined by the theorem of Pythagoras. This number times four is close to PI.
 
 n = 100000
 for i = 1 to n
@@ -319,7 +319,7 @@ for i = 1 to n
   move x * 100 y * 100
   circle 0.2
   if i mod 1000 = 0
-    sleep 0.01
+    sleep 0.03
   .
 .
 print hit / n * 4

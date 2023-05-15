@@ -125,9 +125,9 @@ func handle_key2 . .
       else
          col = 500
          todo += 1
-         timer 3
+         timer 2
       .
-      call disp col q$ & resok
+      call disp col q$ & res
    else
       if ind = 10
          res = res div 10

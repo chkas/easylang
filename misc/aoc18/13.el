@@ -14,34 +14,35 @@ func init . .
       for a$ in strchars s$
          pos = len f[]
          if a$ = "-"
-            f[] &= 1
+            f = 1
          elif a$ = "|"
-            f[] &= 2
+            f = 2
          elif a$ = "<"
-            f[] &= 1
+            f = 1
             car_dir[] &= 3
             car_pos[] &= pos
          elif a$ = ">"
-            f[] &= 1
+            f = 1
             car_dir[] &= 1
             car_pos[] &= pos
          elif a$ = "^"
-            f[] &= 2
+            f = 2
             car_dir[] &= 4
             car_pos[] &= pos
          elif a$ = "v"
-            f[] &= 2
+            f = 2
             car_dir[] &= 2
             car_pos[] &= pos
          elif a$ = "/"
-            f[] &= 3
+            f = 3
          elif a$ = "\\"
-            f[] &= 4
+            f = 4
          elif a$ = "+"
-            f[] &= 5
+            f = 5
          else
-            f[] &= 0
+            f = 0
          .
+         f[] &= f
       .
    .
 .
@@ -133,7 +134,7 @@ func run . .
    ncars = len car_pos[]
    repeat
       # sort car pos
-      for i = 1 to len car_pos[] - 1
+      for i to len car_pos[] - 1
          for j = i + 1 to len car_pos[]
             if car_pos[j] < car_pos[i]
                swap car_pos[j] car_pos[i]
@@ -142,7 +143,7 @@ func run . .
             .
          .
       .
-      for id = 1 to len car_pos[]
+      for id to len car_pos[]
          pos = car_pos[id]
          if pos <> -1
             if f[pos] = 3
@@ -155,7 +156,7 @@ func run . .
             .
             posn = pos + dir[car_dir[id]]
             car_pos[id] = posn
-            for j = 1 to len car_pos[]
+            for j to len car_pos[]
                if j <> id and posn = car_pos[j]
                   # crash
                   if first_done = 0

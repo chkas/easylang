@@ -38,7 +38,6 @@ textarea {
 	transition:height 0.2s;
 }
 canvas.run { outline-style:solid;outline-color:#a00;outline-width:1px }
-textarea.run { background-color:#eee }
 
 canvas {
 	margin-left:12px;
@@ -417,16 +416,14 @@ function runClick(btn) {
 		if (actBtn != null) {
 			actBtn.stop.style.display = "inline"
 		}
-	}, 1000);
+	}, 2000);
 	btn.disabled = true
 
 	tailSrc = null
 
-
 	if (!btn.canv) btn.canv = makeCanv()
 	if (!btn.out) btn.out = makeOut()
 	btn.canv.className = "run"
-	btn.out.className = "run"
 
 	codeRun(btn.pre, btn.canv, btn.out)
 }
