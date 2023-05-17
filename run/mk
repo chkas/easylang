@@ -234,7 +234,7 @@ span.high {background-color:#666}
 	<select id=sel></select>
 
 
-	<div id=dropbtn onclick="dropdf()">
+	<div id=dropbtn>
 		<div class=hamb></div>
 		<div class=hamb></div>
 		<div class=hamb></div>
@@ -265,17 +265,17 @@ function show(e) { e.style.display = "" }
 function hide(e) { e.style.display = "none" }
 function isVisible(e) { return e.style.display == "" }
 
-function dropdf() {
+dropbtn.onmousedown = function(evt) {
+	event.stopPropagation()
 	if (isVisible(dropd)) hide(dropd)
 	else show(dropd)
 }
 
-window.onclick = function(evt) {
-	if (evt.target != dropbtn && evt.target != remove) {
+window.onmousedown = function(evt) {
+	if (evt.target != remove && evt.target != edit && evt.target != inst) {
 		hide(dropd)
 	}
 } 
-
 
 function show(e) { e.style.display = "" }
 function hide(e) { e.style.display = "none" }
