@@ -3,7 +3,7 @@ const VERS = ""
 var lang = navigator.language.substring(0, 2)
 
 if (lang == "de") {
-	txt_header = "<p>Programmieren leicht gemacht - <a href=../apps>Mehr<a></p><h3>Tutorials</h3>"
+	txt_header = "<p>Programmieren leicht gemacht</p><h3>Tutorials</h3>"
 	tut_descr = [
 		"Programmieren lernen",
 		"Dokumentation - Code-Beispiele",
@@ -11,7 +11,7 @@ if (lang == "de") {
 		"Ein Spiel programmieren",
 	]
 } else {
-	txt_header = "<p>Programming made easy - <a href=../apps>More<a></p><h3>Tutorials</h3>"
+	txt_header = "<p>Programming made easy</p><h3>Tutorials</h3>"
 	tut_descr = [
 		"Learn programming",
 		"Documentation - Code snippets",
@@ -56,5 +56,6 @@ on animate
       vy -= 0.1
    end
 end
-`
+
+-`
 

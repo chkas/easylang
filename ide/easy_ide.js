@@ -38,6 +38,7 @@ var container = eid("container")
 var storage = eid("storage")
 var tutchng = eid("tutchng")
 var tutchng2 = eid("tutchng2")
+var tutinf = eid("tutinf")
 var expnd = eid("expnd")
 var moreBtn = eid("moreBtn")
 var moreSpn = eid("moreSpn")
@@ -393,6 +394,7 @@ function showTut(f) {
 		txt_locale = window["txt_locale"]
 		show(tutchng)
 		show(tutchng2)
+		hide(tutinf)
 		removeChilds(tut)
 		onTab(1)
 	}
@@ -431,6 +433,7 @@ function doTutChng() {
 	docx.scrollTop = 0
 	hide(tutchng)
 	hide(tutchng2)
+	show(tutinf)
 	removeChilds(tut)
 	tut.innerHTML = txt_header
 	var lnk
