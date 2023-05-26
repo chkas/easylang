@@ -9,6 +9,6 @@ func fib n . res .
 .
 time0 = systime
 print "Calculating ..."
-call fib 34 r
+call fib 35 r
 print r & " - " & systime - time0
 

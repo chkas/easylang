@@ -81,6 +81,8 @@ themeBtn.onclick = function() {
 
 show(container)
 
+var fulldiv
+
 function showFull() {
 	hide(container)
 	canv.style.width = "calc(100vmin - 6px)"
@@ -88,47 +90,45 @@ function showFull() {
 	canv.style.padding = "3px"
 
 	var fr = document.createDocumentFragment()
-	var div = create("div")
-	div.style.margin = "12px"
-	div.style.cssFloat = "left"
-	div.style.width = "180px"
+	fulldiv = create("div")
+	fulldiv.style.margin = "12px"
+	fulldiv.style.cssFloat = "left"
+	fulldiv.style.width = "180px"
 
 	var btn = create("button")
 	btn.textContent = "Edit code"
-	btn.div = div
 	btn.onclick = function() {
 		incol.insertBefore(runBtn, stBtn)
 		outcol.insertBefore(canv, out)
-		document.body.removeChild(btn.div)
+		document.body.removeChild(fulldiv)
 		canv.style.width = "100%"
 		show(container)
 		resizeAll()
 	}
-	div.appendChild(btn)
+	fulldiv.appendChild(btn)
 	incol.removeChild(runBtn)
-	div.appendChild(runBtn)
-	append(div, "p")
+	fulldiv.appendChild(runBtn)
+	append(fulldiv, "p")
 	var p = location.pathname.slice(0, -5)
 	var url = location.origin + p + "/run/#code=" + encodeURIComponent(inp.innerText)
 	var lnk = create("a")
 	lnk.href = url
 	lnk.target = "_blank"
 	appendTxt(lnk, "Code runner")
-	div.appendChild(lnk)
+	fulldiv.appendChild(lnk)
 
 	btn = create("button")
 	btn.textContent = "Copy link"
-	btn.div = div
 	btn.onclick = function() {
 		navigator.clipboard.writeText(url);
 	}
-	append(div, "p")
-	div.appendChild(btn)
+	append(fulldiv, "p")
+	fulldiv.appendChild(btn)
 
+	append(fulldiv, "p")
+	appendTxt(fulldiv, "You can email this link to your smartphone and run the program there.")
 
-	append(div, "p")
-	appendTxt(div, "You can email this link to your smartphone and run the program there.")
-	fr.appendChild(div)
+	fr.appendChild(fulldiv)
 	fr.appendChild(canv)
 	document.body.appendChild(fr)
 }

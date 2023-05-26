@@ -1,6 +1,6 @@
 # source $HOME/emsdk/emsdk_env.sh
 
-v = 325
+v = 327
 
 #--------------------------------------------------------------------
 # DBG = true
@@ -24,6 +24,9 @@ ifeq ($(origin EMSDK),undefined)
 else
 	CLOSURE = java -jar $(EMSDK)/upstream/emscripten/node_modules/google-closure-compiler-java/compiler.jar
 endif
+
+#CLOSOPT = --language_in=ECMASCRIPT5_STRICT --compilation_level ADVANCED
+CLOSOPT = --compilation_level ADVANCED
 
 out := $(HOME)/out/easylang
 wrk := $(out)/wrk
@@ -86,12 +89,12 @@ $(apps)/easyw.js: $(wrk)/easyw.js
 	$(CLOSURE) --js $< --js_output_file $@ --jscomp_off "*"
 
 $(apps)/easy.js: easy.js
-	$(CLOSURE) --compilation_level ADVANCED --js $< --js_output_file $@
+	$(CLOSURE)  $(CLOSOPT) --js $< --js_output_file $@
 
 $(apps)/easy_code2.js: easy.js ../apps/easy_code.js
 	cat easy.js >$(wrk)/tmp.js
 	cat ../apps/easy_code.js >>$(wrk)/tmp.js
-	$(CLOSURE) --compilation_level ADVANCED --js $(wrk)/tmp.js --js_output_file $@
+	$(CLOSURE)  $(CLOSOPT) --js $(wrk)/tmp.js --js_output_file $@
 
 $(or)/%: %
 	cp -p $< $@
@@ -118,7 +121,7 @@ $(wrk)/tmp_ide.js: easy_ide.js easy.js makefile
 	echo "const WORKER = 'easyw$v.js'" >$(wrk)/tmp.js
 	tail +2 easy.js >>$(wrk)/tmp.js
 	cat easy_ide.js >>$(wrk)/tmp.js
-	$(CLOSURE) --compilation_level ADVANCED --js $(wrk)/tmp.js --js_output_file $@
+	$(CLOSURE) $(CLOSOPT) --js $(wrk)/tmp.js --js_output_file $@
 
 
 $(or)/index.html: $(wrk)/ide.html $(wrk)/tmp_ide.js
@@ -145,12 +148,12 @@ $(or)/sw.js: sw.js $(or)/index.html $(or)/easyw$(v).js makefile
 $(wrk)/vers_easy.js: easy.js makefile
 	echo "const WORKER = 'easyw$v.js'" >$(or)/tmp.js
 	tail +2 easy.js >>$(or)/tmp.js
-	$(CLOSURE) --compilation_level ADVANCED --js $(or)/tmp.js --js_output_file $@
+	$(CLOSURE) $(CLOSOPT) --js $(or)/tmp.js --js_output_file $@
 
 $(wrk)/vers_easy_code.js: easy.js ../apps/easy_code.js makefile
 	echo "const WORKER = 'easyw$v.js'" >$(or)/tmp.js
 	tail +2 easy.js >>$(or)/tmp.js
 	cat ../apps/easy_code.js >>$(or)/tmp.js
-	$(CLOSURE) --compilation_level ADVANCED --js $(or)/tmp.js --js_output_file $@
+	$(CLOSURE) $(CLOSOPT) --js $(or)/tmp.js --js_output_file $@
 
 

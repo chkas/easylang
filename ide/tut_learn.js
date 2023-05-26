@@ -531,18 +531,22 @@ end
 
 -
 
-+ Certain while-loops can be replaced by simpler *for-loops*.
++ In this *for-loop*, the inner block is run for all values for *i* from 1 to 5.
 
-+de Bestimmte while-Schleifen kann man durch einfachere *for-Schleifen* ersetzen.
++de In dieser *for-Schleife* wird der innere Block für alle Werte für *i* von 1 bis 5 ausgeführt
+
+for i = 1 to 5
+   print i
+end
+
++ With a *while-loop* you need more statements for this.
+
++de Mit einer *while-Schleife* braucht man dafür mehr Anweisungen.
 
 i = 1
 while i <= 5
    print i
    i += 1
-end
-
-for i = 1 to 5
-   print i
 end
 
 * Animation
@@ -551,8 +555,7 @@ end
 
 + A rolling ball - how does it work?
 
-+ Draw the ball, w
-ait briefly, clear the screen, move the position slightly, draw again, and so on. This creates the impression of movement.
++ Draw the ball, wait briefly, clear the screen, move the position slightly, draw again, and so on. This creates the impression of movement.
 
 +de Ein rollender Ball - wie funktioniert das?
 
