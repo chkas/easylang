@@ -5,7 +5,7 @@ visual = 1
 sys topleft
 global port[] port$[] aa zz m[] nc nc2 .
 # 
-func mark pos col . .
+proc mark pos col . .
    f = 100 / nc2
    if visual = 0
       break 1
@@ -19,7 +19,7 @@ func mark pos col . .
       sleep 0.001
    .
 .
-func show . .
+proc show . .
    if visual = 0
       break 1
    .
@@ -33,7 +33,7 @@ func show . .
    call mark zz 900
 .
 # 
-func parse . .
+proc parse . .
    a1$[] = strchars input
    nc = len a1$[] - 2
    nc2 = (nc - 2)
@@ -82,7 +82,7 @@ func parse . .
    .
 .
 call parse
-func connect . .
+proc connect . .
    for i = 1 to len port$[]
       s$ = port$[i]
       if s$ = "AA"
@@ -103,7 +103,7 @@ call connect
 # 
 offs[] = [ -nc 1 nc -1 ]
 # 
-func part1 . .
+proc part1 . .
    call show
    len seen[] len port[]
    cur[] &= aa
@@ -143,7 +143,7 @@ func part1 . .
 .
 call part1
 # 
-func is_inner pos . r .
+proc is_inner pos . r .
    x = pos mod nc
    y = pos div nc
    r = 1
@@ -151,7 +151,7 @@ func is_inner pos . r .
       r = 0
    .
 .
-func mark2 pos col lev . .
+proc mark2 pos col lev . .
    if visual = 0 or lev >= 6
       break 1
    .
@@ -173,7 +173,7 @@ func mark2 pos col lev . .
       sleep 0.001
    .
 .
-func show2 . .
+proc show2 . .
    if visual = 0
       break 1
    .
@@ -187,7 +187,7 @@ func show2 . .
    .
    call mark2 zz 900 0
 .
-func part2 . .
+proc part2 . .
    call show2
    max_level = 30
    len seen[] len port[] * (max_level + 1)

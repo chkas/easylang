@@ -9,7 +9,7 @@
 apos = number substr input 28 10
 bpos = number substr input 28 10
 # 
-func part1 pos pos2 . .
+proc part1 pos pos2 . .
    repeat
       for _ to 3
          pos = (pos + die) mod 10 + 1
@@ -25,7 +25,7 @@ func part1 pos pos2 . .
 .
 call part1 apos bpos
 # 
-func calc start . done[] ndone[] .
+proc calc start . done[] ndone[] .
    len cnt[] 21 * 10
    cnt[start] = 1
    repeat
@@ -61,7 +61,7 @@ func calc start . done[] ndone[] .
       swap cnt[] cntn[]
    .
 .
-func part2 . .
+proc part2 . .
    call calc apos adone[] anotdone[]
    call calc bpos bdone[] bnotdone[]
    # 

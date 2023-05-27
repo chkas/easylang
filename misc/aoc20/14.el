@@ -7,7 +7,7 @@ repeat
 .
 # 
 global memi$[] mem[] .
-func mem_wr1 ind$ val . .
+proc mem_wr1 ind$ val . .
    for i to len mem[]
       if memi$[i] = ind$
          mem[i] = val
@@ -17,7 +17,7 @@ func mem_wr1 ind$ val . .
    memi$[] &= ind$
    mem[] &= val
 .
-func part1 . .
+proc part1 . .
    ii = 1
    while substr inp$[ii] 1 4 = "mask"
       s$[] = strsplit inp$[ii] " "
@@ -50,7 +50,7 @@ func part1 . .
 call part1
 # 
 # 
-func mem_wr ind$ val . .
+proc mem_wr ind$ val . .
    ind$[] = strchars ind$
    for k to len mem[]
       m$[] = strchars memi$[k]
@@ -98,7 +98,7 @@ func mem_wr ind$ val . .
    len mem[] len mem[] - len del[]
    len memi$[] len memi$[] - len del[]
 .
-func part2 . .
+proc part2 . .
    ii = 1
    while substr inp$[ii] 1 4 = "mask"
       s$[] = strsplit inp$[ii] " "

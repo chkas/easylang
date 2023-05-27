@@ -16,7 +16,7 @@ subr readall
 call readall
 # 
 global s$[] si .
-func parse ind . tr[] .
+proc parse ind . tr[] .
    for ind = ind to ind + 1
       while s$[si] = "," or s$[si] = "]"
          si += 1
@@ -33,7 +33,7 @@ func parse ind . tr[] .
 .
 # 
 global exploded expli expln splitted .
-func explx lev ind . tr[] .
+proc explx lev ind . tr[] .
    for ind = ind to ind + 1
       if tr[ind] = -1
          if lev >= 4 and exploded = 0 and tr[ind * 2] <> -1 and tr[ind * 2 + 1] <> -1
@@ -55,13 +55,13 @@ func explx lev ind . tr[] .
       .
    .
 .
-func explode . tr[] .
+proc explode . tr[] .
    exploded = 0
    expli = -1
    expln = -1
    call explx 1 2 tr[]
 .
-func splitx ind . tr[] .
+proc splitx ind . tr[] .
    for ind = ind to ind + 1
       if tr[ind] = -1
          call splitx ind * 2 tr[]
@@ -75,12 +75,12 @@ func splitx ind . tr[] .
       .
    .
 .
-func split . tr[] .
+proc split . tr[] .
    splitted = 0
    call splitx 2 tr[]
 .
 # 
-func add tr[] . tree[] .
+proc add tr[] . tree[] .
    tr0[] = tree[]
    for i to len tree[]
       tree[i] = 0
@@ -97,7 +97,7 @@ func add tr[] . tree[] .
    .
 .
 # 
-func magnitude_r ind . tr[] res .
+proc magnitude_r ind . tr[] res .
    if tr[ind] = -1
       call magnitude_r ind * 2 tr[] h1
    else
@@ -111,11 +111,11 @@ func magnitude_r ind . tr[] res .
    .
    res = 3 * h1 + 2 * h2
 .
-func magnitude tr[] . res .
+proc magnitude tr[] . res .
    call magnitude_r 2 tr[] res
 .
 # 
-func reduce . t[] .
+proc reduce . t[] .
    repeat
       repeat
          call explode t[]
@@ -125,13 +125,13 @@ func reduce . t[] .
       until splitted = 0
    .
 .
-func getline l . tr[] .
+proc getline l . tr[] .
    s$[] = strchars in$[l]
    si = 2
    len tr[] 64
    call parse 2 tr[]
 .
-func part1 . .
+proc part1 . .
    call getline 1 t1[]
    for i = 2 to len in$[]
       call getline i t2[]
@@ -143,7 +143,7 @@ func part1 . .
 .
 call part1
 # 
-func part2 . .
+proc part2 . .
    for i to len in$[]
       for j to len in$[]
          if i <> j

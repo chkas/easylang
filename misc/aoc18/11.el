@@ -10,7 +10,7 @@ for x to 300
       po[y * 301 + x] = h
    .
 .
-func part1 . .
+proc part1 . .
    for x to 297
       for y to 297
          s = 0
@@ -46,7 +46,7 @@ for y to 300
       pox[y * 301 + x] = s
    .
 .
-func part2 . .
+proc part2 . .
    for x to 300
       for y to 300
          msz = 300 - y

@@ -3,7 +3,7 @@
 inp$ = input
 # 
 is_part2 = 0
-func getlen s$ . lng .
+proc getlen s$ . lng .
    lng = 0
    i = 1
    while i <= len s$

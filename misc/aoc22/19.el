@@ -4,12 +4,12 @@
 # 
 global max res[] rob[] cost[][] .
 # 
-func robres sig . .
+proc robres sig . .
    res[1] += sig * rob[1]
    res[2] += sig * rob[2]
    res[3] += sig * rob[3]
 .
-func search time skip geodes . .
+proc search time skip geodes . .
    if time = 0
       max = higher geodes max
       break 1
@@ -47,7 +47,7 @@ func search time skip geodes . .
    call robres -1
 .
 # 
-func run . .
+proc run . .
    id = 1
    repeat
       s$ = input

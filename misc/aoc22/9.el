@@ -17,7 +17,7 @@ cnt = 0
 textsize 2.5
 xc = n / 2
 yc = n / 2
-func show . .
+proc show . .
    clear
    if rx[1] >= xc + 50
       xc += 1
@@ -101,7 +101,7 @@ cnt = 0
 textsize 2.5
 xc = n / 2
 yc = n / 2
-func show . .
+proc show . .
    clear
    if rx[1] >= xc + 50
       xc += 1

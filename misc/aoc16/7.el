@@ -1,6 +1,6 @@
 # AoC-16 - Day 7: Internet Protocol Version 7 
 # 
-func test1 s$ . in .
+proc test1 s$ . in .
    in = 0
    s$[] = strchars s$
    for i to len s$[]
@@ -23,7 +23,7 @@ func test1 s$ . in .
       .
    .
 .
-func test2 s$ . ret .
+proc test2 s$ . ret .
    ret = 0
    len f1[] 26 * 26
    len f2[] 26 * 26

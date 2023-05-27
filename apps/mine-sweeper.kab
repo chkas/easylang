@@ -10,13 +10,13 @@ subr initvars
    indx = -1
    no_time = 0
 .
-func getind r c . ind .
+proc getind r c . ind .
    ind = -1
    if r >= 0 and r <= 6 and c >= 0 and c <= 7
       ind = r * 8 + c + 1
    .
 .
-func draw_cell ind h . .
+proc draw_cell ind h . .
    ind -= 1
    r = ind div 8
    c = ind mod 8
@@ -51,7 +51,7 @@ func draw_cell ind h . .
       line x + 8 y + 9
    .
 .
-func open ind . .
+proc open ind . .
    if ind <> -1 and cell[ind] = 0
       cell[ind] = 2
       flag[ind] = 0
@@ -72,7 +72,7 @@ func open ind . .
       .
    .
 .
-func show_mines m . .
+proc show_mines m . .
    for ind to 56
       if cell[ind] = 1
          color 686
@@ -83,7 +83,7 @@ func show_mines m . .
       .
    .
 .
-func outp col s$ . .
+proc outp col s$ . .
    move 2.5 87
    color col
    rect 59 11
@@ -91,7 +91,7 @@ func outp col s$ . .
    move 5 90
    text s$
 .
-func upd_info . .
+proc upd_info . .
    for i to 56
       nm += flag[i]
       if cell[i] < 2
@@ -106,7 +106,7 @@ func upd_info . .
       call outp 464 8 - nm & " mines left"
    .
 .
-func test ind . .
+proc test ind . .
    if cell[ind] < 2 and flag[ind] = 0
       if cell[ind] = 1
          call show_mines -1
@@ -121,7 +121,7 @@ func test ind . .
    .
 .
 background 676
-func start . .
+proc start . .
    clear
    color 353
    for ind to 56

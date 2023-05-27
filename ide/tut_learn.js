@@ -339,7 +339,7 @@ color 543
 textsize 6
 linewidth 0.5
 y = 75
-func cod n$ v v$ . .
+proc cod n$ v v$ . .
    move 5 y + 2
    line 80 y + 2
    line 80 y + 22
@@ -620,9 +620,9 @@ call drawcar
 
 +de Mit *subr* können Aktionen zusammengefasst werden, die von verschiedenen Stellen aus mittels *call* aufgerufen werden können. Das nennt man *Unterprogramm* oder *Subroutine*.
 
-+ With *func* you can also create *functions* with parameters and local variables, but this is not covered in this beginner course.
++ With *proc* you can also create *procedures* with parameters and local variables, but this is not covered in this beginner course.
 
-+de Mit *func* kann man auch *Funktionen* mit Parametern und lokalen Variablen erstellen, das wird aber in diesem Einsteiger-Kurs nicht behandelt.
++de Mit *proc* kann man auch *Prozeduren* mit Parametern und lokalen Variablen erstellen, das wird aber in diesem Einsteiger-Kurs nicht behandelt.
 
 + 🤔 Let the car move.
 
@@ -775,7 +775,7 @@ line 60 80
 line 25 80
 line 25 5
 y = 10
-func dr ind v . .
+proc dr ind v . .
   move 31 y + 3
   text ind
   move 43 y + 3

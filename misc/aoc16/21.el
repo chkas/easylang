@@ -5,13 +5,13 @@ repeat
    until ii$ = ""
    inp$[] &= ii$
 .
-func tostr pw[] . pw$ .
+proc tostr pw[] . pw$ .
    pw$ = ""
    for v in pw[]
       pw$ &= strchar v + 97
    .
 .
-func hash pw[] . hash$ .
+proc hash pw[] . hash$ .
    np = len pw[]
    len pwn[] np
    arrbase pw[] 0
@@ -95,7 +95,7 @@ print h$
 perm[] = [ 0 1 2 3 4 5 6 7 ]
 # 
 global permlist[][] .
-func mk_permlist k . .
+proc mk_permlist k . .
    for i = k to len perm[]
       swap perm[i] perm[k]
       call mk_permlist k + 1

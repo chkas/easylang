@@ -7,7 +7,7 @@ sz = len a$[]
 fsz = 100 / sz
 n_keys = 0
 # 
-func mark p col . .
+proc mark p col . .
    x = p mod sz
    y = p div sz
    color col
@@ -20,7 +20,7 @@ len door_pos[] 26
 len key_pos[] 26 + 1
 robot = 0
 # 
-func parse . .
+proc parse . .
    repeat
       a$[] = strchars inp$
       arrbase a$[] 0
@@ -53,7 +53,7 @@ func parse . .
 .
 call parse
 # 
-func show . .
+proc show . .
    move 0 0
    color 888
    rect 100 100
@@ -100,7 +100,7 @@ offs[] = [ -sz 1 sz -1 ]
 # 
 global kk_dist[] kk_doors[][] kk_keys[][] .
 # 
-func add_kk key k dist . coll[] .
+proc add_kk key k dist . coll[] .
    k -= 96
    key -= 1
    ind = key * n_keys + k
@@ -113,7 +113,7 @@ func add_kk key k dist . coll[] .
       .
    .
 .
-func spread key . .
+proc spread key . .
    len found[] n_keys
    m[] = map[]
    arrbase m[] 0
@@ -151,7 +151,7 @@ func spread key . .
 .
 len open[] n_keys + 1
 # 
-func calc_distances . .
+proc calc_distances . .
    len kk_dist[] 0
    len kk_doors[][] 0
    len kk_keys[][] 0
@@ -165,7 +165,7 @@ func calc_distances . .
       .
    .
 .
-func is_path_open key k . open .
+proc is_path_open key k . open .
    key -= 1
    ind = key * n_keys + k
    open = 0
@@ -185,7 +185,7 @@ hashsz = 199999
 len hashind[] hashsz
 len hashv[] hashsz
 # 
-func hashget ind . val .
+proc hashget ind . val .
    hi = ind mod hashsz + 1
    repeat
       if hashind[hi] = ind
@@ -197,7 +197,7 @@ func hashget ind . val .
    .
    val = -1
 .
-func hashset ind val . .
+proc hashset ind val . .
    hi = ind mod hashsz + 1
    while hashind[hi] <> 0
       hi = hi mod hashsz + 1
@@ -206,7 +206,7 @@ func hashset ind val . .
    hashv[hi] = val
 .
 # 
-func state_id key . id .
+proc state_id key . id .
    id = 0
    for k = 1 to n_keys
       id *= 2
@@ -216,7 +216,7 @@ func state_id key . id .
    id += key
 .
 # 
-func solve key . dist .
+proc solve key . dist .
    for k = 1 to n_keys
       remain += if open[k] = 0
    .
@@ -256,7 +256,7 @@ call calc_distances
 call solve n_keys + 1 dist0
 print dist0
 # 
-func part2 . .
+proc part2 . .
    for i = 1 to 4
       map[robot + offs[i]] = 1
    .

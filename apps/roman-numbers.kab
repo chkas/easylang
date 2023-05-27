@@ -1,7 +1,7 @@
 # Roman numbers
 # 
 global ans$ sol$ state ind cnt pts same .
-func disp col s$ . .
+proc disp col s$ . .
    color col
    move 3 76
    rect 94 21
@@ -10,7 +10,7 @@ func disp col s$ . .
    textsize 12
    text s$
 .
-func disp2 col s$ . .
+proc disp2 col s$ . .
    color col
    move 3 51
    rect 70 22
@@ -19,7 +19,7 @@ func disp2 col s$ . .
    textsize 12
    text s$
 .
-func num2rom num . rom$ .
+proc num2rom num . rom$ .
    values[] = [ 1000 900 500 400 100 90 50 40 10 9 5 4 1 ]
    symbol$[] = [ "M" "CM" "D" "CD" "C" "XC" "L" "XL" "X" "IX" "V" "IV" "I" ]
    rom$ = ""
@@ -30,7 +30,7 @@ func num2rom num . rom$ .
       .
    .
 .
-func new_quest . .
+proc new_quest . .
    repeat
       num = random 2500
       call num2rom num sol$
@@ -41,7 +41,7 @@ func new_quest . .
    call disp 030 "_"
 .
 sym$[] = [ "M" "D" "C" "L" "X" "V" "I" ]
-func draw_key . .
+proc draw_key . .
    h = ind
    if h <= 0
       s$ = "⌫"
@@ -61,7 +61,7 @@ func draw_key . .
    text s$
 .
 background 010
-func init . .
+proc init . .
    state = 0
    cnt = 5
    pts = 0
@@ -73,7 +73,7 @@ func init . .
    call new_quest
    call disp 030 "_"
 .
-func handle_key . .
+proc handle_key . .
    if ind = 8
       if ans$ = sol$
          cnt -= 1
@@ -105,7 +105,7 @@ func handle_key . .
    .
    call disp col h$
 .
-func handle_inp r c . .
+proc handle_inp r c . .
    if r = 0
       ind = 0
    else
@@ -142,7 +142,7 @@ on mouse_up
       ind = -1
    .
 .
-func done . .
+proc done . .
    clear
    color 888
    move 8 78

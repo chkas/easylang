@@ -10,7 +10,7 @@ visualization = 1
 # 
 sys topleft
 global cod$[] a1[] a2[] a3[] v[] in[] is_part2 .
-func run . .
+proc run . .
    inpos = 1
    v[] = [ 0 0 0 0 ]
    for i = 1 to len cod$[]
@@ -40,7 +40,7 @@ func run . .
 background 000
 clear
 # 
-func show . .
+proc show . .
    if visualization = 0
       break 1
    .
@@ -58,7 +58,7 @@ func show . .
    text "z:" & v[4]
    sleep 0.02
 .
-func find . .
+proc find . .
    in[] = [ ]
    for i = 1 to 14
       call run
@@ -98,7 +98,7 @@ func find . .
    .
    print ""
 .
-func read . .
+proc read . .
    repeat
       in$ = input
       until in$ = ""

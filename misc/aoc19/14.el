@@ -2,7 +2,7 @@
 # 
 global name$[] recpt0[][] .
 # 
-func nid n$ . i .
+proc nid n$ . i .
    for i to len name$[]
       if name$[i] = n$
          break 2
@@ -10,7 +10,7 @@ func nid n$ . i .
    .
    name$[] &= n$
 .
-func parse . .
+proc parse . .
    call nid "ORE" h
    call nid "FUEL" h
    repeat
@@ -34,7 +34,7 @@ func parse . .
 .
 call parse
 # 
-func produce_fuel need . n_ore .
+proc produce_fuel need . n_ore .
    recpt[][] = recpt0[][]
    len need[] len name$[]
    need[2] = need
@@ -68,7 +68,7 @@ func produce_fuel need . n_ore .
 call produce_fuel 1 n_ore
 print n_ore
 # 
-func part2 . .
+proc part2 . .
    min = 1
    max = 9999999999
    while min + 1 < max

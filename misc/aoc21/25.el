@@ -10,7 +10,7 @@ sys topleft
 global m[] nc .
 background 001
 col[] = [ 0 030 060 ]
-func show . .
+proc show . .
    if visualization = 0
       break 1
    .
@@ -28,7 +28,7 @@ func show . .
    .
    sleep 0.01
 .
-func step . done .
+proc step . done .
    nr = len m[] / nc
    done = 1
    for i to len m[]

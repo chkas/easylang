@@ -1,6 +1,6 @@
 # AoC-17 - Day 21: Fractal Art
 # 
-func inarr s$ i d . f[] .
+proc inarr s$ i d . f[] .
    len f[] d * d
    arrbase f[] 0
    for y range0 d
@@ -11,13 +11,13 @@ func inarr s$ i d . f[] .
       i += 1
    .
 .
-func val . f[] v .
+proc val . f[] v .
    v = 0
    for f in f[]
       v = v * 2 + f
    .
 .
-func rotate . f[] .
+proc rotate . f[] .
    len fp[] len f[]
    swap f[] fp[]
    arrbase f[] 0
@@ -28,7 +28,7 @@ func rotate . f[] .
       .
    .
 .
-func mirror . f[] .
+proc mirror . f[] .
    len fp[] len f[]
    swap f[] fp[]
    arrbase f[] 0
@@ -44,7 +44,7 @@ len r3[][] 512
 arrbase r2[][] 0
 arrbase r3[][] 0
 # 
-func read_rules . .
+proc read_rules . .
    repeat
       s$ = input
       until len s$ > 20
@@ -80,7 +80,7 @@ img[] = [ 0 1 0 0 0 1 1 1 1 ]
 arrbase img[] 0
 nc = 3
 # 
-func show . .
+proc show . .
    d = sqrt len img[]
    for y range0 d
       for x range0 d
@@ -94,7 +94,7 @@ func show . .
    .
    print ""
 .
-func val_img r c d . v .
+proc val_img r c d . v .
    i = r * d * nc + c * d
    v = 0
    for _ range0 d
@@ -105,7 +105,7 @@ func val_img r c d . v .
       i += nc - d
    .
 .
-func ins_img r c d . ins[] .
+proc ins_img r c d . ins[] .
    arrbase ins[] 0
    i = r * d * nc + c * d
    for _ range0 d
@@ -117,7 +117,7 @@ func ins_img r c d . ins[] .
       i += nc - d
    .
 .
-func expand . .
+proc expand . .
    if nc mod 2 = 0
       ex = 2
    else

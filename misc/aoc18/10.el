@@ -14,7 +14,7 @@ background 000
 color 999
 # 
 global xl yl .
-func show . .
+proc show . .
    clear
    for i to len x[]
       move x[i] - xl + 10 y[i] - yl + 30

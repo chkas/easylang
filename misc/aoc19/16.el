@@ -2,7 +2,7 @@
 # 
 inp$ = input
 # 
-func part1 . .
+proc part1 . .
    d[] = number strchars inp$
    n = len d[]
    pat[] = [ 0 1 0 -1 ]
@@ -40,7 +40,7 @@ func part1 . .
 .
 call part1
 # 
-func part2 . .
+proc part2 . .
    n_in = len inp$
    offs = number substr inp$ 1 7
    len d[] n_in * 10000 - offs

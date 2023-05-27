@@ -6,7 +6,7 @@ repeat
    prog$[] &= s$
 .
 # 
-func run inp . .
+proc run inp . .
    for s$ in prog$[]
       s$[] = strsplit s$ " "
       p$[] &= s$[1]

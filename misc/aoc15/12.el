@@ -3,13 +3,13 @@
 inp$ = input
 ipos = 1
 c$ = ""
-func nextc . .
+proc nextc . .
    c$ = substr inp$ ipos 1
    ipos += 1
 .
-funcdecl parse . sum red .
+procdecl parse . sum red .
 tokv$ = ""
-func parse_numb . .
+proc parse_numb . .
    tokv$ = ""
    if c$ = "-"
       tokv$ &= c$
@@ -20,7 +20,7 @@ func parse_numb . .
       call nextc
    .
 .
-func parse_str . .
+proc parse_str . .
    tokv$ = ""
    while c$ <> "\""
       tokv$ &= c$
@@ -29,7 +29,7 @@ func parse_str . .
    call nextc
 .
 part2 = 0
-func parse_obj . sum .
+proc parse_obj . sum .
    sum = 0
    repeat
       if c$ <> "\""
@@ -55,7 +55,7 @@ func parse_obj . sum .
       sum = 0
    .
 .
-func parse_arr . sum .
+proc parse_arr . sum .
    sum = 0
    repeat
       call parse s red
@@ -68,7 +68,7 @@ func parse_arr . sum .
    .
    call nextc
 .
-func parse . sum red .
+proc parse . sum red .
    red = 0
    if c$ = "{"
       call nextc

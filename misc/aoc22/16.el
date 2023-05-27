@@ -1,13 +1,13 @@
 # AoC-22 - Day 16: Proboscidea Volcanium
 # 
 len hash[] 32768 * 16
-func hashinit . .
+proc hashinit . .
    for i to len hash[]
       hash[i] = -1
    .
 .
 global name$[] .
-func name2id n$ . id .
+proc name2id n$ . id .
    for id to len name$[]
       if name$[id] = n$
          break 2
@@ -16,7 +16,7 @@ func name2id n$ . id .
    name$[] &= n$
 .
 global valv[] con[][] npos .
-func read . .
+proc read . .
    call name2id "AA" aa
    repeat
       s$ = input
@@ -67,7 +67,7 @@ subr init
    len todo[][] 20
    itodo = 1
 .
-func addways cod press time . .
+proc addways cod press time . .
    h = cod - 1
    pos = h mod npos + 1
    open = h div npos
@@ -82,7 +82,7 @@ func addways cod press time . .
       .
    .
 .
-func run nwrks time0 . .
+proc run nwrks time0 . .
    call init
    todo[itodo][] = [ 1 * 10000 ]
    repeat

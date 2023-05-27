@@ -6,16 +6,16 @@ sys topleft
 inp$[] = strchars input
 ind = 2
 global c$ .
-func nextc . .
+proc nextc . .
    c$ = inp$[ind]
    ind += 1
 .
 len f[] 1000 * 1000
 arrbase f[] 0
 # 
-funcdecl parse . pos[] .
+procdecl parse . pos[] .
 # 
-func parse_opt . pos[] .
+proc parse_opt . pos[] .
    while 1 = 1
       d = 0
       if c$ = "W"
@@ -46,7 +46,7 @@ func parse_opt . pos[] .
    .
 .
 # 
-func parse . pos0[] .
+proc parse . pos0[] .
    pos[] = pos0[]
    call parse_opt pos[]
    pos_res[] = pos[]
@@ -70,7 +70,7 @@ func parse . pos0[] .
 # 
 min = 0
 max = 0
-func show solve . .
+proc show solve . .
    if visual = 0
       break 1
    .
@@ -107,7 +107,7 @@ func show solve . .
    .
    sleep 0
 .
-func build . .
+proc build . .
    call nextc
    pos[] &= 500500
    f[pos[1]] = 1

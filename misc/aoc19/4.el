@@ -1,7 +1,7 @@
 # AoC-19 - Day 4: Secure Container
 # 
 inp[] = number strsplit input "-"
-func part1 . .
+proc part1 . .
    for i = inp[1] to inp[2]
       ok = 1
       ok2 = 0
@@ -22,7 +22,7 @@ func part1 . .
 .
 call part1
 # 
-func part2 . .
+proc part2 . .
    for i = inp[1] to inp[2]
       ok = 1
       ok2 = 0

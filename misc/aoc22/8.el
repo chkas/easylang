@@ -4,7 +4,7 @@ visual = 1
 # 
 sys topleft
 global m[] nc .
-func read . .
+proc read . .
    s$ = input
    nc = len s$
    if nc = 0
@@ -27,7 +27,7 @@ call read
 # 
 sc = 95 / nc
 sc2 = sc / 2
-func showall . .
+proc showall . .
    color 000
    rect 100 100
    for p = 1 to len m[]
@@ -45,7 +45,7 @@ if visual = 1
 .
 #  
 textsize 3
-func showt s$ . .
+proc showt s$ . .
    move 0 95
    color 000
    rect 50 5
@@ -53,7 +53,7 @@ func showt s$ . .
    color 777
    text s$
 .
-func show p high . .
+proc show p high . .
    y = (p - 1) div nc * sc
    x = (p - 1) mod nc * sc
    move x y
@@ -69,7 +69,7 @@ func show p high . .
    sleep 0.005
 .
 len seen[] len m[]
-func look p inc . .
+proc look p inc . .
    mx = -1
    for i = 1 to nc
       if m[p] > mx
@@ -82,7 +82,7 @@ func look p inc . .
       p += inc
    .
 .
-func part1 . .
+proc part1 . .
    for i = 1 to nc
       call look (i - 1) * nc + 1 1
       call look i * nc (-1)
@@ -101,7 +101,7 @@ func part1 . .
 call part1
 # 
 # 
-func cnt p inc . cnt .
+proc cnt p inc . cnt .
    cnt = 0
    high = m[p]
    repeat
@@ -120,7 +120,7 @@ func cnt p inc . cnt .
       until m[p] >= high
    .
 .
-func part2 . .
+proc part2 . .
    for p = 1 to nc * nc
       if visual = 1
          clear

@@ -12,19 +12,19 @@ arrbase hull[] 0
 pos = nc * nc div 2 + nc div 2
 global n_painted out_ind .
 # 
-func init_part2 . .
+proc init_part2 . .
    for i range0 len hull[]
       hull[i] = 0
    .
    pos = nc * nc div 2 + nc div 2
    hull[pos] = 1
 .
-func ic_inpf . in .
+proc ic_inpf . in .
    in = hull[pos]
 .
 mpos[] = [ 1 nc -1 (-nc) ]
 dir = 1
-func ic_outpf out . .
+proc ic_outpf out . .
    if out_ind = 0
       hull[pos] = out
       if painted[pos] = 0
@@ -40,7 +40,7 @@ func ic_outpf out . .
    .
    out_ind = (out_ind + 1) mod 2
 .
-func make_pic . .
+proc make_pic . .
    f = 100 / nc
    background 000
    clear
@@ -61,7 +61,7 @@ prefix ic_
 # -------- intcode -------- 
 arrbase mem[] 0
 base = 0
-func mem_ind mo ind . rind .
+proc mem_ind mo ind . rind .
    if mo = 1
       rind = ind
    elif mo = 0
@@ -73,7 +73,7 @@ func mem_ind mo ind . rind .
       len mem[] rind + 8
    .
 .
-func run . .
+proc run . .
    repeat
       oc0 = mem[pc]
       oc = oc0 mod 100

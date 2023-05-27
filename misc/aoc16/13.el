@@ -10,7 +10,7 @@ arrbase m[] 0
 # 
 background 543
 clear
-func show solve . .
+proc show solve . .
    if visualization = 1
       sc = 100 / nc
       for x range0 nc
@@ -29,7 +29,7 @@ func show solve . .
       sleep 0.05
    .
 .
-func mk . .
+proc mk . .
    for x range0 nc
       for y range0 nc
          b = x * x + 3 * x + 2 * x * y + y + y * y + inp

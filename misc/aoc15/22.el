@@ -3,10 +3,10 @@
 boss_hit = number substr input 13 -1
 boss_dmg = number substr input 9 -1
 # 
-funcdecl player cost mana hit bhit eff[] . .
+procdecl player cost mana hit bhit eff[] . .
 # 
 min = 1 / 0
-func effect . arm bhit mana eff[] .
+proc effect . arm bhit mana eff[] .
    if eff[1] > 0
       arm = 7
       eff[1] -= 1
@@ -21,7 +21,7 @@ func effect . arm bhit mana eff[] .
    .
 .
 sel_cost[] = [ 53 73 113 173 229 ]
-func select cost sel mana hit bhit eff[] . .
+proc select cost sel mana hit bhit eff[] . .
    cost += sel_cost[sel]
    mana -= sel_cost[sel]
    if sel = 1
@@ -48,7 +48,7 @@ func select cost sel mana hit bhit eff[] . .
 .
 # 
 part2 = 0
-func player cost mana hit bhit eff[] . .
+proc player cost mana hit bhit eff[] . .
    if part2 = 1
       hit -= 1
    .

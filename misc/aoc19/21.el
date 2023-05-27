@@ -2,7 +2,7 @@
 # 
 ic_code[] = number strsplit input ","
 ic_in = -1
-func ic_outpf out . .
+proc ic_outpf out . .
    if out > 127
       print out
    else
@@ -18,7 +18,7 @@ subr reset
    mem[] = code[]
    arrbase mem[] 0
 .
-func mem_ind mo ind . rind .
+proc mem_ind mo ind . rind .
    rind = ind
    if mo = 0
       rind = mem[ind]
@@ -29,7 +29,7 @@ func mem_ind mo ind . rind .
       len mem[] rind + 8
    .
 .
-func run . .
+proc run . .
    repeat
       oc0 = mem[pc]
       oc = oc0 mod 100
@@ -75,11 +75,11 @@ func run . .
 prefix
 # --------  --------
 # 
-func ic_put h . .
+proc ic_put h . .
    ic_in = h
    call ic_run
 .
-func run . .
+proc run . .
    s$ = input
    for _ = 1 to 2
       call ic_reset

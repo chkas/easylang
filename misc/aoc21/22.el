@@ -4,7 +4,7 @@
 # with cubes are subtracted, intersections
 # with intersections are added, .. 
 # 
-func inter p0 q0 p1 q1 . r0 r1 r .
+proc inter p0 q0 p1 q1 . r0 r1 r .
    r = 0
    if p0 > q0
       swap p0 q0
@@ -16,7 +16,7 @@ func inter p0 q0 p1 q1 . r0 r1 r .
       r = 1
    .
 .
-func intersect p[] q[] . r[] r .
+proc intersect p[] q[] . r[] r .
    for d = 1 step 2 to 5
       call inter p[d] q[d] p[d + 1] q[d + 1] r0 r1 r
       if r = 0
@@ -28,7 +28,7 @@ func intersect p[] q[] . r[] r .
 .
 global pts[][] pts_sign[] .
 # 
-func add pt[] ison . .
+proc add pt[] ison . .
    len r[] 6
    for i to len pts[][]
       call intersect pt[] pts[i][] r[] r
@@ -42,13 +42,13 @@ func add pt[] ison . .
       pts_sign[] &= 1
    .
 .
-func volume pt[] . vol .
+proc volume pt[] . vol .
    vol = 1
    for d = 1 step 2 to 5
       vol *= abs (pt[d] - pt[d + 1]) + 1
    .
 .
-func volume_all . sum .
+proc volume_all . sum .
    sum = 0
    for i to len pts[][]
       call volume pts[i][] vol

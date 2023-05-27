@@ -47,7 +47,7 @@ subr initvars
   frame = 0
   call go_home
 .
-func show_maze . .
+proc show_maze . .
   linewidth c5
   color 000
   move 0 0
@@ -69,7 +69,7 @@ func show_maze . .
     .
   .
 .
-func make_maze . .
+proc make_maze . .
   for i = 1 to len f[]
     f[i] = 1
   .
@@ -113,7 +113,7 @@ subr new_game
   background -1
   call initvars
 .
-func show_monster col row dirx diry . .
+proc show_monster col row dirx diry . .
   x = col * c + c2 + c10 + dirx * step * c5
   y = row * c + c2 + c10 + diry * step * c5
   color 900
@@ -150,10 +150,10 @@ on mouse_move
   m_x = mouse_x
   m_y = mouse_y
 .
-func f_dir col row x y . v .
+proc f_dir col row x y . v .
   v = f[col * 2 + x + row * sz * 2 + sz + y * sz + 2]
 .
-func f_all col row . v .
+proc f_all col row . v .
   col2 = col * 2
   rsz2 = row * sz * 2
   v = f[col2 + rsz2 + sz + 3]
@@ -161,7 +161,7 @@ func f_all col row . v .
   v += f[col2 + rsz2 + 2 * sz + 2]
   v += f[col2 + rsz2 + 2]
 .
-func do_x . .
+proc do_x . .
   if me_row_s > -2 and me_row_s < 2
     if dme_x > c5
       x = 1
@@ -183,7 +183,7 @@ func do_x . .
     .
   .
 .
-func do_y . .
+proc do_y . .
   if me_col_s > -2 and me_col_s < 2
     if dme_y > c5
       y = 1
@@ -205,7 +205,7 @@ func do_y . .
     .
   .
 .
-func move_me . .
+proc move_me . .
   if abs dme_x > abs dme_y
     call do_x
     call do_y
@@ -241,7 +241,7 @@ func move_me . .
     n_monster += 1
   .
 .
-func get_dir c r . x y .
+proc get_dir c r . x y .
   xo = x
   yo = y
   repeat
@@ -269,7 +269,7 @@ func get_dir c r . x y .
     until x <> 0 or y <> 0
   .
 .
-func move_monster . .
+proc move_monster . .
   for i = 1 to n_mo
     call show_monster m_col[i] m_row[i] m_dirx[i] m_diry[i]
   .

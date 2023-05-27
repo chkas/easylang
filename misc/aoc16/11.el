@@ -3,7 +3,7 @@
 hashsz = 1999993
 len hashind[] hashsz
 # 
-func hash ind . ret .
+proc hash ind . ret .
    hi = ind mod hashsz + 1
    while hashind[hi] <> 0 and hashind[hi] <> ind
       hi = hi mod hashsz + 1
@@ -17,7 +17,7 @@ func hash ind . ret .
 .
 # 
 na$[] = [ ]
-func id n$ . id .
+proc id n$ . id .
    for id to len na$[]
       if na$[id] = n$
          break 2
@@ -30,7 +30,7 @@ global el el0 cod destcod .
 len ar[] 16
 arrbase ar[] 0
 # 
-func init . .
+proc init . .
    len ob[] 5
    len obx[] 5
    for fl = 0 to 3
@@ -59,7 +59,7 @@ func init . .
 .
 call init
 # 
-func tocod . .
+proc tocod . .
    cod = 0
    for v in ar[]
       cod = cod * 8 + v
@@ -69,7 +69,7 @@ func tocod . .
 call tocod
 cod0 = cod
 # 
-func toarr . .
+proc toarr . .
    h = cod
    el = h mod 4
    h = h div 4
@@ -79,7 +79,7 @@ func toarr . .
    .
 .
 # 
-func add_check i1 i2 . .
+proc add_check i1 i2 . .
    ar[i1] -= 1
    ar[i2] += 1
    gen = 0
@@ -105,7 +105,7 @@ func add_check i1 i2 . .
    ar[i1] += 1
    ar[i2] -= 1
 .
-func add_todo . .
+proc add_todo . .
    # one object
    l1[] = [ ]
    l2[] = [ ]
@@ -155,7 +155,7 @@ func add_todo . .
       ar[i] += 1
    .
 .
-func run . .
+proc run . .
    call tocod
    todon[] = [ cod ]
    todo[] = [ ]

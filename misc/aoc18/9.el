@@ -7,7 +7,7 @@ len nxt[] n_marple * 100
 len pre[] n_marple * 100
 len score[] n_player
 # 
-func run n_moves . .
+proc run n_moves . .
    pre[1] = 1
    nxt[1] = 1
    cur = 1

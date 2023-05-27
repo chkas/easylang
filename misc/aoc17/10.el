@@ -3,14 +3,14 @@
 inp$ = input
 global inp[] l[] .
 arrbase l[] 0
-func init . .
+proc init . .
    len l[] 256
    for i range0 256
       l[i] = i
    .
 .
 # 
-func run rounds . .
+proc run rounds . .
    for _ range0 rounds
       for l in inp[]
          a = pos

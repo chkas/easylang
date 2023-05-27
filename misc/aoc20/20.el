@@ -3,7 +3,7 @@
 sys topleft
 global id[] n[] ed[][] rev[] .
 # 
-func build_rev . .
+proc build_rev . .
    for i range0 1024
       h = i
       v = 0
@@ -18,7 +18,7 @@ func build_rev . .
 .
 call build_rev
 # 
-func edge_val s$ . n .
+proc edge_val s$ . n .
    n = 0
    for i to 10
       n *= 2
@@ -28,7 +28,7 @@ func edge_val s$ . n .
 # 
 global img[] .
 # 
-func read . .
+proc read . .
    repeat
       s$ = input
       until s$ = ""
@@ -65,7 +65,7 @@ call read
 # 
 n_tiles = len ed[][]
 # 
-func part1 . .
+proc part1 . .
    prod = 1
    for c1 to n_tiles
       n = 0
@@ -107,7 +107,7 @@ call part1
 # 
 rows = sqrt n_tiles
 # 
-func turn i . .
+proc turn i . .
    swap h[] ed[i][]
    h = h[4]
    h[4] = h[3]
@@ -117,7 +117,7 @@ func turn i . .
    swap h[] ed[i][]
 .
 # 
-func flip i . .
+proc flip i . .
    swap h[] ed[i][]
    x = h[1]
    h[1] = rev[h[3] + 1]
@@ -127,7 +127,7 @@ func flip i . .
    swap h[] ed[i][]
 .
 # 
-func turn_flip mode start r . .
+proc turn_flip mode start r . .
    len im[] r * r
    if mode = 1
       offs = 0
@@ -168,7 +168,7 @@ func turn_flip mode start r . .
 # pr ed[][]
 # 
 global imgids[] .
-func build . .
+proc build . .
    # 
    len done[] n_tiles
    # 
@@ -207,7 +207,7 @@ func build . .
 .
 call build
 # 
-func expand_img . .
+proc expand_img . .
    len imgn[] len img[]
    for r range0 rows
       for c range0 rows
@@ -228,7 +228,7 @@ func expand_img . .
 irows = rows * 8
 call expand_img
 # 
-func show_grafic . .
+proc show_grafic . .
    f = 100 / irows
    color 003
    rect 100 100
@@ -250,7 +250,7 @@ monster[][] &= [ 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 ]
 monster[][] &= [ 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 1 ]
 monster[][] &= [ 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 0 ]
 # 
-func search_monster . n_monster .
+proc search_monster . n_monster .
    for r range0 irows - 3
       for c range0 irows - 20
          found = 1

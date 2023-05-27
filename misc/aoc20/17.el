@@ -13,7 +13,7 @@ len p[] len f[]
 n2 = n * n
 n3 = n * n * 8
 # 
-func init . .
+proc init . .
    y = 7
    for ii to len in$[]
       s$[] = strchars in$[ii]
@@ -28,7 +28,7 @@ func init . .
       y += 1
    .
 .
-func update part turn . sum .
+proc update part turn . sum .
    swap f[] p[]
    wx = turn
    if part = 1
@@ -75,7 +75,7 @@ func update part turn . sum .
       .
    .
 .
-func run part . .
+proc run part . .
    call init
    for i to 6
       call update part i sum

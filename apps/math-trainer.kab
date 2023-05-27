@@ -16,7 +16,7 @@ subr init_vars
       todo = 3
    .
 .
-func disp col s$ . .
+proc disp col s$ . .
    color col
    move 3 76
    rect 94 21
@@ -25,7 +25,7 @@ func disp col s$ . .
    textsize 12
    text s$
 .
-func show_quest . .
+proc show_quest . .
    if res = resok
       if op = 1
          a = random 8 + 1
@@ -57,7 +57,7 @@ func show_quest . .
    call disp 030 q$ & "_"
    res = 0
 .
-func draw_key col ind . .
+proc draw_key col ind . .
    s$ = strchar (ind + 48)
    h = ind
    if h < 10 and h > 0
@@ -86,7 +86,7 @@ func draw_key col ind . .
    text s$
 .
 background 010
-func start . .
+proc start . .
    call init_vars
    clear
    for ind = 0 to 11
@@ -95,7 +95,7 @@ func start . .
    call show_quest
 .
 menu$[] = [ "Mul 🤔" "Div 🤔" "Add 🤔🤔" "Sub 🤔🤔" "Mul 🤔🤔" ]
-func draw_menu_key col i . .
+proc draw_menu_key col i . .
    y = (5 - i) * 19 + 3
    move 3 y
    color col
@@ -108,14 +108,14 @@ func draw_menu_key col i . .
    move 50 y + 5
    text substr menu$[i] 4 -1
 .
-func draw_menu . .
+proc draw_menu . .
    clear
    for i = 1 to 5
       call draw_menu_key 020 i
    .
    state = 0
 .
-func handle_key2 . .
+proc handle_key2 . .
    if ind = 11
       state = 2
       if res = resok
@@ -145,7 +145,7 @@ func handle_key2 . .
       call disp 030 q$ & h$
    .
 .
-func handle_key . .
+proc handle_key . .
    c = mouse_x div 25
    r = 2 - mouse_y div 25
    if c < 3
@@ -211,7 +211,7 @@ on mouse_up
       ind = -1
    .
 .
-func smiley t . .
+proc smiley t . .
    if t <= 60
       move 65 30
       color 983
@@ -229,7 +229,7 @@ func smiley t . .
       .
    .
 .
-func show_result . .
+proc show_result . .
    state = 3
    timer 2
    t = floor (systime - t)

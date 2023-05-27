@@ -2,7 +2,7 @@
 # 
 global col$[] cont_col[][] cont_cnt[][] .
 # 
-func col_id s$ . col .
+proc col_id s$ . col .
    for col to len col$[]
       if col$[col] = s$
          break 2
@@ -12,7 +12,7 @@ func col_id s$ . col .
    cont_col[][] &= [ ]
    cont_cnt[][] &= [ ]
 .
-func read_inp . .
+proc read_inp . .
    repeat
       inp$ = input
       until inp$ = ""
@@ -33,7 +33,7 @@ func read_inp . .
 call read_inp
 call col_id "shiny gold" gold
 # 
-func search i . fnd .
+proc search i . fnd .
    for j to len cont_col[i][]
       col = cont_col[i][j]
       if col = gold
@@ -44,7 +44,7 @@ func search i . fnd .
       .
    .
 .
-func part1 . .
+proc part1 . .
    for i to len cont_col[][]
       fnd = 0
       call search i fnd
@@ -54,7 +54,7 @@ func part1 . .
 .
 call part1
 # 
-func get_sum col . sum .
+proc get_sum col . sum .
    sum = 0
    for i to len cont_col[col][]
       call get_sum cont_col[col][i] s
@@ -62,7 +62,7 @@ func get_sum col . sum .
       sum += h + h * s
    .
 .
-func part2 . .
+proc part2 . .
    call get_sum gold sum
    print sum
 .

@@ -8,7 +8,7 @@ repeat
    b$[] &= h$[2]
 .
 orbsum = 0
-func go a$ orb . .
+proc go a$ orb . .
    orbsum += orb
    for i = 1 to len a$[]
       if a$[i] = a$
@@ -19,7 +19,7 @@ func go a$ orb . .
 call go "COM" 0
 print orbsum
 # 
-func find a$ orb . you san .
+proc find a$ orb . you san .
    if a$ = "YOU"
       you = orb
       san = -1

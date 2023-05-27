@@ -7,7 +7,7 @@ ic_mem[] = number strsplit input ","
 # 
 global ball_x pad_x .
 # 
-func ic_inpf . in .
+proc ic_inpf . in .
    if ball_x > pad_x
       in = 1
    elif ball_x < pad_x
@@ -23,7 +23,7 @@ textsize 4
 background 000
 clear
 # 
-func draw_score v . .
+proc draw_score v . .
    if visual = 0
       break 1
    .
@@ -33,7 +33,7 @@ func draw_score v . .
    color 666
    text "Score: " & v
 .
-func draw x y v . .
+proc draw x y v . .
    if visual = 0
       break 1
    .
@@ -48,7 +48,7 @@ func draw x y v . .
 .
 global x y out_ind n_blocks n_points .
 # 
-func ic_outpf out . .
+proc ic_outpf out . .
    if out_ind = 0
       x = out
    elif out_ind = 1
@@ -75,7 +75,7 @@ prefix ic_
 # -------- intcode -------- 
 base = 0
 arrbase mem[] 0
-func mem_ind mo ind . rind .
+proc mem_ind mo ind . rind .
    if mo = 1
       rind = ind
    elif mo = 0
@@ -87,7 +87,7 @@ func mem_ind mo ind . rind .
       len mem[] rind + 8
    .
 .
-func run . .
+proc run . .
    repeat
       oc0 = mem[pc]
       oc = oc0 mod 100

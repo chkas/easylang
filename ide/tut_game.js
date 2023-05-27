@@ -5,7 +5,7 @@ txt_tutor=`+ Programming a letter memory game
 + We program a simple letter memory game.
 
 ##50
-func square ind col s$ . .
+proc square ind col s$ . .
    ind -= 1
    x = ind mod 4 * 12 + 2
    y = ind div 4 * 12 + 52
@@ -29,7 +29,7 @@ call square 9 575 "E"
 + We have 16 cards, which we arrange line by line from bottom to top. These cards and also the positions are numbered from 1 to 16.
 
 ##50
-func square ind col n . .
+proc square ind col n . .
   ind -= 1
   x = ind mod 4 * 12 + 2
   y = ind div 4 * 12 + 52
@@ -48,11 +48,11 @@ for i = 1 to 16
   call square i 353 i
 .
 
-+ At first we create a function that draws a square at a position (0-15) in a certain color and a label.
++ At first we create a procedure that draws a square at a position (0-15) in a certain color and a label.
 
 + The drawing area is 100 times 100 units. The origin is bottom left. There are 1000 possible colors - from 000 to 999, mixed from the primary colours red, green and blue. The left digit specifies the red component, the middle digit the green component and the right digit the blue component (*900* is a deep red).
 
-func draw_square ind col s$ . .
+proc draw_square ind col s$ . .
   ind -= 1
   x = ind mod 4 * 24 + 3
   y = ind div 4 * 24 + 3
@@ -68,7 +68,7 @@ textsize 16
 call draw_square 1 353  ""
 call draw_square 8 575  "A"
 
-+ *func* defines a function. The variables up to the first point are the in-parameters, followed by the in-out- parameters. Variables that appear in a function for the first time are local.
++ *proc* defines a procedure. The variables up to the first point are the in-parameters, followed by the in-out- parameters. Variables that appear in a procedure for the first time are local.
 
 + *ind mod 4* calculates the rest of the division by 4 and gives the column of the card. *ind div 4* calculates the integer part of the division and gives the row. *x* and *y* are then calculated and a small square is drawn, leaving an edge free. The text is indented, written in black color.
 
@@ -79,7 +79,7 @@ print cards$[]
 
 + Now we shuffle the cards (this array) and display them.
 
-func draw_square ind col s$ . .
+proc draw_square ind col s$ . .
   ind -= 1
   x = ind mod 4 * 24 + 3
   y = ind div 4 * 24 + 3
@@ -105,7 +105,7 @@ end
 
 + On mouse-click we search for the card under the mouse pointer and uncover it.
 
-func draw_square ind col s$ . .
+proc draw_square ind col s$ . .
   ind -= 1
   x = ind mod 4 * 24 + 3
   y = ind div 4 * 24 + 3
@@ -117,7 +117,7 @@ func draw_square ind col s$ . .
   text s$
 end
 cards$[] = strchars "AABBDDEEFFGGHHII"
-func init . .
+proc init . .
   # display covered cards
   for i = 1 to 16
     call draw_square i 353 ""
@@ -181,7 +181,7 @@ call wait
 
 # Letter memory
 # 
-func draw_square ind col s$ . .
+proc draw_square ind col s$ . .
   ind -= 1
   x = ind mod 4 * 24 + 3
   y = ind div 4 * 24 + 3
@@ -201,7 +201,7 @@ end
 cards$[] = strchars "AABBDDEEFFGGHHII"
 len open[] 16
 background 000
-func init . .
+proc init . .
   call init_vars
   clear
   # display covered cards
@@ -215,7 +215,7 @@ func init . .
     swap cards$[r] cards$[i]
   end
 end
-func open ind . .
+proc open ind . .
   open[ind] = 1
   call draw_square ind 575 cards$[ind]
   if card1 = 0
@@ -251,7 +251,7 @@ on timer
   call draw_square card2 353 ""
   card2 = 0
 end
-func search_card . .
+proc search_card . .
   c = mouse_x div 25
   r = mouse_y div 25
   ind = r * 4 + c + 1

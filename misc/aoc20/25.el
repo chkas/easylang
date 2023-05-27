@@ -3,7 +3,7 @@
 publ1 = number input
 publ2 = number input
 # 
-func crack_priv publ . res .
+proc crack_priv publ . res .
    prod = 1
    res = 0
    while prod <> publ
@@ -12,7 +12,7 @@ func crack_priv publ . res .
       res += 1
    .
 .
-func get_shared_secr priv publ . res .
+proc get_shared_secr priv publ . res .
    res = 1
    for _ to priv
       res *= publ

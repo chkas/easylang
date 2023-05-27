@@ -1,7 +1,7 @@
 # AoC-20 - Day 11: Seating System
 # 
 global seat[] nc .
-func read . .
+proc read . .
    s$ = input
    nc = len s$ + 2
    for i to nc
@@ -25,7 +25,7 @@ len f[] len seat[]
 len p[] len seat[]
 # 
 global is_part1 .
-func look i dir . s .
+proc look i dir . s .
    if is_part1 = 1
       i += dir
    else
@@ -38,7 +38,7 @@ func look i dir . s .
 .
 len stable[] len f[]
 # 
-func run . .
+proc run . .
    nrow = len seat[] / nc
    for i to len f[]
       f[i] = 0

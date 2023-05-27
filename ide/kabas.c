@@ -2160,7 +2160,7 @@ static ushort parse_sequ(void) {
 			if (tok == t_global) {
 				parse_global_stat();
 			}
-			else if (tok == t_func) {
+			else if (tok == t_proc || tok == t_func) {
 				if (sequ_level != 0) error("not allowed here");
 				loop_level += 1;
 				if (!err && sequ_level < 16) nest_block[sequ_level] = codestrln;
@@ -2175,7 +2175,7 @@ static ushort parse_sequ(void) {
 				if (sequ_level != 0) error("not allowed here");
 				parse_on_stat();
 			}
-			else if (tok == t_funcdecl) {
+			else if (tok == t_procdecl || tok == t_funcdecl) {
 				if (sequ_level != 0) error("not allowed here");
 				parse_funcdecl();
 			}
@@ -2514,13 +2514,13 @@ extern int parse(const char* str, int opt, int pos) {
 			ushort npos = nest_block[nestlevel_err];
 			codestr[npos + 1] = 'u';
 			char ch = codestr[npos + 4];
-			if (ch == 'f') codestr[npos + 7] = 'u';
-			else if (ch == 'h') codestr[npos + 10] = 'u';
-			else if (ch == 'o') codestr[npos + 8] = 'u';
-			else if (ch == 'l') codestr[npos + 9] = 'u';
-			else if (ch == 'e') codestr[npos + 11] = 'u';
-			else if (ch == 'u') codestr[npos + 9] = 'u';
-			else if (ch == 'n') codestr[npos + 7] = 'u';
+			if (ch == 'f') codestr[npos + 7] = 'u';	//if
+			else if (ch == 'h') codestr[npos + 10] = 'u'; // while
+			else if (ch == 'o') codestr[npos + 8] = 'u'; //for
+			else if (ch == 'e') codestr[npos + 11] = 'u'; // repeat
+			else if (ch == 'n') codestr[npos + 7] = 'u'; // on
+//			else if (ch == 'l' || ch == 'r' || ch == 'u') codestr[npos + 9] = 'u'; //elif, else, proc, func, subr
+			else codestr[npos + 9] = 'u'; //elif, else, proc, func, subr
 		}
 		return err_pos;
 	}

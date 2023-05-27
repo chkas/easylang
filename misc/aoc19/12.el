@@ -8,7 +8,7 @@ for _ range0 4
 .
 arrbase p0[] 0
 # 
-func part_1 . .
+proc part_1 . .
    p[] = p0[]
    len v[] 12
    arrbase p[] 0
@@ -40,7 +40,7 @@ func part_1 . .
 .
 call part_1
 # 
-func gcd a b . res .
+proc gcd a b . res .
    while b <> 0
       h = b
       b = a mod b
@@ -48,13 +48,13 @@ func gcd a b . res .
    .
    res = a
 .
-func lcm3 a b c . r .
+proc lcm3 a b c . r .
    call gcd a b h
    r1 = a div h * b
    call gcd r1 c h
    r = r1 div h * c
 .
-func part_2 . .
+proc part_2 . .
    p[] = p0[]
    len v[] 12
    len steps[] 3

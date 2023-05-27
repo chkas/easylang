@@ -6,7 +6,7 @@ sys topleft
 global nc f[] car_dir[] car_pos[] .
 arrbase f[] 0
 # 
-func init . .
+proc init . .
    repeat
       s$ = input
       until s$ = ""
@@ -51,7 +51,7 @@ call init
 first_show = 1
 global tick crash_pos[] crash_tick[] .
 # 
-func show crash_pos . .
+proc show crash_pos . .
    if visual = 0
       break 1
    .
@@ -130,7 +130,7 @@ func show crash_pos . .
 dir[] = [ 1 nc -1 (-nc) ]
 len car_turn[] len car_dir[]
 # 
-func run . .
+proc run . .
    ncars = len car_pos[]
    repeat
       # sort car pos

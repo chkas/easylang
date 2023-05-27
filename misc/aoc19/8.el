@@ -13,7 +13,7 @@ if len img[] < 40
 sz = w * h
 n_layer = len img[] / sz
 # 
-func part1 . .
+proc part1 . .
    min = 1 / 0
    for l range0 n_layer
       cnt = 0
@@ -40,7 +40,7 @@ func part1 . .
 .
 call part1
 # 
-func part2 . .
+proc part2 . .
    len img2[] sz
    arrbase img2[] 0
    for i range0 sz

@@ -4,7 +4,7 @@ visual = 1
 sys topleft
 # 
 global go[][] nc .
-func read . .
+proc read . .
    l = 1
    repeat
       s$ = input
@@ -42,14 +42,14 @@ len m[] nc * nc
 dirs_even[] = [ -1 (-nc - 1) (-nc) 1 nc (nc - 1) ]
 dirs_odd[] = [ -1 (-nc) (-nc + 1) 1 (nc + 1) nc ]
 # 
-func sum_black . s .
+proc sum_black . s .
    s = 0
    for i to len m[]
       s += m[i]
    .
 .
 background 000
-func show . .
+proc show . .
    if visual = 0
       break 1
    .
@@ -95,7 +95,7 @@ func show . .
    text sum & " black tiles"
    sleep 0.03
 .
-func show2 . .
+proc show2 . .
    if visual = 0
       break 1
    .
@@ -130,7 +130,7 @@ func show2 . .
    text sum & " black tiles"
    sleep 0.1
 .
-func part1 . .
+proc part1 . .
    start = nc * (nc div 2) + nc div 2
    for l to len go[][]
       pos = start
@@ -152,7 +152,7 @@ call part1
 # 
 # 
 len p[] len m[]
-func update . .
+proc update . .
    swap m[] p[]
    for r to nc - 2
       for c to nc - 2
@@ -179,7 +179,7 @@ func update . .
       .
    .
 .
-func part2 . .
+proc part2 . .
    for i to 100
       call update
       if i <= 10

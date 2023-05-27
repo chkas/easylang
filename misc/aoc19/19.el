@@ -15,7 +15,7 @@ subr reset
    mem[] = code[]
    arrbase mem[] 0
 .
-func mem_ind mo ind . rind .
+proc mem_ind mo ind . rind .
    rind = ind
    if mo = 0
       rind = mem[ind]
@@ -26,7 +26,7 @@ func mem_ind mo ind . rind .
       len mem[] rind + 8
    .
 .
-func run . .
+proc run . .
    repeat
       oc0 = mem[pc]
       oc = oc0 mod 100
@@ -75,7 +75,7 @@ func run . .
 prefix
 # --------  --------
 # 
-func in_beam in1 in2 . out .
+proc in_beam in1 in2 . out .
    call ic_reset
    ic_in = in1
    call ic_run
@@ -85,7 +85,7 @@ func in_beam in1 in2 . out .
 .
 background 222
 clear
-func draw_light x y h . .
+proc draw_light x y h . .
    if visual = 0
       break 1
    .
@@ -99,7 +99,7 @@ func draw_light x y h . .
    sleep 0
 .
 # 
-func part1 . .
+proc part1 . .
    cnt = 0
    for y range0 50
       for x range0 50
@@ -111,7 +111,7 @@ func part1 . .
    print cnt
 .
 # 
-func test x . y res .
+proc test x . y res .
    x += 99
    repeat
       call in_beam x y h
@@ -120,7 +120,7 @@ func test x . y res .
    .
    call in_beam x - 99 y + 99 res
 .
-func part2 . .
+proc part2 . .
    y = 0
    x = 100
    repeat

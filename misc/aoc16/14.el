@@ -2,14 +2,14 @@
 # 
 len md5k[] 64
 arrbase md5k[] 0
-func md5init . .
+proc md5init . .
    for i range0 64
       md5k[i] = floor (0x100000000 * abs sin ((i + 1) * 180 / pi))
    .
 .
 call md5init
 # 
-func md5 inp$ . s$ .
+proc md5 inp$ . s$ .
    subr addinp
       if inp4 = 1
          inp[] &= 0
@@ -94,7 +94,7 @@ func md5 inp$ . s$ .
       .
    .
 .
-func md5x in$ . h$ .
+proc md5x in$ . h$ .
    call md5 in$ h$
    for i range0 2016
       call md5 h$ h$
@@ -104,7 +104,7 @@ func md5x in$ . h$ .
 inp$ = input
 # 
 part2 = 0
-func run . .
+proc run . .
    for i range0 25000
       if part2 = 1
          call md5x inp$ & i md$

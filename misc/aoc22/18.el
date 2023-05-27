@@ -4,7 +4,7 @@ nc = 25
 ncc = nc * nc
 len m[] ncc * nc
 #  
-func init . .
+proc init . .
    repeat
       s$ = input
       until s$ = ""
@@ -14,7 +14,7 @@ func init . .
    .
 .
 call init
-func cntfaces id . res .
+proc cntfaces id . res .
    for i = 1 to len m[]
       if m[i] = id
          s += 6
@@ -30,7 +30,7 @@ func cntfaces id . res .
 call cntfaces 1 nfaces
 print nfaces
 # 
-func flood . .
+proc flood . .
    todo[] &= 1
    m[1] = 2
    while len todo[] > 0

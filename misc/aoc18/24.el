@@ -2,7 +2,7 @@
 # 
 global type$[] .
 # 
-func type_id s$ . id .
+proc type_id s$ . id .
    for id to len type$[]
       if type$[id] = s$
          break 2
@@ -12,7 +12,7 @@ func type_id s$ . id .
 .
 global team[] units0[] hitp[] imm[][] weak[][] dam0[] dam_type[] init[] attac[] .
 # 
-func read . .
+proc read . .
    for team to 2
       s$ = input
       repeat
@@ -61,7 +61,7 @@ func read . .
 call read
 # 
 # 
-func combat boost . winner res .
+proc combat boost . winner res .
    units[] = units0[]
    dam[] = dam0[]
    for i to len units[]

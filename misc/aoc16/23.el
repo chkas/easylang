@@ -9,7 +9,7 @@ prog$[4] = "cpy b a"
 prog$[5] = "mul d a"
 prog$[6] = "jnz 1 5"
 # 
-func run inp . .
+proc run inp . .
    for s$ in prog$[]
       s$[] = strsplit s$ " "
       r = strcode s$[2] - 96

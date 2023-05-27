@@ -1,7 +1,7 @@
 # AoC-15 - Day 13: Knights of the Dinner Table
 # 
 global name$[] .
-func id n$ . id .
+proc id n$ . id .
    for id to len name$[]
       if name$[id] = n$
          break 2
@@ -27,7 +27,7 @@ for s$ in inp$[]
    h[a * n + b] = h
 .
 global permlist[][] perm[] .
-func mk_permlist k . .
+proc mk_permlist k . .
    for i = k to len perm[]
       swap perm[i] perm[k]
       call mk_permlist k + 1

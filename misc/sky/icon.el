@@ -23,5 +23,5 @@ for i = 1 to len x[]
 color c
 move 75 75
 circle 2
-#sysfunc "id:10"
+#sysproc "id:10"
 

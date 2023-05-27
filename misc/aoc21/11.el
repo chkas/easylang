@@ -17,7 +17,7 @@ if visualization = 1
    sleep 3
 .
 color 321
-func draw . .
+proc draw . .
    if visualization = 0
       break 1
    .

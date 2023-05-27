@@ -1,6 +1,6 @@
 # AoC-22 - Day 13: Distress Signal
 # 
-func ntok . s$ tok .
+proc ntok . s$ tok .
    c$ = substr s$ 1 1
    h = 2
    if c$ = ","
@@ -22,7 +22,7 @@ func ntok . s$ tok .
    .
    s$ = substr s$ h -1
 .
-func cmp . s1$ s2$ win .
+proc cmp . s1$ s2$ win .
    repeat
       call ntok s1$ tok1
       call ntok s2$ tok2
@@ -49,14 +49,14 @@ func cmp . s1$ s2$ win .
       until done = 1 or win <> 0
    .
 .
-func compare s1$ s2$ . ok .
+proc compare s1$ s2$ . ok .
    call ntok s1$ h
    call ntok s2$ h
    win = 0
    call cmp s1$ s2$ win
    ok = 2 - win
 .
-func run . .
+proc run . .
    repeat
       swap spp$ sp$
       swap s$ sp$

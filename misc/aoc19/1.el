@@ -1,6 +1,6 @@
 # AoC-19 - Day 1: The Tyranny of the Rocket Equation
 # 
-func fuel2 w . fs .
+proc fuel2 w . fs .
    fs = 0
    repeat
       f = w div 3 - 2

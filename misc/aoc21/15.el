@@ -17,7 +17,7 @@ global m[] nc cost todo[][] endpos prev[] .
 background 000
 clear
 textsize 4
-func show . .
+proc show . .
    if visualization = 0
       break 1
    .
@@ -48,7 +48,7 @@ func show . .
    text "Total risk: " & cost
    sleep 0.01
 .
-func show_route . .
+proc show_route . .
    if visualization = 0
       break 1
    .
@@ -65,7 +65,7 @@ func show_route . .
    .
 .
 # 
-func read . .
+proc read . .
    inp$ = input
    sz = len inp$
    if sz = 0

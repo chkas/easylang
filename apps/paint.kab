@@ -8,7 +8,7 @@ sel_col = 1
 state = 0
 down = 0
 # 
-func showpen . .
+proc showpen . .
   color 444
   move 0 0
   rect 100 8
@@ -39,7 +39,7 @@ func showpen . .
   linewidth thick[sel_thick]
 .
 c[] = [ 9 0 0 ]
-func picker . .
+proc picker . .
   col = col[sel_col]
   for i = 2 downto 0
     c[i + 1] = col mod 10
@@ -60,7 +60,7 @@ func picker . .
     circle 1
   .
 .
-func action x y . .
+proc action x y . .
   if state = 0
     if y < 8
       if x < 8

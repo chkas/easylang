@@ -3,7 +3,7 @@
 # Recursive parsing 
 # 
 global b[] bi .
-func init . .
+proc init . .
    hex$[] = strchars input
    for h$ in hex$[]
       v = strcode h$ - 48
@@ -25,14 +25,14 @@ func init . .
 .
 call init
 # 
-func getnum cnt . v .
+proc getnum cnt . v .
    v = 0
    for bi = bi to bi + cnt - 1
       v = v * 2 + b[bi]
    .
 .
 global vers_sum .
-func parse_pack . val .
+proc parse_pack . val .
    call getnum 3 h
    vers_sum += h
    call getnum 3 id

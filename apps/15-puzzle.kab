@@ -4,7 +4,7 @@ sys topleft
 background 432
 textsize 13
 len f[] 16
-func draw . .
+proc draw . .
   clear
   for i = 1 to 16
     h = f[i]
@@ -24,7 +24,7 @@ func draw . .
   .
 .
 global done .
-func init . .
+proc init . .
   done = 0
   for i = 1 to 16
     f[i] = i
@@ -49,7 +49,7 @@ func init . .
   textsize 12
   call draw
 .
-func move_tile . .
+proc move_tile . .
   c = mouse_x div 25
   r = mouse_y div 25
   i = r * 4 + c + 1

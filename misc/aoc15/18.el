@@ -29,7 +29,7 @@ global p[] f[] .
 f = 100 / (n - 1)
 background 000
 color 543
-func show . .
+proc show . .
    if visualization = 1
       clear
       for r to n - 1
@@ -43,13 +43,13 @@ func show . .
       sleep 0.05
    .
 .
-func patch . .
+proc patch . .
    f[n + 2] = 1
    f[n + n] = 1
    f[n * (n - 1) + 2] = 1
    f[n * n] = 1
 .
-func update . .
+proc update . .
    swap f[] p[]
    for r to n - 1
       sm = 0

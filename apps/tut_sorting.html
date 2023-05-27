@@ -20,7 +20,7 @@ txt_tutor=`* Sorting algorithms
 
 print "Selection sort"
 print ""
-func sort . d[] .
+proc sort . d[] .
   for i = 1 to len d[] - 1
     for j = i + 1 to len d[]
       if d[j] < d[i]
@@ -29,13 +29,13 @@ func sort . d[] .
     .
   .
 .
-func test . .
+proc test . .
   d[] = [ 29 4 72 44 55 26 27 77 92 5 ]
   call sort d[]
   print d[]
   print ""
 .
-func time_test . .
+proc time_test . .
   len d[] 50
   write "Length" & strchar 9 & "Time"
   for _ = 1 to 3
@@ -58,7 +58,7 @@ call time_test
 
 print "Insertion sort"
 print ""
-func sort . d[] .
+proc sort . d[] .
   for i = 2 to len d[]
     h = d[i]
     j = i - 1
@@ -69,7 +69,7 @@ func sort . d[] .
     d[j + 1] = h
   .
 .
-func time_test . .
+proc time_test . .
   len d[] 50
   write "Length" & strchar 9 & "Time"
   for test = 1 to 3
@@ -93,7 +93,7 @@ call time_test
 
 print "Heapsort"
 print ""
-func sort . d[] .
+proc sort . d[] .
   n = len d[]
   # make heap
   for i = 2 to n
@@ -123,7 +123,7 @@ func sort . d[] .
     .
   .
 .
-func time_test . .
+proc time_test . .
   len d[] 500
   write "Length" & strchar 9 & "Time"
   for test = 1 to 3
@@ -149,7 +149,7 @@ call time_test
 
 print "Mergesort"
 print ""
-func sort . d[] .
+proc sort . d[] .
   len tmp[] len d[]
   sz = 1
   while sz < len d[]
@@ -181,7 +181,7 @@ func sort . d[] .
     sz += sz
   .
 .
-func time_test . .
+proc time_test . .
   len d[] 5000
   write "Length" & strchar 9 & "Time"
   for test = 1 to 3
@@ -207,7 +207,7 @@ call time_test
 
 print "Quicksort"
 print ""
-func sort . d[] .
+proc sort . d[] .
   len stack[] 64
   sp = 1
   # this is sufficient to sort 4 billion numbers
@@ -247,7 +247,7 @@ func sort . d[] .
     .
   .
 .
-func time_test . .
+proc time_test . .
   len d[] 5000
   write "Length" & strchar 9 & "Time"
   for test = 1 to 3
@@ -275,7 +275,7 @@ call time_test
 
 print "Radix sort"
 print ""
-func sort . d[] .
+proc sort . d[] .
   # radix = 10
   radix = 256
   max = 0
@@ -304,7 +304,7 @@ func sort . d[] .
     pos *= radix
   .
 .
-func time_test . .
+proc time_test . .
   len d[] 5000
   write "Length" & strchar 9 & "Time"
   for test = 1 to 3
@@ -334,7 +334,7 @@ call time_test
 
 + The following *Quicksort* variant is recursive. The code looks clean and is fast. But there is a dangerous thing: the *stack* and its limited size. The stack size is different on different operating systems. For embedded systems, it may be very small.
 
-func qsort left right . d[] .
+proc qsort left right . d[] .
   if left < right
     # partition 
     piv = d[left]
@@ -351,7 +351,7 @@ func qsort left right . d[] .
     call qsort mid + 1 right d[]
   .
 .
-func sort . d[] .
+proc sort . d[] .
   call qsort 1 len d[] d[]
 .
 d[] = [ 29 4 72 44 55 26 27 77 92 5 ]
@@ -362,7 +362,7 @@ print d[]
 
 + With *tail call elimination* and ensuring that the smaller subarray is sorted first, we can also make the recursive variant *stack safe*. With bad input we then get "only" the worst-case time complexity.
 
-func qsort left right . d[] .
+proc qsort left right . d[] .
   while left < right
     # partition 
     piv = d[left]
@@ -384,7 +384,7 @@ func qsort left right . d[] .
     .
   .
 .
-func sort . d[] .
+proc sort . d[] .
   call qsort 1 len d[] d[]
 .
 d[] = [ 29 4 72 44 55 26 27 77 92 5 ]

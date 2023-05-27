@@ -11,7 +11,7 @@ visualization = 1
 #
 sys topleft 
 global m[] nc nr lowpt[] .
-func show upd . .
+proc show upd . .
    if visualization = 0
       break 1
    .
@@ -38,7 +38,7 @@ func show upd . .
    .
    sleep 0.01
 .
-func part1 . .
+proc part1 . .
    inp$ = input
    nc = len inp$ + 2
    for i to nc
@@ -69,7 +69,7 @@ func part1 . .
 call part1
 call show 0
 # 
-func sort . d[] .
+proc sort . d[] .
    for i to len d[] - 1
       for j = i + 1 to len d[]
          if d[j] > d[i]
@@ -78,7 +78,7 @@ func sort . d[] .
       .
    .
 .
-func expand pos . sz .
+proc expand pos . sz .
    m[pos] += 10
    sz += 1
    for i in [ pos - 1 pos + 1 pos - nc pos + nc ]
@@ -87,7 +87,7 @@ func expand pos . sz .
       .
    .
 .
-func part2 . .
+proc part2 . .
    for i to len lowpt[]
       sz = 0
       call expand lowpt[i] sz

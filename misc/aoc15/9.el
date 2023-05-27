@@ -1,7 +1,7 @@
 # AoC-15 - Day 9: All in a Single Night
 # 
 global name$[] perm[] .
-func id n$ . id .
+proc id n$ . id .
    for id = 1 to len name$[]
       if name$[id] = n$
          break 2
@@ -31,7 +31,7 @@ for s$ in inp$[]
    dist[b * n + a] = d
 .
 global permlist[][] .
-func mk_permlist k . .
+proc mk_permlist k . .
    for i = k to len perm[]
       swap perm[i] perm[k]
       call mk_permlist k + 1

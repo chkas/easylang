@@ -175,7 +175,7 @@ xxx
 }
 
 mk_tut "Documentation and code snippets" docu "easylang documentation"
-mk_tut "Functions and recursion" func "recursive functions"
+mk_tut "Procedures and recursion" func "recursive procedures"
 mk_tut "Programming a letter memory game" game "canvas game, smartphone" "" "runner"
 mk_tut "Programming basics" learn "learn programming basics"
 sed s/555/222/g $o/tut_learn.html > $o/tmp.html
@@ -431,7 +431,7 @@ and <a href=easy.js><i>easy.js</i></a> to your web directory, you can embed a sc
 </div>
 
 <script>
-src1 = `func tree x y a d . .
+src1 = `proc tree x y a d . .
    linewidth d * 0.4
    move x y
    x += cos a * d * 1.4 * (randomf + 0.5)

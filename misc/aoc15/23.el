@@ -6,7 +6,7 @@ repeat
    p$[] &= s$
 .
 # 
-func run r[] . .
+proc run r[] . .
    pc = 1
    while pc <= len p$[]
       s$[] = strsplit p$[pc] ", "

@@ -1,6 +1,6 @@
 # AoC-16 - Day 16: Dragon Checksum
 # 
-func run sz inp$ . .
+proc run sz inp$ . .
    d[] = number strchars inp$
    while len d[] < sz
       d[] &= 0

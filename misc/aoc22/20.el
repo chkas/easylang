@@ -1,7 +1,7 @@
 # AoC-22 - Day 20: Grove Positioning System
 # 
 global v[] nxt[] n .
-func out . .
+proc out . .
    ind = 1
    for k = 1 to n
       write v[ind] & " "
@@ -9,7 +9,7 @@ func out . .
    .
    print ""
 .
-func read . .
+proc read . .
    repeat
       s$ = input
       until s$ = ""
@@ -19,7 +19,7 @@ func read . .
    n = len v[]
    nxt[n] = 1
 .
-func init_part2 . .
+proc init_part2 . .
    for i = 1 to len v[]
       v[i] *= 811589153
       nxt[i] = i + 1
@@ -28,7 +28,7 @@ func init_part2 . .
 .
 call read
 # 
-func mix . .
+proc mix . .
    for k = 1 to n
       ind = k
       v = v[ind]
@@ -46,12 +46,12 @@ func mix . .
       nxt[k] = nxt
    .
 .
-func nmix h . .
+proc nmix h . .
    for i = 1 to h
       call mix
    .
 .
-func find sk . r .
+proc find sk . r .
    sk = sk mod n
    for ind = 1 to n
       if v[ind] = 0
@@ -63,7 +63,7 @@ func find sk . r .
    .
    r = v[ind]
 .
-func run nm . .
+proc run nm . .
    call nmix nm
    for h in [ 1000 2000 3000 ]
       call find h r

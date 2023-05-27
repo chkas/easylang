@@ -12,7 +12,7 @@ subr init_vars
    row = -1
    res = 0
 .
-func disp col s$ . .
+proc disp col s$ . .
    color col
    move 3 76
    rect 94 21
@@ -21,7 +21,7 @@ func disp col s$ . .
    textsize 12
    text s$
 .
-func show_quest . .
+proc show_quest . .
    j = random sz
    if row < 10
       n = n[j]
@@ -36,7 +36,7 @@ func show_quest . .
    call disp 030 n & " * " & m & " = _"
    res = 0
 .
-func sel_row . .
+proc sel_row . .
    if ind <= 10
       t = systime
       row = ind
@@ -57,7 +57,7 @@ func sel_row . .
       call show_quest
    .
 .
-func draw_key . .
+proc draw_key . .
    s$ = strchar (ind + 48)
    h = ind
    if h < 10 and h > 0
@@ -85,7 +85,7 @@ func draw_key . .
    text s$
 .
 background 010
-func init . .
+proc init . .
    call init_vars
    clear
    for ind = 0 to 11
@@ -95,7 +95,7 @@ func init . .
    ind = -1
    call disp 030 "Which row?"
 .
-func sel_inp . .
+proc sel_inp . .
    if ind = 11
       state = 1
       if n * m = res
@@ -125,14 +125,14 @@ func sel_inp . .
    .
    call disp col n & " * " & m & " = " & h$
 .
-func handle_key2 . .
+proc handle_key2 . .
    if row = -1
       call sel_row
    else
       call sel_inp
    .
 .
-func handle_key . .
+proc handle_key . .
    c = mouse_x div 25
    r = 2 - mouse_y div 25
    if c < 3
@@ -186,7 +186,7 @@ on mouse_up
       call draw_key
    .
 .
-func smiley t . .
+proc smiley t . .
    if t <= 60
       move 65 30
       color 983
@@ -204,7 +204,7 @@ func smiley t . .
       .
    .
 .
-func done . .
+proc done . .
    t = floor (systime - t)
    move 0 0
    color 030

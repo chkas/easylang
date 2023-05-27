@@ -11,7 +11,7 @@ ny = 1000
 len f[] nx * ny
 arrbase f[] 0
 # 
-func part1 . .
+proc part1 . .
    len ero[] nx
    arrbase ero[] 0
    ero[0] = depth mod 20183
@@ -56,7 +56,7 @@ for i range0 len w[]
 todon[] = [ 0 ]
 mintarg = 99999
 targpos = targy * nx2 + 2 * targx
-func add_todo pos w . .
+proc add_todo pos w . .
    if w < w[pos]
       w[pos] = w
       if pos = targpos

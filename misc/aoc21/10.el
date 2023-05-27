@@ -2,7 +2,7 @@
 # 
 # Recursive syntax tree parsing. 
 # 
-func sort . d[] .
+proc sort . d[] .
    for i = 1 to len d[] - 1
       for j = i + 1 to len d[]
          if d[j] > d[i]
@@ -12,13 +12,13 @@ func sort . d[] .
    .
 .
 global inp$ c$ inpi .
-func nextc . .
+proc nextc . .
    c$ = substr inp$ inpi 1
    inpi += 1
 .
-funcdecl parse . .
+procdecl parse . .
 global score err .
-func parse_expect b$ . .
+proc parse_expect b$ . .
    call nextc
    call parse
    if c$ = "" and err = 0
@@ -43,7 +43,7 @@ func parse_expect b$ . .
    .
    call nextc
 .
-func parse . .
+proc parse . .
    while 1 = 1
       if c$ = "("
          call parse_expect ")"

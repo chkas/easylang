@@ -6,7 +6,7 @@
 # by a 2 elements wide frame.  
 # 
 global alg[] i0 l0 nc mn[] m[] .
-func read . .
+proc read . .
    s$[] = strchars input
    for c$ in s$[]
       alg[] &= if c$ = "#"
@@ -31,7 +31,7 @@ func read . .
    .
 .
 call read
-func update . .
+proc update . .
    i0 = i0 - nc - 1
    i = i0
    l0 += 2

@@ -3,11 +3,11 @@
 inp$ = input
 global c$ cnt score .
 inpos = 1
-func nextc . .
+proc nextc . .
    c$ = substr inp$ inpos 1
    inpos += 1
 .
-func garbage . .
+proc garbage . .
    repeat
       call nextc
       while c$ = "!"
@@ -18,7 +18,7 @@ func garbage . .
       cnt += 1
    .
 .
-func group lev . .
+proc group lev . .
    repeat
       call nextc
       if c$ = "{"

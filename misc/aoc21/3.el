@@ -11,14 +11,14 @@ repeat
 .
 nbits = len inp$[1]
 # 
-func binval s$ . v .
+proc binval s$ . v .
    v = 0
    for b$ in strchars s$
       v = v * 2 + number b$
    .
 .
 # 
-func part_1 . .
+proc part_1 . .
    len cnt[] nbits
    for ln$ in inp$[]
       for i = 1 to nbits
@@ -36,7 +36,7 @@ func part_1 . .
 .
 call part_1
 # 
-func find bit ln$[] . val .
+proc find bit ln$[] . val .
    for i = 1 to nbits
       cnt = 0
       for ln$ in ln$[]

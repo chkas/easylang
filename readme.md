@@ -20,9 +20,9 @@ end
 
 ## Website
 
-**[easylang.online](https://easylang.online/)**
-
 **[easylang.dev](https://easylang.dev/)**
+
+**[easylang.online](https://easylang.online/)**
 
 **[chkas.github.io](https://chkas.github.io/)**
 
@@ -48,7 +48,7 @@ Install and activate a tested version
 source emsdk/emsdk_env.sh
 emsdk update ; emsdk list
 # vers=latest
-vers=3.1.36
+vers=3.1.39
 emsdk install $vers ; emsdk activate $vers
 ~~~
 

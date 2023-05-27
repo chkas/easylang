@@ -4,7 +4,7 @@ mem0[] = number strsplit input ","
 arrbase mem0[] 0
 global mem[] .
 # 
-func run . .
+proc run . .
    repeat
       oc = mem[pc]
       until oc = 99
@@ -22,7 +22,7 @@ func run . .
    .
 .
 # 
-func part1 . .
+proc part1 . .
    mem[] = mem0[]
    mem[1] = 12
    mem[2] = 2
@@ -30,7 +30,7 @@ func part1 . .
    print mem[0]
 .
 # 
-func part2 . .
+proc part2 . .
    for noun range0 100
       for verb range0 100
          mem[] = mem0[]

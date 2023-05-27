@@ -19,19 +19,19 @@ to encrypt and decrypt the data. This key must be kept secret.
 
 + XOR encryption with a repeating key is simple, but not secure.
 
-func str2bytes s$ . ar[] .
+proc str2bytes s$ . ar[] .
   ar[] = [ ]
   for c$ in strchars s$
     ar[] &= strcode c$
   .
 .
-func bytes2str ar[] . s$ .
+proc bytes2str ar[] . s$ .
   s$ = ""
   for b in ar[]
     s$ &= strchar b
   .
 .
-func xorcrypt key in[] . out[] .
+proc xorcrypt key in[] . out[] .
   out[] = [ ]
   for i = 1 to 4
     k[] &= bitand key 0xff
@@ -72,13 +72,13 @@ a character are varied independently until they
 "fit" the data they decrypt - a text, for example, 
 contains many lowercase letters. 
 
-func bytes2str ar[] . s$ .
+proc bytes2str ar[] . s$ .
   s$ = ""
   for b in ar[]
     s$ &= strchar b
   .
 .
-func xorcrypt key in[] . out[] .
+proc xorcrypt key in[] . out[] .
   out[] = [ ]
   for i = 1 to 4
     k[] &= bitand key 0xff
@@ -90,7 +90,7 @@ func xorcrypt key in[] . out[] .
 .
 encr[] = [ 124 35 54 64 88 35 117 100 26 106 65 100 20 34 119 119 81 106 119 33 71 63 100 113 70 35 101 100 20 40 127 115 64 34 114 96 77 106 102 96 70 62 111 33 82 37 100 33 96 56 99 101 77 100 54 67 91 40 ]
 #  
-func crack_xor in[] . .
+proc crack_xor in[] . .
   len k[] 4
   for ki = 1 to 4
     for b = 0 to 0xff
@@ -127,20 +127,20 @@ call crack_xor encr[]
 
 + Encryption is done by the basic operations rotation, XOR and addition with the key as parameter in several rounds. For decryption, these steps must be performed in reverse order.
 
-func str2bytes s$ . ar[] .
+proc str2bytes s$ . ar[] .
   ar[] = [ ]
   for c$ in strchars s$
     ar[] &= strcode c$
   .
 .
-func bytes2str ar[] . s$ .
+proc bytes2str ar[] . s$ .
   s$ = ""
   for b in ar[]
     s$ &= strchar b
   .
 .
 # 
-func rot k . x y .
+proc rot k . x y .
   x = bitor bitshift x 3 bitshift x -29
   x += y
   x = bitxor x k
@@ -148,7 +148,7 @@ func rot k . x y .
   y = bitxor y x
 .
 global spkb[] .
-func sp_prepkey key . .
+proc sp_prepkey key . .
   a = key div 0x100000000
   b = key mod 0x100000000
   spkb[] = [ b ]
@@ -157,27 +157,27 @@ func sp_prepkey key . .
     spkb[] &= b
   .
 .
-func sp_block . x y .
+proc sp_block . x y .
   call rot spkb[1] x y
   for i = 2 to 23
     call rot spkb[i] x y
   .
 .
-func rotrev k . x y .
+proc rotrev k . x y .
   y = bitxor y x
   x = bitor bitshift x -8 bitshift x 24
   x = bitxor x k
   x = (x - y) mod 0x100000000
   x = bitor bitshift x -3 bitshift x 29
 .
-func sp_blockrev . x y .
+proc sp_blockrev . x y .
   for i = 23 downto 2
     call rotrev spkb[i] x y
   .
   call rotrev spkb[1] x y
 .
 # 
-func sp_encr key . in[] out[] .
+proc sp_encr key . in[] out[] .
   call sp_prepkey key
   # padding
   if len in[] mod 8 <> 0
@@ -197,7 +197,7 @@ func sp_encr key . in[] out[] .
     .
   .
 .
-func sp_decr key . in[] out[] .
+proc sp_decr key . in[] out[] .
   call sp_prepkey key
   out[] = [ ]
   for i = 1 to len in[]
@@ -241,20 +241,20 @@ print encr[]
 
 + To shorten the search time in this example, we start the key search near the key.
 
-func str2bytes s$ . ar[] .
+proc str2bytes s$ . ar[] .
   ar[] = [ ]
   for c$ in strchars s$
     ar[] &= strcode c$
   .
 .
-func bytes2str ar[] . s$ .
+proc bytes2str ar[] . s$ .
   s$ = ""
   for b in ar[]
     s$ &= strchar b
   .
 .
 # 
-func rot k . x y .
+proc rot k . x y .
   x = bitor bitshift x 3 bitshift x -29
   x += y
   x = bitxor x k
@@ -262,7 +262,7 @@ func rot k . x y .
   y = bitxor y x
 .
 global spkb[] .
-func sp_prepkey key . .
+proc sp_prepkey key . .
   a = key div 0x100000000
   b = key mod 0x100000000
   spkb[] = [ b ]
@@ -271,21 +271,21 @@ func sp_prepkey key . .
     spkb[] &= b
   .
 .
-func rotrev k . x y .
+proc rotrev k . x y .
   y = bitxor y x
   x = bitor bitshift x -8 bitshift x 24
   x = bitxor x k
   x = (x - y) mod 0x100000000
   x = bitor bitshift x -3 bitshift x 29
 .
-func sp_blockrev . x y .
+proc sp_blockrev . x y .
   for i = 23 downto 2
     call rotrev spkb[i] x y
   .
   call rotrev spkb[1] x y
 .
 # 
-func sp_decr key . in[] out[] .
+proc sp_decr key . in[] out[] .
   call sp_prepkey key
   out[] = [ ]
   for i = 1 to len in[]
@@ -303,7 +303,7 @@ func sp_decr key . in[] out[] .
 .
 encr_data[] = [ 192 253 254 121 108 155 118 170 155 152 106 191 207 145 206 162 65 231 185 62 171 54 146 147 249 45 24 91 114 114 175 5 17 202 184 36 86 78 210 131 71 28 71 74 8 147 221 148 39 117 92 147 180 203 178 147 22 84 137 109 136 209 111 137 ]
 # 
-func brute_force in[] . key .
+proc brute_force in[] . key .
   len in[] 16
   for key = 18000000 to 9007199254740991
     if key mod 10000 = 0
@@ -346,20 +346,20 @@ This can be avoided by using a random IV to which the first block is
 XORed. This IV must be transmitted (or stored) together with the ciphertext. 
 Conveniently, it is added as the first block.
 
-func str2bytes s$ . ar[] .
+proc str2bytes s$ . ar[] .
   ar[] = [ ]
   for c$ in strchars s$
     ar[] &= strcode c$
   .
 .
-func bytes2str ar[] . s$ .
+proc bytes2str ar[] . s$ .
   s$ = ""
   for b in ar[]
     s$ &= strchar b
   .
 .
 # 
-func rot k . x y .
+proc rot k . x y .
   x = bitor bitshift x 3 bitshift x -29
   x += y
   x = bitxor x k
@@ -367,7 +367,7 @@ func rot k . x y .
   y = bitxor y x
 .
 global spkb[] .
-func sp_prepkey key . .
+proc sp_prepkey key . .
   a = key div 0x100000000
   b = key mod 0x100000000
   spkb[] = [ b ]
@@ -376,27 +376,27 @@ func sp_prepkey key . .
     spkb[] &= b
   .
 .
-func sp_block . x y .
+proc sp_block . x y .
   call rot spkb[1] x y
   for i = 2 to 23
     call rot spkb[i] x y
   .
 .
-func rotrev k . x y .
+proc rotrev k . x y .
   y = bitxor y x
   x = bitor bitshift x -8 bitshift x 24
   x = bitxor x k
   x = (x - y) mod 0x100000000
   x = bitor bitshift x -3 bitshift x 29
 .
-func sp_blockrev . x y .
+proc sp_blockrev . x y .
   for i = 23 downto 2
     call rotrev spkb[i] x y
   .
   call rotrev spkb[1] x y
 .
 # 
-func sp_encr key . in[] out[] .
+proc sp_encr key . in[] out[] .
   call sp_prepkey key
   # padding
   if len in[] mod 8 <> 0
@@ -428,7 +428,7 @@ func sp_encr key . in[] out[] .
     .
   .
 .
-func sp_decr key . in[] out[] .
+proc sp_decr key . in[] out[] .
   call sp_prepkey key
   out[] = [ ]
   for i = 1 to len in[]
@@ -480,20 +480,20 @@ the encrypted data.
 actual counter can also be combined with a start value in a 
 different way (XOR, concatenate).
 
-func str2bytes s$ . ar[] .
+proc str2bytes s$ . ar[] .
   ar[] = [ ]
   for c$ in strchars s$
     ar[] &= strcode c$
   .
 .
-func bytes2str ar[] . s$ .
+proc bytes2str ar[] . s$ .
   s$ = ""
   for b in ar[]
     s$ &= strchar b
   .
 .
 # 
-func rot k . x y .
+proc rot k . x y .
   x = bitor bitshift x 3 bitshift x -29
   x += y
   x = bitxor x k
@@ -501,7 +501,7 @@ func rot k . x y .
   y = bitxor y x
 .
 global spkb[] .
-func sp_prepkey key . .
+proc sp_prepkey key . .
   a = key div 0x100000000
   b = key mod 0x100000000
   spkb[] = [ b ]
@@ -510,13 +510,13 @@ func sp_prepkey key . .
     spkb[] &= b
   .
 .
-func sp_block . x y .
+proc sp_block . x y .
   call rot spkb[1] x y
   for i = 2 to 23
     call rot spkb[i] x y
   .
 .
-func sp_ctrmode key ctr . in[] out[] .
+proc sp_ctrmode key ctr . in[] out[] .
   call sp_prepkey key
   out[] = [ ]
   for i = 1 to len in[]
@@ -549,13 +549,13 @@ print s$
 + Bob and Alice exchange secret messages. A fatal mistake 
 happens to them doing so.
 
-func str2bytes s$ . ar[] .
+proc str2bytes s$ . ar[] .
   ar[] = [ ]
   for c$ in strchars s$
     ar[] &= strcode c$
   .
 .
-func rot k . x y .
+proc rot k . x y .
   x = bitor bitshift x 3 bitshift x -29
   x += y
   x = bitxor x k
@@ -563,7 +563,7 @@ func rot k . x y .
   y = bitxor y x
 .
 global spkb[] .
-func sp_prepkey key . .
+proc sp_prepkey key . .
   a = key div 0x100000000
   b = key mod 0x100000000
   spkb[] = [ b ]
@@ -572,13 +572,13 @@ func sp_prepkey key . .
     spkb[] &= b
   .
 .
-func sp_block . x y .
+proc sp_block . x y .
   call rot spkb[1] x y
   for i = 2 to 23
     call rot spkb[i] x y
   .
 .
-func sp_ctrmode key ctr . in[] out[] .
+proc sp_ctrmode key ctr . in[] out[] .
   call sp_prepkey key
   out[] = [ ]
   for i = 1 to len in[]
@@ -623,13 +623,13 @@ c[][] &= [ 12 67 227 52 44 5 27 158 11 144 248 29 4 193 35 71 123 4 173 51 24 12
 c[][] &= [ 12 67 227 55 47 14 86 219 125 213 205 20 91 193 29 15 113 30 226 32 89 129 197 129 44 63 106 130 58 183 134 119 53 66 17 161 119 185 112 108 245 135 26 72 5 56 68 226 174 210 235 210 216 77 239 16 95 45 18 161 140 95 60 43 4 184 100 233 222 93 195 139 ]
 c[][] &= [ 12 67 227 52 44 5 27 158 4 144 230 23 24 133 74 14 116 15 163 106 22 246 217 130 53 63 109 139 38 249 209 97 112 74 84 189 108 236 49 108 186 158 29 95 87 58 82 160 226 186 254 203 208 2 252 66 94 51 81 169 197 94 46 47 19 238 42 207 156 20 226 129 49 ]
 #  
-func bytes2str ar[] . s$ .
+proc bytes2str ar[] . s$ .
   s$ = ""
   for b in ar[]
     s$ &= strchar b
   .
 .
-func crack_xor . key[] .
+proc crack_xor . key[] .
   key[] = [ ]
   for pos = 1 to 66
     max = 1
@@ -683,7 +683,7 @@ func crack_xor . key[] .
 .
 call crack_xor key[]
 # 
-func decrypt encr[] key[] . .
+proc decrypt encr[] key[] . .
   out[] = [ ]
   for i = 1 to len key[]
     if key[i] <> -1
@@ -719,19 +719,19 @@ c[][] &= [ 12 67 227 52 44 5 27 158 11 144 248 29 4 193 35 71 123 4 173 51 24 12
 c[][] &= [ 12 67 227 55 47 14 86 219 125 213 205 20 91 193 29 15 113 30 226 32 89 129 197 129 44 63 106 130 58 183 134 119 53 66 17 161 119 185 112 108 245 135 26 72 5 56 68 226 174 210 235 210 216 77 239 16 95 45 18 161 140 95 60 43 4 184 100 233 222 93 195 139 ]
 c[][] &= [ 12 67 227 52 44 5 27 158 4 144 230 23 24 133 74 14 116 15 163 106 22 246 217 130 53 63 109 139 38 249 209 97 112 74 84 189 108 236 49 108 186 158 29 95 87 58 82 160 226 186 254 203 208 2 252 66 94 51 81 169 197 94 46 47 19 238 42 207 156 20 226 129 49 ]
 #  
-func str2bytes s$ . ar[] .
+proc str2bytes s$ . ar[] .
   ar[] = [ ]
   for c$ in strchars s$
     ar[] &= strcode c$
   .
 .
-func bytes2str ar[] . s$ .
+proc bytes2str ar[] . s$ .
   s$ = ""
   for b in ar[]
     s$ &= strchar b
   .
 .
-func decrypt encr[] key[] . .
+proc decrypt encr[] key[] . .
   out[] = [ ]
   for i = 1 to len key[]
     if key[i] <> -1
@@ -771,20 +771,20 @@ key, or the same (key,counter) pair, for encrypting different inputs.
 
 + We use this to generate a 53-bit key from a variable-length text key. The data is then encrypted with our easy-to-use block cipher in CBC mode - which doesn't go wrong as easily as stream ciphers.
 
-func str2bytes s$ . ar[] .
+proc str2bytes s$ . ar[] .
   ar[] = [ ]
   for c$ in strchars s$
     ar[] &= strcode c$
   .
 .
-func bytes2str ar[] . s$ .
+proc bytes2str ar[] . s$ .
   s$ = ""
   for b in ar[]
     s$ &= strchar b
   .
 .
 # 
-func rot k . x y .
+proc rot k . x y .
   x = bitor bitshift x 3 bitshift x -29
   x += y
   x = bitxor x k
@@ -792,34 +792,34 @@ func rot k . x y .
   y = bitxor y x
 .
 global spkb[] .
-func sp_prepkey a b . .
+proc sp_prepkey a b . .
   spkb[] = [ b ]
   for i = 0 to 21
     call rot i a b
     spkb[] &= b
   .
 .
-func sp_block . x y .
+proc sp_block . x y .
   call rot spkb[1] x y
   for i = 2 to 23
     call rot spkb[i] x y
   .
 .
-func rotrev k . x y .
+proc rotrev k . x y .
   y = bitxor y x
   x = bitor bitshift x -8 bitshift x 24
   x = bitxor x k
   x = (x - y) mod 0x100000000
   x = bitor bitshift x -3 bitshift x 29
 .
-func sp_blockrev . x y .
+proc sp_blockrev . x y .
   for i = 23 downto 2
     call rotrev spkb[i] x y
   .
   call rotrev spkb[1] x y
 .
 # 
-func sp_encr key . in[] out[] .
+proc sp_encr key . in[] out[] .
   call sp_prepkey key div 0x100000000 key mod 0x100000000
   # padding
   if len in[] mod 8 <> 0
@@ -851,7 +851,7 @@ func sp_encr key . in[] out[] .
     .
   .
 .
-func sp_decr key . in[] out[] .
+proc sp_decr key . in[] out[] .
   call sp_prepkey key div 0x100000000 key mod 0x100000000
   out[] = [ ]
   for i = 1 to len in[]
@@ -875,7 +875,7 @@ func sp_decr key . in[] out[] .
     .
   .
 .
-func genkey s$ . k .
+proc genkey s$ . k .
   call str2bytes s$ b[]
   if len b[] mod 8 <> 0
     len b[] len b[] + 8 - len b[] mod 8

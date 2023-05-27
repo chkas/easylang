@@ -3,7 +3,7 @@
 visual = 1
 # 
 global inp[] .
-func parse . .
+proc parse . .
    for r = 1 to 5
       for c$ in strchars input
          inp[] &= if c$ = "#"
@@ -20,7 +20,7 @@ len p[] n1 * n1 + n2
 arrbase f[] 0
 arrbase p[] 0
 # 
-func init . .
+proc init . .
    for r range0 n
       for c range0 n
          f[r * n1 + c + n2] = inp[r * 5 + c + 1]
@@ -40,7 +40,7 @@ if visual = 1
    background 210
    color 432
 .
-func show . .
+proc show . .
    if visual = 0
       break 1
    .
@@ -55,7 +55,7 @@ func show . .
    .
    sleep 0.05
 .
-func update . .
+proc update . .
    swap f[] p[]
    for r range0 n
       for c range0 n
@@ -73,7 +73,7 @@ func update . .
       .
    .
 .
-func part1 . .
+proc part1 . .
    repeat
       call show
       f = 1
@@ -104,7 +104,7 @@ lev0 = 120
 len f[] 25 * (lev0 * 2) + 25
 len p[] len f[]
 # 
-func init2 . .
+proc init2 . .
    for i range0 len f[]
       f[i] = 0
    .
@@ -115,7 +115,7 @@ func init2 . .
       .
    .
 .
-func show2 . .
+proc show2 . .
    if visual = 0
       break 1
    .
@@ -147,14 +147,14 @@ func show2 . .
    .
    sleep 0.02
 .
-func sum5 b inc . s .
+proc sum5 b inc . s .
    i = b
    for j range0 5
       s += p[i]
       i += inc
    .
 .
-func updatel lev . dirty .
+proc updatel lev . dirty .
    dirty = 0
    b = lev * 25
    for r range0 5
@@ -209,7 +209,7 @@ func updatel lev . dirty .
       .
    .
 .
-func update2 . .
+proc update2 . .
    swap f[] p[]
    call updatel lev0 h
    repeat
@@ -222,7 +222,7 @@ func update2 . .
       print "error space"
    .
 .
-func part2 . .
+proc part2 . .
    call init2
    call show2
    sleep 0.02

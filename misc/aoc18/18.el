@@ -5,7 +5,7 @@ visual = 1
 global n .
 arrbase f[] 0
 # 
-func read . .
+proc read . .
    s$ = input
    n = len s$ + 2
    len f[] n
@@ -34,7 +34,7 @@ if visual = 1
    text "WARNING: Flashing"
    sleep 2
 .
-func show . .
+proc show . .
    if visual = 0
       break 1
    .
@@ -61,7 +61,7 @@ func show . .
    .
    sleep 0.01
 .
-func update . .
+proc update . .
    swap f[] p[]
    for r range0 n - 2
       for c range0 n - 2
@@ -93,13 +93,13 @@ func update . .
       .
    .
 .
-func hash . res .
+proc hash . res .
    res = 0
    for i range0 len f[]
       res = (res + f[i]) * 65521 mod 137438953447
    .
 .
-func sum . r .
+proc sum . r .
    for i range0 len f[]
       if f[i] = 1
          sumt += 1
@@ -109,7 +109,7 @@ func sum . r .
    .
    r = sumt * suml
 .
-func run . .
+proc run . .
    arrbase hash[] 0
    for i to 10
       call update

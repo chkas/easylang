@@ -7,7 +7,7 @@
 f$ = input
 s$ = input
 global pair$[] let$[] cnt[] .
-func get p$ . id .
+proc get p$ . id .
    for id = 1 to len pair$[]
       if pair$[id] = p$
          break 2
@@ -15,7 +15,7 @@ func get p$ . id .
    .
    print "error"
 .
-func output . .
+proc output . .
    len cntl[] 26
    for i = 1 to len cnt[]
       cntl[(strcode substr pair$[i] 1 1) - 64] += cnt[i]

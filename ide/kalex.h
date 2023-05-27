@@ -14,7 +14,7 @@
 static const char* token_list[] = {
 	"", 
 	"else", "elif", "until", "end",
-	"func", "funcdecl", "subr", "on", "prefix", "input_data", "global",
+	"func", "funcdecl", "proc", "procdecl", "subr", "on", "prefix", "input_data", "global",
 	"if", "while", "for", "repeat",
 	"and", "or", "not", "mod", "mod1", "div", "div1",
 	"call",  "len",
@@ -51,7 +51,7 @@ static const char* token_list[] = {
 enum token_tok {
 	t_default = 0,
 	t_else, t_elif, t_until, t_end,
-	t_func, t_funcdecl, t_subr, t_on, t_prefix, t_input_data, t_global,
+	t_func, t_funcdecl, t_proc, t_procdecl, t_subr, t_on, t_prefix, t_input_data, t_global,
 	t_if, t_while, t_for, t_repeat,
 	t_and, t_or, t_not, t_mod, t_mod1, t_divi, t_divi1,
 	t_call, t_len,
@@ -452,7 +452,7 @@ static int tbl_l[] = { t_len, t_lower, t_line, t_linewidth, t_logn, 0 };
 static int tbl_m[] = { t_mod, t_mod1, t_move, t_mouse_x, t_mouse_y, t_mouse_cursor, 0 };
 static int tbl_n[] = { t_not, t_numfmt, t_number, 0 };
 static int tbl_o[] = { t_or, t_on, 0 };
-static int tbl_p[] = { t_print, t_pr, t_pi, t_pow, t_polygon, t_prefix, 0 };
+static int tbl_p[] = { t_print, t_proc, t_procdecl, t_pr, t_pi, t_pow, t_polygon, t_prefix, 0 };
 static int tbl_q[] = { 0 };
 static int tbl_r[] = { t_repeat, t_randomf, t_random, t_rect, t_random_seed, 0 };
 static int tbl_s[] = { t_subr, t_swap, t_sleep, t_systime, t_substr, t_sqrt, t_sin, t_str_ord, t_str_compare, t_sysfunc, t_str_chr, t_strjoin, t_sign, t_sound, t_sys, 0 };

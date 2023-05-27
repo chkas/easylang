@@ -5,7 +5,7 @@ arrbase code[] 0
 # 
 global base mem[] .
 # 
-func mem_ind mo ind . rind .
+proc mem_ind mo ind . rind .
    if mo = 1
       rind = ind
    elif mo = 0
@@ -17,7 +17,7 @@ func mem_ind mo ind . rind .
       len mem[] rind + 8
    .
 .
-func run inp . .
+proc run inp . .
    mem[] = code[]
    base = 0
    pc = 0

@@ -4,7 +4,7 @@ sys topleft
 w1$[] = strsplit input ","
 w2$[] = strsplit input ","
 # 
-func split s$ . d$ l .
+proc split s$ . d$ l .
    d$ = substr s$ 1 1
    l = number substr s$ 2 99
 .
@@ -20,18 +20,18 @@ if len w2$[] < 100
    sc = 3
 .
 # 
-func mark x y . .
+proc mark x y . .
    move x / sc + startx y / sc + starty
    color 900
    circle 0.7
 .
-func mark_start . .
+proc mark_start . .
    move startx starty
    color 090
    circle 1
 .
 # 
-func drawline col x1 y1 x2 y2 . .
+proc drawline col x1 y1 x2 y2 . .
    color col
    move x1 / sc + startx y1 / sc + starty
    line x2 / sc + startx y2 / sc + starty
@@ -48,7 +48,7 @@ vy[] = [ ]
 vw[] = [ ]
 vl[] = [ ]
 # 
-func wire_1 . .
+proc wire_1 . .
    for i = 1 to len w1$[]
       call split w1$[i] d$ l
       if d$ = "L" or d$ = "R"
@@ -76,7 +76,7 @@ func wire_1 . .
       .
    .
 .
-func between v a l . r .
+proc between v a l . r .
    b = a + l
    if a > b
       swap a b
@@ -87,7 +87,7 @@ func between v a l . r .
       r = 0
    .
 .
-func intersect xh yh lh xv yv lv w . .
+proc intersect xh yh lh xv yv lv w . .
    call between yh yv lv r
    if r = 1
       call between xv xh lh r
@@ -104,7 +104,7 @@ func intersect xh yh lh xv yv lv w . .
       .
    .
 .
-func wire_2 . .
+proc wire_2 . .
    for i = 1 to len w2$[]
       call split w2$[i] d$ l
       if d$ = "L" or d$ = "R"

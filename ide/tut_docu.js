@@ -134,7 +134,7 @@ print res
 
 -
 
-func gcd a b . res .
+proc gcd a b . res .
    while b <> 0
       h = b
       b = a mod b
@@ -145,7 +145,7 @@ func gcd a b . res .
 call gcd 120 35 r
 print r
 
-+ Functions are defined with *func* and called with *call*. Value and reference parameters are specified after the function name. Variables that occur for the first time within a function are local to that function.
++ Functions are defined with *proc* and called with *call*. Value and reference parameters are specified after the procedure name. Variables that occur for the first time within a procedure are local to that procedure.
 
 * Sound
 
@@ -156,7 +156,7 @@ txt$ = "sos sos"
 chars$[] = strchars "abcdefghijklmnopqrstuvwxyz "
 code$[] = [ ".-" "-..." "-.-." "-.." "." "..-." "--." "...." ".." ".---" "-.-" ".-.." "--" "-." "---" ".--." "--.-" ".-." "..." "-" "..-" "...-" ".--" "-..-" "-.--" "--.." " " ]
 #
-func morse ch$ . .
+proc morse ch$ . .
    ind = 1
    while ind <= len chars$[] and chars$[ind] <> ch$
       ind += 1
@@ -250,7 +250,7 @@ for x = 0 step 0.5 to 100
 deg = 0 ; x = 50 ; y = 50 ; down = 0
 #
 move x y
-func forward n . .
+proc forward n . .
    x += cos deg * n
    y += sin deg * n
    if down = 1
@@ -259,7 +259,7 @@ func forward n . .
       move x y
    .
 .
-func turn a . .
+proc turn a . .
    deg -= a
 .
 #
@@ -307,7 +307,7 @@ text "PI: " & 4.0 * hit / 100000
 background 777
 clear
 col = 0
-func eye x y . .
+proc eye x y . .
    color 999
    move x y
    circle 6.5
@@ -360,7 +360,7 @@ call eyes
 # color picker
 #
 c[] = [ 9 0 0 ]
-func picker . .
+proc picker . .
    for i = 0 to 9
       f = 1
       for j = 0 to 2
@@ -494,7 +494,7 @@ print a[][]
 
 + Selection sort
 
-func sort . d[] .
+proc sort . d[] .
    for i = 1 to len d[] - 1
       for j = i + 1 to len d[]
          if d[j] < d[i]
@@ -538,13 +538,13 @@ for i = 0 to 50
    .
 .
 
-+ With *break n* you can leave nested loops. It can also be used to exit a function or a subroutine.
++ With *break n* you can leave nested loops. It can also be used to exit a procedure or a subroutine.
 
 name$[] = [ ]
-func name2id n$ . id .
+proc name2id n$ . id .
    for id = 1 to len name$[]
       if name$[id] = n$
-         # leave loop and function
+         # leave loop and procedure
          break 2
       .
    .
@@ -557,7 +557,7 @@ for s$ in [ "alice" "bob" "trudy" "bob" ]
 
 * Namespaces
 
-+ Namespaces are implemented with the *prefix* directive. All names - variables, functions, subroutines - within the range specified are prefixed with the specified string.
++ Namespaces are implemented with the *prefix* directive. All names - variables, procedures, subroutines - within the range specified are prefixed with the specified string.
 
 pos = 12345
 #
@@ -565,13 +565,13 @@ prefix st_
 #
 len stack[] 100
 pos = 1
-func push v . .
+proc push v . .
    if pos < len stack[] - 1
       pos += 1
       stack[pos] = v
    .
 .
-func pop . v .
+proc pop . v .
    v = stack[pos]
    if pos >= 1
       pos -= 1

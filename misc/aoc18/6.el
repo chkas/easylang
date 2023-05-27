@@ -12,7 +12,7 @@ repeat
    y[] &= y
    n[] &= 0
 .
-func part1 . .
+proc part1 . .
    for y = 0 to maxy + 1
       for x = 0 to maxx + 1
          mind = 1 / 0
@@ -43,7 +43,7 @@ func part1 . .
 .
 call part1
 # 
-func part2 . .
+proc part2 . .
    thre = 32
    if maxx > 100
       thre = 10000

@@ -15,7 +15,7 @@ for i to len d[] - 1
    .
 .
 # 
-func part1 . .
+proc part1 . .
    d = d[2]
    for i = 3 to len d[]
       if d[i] - d = 1
@@ -33,7 +33,7 @@ call part1
 # 
 len cache[] d[len d[] - 1]
 # 
-func find_ways ind0 . n0 .
+proc find_ways ind0 . n0 .
    if ind0 = len d[]
       n0 = 1
       break 1

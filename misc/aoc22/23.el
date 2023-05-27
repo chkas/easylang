@@ -3,7 +3,7 @@
 nc = 200
 len m[] nc * nc
 global elf[] .
-func read . .
+proc read . .
    s$ = input
    offs = nc div 2 - len s$ div 2
    r = offs
@@ -32,7 +32,7 @@ dir0 = 1
 nelf = len elf[]
 len elfn[] nelf
 # 
-func do . moved .
+proc do . moved .
    for i to nelf
       m[elf[i]] = -1
    .

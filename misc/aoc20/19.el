@@ -14,7 +14,7 @@ repeat
 len rule[][] len in$[] + 20
 global a b .
 # 
-func init . .
+proc init . .
    for i to len in$[]
       l$[] = strsplit in$[i] " "
       ind = 1 + number substr l$[1] 1 -1
@@ -37,7 +37,7 @@ func init . .
 .
 call init
 # 
-func match s$ . nr[] res .
+proc match s$ . nr[] res .
    #  pr s$
    #  pr nr[]
    res = 1

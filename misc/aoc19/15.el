@@ -13,7 +13,7 @@ prefix ic_
 global base pc .
 arrbase mem[] 0
 # 
-func mem_ind mo ind . rind .
+proc mem_ind mo ind . rind .
    rind = ind
    if mo = 0
       rind = mem[ind]
@@ -24,7 +24,7 @@ func mem_ind mo ind . rind .
       len mem[] rind + 8
    .
 .
-func run . .
+proc run . .
    repeat
       oc0 = mem[pc]
       oc = oc0 mod 100
@@ -70,7 +70,7 @@ func run . .
 # --------  --------
 prefix
 # 
-func go_dir d . out .
+proc go_dir d . out .
    ic_in = d
    call ic_run
    out = ic_out
@@ -79,7 +79,7 @@ len map[] 100 * 100
 background 000
 clear
 ox_pos = 1
-func draw pos col . .
+proc draw pos col . .
    if visual = 0
       break 1
    .
@@ -94,7 +94,7 @@ func draw pos col . .
 offs[] = [ -100 100 1 -1 ]
 rev[] = [ 2 1 4 3 ]
 # 
-func maze dir0 pos . min .
+proc maze dir0 pos . min .
    map[pos] = 1
    call draw pos 888
    min = 1 / 0
@@ -118,7 +118,7 @@ func maze dir0 pos . min .
    .
 .
 # 
-func oxygen . .
+proc oxygen . .
    todon[] = [ ox_pos ]
    repeat
       swap todo[] todon[]

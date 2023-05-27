@@ -6,7 +6,7 @@ repeat
    jmp0[] &= number in$
 .
 # 
-func run part jmp[] . .
+proc run part jmp[] . .
    i = 1
    repeat
       n += 1

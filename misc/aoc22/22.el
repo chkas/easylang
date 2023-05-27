@@ -3,7 +3,7 @@
 nc = 160
 len m[] nc * 210
 # 
-func read . .
+proc read . .
    r = 1
    repeat
       s$ = input
@@ -27,7 +27,7 @@ call read
 inc[] = [ 1 nc -1 (-nc) ]
 global sz .
 # 
-func turn d . ni .
+proc turn d . ni .
    for i to 4
       if inc[i] = ni
          ni = inc[(i + d) mod1 4]
@@ -36,7 +36,7 @@ func turn d . ni .
    .
 .
 global cur[] prev[] plane dif .
-func takedir . nxt ni .
+proc takedir . nxt ni .
    if m[nxt + ni] = 0
       # left
       call turn -1 ni
@@ -71,7 +71,7 @@ func takedir . nxt ni .
       .
    .
 .
-func findedge . nxt ni .
+proc findedge . nxt ni .
    call turn -1 ni
    h = nxt - nc
    if abs ni > 1
@@ -106,7 +106,7 @@ func findedge . nxt ni .
    nxt += ni * (off + 1)
    call turn -1 ni
 .
-func step part . ind inc .
+proc step part . ind inc .
    nxt = ind + inc
    ni = inc
    # 
@@ -125,7 +125,7 @@ func step part . ind inc .
       inc = ni
    .
 .
-func go part inp$ . .
+proc go part inp$ . .
    inc = 1
    ind = nc
    while m[ind] <> 1

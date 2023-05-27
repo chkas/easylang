@@ -4,14 +4,14 @@ len k[] 64
 arrbase k[] 0
 s[] = [ 7 12 17 22 7 12 17 22 7 12 17 22 7 12 17 22 5 9 14 20 5 9 14 20 5 9 14 20 5 9 14 20 4 11 16 23 4 11 16 23 4 11 16 23 4 11 16 23 6 10 15 21 6 10 15 21 6 10 15 21 6 10 15 21 ]
 arrbase s[] 0
-func init_hash . .
+proc init_hash . .
    for i range0 64
       k[i] = floor (0x100000000 * abs sin ((i + 1) * 180 / pi))
    .
 .
 call init_hash
 # 
-func out h[] . s$ .
+proc out h[] . s$ .
    s$ = ""
    for a in h[]
       for i range0 4
@@ -28,7 +28,7 @@ func out h[] . s$ .
    .
 .
 global inp[] inp4 .
-func addinp b . .
+proc addinp b . .
    if inp4 = 1
       inp[] &= 0
    .
@@ -38,7 +38,7 @@ func addinp b . .
       inp4 = 1
    .
 .
-func hash inp$ . hash[] .
+proc hash inp$ . hash[] .
    inp[] = [ ]
    inp4 = 1
    for i to len inp$
@@ -96,7 +96,7 @@ func hash inp$ . hash[] .
 # call hash "abc5017308" h[]
 # call out h[] s$ ; print s$
 # 
-func run . .
+proc run . .
    print "That takes some time ..."
    inp$ = input
    pw1$[] = strchars "........"

@@ -14,7 +14,7 @@ len m[] nc * nc
 len mn[] len m[]
 len dim[] 2
 # 
-func draw . .
+proc draw . .
    if visualization = 0
       break 1
    .

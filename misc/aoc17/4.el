@@ -1,7 +1,7 @@
 # AoC-17 - Day 4: High-Entropy Passphrases
 # 
 name$[] = [ ]
-func name n$ . ret .
+proc name n$ . ret .
    ret = 0
    for h$ in name$[]
       if h$ = n$
@@ -12,7 +12,7 @@ func name n$ . ret .
    name$[] &= n$
 .
 # 
-func sort . s$ .
+proc sort . s$ .
    d$[] = strchars s$
    for i to len d$[] - 1
       for j = i + 1 to len d$[]

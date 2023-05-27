@@ -12,7 +12,7 @@ sys topleft
 hashsz = 1999993
 len hashind[] hashsz
 # 
-func hash ind . ret .
+proc hash ind . ret .
    hi = ind mod hashsz + 1
    while hashind[hi] <> 0 and hashind[hi] <> ind
       hi = hi mod hashsz + 1
@@ -26,7 +26,7 @@ func hash ind . ret .
 m[] = [ 0 0 -1 0 -1 0 -1 0 -1 0 0 ]
 global m0[] destid dim .
 # 
-func tonum . n .
+proc tonum . n .
    n = 0
    for i to len m0[]
       n = n * 5 + m0[i]
@@ -37,7 +37,7 @@ func tonum . n .
       .
    .
 .
-func toarr n . .
+proc toarr n . .
    for i = 11 downto 1
       if m[i] <> -1
          m[i] = n mod 5
@@ -54,7 +54,7 @@ sz = 8.5
 sz2 = sz / 2
 background 000
 acol[] = [ 373 773 751 733 ]
-func show cost t . .
+proc show cost t . .
    if visualization = 0
       break 1
    .
@@ -104,7 +104,7 @@ func show cost t . .
    sleep t
 .
 # 
-func read . .
+proc read . .
    s$ = input
    s$ = input
    ind = 1
@@ -118,7 +118,7 @@ func read . .
    .
 .
 global m0saved[] .
-func init . .
+proc init . .
    dim = 2
    m0[] = [ 1 2 3 4 1 2 3 4 ]
    call tonum destid
@@ -126,7 +126,7 @@ func init . .
    m0saved[] = m0[]
 .
 # 
-func prepare_part2 . .
+proc prepare_part2 . .
    dim = 4
    m0[] = [ ]
    for i = 0 to 15
@@ -145,7 +145,7 @@ func prepare_part2 . .
 .
 # 
 amp[] = [ 1 10 100 1000 ]
-func init_cost . cost .
+proc init_cost . cost .
    cost = 0
    for i to 4
       for j to dim
@@ -165,7 +165,7 @@ func init_cost . cost .
 .
 global todo[] cost[] prev[] .
 # 
-func show_way . .
+proc show_way . .
    list[] &= destid
    cur = destid
    repeat
@@ -209,7 +209,7 @@ func show_way . .
    .
 .
 # 
-func take_min . cur cost .
+proc take_min . cur cost .
    n = len todo[]
    if n = 0
       cur = -1
@@ -226,7 +226,7 @@ func take_min . cur cost .
    len todo[] -1
    len cost[] -1
 .
-func go_home . cur .
+proc go_home . cur .
    call toarr cur
    while done = 0
       done = 1
@@ -263,7 +263,7 @@ func go_home . cur .
       .
    .
 .
-func add_ways cur cost . .
+proc add_ways cur cost . .
    for box to 4
       m0i = -1
       i = 0
@@ -311,7 +311,7 @@ func add_ways cur cost . .
       .
    .
 .
-func run . .
+proc run . .
    call init_cost cost
    call tonum h
    todo[] = [ h ]

@@ -3,7 +3,7 @@
 name$[] = [ "children" "cats" "samoyeds" "pomeranians" "akitas" "vizslas" "goldfish" "trees" "cars" "perfumes" ]
 cnt[] = [ 3 7 2 3 0 0 5 3 2 1 ]
 # 
-func id n$ . id .
+proc id n$ . id .
    for id to len name$[]
       if name$[id] = n$
          break 2

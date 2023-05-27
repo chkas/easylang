@@ -3,7 +3,7 @@
 hashsz = 199999
 len hashind[] hashsz
 # 
-func hashset ind . ret .
+proc hashset ind . ret .
    hi = ind mod hashsz + 1
    while hashind[hi] <> ind and hashind[hi] <> 0
       hi = hi mod hashsz + 1
@@ -15,7 +15,7 @@ func hashset ind . ret .
       ret = 0
    .
 .
-func hashclear . .
+proc hashclear . .
    len hashind[] 0
    len hashind[] hashsz
 .
@@ -23,7 +23,7 @@ func hashclear . .
 len m[] 10000 * 9
 # 
 global rock[][] inp$ .
-func init . .
+proc init . .
    for i = 0 to len m[] div 9 - 1
       h = i * 9 + 1
       m[h] = 1
@@ -43,7 +43,7 @@ call init
 # 
 global high rock[] irock .
 # 
-func show . .
+proc show . .
    rrock = irock div 9
    crock = irock mod 9
    for row = high + 7 downto 0
@@ -73,7 +73,7 @@ func show . .
    print ""
 .
 # 
-func mov dir . block .
+proc mov dir . block .
    for r = 0 to 3
       for c = 0 to 3
          ind = irock + r * 9 + c
@@ -87,7 +87,7 @@ func mov dir . block .
    irock += dir
 .
 high = 0
-func mkstone . .
+proc mkstone . .
    for r = 0 to 3
       for c = 0 to 3
          ind = irock + r * 9 + c
@@ -101,7 +101,7 @@ func mkstone . .
 .
 rock = 1
 inp = 1
-func testhash . fnd .
+proc testhash . fnd .
    if high >= 3
       h = inp
       h *= 5

@@ -1,7 +1,7 @@
 # AoC-15 - Day 7: Some Assembly Required
 # 
 global name$[] r[] .
-func id n$ . id .
+proc id n$ . id .
    for id to len name$[]
       if name$[id] = n$
          break 2
@@ -10,7 +10,7 @@ func id n$ . id .
    name$[] &= n$
    r[] &= -1
 .
-func gval s$ . r .
+proc gval s$ . r .
    r = number s$
    if error = 1
       call id s$ h

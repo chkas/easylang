@@ -6,7 +6,7 @@ sys topleft
 global w monitor_stat .
 arrbase m[] 0
 # 
-func init . .
+proc init . .
    s$ = input
    w = len s$
    while s$ <> ""
@@ -20,7 +20,7 @@ call init
 # 
 sc = 100 / w
 background 000
-func show . .
+proc show . .
    if visual = 0
       break 1
    .
@@ -35,7 +35,7 @@ func show . .
       .
    .
 .
-func mark i . .
+proc mark i . .
    if visual = 0
       break 1
    .
@@ -46,7 +46,7 @@ func mark i . .
    circle 1
    sleep 0.04
 .
-func show_ray x y . .
+proc show_ray x y . .
    if visual = 0
       break 1
    .
@@ -57,7 +57,7 @@ func show_ray x y . .
    line x * sc + sc / 2 y * sc + sc / 2
    sleep 0.02
 .
-func gcd a b . res .
+proc gcd a b . res .
    a = abs a
    b = abs b
    while b <> 0
@@ -68,7 +68,7 @@ func gcd a b . res .
    res = a
 .
 global dx dx[] dy[] .
-func get_rays stat . .
+proc get_rays stat . .
    dx[] = [ ]
    dy[] = [ ]
    arrbase dx[] 0
@@ -96,7 +96,7 @@ func get_rays stat . .
       .
    .
 .
-func part1 . .
+proc part1 . .
    for i range0 len m[]
       if m[i] = 1
          call get_rays i
@@ -114,7 +114,7 @@ func part1 . .
 # 
 linewidth 0.5
 # 
-func find_next . dx dy ind .
+proc find_next . dx dy ind .
    start_ang = atan2 dy dx
    ang = 1 / 0
    for i range0 len dx[]
@@ -129,7 +129,7 @@ func find_next . dx dy ind .
    .
 .
 n_shot = 0
-func fire ind . .
+proc fire ind . .
    x = monitor_stat mod w
    y = monitor_stat div w
    dx = dx[ind]
@@ -155,7 +155,7 @@ func fire ind . .
    call show
    call mark monitor_stat
 .
-func part2 . .
+proc part2 . .
    call get_rays monitor_stat
    dy = -99999
    dx = -1

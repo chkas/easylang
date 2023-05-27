@@ -10,7 +10,7 @@ visualization = 1
 sys topleft
 background 000
 clear
-func draw x y cod . .
+proc draw x y cod . .
    if visualization = 0
       break 1
    .
@@ -36,7 +36,7 @@ func draw x y cod . .
 # 
 perm[] = [ 0 1 2 3 4 5 6 ]
 global permlist[][] .
-func permutate_list k . .
+proc permutate_list k . .
    for i = k to len perm[]
       swap perm[i] perm[k]
       call permutate_list k + 1
@@ -48,14 +48,14 @@ func permutate_list k . .
 .
 call permutate_list 1
 # 
-func codeperm perm s$ . cod .
+proc codeperm perm s$ . cod .
    cod = 0
    for c$ in strchars s$
       cod += bitshift 1 permlist[perm][strcode c$ - 97 + 1]
    .
 .
 len digit[] 128
-func init . .
+proc init . .
    for i = 1 to 128
       digit[i] = -1
    .
@@ -68,7 +68,7 @@ func init . .
 call init
 # 
 global inp$ part1 part2 linenr .
-func procline . .
+proc procline . .
    inp$[] = strsplit inp$ " "
    for perm = 1 to len permlist[][]
       for nr = 1 to 10

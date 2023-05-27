@@ -1,14 +1,14 @@
-txt_tutor=`+ Functions and recursion
+txt_tutor=`+ Procedures and recursion
 
 -
 
-+ Functions are defined with *func* and called with *call*. The syntax of a function definition is: *func <func_name> <value parameters> . <reference parameters> .*
++ Procedures are defined with *proc* and called with *call*. The syntax of a procedure definition is: *proc <proc_name> <value parameters> . <reference parameters> .*
 
-+ Variables that occur for the first time within a function are local to that function. Global variables declared above can be accessed.
++ Variables that occur for the first time within a procedure are local to that procedure. Global variables declared above can be accessed.
 
 # compute the greatest common divisor
 # 
-func gcd a b . res .
+proc gcd a b . res .
    while b <> 0
       h = b
       b = a mod b
@@ -21,7 +21,7 @@ print r
 
 + *a*, *b* are value parameters, *res* is a reference (or inout) parameter and *h* is a local variable.
 
-* Recursive functions
+* Recursive procedures
 
 + The factorial of a number *n* is the product of numbers from *1* to *n*: *n! = n ** (n - 1) ** . . . ** 2 ** 1*
 
@@ -29,7 +29,7 @@ print r
 
 # factorial iterative
 # 
-func fact n . res .
+proc fact n . res .
    res = 1
    while n > 1
       res = res * n
@@ -45,7 +45,7 @@ print res
 
 # factorial recursive
 # 
-func fact n . res .
+proc fact n . res .
   if n = 1
     res = 1
   else
@@ -56,7 +56,7 @@ func fact n . res .
 call fact 6 res
 print res
 
-+ The function is called within the function. Each calling instance requires a new set of local variables and parameters. This and the return address are stored on the stack. The recursion depth is limited.
++ The procedure is called within the procedure. Each calling instance requires a new set of local variables and parameters. This and the return address are stored on the stack. The recursion depth is limited.
 
 * Fractal tree
 
@@ -64,7 +64,7 @@ print res
 
 + Such a tree can be drawn relatively easily with a recursive program.
 
-func tree x y angle depth . .
+proc tree x y angle depth . .
    linewidth depth * 0.4
    move x y
    x += cos angle * depth * 1.4 * (randomf + 0.5)
@@ -79,7 +79,7 @@ call tree 50 5 90 10
 
 * Quicksort
 
-func qsort left right . d[] .
+proc qsort left right . d[] .
   # 
   subr partition
     mid = left
@@ -104,7 +104,7 @@ for i = 1 to 100
 call qsort 1 len d[] d[]
 print d[]
 
-+ The subroutine *partition* is defined within the function *sort*. In the subroutine *partition*, access to the local variables of the function *sort* is then also possible.
++ The subroutine *partition* is defined within the procedure *sort*. In the subroutine *partition*, access to the local variables of the procedure *sort* is then also possible.
 
 * Tower of Hanoi
 
@@ -120,13 +120,13 @@ len tow_disc[2][] ndisc
 len tow_disc[3][] ndisc
 textsize 7
 # 
-func init . .
+proc init . .
    for i = 1 to ndisc
       tow_disc[1][i] = ndisc - i
    .
    tow_height[1] = ndisc
 .
-func show . .
+proc show . .
    clear
    color 444
    move 0 0
@@ -152,7 +152,7 @@ func show . .
       .
    .
 .
-func move_disc src dst . .
+proc move_disc src dst . .
    print "move " & src & " to " & dst
    sleep 0.5
    d = tow_disc[src][tow_height[src]]
@@ -162,7 +162,7 @@ func move_disc src dst . .
    call show
    sleep 0.5
 .
-func hanoi n src dst aux . .
+proc hanoi n src dst aux . .
    if n >= 1
       call hanoi n - 1 src aux dst
       call move_disc src dst
@@ -186,7 +186,7 @@ f = 100 / (n - 0.5)
 len m[] n * n
 # 
 background 000
-func show_maze . .
+proc show_maze . .
   clear
   for i = 1 to len m[]
     if m[i] = 0
@@ -203,7 +203,7 @@ offs[] = [ 1 n -1 (-n) ]
 brdc[] = [ n - 2 -1 1 -1 ]
 brdr[] = [ -1 n - 2 -1 1 ]
 # 
-func m_maze pos . .
+proc m_maze pos . .
   m[pos] = 0
   call show_maze
   d[] = [ 1 2 3 4 ]
@@ -221,7 +221,7 @@ func m_maze pos . .
     .
   .
 .
-func make_maze . .
+proc make_maze . .
   for i = 1 to len m[]
     m[i] = 1
   .
@@ -231,14 +231,14 @@ func make_maze . .
 call make_maze
 call show_maze
 # 
-func mark pos col . .
+proc mark pos col . .
   x = (pos - 1) mod n
   y = (pos - 1) div n
   color col
   move x * f + f / 4 y * f + f / 4
   circle f / 4
 .
-func solve dir0 pos . found .
+proc solve dir0 pos . found .
   call mark pos 900
   sleep 0.05
   if pos = endpos
@@ -270,7 +270,7 @@ n = 8
 # stores the position of the queen on row
 len col[] n
 # 
-func print_solution . .
+proc print_solution . .
   h$ = "┏"
   for i = 1 to n - 1
     h$ &= "━━━┳"
@@ -304,7 +304,7 @@ func print_solution . .
   print ""
 .
 # 
-func is_save col row . save .
+proc is_save col row . save .
   save = 1
   for i = 1 to row - 1
     if col[i] = col or abs (col[i] - col) = abs (row - i)
@@ -317,7 +317,7 @@ func is_save col row . save .
 print "First 3 solutions: "
 print ""
 n_solutions = 0
-func solve row . .
+proc solve row . .
   if row > n
     n_solutions += 1
     if n_solutions <= 3
@@ -338,7 +338,7 @@ print "Number of solutions: " & n_solutions
 
 * Mutual recursion - parser
 
-+ A recursiv top-down parser for an arithemtic expression. There we have a *mutual recursion* for the functions *parse_expr* and *parse_factor*. To do this, we need to make a function known with a *forward declaration* before implementing it.
++ A recursiv top-down parser for an arithemtic expression. There we have a *mutual recursion* for the procedures *parse_expr* and *parse_factor*. To do this, we need to make a procedure known with a *forward declaration* before implementing it.
 
 # parser for arithemtic expressions
 # 
@@ -373,9 +373,9 @@ subr ntok
     .
   .
 .
-funcdecl parse_expr . res .
+procdecl parse_expr . res .
 # 
-func parse_factor . res .
+proc parse_factor . res .
   if tok$ = "numb"
     write tokv
     res = tokv
@@ -391,7 +391,7 @@ func parse_factor . res .
     call ntok
   .
 .
-func parse_term . res .
+proc parse_term . res .
   call parse_factor res
   while tok$ = "*" or tok$ = "/"
     write " " & tok$ & " "
@@ -405,7 +405,7 @@ func parse_term . res .
     .
   .
 .
-func parse_expr . res .
+proc parse_expr . res .
   call parse_term res
   while tok$ = "+" or tok$ = "-"
     write " " & tok$ & " "
@@ -419,7 +419,7 @@ func parse_expr . res .
     .
   .
 .
-func parse s$ . res .
+proc parse s$ . res .
   inp$[] = strchars s$
   inp_ind = 1
   call nch

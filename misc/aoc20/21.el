@@ -2,7 +2,7 @@
 # 
 global ingre$[] allerg$[] meal_ingre[][] meal_allerg[][] .
 # 
-func ingre_id s$ . i .
+proc ingre_id s$ . i .
    for i to len ingre$[]
       if ingre$[i] = s$
          break 2
@@ -10,7 +10,7 @@ func ingre_id s$ . i .
    .
    ingre$[] &= s$
 .
-func allerg_id s$ . i .
+proc allerg_id s$ . i .
    for i to len allerg$[]
       if allerg$[i] = s$
          break 2
@@ -18,7 +18,7 @@ func allerg_id s$ . i .
    .
    allerg$[] &= s$
 .
-func read . .
+proc read . .
    meal = 1
    repeat
       s$ = input
@@ -48,7 +48,7 @@ n_meal = len meal_ingre[][]
 n_ingre = len ingre$[]
 n_allerg = len allerg$[]
 # 
-func allerg_in_meal allerg meal . is_in .
+proc allerg_in_meal allerg meal . is_in .
    is_in = 0
    for i to len meal_allerg[meal][]
       if allerg = meal_allerg[meal][i]
@@ -57,7 +57,7 @@ func allerg_in_meal allerg meal . is_in .
       .
    .
 .
-func ingre_in_meal ingre meal . is_in .
+proc ingre_in_meal ingre meal . is_in .
    is_in = 0
    for i to len meal_ingre[meal][]
       if ingre = meal_ingre[meal][i]
@@ -70,7 +70,7 @@ func ingre_in_meal ingre meal . is_in .
 len ingre_allerg0[] n_ingre
 global allerg_ingre[][] .
 # 
-func search allerg . .
+proc search allerg . .
    len ingre_allerg[] n_ingre
    for i to n_ingre
       ingre_allerg[i] = 1
@@ -97,7 +97,7 @@ for i to n_allerg
    call search i
 .
 # 
-func part1 . .
+proc part1 . .
    for ingre to n_ingre
       if ingre_allerg0[ingre] = 0
          for meal to n_meal
@@ -112,7 +112,7 @@ call part1
 # 
 # 
 len allerg_ingre[] n_allerg
-func part2 . .
+proc part2 . .
    for k to n_allerg
       for allerg to n_allerg
          s = 0

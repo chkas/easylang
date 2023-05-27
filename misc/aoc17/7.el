@@ -1,7 +1,7 @@
 # AoC-17 - Day 7: Recursive Circus
 # 
 global name$[] childs[][] parent[] w[] root .
-func name2id n$ . id .
+proc name2id n$ . id .
    for id to len name$[]
       if name$[id] = n$
          break 2
@@ -13,7 +13,7 @@ func name2id n$ . id .
    w[] &= 0
 .
 # 
-func read . .
+proc read . .
    repeat
       in$ = input
       until in$ = ""
@@ -42,7 +42,7 @@ call read
 print name$[root]
 # 
 done = 0
-func bala node . wr .
+proc bala node . wr .
    for i to len childs[node][]
       nd = childs[node][i]
       call bala nd w

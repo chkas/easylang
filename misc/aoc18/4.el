@@ -15,7 +15,7 @@ for i = 1 to len s$[] - 1
 .
 global gids[] .
 global tm[][] gid .
-func gid g . .
+proc gid g . .
    for gid = 1 to len gids[]
       if g = gids[gid]
          break 2

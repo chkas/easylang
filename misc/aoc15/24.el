@@ -1,7 +1,7 @@
 # AoC-15 - Day 24: It Hangs in the Balance
 # 
 global n[] sumall[] inpsum .
-func init . .
+proc init . .
    repeat
       h = number input
       until error = 1
@@ -14,7 +14,7 @@ call init
 # 
 global mineq minsel targsum .
 # 
-func find pos sum sel eq . .
+proc find pos sum sel eq . .
    if sum = targsum
       if sel < minsel
          mineq = eq

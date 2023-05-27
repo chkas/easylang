@@ -2,7 +2,7 @@
 # 
 inp$ = input
 # 
-func hash s$ . hash[] .
+proc hash s$ . hash[] .
    inp[] = [ ]
    for i to len s$
       inp[] &= strcode substr s$ i 1
@@ -39,7 +39,7 @@ func hash s$ . hash[] .
       hash[] &= h
    .
 .
-func outp . hash[] .
+proc outp . hash[] .
    for i range0 len hash[]
       h = hash[i]
       for h in [ h div 16 h mod 16 ]
@@ -54,7 +54,7 @@ func outp . hash[] .
 .
 m[] = []
 # 
-func bits b[] . .
+proc bits b[] . .
    for b in b[]
       h = 0x80
       while h > 0
@@ -63,7 +63,7 @@ func bits b[] . .
       .
    .
 .
-func make_grid . .
+proc make_grid . .
    for i range0 128
       call hash inp$ & "-" & i hash[]
       call bits hash[]
@@ -75,7 +75,7 @@ func make_grid . .
 .
 call make_grid
 # 
-func expand ind . .
+proc expand ind . .
    m[ind] = 0
    if ind mod 128 <> 1 and m[ind - 1] = 1
       call expand ind - 1

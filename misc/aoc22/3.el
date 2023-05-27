@@ -1,6 +1,6 @@
 # AoC-22 - Day 3: Rucksack Reorganization
 # 
-func code c$ . c .
+proc code c$ . c .
    c = strcode c$ - strcode "a" + 1
    if c < 1
       c += strcode "a" - strcode "A" + 26

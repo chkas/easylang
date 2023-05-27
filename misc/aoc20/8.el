@@ -2,7 +2,7 @@
 # 
 global cod$[] arg[] .
 # 
-func read_input . .
+proc read_input . .
    repeat
       inp$ = input
       until inp$ = ""
@@ -14,7 +14,7 @@ func read_input . .
 call read_input
 # 
 global acc err .
-func run . .
+proc run . .
    pc = 1
    len vis[] len cod$[]
    err = 0
@@ -38,13 +38,13 @@ func run . .
    .
 .
 # 
-func part1 . .
+proc part1 . .
    call run
    print acc
 .
 call part1
 # 
-func part2 . .
+proc part2 . .
    fix = 1
    repeat
       while cod$[fix] = "acc" or cod$[fix] = "nop"

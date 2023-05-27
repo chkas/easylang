@@ -2,7 +2,7 @@
 # 
 f[] = number strsplit input " "
 # 
-func parse a . b sum .
+proc parse a . b sum .
    b = a + 2
    for i to f[a]
       call parse b b sum
@@ -15,7 +15,7 @@ func parse a . b sum .
 call parse 1 _ sum
 print sum
 # 
-func parse2 a . b sum .
+proc parse2 a . b sum .
    b = a + 2
    for i to f[a]
       call parse2 b b v

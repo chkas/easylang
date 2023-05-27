@@ -1,6 +1,6 @@
 # Letter memory
 # 
-func draw_square ind col s$ . .
+proc draw_square ind col s$ . .
   ind -= 1
   x = ind mod 4 * 24 + 3
   y = ind div 4 * 24 + 3
@@ -20,7 +20,7 @@ end
 cards$[] = strchars "AABBDDEEFFGGHHII"
 len open[] 16
 background 000
-func init . .
+proc init . .
   call init_vars
   clear
   # display covered cards
@@ -34,7 +34,7 @@ func init . .
     swap cards$[r] cards$[i]
   end
 end
-func open ind . .
+proc open ind . .
   open[ind] = 1
   call draw_square ind 575 cards$[ind]
   if card1 = 0
@@ -70,7 +70,7 @@ on timer
   call draw_square card2 353 ""
   card2 = 0
 end
-func search_card . .
+proc search_card . .
   c = mouse_x div 25
   r = mouse_y div 25
   ind = r * 4 + c + 1

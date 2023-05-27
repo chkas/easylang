@@ -6,7 +6,7 @@ repeat
    prog$[] &= s$
 .
 # 
-func run inp . ok .
+proc run inp . ok .
    n1o = 1
    for s$ in prog$[]
       s$[] = strsplit s$ " "
