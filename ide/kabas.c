@@ -57,7 +57,7 @@ static double (*numf[])(struct op*) = {
 	op_sys_time, op_error, op_mouse_x, op_mouse_y, op_randomf, op_pi,
 	op_random,  op_sqrt, op_logn, op_abs, op_sign, op_bitnot, op_floor, op_sin, op_cos, op_tan, op_asin, op_acos, op_atan, 
 	op_atan2, op_pow, op_bitand, op_bitor, op_bitxor, op_bitshift, op_lower, op_higher,
-	op_number, op_str_ord, op_str_compare
+	op_number, op_str_code, op_str_compare
 };
 
 static ushort parse_numfunc(void) {

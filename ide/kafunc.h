@@ -223,7 +223,8 @@ static double op_floor(struct op* op) {
 }
 
 //kc
-static double op_str_ord(struct op* op) {
+/*
+static double op_str_code(struct op* op) {
 	struct str s = strf(op->o1);
 	const char* utf8 = str_ptr(&s);
 	if(!(utf8[0] & 0x80)) return utf8[0];
@@ -233,6 +234,34 @@ static double op_str_ord(struct op* op) {
 	}
 	else
 		return -1;
+}
+*/
+static double op_str_code(struct op* op) {
+	struct str s = strf(op->o1);
+	const char* utf8 = str_ptr(&s);
+	int nb, cp;
+	if (!(utf8[0] & 0x80)) {
+		nb = 1;
+		cp = utf8[0];
+	}
+	else if ((utf8[0] & 0xe0) == 0xc0) {
+		nb = 2;
+		cp = utf8[0] & 0x1f;
+	}
+	else if ((utf8[0] & 0xf0) == 0xe0) {
+		nb = 3;
+		cp = utf8[0] & 0x0f;
+	}
+	else if ((utf8[0] & 0xf8) == 0xf0) {
+		nb = 4;
+		cp = utf8[0] & 0x07;
+	}
+	else return -1;
+
+	for (int i = 1; i < nb; i++) {
+        cp = (cp << 6) | (utf8[i] & 0x3f);
+    }
+    return cp;
 }
 
 static double op_str_len(struct op* op) {

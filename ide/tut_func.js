@@ -6,8 +6,6 @@ txt_tutor=`+ Procedures and recursion
 
 + Variables that occur for the first time within a procedure are local to that procedure. Global variables declared above can be accessed.
 
-# compute the greatest common divisor
-# 
 proc gcd a b . res .
    while b <> 0
       h = b
@@ -27,8 +25,6 @@ print r
 
 + This can be easily calculated
 
-# factorial iterative
-# 
 proc fact n . res .
    res = 1
    while n > 1
@@ -43,8 +39,6 @@ print res
 
 + It can also be calculated recursively
 
-# factorial recursive
-# 
 proc fact n . res .
   if n = 1
     res = 1
@@ -177,87 +171,87 @@ call hanoi ndisc 1 2 3
 
 + Generate and solve a maze using recursive depth-first search (DFS).
 
-size = 20
+size = 15
 n = 2 * size + 1
-endpos = n * n - 1
-startpos = n + 2
-# 
 f = 100 / (n - 0.5)
 len m[] n * n
 # 
 background 000
 proc show_maze . .
-  clear
-  for i = 1 to len m[]
-    if m[i] = 0
-      x = (i - 1) mod n
-      y = (i - 1) div n
-      color 777
-      move x * f - f / 2 y * f - f / 2
-      rect f * 1.5 f * 1.5
-    .
-  .
-  sleep 0.001
+   clear
+   for i = 1 to len m[]
+      if m[i] = 0
+         x = (i - 1) mod n
+         y = (i - 1) div n
+         color 999
+         move x * f - f / 2 y * f - f / 2
+         rect f * 1.5 f * 1.5
+      .
+   .
+   sleep 0.01
 .
 offs[] = [ 1 n -1 (-n) ]
-brdc[] = [ n - 2 -1 1 -1 ]
-brdr[] = [ -1 n - 2 -1 1 ]
-# 
 proc m_maze pos . .
-  m[pos] = 0
-  call show_maze
-  d[] = [ 1 2 3 4 ]
-  for i = 4 downto 1
-    d = random i
-    dir = d[d]
-    d[d] = d[i]
-    r = (pos - 1) div n
-    c = (pos - 1) mod n
-    posn = pos + 2 * offs[dir]
-    if c <> brdc[dir] and r <> brdr[dir] and m[posn] <> 0
-      posn = pos + 2 * offs[dir]
-      m[pos + offs[dir]] = 0
-      call m_maze posn
-    .
-  .
+   m[pos] = 0
+   call show_maze
+   d[] = [ 1 2 3 4 ]
+   for i = 4 downto 1
+      d = random i
+      dir = offs[d[d]]
+      d[d] = d[i]
+      if m[pos + dir] = 1 and m[pos + 2 * dir] = 1
+         m[pos + dir] = 0
+         call m_maze pos + 2 * dir
+      .
+   .
 .
+endpos = n * n - 1
 proc make_maze . .
-  for i = 1 to len m[]
-    m[i] = 1
-  .
-  call m_maze startpos
-  m[endpos] = 0
+   for i = 1 to len m[]
+      m[i] = 1
+   .
+   for i = 1 to n
+      m[i] = 2
+      m[n * i] = 2
+      m[n * i - n + 1] = 2
+      m[n * n - n + i] = 2
+   .
+   h = 2 * random 15 - n + n * 2 * random 15
+   call m_maze h
+   m[endpos] = 0
 .
 call make_maze
 call show_maze
 # 
 proc mark pos col . .
-  x = (pos - 1) mod n
-  y = (pos - 1) div n
-  color col
-  move x * f + f / 4 y * f + f / 4
-  circle f / 4
+   x = (pos - 1) mod n
+   y = (pos - 1) div n
+   color col
+   move x * f + f / 4 y * f + f / 4
+   circle f / 3.5
 .
 proc solve dir0 pos . found .
-  call mark pos 900
-  sleep 0.05
-  if pos = endpos
-    found = 1
-  else
-    for dir = 1 to 4
+   call mark pos 900
+   sleep 0.05
+   if pos = endpos
+      found = 1
+      break 1
+   .
+   of = random 4 - 1
+   for h = 1 to 4
+      dir = (h + of) mod1 4
       posn = pos + offs[dir]
       if dir <> dir0 and m[posn] = 0 and found = 0
-        call solve (dir + 1) mod 4 + 1 posn found
-        if found = 0
-          call mark posn 777
-          sleep 0.05
-        .
+         call solve (dir + 1) mod 4 + 1 posn found
+         if found = 0
+            call mark posn 888
+            sleep 0.08
+         .
       .
-    .
-  .
+   .
 .
-sleep 2
-call solve 0 startpos found
+sleep 1
+call solve 0 n + 2 found
 
 * Eight queens puzzle
 
@@ -338,10 +332,8 @@ print "Number of solutions: " & n_solutions
 
 * Mutual recursion - parser
 
-+ A recursiv top-down parser for an arithemtic expression. There we have a *mutual recursion* for the procedures *parse_expr* and *parse_factor*. To do this, we need to make a procedure known with a *forward declaration* before implementing it.
++ A recursiv top-down parser for an arithmetic expression. There we have a *mutual recursion* for the procedures *parse_expr* and *parse_factor*. To do this, we need to make a procedure known with a *forward declaration* before implementing it.
 
-# parser for arithemtic expressions
-# 
 subr nch
   if inp_ind > len inp$[]
     ch$ = strchar 0
