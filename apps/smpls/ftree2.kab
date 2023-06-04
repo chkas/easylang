@@ -1,4 +1,4 @@
-func tree x y l w ang dp p . .
+proc tree x y l w ang dp p . .
   move x y
   x += l * cos ang
   y -= l * sin ang

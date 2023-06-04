@@ -3,7 +3,7 @@ len p5[] n
 for i = 0 to n - 1
   p5[i + 1] = i * i * i * i * i
 .
-func search a b s . y .
+proc search a b s . y .
   y = -1
   while a + 1 < b
     i = (a + b) div 2

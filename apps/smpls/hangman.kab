@@ -1,6 +1,6 @@
 # Hangman
 # 
-if sysfunc "lang" = "de"
+if sysproc "lang" = "de"
   alpha$[] = strchars "ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ"
   words$[] = [ "MAUS" "KATZE" "HUND" "ELEFANT" "PFERD" "NASHORN" "SPINNE" "AMEISE" "TIGER" "GEPARD" "SCHLANGE" "KUH" "SCHWEIN" "KROKODIL" "RATTE" "HUHN" "GIRAFFE" "SKORPION" "WAL" "DELFIN" "EIDECHSE" "FLIEGE" "RABE" "ADLER" "AMSEL" "SPECHT" "PINGUIN" "ESEL" "ZIEGE" "SCHAF" "ENTE" "SCHWAN" "MAULWURF" "BIENE" "WESPE" "ZECKE" "SCHNECKE" "FUCHS" "WOLF" "HAI" "FORELLE" "TAUBE" "BÄR" "DACHS" "EULE" "ERDMÄNNCHEN" "EICHHÖRNCHEN" "FROSCH" "FLEDERMAUS" "GOLDFISCH" "GEIER" "GANS" "GORILLA" "SCHIMPANSE" "HORNISSE" "HAMSTER" "HASE" "REH" "HIRSCH" "MURMELTIER" "IGEL" "KÄFER" "KAMEL" "KÄNGURU" "KREBS" "LÖWE" "LUCHS" "LAMA" "MOLCH" "NASHORN" "PAPAGEI" "PANDBÄR" "PAVIAN" "QUALLE" "REGENWURM" "SCHILDKRÖTE" "STINKTIER" "SEEPFERDCHEN" "ZEBRA" "BIBER" "ANTILOPE" "SEESTERN" "MUSCHEL" "CHAMÄLEON" "FAULTIER" "FLAMINGO" "KANINCHEN" "KOALABÄR" "KRÖTE" ]
 else
@@ -18,7 +18,7 @@ subr init
   game_stat = 0
 .
 background 000
-func draw . .
+proc draw . .
   clear
   linewidth 1
   color 997
@@ -113,7 +113,7 @@ func draw . .
 on timer
   game_stat = 3
 .
-func search_letter . .
+proc search_letter . .
   c = (mouse_x - 3) div 11
   r = (mouse_y - 3) div 12
   ind = c + r * 5 + 1

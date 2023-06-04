@@ -14,7 +14,7 @@ n = 5
 m = 3
 len result[] m
 # 
-func combinations pos val . .
+proc combinations pos val . .
   if pos <= m
     for i = val to n - m
       result[pos] = pos + i
@@ -35,7 +35,7 @@ k = 2
 len result[] k
 n_results = 0
 # 
-func output . .
+proc output . .
   n_results += 1
   if len items$[] > 0
     s$ = ""
@@ -45,7 +45,7 @@ func output . .
     print s$
   .
 .
-func combine pos val . .
+proc combine pos val . .
   if pos > k
     call output
   else
@@ -68,7 +68,7 @@ print n_results & " results with 10 donuts"
 #
 print ""
 # Convert_seconds_to_compound_duration
-func split sec . s$ .
+proc split sec . s$ .
   divs[] = [ 60 60 24 7 ]
   n$[] = [ "sec" "min" "hr" "d" "wk" ]
   len r[] 5
@@ -116,7 +116,7 @@ print tot
 #
 pr ""
 #
-func factorial n . r .
+proc factorial n . r .
   r = 1
   i = 2
   while i <= n
@@ -141,13 +141,13 @@ pr ""
 #
 # Nth_root
 #
-func power x n . r .
+proc power x n . r .
   r = 1
   for i = 1 to n
     r *= x
   .
 .
-func nth_root x n . r .
+proc nth_root x n . r .
   r = 2
   repeat
     call power r n - 1 p

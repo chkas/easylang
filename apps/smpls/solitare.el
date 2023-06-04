@@ -3,7 +3,7 @@
 # 
 global nc brd$[] center moves .
 # 
-func init . .
+proc init . .
   repeat
     s$ = input
     until s$ = ""
@@ -19,7 +19,7 @@ func init . .
 .
 call init
 # 
-func movex pos dir . res .
+proc movex pos dir . res .
   moves += 1
   res = 0
   if brd$[pos] = "●" and brd$[pos + dir] = "●" and brd$[pos + 2 * dir] = "○"
@@ -29,12 +29,12 @@ func movex pos dir . res .
     res = 1
   .
 .
-func unmove pos dir . .
+proc unmove pos dir . .
   brd$[pos] = "●"
   brd$[pos + dir] = "●"
   brd$[pos + 2 * dir] = "○"
 .
-func solve . res .
+proc solve . res .
   for pos = 1 to len brd$[]
     if brd$[pos] = "●"
       for dir in [ -1 (-nc) 1 nc ]

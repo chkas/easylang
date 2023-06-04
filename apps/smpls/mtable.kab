@@ -1,5 +1,5 @@
 n = 12
-func out h . .
+proc out h . .
   if h < 10
     write "  "
   elif h < 100

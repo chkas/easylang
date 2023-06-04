@@ -1,34 +1,34 @@
 len cyl[] 6
-func rshift . .
+proc rshift . .
   h = cyl[6]
   for i = 6 downto 2
     cyl[i] = cyl[i - 1]
   .
   cyl[1] = h
 .
-func unload . .
+proc unload . .
   for i = 1 to 6
     cyl[i] = 0
   .
 .
-func load . .
+proc load . .
   while cyl[1] = 1
     call rshift
   .
   cyl[1] = 1
   call rshift
 .
-func spin . .
+proc spin . .
   lim = random 6
   for i = 1 to lim - 1
     call rshift
   .
 .
-func fire . shot .
+proc fire . shot .
   shot = cyl[1]
   call rshift
 .
-func method m[] . shot .
+proc method m[] . shot .
   call unload
   shot = 0
   for m in m[]
@@ -45,7 +45,7 @@ func method m[] . shot .
   .
 .
 method$[] = [ "load" "spin" "fire" ]
-func test m[] . .
+proc test m[] . .
   n = 100000
   for i = 1 to n
     call method m[] shot

@@ -1,6 +1,6 @@
 len md5k[] 64
 len md5s[] 64.
-func md5init . .
+proc md5init . .
   s[] = [ 7 12 17 22 5 9 14 20 4 11 16 23 6 10 15 21 ]
   for i = 1 to 64
     md5k[i] = floor (0x100000000 * abs sin (i * 180 / pi))
@@ -15,7 +15,7 @@ func md5init . .
 .
 call md5init
 # 
-func md5 inp$ . s$ .
+proc md5 inp$ . s$ .
   subr addinp
     if inp4 = 1
       inp[] &= 0

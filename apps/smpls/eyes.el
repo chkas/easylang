@@ -1,6 +1,6 @@
 background 888
 clear
-func eye x y . .
+proc eye x y . .
    color 999
    move x y
    circle 6.5

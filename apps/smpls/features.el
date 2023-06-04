@@ -23,7 +23,7 @@ print sum
 # functions have value and reference
 # parameters, no return values
 #
-func gcd a b . res .
+proc gcd a b . res .
   # a and b are value parameters
   # res is a reference parameter
   while b <> 0
@@ -124,7 +124,7 @@ print ""
 # With 'break n' you can leave nested loops and a function
 #
 names$[] = [ ]
-func name2id name$ . id .
+proc name2id name$ . id .
   for id = 1 to len names$[]
     if names$[id] = name$
       # leave loop and function

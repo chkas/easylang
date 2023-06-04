@@ -1,4 +1,4 @@
-func mul_inv a b . x1 .
+proc mul_inv a b . x1 .
   b0 = b
   x1 = 1
   if b <> 1
@@ -16,7 +16,7 @@ func mul_inv a b . x1 .
     .
   .
 .
-func remainder . n[] a[] r .
+proc remainder . n[] a[] r .
   prod = 1
   sum = 0
   for i = 1 to len n[]

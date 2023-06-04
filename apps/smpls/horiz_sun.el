@@ -1,4 +1,4 @@
-func getn s$ . v .
+proc getn s$ . v .
   write s$
   v = number input
   print v

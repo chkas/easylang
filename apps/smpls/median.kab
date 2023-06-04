@@ -1,4 +1,4 @@
-func quickselect k . list[] res .
+proc quickselect k . list[] res .
   # 
   subr partition
     mid = left
@@ -24,7 +24,7 @@ func quickselect k . list[] res .
   .
   res = list[k]
 .
-func median . list[] res .
+proc median . list[] res .
   h = len list[] div 2 + 1
   call quickselect h list[] res
   if len list[] mod 2 = 0

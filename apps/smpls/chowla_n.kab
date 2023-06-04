@@ -1,4 +1,4 @@
-func chowla n . sum .
+proc chowla n . sum .
   sum = 0
   i = 2
   while i * i <= n
@@ -13,7 +13,7 @@ func chowla n . sum .
     i += 1
   .
 .
-func sieve . c[] .
+proc sieve . c[] .
   i = 3
   while i * 3 <= len c[]
     if c[i] = 0
@@ -29,7 +29,7 @@ func sieve . c[] .
     i += 2
   .
 .
-func commatize n . s$ .
+proc commatize n . s$ .
   s$[] = strchars n
   s$ = ""
   l = len s$[]
@@ -46,7 +46,7 @@ for i = 1 to 37
   call chowla i h
   print "  " & i & ": " & h
 .
-func main . .
+proc main . .
   print ""
   len c[] 10000000
   count = 1

@@ -1,4 +1,4 @@
-func num2rom num . rom$ .
+proc num2rom num . rom$ .
   values[] = [ 1000 900 500 400 100 90 50 40 10 9 5 4 1 ]
   symbol$[] = [ "M" "CM" "D" "CD" "C" "XC" "L" "XL" "X" "IX" "V" "IV" "I" ]
   rom$ = ""
@@ -16,7 +16,7 @@ print r$
 call num2rom 1666 r$
 print r$
 # 
-func rom2int rom$ . val .
+proc rom2int rom$ . val .
   symbols$[] = [ "M" "D" "C" "L" "X" "V" "I" ]
   values[] = [ 1000 500 100 50 10 5 1 ]
   val = 0

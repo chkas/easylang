@@ -1,4 +1,4 @@
-func fib n . res .
+proc fib n . res .
   if n < 2
     res = n
   .

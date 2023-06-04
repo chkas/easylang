@@ -1,4 +1,4 @@
-func mysqrt a . b .
+proc mysqrt a . b .
    b = 1
    repeat
       ar = a * b
