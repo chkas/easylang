@@ -11,13 +11,7 @@
     "christof.kaser@gmail.com".
 */
 #include "kalib.h"
-
-#ifdef __EMSCRIPTEN__
-#include <emscripten.h>
-#endif
-
 #include "kalex.h"
-
 #include "kafunc.h"
 
 //--------------------------------------------------------------------------------------
@@ -2303,8 +2297,8 @@ static ushort parse_sequ(void) {
 					csb_tok_nt();
 					cs_spc();
 					h = tvalf;
-					if (tok != t_lnumber || h != tvalf) error("int number");
-					if (loop_level < h) error("loop level too low");
+					if (tok != t_lnumber || h != tvalf) error("break level");
+					if (loop_level < h) error("break level too high");
 					cs(tval);
 					codp[o].vf = op_break;
 					codp[o].o1 = h;

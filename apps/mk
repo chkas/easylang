@@ -210,6 +210,7 @@ col="body{ background-color:#000; color:#ccc;}"
 for j in clock pendulum _r_maze0 _r_maze; do
 	test $j.kab = $k && col=''
 done
+test _color_bars.kab = $k && col="body{ background-color:#444; color:#eee;}"
 echo $col
 
 

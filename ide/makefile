@@ -1,6 +1,6 @@
 # source $HOME/emsdk/emsdk_env.sh
 
-v = 329
+v = 330
 
 #--------------------------------------------------------------------
 # DBG = true
@@ -45,15 +45,6 @@ $(wrk)/%.o: $(wrk)/%.c $(wrk)/kalib.h $(wrk)/kalex.h $(wrk)/kafunc.h $(wrk)/kaba
 
 $(wrk)/easyw.js: $(wrk)/kabas.o kabasw.js
 	$(LD) --post-js kabasw.js $(wrk)/kabas.o -o $@
-
-$(wrk)/%.c: ../%.c
-	cp -p $< $@
-
-$(wrk)/%.h: ../web/%.h
-	cp -p $< $@
-
-$(wrk)/%.h: ../%.h
-	cp -p $< $@
 
 $(wrk)/%: %
 	cp -p $< $@
@@ -132,12 +123,6 @@ $(or)/index.html: $(wrk)/ide.html $(wrk)/tmp_ide.js
 	cat swreg.js >>$@
 	cat $(wrk)/tmp_ide.js >>$@
 	echo "</script>" >>$@
-
-#$(or)/2/index.html: $(or)/ide.html $(or)/tmp_ide.js
-#	head -n -3 $(or)/ide.html >$@
-#	echo "<script>" >>$@
-#	cat $(or)/tmp_ide.js >>$@
-#	echo "</script>" >>$@
 
 $(or)/sw.js: sw.js $(or)/index.html $(or)/easyw$(v).js makefile
 	echo "const CACHE = 'd$(shell date +%y%m%d-%H%M)'" >$@

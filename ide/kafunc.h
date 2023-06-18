@@ -13,6 +13,9 @@
 
 #if defined(__EMSCRIPTEN__)
 
+#include <emscripten.h>
+#include "emscripten/em_math.h"
+
 #include "kabasw.h"
 
 #elif defined(__RUN__) || defined(__NOSDL__)
@@ -186,24 +189,38 @@ static double op_add_vnum16l(struct op* op) {
 static double op_error(struct op* op) {
 	return rt.sys_error;
 }
-
 static double op_sys_time(struct op* op) {
 	return sys_time();
 }
 
-static double op_random(struct op* op) {
-#ifdef __EMSCRIPTEN__
+static double randf(void) {
 	double f;
-	if (rt.randseed == -1) f = (double)emscripten_random();
-	else f = ((double)rand() / (RAND_MAX + 1.0));
+
+#ifdef __EMSCRIPTEN__
+	if (rt.randseed == -1) {
+//		f = emscripten_random();  // is only float
+		f = emscripten_math_random();
+	}
+	else f = ((double)rand() / 0x80000000);
 #else
-	double f = ((double)rand() / (RAND_MAX + 1.0));
+	if (rt.randseed == -1) {
+		rt.randseed = time(0);
+		srand(rt.randseed);
+	}
+	f = ((double)rand() / 0x80000000);
 #endif
-	int h = (int)numf(op->o1);
-	int r = (int)(f * h);
-//kc is this necessary??
-	if (r == h) r -= 1;
-	return r + 1;
+	return f;
+}
+static double op_random(struct op* op) {
+	long long range = (long long)numf(op->o1);
+	if (range < 1) return 0;
+
+	long long max = (0x80000000 / range) * range;
+	int h;
+	do {
+		h = randf() * 0x80000000;
+	} while (h >= max);
+	return h % range + 1;
 }
 
 static double op_numlog(struct op* op) {
@@ -222,20 +239,6 @@ static double op_floor(struct op* op) {
 	return floor(numf(op->o1));
 }
 
-//kc
-/*
-static double op_str_code(struct op* op) {
-	struct str s = strf(op->o1);
-	const char* utf8 = str_ptr(&s);
-	if(!(utf8[0] & 0x80)) return utf8[0];
-	else if ((utf8[0] & 0xe0) == 0xc0) return (((utf8[0] & 0x1f) << 6) | (utf8[1] & 0x3f));
-	else if((utf8[0] & 0xf0) == 0xe0) {
-		return (((utf8[0] & 0x0f) << 12) | ((utf8[1] & 0x3f) << 6) | (utf8[2] & 0x3f));
-	}
-	else
-		return -1;
-}
-*/
 static double op_str_code(struct op* op) {
 	struct str s = strf(op->o1);
 	const char* utf8 = str_ptr(&s);
@@ -277,17 +280,8 @@ static double op_mouse_x(struct op* op) {
 static double op_mouse_y(struct op* op) {
 	return rt.mouse_y;
 }
-
 static double op_randomf(struct op* op) {
-
-#ifdef __EMSCRIPTEN__
-	double f;
-	if (rt.randseed == -1) f = (double)emscripten_random();
-	else f = ((double)rand() / (RAND_MAX + 1.0));
-#else
-	double f = ((double)rand() / RAND_MAX);
-#endif
-	return f;
+	return randf();
 }
 
 static double op_pi(struct op* op) {
@@ -895,7 +889,7 @@ static struct str op_time_str(struct op* op) {
 	struct str str;
 	char buf[20];
 	str_init(&str);
-	time_t v =  (int)numf(op->o1);
+	time_t v =  (long long)numf(op->o1);
 	struct tm* tinfo = localtime(&v);
 	strftime(buf, 20, "%Y-%m-%d %H:%M:%S", tinfo);
 	str_append(&str, buf);
