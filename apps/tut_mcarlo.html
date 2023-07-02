@@ -146,6 +146,27 @@ print "-------------"
 
 + We lose nearly every time our money.
 
+subr session
+   cash = 1000
+   while cash < 2000 and cash >= 10
+      cash -= 10
+      numb = random 37 - 1
+      if numb >= 19
+         cash += 20
+      .
+   .
+.
+n = 1000
+for i = 1 to n
+   call session
+   if cash < 10
+      n_lose += 1
+   .
+.
+print n_lose & "/" & n & " = " & n_lose / n * 100 & "%"
+
++ The simulation tells us that there is a probability of more than 99% that we will lose our money.
+
 -
 
 + We need a winning strategy. The chance that a high number will come after a low one could be higher. So we bet on the high numbers if there was a low number before, otherwise we bet on the low numbers.

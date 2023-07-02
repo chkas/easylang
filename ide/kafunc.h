@@ -1698,9 +1698,7 @@ static void op_write(struct op* op) {
 }
 
 static void op_sys(struct op* op) {
-	if (op->o1 >= 10) {
-		gr_sys(op->o1);
-	}
+	gr_sys(op->o1);
 }
 /*
 static void op_syscmd(struct op* op) {
@@ -2002,7 +2000,12 @@ void evt_func(int id, const char* v) {
 void evt_mouse(int id, double x, double y) {
 	if (id <= 2) {
 		rt.mouse_x = x;
+#ifdef __EMSCRIPTEN__
+		if (grbotleft) rt.mouse_y = 100 - y;
+		else rt.mouse_y = y;
+#else
 		rt.mouse_y = y;
+#endif
 		if (id == 0) {
 			// on phones it's sometimes >= 100 or < 0
 			if (x > 99.99609375) rt.mouse_x = 99.99609375;

@@ -229,7 +229,8 @@ function tutUpd() {
 
 function runCode(code, caret) {
 //	moreShow(false)
-	dbg.textContent = ""
+//	dbg.textContent = ""
+	dbg.value = ""
 	tailSrc = null
 	stepBtn.disabled = true
 	showRun(false)
@@ -1248,7 +1249,8 @@ window.addEventListener("keydown", function(e) {
 
 function runDebug() {
 	removeCnd()
-	dbg.textContent = ""
+//	dbg.textContent = ""
+	dbg.value = ""
 	var h = dbgSel.selectedIndex
 	if (h == 0 && !window["sab"]) h = 1
 	if (h == 0) {

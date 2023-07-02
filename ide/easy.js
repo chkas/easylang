@@ -75,7 +75,6 @@ function msgFunc(msg, d = null) {
 	if (eFunc) eFunc(msg, d)
 }
 
-var botLeft
 function canvInit() {
 	canvSetOff()
 	c = eCan.getContext("2d")
@@ -83,14 +82,11 @@ function canvInit() {
 	linewidth(1)
 	// set color
 	sys(3)
-	c.px = 0
-	c.py = 100
 	c.backImg = null
 	c.backColor = null
 	c.setTransform(1,0,0,1,0,0)
 	c.translate(0.04, 0.04)
 	c.scale(8, 8)
-	botLeft = true
 }
 var doTrace = false
 
@@ -98,13 +94,10 @@ function kaRun(s, opt = 0, pos = -1) {
 	eCan = canv0
 	eOut = out0
 	if (eCan) canvInit()
-	if (opt > 511) {
-		imgTrace = null
-		doTrace = true
-	}
-	else {
-		doTrace = false
-	}
+
+	if (opt > 511) doTrace = true
+	else doTrace = false
+
 	isRunning = true
 	worker.postMessage(["run", s, opt, pos])
 }
@@ -167,16 +160,13 @@ function circ(x, y, w) {
 	c.arc(x, y, w, 0, 2 * Math.PI)
 	c.fill()
 }
-function line(x, y) {
-	if (botLeft) y = 100 - y
+function line(x0, y0, x, y) {
 	c.beginPath()
-	c.moveTo(c.px, c.py)
+	c.moveTo(x0, y0)
 	c.lineTo(x, y)
 	c.stroke()
-	circ(c.px, c.py, c.lineWidth / 2)
+	circ(x0, y0, c.lineWidth / 2)
 	circ(x, y, c.lineWidth / 2)
-	c.px = x
-	c.py = y
 }
 function color(r, g, b) {
 	var col = "rgb(" + r + "," + g + "," + b + ")"
@@ -186,9 +176,6 @@ function color(r, g, b) {
 function textsize(sz) {
 //	c.font = sz + "px Courier New"
 	c.font = sz + "px monospace"
-//	c.txtY = sz * 5 / 6
-	// all ascii chars are in the box?
-	c.txtY = sz * 0.78
 }
 function linewidth(w) {
 	c.lineWidth = w
@@ -197,13 +184,11 @@ function curve(l) {
 	if (l.length < 2) return
 	var x = l[0][0]
 	var y = l[0][1]
-	if (botLeft) y = 100 - y
 	circ(x, y, c.lineWidth / 2)
 	c.beginPath()
 	c.moveTo(x, y)
 	var x1 = l[1][0]
 	var y1 = l[1][1]
-	if (botLeft) y1 = 100 - y1
 	var xn
 	var yn
 	if (l.length == 2) {
@@ -214,7 +199,6 @@ function curve(l) {
 	else {
 		var x2 = l[2][0]
 		var y2 = l[2][1]
-		if (botLeft) y2 = 100 - y2
 		if (l.length == 3) {
 			c.quadraticCurveTo(x1, y1, x2, y2);
 			xn = x2
@@ -223,7 +207,6 @@ function curve(l) {
 		else {
 			xn = l[3][0]
 			yn = l[3][1]
-			if (botLeft) yn = 100 - yn
 			c.bezierCurveTo(x1, y1, x2, y2, xn, yn);
 		}
 	}
@@ -234,11 +217,9 @@ function polyg(l) {
 	if (l.length < 2) return
 	c.beginPath()
 	var y = l[0][1]
-	if (botLeft) y = 100 - y
 	c.moveTo(l[0][0], y)
 	for (var i = 1; i < l.length; i++) {
 		y = l[i][1]
-		if (botLeft) y = 100 - y
 		c.lineTo(l[i][0], y)
 	}
 	c.fill()
@@ -285,7 +266,7 @@ function sys(n) {
 		c.fillStyle = h
 		c.strokeStyle = h
 	}
-	else if (n == 10) {
+	else if (n == 5) {
 		// show grid
 		var lw = c.lineWidth
 		var ss = c.strokeStyle
@@ -303,45 +284,31 @@ function sys(n) {
 		c.lineWidth = lw
 		c.strokeStyle = ss
 	}
-	else if (n == 11) botLeft = true
-	else if (n == 12) botLeft = false
 	else {
 		console.log("** sys " + n + " not handled")
 	}
 }
 
-var imgTrace
-
 function grafCommand(d) {
 	var h
 	switch (d[0]) {
 	case 1:
-		c.px = d[1]		
-		if (botLeft) c.py = 100 - d[2]
-		else c.py = d[2]
+		// move
 		break
 	case 2:
-		line(d[1], d[2])
+		line(d[1], d[2], d[3], d[4])
 		break
 	case 3:
-		if (d[1] >= 0) {
-			c.beginPath()
-			c.arc(c.px, c.py, d[1], 0, 2 * Math.PI)
-			c.fill()
-		}
+		if (d[1] >= 0) circ(d[1], d[2], d[3])
 		break
 	case 4:
-		if (botLeft) h = d[2]
-		else h = 0
-		c.fillRect(c.px, c.py - h, d[1], d[2])
+		c.fillRect(d[1], d[2], d[3], d[4])
 		break
 	case 5:
 		polyg(d[1])
 		break
 	case 6:
-		if (botLeft) h = 0
-		else h = c.txtY
-		c.fillText(d[1], c.px, c.py + h)
+		c.fillText(d[3], d[1], d[2])
 		break
 	case 7:
 		sys(d[1])
@@ -375,7 +342,7 @@ function grafCommand(d) {
 		break
 	case 16:
 		c.beginPath()
-		c.arc(c.px, c.py, d[1], d[2] * Math.PI / 180, d[3] * Math.PI / 180)
+		c.arc(d[1], d[2], d[3], d[4] * Math.PI / 180, d[3] * Math.PI / 180)
 		c.fill()
 		break
 	}
@@ -384,28 +351,8 @@ function grafCommand(d) {
 var cursors = [ "default", "crosshair", "pointer" ]
 
 function grafList(cmds) {
-	if (cmds.length == 1) {
-		var d = cmds[0]
-		if (doTrace && d[0] <= 7) {
-			if (imgTrace) {
-				c.putImageData(imgTrace, c.px * 8 - 8, c.py * 8 - 8)
-			}
-		}
-		grafCommand(d)
-		if (doTrace && d[0] <= 7) {
-			imgTrace = c.getImageData(c.px * 8 - 8, c.py * 8 - 8, 16,  16)
-			var f = c.fillStyle
-			c.fillStyle = "red"
-			c.beginPath()
-			c.arc(c.px, c.py, 1, 0, 2 * Math.PI)
-			c.fill()
-			c.fillStyle = f
-		}
-	}
-	else {
-		for (var i = 0; i < cmds.length; i++) {
-			grafCommand(cmds[i])
-		}
+	for (var i = 0; i < cmds.length; i++) {
+		grafCommand(cmds[i])
 	}
 }
 
@@ -513,11 +460,8 @@ function canvMouseDown(e) {
 	var r = eCan.getBoundingClientRect()
 	isMouseDown = true
 	var sc = eCan.width / r.width / 8
-	var y
-	if (botLeft) y = 100 - (e.clientY - r.top) * sc
-	else y = (e.clientY - r.top) * sc
 	worker.postMessage(["mouse", 0, 
-			(e.clientX - r.left) * sc, y ])
+			(e.clientX - r.left) * sc, (e.clientY - r.top) * sc ])
 	eCan.focus()
 	e.preventDefault()
 }
@@ -555,19 +499,15 @@ function canvMouseUp(e) {
 	var r = eCan.getBoundingClientRect()
 	isMouseDown = false
 	var sc = eCan.width / r.width / 8
-	var y = (e.clientY - r.top) * sc
-	if (botLeft) y = 100 - y
 	worker.postMessage(["mouse", 1, 
-			(e.clientX - r.left) * sc, y ])
+			(e.clientX - r.left) * sc, (e.clientY - r.top) * sc ])
 	e.preventDefault()
 }
 function canvMouseMove(e) {
 	var r = eCan.getBoundingClientRect()
 	var sc = eCan.width / r.width / 8
-	var y = (e.clientY - r.top) * sc
-	if (botLeft) y = 100 - y
 	worker.postMessage(["mouse", 2,
-			(e.clientX - r.left) * sc, y ])
+			(e.clientX - r.left) * sc, (e.clientY - r.top) * sc ])
 	e.preventDefault()
 }
 
@@ -598,9 +538,6 @@ function workerMessage(event) {
 		workerStarted()
 		break
 	case "done": 
-		if (doTrace && imgTrace) {
-			c.putImageData(imgTrace, c.px * 8 - 8, c.py * 8 - 8);
-		}
 		isRunning = false
 		canvSetOff()
 		msgFunc("stopped")
@@ -648,6 +585,9 @@ function workerMessage(event) {
 			if (d[1] & 8) {
 				eCan.addEventListener("keydown", _keydown)
 				eCan.tabIndex = 0
+//kc?
+				// if (!"ontouchstart" in document)
+				eCan.focus()
 			}
 			if (d[1] & 16) {
 				if (!eCan.aniFrame) {

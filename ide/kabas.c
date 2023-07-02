@@ -2316,7 +2316,7 @@ static ushort parse_sequ(void) {
 				else if (tok == t_drawgrid) {
 					csb_tok_nt();
 					codp[o].vf = op_sys;
-					codp[o].o1 = 10;
+					codp[o].o1 = 5;
 				}
 				else  {					// t_sys
 					parse_sys_stat(o);

@@ -694,30 +694,33 @@ end
 
 -
 
-+ The *animate* event occurs after each screen refresh. Perfect for letting the car drive. Oops - something is missing!
++ The *animate* event occurs after each screen refresh - usually 60 times per second. Perfect for animating a bouncing ball. Oops... the ball disappears!
 
-+de Das *animate*-Ereignis tritt nach jeder Bildschirmaktualisierung auf. Perfekt, um das Auto fahren zu lassen. Ups... da fehlt etwas!
++de Das *animate*-Ereignis tritt nach jeder Bildschirmaktualisierung - normalerweise 60 mal pro Sekunde. Perfekt, um einen abprallenden Ball zu animieren. Ups... der Ball verschwindet!
 
-v = 0.4
+x = 50
+y = 50
+vx = 1
+vy = 0.5
+color 700
+# 
 on animate
-   if x > 79 or x < 0
-      # change direction
-      v = -v
-   end
    clear
-   # here is something missing
-   move x + 5 3
-   circle 3.5
-   move x + 16 3
-   circle 3.5
-   x += v
+   move x y
+   circle 10
+   x += vx
+   y += vy
 end
 
-+ 🤔 Fix the car!
++ 🤔 Let the ball bounce off the walls.
+
++ 🤔 Let the car drive back and forth! The car should be able to be stopped and restarted with a mouse click.
 
 + 🤔🤔 Try to control the speed with the keyboard keys!
 
-+de 🤔 Repariere das Auto!
++de 🤔 Lass den Ball an den Wänden abprallen.
+
++de 🤔 Lass das Auto hin und her fahren! Das Auto sollte mit einem Mausklick angehalten und neu gestartet werden können.
 
 +de 🤔🤔 Versuche mit den Keyboard-Tasten die Geschwindigkeit zu steuern!
 
@@ -882,7 +885,7 @@ for s = 1 to len si[][]
 
 +de Nimm zuerst das erste Element als kleinste Zahl. Gehe dann alle Zahlen durch und vergleiche sie mit der aktuellen kleinsten Zahl. Wenn eine Zahl kleiner ist, ist das die neue kleinste Zahl.
 
-a[] = [ 44 72 55 26 27 4 99 7 ]
+a[] = [ 14 8 15 5 11 4 16 7 ]
 min = a[1]
 for i = 2 to len a[]
    if a[i] < min
@@ -895,22 +898,23 @@ print min
 
 +de 🤔 Wir wollen nun auch wissen, was die größte Zahl ist.
 
-+ Now we want to put the smallest number on the first position. For this we remember the position of the smallest element. Then we just have to copy the first element to the position of the smallest element and put the smallest number to the first position.
++ Now we want to put the smallest number in the first position. To do this, we go through all the elements starting from the second position. And if an element is smaller than the one at the first position, we swap the two elements.
 
-+de Jetzt wollen wir die kleinste Zahl auf die erste Position setzen. Dazu merken wir uns die Position des kleinsten Elements. Dann müssen wir nur noch das erste Element an die Position des kleinsten Elements kopieren und die kleinste Zahl an die erste Position setzen.
++de Nun wollen wir die kleinste Zahl an die erste Stelle setzen. Dazu gehen wir alle Elemente ab der zweiten Position durch. Und wenn ein Element kleiner ist als das an der ersten Position, vertauschen wir die beiden Elemente.
 
-a[] = [ 44 72 55 26 27 4 99 7 ]
-min = a[1]
-min_pos = 1
+a[] = [ 14 8 15 5 11 4 16 7 ]
 for i = 2 to len a[]
-   if a[i] < min
-      min = a[i]
-      min_pos = i
+   if a[i] < a[1]
+      tmp = a[1]
+      a[1] = a[i]
+      a[i] = tmp
    end
 end
-a[min_pos] = a[1]
-a[1] = min
 print a[]
+
++ To swap two values, you can also use *swap*.
+
++de Um zwei Werte zu tauschen, kannst du auch *swap* verwenden.
 
 -
 
@@ -921,10 +925,39 @@ print a[]
 a[] = [ 44 72 55 26 27 4 99 7 ]
 for pos = 1 to len a[] - 1
    #
-   # TODO: search minimum starting from
-   #       pos and move it to pos
+   # TODO: move minimum to pos starting from pos + 1
    #
 end
 print a[]
-`
 
+* Other useful functions
+
+*de Weitere nützliche Funktionen
+
++ With *color3* you can set the character color more precisely. The function has the three basic colors red, green and blue as parameters, whereby the proportion of these colors is set as a floating point number from 0 to 1.
+
++de Mit *color3* kannst du die Zeichenfarbe genauer einstellen. Die Funktion hat die drei Grundfarben Rot, Grün und Blau als Parameter, wobei der Anteil dieser Farben als Gleitkommazahl von 0 bis 1 eingestellt wird.
+
+for i = 0 to 100
+   r = i / 100
+   move 0 i
+   color3 r 0 0
+   line 100 i
+end
+
+-
+
++ With *randomf* you get a random floating point number between 0 and 1. This simplifies the drawing of the starry sky.
+
++de Mit *randomf* bekommt man eine zufälligen Gleitpunkt-Zahl zwischen 0 und 1. Das vereinfacht das Zeichnen des Sternenhimmels.
+
+background 000
+clear
+color 999
+for i = 1 to 100
+   x = randomf * 100
+   y = randomf * 100
+   move x y
+   circle randomf * 0.5
+end
+`
