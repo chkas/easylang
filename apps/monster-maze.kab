@@ -1,6 +1,5 @@
 # Monster maze
 # 
-sys topleft
 size = 12
 n_monster = 6
 monster_delay = 8
@@ -17,337 +16,336 @@ csc2 = c2 - c10 - c / 128
 # 
 len f[] sz * sz
 subr go_home
-  me_col = 0
-  me_col_s = 0
-  me_row = 0
-  me_row_s = 0
-  me_x = c2 + c10
-  me_y = c2 + c10
-  m_x = 0
-  m_y = 0
+   me_col = 0
+   me_col_s = 0
+   me_row = 0
+   me_row_s = 0
+   me_x = c2 + c10
+   me_y = c2 + c10
+   m_x = 0
+   m_y = 0
 .
 subr initvars
-  dme_x = 0
-  dme_y = 0
-  len m_col[] n_monster
-  len m_row[] n_monster
-  len m_dirx[] n_monster
-  len m_diry[] n_monster
-  time_start = systime
-  stat = 0
-  n_mo = n_monster
-  h = size div 5
-  for i = 1 to n_mo
-    m_col[i] = random (size - h) + h - 1
-    m_row[i] = random (size - h) + h - 1
-    m_dirx[i] = 0
-    m_diry[i] = 0
-  .
-  step = 0
-  frame = 0
-  call go_home
+   dme_x = 0
+   dme_y = 0
+   len m_col[] n_monster
+   len m_row[] n_monster
+   len m_dirx[] n_monster
+   len m_diry[] n_monster
+   time_start = systime
+   stat = 0
+   n_mo = n_monster
+   h = size div 5
+   for i to n_mo
+      m_col[i] = random (size - h) + h - 1
+      m_row[i] = random (size - h) + h - 1
+      m_dirx[i] = 0
+      m_diry[i] = 0
+   .
+   step = 0
+   frame = 0
+   call go_home
 .
 proc show_maze . .
-  linewidth c5
-  color 000
-  move 0 0
-  rect 100 100
-  color 040
-  for r range0 sz
-    for co range0 sz
-      if f[r * sz + co + 1] = 1
-        if r mod 2 = 0
-          if co mod 2 = 1
-            move c10 + (co - 1) * c2 c10 + r * c2
-            line c10 + (co + 1) * c2 c10 + r * c2
-          .
-        else
-          move c10 + co * c2 c10 + (r - 1) * c2
-          line c10 + co * c2 c10 + (r + 1) * c2
-        .
+   linewidth c5
+   color 000
+   move 0 0
+   rect 100 100
+   color 040
+   for r range0 sz
+      for co range0 sz
+         if f[r * sz + co + 1] = 1
+            if r mod 2 = 0
+               if co mod 2 = 1
+                  move c10 + (co - 1) * c2 c10 + r * c2
+                  line c10 + (co + 1) * c2 c10 + r * c2
+               .
+            else
+               move c10 + co * c2 c10 + (r - 1) * c2
+               line c10 + co * c2 c10 + (r + 1) * c2
+            .
+         .
       .
-    .
-  .
+   .
 .
 proc make_maze . .
-  for i = 1 to len f[]
-    f[i] = 1
-  .
-  f[sz * sz - 1] = 0
-  visited = 1
-  hsz = sz div 2
-  x = 2 * random hsz - 1
-  y = 2 * random hsz - 1
-  f[x + y * sz + 1] = 0
-  while visited < hsz * hsz
-    oldx = x
-    oldy = y
-    dir = random 4
-    if dir = 1
-      if x + 2 < sz
-        x += 2
+   for i to len f[]
+      f[i] = 1
+   .
+   f[sz * sz - 1] = 0
+   visited = 1
+   hsz = sz div 2
+   x = 2 * random hsz - 1
+   y = 2 * random hsz - 1
+   f[x + y * sz + 1] = 0
+   while visited < hsz * hsz
+      oldx = x
+      oldy = y
+      dir = random 4
+      if dir = 1
+         if x + 2 < sz
+            x += 2
+         .
+      elif dir = 2
+         if y + 2 < sz
+            y += 2
+         .
+      elif dir = 3
+         if x > 2
+            x -= 2
+         .
+      else
+         if y > 2
+            y -= 2
+         .
       .
-    elif dir = 2
-      if y + 2 < sz
-        y += 2
+      if f[y * sz + x + 1] = 1
+         f[y * sz + x + 1] = 0
+         f[(y + oldy) div 2 * sz + (x + oldx) div 2 + 1] = 0
+         visited += 1
       .
-    elif dir = 3
-      if x > 2
-        x -= 2
-      .
-    else
-      if y > 2
-        y -= 2
-      .
-    .
-    if f[y * sz + x + 1] = 1
-      f[y * sz + x + 1] = 0
-      f[(y + oldy) div 2 * sz + (x + oldx) div 2 + 1] = 0
-      visited += 1
-    .
-  .
+   .
 .
 subr new_game
-  call make_maze
-  call show_maze
-  background -1
-  call initvars
+   call make_maze
+   call show_maze
+   background -1
+   call initvars
 .
 proc show_monster col row dirx diry . .
-  x = col * c + c2 + c10 + dirx * step * c5
-  y = row * c + c2 + c10 + diry * step * c5
-  color 900
-  move x y
-  circle csc2
-  color 000
-  move x - c8 y - c10
-  circle c20
-  move x + c8 y - c10
-  circle c20
-  move x y + c5
-  circle c16 * abs step
+   x = col * c + c2 + c10 + dirx * step * c5
+   y = row * c + c2 + c10 + diry * step * c5
+   color 900
+   move x y
+   circle csc2
+   color 000
+   move x - c8 y + c10
+   circle c20
+   move x + c8 y + c10
+   circle c20
+   move x y - c5
+   circle c16 * abs step
 .
 subr show_me
-  move me_x me_y
-  circle csc2
-  color 000
-  move me_x - c8 me_y - c10
-  circle c20
-  move me_x + c8 me_y - c10
-  circle c20
-  linewidth c16
-  move me_x - c10 me_y + c5
-  line me_x + c10 me_y + c5
+   move me_x me_y
+   circle csc2
+   color 000
+   move me_x - c8 me_y + c10
+   circle c20
+   move me_x + c8 me_y + c10
+   circle c20
+   linewidth c16
+   move me_x - c10 me_y - c5
+   line me_x + c10 me_y - c5
 .
 on mouse_down
-  m_x = mouse_x
-  m_y = mouse_y
-  if stat < 0
-    call new_game
-  .
+   m_x = mouse_x
+   m_y = mouse_y
+   if stat < 0
+      call new_game
+   .
 .
 on mouse_move
-  m_x = mouse_x
-  m_y = mouse_y
+   m_x = mouse_x
+   m_y = mouse_y
 .
 proc f_dir col row x y . v .
-  v = f[col * 2 + x + row * sz * 2 + sz + y * sz + 2]
+   v = f[col * 2 + x + row * sz * 2 + sz + y * sz + 2]
 .
 proc f_all col row . v .
-  col2 = col * 2
-  rsz2 = row * sz * 2
-  v = f[col2 + rsz2 + sz + 3]
-  v += f[col2 + rsz2 + sz + 1]
-  v += f[col2 + rsz2 + 2 * sz + 2]
-  v += f[col2 + rsz2 + 2]
+   col2 = col * 2
+   rsz2 = row * sz * 2
+   v = f[col2 + rsz2 + sz + 3]
+   v += f[col2 + rsz2 + sz + 1]
+   v += f[col2 + rsz2 + 2 * sz + 2]
+   v += f[col2 + rsz2 + 2]
 .
 proc do_x . .
-  if me_row_s > -2 and me_row_s < 2
-    if dme_x > c5
-      x = 1
-    elif dme_x < -c5
-      x = -1
-    .
-    if x <> 0
-      if me_col_s = 0
-        call f_dir me_col me_row x 0 v
+   if me_row_s > -2 and me_row_s < 2
+      if dme_x > c5
+         x = 1
+      elif dme_x < -c5
+         x = -1
       .
-      if v = 0
-        me_col_s += x
-        if me_col_s = 3 * x
-          me_col += x
-          me_col_s = -2 * x
-        .
-        me_row_s = 0
+      if x <> 0
+         if me_col_s = 0
+            call f_dir me_col me_row x 0 v
+         .
+         if v = 0
+            me_col_s += x
+            if me_col_s = 3 * x
+               me_col += x
+               me_col_s = -2 * x
+            .
+            me_row_s = 0
+         .
       .
-    .
-  .
+   .
 .
 proc do_y . .
-  if me_col_s > -2 and me_col_s < 2
-    if dme_y > c5
-      y = 1
-    elif dme_y < -c5
-      y = -1
-    .
-    if y <> 0
-      if me_row_s = 0
-        call f_dir me_col me_row 0 y v
+   if me_col_s > -2 and me_col_s < 2
+      if dme_y > c5
+         y = 1
+      elif dme_y < -c5
+         y = -1
       .
-      if v = 0
-        me_row_s += y
-        if me_row_s = 3 * y
-          me_row += y
-          me_row_s = -2 * y
-        .
-        me_col_s = 0
+      if y <> 0
+         if me_row_s = 0
+            call f_dir me_col me_row 0 y v
+         .
+         if v = 0
+            me_row_s += y
+            if me_row_s = 3 * y
+               me_row += y
+               me_row_s = -2 * y
+            .
+            me_col_s = 0
+         .
       .
-    .
-  .
+   .
 .
 proc move_me . .
-  if abs dme_x > abs dme_y
-    call do_x
-    call do_y
-  else
-    call do_y
-    call do_x
-  .
-  me_x = me_col * c + c2 + c10 + me_col_s * c5
-  me_y = me_row * c + c2 + c10 + me_row_s * c5
-  if me_y > 100 - c2
-    # sound [ 440 0.2 494 0.2 523 0.4 ]
-    stat = -1
-    color 000
-    move 0 0
-    rect 100 100
-    textsize 8
-    color 777
-    move 4 8
-    text "Super! You made it."
-    textsize 6
-    move 4 22
-    text "Time: " & floor (systime - time_start - 0.5)
-    move 4 32
-    text "Monster: " & n_monster
-    move 4 60
-    color 822
-    text "More and more monsters"
-    move 4 70
-    text "are coming and they"
-    move 4 80
-    text "are getting faster!"
-    monster_delay -= 1
-    n_monster += 1
-  .
+   if abs dme_x > abs dme_y
+      call do_x
+      call do_y
+   else
+      call do_y
+      call do_x
+   .
+   me_x = me_col * c + c2 + c10 + me_col_s * c5
+   me_y = me_row * c + c2 + c10 + me_row_s * c5
+   if me_y > 100 - c2
+      # sound [ 440 0.2 494 0.2 523 0.4 ]
+      stat = -1
+      color 000
+      move 0 0
+      rect 100 100
+      textsize 8
+      color 995
+      move 5 86
+      text "Super! You made it."
+      textsize 6
+      move 5 74
+      text "Monsters: " & n_monster
+      move 5 66
+      text "Time: " & floor (systime - time_start - 0.5)
+      color 822
+      move 5 50
+      text "More and more monsters"
+      move 5 42
+      text "are coming and they"
+      move 5 34
+      text "are getting faster!"
+      monster_delay -= 1
+      n_monster += 1
+   .
 .
 proc get_dir c r . x y .
-  xo = x
-  yo = y
-  repeat
-    d = random 4
-    if d = 1
-      x = -1
-    elif d = 2
-      y = -1
-    elif d = 3
-      x = 1
-    else
-      y = 1
-    .
-    call f_dir c r x y v
-    if v = 1
-      x = 0
-      y = 0
-    elif xo = -x and yo = -y
-      call f_all c r v
-      if v <> 3
-        x = 0
-        y = 0
+   xo = x
+   yo = y
+   repeat
+      d = random 4
+      if d = 1
+         x = -1
+      elif d = 2
+         y = -1
+      elif d = 3
+         x = 1
+      else
+         y = 1
       .
-    .
-    until x <> 0 or y <> 0
-  .
+      call f_dir c r x y v
+      if v = 1
+         x = 0
+         y = 0
+      elif xo = -x and yo = -y
+         call f_all c r v
+         if v <> 3
+            x = 0
+            y = 0
+         .
+      .
+      until x <> 0 or y <> 0
+   .
 .
 proc move_monster . .
-  for i = 1 to n_mo
-    call show_monster m_col[i] m_row[i] m_dirx[i] m_diry[i]
-  .
-  frame += 1
-  if frame >= monster_delay
-    frame = 0
-    if step = 0
-      for i = 1 to n_mo
-        if m_row[i] = size
-          swap m_row[i] m_row[n_mo]
-          swap m_col[i] m_col[n_mo]
-          swap m_dirx[i] m_dirx[n_mo]
-          swap m_diry[i] m_diry[n_mo]
-          n_mo -= 1
-        .
+   for i to n_mo
+      call show_monster m_col[i] m_row[i] m_dirx[i] m_diry[i]
+   .
+   frame += 1
+   if frame >= monster_delay
+      frame = 0
+      if step = 0
+         for i to n_mo
+            if m_row[i] = size
+               m_row[i] = m_row[n_mo]
+               m_col[i] = m_col[n_mo]
+               m_dirx[i] = m_dirx[n_mo]
+               m_diry[i] = m_diry[n_mo]
+               n_mo -= 1
+            .
+         .
+         for i to n_mo
+            dx = m_dirx[i]
+            dy = m_diry[i]
+            call get_dir m_col[i] m_row[i] dx dy
+            m_dirx[i] = dx
+            m_diry[i] = dy
+         .
       .
-      for i = 1 to n_mo
-        dx = m_dirx[i]
-        dy = m_diry[i]
-        call get_dir m_col[i] m_row[i] dx dy
-        m_dirx[i] = dx
-        m_diry[i] = dy
+      step += 1
+      if step = 3
+         step = -2
+         for i to n_mo
+            m_col[i] += m_dirx[i]
+            m_row[i] += m_diry[i]
+         .
       .
-    .
-    step += 1
-    if step = 3
-      step = -2
-      for i = 1 to n_mo
-        m_col[i] += m_dirx[i]
-        m_row[i] += m_diry[i]
-      .
-    .
-  .
+   .
 .
 on timer
-  if stat = 1
-    call go_home
-    stat = 0
-  .
+   if stat = 1
+      call go_home
+      stat = 0
+   .
 .
 subr do_next
-  clear
-  call move_monster
-  if stat = 0
-    dme_x = m_x - me_x
-    dme_y = m_y - me_y
-    if abs dme_x + abs dme_y < 8 * c
-      call move_me
-    .
-    for i = 1 to n_mo
-      if me_col = m_col[i] and me_row = m_row[i]
-        # sound [ 330 0.2 294 0.2 262 0.4 ]
-        stat = 1
-        timer 1
+   clear
+   call move_monster
+   if stat = 0
+      dme_x = m_x - me_x
+      dme_y = m_y - me_y
+      if abs dme_x + abs dme_y < 8 * c
+         call move_me
       .
-    .
-    color 070
-  else
-    color 886
-  .
-  call show_me
-  if n_mo = 0
-    stat = -1
-    color 797
-    move 0 0
-    rect 100 100
-    textsize 10
-    color 000
-    move 20 20
-    text "Game over"
-    monster_delay = 8
-    n_monster = 6
-  .
+      for i to n_mo
+         if me_col = m_col[i] and me_row = m_row[i]
+            # sound [ 330 0.2 294 0.2 262 0.4 ]
+            stat = 1
+            timer 1
+         .
+      .
+      color 070
+   else
+      color 886
+   .
+   call show_me
+   if n_mo = 0
+      stat = -1
+      color 000
+      move 0 0
+      rect 100 100
+      textsize 10
+      color 995
+      move 20 60
+      text "Game over"
+      monster_delay = 8
+      n_monster = 6
+   .
 .
 on animate
-  if stat >= 0
-    call do_next
-  .
+   if stat >= 0
+      call do_next
+   .
 .
 call new_game
-

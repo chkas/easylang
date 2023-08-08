@@ -27,8 +27,8 @@ cat >$odir/mfst.json <<EOF
 	"theme_color": "#bdb"
 }
 EOF
-
-echo "var CACHE = 'r$(date +%y%m%d-%H%M)'" > $odir/sw.js
+date=$(date +%y%m%d-%H%M)
+echo "var CACHE = 'r$date'" > $odir/sw.js
 echo "var VERS = '$v'" >>$odir/sw.js
 cat >>$odir/sw.js <<EOF
 var urls = [
@@ -91,7 +91,7 @@ EOF
 
 exec > $odir/index.html
 
-cat <<'xxx'
+cat <<xxx
 
 <!doctype html> 
 <meta charset=utf-8>
@@ -220,7 +220,7 @@ span.high {background-color:#666}
 	<div id=info style="display:none">
 		<h3>Code Runner</h3>
 		<p>There are no apps installed.
-		<p><a href=../games/>Install apps and games</a>
+		<p><a href=../games/index.html?$date>Install apps and games</a>
 	</div>
 
 	<div id=noti style=display:none>Click here to update to new version<br></div>
@@ -350,6 +350,18 @@ on animate
    y += vy
 .`
 
+err = `
+clear
+textsize 5
+move 5 60
+text "This app is not compatible :-("
+move 5 50
+text "You should reinstall it."
+`
+
+xxx
+cat <<xxx
+
 var aspr = 1
 
 window.onresize = function() {
@@ -401,14 +413,6 @@ function runr(s) {
 	easyrun(s, canv)
 }
 
-err = `
-clear
-textsize 5
-move 5 60
-text "This app is not compatible :-("
-move 5 50
-text "You should reinstall it."
-`
 easyinit(canv, null, msgf)
 
 window.name = "easylang_run"
@@ -513,7 +517,7 @@ function updsel() {
 }
 inst.onclick = function() {
 //	window.open("./list.html", "_self")
-	window.open("../games/", "_self")
+	window.open("../games/index.html?$date", "_self")
 }
 keep.onclick = function() {
 	window.localStorage.setItem("a" + appn, code)

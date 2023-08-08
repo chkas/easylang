@@ -38,7 +38,7 @@ function update() {
 
 function push(v) {
 	cmds.push(v)
-	if (cmds.length > 99999) update()
+	if (cmds.length > 200000) update()
 }
 
 function parsex(d) {

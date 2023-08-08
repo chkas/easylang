@@ -1,6 +1,6 @@
 # source $HOME/emsdk/emsdk_env.sh
 
-v = 331
+v = 391
 
 #--------------------------------------------------------------------
 # DBG = true
@@ -30,9 +30,13 @@ CLOSOPT = --compilation_level ADVANCED
 
 out := $(HOME)/out/easylang
 wrk := $(out)/wrk
+csrcf := $(wrk)/kabas.c $(wrk)/kafunc.h $(wrk)/kalex.h $(wrk)/kalib.h $(wrk)/kabasw.h $(wrk)/kaparse.h $(wrk)/kawasm.h
 
-all: $(wrk) main tut csrc
-csrc: $(wrk)/kafunc.h $(wrk)/kalex.h $(wrk)/kalib.h $(wrk)/kabasw.h $(wrk)/kabas.c
+all: ide
+
+basic: $(wrk) main tut csrc
+
+csrc: $(csrcf)
 
 $(wrk):
 	mkdir -p $(wrk)
@@ -40,7 +44,7 @@ $(wrk):
 main: $(wrk)/easy_ide.js $(wrk)/easyw.js $(wrk)/easy.js $(wrk)/ide.html
 tut: $(wrk)/tut_id.js $(wrk)/tut_docu.js $(wrk)/tut_learn.js $(wrk)/tut_game.js $(wrk)/tut_func.js
 
-$(wrk)/%.o: $(wrk)/%.c $(wrk)/kalib.h $(wrk)/kalex.h $(wrk)/kafunc.h $(wrk)/kabasw.h
+$(wrk)/kabas.o: $(csrcf)
 	$(CC) -c $< -o $@
 
 $(wrk)/easyw.js: $(wrk)/kabas.o kabasw.js
@@ -57,7 +61,7 @@ apps = $(out)/apps
 clean:
 	rm -rf $(out)/wrk $(out)/ide $(out)/apps $(out)/run
 
-ide: all dirs apps mainr tutr extr
+ide: basic dirs apps mainr tutr extr
 release: ide
 rel: ide
 

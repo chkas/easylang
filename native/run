@@ -2,13 +2,13 @@
 
 n=run
 N=`dirname $0`
-S=$N/../ide
+S=$N/../main
 D=$HOME/.cache/easylang
 
 mkdir -p $D
 
 test ! -e $D/$n && compile=1
-h="$S/kafunc.h $S/kalib.h $S/kalex.h $N/kabgr.c $0"
+h="$S/kafunc.h $S/kalib.h $S/kalex.h $S/kaparse.h $N/kabgr.c $0"
 f="$S/kabas.c"
 for i in $f $h; do
   test $i -nt $D/$n && compile=1 

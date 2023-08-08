@@ -2,234 +2,243 @@
 # 
 sys topleft
 subr initvars
-  song = 1
-  songs[][] &= [ 10 11 12 13 34 34 15 15 15 15 34 39 15 15 15 15 34 39 13 13 13 13 32 32 11 11 11 11 30 39 ]
-  songs[][] &= [ 10 11 12 13 34 34 15 13 17 15 34 39 15 13 17 15 34 39 14 13 13 13 13 12 32 12 11 12 11 10 12 34 10 12 34 14 14 37 14 14 30 ]
-  songs[][] &= [ 20 2 14 17 15 7 5 34 23 4 12 10 31 10 19 14 14 13 13 12 4 2 31 14 14 13 13 12 4 2 31 20 2 14 17 15 7 5 34 23 4 12 10 31 10 19 ]
-  songs[][] &= [ 10 11 12 13 14 15 16 17 ]
-  swap songs[song][] notes[]
-  n$[] = strchars "CDEFGABC"
-  f[] = [ 262 294 330 349 392 440 494 523 ]
-  ind = 1
-  note = 1
-  stat = 0
+   song = 1
+   songs[][] &= [ 10 11 12 13 34 34 15 15 15 15 34 39 15 15 15 15 34 39 13 13 13 13 32 32 11 11 11 11 30 39 ]
+   songs[][] &= [ 10 11 12 13 34 34 15 13 17 15 34 39 15 13 17 15 34 39 14 13 13 13 13 12 32 12 11 12 11 10 12 34 10 12 34 14 14 37 14 14 30 ]
+   songs[][] &= [ 20 2 14 17 15 7 5 34 23 4 12 10 31 10 19 14 14 13 13 12 4 2 31 14 14 13 13 12 4 2 31 20 2 14 17 15 7 5 34 23 4 12 10 31 10 19 ]
+   songs[][] &= [ 10 11 12 13 14 15 16 17 ]
+   swap songs[song][] notes[]
+   n$[] = strchars "CDEFGABC"
+   f[] = [ 262 294 330 349 392 440 494 523 ]
+   ind = 1
+   note = 1
+   stat = 0
 .
 proc draw_notes . .
-  move 0 0
-  color 987
-  rect 100 55
-  clk = 0
-  y0 = -8
-  for i = 1 to len notes[]
-    if clk mod 32 = 0
-      y0 += 12
+   move 0 0
+   color 987
+   rect 100 55
+   clk = 0
+   y0 = -8
+   for i = 1 to len notes[]
+      if clk mod 32 = 0
+         y0 += 12
+         color 000
+         linewidth 0.1
+         for j = 0 to 4
+            move 3 y0 + j * 1.5
+            line 97 y0 + j * 1.5
+         .
+         x = 5
+      .
+      n = notes[i]
+      t = n div 10 + 1
+      n = n mod 10
       color 000
-      linewidth 0.1
-      for j = 0 to 4
-        move 3 y0 + j * 1.5
-        line 97 y0 + j * 1.5
-      .
-      x = 5
-    .
-    n = notes[i]
-    t = n div 10 + 1
-    n = n mod 10
-    color 000
-    if n = 9
-      if t < 3
-        linewidth 1
-        move x + 0.5 y0 + 2
-        line x y0 + 2.5
-        linewidth 0.4
-        line x + 1 y0 + 3.5
-        line x - 0.5 y0 + 3.5
+      if n = 9
+         if t < 3
+            linewidth 1
+            move x + 0.5 y0 + 2
+            line x y0 + 2.5
+            linewidth 0.4
+            line x + 1 y0 + 3.5
+            line x - 0.5 y0 + 3.5
+         else
+            linewidth 1
+            move x - 1 y0 + 2.5
+            line x + 1 y0 + 2.5
+         .
       else
-        linewidth 1
-        move x - 1 y0 + 2.5
-        line x + 1 y0 + 2.5
+         y = y0 + 7.5 - n * 0.75
+         move x y
+         circle 1
+         if t > 3
+            color 987
+            circle 0.5
+            color 000
+         .
+         linewidth 0.1
+         if n <= 5
+            move x + 0.9 y
+            line x + 0.9 y - 4
+            if t = 1
+               linewidth 0.3
+               line x + 1.8 y - 1.5
+            .
+         else
+            move x - 0.9 y
+            line x - 0.9 y + 4
+            if t = 1
+               linewidth 0.3
+               line x - 1.8 y + 1.5
+            .
+         .
+         if n < 1
+            move x - 2 y
+            line x + 2 y
+         .
+         if t = 3 or t = 5
+            h = y
+            if n mod 2 = 0
+               h -= 0.75
+            .
+            move x + 2.5 h
+            circle 0.35
+         .
       .
-    else
-      y = y0 + 7.5 - n * 0.75
-      move x y
-      circle 1
-      if t > 3
-        color 987
-        circle 0.5
-        color 000
+      clk += t
+      if clk mod 8 = 0
+         linewidth 0.1
+         move x + 4 y0
+         line x + 4 y0 + 6
       .
-      linewidth 0.1
-      if n <= 5
-        move x + 0.9 y
-        line x + 0.9 y - 4
-        if t = 1
-          linewidth 0.3
-          line x + 1.8 y - 1.5
-        .
+      if t = 1
+         x += 4
       else
-        move x - 0.9 y
-        line x - 0.9 y + 4
-        if t = 1
-          linewidth 0.3
-          line x - 1.8 y + 1.5
-        .
+         x += 6.5
       .
-      if n < 1
-        move x - 2 y
-        line x + 2 y
-      .
-      if t = 3 or t = 5
-        h = y
-        if n mod 2 = 0
-          h -= 0.75
-        .
-        move x + 2.5 h
-        circle 0.35
-      .
-    .
-    clk += t
-    if clk mod 8 = 0
-      linewidth 0.1
-      move x + 4 y0
-      line x + 4 y0 + 6
-    .
-    if t = 1
-      x += 4
-    else
-      x += 6.5
-    .
-  .
+   .
 .
 proc btn x y s$ . .
-  linewidth 8
-  move x y
-  line x + 13 y
-  move x - 1 y - 2.5
-  color 000
-  textsize 6
-  text s$
+   linewidth 8
+   move x y
+   line x + 13 y
+   move x - 1 y - 2.5
+   color 000
+   textsize 6
+   text s$
 .
-subr draw_btn
-  call btn 82 61 "Play"
+subr draw_btn_song
+   call btn 82 61 "Song"
 .
-subr draw_btn2
-  call btn 59 61 "Song"
+subr draw_btn_slow
+   call btn 59 61 "Slow"
+.
+subr draw_btn_play
+   call btn 36 61 "Play"
 .
 proc draw_key down . .
-  if down = 1
-    color 765
-  else
-    color 999
-  .
-  x = (ind - 1) * 12.5 + 1
-  move x 75
-  rect 10.5 25
-  color 222
-  if ind <= 2 or ind >= 4 and ind <= 6
-    move x + 8.5 75
-    rect 2 12
-  .
-  if ind >= 2 and ind <= 3 or ind >= 5 and ind <= 7
-    move x 75
-    rect 2 12
-  .
-  color 222
-  move x + 2.5 92
-  text n$[ind]
+   if down = 1
+      color 765
+   else
+      color 999
+   .
+   x = (ind - 1) * 12.5 + 1
+   move x 75
+   rect 10.5 25
+   color 222
+   if ind <= 2 or ind >= 4 and ind <= 6
+      move x + 8.5 75
+      rect 2 12
+   .
+   if ind >= 2 and ind <= 3 or ind >= 5 and ind <= 7
+      move x 75
+      rect 2 12
+   .
+   color 222
+   move x + 2.5 92
+   text n$[ind]
 .
 subr play_note
-  if clk mod 32 = 0
-    yn += 12
-    xn = 4.5
-  .
-  color 900
-  linewidth 1
-  move xn yn
-  line xn + 1 yn
-  h = notes[note]
-  t = h div 10 + 1
-  clk += t
-  ind = h mod 10 + 1
-  if ind <= 8
-    call draw_key 1
-    sound [ f[ind] t * 0.25 - 0.1 ]
-  .
-  stat = 3
-  timer t * 0.25 - 0.1
+   if clk mod 32 = 0
+      yn += 12
+      xn = 4.5
+   .
+   color 900
+   linewidth 1
+   move xn yn
+   line xn + 1 yn
+   h = notes[note]
+   t = h div 10 + 1
+   clk += t
+   ind = h mod 10 + 1
+   if ind <= 8
+      call draw_key 1
+      sound [ f[ind] t * speed - 0.1 ]
+   .
+   stat = 3
+   timer t * speed - 0.1
 .
 subr play_note_done
-  color 987
-  linewidth 1
-  move xn - 0.1 yn
-  line xn + 1.2 yn
-  if t = 1
-    xn += 4
-  else
-    xn += 6.5
-  .
-  if ind <= 8
-    call draw_key 0
-  .
-  note += 1
-  if note <= len notes[]
-    stat = 2
-    timer 0.1
-  else
-    stat = 0
-  .
+   color 987
+   linewidth 1
+   move xn - 0.1 yn
+   line xn + 1.2 yn
+   if t = 1
+      xn += 4
+   else
+      xn += 6.5
+   .
+   if ind <= 8
+      call draw_key 0
+   .
+   note += 1
+   if note <= len notes[]
+      stat = 2
+      timer 0.1
+   else
+      stat = 0
+   .
 .
 subr start_play
-  clk = 0
-  color 432
-  call draw_btn
-  note = 1
-  yn = 1
-  stat = 2
-  timer 0
+   clk = 0
+   color 432
+   call draw_btn_play
+   note = 1
+   yn = 1
+   stat = 2
+   timer 0
 .
 subr change_song
-  color 432
-  call draw_btn2
-  swap songs[song][] notes[]
-  song = song mod len songs[][] + 1
-  swap songs[song][] notes[]
-  call draw_notes
+   color 432
+   call draw_btn_song
+   swap songs[song][] notes[]
+   song = song mod len songs[][] + 1
+   swap songs[song][] notes[]
+   call draw_notes
 .
 on timer
-  if stat = 2
-    call play_note
-  elif stat = 3
-    call play_note_done
-  .
+   if stat = 2
+      call play_note
+   elif stat = 3
+      call play_note_done
+   .
 .
 on mouse_down
-  if stat >= 2
-    timer -1
-    call play_note_done
-    stat = 0
-  .
-  if mouse_y > 75
-    ind = floor (mouse_x / 100 * 8) + 1
-    sound [ f[ind] 10 ]
-    call draw_key 1
-    stat = 1
-  elif mouse_y < 65 and mouse_y > 57
-    if mouse_x > 77
-      call start_play
-    elif mouse_x > 55
-      call change_song
-    .
-  .
+   if stat >= 2
+      timer -1
+      call play_note_done
+      stat = 0
+   .
+   if mouse_y > 75
+      ind = floor (mouse_x / 100 * 8) + 1
+      sound [ f[ind] 10 ]
+      call draw_key 1
+      stat = 1
+   elif mouse_y < 65 and mouse_y > 57
+      if mouse_x > 77
+         call change_song
+      elif mouse_x > 55
+         speed = 0.4
+         call start_play
+      elif mouse_x > 33
+         speed = 0.25
+         call start_play
+      .
+   .
 .
 on mouse_up
-  color 654
-  call draw_btn
-  color 654
-  call draw_btn2
-  if stat = 1
-    sound [ ]
-    call draw_key 0
-    stat = 0
-  .
+   color 654
+   call draw_btn_song
+   color 654
+   call draw_btn_play
+   color 654
+   call draw_btn_slow
+   if stat = 1
+      sound [ ]
+      call draw_key 0
+      stat = 0
+   .
 .
 # 
 call initvars
@@ -243,11 +252,12 @@ move 40 75
 rect 40 12
 textsize 6
 for ind = 1 to 8
-  call draw_key 0
+   call draw_key 0
 .
 color 654
-call draw_btn
+call draw_btn_play
 color 654
-call draw_btn2
+call draw_btn_song
+color 654
+call draw_btn_slow
 call draw_notes
-

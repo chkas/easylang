@@ -14,7 +14,7 @@
 static const char* token_list[] = {
 	"", 
 	"else", "elif", "until", "end",
-	"func", "funcdecl", "proc", "procdecl", "subr", "on", "prefix", "input_data", "global",
+	"func", "proc", "fastproc", "procdecl", "subr", "on", "prefix", "input_data", "global",
 	"if", "while", "for", "repeat",
 	"and", "or", "not", "mod", "mod1", "div", "div1",
 	"call",  "len",
@@ -51,7 +51,7 @@ static const char* token_list[] = {
 enum token_tok {
 	t_default = 0,
 	t_else, t_elif, t_until, t_end,
-	t_func, t_funcdecl, t_proc, t_procdecl, t_subr, t_on, t_prefix, t_input_data, t_global,
+	t_func, t_proc, t_fastproc, t_procdecl, t_subr, t_on, t_prefix, t_input_data, t_global,
 	t_if, t_while, t_for, t_repeat,
 	t_and, t_or, t_not, t_mod, t_mod1, t_divi, t_divi1,
 	t_call, t_len,
@@ -69,9 +69,9 @@ enum token_tok {
 	t_systime, t_error, t_mouse_x, t_mouse_y, t_randomf, t_pi,
 	t_random,  t_sqrt, t_logn, t_abs, t_sign, t_bitnot, t_floor, t_sin, t_cos, t_tan, t_asin, t_acos, t_atan, 
 	t_atan2, t_pow, t_bitand, t_bitor, t_bitxor, t_bitshift, t_lower, t_higher,
-	t_number, t_str_ord, t_str_compare,
+	t_number, t_strord, t_strcompare,
 
-	t_input, t_sysfunc, t_keyb_key, t_str_chr, t_timestr, t_strjoin, t_substr,
+	t_input, t_sysfunc, t_keyb_key, t_strchr, t_timestr, t_strjoin, t_substr,
 
 	t_plus, t_minus, t_mult, t_div, t_hash, t_lt, t_gt, t_dot, t_eq, t_amp,
 	t_pal, t_par, t_brl, t_brr, t_brrl, t_neq, t_le, t_ge, t_ampeq, t_pleq, t_asteq, t_diveq, t_mineq,
@@ -89,13 +89,12 @@ enum token_tok {
 static byte tok;
 static byte tokpr;
 
-static char is_numfunc() { return tok >= t_systime && tok <= t_str_compare; }
+static char is_numfunc() { return tok >= t_systime && tok <= t_strcompare; }
 static char is_strfunc() { return tok >= t_input && tok <= t_substr; }
 
 static char err;
 static int ind_tok, indc;
 
-static char cod;
 static char is_enter;
 
 static const char* parse_str; 
@@ -442,7 +441,7 @@ static int tbl_b[] = { t_break, t_background, t_bitand, t_bitor, t_bitxor, t_bit
 static int tbl_c[] = { t_call, t_clear, t_color, t_circle, t_cos, t_rgb, t_arc, t_curve, t_rotate, t_translate, 0 } ;
 static int tbl_d[] = { t_divi, t_divi1, t_drawgrid, 0 } ;
 static int tbl_e[] = { t_else, t_elif, t_end, t_error, 0 };
-static int tbl_f[] = { t_for, t_func, t_funcdecl, t_floor, 0 };
+static int tbl_f[] = { t_for, t_floor, t_fastproc, t_func, 0 };
 static int tbl_g[] = { t_global, 0 };
 static int tbl_h[] = { t_higher, 0 };
 static int tbl_i[] = { t_if, t_input, t_input_data, 0 };
@@ -455,7 +454,7 @@ static int tbl_o[] = { t_or, t_on, 0 };
 static int tbl_p[] = { t_print, t_proc, t_procdecl, t_pr, t_pi, t_pow, t_polygon, t_prefix, 0 };
 static int tbl_q[] = { 0 };
 static int tbl_r[] = { t_repeat, t_randomf, t_random, t_rect, t_random_seed, 0 };
-static int tbl_s[] = { t_subr, t_swap, t_sleep, t_systime, t_substr, t_sqrt, t_sin, t_str_ord, t_str_compare, t_sysfunc, t_str_chr, t_strjoin, t_sign, t_sound, t_sys, 0 };
+static int tbl_s[] = { t_subr, t_swap, t_sleep, t_systime, t_substr, t_sqrt, t_sin, t_strord, t_strcompare, t_sysfunc, t_strchr, t_strjoin, t_sign, t_sound, t_sys, 0 };
 static int tbl_t[] = { t_tan, t_timestr, t_text, t_timer, t_textsize, 0 };
 static int tbl_u[] = { t_until, 0 };
 static int tbl_v[] = { 0 };
@@ -617,7 +616,7 @@ static void nexttok() {
 }
 
 // -------------------------------------------------------------------------------
-#define UMO (ushort)-1
+//#define UMO (ushort)-1
 
 static char* cstrs_p;
 static unsigned cstrs_len;
@@ -642,34 +641,39 @@ static uint cstrs_add(const char* s) {
 
 struct vname {
 	char name[16];
-	short id;
-	ushort srcpos;
+	union {
+		struct {
+			short id;
+			ushort srcpos;
+		};
+		ND* start;
+	};
 	char typ;
 	char access;
 };
 
-struct func {
+struct proc {
 	struct vname *vname_p;
 	char name[16];
 	char parms[9];
 	ushort vname_len;
-//	unsigned vname_len;
-	ushort start;
+	ND* start;
 // float, str, (intarr + numarr + strarr)
 	ushort varcnt[3];
 	byte anonym_id;
 
 };
-struct funcdecl {
-	ushort func_i;
-	ushort callref;
+struct procdecl {
+	ushort proc_i;
+	ND* callref;
 };
 
-static struct func* func;
-static struct func* func_p;
-static ushort func_len;
-static struct funcdecl* funcdecl;
-static ushort funcdecl_len;
+static struct proc* proc;
+static struct proc* proc_p;
+static struct proc* fastproc_addr;
+static ushort proc_len;
+static struct procdecl* procdecl;
+static ushort procdecl_len;
 
 //---------------------------------------------------------------
 
@@ -679,8 +683,8 @@ static char name_anonym[5];
 
 static const char* getn(const char* name) {
 	if (name[0] == '_' && name[1] == 0) {
-		func->anonym_id += 1;
-		sprintf(name_anonym, "_%d", func->anonym_id);
+		proc->anonym_id += 1;
+		sprintf(name_anonym, "_%d", proc->anonym_id);
 		name = name_anonym;
 	}
 	if (prefix_len) {
@@ -694,49 +698,48 @@ static const char* getn(const char* name) {
 	return name;
 }
 
-static struct func* func_get(const char* name) {
-	struct func *p = func_p;
-	while (p < func_p + func_len) {
+static struct proc* proc_get(const char* name) {
+	struct proc *p = proc_p;
+	while (p < proc_p + proc_len) {
 		if (strcmp(name, p->name) == 0) return p;
 		p += 1;
 	}
 	return NULL;
 }
 
-static struct func* func_add(const char* name) {
-	func_len += 1;
-	func_p = (struct func *)_realloc(func_p, func_len * sizeof(struct func));
-	struct func* p = func_p + func_len - 1;
-	memset(p, 0, sizeof(struct func));
+static struct proc* proc_add(const char* name) {
+	proc_len += 1;
+	proc_p = (struct proc *)_realloc(proc_p, proc_len * sizeof(struct proc));
+	struct proc* p = proc_p + proc_len - 1;
+	memset(p, 0, sizeof(struct proc));
 	strcpy(p->name, name);
 	return p;
 }
 
-static void func_free(void) {
+static void proc_free(void) {
 
-	if (func_p == NULL) return;
-	struct func *p = func_p;
-	while (p < func_p + func_len) {
+	if (proc_p == NULL) return;
+	struct proc *p = proc_p;
+	while (p < proc_p + proc_len) {
 		free(p->vname_p);
 		p += 1;
 	}
-	free(func_p);
-	func_p = NULL;
-	func_len = 0;
-	free(funcdecl);
-	funcdecl = NULL;
-	funcdecl_len = 0;
+	free(proc_p);
+	proc_p = NULL;
+	proc_len = 0;
+	free(procdecl);
+	procdecl = NULL;
+	procdecl_len = 0;
 }
 
 static struct {
-	ushort mouse_down;
-	ushort mouse_up;
-	ushort mouse_move;
-	ushort key_down;
-	ushort animate;
-	ushort timer;
+	ND* mouse_down;
+	ND* mouse_up;
+	ND* mouse_move;
+	ND* key_down;
+	ND* animate;
+	ND* timer;
 } seq;
-
 
 static ushort prog_props;
 
@@ -744,7 +747,7 @@ enum vartyp { VAR_NUM, VAR_STR,
 	VAR_NUMARR, VAR_STRARR,
 	VAR_NUMARRARR, VAR_STRARRARR, VAR_SUBR };
 
-static struct vname* get_vname(struct func* f, const char* name, char typ) {
+static struct vname* get_vname(struct proc* f, const char* name, char typ) {
 
 	struct vname *p = f->vname_p;
 	if (!f->vname_p) return NULL;   // because NULL + 0 is UB
@@ -755,7 +758,7 @@ static struct vname* get_vname(struct func* f, const char* name, char typ) {
 	return NULL;
 }
 
-static struct vname* add_vname(struct func* f, const char* name, char typ, ushort pos) {
+static struct vname* add_vname(struct proc* f, const char* name, char typ, ushort pos) {
 	if (f->vname_len % 8 == 0) {
 		f->vname_p = (struct vname *)_realloc(f->vname_p, (f->vname_len + 8) * sizeof(struct vname));
 	}
@@ -788,23 +791,23 @@ static void lvar(byte typ, byte access, byte mode) {
 		const char* name = getn(tval);
 		if (name == name_anonym) access = RW;
 
-		struct vname* p = get_vname(func, name, typ);
+		struct vname* p = get_vname(proc, name, typ);
 		if (p != NULL) error("already used");
 
-		p = add_vname(func, name, typ, code_utf8len);
+		p = add_vname(proc, name, typ, code_utf8len);
 		if (p == NULL) return;
 		p->access = access;
 		ushort h = typ;
 		if (typ > VAR_NUMARR) h = VAR_NUMARR;
-		p->id = func->varcnt[h];
-		func->varcnt[h] += 1;
+		p->id = proc->varcnt[h];
+		proc->varcnt[h] += 1;
 	}
 	cs(tval);
 	cs(vex(typ));
 	nexttok();
 }
 
-static struct vname* add_var(struct func* f, const char* name, ushort typ, ushort pos) {
+static struct vname* add_var(struct proc* f, const char* name, ushort typ, ushort pos) {
 	struct vname* p = add_vname(f, name, typ, pos);
 	p->access = 0;
 	if (typ > VAR_NUMARR) typ = VAR_NUMARR;
@@ -819,28 +822,28 @@ static short get_var(ushort typ, ushort access, const char* name, ushort pos) {
 	if (name == name_anonym) access = RW;
 
 	struct vname* p;
-	if (func == func_p) {
-		p = get_vname(func_p, name, typ);
-		if (p == NULL) p = add_var(func_p, name, typ, pos);
+	if (proc == proc_p) {
+		p = get_vname(proc_p, name, typ);
+		if (p == NULL) p = add_var(proc_p, name, typ, pos);
+		p->access |= access;
+		return -(p->id + 1);
+	}
+
+	// in proc
+	p = get_vname(proc, name, typ);
+	if (p) {
 		p->access |= access;
 		return p->id;
 	}
-
-	// in function
-	p = get_vname(func, name, typ);
-	if (p != NULL) {
-		p->access |= access;
-		return -(p->id + 1);
-	}
-	p = get_vname(func_p, name, typ);
+	p = get_vname(proc_p, name, typ);
 	if (p == NULL) {
 		// create local variable
-		p = add_var(func, name, typ, pos);
+		p = add_var(proc, name, typ, pos);
 		p->access |= access;
-		return -(p->id + 1);
+		return p->id;
 	}
 	p->access |= access;
-	return p->id;
+	return -(p->id + 1);
 }
 
 static short parse_var(ushort typ, ushort access) {
@@ -854,24 +857,25 @@ static short parse_var(ushort typ, ushort access) {
 // -------------------------------------------------------------------------------
 
 struct opln {
-	ushort o;
+	ND* nd;
 	ushort line;
 };
 
 static struct opln* opln_p;
 static ushort opln_len;
 
-static void opln_add(ushort o, ushort line) {
+static void opln_add(ND* nd, ushort line) {
 	if (cod) {
 		if (opln_len % 64 == 0) {
 			opln_p = (struct opln*)_realloc(opln_p, (opln_len + 64) * sizeof(struct opln));
 		}
-		opln_p[opln_len].o = o;
+		opln_p[opln_len].nd = nd;
 		opln_p[opln_len].line = line;
 		opln_len += 1;
 	}
 }
 
+/*
 struct op {
 	union {
 		struct {
@@ -920,11 +924,11 @@ struct op {
 		};
 	};
 };
+*/
 
-
+/*
 static struct op *codp;
 static uint code_len;
-
 static struct op dummy_op;
 
 static void code_free() {
@@ -944,6 +948,7 @@ static ushort code_add(void) {
 	code_len += 1;
 	return code_len - 1;
 }
+*/
 
 // ---------------------------------------------------------
 
@@ -955,7 +960,7 @@ static void parse_clean() {
 	cstrs_free();
 	code_free();
 
-	func_free();
+	proc_free();
 
 	free(opln_p);
 	opln_p = NULL;
@@ -984,14 +989,15 @@ static void parse_prepare() {
 	uint h = strlen(parse_str);
 	codestrspc = h + h / 2;
 	codestr = _realloc(NULL, codestrspc + 1);
-	func = func_add("_GLOBAL_");
+	proc = proc_add("_GLOBAL_");
+	fastproc_addr = NULL;
 
-	seq.mouse_down = UMO;
-	seq.mouse_up = UMO;
-	seq.mouse_move = UMO;
-	seq.key_down = UMO;
-	seq.animate = UMO;
-	seq.timer = UMO;
+	seq.mouse_down = NULL;
+	seq.mouse_up = NULL;
+	seq.mouse_move = NULL;
+	seq.key_down = NULL;
+	seq.animate = NULL;
+	seq.timer = NULL;
 	prog_props = 0;
 }
 

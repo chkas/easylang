@@ -59,9 +59,9 @@ txt_tutor=`
 *de Programmier-Grundlagen
 
 xxx
-		l=$(grep -n Trace ../ide/tut_learn.js | head -1 | cut -f1 -d:)
-		head -$((l-1)) ../ide/tut_learn.js | tail +8 >>$o/tut_$n.html
-		tail +$((l+4)) ../ide/tut_learn.js  >>$o/tut_$n.html
+		l=$(grep -n Trace ../main/tut_learn.js | head -1 | cut -f1 -d:)
+		head -$((l-1)) ../main/tut_learn.js | tail +8 >>$o/tut_$n.html
+		tail +$((l+4)) ../main/tut_learn.js  >>$o/tut_$n.html
 
 cat <<'xxx' >>$o/tut_$n.html
 txt_tutor+=`
@@ -83,7 +83,7 @@ xxx
 		echo  >>$o/tut_$n.html
 		lnk="@ ./tut_learn.html@A more basic tutorial for beginners can be found here."
 		echo $lnk >>$o/tut_$n.html
-		tail +4 ../ide/tut_$2.js >>$o/tut_$n.html
+		tail +4 ../main/tut_$2.js >>$o/tut_$n.html
 	fi
 
 	if test "$5" = runner; then

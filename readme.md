@@ -64,7 +64,7 @@ The destination folder is ~/out/easylang. Needs Java for the *closure-compiler*.
 
 ~~~
 source emsdk/emsdk_env.sh
-( cd easylang/ide ; make ide )
+( cd easylang/main ; make )
 ~~~
 
 Test it locally

@@ -81,6 +81,7 @@ struct str {
 		char d[16];
 	};
 };
+typedef struct str STR;
 
 // #define IS_PTR 1
 #define IS_PTR 127
