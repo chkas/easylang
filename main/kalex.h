@@ -14,7 +14,7 @@
 static const char* token_list[] = {
 	"", 
 	"else", "elif", "until", "end",
-	"func", "proc", "fastproc", "procdecl", "subr", "on", "prefix", "input_data", "global",
+	"proc", "fastproc", "procdecl", "subr", "on", "prefix", "input_data", "global",
 	"if", "while", "for", "repeat",
 	"and", "or", "not", "mod", "mod1", "div", "div1",
 	"call",  "len",
@@ -51,7 +51,7 @@ static const char* token_list[] = {
 enum token_tok {
 	t_default = 0,
 	t_else, t_elif, t_until, t_end,
-	t_func, t_proc, t_fastproc, t_procdecl, t_subr, t_on, t_prefix, t_input_data, t_global,
+	t_proc, t_fastproc, t_procdecl, t_subr, t_on, t_prefix, t_input_data, t_global,
 	t_if, t_while, t_for, t_repeat,
 	t_and, t_or, t_not, t_mod, t_mod1, t_divi, t_divi1,
 	t_call, t_len,
@@ -441,7 +441,7 @@ static int tbl_b[] = { t_break, t_background, t_bitand, t_bitor, t_bitxor, t_bit
 static int tbl_c[] = { t_call, t_clear, t_color, t_circle, t_cos, t_rgb, t_arc, t_curve, t_rotate, t_translate, 0 } ;
 static int tbl_d[] = { t_divi, t_divi1, t_drawgrid, 0 } ;
 static int tbl_e[] = { t_else, t_elif, t_end, t_error, 0 };
-static int tbl_f[] = { t_for, t_floor, t_fastproc, t_func, 0 };
+static int tbl_f[] = { t_for, t_floor, t_fastproc, 0 };
 static int tbl_g[] = { t_global, 0 };
 static int tbl_h[] = { t_higher, 0 };
 static int tbl_i[] = { t_if, t_input, t_input_data, 0 };
@@ -646,7 +646,7 @@ struct vname {
 			short id;
 			ushort srcpos;
 		};
-		ND* start;
+		ND* sstart;
 	};
 	char typ;
 	char access;

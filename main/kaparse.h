@@ -148,7 +148,6 @@ S int is_numfactor(void) {
 	return 0;
 }
 
-
 S void optimize_vnumael(ND* nd) {
 
 	if (nd->ri->numf == op_lvnum) {
@@ -747,6 +746,8 @@ S ND* parse_sequ_if(void) {
 	return nd;
 }
 
+struct vname* xx;
+
 S void parse_subr(void) {
 
 	loop_level += 1;
@@ -758,9 +759,13 @@ S void parse_subr(void) {
 	if (p != NULL) error("already defined");
 	p = add_vname(proc, name, VAR_SUBR, code_utf8len);
 	cs_tok_nt();
-	p->start = ndnxt;	// could be recursive
+	p->sstart = mknd();
+	ushort pind = p - proc->vname_p;
+
 	ND* h = parse_sequ_end();
-	if (h == NULL) p->start = NULL; // could be empty
+	p = proc->vname_p + pind;
+	p->sstart->ex = h;
+	
 	nexttok();
 	loop_level -= 1;
 }
@@ -1504,7 +1509,7 @@ S void parse_for_stat(ND* nd) {
 	loop_level -= 1;
 }
 
-// TODO make short (1 statement) repeat, change le ri
+// TODO make short (1 statement) repeat, change le ri ?
 S void parse_repeat_stat(ND* nd) {
 
 	ND* ndx = mkndx();
@@ -1783,7 +1788,7 @@ S void parse_call_stat(ND* nd) {
 			return;
 		}
 		cs_tok_nt();
-		nd->le = pf->start;
+		nd->le = pf->sstart;
 		nd->vf = op_callsubr;
 		return;
 	}

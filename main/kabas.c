@@ -96,7 +96,7 @@ ND* ndnxt;
 ND* mknd(void) {
 	if (!cod) return progmem;
 	if (ndnxt >= progmem + BLSZ - 2) {
-		fprintf(stderr, "increase memory\n"); 
+//		fprintf(stderr, "increase memory\n"); 
 		ND* nd = malloc((BLSZ + 1) * sizeof(ND));
 		progmem[BLSZ].ex = nd;
 		progmem = nd;
@@ -114,7 +114,7 @@ S void code_free() {
 
 	while (nd) {
 		ND* h = nd[BLSZ].ex;
-		fprintf(stderr, "free\n"); 
+//		fprintf(stderr, "free\n"); 
 		free(nd);
 		nd = h;
 	}
