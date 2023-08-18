@@ -11,46 +11,13 @@
     "christof.kaser@gmail.com".
 */
 
-// DOESN'T WORK - EXPERIMENTING
-
-#if 1
-//#ifdef __EMSCRIPTEN__
-
-//test
-/*
-unsigned char wasm[] = {
-  0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, 0x01, 0x07, 0x01, 0x60,
-  0x02, 0x7c, 0x7c, 0x01, 0x7c, 0x03, 0x02, 0x01, 0x00, 0x07, 0x08, 0x01,
-  0x04, 0x66, 0x61, 0x73, 0x74, 0x00, 0x00, 0x0a, 0x09, 0x01, 0x07, 0x00,
-  0x20, 0x00, 0x20, 0x01, 0xa2, 0x0b
-};
-unsigned int wasm_len = 42;
-
-
-unsigned char wasm[] = {
-  0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, 0x01, 0x07, 0x01, 0x60,
-  0x02, 0x7c, 0x7c, 0x01, 0x7c, 0x03, 0x02, 0x01, 0x00, 0x07, 0x08, 0x01,
-  0x04, 0x66, 0x61, 0x73, 0x74, 0x00, 0x00, 0x0a, 0x5d, 0x01, 0x5b, 0x01,
-  0x06, 0x7c, 0x02, 0x40, 0x03, 0x40, 0x20, 0x06, 0x44, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0xf0, 0x3f, 0xa0, 0x21, 0x06, 0x20, 0x03, 0x20, 0x02,
-  0xa1, 0x20, 0x00, 0xa0, 0x22, 0x07, 0x20, 0x07, 0xa2, 0x22, 0x03, 0x20,
-  0x05, 0x20, 0x05, 0xa0, 0x20, 0x04, 0xa2, 0x20, 0x01, 0xa0, 0x22, 0x04,
-  0x20, 0x04, 0xa2, 0x22, 0x02, 0xa0, 0x44, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x10, 0x40, 0x63, 0x45, 0x0d, 0x01, 0x20, 0x07, 0x21, 0x05, 0x20,
-  0x06, 0x44, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x60, 0x40, 0x63, 0x0d,
-  0x00, 0x0b, 0x0b, 0x20, 0x06, 0x0b
-};
-unsigned int wasm_len = 126;
-
-*/
+// EXPERIMENTING
 
 byte wasm[1000] = {
   0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, 0x01, 0x08, 0x01, 0x60,
   0x03, 0x7c, 0x7c, 0x7c, 0x01, 0x7c, 0x03, 0x02, 0x01, 0x00, 0x07, 0x08, 
   0x01, 0x04, 0x66, 0x61, 0x73, 0x74, 0x00, 0x00, 0x0a, 0x5d, 0x01, 0x5b
 };
-
-#endif
 
 static ushort wi;
 static void wemit(byte b) {
@@ -68,40 +35,39 @@ static void wemitf(double d) {
 	*(double*)(wasm + wi) = d;
 	wi += 8;
 }
-static void mf_expr(ushort o) {
+static void mf_expr(ND* nd) {
 
-	void* p = codp[o].vf;
-	if (p == op_add || p == op_mult) {
-		mf_expr(codp[o].o1);
-		mf_expr(codp[o].o2);
+	void* p = nd->vf;
+	if (p == op_add || p == op_mult || p == op_div || p == op_sub) {
+		mf_expr(nd->le);
+		mf_expr(nd->ri);
 		
 		if (p == op_add) {
-			printf("add\n");
 			wemit(0xa0);
 		}
+		else if (p == op_sub) {
+			wemit(0xa1);
+		}
 		else if (p == op_mult) {
-			printf("mult\n");
 			wemit(0xa2);
+		}
+		else if (p == op_div) {
+			wemit(0xa3);
 		}
 	}
 	else if (p == op_lvnum) {
-		printf("get %d\n", codp[o].o1);
+//		printf("get %d\n", nd->v1);
 		wemit(0x20);
-		wemit(codp[o].o1);
+		wemit(nd->v1);
 	}
 	else if (p == op_const_fl) {
-		printf("const\n");
 		wemit(0x44);
-		*(double*)(wasm + wi) = (double)codp[o].cfl;
-		wi += 8;
-	}
-	else if (p == op_const_flx) {
-		printf("const\n");
-		wemit(0x44);
-		wemitf(codp[o + 1].cdbl);
+		wemitf(nd->cfl);
 	}
 	else {
-		printf("expr_xx\n");
+		printf("fastproc error - expr\n");
+		fastproc_addr = 0;
+		error("fastproc error");
 	}
 }
 
@@ -110,12 +76,11 @@ static int mf_iscmp(void* p) {
 	return 0; 
 }
 
-static void mf_and(ushort o) {
-	void* p = codp[o].intf;
+static void mf_and(ND* nd) {
+	void* p = nd->intf;
 	if (mf_iscmp(p)) {
-		printf("op_cmpf\n");
-		mf_expr(codp[o].o1);
-		mf_expr(codp[o].o2);
+		mf_expr(nd->le);
+		mf_expr(nd->ri);
 		if (p == op_eqf) wemit(0x61);
 		else if (p == op_neqf) wemit(0x62);
 		else if (p == op_ltf) wemit(0x63);
@@ -123,39 +88,43 @@ static void mf_and(ushort o) {
 		else if (p == op_lef) wemit(0x65);
 		else if (p == op_gef) wemit(0x66);
 		wemit(0x0d); //br_if
+		wemit(1);
 	}
 	else {
-		printf("op_andxx\n");
+		printf("fastproc error - and\n");
+		fastproc_addr = 0;
+		error("fastproc error");
 	}
 }
 
-static void mf_or(ushort o) {
-	while (codp[o].intf == op_or) {
-		mf_and(codp[o].o1);
-		o = codp[o].o2;
+static void mf_or(ND* nd) {
+	while (nd->intf == op_or) {
+		mf_and(nd->le);
+		nd = nd->ri;
 	}
-	mf_and(o);
+	mf_and(nd);
 }
 
-static void mf_sequ(ushort o) {	while (1) {
-		void* p = codp[o].vf;
-		if (p == op_while) {			
-			printf("op_while\n");
-			mf_sequ(codp[o].o2);
+static void mf_sequ(ND* nd) {
+	while (nd) {
+		void* p = nd->vf;
+
+		if (0) {
 		}
 		else if (p == op_repeat) {			
-			printf("op_repeat\n");
+
+			ND* ndx = nd + 1;
+
 			wemit(0x02);
 			wemit(0x40);
 			wemit(0x03);
 			wemit(0x40);
-			mf_sequ(codp[o].o2);
+			mf_sequ(nd->ri);
 			//
 
-			mf_or(codp[o].o1);
+			mf_or(nd->le);
 			
-
-			mf_sequ(codp[o].o3);
+			mf_sequ(ndx->ex);
 
 			wemit(0x0c);
 			wemit(0);
@@ -163,45 +132,42 @@ static void mf_sequ(ushort o) {	while (1) {
 			wemit(0x0b);
 
 		}
-		else if (p == op_flass) {
-			mf_expr(codp[o].o2);
+		else if (p == op_flassp) {
+			mf_expr(nd->ri);
+			wemit(0x20);
+			wemit(nd->v1);
+			wemit(0xa0);
 			// local.set 
 			wemit(0x21);
-			wemit(codp[o].o1);
-			printf("op_flass %d\n", codp[o].o1);
+			wemit(nd->v1);
 		}
-		else if (p == op_intass16) {
-			printf("op_intass\n");
-		}
-		else if (p == op_intassp16) {
-			printf("op_intassp\n");
+		else if (p == op_flass) {
+			mf_expr(nd->ri);
+			// local.set 
+			wemit(0x21);
+			wemit(nd->v1);
 		}
 		else {
-			printf("op_xx\n");
+			printf("fastproc error - sequence\n");
+			fastproc_addr = 0;
+			error("fastproc error");
 		}
-		o = codp[o].next;
-		if (o == UMO) break;
-//		break;
+		nd = nd->next;
 	}
-	printf("\n");
 }
-
 
 static void parse_fastproc(void) {
 
-	printf("%d %d %d\n", proc->varcnt[0], proc->varcnt[1], proc->varcnt[2]);
+//	printf("%d %d %d\n", proc->varcnt[0], proc->varcnt[1], proc->varcnt[2]);
 	if (proc->varcnt[1] + proc->varcnt[2] > 0) {
 		error("in fastproc only mumbers are allowed");
 	}
-	fastproc_addr = proc;
+	fastproc_addr = proc - proc_p;
 
 //kc ---------- compile fast
 
-	printf("%s\n", proc->name);
-//	ushort ox = proc->start - 1;
-	printf("%d %d %d\n", proc->varcnt[0], proc->varcnt[1], proc->varcnt[2]);
+//	printf("%s\n", proc->parms);
 
-	printf("%s\n", proc->parms);
 	if (memcmp(proc->parms, "ffF", 4) != 0) {
 		error("a fastproc have 2 in- and 1 inout-parameter");
 	}
@@ -213,34 +179,33 @@ static void parse_fastproc(void) {
 		wemit(b);
 		wemit(0x7c);
 	}
-
-//	printf("%d %d %d\n", codp[ox].bx0, codp[ox].bx1, codp[ox].bx2);
-
-	mf_sequ(proc->start);
+	mf_sequ(proc->start->bxnd);
 
 	wemit(0x20);
 	wemit(2);
 	wemit(0x0b);
 
-	printf("size %d\n", wi);
 	ushort h = wi - 36;
 	wasm[0x23] = h;
 	wasm[0x21] = h + 2;
 
-#ifdef __EMSCRIPTEN__
+	printf("fastproc %s - size %d\n", proc->name, wi);
 
-	EM_ASM(
-		fastarr = Array();
-	);
-	for (int i = 0; i < wi; i++) {
-	    EM_ASM_({
-        	fastarr.push(getValue($0));
-		}, wasm + i);
+#ifdef __EMSCRIPTEN__
+	if (fastproc_addr) {
+		EM_ASM(
+			fastarr = Array();
+		);
+		for (int i = 0; i < wi; i++) {
+		    EM_ASM_({
+				fastarr.push(getValue($0));
+			}, wasm + i);
+		}
+	    EM_ASM(
+	        var mod = new WebAssembly.Module(Uint8Array.from(fastarr));
+	        fastinst = new WebAssembly.Instance(mod);
+	    );
 	}
-    EM_ASM(
-        var mod = new WebAssembly.Module(Uint8Array.from(fastarr));
-        fastinst = new WebAssembly.Instance(mod);
-    );
 #endif
 }
 

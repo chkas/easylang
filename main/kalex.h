@@ -670,7 +670,7 @@ struct procdecl {
 
 static struct proc* proc;
 static struct proc* proc_p;
-static struct proc* fastproc_addr;
+static ushort fastproc_addr;
 static ushort proc_len;
 static struct procdecl* procdecl;
 static ushort procdecl_len;
@@ -875,81 +875,6 @@ static void opln_add(ND* nd, ushort line) {
 	}
 }
 
-/*
-struct op {
-	union {
-		struct {
-			union {
-				int (*intf)(struct op*);
-				double (*numf)(struct op*);
-				struct str (*strf)(struct op*);
-				void (*vf)(struct op*);
-				struct arr (*arrf)(struct op*);
-				void* (*pf)(struct op*);
-			};
-			union {
-				struct {
-					ushort o1;
-					union {
-						ushort o2;
-						short cint16;
-					};
-					ushort o3;
-				};
-				float cfl;
-				int cint;
-				uint str;
-			};
-			ushort next;
-		};
-
-// for extendend op
-		struct {
-			union {
-				double cdbl;
-				struct {
-					ushort ox1;
-					ushort ox2;
-					ushort ox3;
-					ushort ox4;
-				};
-				struct {
-					byte bx0;
-					byte bx1;
-					byte bx2;
-					byte bx3;
-					byte bx[8];
-				};
-			};
-		};
-	};
-};
-*/
-
-/*
-static struct op *codp;
-static uint code_len;
-static struct op dummy_op;
-
-static void code_free() {
-	if (codp != &dummy_op) {
-		free(codp);
-		codp = &dummy_op;
-	}
-	code_len = 0;
-}
-
-static ushort code_add(void) {
-	if (!cod) return 0;
-	if (code_len % 64 == 0) { 
-		if (codp == &dummy_op) codp = NULL; 
-		codp = _realloc(codp, (code_len + 64) * sizeof(struct op));
-	}
-	code_len += 1;
-	return code_len - 1;
-}
-*/
-
 // ---------------------------------------------------------
 
 static ushort onstats;
@@ -990,7 +915,7 @@ static void parse_prepare() {
 	codestrspc = h + h / 2;
 	codestr = _realloc(NULL, codestrspc + 1);
 	proc = proc_add("_GLOBAL_");
-	fastproc_addr = NULL;
+	fastproc_addr = 0;
 
 	seq.mouse_down = NULL;
 	seq.mouse_up = NULL;

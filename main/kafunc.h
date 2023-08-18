@@ -531,11 +531,6 @@ S void op_arrarr_ass(ND* nd) {
 S double op_const_fl(ND* nd) {
 	return nd->cfl;
 }
-/*
-S double op_const_flx(ND* nd) {
-	return (op + 1)->cdbl;
-}
-*/
 
 S double op_negf(ND* nd) {
 	return -numf(nd->le);
@@ -2025,15 +2020,15 @@ S void op_callproc(ND* nd0) {
 	if (stop_flag) stop_flag -= 1;
 }
 
-/*
-//kc
+
+#ifdef FASTPROC
+
 S void op_fastcall(ND* nd0) {
-	printf("fastcall\n");
 
 #ifdef __EMSCRIPTEN__
 
 	ND* nd = nd0->ri;
-	opx = codp + nd->o3;
+
 	double a1 = numf(nd);
 	nd = nd->next;
 	double a2 = numf(nd);
@@ -2047,9 +2042,10 @@ S void op_fastcall(ND* nd0) {
 	*(gnum(nd->v1)) = r;
 
 #else
-	op_call(ND* nd);
+	op_callproc(nd0);
 #endif
-*/
+}
+#endif
 
 #define sl_as(ps, s) str_append(ps, s)
 

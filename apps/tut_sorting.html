@@ -36,7 +36,7 @@ proc test . .
   print ""
 .
 proc time_test . .
-  len d[] 50
+  len d[] 500
   write "Length" & strchar 9 & "Time"
   for _ = 1 to 3
     for i = 1 to len d[]
@@ -70,7 +70,7 @@ proc sort . d[] .
   .
 .
 proc time_test . .
-  len d[] 50
+  len d[] 500
   write "Length" & strchar 9 & "Time"
   for test = 1 to 3
     for i = 1 to len d[]
@@ -126,7 +126,7 @@ proc sort . d[] .
 proc time_test . .
   len d[] 500
   write "Length" & strchar 9 & "Time"
-  for test = 1 to 3
+  for test = 1 to 4
     for i = 1 to len d[]
       d[i] = random 1000000
     .
@@ -182,9 +182,9 @@ proc sort . d[] .
   .
 .
 proc time_test . .
-  len d[] 5000
+  len d[] 500
   write "Length" & strchar 9 & "Time"
-  for test = 1 to 3
+  for test = 1 to 4
     for i = 1 to len d[]
       d[i] = random 1000000
     .
@@ -248,9 +248,9 @@ proc sort . d[] .
   .
 .
 proc time_test . .
-  len d[] 5000
+  len d[] 500
   write "Length" & strchar 9 & "Time"
-  for test = 1 to 3
+  for test = 1 to 4
     for i = 1 to len d[]
       d[i] = random 1000000
     .
@@ -305,9 +305,9 @@ proc sort . d[] .
   .
 .
 proc time_test . .
-  len d[] 5000
+  len d[] 500
   write "Length" & strchar 9 & "Time"
-  for test = 1 to 3
+  for test = 1 to 4
     for i = 1 to len d[]
       d[i] = random 1000000
     .

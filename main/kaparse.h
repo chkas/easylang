@@ -148,8 +148,11 @@ S int is_numfactor(void) {
 	return 0;
 }
 
+byte in_fastproc;
+
 S void optimize_vnumael(ND* nd) {
 
+	if (in_fastproc) return;
 	if (nd->ri->numf == op_lvnum) {
 		nd->numf = op_vnumael_lvar;
 		nd->v2 = nd->ri->v1;
@@ -392,6 +395,7 @@ S ND* parse_term(void) {
 //kc optimize
 S void optimize_ex(ND* nd) {
 
+	if (in_fastproc) return;
 	if (nd->le->numf == op_lvnum && nd->ri->numf == op_const_fl) {
 		double d = nd->ri->cfl;
 		float f = (float)d;
@@ -583,6 +587,7 @@ S void parse_arr_cmp(ND* nd) {
 
 S void optimize_cmp(ND* nd) {
 
+	if (in_fastproc) return;
 	if (nd->le->numf == op_lvnum && nd->ri->numf == op_const_fl) {
 		double d = nd->ri->cfl;
 		float f = (float)d;
@@ -1794,7 +1799,7 @@ S void parse_call_stat(ND* nd) {
 	}
 
 	cs_tok_nt();
-	nd->le =p->start;
+	nd->le = p->start;
 	if (p->start == NULL) {
 		procdecl = realloc(procdecl, sizeof(struct procdecl) * (procdecl_len + 1));
 		procdecl[procdecl_len].callref = nd;
@@ -1804,9 +1809,12 @@ S void parse_call_stat(ND* nd) {
 //kc
 	nd->vf = op_callproc;
 
-//	if (p == fastproc_addr) {
-//		nd->vf = op_fastcall;
-//	}
+#ifdef FASTPROC
+	if (p - proc_p == fastproc_addr) {
+		nd->vf = op_fastcall;
+	}
+#endif
+
 	ND* ndf = nd;
 	ushort i = 0;
 
@@ -1877,6 +1885,7 @@ S void parse_call_stat(ND* nd) {
 
 S void optimize_ass(ND* nd) {
 
+	if (in_fastproc) return;
 	if (nd->ri->numf == op_const_fl) {
 
 		double d = nd->ri->cfl;
@@ -1971,8 +1980,17 @@ S ND* parse_sequ(void) {
 				loop_level += 1;
 				if (!err && sequ_level < 16) nest_block[sequ_level] = codestrln;
 
+#ifdef FASTPROC
+				if (tok == t_fastproc && cod) {
+					in_fastproc = 1;
+					parse_proc();
+					parse_fastproc();
+					in_fastproc = 0;
+				}
+				else parse_proc();
+#else
 				parse_proc();
-//kc				if (tok == t_fastproc && cod) parse_fastproc();
+#endif
 
 				proc = proc_p;
 				loop_level -= 1;

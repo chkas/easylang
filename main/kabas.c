@@ -123,9 +123,15 @@ S void code_free() {
 	ndnxt = progmem;
 }
 
+#define FASTPROC
+
 #include "kalex.h"
 #include "kafunc.h"
-//#include "kawasm.h"
+
+#ifdef FASTPROC
+#include "kawasm.h"
+#endif
+
 #include "kaparse.h"
 
 //--------------------------------------------------------------------------------------
@@ -283,8 +289,7 @@ int main(void) {
 #elif defined(__RUN__)
 
 //test
-//char* code = "fastproc mul a b . r . i = 1 while i <= 5 i += 1 . r = a * b r += 2 . call mul 2 3 r print r";
-char* code1 = "fastproc mul a b . r . r = a * b . call mul 2 3 r print r";
+char* code = "fastproc mul a b . r . r = a * b . call mul 2 8 r print r";
 char* code2 = "proc f .. print 4 . call f";
 
 char* codefr = "proc iter cx cy . iter . "
@@ -308,7 +313,7 @@ char* code4 =
 	". "
 	"print s "
 ;
-char* code = 
+char* code5 = 
 	"a[]=[7 8] proc f a .. if a = 1 pr a[a] . . call f 1 a -= 2 pr a  "
 ;
 

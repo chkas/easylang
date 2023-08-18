@@ -1,31 +1,34 @@
 # Mandelbrot
-# 
-center_x = 220
-center_y = 150
-scale = 150
+#  
+center_x = 300
+center_y = 200
+scale = 200
 background 000
 textsize 2
 # 
+fastproc iter cx cy . iter .
+   iter = 0
+   repeat
+      y = 2 * x * y + cy
+      x = xx - yy + cx
+      iter += 1
+      xx = x * x
+      yy = y * y
+      until xx + yy > 4 or iter = 128
+   .
+.
 proc draw . .
    clear
-   for scr_y = 0 to 299
+   for scr_y = 0 to 399
       cy = (scr_y - center_y) / scale
-      for scr_x = 0 to 299
+      for scr_x = 0 to 399
          cx = (scr_x - center_x) / scale
-         x = 0 ; y = 0 ; iter = 0
-         repeat
-            xx = x * x
-            yy = y * y
-            until xx + yy >= 4 or iter = 128
-            h = xx - yy + cx
-            y = 2 * x * y + cy
-            x = h
-            iter += 1
-         .
+         call iter cx cy iter
          if iter < 128
             color3 iter / 32 iter / 128 0
-            move scr_x / 3 scr_y / 3
-            rect 0.4 0.4
+            # color3 0 iter / 32 iter / 128
+            move scr_x / 4 scr_y / 4
+            rect 0.25 0.25
          .
       .
    .
@@ -37,16 +40,16 @@ on mouse_down
    time0 = systime
 .
 on mouse_up
-   center_x += 150 - mouse_x * 3
-   center_y += 150 - mouse_y * 3
+   center_x += 200 - mouse_x * 4
+   center_y += 200 - mouse_y * 4
    if systime - time0 < 0.3
-      center_x -= 150 - center_x
-      center_y -= 150 - center_y
+      center_x -= 200 - center_x
+      center_y -= 200 - center_y
       scale *= 2
    else
-      center_x += (150 - center_x) / 2
-      center_y += (150 - center_y) / 2
-      scale /= 2
+      center_x += (200 - center_x) * 3 / 4
+      center_y += (200 - center_y) * 3 / 4
+      scale /= 4
    .
    call draw
 .

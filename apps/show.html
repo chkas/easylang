@@ -105,17 +105,16 @@ window.onresize()
 
 var demo = `ang = 45
 color 663
-#
 on animate
-  clear
-  move 50 50
-  circle 1
-  x = 50 + 40 * sin ang
-  y = 50 - 40 * cos ang
-  line x y
-  circle 6
-  vel += sin ang / 5
-  ang += vel
+   clear
+   move 50 50
+   circle 1
+   x = 50 + 40 * sin ang
+   y = 50 + 40 * cos ang
+   line x y
+   circle 6
+   vel += sin ang / 5
+   ang += vel
 .
 `
 
@@ -170,17 +169,26 @@ nextlnk.onclick = function() {
 	}
 }
 
-if (location.search.startsWith("?f=")) {
-	files = location.search.substr(3).split(",")
-	load(files[0])
+function ready() {
+	if (location.search.startsWith("?f=")) {
+		files = location.search.substr(3).split(",")
+		load(files[0])
+	}
+	else {
+		var q = location.hash
+		if (q.startsWith("#code=")) {
+			code.innerText = decodeURIComponent(q.substring(6))
+		}
+		else {
+			code.innerText = demo
+		}
+		runlnk.onclick()
+	}
+	if (!files || files.length == 1) {
+		nextlnk.style.display = "none"
+	}
 }
-else {
-	code.innerText = demo
-	runlnk.onclick()
-}
-if (!files || files.length == 1) {
-	nextlnk.style.display = "none"
-}
+ready()
 
 </script>
 
