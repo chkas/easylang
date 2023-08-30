@@ -446,7 +446,20 @@ function newCode() {
 	show(keepd)
 }
 
-function ready() {
+async function decompr(txt) {
+	var s = atob(txt)
+	var buf = new ArrayBuffer(s.length)
+	var bytes = new Uint8Array(buf)
+	for (var i = 0; i < s.length; i++) {
+		bytes[i] = s.charCodeAt(i)
+	}
+	var stream = new Response(buf).body.pipeThrough(new DecompressionStream('deflate'))
+	var h = await new Response(stream).arrayBuffer()
+	var dec = new TextDecoder("utf8")
+	return dec.decode(h)
+}
+
+async function ready() {
 
 	fillsel(null)
 
@@ -455,6 +468,10 @@ function ready() {
 
 	if (q.startsWith("code=")) {
 		code = decodeURIComponent(q.substring(5))
+		history.replaceState(null, "", location.protocol + "//" + location.host + location.pathname)
+	}
+	else if (q.startsWith("cod=")) {
+		code = await decompr(q.substring(4))
 		history.replaceState(null, "", location.protocol + "//" + location.host + location.pathname)
 	}
 	else code = window.localStorage.getItem("xruncode")
@@ -476,6 +493,7 @@ function change() {
 	var ind = sel.selectedIndex >= 0 ? sel.selectedIndex : 0
 	appn = sel.options[ind].value
 	code = window.localStorage.getItem("a" + appn)
+	window.localStorage.setItem("xrunsel", ind)
 	getCodeInfo()
 	runr(code)
 }

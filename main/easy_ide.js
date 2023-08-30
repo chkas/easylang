@@ -73,6 +73,29 @@ function show(e) { e.style.display = "" }
 function hide(e) { e.style.display = "none" }
 function isVisible(e) { return e.style.display == "" }
 
+async function compr(txt) {
+	var enc = new TextEncoder()
+	var buffer = await new Response(new Response(enc.encode(txt)).body.pipeThrough(new CompressionStream('deflate'))).arrayBuffer()
+	var s = ""
+	var bytes = new Uint8Array(buffer)
+	for (var i = 0; i < bytes.byteLength; i++) {
+		s += String.fromCharCode(bytes[i])
+	}
+	return btoa(s)
+}
+async function decompr(txt) {
+	var s = atob(txt)
+	var buf = new ArrayBuffer(s.length)
+	var bytes = new Uint8Array(buf)
+	for (var i = 0; i < s.length; i++) {
+		bytes[i] = s.charCodeAt(i)
+	}
+	var stream = new Response(buf).body.pipeThrough(new DecompressionStream('deflate'))
+	var h = await new Response(stream).arrayBuffer()
+	var dec = new TextDecoder("utf8")
+	return dec.decode(h)
+}
+
 themeBtn.onclick = function() {
 	chngTheme()
 //	moreShow(false)
@@ -83,7 +106,7 @@ show(container)
 
 var fulldiv
 
-function showFull() {
+async function showFull() {
 	hide(container)
 	canv.style.width = "calc(100vmin - 6px)"
 	canv.style.height = "calc(100vmin - 6px)"
@@ -110,7 +133,11 @@ function showFull() {
 	fulldiv.appendChild(runBtn)
 	append(fulldiv, "p")
 	var p = location.pathname.slice(0, -5)
-	var url = location.origin + p + "/run/#code=" + encodeURIComponent(inp.innerText)
+
+	var h = await compr(inp.innerText)
+	var url = location.origin + p + "/run/#cod=" + h
+//	var url = location.origin + p + "/run/#code=" + encodeURIComponent(inp.innerText)
+
 	var lnk = create("a")
 	lnk.href = url
 	lnk.target = "_blank"
@@ -229,7 +256,6 @@ function tutUpd() {
 
 function runCode(code, caret) {
 //	moreShow(false)
-//	dbg.textContent = ""
 	dbg.value = ""
 	tailSrc = null
 	stepBtn.disabled = true
@@ -1307,11 +1333,13 @@ moreBtn.onmousedown = function() {
 	moreShow(!isVisible(moreSpn))
 }
 
-urlBtn.onclick = function() {
-	var s = "#code="
+urlBtn.onclick = async function() {
+	var h = await compr(inp.innerText)
+	dbg.value = location.origin + "/ide/#cod=" + h
+	//var s = "#code="
 	//if (isVisible(canv)) s = "#run="
-	var url = location.origin + "/ide/" + s + encodeURIComponent(inp.innerText)
-	out.value = url
+	//var url = location.origin + "/ide/" + s + encodeURIComponent(inp.innerText)
+	//out.value = url
 //	moreShow(false)
 }
 
@@ -1377,7 +1405,7 @@ function testReload() {
 	}
 }
 
-function main() {
+async function main() {
 
 	var tabn = 1
 	if (window.localStorage.getItem("x2col") == "true") {
@@ -1397,21 +1425,34 @@ function main() {
 				h = 5
 				if (doce) tabn = 3
 			}
-			else if (vs[i].startsWith("run=")) {
-				h = 4
-				showCanv()
+			else if (vs[i].startsWith("cod=")) {
+				h = 1
+				if (doce) tabn = 3
 			}
+			else if (vs[i].startsWith("run=eF5")) h = 1
+			else if (vs[i].startsWith("run=")) h = 4
+
 			else if (vs[i] == "store") tabn = 2
 			else if (vs[i].startsWith("tut=")) initTut = Number(vs[i].substring(4))
-			if (h) {
+			if (h > 1) {
 				try {
 					codeToRun = decodeURIComponent(vs[i].substring(h))
 				}
 				catch(e) {
 					codeToRun = "# URL error"
 				}
-				appendTxt(inp, codeToRun)
+				inp.value = codeToRun
 				if (h == 4) showFull()
+			}
+			else if (h) {
+				try {
+					codeToRun = await decompr(vs[i].substring(4))
+				}
+				catch(e) {
+					codeToRun = "# URL Error"
+				}
+				inp.value = codeToRun
+				if (vs[i][0] == "r") showFull()
 			}
 		}
 		history.replaceState(null, "", location.pathname)

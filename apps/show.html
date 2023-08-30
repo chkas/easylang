@@ -103,7 +103,9 @@ window.onresize = function() {
 
 window.onresize()
 
-var demo = `ang = 45
+var demo = `# Demo
+#
+ang = 45
 color 663
 on animate
    clear
@@ -133,8 +135,11 @@ runlnk.onclick = function() {
 		disableShort()
 	}
 }
-edit.onclick = function() {
-	window.open("../ide/#code=" + encodeURIComponent(code.innerText))
+edit.onclick = async function() {
+	var h = await compr(code.innerText)
+	window.open(location.origin + "/ide/#cod=" + h)
+
+//	window.open("../ide/#code=" + encodeURIComponent(code.innerText))
 }
 
 easyinit(canv, out, codeMsgF)
@@ -169,15 +174,55 @@ nextlnk.onclick = function() {
 	}
 }
 
-function ready() {
+async function compr(inp) {
+	var enc = new TextEncoder()
+	var buffer = await new Response(new Response(enc.encode(inp)).body.pipeThrough(new CompressionStream('deflate'))).arrayBuffer()
+	var s = ""
+	var bytes = new Uint8Array(buffer)
+	for (var i = 0; i < bytes.byteLength; i++) {
+		s += String.fromCharCode(bytes[i])
+	}
+	return btoa(s)
+}
+async function decompr(inp) {
+	var s = atob(inp)
+	var buf = new ArrayBuffer(s.length)
+	var bytes = new Uint8Array(buf)
+	for (var i = 0; i < s.length; i++) {
+		bytes[i] = s.charCodeAt(i)
+	}
+	var stream = new Response(buf).body.pipeThrough(new DecompressionStream('deflate'))
+	var h = await new Response(stream).arrayBuffer()
+	var dec = new TextDecoder("utf8")
+	return dec.decode(h)
+}
+
+var error_compr = `
+# The browser doesn't support
+# Compression Streams API :-(
+# 
+move 20 83
+color 983
+circle 7
+color 000
+move 17 85
+circle 1
+move 23 85
+circle 1
+linewidth 1
+curve [ 17 80 20 83 23 80 ]
+`
+
+async function ready() {
 	if (location.search.startsWith("?f=")) {
 		files = location.search.substr(3).split(",")
 		load(files[0])
 	}
 	else {
 		var q = location.hash
-		if (q.startsWith("#code=")) {
-			code.innerText = decodeURIComponent(q.substring(6))
+		if (q.startsWith("#cod=")) {
+			if ("DecompressionStream" in window) code.innerText = await decompr(q.substring(5))
+			else code.innerText = error_compr
 		}
 		else {
 			code.innerText = demo

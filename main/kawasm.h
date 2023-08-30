@@ -24,6 +24,8 @@ byte* wasm = NULL;
 ushort wasm_len = 0;
 
 static ushort wasmi;
+static ushort wavar;
+
 static void wemit(byte b) {
 	if (wasmi >= wasm_len) {
 		wasm_len += 256;
@@ -52,33 +54,65 @@ static void mf_err(const char* s) {
 #define W_END 0x0b
 #define W_BRIF 0x0d
 #define W_BR 0x0c
-#define W_SET 0x21
 #define W_GET 0x20
+#define W_SET 0x21
+#define W_TEE 0x22
+
+#define W_ADD 0xa0
+#define W_SUB 0xa1
+#define W_MULT 0xa2
+#define W_DIV 0xa3
+#define W_FLOOR 0x9c
+
 
 static void mf_sequ(ND* nd);
 
 static void mf_expr(ND* nd) {
 
 	void* p = nd->vf;
-	if (p == op_add || p == op_mult || p == op_div || p == op_sub) {
+	if (p == op_add || p == op_mult || p == op_div || p == op_sub 
+		 || p == op_lower || p == op_higher || p == op_divi) {
+
 		mf_expr(nd->le);
 		mf_expr(nd->ri);
 		
-		if (p == op_add) {
-			wemit(0xa0);
-		}
-		else if (p == op_sub) {
-			wemit(0xa1);
-		}
-		else if (p == op_mult) {
-			wemit(0xa2);
-		}
-		else if (p == op_div) {
-			wemit(0xa3);
+		if (p == op_add) wemit(W_ADD);
+		else if (p == op_sub) wemit(W_SUB);
+		else if (p == op_mult) wemit(W_MULT);
+		else if (p == op_div) wemit(W_DIV);
+		else if (p == op_lower) wemit(0xa4);
+		else if (p == op_higher) wemit(0xa5);
+		else if (p == op_divi) {
+			wemit(W_DIV);
+			wemit(W_FLOOR);
 		}
 	}
+	else if (p == op_mod) {
+		mf_expr(nd->le);
+		wemit(W_TEE);
+		wemit(wavar);
+		wemit(W_GET);
+		wemit(wavar);
+
+		mf_expr(nd->ri);
+		wemit(W_TEE);
+		wemit(wavar + 1);
+		wemit(W_DIV);
+		wemit(W_FLOOR);
+		wemit(W_GET);
+		wemit(wavar + 1);
+		wemit(W_MULT);
+		wemit(W_SUB);
+	}
+	else if (p == op_floor || p == op_abs || p == op_negf || p == op_sqrt) {
+		mf_expr(nd->le);
+
+		if (p == op_floor) wemit(W_FLOOR);
+		else if (p == op_abs) wemit(0x99);
+		else if (p == op_negf) wemit(0x9a);
+		else if (p == op_sqrt) wemit(0x9f);
+	}
 	else if (p == op_lvnum) {
-//		printf("get %d\n", nd->v1);
 		wemit(W_GET);
 		wemit(nd->v1);
 	}
@@ -317,12 +351,12 @@ static void parse_fastproc(void) {
 	memcpy(wasm, wasm0, sizeof(wasm0));	
 
 	wasmi = 36;
-	if (b == 0) wemit(0);
-	else {
-		wemit(1);
-		wemit(b);
-		wemit(0x7c);
-	}
+	wavar = b;
+	b += 2;
+	wemit(1);
+	wemit(b);
+	wemit(0x7c);
+
 	mf_sequ(proc->start->bxnd);
 
 	wemit(0x20);
@@ -336,20 +370,20 @@ static void parse_fastproc(void) {
 	printf("fastproc %s - size %d\n", proc->name, wasmi);
 
 #ifdef __EMSCRIPTEN__
-	if (fastproc_addr) {
-		EM_ASM(
-			fastarr = Array();
-		);
-		for (int i = 0; i < wasmi; i++) {
-		    EM_ASM_({
-				fastarr.push(getValue($0));
-			}, wasm + i);
-		}
-	    EM_ASM(
-	        var mod = new WebAssembly.Module(Uint8Array.from(fastarr));
-	        fastinst = new WebAssembly.Instance(mod);
-	    );
+
+	EM_ASM(
+		fastarr = Array();
+	);
+	for (int i = 0; i < wasmi; i++) {
+	    EM_ASM_({
+			fastarr.push(getValue($0));
+		}, wasm + i);
 	}
+    EM_ASM(
+        var mod = new WebAssembly.Module(Uint8Array.from(fastarr));
+        fastinst = new WebAssembly.Instance(mod);
+    );
+
 #endif
 	free(wasm);
 	wasm = 0;
