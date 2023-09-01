@@ -174,9 +174,9 @@ nextlnk.onclick = function() {
 	}
 }
 
-async function compr(inp) {
+async function compr(txt) {
 	var enc = new TextEncoder()
-	var buffer = await new Response(new Response(enc.encode(inp)).body.pipeThrough(new CompressionStream('deflate'))).arrayBuffer()
+	var buffer = await new Response(new Response(enc.encode(txt)).body.pipeThrough(new CompressionStream('deflate-raw'))).arrayBuffer()
 	var s = ""
 	var bytes = new Uint8Array(buffer)
 	for (var i = 0; i < bytes.byteLength; i++) {
@@ -184,22 +184,20 @@ async function compr(inp) {
 	}
 	return btoa(s)
 }
-async function decompr(inp) {
-	var s = atob(inp)
+async function decompr(txt) {
+	var s = atob(txt)
 	var buf = new ArrayBuffer(s.length)
 	var bytes = new Uint8Array(buf)
 	for (var i = 0; i < s.length; i++) {
 		bytes[i] = s.charCodeAt(i)
 	}
-	var stream = new Response(buf).body.pipeThrough(new DecompressionStream('deflate'))
+	var stream = new Response(buf).body.pipeThrough(new DecompressionStream('deflate-raw'))
 	var h = await new Response(stream).arrayBuffer()
 	var dec = new TextDecoder("utf8")
 	return dec.decode(h)
 }
 
-var error_compr = `
-# The browser doesn't support
-# Compression Streams API :-(
+var sadSmiley = `
 # 
 move 20 83
 color 983
@@ -221,8 +219,15 @@ async function ready() {
 	else {
 		var q = location.hash
 		if (q.startsWith("#cod=")) {
-			if ("DecompressionStream" in window) code.innerText = await decompr(q.substring(5))
-			else code.innerText = error_compr
+			if ("DecompressionStream" in window) {
+				try {
+					code.innerText = await decompr(q.substring(5))
+				}
+				catch(e) {
+					code.innerText = "# Decompression error\n" + sadSmiley; 
+				}
+			}
+			else code.innerText = "# The browser doesn't support\n# Compression Streams API\n" + sadSmiley
 		}
 		else {
 			code.innerText = demo

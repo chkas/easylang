@@ -14,12 +14,6 @@
 // fastproc - creates wasm code 
 // currently works only partially - experimenting
 
-byte wasm0[] = {
-  0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, 0x01, 0x08, 0x01, 0x60,
-  0x03, 0x7c, 0x7c, 0x7c, 0x01, 0x7c, 0x03, 0x02, 0x01, 0x00, 0x07, 0x08, 
-  0x01, 0x04, 0x66, 0x61, 0x73, 0x74, 0x00, 0x00, 0x0a, 0x5d, 0x01, 0x5b
-};
-
 byte* wasm = NULL;
 ushort wasm_len = 0;
 
@@ -328,29 +322,52 @@ static void mf_sequ(ND* nd) {
 	}
 }
 
+byte wasm0[] = {
+  0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, 0x01, 0xff, 0x01, 0x60
+};
+byte wasm1[] = {
+  0x01, 0x7c, 0x03, 0x02, 0x01, 0x00, 0x07, 0x08, 0x01, 0x04, 0x66, 0x61, 
+//  0x73, 0x74, 0x00, 0x00, 0x0a, 0x5d, 0x01, 0x5b
+  0x73, 0x74, 0x00, 0x00, 0x0a, 0xff, 0xff, 0x01, 0xff, 0xff
+};
+
 static void parse_fastproc(void) {
 
 //	printf("%d %d %d\n", proc->varcnt[0], proc->varcnt[1], proc->varcnt[2]);
 	if (proc->varcnt[1] + proc->varcnt[2] > 0) {
 		error("in fastproc only mumbers are allowed");
+		return;
 	}
 	fastproc_addr = proc - proc_p;
-
-//kc ---------- compile fast
-
-//	printf("%s\n", proc->parms);
-
-	if (memcmp(proc->parms, "ffF", 4) != 0) {
-		error("a fastproc have 2 in- and 1 inout-parameter");
-	}
-	byte b = proc->varcnt[0] - 3;		// 2 in parm, 1 inout
 
 	free(wasm);
 	wasm = malloc(1000);
 	wasm_len = 1000;
-	memcpy(wasm, wasm0, sizeof(wasm0));	
+	wasmi = sizeof(wasm0);
+	memcpy(wasm, wasm0, wasmi);	
 
-	wasmi = 36;
+	// parameter
+	byte nparm;
+
+	if (strcmp(proc->parms, "F") == 0) nparm = 1;
+	else if (strcmp(proc->parms, "fF") == 0) nparm = 2;
+	else if (strcmp(proc->parms, "ffF") == 0) nparm = 3;
+	else if (strcmp(proc->parms, "fffF") == 0) nparm = 4;
+	else {
+		error("a fastproc have some in- and 1 inout-parameter");
+		return;
+	}
+	wasm[9] = 5 + nparm;
+
+	wemit(nparm);
+	for (byte i = 0; i < nparm; i++) wemit(0x7c);
+
+	memcpy(wasm + wasmi, wasm1, sizeof(wasm1));	
+	wasmi += sizeof(wasm1);
+
+	ushort tmpind = wasmi;
+
+	byte b = proc->varcnt[0] - nparm;
 	wavar = b;
 	b += 2;
 	wemit(1);
@@ -359,13 +376,21 @@ static void parse_fastproc(void) {
 
 	mf_sequ(proc->start->bxnd);
 
-	wemit(0x20);
-	wemit(2);
-	wemit(0x0b);
+	wemit(W_GET);
+	wemit(nparm - 1);
+	wemit(W_END);
 
-	ushort h = wasmi - 36;
-	wasm[0x23] = h;
-	wasm[0x21] = h + 2;
+	ushort h = wasmi - tmpind;
+
+	if (h >= 16384) {
+		error("fastproc too big");
+		return;
+	}
+	wasm[33 + nparm] = (h & 127) | 128;
+	wasm[34 + nparm] = h >> 7;
+	h += 3;
+	wasm[30 + nparm] = (h & 127) | 128;
+	wasm[31 + nparm] = h >> 7;
 
 	printf("fastproc %s - size %d\n", proc->name, wasmi);
 

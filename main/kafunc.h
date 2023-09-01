@@ -2028,16 +2028,34 @@ S void op_fastcall(ND* nd0) {
 #ifdef __EMSCRIPTEN__
 
 	ND* nd = nd0->ri;
-
-	double a1 = numf(nd);
-	nd = nd->next;
-	double a2 = numf(nd);
-	nd = nd->next;
+	double a[3];
+	int i = 0;
+	while (nd->next) {
+		if (i == 3) {
+			fprintf(stderr, "internal error: fastcall");
+			return;
+		}
+		a[i++] = numf(nd);
+		nd = nd->next;
+	}
 	double r = *(gnum(nd->v1));
-	
-	r = EM_ASM_DOUBLE(
-		{ return fastinst.exports.fast($0, $1, $2) }, 
-		a1, a2, r);
+
+	if (i == 0) {
+		r = EM_ASM_DOUBLE(
+			{ return fastinst.exports.fast($0) }, r);
+	}
+	else if (i == 1) {
+		r = EM_ASM_DOUBLE(
+			{ return fastinst.exports.fast($0, $1) }, a[0], r);
+	}
+	else if (i == 2) {
+		r = EM_ASM_DOUBLE(
+			{ return fastinst.exports.fast($0, $1, $2) }, a[0], a[1], r);
+	}
+	else {	// if (i == 3)
+		r = EM_ASM_DOUBLE(
+			{ return fastinst.exports.fast($0, $1, $2, $3) }, a[0], a[1], a[2], r);
+	}
 
 	*(gnum(nd->v1)) = r;
 
@@ -2045,6 +2063,8 @@ S void op_fastcall(ND* nd0) {
 	op_callproc(nd0);
 #endif
 }
+
+
 #endif
 
 #define sl_as(ps, s) str_append(ps, s)

@@ -453,7 +453,7 @@ async function decompr(txt) {
 	for (var i = 0; i < s.length; i++) {
 		bytes[i] = s.charCodeAt(i)
 	}
-	var stream = new Response(buf).body.pipeThrough(new DecompressionStream('deflate'))
+	var stream = new Response(buf).body.pipeThrough(new DecompressionStream('deflate-raw'))
 	var h = await new Response(stream).arrayBuffer()
 	var dec = new TextDecoder("utf8")
 	return dec.decode(h)

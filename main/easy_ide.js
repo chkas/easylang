@@ -75,7 +75,7 @@ function isVisible(e) { return e.style.display == "" }
 
 async function compr(txt) {
 	var enc = new TextEncoder()
-	var buffer = await new Response(new Response(enc.encode(txt)).body.pipeThrough(new CompressionStream('deflate'))).arrayBuffer()
+	var buffer = await new Response(new Response(enc.encode(txt)).body.pipeThrough(new CompressionStream('deflate-raw'))).arrayBuffer()
 	var s = ""
 	var bytes = new Uint8Array(buffer)
 	for (var i = 0; i < bytes.byteLength; i++) {
@@ -90,7 +90,7 @@ async function decompr(txt) {
 	for (var i = 0; i < s.length; i++) {
 		bytes[i] = s.charCodeAt(i)
 	}
-	var stream = new Response(buf).body.pipeThrough(new DecompressionStream('deflate'))
+	var stream = new Response(buf).body.pipeThrough(new DecompressionStream('deflate-raw'))
 	var h = await new Response(stream).arrayBuffer()
 	var dec = new TextDecoder("utf8")
 	return dec.decode(h)
@@ -1429,7 +1429,7 @@ async function main() {
 				h = 1
 				if (doce) tabn = 3
 			}
-			else if (vs[i].startsWith("run=eF5")) h = 1
+			else if (vs[i].startsWith("rux=")) h = 1
 			else if (vs[i].startsWith("run=")) h = 4
 
 			else if (vs[i] == "store") tabn = 2
@@ -1439,7 +1439,7 @@ async function main() {
 					codeToRun = decodeURIComponent(vs[i].substring(h))
 				}
 				catch(e) {
-					codeToRun = "# URL error"
+					codeToRun = "# URI error"
 				}
 				inp.value = codeToRun
 				if (h == 4) showFull()
@@ -1449,7 +1449,7 @@ async function main() {
 					codeToRun = await decompr(vs[i].substring(4))
 				}
 				catch(e) {
-					codeToRun = "# URL Error"
+					codeToRun = "# Decompression error"
 				}
 				inp.value = codeToRun
 				if (vs[i][0] == "r") showFull()
