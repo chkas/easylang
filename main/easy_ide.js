@@ -1184,6 +1184,7 @@ function showRun(on = true) {
 }
 
 function ideMsgFunc(msg, d) {
+console.log(msg)
 	if (msg == "output") {
 		dbg.value = d[0]
 	}
@@ -1361,7 +1362,6 @@ var initTut
 function ready() {
 	canv.className = ""
 	showRun()
-	inp.focus()
 	runBtn.disabled = false
 	stepBtn.disabled = false
 
@@ -1468,6 +1468,7 @@ async function main() {
 		appendTxt(inp, t)
 	}
 	console.log("loading ...")
+	inp.focus()
 	easyinit(canv, out, ideMsgFunc)
 }
 

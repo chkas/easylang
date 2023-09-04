@@ -58,6 +58,12 @@ static void mf_err(const char* s) {
 #define W_DIV 0xa3
 #define W_FLOOR 0x9c
 
+#define W_EQ 0x61
+#define W_NE 0x62
+#define W_LT 0x63
+#define W_GT 0x64
+#define W_LE 0x65
+#define W_GE 0x66
 
 static void mf_sequ(ND* nd);
 
@@ -129,12 +135,12 @@ static void mf_cmpneg(ND* nd, byte lev) {
 	mf_expr(nd->le);
 	mf_expr(nd->ri);
 	//reverse
-	if (p == op_eqf) wemit(0x62);
-	else if (p == op_neqf) wemit(0x61);
-	else if (p == op_ltf) wemit(0x66);
-	else if (p == op_gtf) wemit(0x65);
-	else if (p == op_lef) wemit(0x64);
-	else if (p == op_gef) wemit(0x63);
+	if (p == op_eqf) wemit(W_NE);
+	else if (p == op_neqf) wemit(W_EQ);
+	else if (p == op_ltf) wemit(W_GE);
+	else if (p == op_gtf) wemit(W_LE);
+	else if (p == op_lef) wemit(W_GT);
+	else if (p == op_gef) wemit(W_LT);
 	else mf_err("cmpneg");
 	wemit(W_BRIF);
 	wemit(lev);
@@ -143,12 +149,12 @@ static void mf_cmp(ND* nd, byte lev) {
 	void* p = nd->intf;
 	mf_expr(nd->le);
 	mf_expr(nd->ri);
-	if (p == op_eqf) wemit(0x61);
-	else if (p == op_neqf) wemit(0x62);
-	else if (p == op_ltf) wemit(0x63);
-	else if (p == op_gtf) wemit(0x64);
-	else if (p == op_lef) wemit(0x65);
-	else if (p == op_gef) wemit(0x66);
+	if (p == op_eqf) wemit(W_EQ);
+	else if (p == op_neqf) wemit(W_NE);
+	else if (p == op_ltf) wemit(W_LT);
+	else if (p == op_gtf) wemit(W_GT);
+	else if (p == op_lef) wemit(W_LE);
+	else if (p == op_gef) wemit(W_GE);
 	else mf_err("cmp");
 	wemit(W_BRIF);
 	wemit(lev);
@@ -327,8 +333,7 @@ byte wasm0[] = {
 };
 byte wasm1[] = {
   0x01, 0x7c, 0x03, 0x02, 0x01, 0x00, 0x07, 0x08, 0x01, 0x04, 0x66, 0x61, 
-//  0x73, 0x74, 0x00, 0x00, 0x0a, 0x5d, 0x01, 0x5b
-  0x73, 0x74, 0x00, 0x00, 0x0a, 0xff, 0xff, 0x01, 0xff, 0xff
+  0x73, 0x74, 0x00, 0x00, 0x0a
 };
 
 static void parse_fastproc(void) {
@@ -365,10 +370,16 @@ static void parse_fastproc(void) {
 	memcpy(wasm + wasmi, wasm1, sizeof(wasm1));	
 	wasmi += sizeof(wasm1);
 
-	ushort tmpind = wasmi;
+	// code size
+	wasmi += 2;
+	wemit(0x1);
+	// func size
+	wasmi += 2;
+
+	ushort fstart = wasmi;
 
 	byte b = proc->varcnt[0] - nparm;
-	wavar = b;
+	wavar = b + nparm;
 	b += 2;
 	wemit(1);
 	wemit(b);
@@ -380,17 +391,17 @@ static void parse_fastproc(void) {
 	wemit(nparm - 1);
 	wemit(W_END);
 
-	ushort h = wasmi - tmpind;
+	ushort h = wasmi - fstart;
 
-	if (h >= 16384) {
+	if (h >= 16384 - 3) {
 		error("fastproc too big");
 		return;
 	}
-	wasm[33 + nparm] = (h & 127) | 128;
-	wasm[34 + nparm] = h >> 7;
+	wasm[fstart - 2] = (h & 127) | 128;
+	wasm[fstart - 1] = h >> 7;
 	h += 3;
-	wasm[30 + nparm] = (h & 127) | 128;
-	wasm[31 + nparm] = h >> 7;
+	wasm[fstart - 5] = (h & 127) | 128;
+	wasm[fstart - 4] = h >> 7;
 
 	printf("fastproc %s - size %d\n", proc->name, wasmi);
 

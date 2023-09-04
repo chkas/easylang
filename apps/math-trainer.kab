@@ -12,8 +12,10 @@ subr init_vars
       todo = 10
    elif op <= 4
       todo = 5
-   else
+   elif op <= 6
       todo = 3
+   else
+      todo = 1
    .
 .
 proc disp col s$ . .
@@ -21,22 +23,35 @@ proc disp col s$ . .
    move 3 76
    rect 94 21
    color 888
-   move 6 82
-   textsize 12
-   text s$
+   if op = 6
+      s$[] = strsplit s$ "\n"
+      textsize 8
+      move 6 89
+      text s$[1]
+      move 6 80
+      text s$[2]
+   elif op <= 5
+      textsize 12
+      move 6 82
+      text s$
+   else
+      textsize 11
+      move 6 83
+      text s$
+   .
 .
 proc show_quest . .
    if res = resok
       if op = 1
          a = random 8 + 1
          b = random 8 + 1
-         q$ = a & " * " & b & " = "
+         q$ = a & " · " & b & " = "
          resok = a * b
       elif op = 2
          b = random 8 + 1
          resok = random 8 + 1
          a = b * resok
-         q$ = a & " / " & b & " = "
+         q$ = a & " ÷ " & b & " = "
       elif op = 3
          a = random 77 + 10
          b = random (89 - a) + 10
@@ -50,8 +65,30 @@ proc show_quest . .
       elif op = 5
          a = random 89 + 10
          b = random 8 + 1
-         q$ = a & " * " & b & " = "
+         q$ = a & " · " & b & " = "
          resok = a * b
+      elif op = 6
+         b = random 8 + 2
+         resok = random 8 + 2
+         a = b * resok
+         c = random 10 + 3
+         d = a - c
+         sn$ = " - "
+         if random 2 = 1
+            sn$ = " + "
+            d = a + c
+         .
+         q$ = b & " · x" & sn$ & c & " = " & d & "\nx = "
+      elif op = 7
+         a = random 21 + 10
+         b = random 21 + 10
+         q$ = a & " · " & b & " = "
+         resok = a * b
+      elif op = 8
+         b = random 21 + 10
+         resok = random 21 + 10
+         a = b * resok
+         q$ = a & " ÷ " & b & " = "
       .
    .
    call disp 030 q$ & "_"
@@ -94,23 +131,30 @@ proc start . .
    .
    call show_quest
 .
-menu$[] = [ "Mul 🤔" "Div 🤔" "Add 🤔🤔" "Sub 🤔🤔" "Mul 🤔🤔" ]
+menu$[] = [ "7 · 8 = _\n🤔" "56 ÷ 8 = _\n🤔" "34 + 23 = _\n🤔🤔" "67 - 21 = _\n🤔🤔" "13 · 7 = _\n🤔🤔" "3 · x - 4 = 8\n🤔🤔" "13 · 27 = _\n🤔🤔🤔" "837 ÷ 31 = _\n🤔🤔🤔" ]
+# 
 proc draw_menu_key col i . .
-   y = (5 - i) * 19 + 3
-   move 3 y
+   c = (i - 1) mod 2
+   r = (i - 1) div 2
+   y = (3 - r) * 24 + 3
+   x = c * 48 + 3
+   # 
+   move x y
    color col
-   rect 94 17
+   rect 45 22
    color 888
-   textsize 12
-   move 16 y + 5
-   text substr menu$[i] 1 3
-   textsize 7
-   move 50 y + 5
-   text substr menu$[i] 4 -1
+   textsize 5
+   s$ = menu$[i]
+   s$[] = strsplit s$ "\n"
+   move x + 2 y + 13
+   text s$[1]
+   textsize 4
+   move x + 2 y + 6
+   text s$[2]
 .
 proc draw_menu . .
    clear
-   for i = 1 to 5
+   for i = 1 to len menu$[]
       call draw_menu_key 020 i
    .
    state = 0
@@ -124,7 +168,6 @@ proc handle_key2 . .
          timer 0.5
       else
          col = 500
-         todo += 1
          timer 2
       .
       call disp col q$ & res
@@ -188,8 +231,14 @@ on key
 .
 on mouse_down
    if state = 0
-      ind = 5 - mouse_y div 20
-      call draw_menu_key 030 ind
+      r = 2 - (mouse_y - 20) div 25
+      c = mouse_x div 50
+      ind = r * 2 + c + 1
+      if ind <= 8
+         call draw_menu_key 030 ind
+      else
+         ind = -1
+      .
    elif state = 1
       if mouse_y < 75
          call handle_key
@@ -239,12 +288,12 @@ proc show_result . .
    color 888
    move 10 84
    textsize 10
-   text "Well done"
+   text "Well done!"
    move 10 70
    text "Time: " & t
    move 10 56
-   textsize 5
-   text menu$[op]
+   textsize 4
+   text q$ & resok
    call smiley t
 .
 on timer

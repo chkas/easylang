@@ -33,7 +33,7 @@ proc show_quest . .
       m = m[sz]
    .
    sz -= 1
-   call disp 030 n & " * " & m & " = _"
+   call disp 030 n & " × " & m & " = _"
    res = 0
 .
 proc sel_row . .
@@ -123,7 +123,7 @@ proc sel_inp . .
       .
       col = 030
    .
-   call disp col n & " * " & m & " = " & h$
+   call disp col n & " × " & m & " = " & h$
 .
 proc handle_key2 . .
    if row = -1
@@ -212,7 +212,7 @@ proc done . .
    color 888
    move 10 84
    textsize 10
-   text "Well done"
+   text "Well done!"
    move 10 70
    s$ = "All"
    if row < 10
@@ -236,4 +236,3 @@ on timer
    .
 .
 call init
-

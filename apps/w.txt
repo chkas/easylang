@@ -53,3 +53,4 @@ end
 +de 🤔 Zeichne das Haus von oben als Hintergrund.
 
 
+sips -Z 200 x.png
