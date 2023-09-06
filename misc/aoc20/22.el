@@ -71,11 +71,11 @@ proc part1 . deck1[] deck2[] .
       .
    .
    if deck1[1] > 0
-      call score deck1[] score
+      call score deck1[] sc
    else
-      call score deck2[] score
+      call score deck2[] sc
    .
-   print score
+   print sc
 .
 call part1 deck1_copy[] deck2_copy[]
 # 
@@ -146,11 +146,11 @@ proc play . deck1[] deck2[] winner .
 .
 call play deck1[] deck2[] winner
 if winner = 1
-   call score deck1[] score
+   call score deck1[] sc
 else
-   call score deck2[] score
+   call score deck2[] sc
 .
-print score
+print sc
 # 
 input_data
 Player 1:

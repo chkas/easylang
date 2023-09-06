@@ -83,8 +83,9 @@ button:enabled:active {background-color:#484}
 
 button.stop { display:none; }
 
-pre i {color: #080}
-pre b {color: #821}
+pre i{color:#088}
+pre b{font-weight:500;color:#920}
+pre s{text-decoration:none;font-weight:500;color:#080}
 pre u {font-weight:bold;text-decoration:none;color:#000; background:#faa}
 
 hr {margin-top:30px;margin-bottom:30px;}

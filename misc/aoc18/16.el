@@ -101,10 +101,10 @@ proc part1 . .
          .
       .
       if ok >= 3
-         part1 += 1
+         res1 += 1
       .
    .
-   print part1
+   print res1
 .
 call part1
 # 

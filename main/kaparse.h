@@ -1,4 +1,4 @@
-/*	kaparse.h
+	/*	kaparse.h
 
 	Copyright (c) Christof Kaser christof.kaser@gmail.com. 
 	All rights reserved.
@@ -148,11 +148,11 @@ S int is_numfactor(void) {
 	return 0;
 }
 
-byte in_fastproc;
+byte in_fastfunc;
 
 S void optimize_vnumael(ND* nd) {
 
-	if (in_fastproc) return;
+	if (in_fastfunc) return;
 	if (nd->ri->numf == op_lvnum) {
 		nd->numf = op_vnumael_lvar;
 		nd->v2 = nd->ri->v1;
@@ -262,6 +262,60 @@ S ND* parse_lenfunc(ushort mode) {
 	return nd;
 }
 
+
+//kc
+S ND* parse_callfunc(struct proc* p) {
+
+	ND* nd = mknd();
+	csf(tval);
+	nexttok();
+//	cs_tok_nt();
+	nd->le = p->start;
+	if (p->start == NULL) {
+		procdecl = realloc(procdecl, sizeof(struct procdecl) * (procdecl_len + 1));
+		procdecl[procdecl_len].callref = nd;
+		procdecl[procdecl_len].proc_i = p - proc_p;
+		procdecl_len += 1;
+	}
+	nd->numf = op_callfunc;
+#ifdef FASTPROC
+	if (p - proc_p == fastfunc_addr) {
+		nd->numf = op_fastcall;
+	}
+#endif
+
+
+	ND* ndf = nd;
+	ushort i = 0;
+
+	while (1) {
+		char b = p->parms[i];
+		if (b < 'a') break;
+		cs_spc();
+		if (b == 'f') {
+			nd->next = parse_fac();;
+			nd = nd->next;
+		}
+		else if (b == 's') {
+			nd->next = parse_strterm();
+			nd = nd->next;
+		}
+		else if (b == 'g') {
+			nd->next = parse_numarrex();
+			nd = nd->next;
+		}
+		else if (b == 't') {
+			nd->next = parse_strarrex();
+			nd = nd->next;
+		}
+		i += 1;
+	}
+	nd->next = NULL;
+	ndf->ri = ndf->next;
+	return ndf;
+}
+
+
 S ND* parse_fac(void) {
 
 	ND* nd;
@@ -270,32 +324,31 @@ S ND* parse_fac(void) {
 		nd->cfl = tvalf;
 		cs_tok_nt();
 		nd->numf = op_const_fl;
-/*
-		double f = tvalf;
-
-		float fh = f;
-		if (f == (double)fh) {
-			nd->numf = op_const_fl;
-			nd->cfl = fh;
-		}
-		else {
-			nd->numf = op_const_flx;
-			ushort ox = code_add();
-			codp[ox].cdbl = f;
-		}
-*/
 
 	}
 	else if (tok == t_name) {
-		nd = mknd();
-		short i = parse_var(VAR_NUM, RD);
-		if (i < 0) {
-			nd->v1 = -i - 1;
-			nd->numf = op_vnum;
+
+//kc
+		const char* name = getn(tval);
+		struct proc* p = proc_get(name);
+		if (p) {
+			if (p->typ == 0) {
+				error("func name");
+				return NULL;
+			}
+			else nd = parse_callfunc(p);
 		}
 		else {
-			nd->v1 = i;
-			nd->numf = op_lvnum;
+			nd = mknd();
+			short i = parse_var(VAR_NUM, RD);
+			if (i < 0) {
+				nd->v1 = -i - 1;
+				nd->numf = op_vnum;
+			}
+			else {
+				nd->v1 = i;
+				nd->numf = op_lvnum;
+			}
 		}
 	} 
 	else if (is_numfunc()) {
@@ -392,10 +445,9 @@ S ND* parse_term(void) {
 	return parse_termx(NULL);
 }
 
-//kc optimize
 S void optimize_ex(ND* nd) {
 
-	if (in_fastproc) return;
+	if (in_fastfunc) return;
 	if (nd->le->numf == op_lvnum && nd->ri->numf == op_const_fl) {
 		double d = nd->ri->cfl;
 		float f = (float)d;
@@ -587,7 +639,7 @@ S void parse_arr_cmp(ND* nd) {
 
 S void optimize_cmp(ND* nd) {
 
-	if (in_fastproc) return;
+	if (in_fastfunc) return;
 	if (nd->le->numf == op_lvnum && nd->ri->numf == op_const_fl) {
 		double d = nd->ri->cfl;
 		float f = (float)d;
@@ -759,11 +811,13 @@ S void parse_subr(void) {
 	stat_begin_nest();
 	if (tok != t_name) error_tok(t_name);
 	const char* name = getn(tval);
-//kc
 	struct vname* p = get_vname(proc, name, VAR_SUBR);
 	if (p != NULL) error("already defined");
 	p = add_vname(proc, name, VAR_SUBR, code_utf8len);
-	cs_tok_nt();
+
+	csf(tval);
+	nexttok();
+
 	p->sstart = mknd();
 	ushort pind = p - proc->vname_p;
 
@@ -775,7 +829,7 @@ S void parse_subr(void) {
 	loop_level -= 1;
 }
 
-S int parse_proc_header(int mode) {
+S int parse_proc_header(int mode, byte proctyp) {
 
 	// mode:0 procdecl
 	csb_tok_spc_nt();
@@ -791,7 +845,13 @@ S int parse_proc_header(int mode) {
 		proc = proc_add(name);
 		if (proc == NULL) return 0;
 	}
-	cs_tok_spc_nt();
+	proc->typ = proctyp;
+
+///kc
+	csf(tval);
+	cs_spc();
+	nexttok();
+//	cs_tok_spc_nt();
 
 	int i = 0;
 	char typ;
@@ -821,8 +881,10 @@ S int parse_proc_header(int mode) {
 		}
 		else {
 			if (is_enter && tok == t_eof) {
-				cst(t_dot);
-				cs_spc();
+				if (proctyp == 0) {
+					cst(t_dot);
+					cs_spc();
+				}
 				cst(t_dot);
 				space_add();
 				cs_nl();
@@ -837,57 +899,59 @@ S int parse_proc_header(int mode) {
 		cs_spc();
 		i += 1;
 	}
-	cst(t_dot);
-	cs_spc();
-	nexttok();
-	while (tok != t_dot) {
-		if (i == 8) {
-			error("max 8 parameters");
-			return 0;
-		}
-		if (tok == t_name) {
-			lvar(VAR_NUM, 3, mode);
-			typ = 'F';
-		}
-		else if (tok == t_vstr) {
-			lvar(VAR_STR, 3, mode);
-			typ = 'S';
-		}
-		else if (tok == t_vnumarr) {
-			lvar(VAR_NUMARR, 3, mode);
-			csbrr();
-			typ = 'G';
-		}
-		else if (tok == t_vnumarrarr) {
-			lvar(VAR_NUMARRARR, 3, mode);
-			expt_ntok(t_brr);
-			typ = 'H';
-		}
-		else if (tok == t_vstrarr) {
-			lvar(VAR_STRARR, 3, mode);
-			csbrr();
-			typ = 'T';
-		}
-		else if (tok == t_vstrarrarr) {
-			lvar(VAR_STRARRARR, 3, mode);
-			expt_ntok(t_brr);
-			typ = 'U';
-		}
-		else {
-			if (is_enter && tok == t_eof) {
-				cst(t_dot);
-				space_add();
-				cs_nl();
-				error("");
+	if (proctyp == 0) { // proc
+		cst(t_dot);
+		cs_spc();
+		nexttok();
+		while (tok != t_dot) {
+			if (i == 8) {
+				error("max 8 parameters");
 				return 0;
 			}
-			error("., variable");
-			return 0;
+			if (tok == t_name) {
+				lvar(VAR_NUM, 3, mode);
+				typ = 'F';
+			}
+			else if (tok == t_vstr) {
+				lvar(VAR_STR, 3, mode);
+				typ = 'S';
+			}
+			else if (tok == t_vnumarr) {
+				lvar(VAR_NUMARR, 3, mode);
+				csbrr();
+				typ = 'G';
+			}
+			else if (tok == t_vnumarrarr) {
+				lvar(VAR_NUMARRARR, 3, mode);
+				expt_ntok(t_brr);
+				typ = 'H';
+			}
+			else if (tok == t_vstrarr) {
+				lvar(VAR_STRARR, 3, mode);
+				csbrr();
+				typ = 'T';
+			}
+			else if (tok == t_vstrarrarr) {
+				lvar(VAR_STRARRARR, 3, mode);
+				expt_ntok(t_brr);
+				typ = 'U';
+			}
+			else {
+				if (is_enter && tok == t_eof) {
+					cst(t_dot);
+					space_add();
+					cs_nl();
+					error("");
+					return 0;
+				}
+				error("., variable");
+				return 0;
+			}
+			if (mode <= 1) proc->parms[i] = typ;
+			else if (proc->parms[i] != typ) error("procdecl doesn't match");
+			cs_spc();
+			i += 1;
 		}
-		if (mode <= 1) proc->parms[i] = typ;
-		else if (proc->parms[i] != typ) error("procdecl doesn't match");
-		cs_spc();
-		i += 1;
 	}
 	if (mode <= 1) proc->parms[i] = 0;
 	else if (proc->parms[i] != 0) error("procdecl doesn't match");
@@ -897,9 +961,9 @@ S int parse_proc_header(int mode) {
 	return 1;
 }
 
-S void parse_proc(void) {
+S void parse_proc(byte typ) {
 
-	if (!parse_proc_header(1)) return;
+	if (!parse_proc_header(1, typ)) return;
 
 	ND* nd = mknd();
 	proc->start = nd;
@@ -939,8 +1003,8 @@ S void parse_proc(void) {
 	}
 }
 
-S void parse_procdecl(void) {
-	parse_proc_header(0);
+S void parse_procdecl(byte typ) {
+	parse_proc_header(0, typ);
 	proc = proc_p;
 }
 
@@ -1776,29 +1840,41 @@ S void parse_swap_stat(ND* nd) {
 	else error("variable");
 }
 
-S void parse_call_stat(ND* nd) {
+S byte try_call_subr(ND* nd, const char* name) {
+	struct vname* pf = get_vname(proc, name, VAR_SUBR);
+	if (pf == NULL && proc != proc_p) pf = get_vname(proc_p, name, VAR_SUBR);
+	if (pf == NULL) {
+		return 0;
+	}
+	csf(tval);
+	nexttok();
+//	cs_tok_nt();
+	nd->le = pf->sstart;
+	nd->vf = op_callsubr;
+	return 1;
+}
 
-	csb_tok_spc_nt();
-
-	expt(t_name);
-	const char* name = getn(tval);
-
-	struct proc* p = proc_get(name);
+//kc
+S void parse_call_stat(ND* nd, struct proc* p) {
 
 	if (p == NULL) {
-		struct vname* pf = get_vname(proc, name, VAR_SUBR);
-		if (pf == NULL && proc != proc_p) pf = get_vname(proc_p, name, VAR_SUBR);
-		if (pf == NULL) {
+		csb_tok_spc_nt();
+		expt(t_name);
+
+		const char* name = getn(tval);
+		if (try_call_subr(nd, name)) return;
+
+		p = proc_get(name);
+		if (p == NULL) { 
 			error("not defined");
 			return;
 		}
-		cs_tok_nt();
-		nd->le = pf->sstart;
-		nd->vf = op_callsubr;
-		return;
 	}
 
-	cs_tok_nt();
+	csf(tval);
+	nexttok();
+//	cs_tok_nt();
+
 	nd->le = p->start;
 	if (p->start == NULL) {
 		procdecl = realloc(procdecl, sizeof(struct procdecl) * (procdecl_len + 1));
@@ -1806,14 +1882,7 @@ S void parse_call_stat(ND* nd) {
 		procdecl[procdecl_len].proc_i = p - proc_p;
 		procdecl_len += 1;
 	}
-//kc
 	nd->vf = op_callproc;
-
-#ifdef FASTPROC
-	if (p - proc_p == fastproc_addr) {
-		nd->vf = op_fastcall;
-	}
-#endif
 
 	ND* ndf = nd;
 	ushort i = 0;
@@ -1838,6 +1907,7 @@ S void parse_call_stat(ND* nd) {
 			nd->next = parse_strarrex();
 			nd = nd->next;
 		}
+		if (!nd) return;
 		i += 1;
 	}
 
@@ -1885,7 +1955,7 @@ S void parse_call_stat(ND* nd) {
 
 S void optimize_ass(ND* nd) {
 
-	if (in_fastproc) return;
+	if (in_fastfunc) return;
 	if (nd->ri->numf == op_const_fl) {
 
 		double d = nd->ri->cfl;
@@ -1975,23 +2045,27 @@ S ND* parse_sequ(void) {
 			if (tok == t_global) {
 				parse_global_stat();
 			}
-			else if (tok == t_proc || tok == t_fastproc) {
+			else if (tok >= t_proc && tok <= t_fastfunc) {
 				if (sequ_level != 0) error("not allowed here");
 				loop_level += 1;
 				if (!err && sequ_level < 16) nest_block[sequ_level] = codestrln;
-
+				if (tok == t_func || tok == t_fastfunc) {
 #ifdef FASTPROC
-				if (tok == t_fastproc && cod) {
-					in_fastproc = 1;
-					parse_proc();
-					parse_fastproc();
-					in_fastproc = 0;
-				}
-				else parse_proc();
+					if (tok == t_fastfunc && cod) {
+						in_fastfunc = 1;
+						parse_proc(1);
+						if (!err) parse_fastfunc();
+						in_fastfunc = 0;
+					}
+					else parse_proc(1);
 #else
-				parse_proc();
+					parse_proc(1);
 #endif
+				}
+				else {
+					parse_proc(0);
 
+				}
 				proc = proc_p;
 				loop_level -= 1;
 			}
@@ -2005,7 +2079,11 @@ S ND* parse_sequ(void) {
 			}
 			else if (tok == t_procdecl) {
 				if (sequ_level != 0) error("not allowed here");
-				parse_procdecl();
+				parse_procdecl(0);
+			}
+			else if (tok == t_funcdecl) {
+				if (sequ_level != 0) error("not allowed here");
+				parse_procdecl(1);
 			}
 			else if (tok == t_prefix) {
 				if (sequ_level != 0) error("not allowed here");
@@ -2043,18 +2121,36 @@ S ND* parse_sequ(void) {
 
 			// -----------------------------------------------------------------------
 			if (tok == t_name) {
-				nd->v1 = parse_var(VAR_NUM, WR);
-				cs_spc();
-				if (tok == t_eq) nd->vf = op_flass;
-				else if (tok == t_pleq) nd->vf = op_flassp;
-				else if (tok == t_mineq) nd->vf = op_flassm;
-				else if (tok == t_asteq) nd->vf = op_flasst;
-				else if (tok == t_diveq) nd->vf = op_flassd;
-				else error("= += -= *= /=");
-				cs_tok_spc_nt();
-				nd->ri = parse_ex();
-				if (cod) {
-					optimize_ass(nd);
+
+				const char* name = getn(tval);
+
+				if (try_call_subr(nd, name) == 0) {
+//kc
+					struct proc* p = proc_get(name);
+					if (p) {
+						if (p->typ == 0) parse_call_stat(nd, p);
+						else {
+							nd->vf = op_print;
+							nd->le = mknd();
+							nd->le->strf = op_numstr;
+							nd->le->le = parse_callfunc(p);
+						}
+					}
+					else {
+						nd->v1 = parse_var(VAR_NUM, WR);
+						cs_spc();
+						if (tok == t_eq) nd->vf = op_flass;
+						else if (tok == t_pleq) nd->vf = op_flassp;
+						else if (tok == t_mineq) nd->vf = op_flassm;
+						else if (tok == t_asteq) nd->vf = op_flasst;
+						else if (tok == t_diveq) nd->vf = op_flassd;
+						else error("= += -= *= /=");
+						cs_tok_spc_nt();
+						nd->ri = parse_ex();
+						if (cod) {
+							optimize_ass(nd);
+						}
+					}
 				}
 			}
 			else if (tok == t_if) {
@@ -2073,7 +2169,7 @@ S ND* parse_sequ(void) {
 				parse_for_stat(nd);
 			}
 			else if (tok == t_call) {
-				parse_call_stat(nd);
+				parse_call_stat(nd, NULL);
 			}
 			else if (tok == t_len) {
 				parse_len_stat(nd);
@@ -2224,6 +2320,9 @@ S ND* parse_sequ(void) {
 					else if (tokpr == t_random_seed) {
 						nd->vf = op_random_seed;
 					}
+					else if (tokpr == t_return) {
+						nd->vf = op_return;
+					}
 					else if (tokpr == t_translate) {
 						nd->vf = op_translate;
 					}
@@ -2251,6 +2350,9 @@ S ND* parse_sequ(void) {
 				}
 				else if (tokpr <= t_arc) {
 					int t = tokpr;
+					if (tokpr == t_return && proc->typ != 1) {
+						error("not in function");
+					}
 					ND* ndx;
 					if (t >= t_rgb) ndx = mkndx();
 					nd->le = parse_ex();

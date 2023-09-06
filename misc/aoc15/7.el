@@ -1,7 +1,7 @@
 # AoC-15 - Day 7: Some Assembly Required
 # 
 global name$[] r[] .
-proc id n$ . id .
+proc getid n$ . id .
    for id to len name$[]
       if name$[id] = n$
          break 2
@@ -13,7 +13,7 @@ proc id n$ . id .
 proc gval s$ . r .
    r = number s$
    if error = 1
-      call id s$ h
+      call getid s$ h
       r = r[h]
    .
 .
@@ -32,13 +32,13 @@ for part to 2
          r = -1
          s$[] = strsplit s$ " "
          if len s$[] = 3
-            call id s$[3] di
+            call getid s$[3] di
             call gval s$[1] r
             if part = 2 and s$[3] = "b"
                r = av
             .
          elif s$[1] = "NOT"
-            call id s$[4] di
+            call getid s$[4] di
             call gval s$[2] h
             if h <> -1
                r = bitnot h
@@ -46,7 +46,7 @@ for part to 2
          else
             call gval s$[1] a
             call gval s$[3] b
-            call id s$[5] di
+            call getid s$[5] di
             if a <> -1 and b <> -1
                if s$[2] = "AND"
                   r = bitand a b
@@ -69,7 +69,7 @@ for part to 2
       .
       until done = 1
    .
-   call id "a" h
+   call getid "a" h
    print r[h]
    av = r[h]
 .

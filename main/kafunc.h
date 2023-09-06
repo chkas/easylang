@@ -169,14 +169,17 @@ S double randf(void) {
 }
 S double op_random(ND* nd) {
 	long long range = (long long)numf(nd->le);
-	if (range < 1) return 0;
+	if (range < 1) return randf();
 
-	long long max = (0x80000000 / range) * range;
-	int h;
-	do {
-		h = randf() * 0x80000000;
-	} while (h >= max);
-	return h % range + 1;
+	if (range <= 0x80000000) {
+		long long max = (0x80000000 / range) * range;
+		int h;
+		do {
+			h = randf() * 0x80000000;
+		} while (h >= max);
+		return h % range + 1;
+	}
+	else return (long long)(randf() * range) + 1;
 }
 
 S double op_numlog(ND* nd) {
@@ -1902,7 +1905,6 @@ S void op_callproc(ND* nd0) {
 	ushort istr = 0;
 	ushort iarr = 0;
 
-//kc
 	ND* nd = nd0->ri;
 
 	int ind = 0;
@@ -2017,50 +2019,151 @@ S void op_callproc(ND* nd0) {
 		ARR* a = arrs + ia;
 		if (a->p) free_arr(a);
 	}
-	if (stop_flag) stop_flag -= 1;
+//?	if (stop_flag) stop_flag -= 1;
+	stop_flag = 0;
 }
 
+S ND* funcnd;
+
+S void op_return(ND* nd) {
+	funcnd = nd->le;
+	stop_flag = 9999;
+}
+S double op_callfunc(ND* nd0) {
+
+	ND* ndp = nd0->le;
+	double* nums = NULL;
+	STR* strs = NULL;
+	ARR* arrs = NULL;
+	byte n_num = ndp->bx0;
+	byte n_str = ndp->bx1;
+	byte n_arr = ndp->bx2;
+
+	if (n_num) {
+		nums = alloca(n_num * sizeof(double));
+		memset(nums, 0, n_num * sizeof(double));
+	}
+	if (n_str) {
+		strs = alloca(n_str * sizeof(STR));
+		memset(strs, 0, n_str * sizeof(STR));
+	}
+	if (n_arr) {
+		arrs = alloca(n_arr * sizeof(ARR));
+		arrs_init(arrs, n_arr);
+	}
+	ushort ifl = 0;
+	ushort istr = 0;
+	ushort iarr = 0;
+
+	ND* nd = nd0->ri;
+
+	int ind = 0;
+	while (nd) {
+		int t = ndp->bx[ind];
+		if (t == PAR_NUM) {
+			nums[ifl] = numf(nd);
+			ifl += 1;
+		}
+		else if (t == PAR_STR) {
+			strs[istr] = strf(nd);
+			istr += 1;
+		}
+		else { 				// PAR_ARR)
+			arrs[iarr] = arrf(nd);
+			iarr += 1;
+		}
+		ind += 1;
+		nd = nd->next;
+	}
+
+	double* rtl_nums_caller = rtl_nums;
+	STR* rtl_strs_caller = rtl_strs;
+	ARR* rtl_arrs_caller = rtl_arrs;
+	rtl_nums = nums;
+	rtl_strs = strs;
+	rtl_arrs = arrs;
+
+	ND* proc_caller = rt.proc;
+	rt.proc = nd0->le;
+
+	funcnd = NULL;
+	if (rt.slow == 0) exec_sequ(ndp->bxnd);
+	else {
+		if (rt.slow >= 32) rt.slow += 1;
+		exec_sequ_slow(ndp->bxnd);
+		if (rt.slow > 32) rt.slow -= 1;
+	}
+	stop_flag = 0;
+
+	double retval = 0;
+	if (funcnd) retval = numf(funcnd);
+
+	rt.proc = proc_caller;
+
+	ifl = 0;
+	istr = 0;
+	iarr = 0;
+
+	rtl_nums = rtl_nums_caller;
+	rtl_strs = rtl_strs_caller;
+	rtl_arrs = rtl_arrs_caller;
+
+	nd = nd0->ri;
+
+	for (int is = 0; is < n_str; is++) {
+		str_free(strs + is);
+	}
+	for (int ia = 0; ia < n_arr; ia++) {
+		ARR* a = arrs + ia;
+		if (a->p) free_arr(a);
+	}
+
+	return retval;
+}
 
 #ifdef FASTPROC
 
-S void op_fastcall(ND* nd0) {
+S double op_fastcall(ND* nd0) {
 
 #ifdef __EMSCRIPTEN__
 
 	ND* nd = nd0->ri;
-	double a[3];
+	double a[4];
 	int i = 0;
-	while (nd->next) {
-		if (i == 3) {
+	while (nd) {
+		if (i == 4) {
 			fprintf(stderr, "internal error: fastcall");
-			return;
+			return 0;
 		}
 		a[i++] = numf(nd);
 		nd = nd->next;
 	}
-	double r = *(gnum(nd->v1));
 
+	double r;
 	if (i == 0) {
 		r = EM_ASM_DOUBLE(
-			{ return fastinst.exports.fast($0) }, r);
+			{ return fastinst.exports.fast() });
 	}
 	else if (i == 1) {
 		r = EM_ASM_DOUBLE(
-			{ return fastinst.exports.fast($0, $1) }, a[0], r);
+			{ return fastinst.exports.fast($0) }, a[0]);
 	}
 	else if (i == 2) {
 		r = EM_ASM_DOUBLE(
-			{ return fastinst.exports.fast($0, $1, $2) }, a[0], a[1], r);
+			{ return fastinst.exports.fast($0, $1) }, a[0], a[1]);
 	}
-	else {	// if (i == 3)
+	else if (i == 3) {
 		r = EM_ASM_DOUBLE(
-			{ return fastinst.exports.fast($0, $1, $2, $3) }, a[0], a[1], a[2], r);
+			{ return fastinst.exports.fast($0, $1, $2) }, a[0], a[1], a[2]);
 	}
-
-	*(gnum(nd->v1)) = r;
+	else {	// if (i == 4)
+		r = EM_ASM_DOUBLE(
+			{ return fastinst.exports.fast($0, $1, $2) }, a[0], a[1], a[2], a[3]);
+	}
+	return r;
 
 #else
-	op_callproc(nd0);
+	return op_callfunc(nd0);
 #endif
 }
 

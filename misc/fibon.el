@@ -1,14 +1,10 @@
-proc fib n . res .
-  if n < 2
-    res = n
-  else
-    call fib n - 1 a 
-    call fib n - 2 b 
-    res = a + b
-  .
+func fib n .
+   if n < 2
+      return n
+   .
+   return fib (n - 2) + fib (n - 1)
 .
 time0 = systime
 print "Calculating ..."
-call fib 35 r
-print r & " - " & systime - time0
+print fib 35 & " - " & systime - time0
 

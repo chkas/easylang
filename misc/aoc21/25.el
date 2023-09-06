@@ -95,11 +95,11 @@ repeat
       .
    .
 .
-for step to 9999
+for st to 9999
    call step done
    call show
    if done = 1
-      print step
+      print st
       break 1
    .
 .

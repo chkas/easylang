@@ -10,7 +10,7 @@ proc add_name n$ . .
    name$[] &= n$
 .
 global na$[] r$[][] .
-proc id n$ . id .
+proc getid n$ . id .
    for id to len na$[]
       if na$[id] = n$
          break 2
@@ -21,7 +21,7 @@ proc id n$ . id .
 .
 global na2$[] id2[] .
 proc add n$ s$ . id .
-   call id n$ id
+   call getid n$ id
    r$[id][] &= s$
    na2$[] &= s$
    id2[] &= id
@@ -43,7 +43,7 @@ for i to len targ$
       i += 1
    .
    s2$ = substr targ$ i + 1 999
-   call id h$ id
+   call getid h$ id
    for r$ in r$[id][]
       call add_name s1$ & r$ & s2$
    .

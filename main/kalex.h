@@ -14,14 +14,14 @@
 static const char* token_list[] = {
 	"", 
 	"else", "elif", "until", "end",
-	"proc", "fastproc", "procdecl", "subr", "on", "prefix", "input_data", "global",
+	"proc", "func", "fastfunc", "procdecl","funcdecl", "subr", "on", "prefix", "input_data", "global",
 	"if", "while", "for", "repeat",
 	"and", "or", "not", "mod", "mod1", "div", "div1",
 	"call",  "len",
 
 	"print", "pr", "write", "text",
 	"sleep", "timer", "textsize", "linewidth", "coord_rotate", "circle", 
-	"color", "background", "mouse_cursor", "random_seed",
+	"color", "background", "mouse_cursor", "return", "random_seed",
 	"move", "line", "coord_translate", "rect", "numfmt",
 	"color3", "circlearc",
 
@@ -51,14 +51,14 @@ static const char* token_list[] = {
 enum token_tok {
 	t_default = 0,
 	t_else, t_elif, t_until, t_end,
-	t_proc, t_fastproc, t_procdecl, t_subr, t_on, t_prefix, t_input_data, t_global,
+	t_proc, t_func, t_fastfunc, t_procdecl, t_funcdecl, t_subr, t_on, t_prefix, t_input_data, t_global,
 	t_if, t_while, t_for, t_repeat,
 	t_and, t_or, t_not, t_mod, t_mod1, t_divi, t_divi1,
 	t_call, t_len,
 
 	t_print, t_pr, t_write, t_text, 
 	t_sleep, t_timer, t_textsize, t_linewidth, t_rotate, t_circle,
-	t_color, t_background, t_mouse_cursor, t_random_seed,
+	t_color, t_background, t_mouse_cursor, t_return, t_random_seed,
 	t_move, t_line, t_translate, t_rect, t_numfmt,
 	t_rgb, t_arc,
 
@@ -118,16 +118,6 @@ static void space_sub() {
 
 static char syntax_high;
 
-/*
-static int utf8len(const char* s) {
-	int len = 0;
-	while (*s) {
-		len += (*s & 0xc0) != 0x80;
-		s++;
-	}
-	return len;
-}
-*/
 static int utf8len(const char* s) {
 	int len = 0;
 	while (1) {
@@ -321,6 +311,17 @@ static void csb(const char* s) {
 	co(s);
 	co(bold2);
 }
+static void csf(const char* s) {
+	if (err) return;
+	code_utf8len += strlen(s);
+	if (syntax_high) {
+		co("<s>");
+		co(s);
+		co("</s>");
+	}
+	else
+		co(s);
+}
 
 static void cst(int t) {
 	if (t < t_plus) csb(token_list[t]);
@@ -441,7 +442,7 @@ static int tbl_b[] = { t_break, t_background, t_bitand, t_bitor, t_bitxor, t_bit
 static int tbl_c[] = { t_call, t_clear, t_color, t_circle, t_cos, t_rgb, t_arc, t_curve, t_rotate, t_translate, 0 } ;
 static int tbl_d[] = { t_divi, t_divi1, t_drawgrid, 0 } ;
 static int tbl_e[] = { t_else, t_elif, t_end, t_error, 0 };
-static int tbl_f[] = { t_for, t_floor, t_fastproc, 0 };
+static int tbl_f[] = { t_for, t_func, t_floor, t_funcdecl, t_fastfunc, 0 };
 static int tbl_g[] = { t_global, 0 };
 static int tbl_h[] = { t_higher, 0 };
 static int tbl_i[] = { t_if, t_input, t_input_data, 0 };
@@ -453,7 +454,7 @@ static int tbl_n[] = { t_not, t_numfmt, t_number, 0 };
 static int tbl_o[] = { t_or, t_on, 0 };
 static int tbl_p[] = { t_print, t_proc, t_procdecl, t_pr, t_pi, t_pow, t_polygon, t_prefix, 0 };
 static int tbl_q[] = { 0 };
-static int tbl_r[] = { t_repeat, t_randomf, t_random, t_rect, t_random_seed, 0 };
+static int tbl_r[] = { t_repeat, t_randomf, t_random, t_return, t_rect, t_random_seed, 0 };
 static int tbl_s[] = { t_subr, t_swap, t_sleep, t_systime, t_substr, t_sqrt, t_sin, t_strord, t_strcompare, t_sysfunc, t_strchr, t_strjoin, t_sign, t_sound, t_sys, 0 };
 static int tbl_t[] = { t_tan, t_timestr, t_text, t_timer, t_textsize, 0 };
 static int tbl_u[] = { t_until, 0 };
@@ -648,8 +649,8 @@ struct vname {
 		};
 		ND* sstart;
 	};
-	char typ;
-	char access;
+	byte typ;
+	byte access;
 };
 
 struct proc {
@@ -660,8 +661,8 @@ struct proc {
 	ND* start;
 // float, str, (intarr + numarr + strarr)
 	ushort varcnt[3];
+	byte typ;
 	byte anonym_id;
-
 };
 struct procdecl {
 	ushort proc_i;
@@ -670,7 +671,7 @@ struct procdecl {
 
 static struct proc* proc;
 static struct proc* proc_p;
-static ushort fastproc_addr;
+static ushort fastfunc_addr;
 static ushort proc_len;
 static struct procdecl* procdecl;
 static ushort procdecl_len;
@@ -915,7 +916,7 @@ static void parse_prepare() {
 	codestrspc = h + h / 2;
 	codestr = _realloc(NULL, codestrspc + 1);
 	proc = proc_add("_GLOBAL_");
-	fastproc_addr = 0;
+	fastfunc_addr = 0;
 
 	seq.mouse_down = NULL;
 	seq.mouse_up = NULL;

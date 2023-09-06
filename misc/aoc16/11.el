@@ -17,7 +17,7 @@ proc hash ind . ret .
 .
 # 
 na$[] = [ ]
-proc id n$ . id .
+proc getid n$ . id .
    for id to len na$[]
       if na$[id] = n$
          break 2
@@ -41,7 +41,7 @@ proc init . .
             j += 1
          .
          n$ = substr s$[j] 1 2
-         call id n$ id
+         call getid n$ id
          if substr s$[j + 1] 1 3 = "gen"
             ob[id] = fl
          else

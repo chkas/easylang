@@ -101,7 +101,7 @@ proc part1 . .
 call part1
 # 
 # 
-proc cnt p inc . cnt .
+proc count p inc . cnt .
    cnt = 0
    high = m[p]
    repeat
@@ -126,10 +126,10 @@ proc part2 . .
          clear
          call showt max & " " & h
       .
-      call cnt p 1 c1
-      call cnt p (-1) c2
-      call cnt p nc c3
-      call cnt p (-nc) c4
+      call count p 1 c1
+      call count p (-1) c2
+      call count p nc c3
+      call count p (-nc) c4
       if visual = 1
          call show p 1
       .

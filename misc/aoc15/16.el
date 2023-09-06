@@ -3,7 +3,7 @@
 name$[] = [ "children" "cats" "samoyeds" "pomeranians" "akitas" "vizslas" "goldfish" "trees" "cars" "perfumes" ]
 cnt[] = [ 3 7 2 3 0 0 5 3 2 1 ]
 # 
-proc id n$ . id .
+proc getid n$ . id .
    for id to len name$[]
       if name$[id] = n$
          break 2
@@ -24,7 +24,7 @@ for part to 2
       for i = 3 step 2 to 7
          n$ = substr s$[i] 1 len s$[i] - 1
          cnt = number s$[i + 1]
-         call id n$ id
+         call getid n$ id
          if part = 2 and (n$ = "cat" or n$ = "trees")
             if cnt[id] >= cnt
                break 1

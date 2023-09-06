@@ -1,7 +1,7 @@
 # AoC-15 - Day 9: All in a Single Night
 # 
 global name$[] perm[] .
-proc id n$ . id .
+proc getid n$ . id .
    for id = 1 to len name$[]
       if name$[id] = n$
          break 2
@@ -15,8 +15,8 @@ repeat
    until s$ = ""
    inp$[] &= s$
    s$[] = strsplit s$ " "
-   call id s$[1] a
-   call id s$[3] b
+   call getid s$[1] a
+   call getid s$[3] b
 .
 n = len perm[]
 # 
@@ -24,8 +24,8 @@ len dist[] n * (n + 1)
 # 
 for s$ in inp$[]
    s$[] = strsplit s$ " "
-   call id s$[1] a
-   call id s$[3] b
+   call getid s$[1] a
+   call getid s$[3] b
    d = number s$[5]
    dist[a * n + b] = d
    dist[b * n + a] = d

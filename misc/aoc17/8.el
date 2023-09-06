@@ -1,7 +1,7 @@
 # AoC-17 - Day 8: I Heard You Like Registers
 # 
 global name$[] v[] .
-proc id n$ . id .
+proc getid n$ . id .
    for id to len name$[]
       if name$[id] = n$
          break 2
@@ -13,12 +13,12 @@ proc id n$ . id .
 repeat
    inp$[] = strsplit input " "
    until len inp$[] < 7
-   call id inp$[1] id
+   call getid inp$[1] id
    v = number inp$[3]
    if inp$[2] = "dec"
       v = -v
    .
-   call id inp$[5] id2
+   call getid inp$[5] id2
    op$ = inp$[6]
    v2 = number inp$[7]
    inc = 0

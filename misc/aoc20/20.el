@@ -183,8 +183,8 @@ proc build . .
          .
          for i to n_tiles
             if done[i] = 0
-               for flip to 2
-                  for turn to 4
+               for fl to 2
+                  for tu to 4
                      if p1 = ed[i][4] and p2 = ed[i][1]
                         break 3
                      .
@@ -198,10 +198,10 @@ proc build . .
          p1 = rev[ed[i][2] + 1]
          imgids[] &= i
          start = (i - 1) * 64
-         if flip = 2
+         if fl = 2
             call turn_flip 5 start 8
          .
-         call turn_flip turn start 8
+         call turn_flip tu start 8
       .
    .
 .

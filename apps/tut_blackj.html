@@ -142,7 +142,7 @@ proc dealer_draw p card cardsum n_ace . p_dealer[] .
     .
   .
 .
-proc ev_stand . .
+proc calc_ev_stand . .
   len p_dealer[] 22
   for dealer_card = 2 to 11
     len ev_stand[dealer_card][] 21
@@ -162,7 +162,7 @@ proc ev_stand . .
     .
   .
 .
-call ev_stand
+call calc_ev_stand
 #
 for dealer_card = 2 to 11
   for cardsum = 21 downto 12
@@ -268,7 +268,7 @@ proc dealer_draw p card cardsum n_ace . p_dealer[] .
     .
   .
 .
-proc ev_stand . .
+proc calc_ev_stand . .
   len p_dealer[] 22
   for dealer_card = 2 to 11
     len ev_stand[dealer_card][] 22
@@ -288,7 +288,7 @@ proc ev_stand . .
     .
   .
 .
-call ev_stand
+call calc_ev_stand
 #
 proc calc_ev . .
   for dealer_card = 2 to 11
@@ -411,7 +411,7 @@ proc dealer_draw p card cardsum n_ace . p_dealer[] .
     .
   .
 .
-proc ev_stand . .
+proc calc_ev_stand . .
   len p_dealer[] 22
   for dealer_card = 2 to 11
     len ev_stand[dealer_card][] 22
@@ -431,7 +431,7 @@ proc ev_stand . .
     .
   .
 .
-call ev_stand
+call calc_ev_stand
 #
 proc calc_ev . .
   for dealer_card = 2 to 11
@@ -585,7 +585,7 @@ proc dealer_draw p card cardsum n_ace . p_dealer[] .
     .
   .
 .
-proc ev_stand . .
+proc calc_ev_stand . .
   len p_dealer[] 22
   for dealer_card = 2 to 11
     len ev_stand[dealer_card][] 22
@@ -605,7 +605,7 @@ proc ev_stand . .
     .
   .
 .
-call ev_stand
+call calc_ev_stand
 #
 proc calc_ev . .
   for dealer_card = 2 to 11
@@ -774,7 +774,7 @@ proc dealer_draw p card cardsum n_ace . p_dealer[] .
     .
   .
 .
-proc ev_stand . .
+proc calc_ev_stand . .
   len p_dealer[] 22
   for dealer_card = 2 to 11
     for i = 17 to 22
@@ -795,7 +795,7 @@ proc ev_stand . .
 .
 #
 proc calc_ev . .
-  call ev_stand
+  call calc_ev_stand
   #
   for dealer_card = 2 to 11
     #
@@ -1233,7 +1233,7 @@ proc dealer_draw p card cardsum n_ace . p_dealer[] .
     .
   .
 .
-proc ev_stand . .
+proc calc_ev_stand . .
   len p_dealer[] 22
   for dealer_card = 2 to 11
     for i = 17 to 22
@@ -1254,7 +1254,7 @@ proc ev_stand . .
 .
 #
 proc calc_ev . .
-  call ev_stand
+  call calc_ev_stand
   #
   for dealer_card = 2 to 11
     #

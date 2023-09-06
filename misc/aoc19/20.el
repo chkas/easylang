@@ -204,8 +204,8 @@ proc part2 . .
             break 2
          .
          if m[pos] >= 0 and dir0 <> -1
-            call is_inner pos is_inner
-            if is_inner = 0 and lev = 0 or is_inner = 1 and lev = max_level
+            call is_inner pos res
+            if res = 0 and lev = 0 or res = 1 and lev = max_level
                # ok
             else
                p = m[pos]
@@ -213,7 +213,7 @@ proc part2 . .
                   seen[p + len port[] * lev] = 1
                   nxt[] &= port[p]
                   nxt_d[] &= -1
-                  if is_inner = 1
+                  if res = 1
                      nxt_l[] &= lev + 1
                   else
                      nxt_l[] &= lev - 1

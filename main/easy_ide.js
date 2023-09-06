@@ -488,7 +488,6 @@ docx.tab = 1
 
 function onTab(on) {
 	var off = docx.tab
-	//console.log("onTab " + on + " " + off)
 	if (!on) on = 1
 	docx.tab = on
 	eid("tab" + off).disabled = false
@@ -1184,7 +1183,6 @@ function showRun(on = true) {
 }
 
 function ideMsgFunc(msg, d) {
-console.log(msg)
 	if (msg == "output") {
 		dbg.value = d[0]
 	}

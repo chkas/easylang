@@ -15,7 +15,7 @@ for i = 1 to len s$[] - 1
 .
 global gids[] .
 global tm[][] gid .
-proc gid g . .
+proc findgid g . .
    for gid = 1 to len gids[]
       if g = gids[gid]
          break 2
@@ -40,7 +40,7 @@ for s$ in s$[]
       .
    else
       g = number substr h$[4] 2 99
-      call gid g
+      call findgid g
    .
 .
 # 

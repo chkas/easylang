@@ -1,7 +1,7 @@
 # AoC-15 - Day 13: Knights of the Dinner Table
 # 
 global name$[] .
-proc id n$ . id .
+proc getid n$ . id .
    for id to len name$[]
       if name$[id] = n$
          break 2
@@ -18,8 +18,8 @@ n = floor sqrt len inp$[] + 2
 len h[] n * n + n
 for s$ in inp$[]
    s$[] = strsplit s$ " ."
-   call id s$[1] a
-   call id s$[11] b
+   call getid s$[1] a
+   call getid s$[11] b
    h = number s$[4]
    if s$[3] = "lose"
       h = -h

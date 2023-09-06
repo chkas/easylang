@@ -11,7 +11,7 @@ if len n[] <= 5
 .
 global n_comb nmin .
 minsel = 1 / 0
-proc sum pos sum sel . .
+proc gsum pos sum sel . .
    if sum = destsum
       n_comb += 1
       if sel <= minsel
@@ -23,12 +23,12 @@ proc sum pos sum sel . .
       .
    elif pos <= len n[]
       if sum + n[pos] <= destsum
-         call sum pos + 1 sum + n[pos] sel + 1
+         call gsum pos + 1 sum + n[pos] sel + 1
       .
-      call sum pos + 1 sum sel
+      call gsum pos + 1 sum sel
    .
 .
-call sum 1 0 0
+call gsum 1 0 0
 print n_comb
 print nmin
 # 
