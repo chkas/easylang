@@ -5,63 +5,62 @@ time = 0.1
 # 
 nx = n + 1
 subr init
-  for r = 1 to n
-    for c = 1 to n
-      i = r * nx + c
-      if randomf < 0.3
-        f[i] = 1
+   for r = 1 to n
+      for c = 1 to n
+         i = r * nx + c
+         if randomf < 0.3
+            f[i] = 1
+         .
       .
-    .
-  .
+   .
 .
 f = 100 / n
 subr show
-  clear
-  for r = 1 to n
-    for c = 1 to n
-      if f[r * nx + c] = 1
-        move c * f - f r * f - f
-        rect f * 0.9 f * 0.9
+   clear
+   for r = 1 to n
+      for c = 1 to n
+         if f[r * nx + c] = 1
+            move c * f - f r * f - f
+            rect f * 0.9 f * 0.9
+         .
       .
-    .
-  .
+   .
 .
 subr update
-  swap f[] p[]
-  for r = 1 to n
-    sm = 0
-    i = r * nx + 1
-    sr = p[i - nx] + p[i] + p[i + nx]
-    for c = 1 to n
-      sl = sm
-      sm = sr
-      in = i + 1
-      sr = p[in - nx] + p[in] + p[in + nx]
-      s = sl + sm + sr
-      if s = 3 or s = 4 and p[i] = 1
-        f[i] = 1
-      else
-        f[i] = 0
+   swap f[] p[]
+   for r = 1 to n
+      sm = 0
+      i = r * nx + 1
+      sr = p[i - nx] + p[i] + p[i + nx]
+      for c = 1 to n
+         sl = sm
+         sm = sr
+         in = i + 1
+         sr = p[in - nx] + p[in] + p[in + nx]
+         s = sl + sm + sr
+         if s = 3 or s = 4 and p[i] = 1
+            f[i] = 1
+         else
+            f[i] = 0
+         .
+         i = in
       .
-      i = in
-    .
-  .
+   .
 .
 on timer
-  call update
-  call show
-  timer time
+   update
+   show
+   timer time
 .
 on mouse_down
-  c = mouse_x div f + 1
-  r = mouse_y div f + 1
-  i = r * nx + c
-  f[i] = 1 - f[i]
-  call show
-  timer 3
+   c = mouse_x div f + 1
+   r = mouse_y div f + 1
+   i = r * nx + c
+   f[i] = 1 - f[i]
+   show
+   timer 3
 .
 len f[] nx * nx + nx
 len p[] nx * nx + nx
-call init
+init
 timer 0
-

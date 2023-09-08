@@ -85,8 +85,9 @@ struct str (*strf[])(ND*) = {
 	op_input, op_sysfunc, op_keyb_key, op_strchr, op_time_str, op_join, op_substr
 };
 
-S void parse_strfunc(ND* nd) {
+S ND* parse_strfunc(void) {
 
+	ND* nd = mknd();
 	csb_tok_nt();
 	nd->strf = strf[tokpr - t_input];
 
@@ -111,6 +112,7 @@ S void parse_strfunc(ND* nd) {
 		cs_spc();
 		nd->le = parse_strarrex();
 	}
+	return nd;
 }
 
 S int is_strfactor(void) {
@@ -264,12 +266,11 @@ S ND* parse_lenfunc(ushort mode) {
 
 
 //kc
-S ND* parse_callfunc(struct proc* p) {
+S ND* parse_callfunc(struct proc* p, byte isstr) {
 
 	ND* nd = mknd();
 	csf(tval);
 	nexttok();
-//	cs_tok_nt();
 	nd->le = p->start;
 	if (p->start == NULL) {
 		procdecl = realloc(procdecl, sizeof(struct procdecl) * (procdecl_len + 1));
@@ -283,7 +284,7 @@ S ND* parse_callfunc(struct proc* p) {
 		nd->numf = op_fastcall;
 	}
 #endif
-
+	if (isstr) nd->strf = op_callfunc_str; 
 
 	ND* ndf = nd;
 	ushort i = 0;
@@ -332,11 +333,11 @@ S ND* parse_fac(void) {
 		const char* name = getn(tval);
 		struct proc* p = proc_get(name);
 		if (p) {
-			if (p->typ == 0) {
+			if (p->typ != 1) {
 				error("func name");
 				return NULL;
 			}
-			else nd = parse_callfunc(p);
+			else nd = parse_callfunc(p, 0);
 		}
 		else {
 			nd = mknd();
@@ -487,68 +488,83 @@ S ND* parse_ex(void) {
 	return parse_exx(NULL);
 }
 
+
+S ND* parse_lstr(void) {
+	ND* nd = mknd();
+	char buf[256];
+	int i = 0;
+	byte esc = 0;
+	while (1) {
+		nextc();
+		if (c == '\"' || c == 0) break;
+		if (c == '\\') {
+			esc = 1;
+			nextc();
+			if  (c == 't') c = '\t';
+			else if  (c == 'n') c = '\n';
+		}
+		if (i < 255) buf[i++] = c;
+		else error("string too long");
+	}
+	buf[i] = 0;
+	if (c != 0) nextc();
+	cs("\"");
+	if (esc == 0) csi(buf);
+	else {
+		char buf2[512];
+		i = 0;
+		int j = 0;
+		while (buf[i] != 0) {
+			char ch = buf[i];
+			if (ch == '\t') {
+				buf2[j] = '\\';
+				j += 1;
+				ch = 't';
+			} 
+			else if (ch == '\n') {
+				buf2[j] = '\\';
+				j += 1;
+				ch = 'n';
+			} 
+			else if (ch == '"') {
+				buf2[j] = '\\';
+				j += 1;
+			} 
+			else if (ch == '\\') {
+				buf2[j] = '\\';
+				j += 1;
+			} 
+			buf2[j] = ch;
+			j += 1;
+			i += 1;
+		}
+		buf2[j] = 0;
+		csi(buf2);
+	}
+	cs("\"");
+	if (cod) {
+		nd->strf = op_lstr;
+		nd->str = cstrs_add(buf);
+	}
+	nexttok();
+	return nd;
+}
+
+S ND* parse_numstr(void) {
+	ND* nd = mknd();
+	nd->strf = op_numstr;
+	nd->le = parse_ex();
+	return nd;
+}
+
 S ND* parse_strterm(void) {
 
-	ND* nd = mknd();
+	ND* nd = NULL;
 	if (tok == t_lstr) {
-		char buf[256];
-		int i = 0;
-		byte esc = 0;
-		while (1) {
-			nextc();
-			if (c == '\"' || c == 0) break;
-			if (c == '\\') {
-				esc = 1;
-				nextc();
-				if  (c == 't') c = '\t';
-				else if  (c == 'n') c = '\n';
-			}
-			if (i < 255) buf[i++] = c;
-			else error("string too long");
-		}
-		buf[i] = 0;
-		if (c != 0) nextc();
-		cs("\"");
-		if (esc == 0) csi(buf);
-		else {
-			char buf2[512];
-			i = 0;
-			int j = 0;
-			while (buf[i] != 0) {
-				char ch = buf[i];
-				if (ch == '\t') {
-					buf2[j] = '\\';
-					j += 1;
-					ch = 't';
-				} 
-				else if (ch == '\n') {
-					buf2[j] = '\\';
-					j += 1;
-					ch = 'n';
-				} 
-				else if (ch == '"') {
-					buf2[j] = '\\';
-					j += 1;
-				} 
-				else if (ch == '\\') {
-					buf2[j] = '\\';
-					j += 1;
-				} 
-				buf2[j] = ch;
-				j += 1;
-				i += 1;
-			}
-			buf2[j] = 0;
-			csi(buf2);
-		}
-		cs("\"");
-		if (cod) {
-			nd->strf = op_lstr;
-			nd->str = cstrs_add(buf);
-		}
-		nexttok();
+		nd = parse_lstr();
 	}
 	else if (tok == t_vstr) {
+		nd = mknd();
 		short i = parse_var(VAR_STR, RD);
 		if (i < 0) {
 			nd->v1 = -i - 1;
@@ -560,6 +576,7 @@ S ND* parse_strterm(void) {
 		}
 	}
 	else if (tok == t_vstrael) {
+		nd = mknd();
 		char s[16];
 		strcpy(s, tval);
 		ushort pos = code_utf8len;
@@ -588,11 +605,25 @@ S ND* parse_strterm(void) {
 		opln_add(nd, fmtline);
 	}
 	else if (is_strfunc()) {
-		parse_strfunc(nd);
+		nd = parse_strfunc();
+	}
+
+	else if (tok == t_name) {
+
+		const char* name = getn(tval);
+		struct proc* p = proc_get(name);
+		if (p) {
+			if (p->typ == 0) error("string");
+
+			else if (p->typ == 2) {
+				nd = parse_callfunc(p, 1);
+			}
+			else nd = parse_numstr();
+		}
+		else nd = parse_numstr();
 	}
 	else if (is_numfactor()) {
-		nd->strf = op_numstr;
-		nd->le = parse_ex();
+		nd = parse_numstr();
 	}
 	else {
 		error("string");
@@ -847,11 +878,9 @@ S int parse_proc_header(int mode, byte proctyp) {
 	}
 	proc->typ = proctyp;
 
-///kc
 	csf(tval);
 	cs_spc();
 	nexttok();
-//	cs_tok_spc_nt();
 
 	int i = 0;
 	char typ;
@@ -2050,6 +2079,7 @@ S ND* parse_sequ(void) {
 				loop_level += 1;
 				if (!err && sequ_level < 16) nest_block[sequ_level] = codestrln;
 				if (tok == t_func || tok == t_fastfunc) {
+
 #ifdef FASTPROC
 					if (tok == t_fastfunc && cod) {
 						in_fastfunc = 1;
@@ -2057,7 +2087,19 @@ S ND* parse_sequ(void) {
 						if (!err) parse_fastfunc();
 						in_fastfunc = 0;
 					}
-					else parse_proc(1);
+					else {
+						if (c == '$' && tok == t_func) {
+							// func$
+//kc
+							tval[4] ='$';
+							tval[5] = 0;
+							nextc();
+							parse_proc(2);
+						}
+						else {
+							parse_proc(1);
+						}
+					}
 #else
 					parse_proc(1);
 #endif
@@ -2125,15 +2167,12 @@ S ND* parse_sequ(void) {
 				const char* name = getn(tval);
 
 				if (try_call_subr(nd, name) == 0) {
-//kc
 					struct proc* p = proc_get(name);
 					if (p) {
 						if (p->typ == 0) parse_call_stat(nd, p);
 						else {
 							nd->vf = op_print;
-							nd->le = mknd();
-							nd->le->strf = op_numstr;
-							nd->le->le = parse_callfunc(p);
+							nd->le = parse_strex();;
 						}
 					}
 					else {
@@ -2144,7 +2183,11 @@ S ND* parse_sequ(void) {
 						else if (tok == t_mineq) nd->vf = op_flassm;
 						else if (tok == t_asteq) nd->vf = op_flasst;
 						else if (tok == t_diveq) nd->vf = op_flassd;
-						else error("= += -= *= /=");
+//						else error("= += -= *= /=");
+						else {
+							nd->vf = op_print;
+							nd->le = parse_strex();;
+						}
 						cs_tok_spc_nt();
 						nd->ri = parse_ex();
 						if (cod) {
@@ -2350,9 +2393,6 @@ S ND* parse_sequ(void) {
 				}
 				else if (tokpr <= t_arc) {
 					int t = tokpr;
-					if (tokpr == t_return && proc->typ != 1) {
-						error("not in function");
-					}
 					ND* ndx;
 					if (t >= t_rgb) ndx = mkndx();
 					nd->le = parse_ex();
@@ -2363,6 +2403,17 @@ S ND* parse_sequ(void) {
 							cs_spc();
 							ndx->ex = parse_ex();
 						}
+					}
+				}
+				else if (tokpr == t_return) {
+					if (proc->typ == 1) {
+						nd->le = parse_ex();
+					}
+					else if (proc->typ == 2) {
+						nd->le = parse_strex();
+					}
+					else {
+						error("not in function");
 					}
 				}
 				else if (tokpr <= t_curve) {

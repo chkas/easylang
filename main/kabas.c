@@ -191,6 +191,9 @@ extern int parse(const char* str, int opt, int pos) {
 			else if (ch == 'e') codestr[npos + 11] = 'u'; // repeat
 			else if (ch == 'n') codestr[npos + 7] = 'u'; // on
 			else if (ch == 'a') codestr[npos + 13] = 'u'; // fastproc
+			else if (ch == 'u' && codestr[npos + 7] == '$') { 
+				codestr[npos + 10] = 'u'; // func$
+			}
 			else {
 				codestr[npos + 9] = 'u'; //elif, else, proc, func, subr
 			}

@@ -88,7 +88,6 @@ proc xorcrypt key in[] . out[] .
     out[] &= bitxor in[i] k[(i - 1) mod 4 + 1]
   .
 .
-encr[] = [ 124 35 54 64 88 35 117 100 26 106 65 100 20 34 119 119 81 106 119 33 71 63 100 113 70 35 101 100 20 40 127 115 64 34 114 96 77 106 102 96 70 62 111 33 82 37 100 33 96 56 99 101 77 100 54 67 91 40 ]
 #  
 proc crack_xor in[] . .
   len k[] 4
@@ -105,7 +104,7 @@ proc crack_xor in[] . .
       .
       if m > len out[] / 5
         print "Partial key " & ki & " : " & b
-        call xorcrypt key encr[] out[]
+        call xorcrypt key in[] out[]
         call bytes2str out[] s$
         print s$
         print ""
@@ -115,6 +114,7 @@ proc crack_xor in[] . .
   .
   print "Key: " & key
 .
+encr[] = [ 124 35 54 64 88 35 117 100 26 106 65 100 20 34 119 119 81 106 119 33 71 63 100 113 70 35 101 100 20 40 127 115 64 34 114 96 77 106 102 96 70 62 111 33 82 37 100 33 96 56 99 101 77 100 54 67 91 40 ]
 call crack_xor encr[]
 
 * Block Cipher

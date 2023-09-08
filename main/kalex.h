@@ -21,10 +21,10 @@ static const char* token_list[] = {
 
 	"print", "pr", "write", "text",
 	"sleep", "timer", "textsize", "linewidth", "coord_rotate", "circle", 
-	"color", "background", "mouse_cursor", "return", "random_seed",
+	"color", "background", "mouse_cursor", "random_seed",
 	"move", "line", "coord_translate", "rect", "numfmt",
 	"color3", "circlearc",
-
+	"return",
 	"sound", "polygon", "curve",
 
 	"swap", "clear", "break", "drawgrid", "arrbase", "sys",
@@ -58,10 +58,10 @@ enum token_tok {
 
 	t_print, t_pr, t_write, t_text, 
 	t_sleep, t_timer, t_textsize, t_linewidth, t_rotate, t_circle,
-	t_color, t_background, t_mouse_cursor, t_return, t_random_seed,
+	t_color, t_background, t_mouse_cursor, t_random_seed,
 	t_move, t_line, t_translate, t_rect, t_numfmt,
 	t_rgb, t_arc,
-
+	t_return,
 	t_sound, t_polygon, t_curve,
 
 	t_swap, t_clear, t_break, t_drawgrid, t_arrbase, t_sys,
@@ -535,6 +535,7 @@ static void nexttok() {
 			}
 		}
 #endif
+		// name
 		if (c == '[') {
 			nextc();
 			if (c == ']') {

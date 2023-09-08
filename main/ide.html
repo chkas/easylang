@@ -184,7 +184,7 @@ button.tab:disabled {
 a:hover {background:#666}
 a{color:#ddd}
 a:visited {color:#ddd}
-u{font-weight:bold;text-decoration:none}
+xxu{font-weight:bold;text-decoration:none}
 *{scrollbar-width:auto}
 ::-webkit-scrollbar{width:10px;height:10px}
 
@@ -197,7 +197,8 @@ h3{background:#444;color:#fff}
 pre i{font-weight:400;color:#9d9}
 pre b{font-weight:500;color:#fc9}
 pre s{text-decoration:none;font-weight:500;color:#9cf}
-pre u {font-weight:bold;text-decoration:none;color:#fff; background:#666}
+pre u{color:#fff;background:#a44;text-decoration:none}
+::selection {color:#fff;background:#bbb}
 
 .tut pre{ background:#333}
 tt{background:#555;color:#efe;border-color:#888}
@@ -216,11 +217,9 @@ button:active:enabled{background:#bbb}
 select{background:#333;color:#eee}
 select:hover:enabled{background:#999}
 .high{background:#d77}
-u{color:#fff;background:#a44}
 *{scrollbar-color:auto}
 ::-webkit-scrollbar-track{background:#222} 
 ::-webkit-scrollbar-thumb{background:#666}
-::selection {color:#fff;background:#888}
 </style>
 
 <script>
@@ -236,9 +235,12 @@ h3{background:#ccc;color:#444}
 #inp{background:#fff}
 #dbg{background:#eee;color:#000}
 tt{border-color:#ccc;background:#fff;color:#000}
+
 pre i{color:#088}
 pre b{font-weight:500;color:#920}
 pre s{text-decoration:none;font-weight:500;color:#080}
+::selection {color:#000;background:#bbb}
+pre u{color:#000;background:#fdd;text-decoration:none}
 
 #out{background:#eee;color:#000}
 button{border-color:#aaa;background:#ddd;color:#000}
@@ -255,7 +257,6 @@ button:active:enabled {background:#999}
 select{background:#eee;color:#000}
 select:hover:enabled {background:#ddd}
 .high{background:#e88}
-u{color:#000;background:#fdd}
 a {color:#000}
 a:visited {color:#000}
 ::-webkit-scrollbar-track{background:#aaa} 

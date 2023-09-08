@@ -2117,7 +2117,97 @@ S double op_callfunc(ND* nd0) {
 		ARR* a = arrs + ia;
 		if (a->p) free_arr(a);
 	}
+	return retval;
+}
+S STR op_callfunc_str(ND* nd0) {
 
+	ND* ndp = nd0->le;
+	double* nums = NULL;
+	STR* strs = NULL;
+	ARR* arrs = NULL;
+	byte n_num = ndp->bx0;
+	byte n_str = ndp->bx1;
+	byte n_arr = ndp->bx2;
+
+	if (n_num) {
+		nums = alloca(n_num * sizeof(double));
+		memset(nums, 0, n_num * sizeof(double));
+	}
+	if (n_str) {
+		strs = alloca(n_str * sizeof(STR));
+		memset(strs, 0, n_str * sizeof(STR));
+	}
+	if (n_arr) {
+		arrs = alloca(n_arr * sizeof(ARR));
+		arrs_init(arrs, n_arr);
+	}
+	ushort ifl = 0;
+	ushort istr = 0;
+	ushort iarr = 0;
+
+	ND* nd = nd0->ri;
+
+	int ind = 0;
+	while (nd) {
+		int t = ndp->bx[ind];
+		if (t == PAR_NUM) {
+			nums[ifl] = numf(nd);
+			ifl += 1;
+		}
+		else if (t == PAR_STR) {
+			strs[istr] = strf(nd);
+			istr += 1;
+		}
+		else { 				// PAR_ARR)
+			arrs[iarr] = arrf(nd);
+			iarr += 1;
+		}
+		ind += 1;
+		nd = nd->next;
+	}
+
+	double* rtl_nums_caller = rtl_nums;
+	STR* rtl_strs_caller = rtl_strs;
+	ARR* rtl_arrs_caller = rtl_arrs;
+	rtl_nums = nums;
+	rtl_strs = strs;
+	rtl_arrs = arrs;
+
+	ND* proc_caller = rt.proc;
+	rt.proc = nd0->le;
+
+	funcnd = NULL;
+	if (rt.slow == 0) exec_sequ(ndp->bxnd);
+	else {
+		if (rt.slow >= 32) rt.slow += 1;
+		exec_sequ_slow(ndp->bxnd);
+		if (rt.slow > 32) rt.slow -= 1;
+	}
+	stop_flag = 0;
+
+	STR retval;
+	str_init(&retval);
+	if (funcnd) retval = strf(funcnd);
+
+	rt.proc = proc_caller;
+
+	ifl = 0;
+	istr = 0;
+	iarr = 0;
+
+	rtl_nums = rtl_nums_caller;
+	rtl_strs = rtl_strs_caller;
+	rtl_arrs = rtl_arrs_caller;
+
+	nd = nd0->ri;
+
+	for (int is = 0; is < n_str; is++) {
+		str_free(strs + is);
+	}
+	for (int ia = 0; ia < n_arr; ia++) {
+		ARR* a = arrs + ia;
+		if (a->p) free_arr(a);
+	}
 	return retval;
 }
 

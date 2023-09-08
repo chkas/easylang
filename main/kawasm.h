@@ -400,8 +400,10 @@ static void parse_fastfunc(void) {
 
 	mf_sequ(proc->start->bxnd);
 
-//	wemit(W_GET);
-//	wemit(nparm - 1);
+	// return 0
+	wemit(0x44);
+	wemitf(0);
+
 	wemit(W_END);
 
 	ushort h = wasmi - fstart;
