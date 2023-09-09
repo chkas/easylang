@@ -292,8 +292,7 @@ int main(void) {
 #elif defined(__RUN__)
 
 //test
-char* code = "fastproc mul a b . r . r = a * b . call mul 2 8 r print r";
-char* code2 = "proc f .. print 4 . call f";
+char* code2 = "proc f .. print 4 . f";
 
 char* codefr = "proc iter cx cy . iter . "
    "iter = 1 "
@@ -306,7 +305,7 @@ char* codefr = "proc iter cx cy . iter . "
       "iter += 1 "
    ". "
 ". "
-"call iter 0.6 0.5 iter "
+"iter 0.6 0.5 iter "
 "pr iter";
 
 char* code4 = 
@@ -315,9 +314,6 @@ char* code4 =
 	"  s = s + b "
 	". "
 	"print s "
-;
-char* code5 = 
-	"a[]=[7 8] proc f a .. if a = 1 pr a[a] . . call f 1 a -= 2 pr a  "
 ;
 
 int main(void) {

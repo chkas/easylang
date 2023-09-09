@@ -22,9 +22,9 @@ c = 1
 repeat
    s$ = input
    until s$ = ""
-   call check
+   check
    if substr s$ 1 4 = "addx"
-      call check
+      check
       x += number substr s$ 6 -1
    .
 .

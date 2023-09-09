@@ -51,7 +51,7 @@ proc parse . .
       until inp$ = ""
    .
 .
-call parse
+parse
 # 
 proc show . .
    move 0 0
@@ -131,7 +131,7 @@ proc spread key . .
          if m[pos] > 2 and dist > 0
             h = m[pos]
             if h >= 97 and found[h - 96] = 0
-               call add_kk key h dist coll[]
+               add_kk key h dist coll[]
                found[h - 96] = 1
             .
             coll[] &= m[pos]
@@ -161,7 +161,7 @@ proc calc_distances . .
    key_pos[n_keys + 1] = robot
    for key = 1 to n_keys + 1
       if open[key] = 0
-         call spread key
+         spread key
       .
    .
 .
@@ -225,8 +225,8 @@ proc solve key . dist .
       break 1
    .
    if key <= n_keys
-      call state_id key id
-      call hashget id dist
+      state_id key id
+      hashget id dist
       if dist >= 0
          break 1
       .
@@ -234,10 +234,10 @@ proc solve key . dist .
    min = 1 / 0
    for k = 1 to n_keys
       if open[k] = 0
-         call is_path_open key k open
+         is_path_open key k open
          if open = 1
             open[k] = 1
-            call solve k h
+            solve k h
             open[k] = 0
             ind = (key - 1) * n_keys + k
             h += kk_dist[ind]
@@ -246,14 +246,14 @@ proc solve key . dist .
       .
    .
    if key <= n_keys
-      call state_id key id
-      call hashset id min
+      state_id key id
+      hashset id min
    .
    dist = min
 .
-call show
-call calc_distances
-call solve n_keys + 1 dist0
+show
+calc_distances
+solve n_keys + 1 dist0
 print dist0
 # 
 proc part2 . .
@@ -275,13 +275,13 @@ proc part2 . .
             open[i] = 1
          .
       .
-      call calc_distances
-      call solve n_keys + 1 dist
+      calc_distances
+      solve n_keys + 1 dist
       sum += dist
    .
    print sum
 .
-call part2
+part2
 # 
 input_data
 #################

@@ -16,7 +16,7 @@ proc init . .
       s$ = input
    .
 .
-call init
+init
 # 
 sc = 100 / w
 background 000
@@ -81,7 +81,7 @@ proc get_rays stat . .
          yi = i div w
          dx = xi - x
          dy = yi - y
-         call gcd dx dy r
+         gcd dx dy r
          dx = dx div r
          dy = dy div r
          for k range0 len dx[]
@@ -99,12 +99,12 @@ proc get_rays stat . .
 proc part1 . .
    for i range0 len m[]
       if m[i] = 1
-         call get_rays i
+         get_rays i
          if len dx[] > max
             monitor_stat = i
             max = len dx[]
-            call show
-            call mark monitor_stat
+            show
+            mark monitor_stat
             sleep 0.02
          .
       .
@@ -146,31 +146,31 @@ proc fire ind . .
       .
       until m[x + y * w] = 1
    .
-   call show_ray x y
+   show_ray x y
    n_shot += 1
    if n_shot = 200
       print x * 100 + y
    .
    m[x + y * w] = 0
-   call show
-   call mark monitor_stat
+   show
+   mark monitor_stat
 .
 proc part2 . .
-   call get_rays monitor_stat
+   get_rays monitor_stat
    dy = -99999
    dx = -1
    repeat
-      call find_next dx dy ind
+      find_next dx dy ind
       dx = dx[ind]
       dy = dy[ind]
-      call fire ind
+      fire ind
       until len dx[] = 0
    .
 .
-call show
-call part1
-call mark monitor_stat
-call part2
+show
+part1
+mark monitor_stat
+part2
 # 
 input_data
 .#..##.###...#######

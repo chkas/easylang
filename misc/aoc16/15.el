@@ -19,10 +19,10 @@ proc run . .
    .
    print t
 .
-call run
+run
 npos[] &= 11
 pos0[] &= 0
-call run
+run
 # 
 input_data
 Disc #1 has 5 positions; at time=0, it is at position 4.

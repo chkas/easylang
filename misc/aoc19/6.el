@@ -12,11 +12,11 @@ proc go a$ orb . .
    orbsum += orb
    for i = 1 to len a$[]
       if a$[i] = a$
-         call go b$[i] orb + 1
+         go b$[i] orb + 1
       .
    .
 .
-call go "COM" 0
+go "COM" 0
 print orbsum
 # 
 proc find a$ orb . you san .
@@ -31,7 +31,7 @@ proc find a$ orb . you san .
       san = -1
       for i = 1 to len a$[]
          if a$[i] = a$
-            call find b$[i] orb + 1 h1 h2
+            find b$[i] orb + 1 h1 h2
             if h1 <> -1
                you = h1
             elif h2 <> -1
@@ -44,7 +44,7 @@ proc find a$ orb . you san .
       .
    .
 .
-call find "COM" 0 you san
+find "COM" 0 you san
 # 
 input_data
 COM)B

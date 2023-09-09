@@ -15,7 +15,10 @@ body {
 }
 a { color: #ddd }
 
-pre u {font-weight:bold;text-decoration:none;color:#fff; background:#666}
+pre i{font-weight:400;color:#9d9}
+pre b{font-weight:500;color:#fc9}
+pre s{text-decoration:none;font-weight:500;color:#9cf}
+pre u{font-weight:bold;text-decoration:none;color:#fff;background:#666}
 span.high {background-color:#666}
 
 #left {
@@ -93,16 +96,16 @@ window.onresize()
 var src = []
 
 src.push(`on animate
-  clear
-  for c = 0 to 1319
-    h = c + tick
-    x = sin (6 * h / pi) + sin (3 * h)
-    h = c + tick * 2
-    y = cos (6 * h / pi) + cos (3 * h)
-    move 20 * x + 50 20 * y + 50
-    circle 0.5
-  .
-  tick += 1
+   clear
+   for c = 0 to 1319
+      h = c + tick
+      x = sin (6 * h / pi) + sin (3 * h)
+      h = c + tick * 2
+      y = cos (6 * h / pi) + cos (3 * h)
+      move 20 * x + 50 20 * y + 50
+      circle 0.5
+   .
+   tick += 1
 .
 `)
 
@@ -110,15 +113,15 @@ src.push(`ang = 45
 color 881
 #
 on animate
-  clear
-  move 50 50
-  circle 1
-  x = 50 + 40 * sin ang
-  y = 50 + 40 * cos ang
-  line x y
-  circle 6
-  vel += sin ang / 7
-  ang += vel
+   clear
+   move 50 50
+   circle 1
+   x = 50 + 40 * sin ang
+   y = 50 + 40 * cos ang
+   line x y
+   circle 6
+   vel += sin ang / 7
+   ang += vel
 .
 `)
 
@@ -156,7 +159,7 @@ on animate
          dy = y[i] - y[j]
          d = sqrt (dx * dx + dy * dy)
          if d < rad2
-            call collide
+            collide
          .
       .
       if x[i] > 100 - rad or x[i] < rad
@@ -183,14 +186,14 @@ src.push(`proc tree x y l w ang dp . .
    linewidth w
    line x y
    if dp = 1
-      break 1
+      return
    .
    nb = 2 + if dp < 9
    for i = 1 to nb
       an = ang + (i - nb / 2 - 0.5) * 20
       an += (randomf - 0.5) * 60
       ln = l * (0.7 + randomf * 0.3)
-      call tree x y ln w * 0.7 an dp - 1
+      tree x y ln w * 0.7 an dp - 1
    .
 .
 background 668
@@ -200,12 +203,12 @@ subr new
    move 2 4
    color 000
    text "Click for new tree"
-   call tree 50 0 15 5 90 10
+   tree 50 0 15 5 90 10
 .
 on mouse_down
-   call new
+   new
 .
-call new
+new
 `)
 
 

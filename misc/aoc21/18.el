@@ -13,7 +13,7 @@ subr readall
       in$[] &= s$
    .
 .
-call readall
+readall
 # 
 global s$[] si .
 proc parse ind . tr[] .
@@ -25,7 +25,7 @@ proc parse ind . tr[] .
       si += 1
       if c$ = "["
          tr[ind] = -1
-         call parse ind * 2 tr[]
+         parse ind * 2 tr[]
       else
          tr[ind] = strcode c$ - 48
       .
@@ -44,7 +44,7 @@ proc explx lev ind . tr[] .
             expln = tr[ind * 2 + 1]
             tr[ind] = 0
          else
-            call explx lev + 1 ind * 2 tr[]
+            explx lev + 1 ind * 2 tr[]
          .
       else
          expli = ind
@@ -59,12 +59,12 @@ proc explode . tr[] .
    exploded = 0
    expli = -1
    expln = -1
-   call explx 1 2 tr[]
+   explx 1 2 tr[]
 .
 proc splitx ind . tr[] .
    for ind = ind to ind + 1
       if tr[ind] = -1
-         call splitx ind * 2 tr[]
+         splitx ind * 2 tr[]
       else
          if tr[ind] > 9 and splitted = 0
             splitted = 1
@@ -77,7 +77,7 @@ proc splitx ind . tr[] .
 .
 proc split . tr[] .
    splitted = 0
-   call splitx 2 tr[]
+   splitx 2 tr[]
 .
 # 
 proc add tr[] . tree[] .
@@ -99,29 +99,29 @@ proc add tr[] . tree[] .
 # 
 proc magnitude_r ind . tr[] res .
    if tr[ind] = -1
-      call magnitude_r ind * 2 tr[] h1
+      magnitude_r ind * 2 tr[] h1
    else
       h1 = tr[ind]
    .
    ind += 1
    if tr[ind] = -1
-      call magnitude_r ind * 2 tr[] h2
+      magnitude_r ind * 2 tr[] h2
    else
       h2 = tr[ind]
    .
    res = 3 * h1 + 2 * h2
 .
 proc magnitude tr[] . res .
-   call magnitude_r 2 tr[] res
+   magnitude_r 2 tr[] res
 .
 # 
 proc reduce . t[] .
    repeat
       repeat
-         call explode t[]
+         explode t[]
          until exploded = 0
       .
-      call split t[]
+      split t[]
       until splitted = 0
    .
 .
@@ -129,29 +129,29 @@ proc getline l . tr[] .
    s$[] = strchars in$[l]
    si = 2
    len tr[] 64
-   call parse 2 tr[]
+   parse 2 tr[]
 .
 proc part1 . .
-   call getline 1 t1[]
+   getline 1 t1[]
    for i = 2 to len in$[]
-      call getline i t2[]
-      call add t2[] t1[]
-      call reduce t1[]
+      getline i t2[]
+      add t2[] t1[]
+      reduce t1[]
    .
-   call magnitude t1[] m
+   magnitude t1[] m
    print m
 .
-call part1
+part1
 # 
 proc part2 . .
    for i to len in$[]
       for j to len in$[]
          if i <> j
-            call getline i t1[]
-            call getline j t2[]
-            call add t2[] t1[]
-            call reduce t1[]
-            call magnitude t1[] m
+            getline i t1[]
+            getline j t2[]
+            add t2[] t1[]
+            reduce t1[]
+            magnitude t1[] m
             if m > max
                max = m
             .
@@ -160,7 +160,7 @@ proc part2 . .
    .
    print max
 .
-call part2
+part2
 # 
 # 
 input_data

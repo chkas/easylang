@@ -91,7 +91,7 @@ proc show_quest . .
          q$ = a & " ÷ " & b & " = "
       .
    .
-   call disp 030 q$ & "_"
+   disp 030 q$ & "_"
    res = 0
 .
 proc draw_key col ind . .
@@ -124,12 +124,12 @@ proc draw_key col ind . .
 .
 background 010
 proc start . .
-   call init_vars
+   init_vars
    clear
    for ind = 0 to 11
-      call draw_key 020 ind
+      draw_key 020 ind
    .
-   call show_quest
+   show_quest
 .
 menu$[] = [ "7 · 8 = _\n🤔" "56 ÷ 8 = _\n🤔" "34 + 23 = _\n🤔🤔" "67 - 21 = _\n🤔🤔" "13 · 7 = _\n🤔🤔" "3 · x - 4 = 8\n🤔🤔" "13 · 27 = _\n🤔🤔🤔" "837 ÷ 31 = _\n🤔🤔🤔" ]
 # 
@@ -155,7 +155,7 @@ proc draw_menu_key col i . .
 proc draw_menu . .
    clear
    for i = 1 to len menu$[]
-      call draw_menu_key 020 i
+      draw_menu_key 020 i
    .
    state = 0
 .
@@ -170,7 +170,7 @@ proc handle_key2 . .
          col = 500
          timer 2
       .
-      call disp col q$ & res
+      disp col q$ & res
    else
       if ind = 10
          res = res div 10
@@ -185,7 +185,7 @@ proc handle_key2 . .
          res = res * 10 + ind
          h$ = res
       .
-      call disp 030 q$ & h$
+      disp 030 q$ & h$
    .
 .
 proc handle_key . .
@@ -202,8 +202,8 @@ proc handle_key . .
          ind = 11
       .
    .
-   call draw_key 040 ind
-   call handle_key2
+   draw_key 040 ind
+   handle_key2
 .
 on key
    ind = strcode keybkey - 48
@@ -218,15 +218,15 @@ on key
          ind = -1
       .
       if ind >= 0
-         call handle_key2
+         handle_key2
       .
    elif state = 0
       if ind >= 1 and ind <= 4
          ind -= 1
-         call start
+         start
       .
    elif state = 4
-      call draw_menu
+      draw_menu
    .
 .
 on mouse_down
@@ -235,27 +235,27 @@ on mouse_down
       c = mouse_x div 50
       ind = r * 2 + c + 1
       if ind <= 8
-         call draw_menu_key 030 ind
+         draw_menu_key 030 ind
       else
          ind = -1
       .
    elif state = 1
       if mouse_y < 75
-         call handle_key
+         handle_key
       elif res = 0
          ind = -1
-         call draw_menu
+         draw_menu
       .
    elif state = 4
-      call draw_menu
+      draw_menu
    .
 .
 on mouse_up
    if ind >= 0
       if state = 0
-         call start
+         start
       elif state = 1 or state = 2
-         call draw_key 020 ind
+         draw_key 020 ind
       .
       ind = -1
    .
@@ -294,16 +294,16 @@ proc show_result . .
    move 10 56
    textsize 4
    text q$ & resok
-   call smiley t
+   smiley t
 .
 on timer
    if state = 3
       state = 4
    elif state = 2 and todo = 0
-      call show_result
+      show_result
    elif state = 2
-      call show_quest
+      show_quest
       state = 1
    .
 .
-call draw_menu
+draw_menu

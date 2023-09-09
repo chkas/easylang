@@ -60,24 +60,24 @@ proc score . d[] res .
 # 
 proc part1 . deck1[] deck2[] .
    while deck1[1] > 0 and deck2[1] > 0
-      call take deck1[] card1
-      call take deck2[] card2
+      take deck1[] card1
+      take deck2[] card2
       if card1 > card2
-         call put card1 deck1[]
-         call put card2 deck1[]
+         put card1 deck1[]
+         put card2 deck1[]
       else
-         call put card2 deck2[]
-         call put card1 deck2[]
+         put card2 deck2[]
+         put card1 deck2[]
       .
    .
    if deck1[1] > 0
-      call score deck1[] sc
+      score deck1[] sc
    else
-      call score deck2[] sc
+      score deck2[] sc
    .
    print sc
 .
-call part1 deck1_copy[] deck2_copy[]
+part1 deck1_copy[] deck2_copy[]
 # 
 # 
 proc deck2str . d[] res$ .
@@ -113,16 +113,16 @@ proc play . deck1[] deck2[] winner .
          winner = 1
          break 1
       .
-      call deck2str deck1[] h$
-      call add_seen h$ seen1$[] is_in1
-      call deck2str deck2[] h$
-      call add_seen h$ seen2$[] is_in2
+      deck2str deck1[] h$
+      add_seen h$ seen1$[] is_in1
+      deck2str deck2[] h$
+      add_seen h$ seen2$[] is_in2
       if is_in1 = 1 or is_in2 = 1
          winner = 1
          break 1
       .
-      call take deck1[] card1
-      call take deck2[] card2
+      take deck1[] card1
+      take deck2[] card2
       if card1 > card2
          win_round = 1
       else
@@ -133,22 +133,22 @@ proc play . deck1[] deck2[] winner .
          d1[1] = card1
          d2[] = deck2[]
          d2[1] = card2
-         call play d1[] d2[] win_round
+         play d1[] d2[] win_round
       .
       if win_round = 1
-         call put card1 deck1[]
-         call put card2 deck1[]
+         put card1 deck1[]
+         put card2 deck1[]
       else
-         call put card2 deck2[]
-         call put card1 deck2[]
+         put card2 deck2[]
+         put card1 deck2[]
       .
    .
 .
-call play deck1[] deck2[] winner
+play deck1[] deck2[] winner
 if winner = 1
-   call score deck1[] sc
+   score deck1[] sc
 else
-   call score deck2[] sc
+   score deck2[] sc
 .
 print sc
 # 

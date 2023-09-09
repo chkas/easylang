@@ -71,7 +71,7 @@ on timer
     sec = number substr h$ 18 2
     min = number substr h$ 15 2
     hour = number substr h$ 12 2
-    call draw hour min sec
+    draw hour min sec
   .
   timer 0.1
 .

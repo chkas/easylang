@@ -30,7 +30,7 @@ proc read . .
    .
    arrbase f0[] 0
 .
-call read
+read
 # 
 att_p[] = [ 3 3 ]
 dir[] = [ -nc (-1) 1 nc ]
@@ -92,7 +92,7 @@ proc battle . res .
             .
             if j = len f[]
                # no target found -> done
-               call show
+               show
                hp = 0
                for i = 1 to len hp[]
                   if hp[i] > 0
@@ -177,7 +177,7 @@ proc battle . res .
                      # elve died
                      if att_p[1] > 3
                         res = -1
-                        call show
+                        show
                         break 3
                      .
                   .
@@ -186,17 +186,17 @@ proc battle . res .
          .
       .
       round += 1
-      call show
+      show
    .
 .
-call battle res
+battle res
 print res
 # 
 proc part2 . .
    delay /= 10
    repeat
       att_p[1] += 1
-      call battle res
+      battle res
       until res <> -1
       if visual = 1
          sleep delay * 10
@@ -204,7 +204,7 @@ proc part2 . .
    .
    print res
 .
-call part2
+part2
 # 
 # 
 input_data

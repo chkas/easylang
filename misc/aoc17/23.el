@@ -67,11 +67,11 @@ if len m$[] = 0
    print "input data needed"
 else
    len r[] 26
-   call run
+   run
    print nmul
    part2 = 1
    r[1] = 1
-   call run
+   run
    print nprim
 .
 # 

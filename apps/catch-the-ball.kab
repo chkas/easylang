@@ -16,7 +16,7 @@ subr start
   points = 0
   lives = 3
   textsize 6
-  call new_ball
+  new_ball
 .
 background 000
 subr backgr
@@ -35,7 +35,7 @@ subr backgr
 .
 on animate
   if lives > 0
-    call backgr
+    backgr
     color col
     move x_pos y_pos
     circle rad
@@ -58,12 +58,12 @@ subr catch
     if points mod 3 = 0
       lives += 1
     .
-    call new_ball
+    new_ball
   else
     lives -= 1
     # sound [ 262 0.2 ]
     if lives = 0
-      call backgr
+      backgr
       textsize 10
       move 20 40
       text "Game over"
@@ -79,11 +79,11 @@ on mouse_down
     locked = 1
     timer 1
     if lives = 0
-      call start
+      start
     else
-      call catch
+      catch
     .
   .
 .
-call start
+start
 

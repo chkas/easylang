@@ -26,11 +26,11 @@ repeat
    new = f[i1] + f[i2]
    if new >= 10
       dig = 1
-      call add
+      add
       new -= 10
    .
    dig = new
-   call add
+   add
    until done = 1
    i1 = (i1 + f[i1]) mod len f[] + 1
    i2 = (i2 + f[i2]) mod len f[] + 1

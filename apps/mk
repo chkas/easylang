@@ -88,10 +88,22 @@ xxx
 
 	if test "$5" = runner; then
 		cat >>$o/tut_$n.html <<'xxx'
+async function compr(txt) {
+	var enc = new TextEncoder()
+	var buffer = await new Response(new Response(enc.encode(txt)).body.pipeThrough(new CompressionStream('deflate-raw'))).arrayBuffer()
+	var s = ""
+	var bytes = new Uint8Array(buffer)
+	for (var i = 0; i < bytes.byteLength; i++) {
+		s += String.fromCharCode(bytes[i])
+	}
+	return btoa(s)
+}
 var url
-function createURL() {
-	var h = encodeURIComponent(pres[pres.length - 1].innerText)
-	url.href = location.origin + "/run/#code=" + h
+async function createURL() {
+	var h = await compr(pres[pres.length - 1].innerText)
+	url.href = location.origin + "/run/#cod=" + h
+//	var h = encodeURIComponent(pres[pres.length - 1].innerText)
+//	url.href = location.origin + "/run/#code=" + h
 	url.target = '_blank'
 	url.innerHTML = "Run and install it on code runner"
 }
@@ -261,11 +273,26 @@ cat <<xxx
 <canvas></canvas>
 
 <script>
-edit.onclick = function() {
-	window.open('../ide/#code=' + encodeURIComponent(easyscript))
+
+async function compr(txt) {
+	var enc = new TextEncoder()
+	var buffer = await new Response(new Response(enc.encode(txt)).body.pipeThrough(new CompressionStream('deflate-raw'))).arrayBuffer()
+	var s = ""
+	var bytes = new Uint8Array(buffer)
+	for (var i = 0; i < bytes.byteLength; i++) {
+		s += String.fromCharCode(bytes[i])
+	}
+	return btoa(s)
 }
-install.onclick = function() {
-	window.open('../run/#code=' + encodeURIComponent(easyscript))
+edit.onclick = async function() {
+	var h = await compr(easyscript)
+	window.open('../ide/#cod=' + h)
+//	window.open('../ide/#code=' + encodeURIComponent(easyscript))
+}
+install.onclick = async function() {
+	var h = await compr(easyscript)
+	window.open('../run/#cod=' + h)
+//	window.open('../run/#code=' + encodeURIComponent(easyscript))
 }
 
 xxx
@@ -440,11 +467,11 @@ src1 = `proc tree x y a d . .
    y += sin a * d * 1.4 * (randomf + 0.5)
    line x y
    if d > 1
-      call tree x y a - 20 d - 1
-      call tree x y a + 20 d - 1
+      tree x y a - 20 d - 1
+      tree x y a + 20 d - 1
    .
 .
-call tree 50 5 90 10
+tree 50 5 90 10
 `
 
 var htxt = `<canvas style="width:95vh;height:95vh">
@@ -565,9 +592,21 @@ easyrun(src1, canv)
 easyrun(src1, canv1)
 show(s2)
 
-function createURL() {
-	var h = encodeURIComponent(code1.value)
-	url.href = location.origin + "/run/#code=" + h
+async function compr(txt) {
+	var enc = new TextEncoder()
+	var buffer = await new Response(new Response(enc.encode(txt)).body.pipeThrough(new CompressionStream('deflate-raw'))).arrayBuffer()
+	var s = ""
+	var bytes = new Uint8Array(buffer)
+	for (var i = 0; i < bytes.byteLength; i++) {
+		s += String.fromCharCode(bytes[i])
+	}
+	return btoa(s)
+}
+async function createURL() {
+	var h = await compr(code1.value)
+	url.href = location.origin + "/run/#cod=" + h
+//	var h = encodeURIComponent(code1.value)
+//	url.href = location.origin + "/run/#code=" + h
 	url.target = '_blank'
 	url.innerHTML = "Run and install it on code runner"
 }

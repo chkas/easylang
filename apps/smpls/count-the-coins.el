@@ -14,16 +14,16 @@ proc count sum kind . r .
       r = cache[chind]
       break 1
    .
-   call count sum - val[kind] kind r2
-   call count sum kind - 1 r1
+   count sum - val[kind] kind r2
+   count sum kind - 1 r1
    r = r1 + r2
    cache[chind] = r
 .
-call count 100 4 r
+count 100 4 r
 print r
-call count 10000 6 r
+count 10000 6 r
 print r
-call count 100000 6 r
+count 100000 6 r
 # this is not exact, since numbers
 # are doubles and r > 2^53
 print r

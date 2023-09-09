@@ -10,7 +10,7 @@ proc init . .
       sumall[] &= inpsum
    .
 .
-call init
+init
 # 
 global mineq minsel targsum .
 # 
@@ -25,19 +25,19 @@ proc find pos sum sel eq . .
    elif pos > 1 and sel <= minsel and sum + sumall[pos - 1] >= targsum
       pos -= 1
       if sum + n[pos] <= targsum
-         call find pos sum + n[pos] sel + 1 eq * n[pos]
+         find pos sum + n[pos] sel + 1 eq * n[pos]
       .
-      call find pos sum sel eq
+      find pos sum sel eq
    .
 .
 minsel = 1 / 0
 targsum = inpsum div 3
-call find len n[] + 1 0 0 1
+find len n[] + 1 0 0 1
 print mineq
 # 
 minsel = 1 / 0
 targsum = inpsum div 4
-call find len n[] + 1 0 0 1
+find len n[] + 1 0 0 1
 print mineq
 # 
 input_data

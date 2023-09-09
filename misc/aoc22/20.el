@@ -26,7 +26,7 @@ proc init_part2 . .
    .
    nxt[n] = 1
 .
-call read
+read
 # 
 proc mix . .
    for k = 1 to n
@@ -48,7 +48,7 @@ proc mix . .
 .
 proc nmix h . .
    for i = 1 to h
-      call mix
+      mix
    .
 .
 proc find sk . r .
@@ -64,16 +64,16 @@ proc find sk . r .
    r = v[ind]
 .
 proc run nm . .
-   call nmix nm
+   nmix nm
    for h in [ 1000 2000 3000 ]
-      call find h r
+      find h r
       sum += r
    .
    print sum
 .
-call run 1
-call init_part2
-call run 10
+run 1
+init_part2
+run 10
 # 
 input_data
 1

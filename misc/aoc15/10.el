@@ -18,7 +18,7 @@ proc run . .
    swap f[] fn[]
 .
 for i to 50
-   call run
+   run
    if i = 40
       print len f[]
    .

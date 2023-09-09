@@ -40,7 +40,7 @@ repeat
 .
 for i = 1 to len f$ - 1
    h$ = substr f$ i 2
-   call get h$ id
+   get h$ id
    cnt[id] += 1
 .
 len cntn[] len cnt[]
@@ -48,19 +48,19 @@ len cntn[] len cnt[]
 for round = 1 to 40
    for i = 1 to len cnt[]
       p$ = substr pair$[i] 1 1 & let$[i]
-      call get p$ id
+      get p$ id
       cntn[id] += cnt[i]
       p$ = let$[i] & substr pair$[i] 2 1
-      call get p$ id
+      get p$ id
       cntn[id] += cnt[i]
       cnt[i] = 0
    .
    swap cntn[] cnt[]
    if round = 10
-      call output
+      output
    .
 .
-call output
+output
 # 
 input_data
 NNCB

@@ -19,8 +19,8 @@ proc run part . .
   .
   print min
 .
-call run 1
-call run 2
+run 1
+run 2
 # 
 input_data
 16,1,2,0,4,2,7,1,2,14

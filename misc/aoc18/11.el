@@ -28,7 +28,7 @@ proc part1 . .
    .
    print mx & "," & my
 .
-call part1
+part1
 # 
 len pox[] 301 * 301
 len poy[] 301 * 301
@@ -70,7 +70,7 @@ proc part2 . .
    .
    print maxx & "," & maxy & "," & maxsz + 1
 .
-call part2
+part2
 #
 input_data
 42

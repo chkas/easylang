@@ -46,7 +46,7 @@ proc init . .
       .
    .
 .
-call init
+init
 # 
 first_show = 1
 global tick crash_pos[] crash_tick[] .
@@ -163,7 +163,7 @@ proc run . .
                      print posn mod nc & "," & posn div nc
                      first_done = 1
                   .
-                  call show posn
+                  show posn
                   car_pos[id] = -1
                   car_pos[j] = -1
                   ncars -= 2
@@ -172,17 +172,17 @@ proc run . .
             .
          .
       .
-      call show -1
+      show -1
       until ncars <= 1
    .
-   call show -2
+   show -2
    for id = 1 to len car_pos[]
       if car_pos[id] <> -1
          print car_pos[id] mod nc & "," & car_pos[id] div nc
       .
    .
 .
-call run
+run
 # 
 input_data
 /->-\        

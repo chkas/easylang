@@ -35,7 +35,7 @@ proc init . .
       swap rule[ind][] rl[]
    .
 .
-call init
+init
 # 
 proc match s$ . nr[] res .
    #  pr s$
@@ -82,15 +82,15 @@ proc match s$ . nr[] res .
       .
       i += 1
    .
-   call match s$ nnr[] res
+   match s$ nnr[] res
    if res = 0 and double = 1
-      call match s$ nnr2[] res
+      match s$ nnr2[] res
    .
 .
 nr0[] = [ 1 ]
 # 
 for i to len in2$[]
-   call match in2$[i] nr0[] res
+   match in2$[i] nr0[] res
    sum += res
 .
 print sum
@@ -100,7 +100,7 @@ rule[12][] = [ 43 32 -1 43 12 32 ]
 # 
 sum = 0
 for i to len in2$[]
-   call match in2$[i] nr0[] res
+   match in2$[i] nr0[] res
    sum += res
 .
 print sum

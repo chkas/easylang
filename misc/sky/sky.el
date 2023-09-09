@@ -1,9 +1,8 @@
-# sys topleft
 lat = 28
 lon = 15
 sinlat = sin lat
 coslat = cos lat
-numfmt 0 4
+numfmt 4 0
 global a[] d[] m[] n$[] .
 # 
 subr turn
@@ -50,9 +49,9 @@ n_stars = 300
 proc draw_stars . .
    color 999
    for i = 1 to n_stars
-      call xyz st - a[i] d[i]
+      xyz st - a[i] d[i]
       if z > 0
-         call turn
+         turn
          if xd > -1
             move xd yd
             circle m[i]
@@ -85,11 +84,11 @@ proc draw_consts . .
       .
       for j = 1 to n
          ind = const[i][j]
-         call xyz st - a[ind] d[ind]
+         xyz st - a[ind] d[ind]
          if z < 0
             scnd = 0
          else
-            call turns
+            turns
             cnt += 1
             if xd > -9999
                if scnd = 0
@@ -154,13 +153,13 @@ proc draw_moon . .
 .
 proc draw_planets . .
    for i = 1 to len pla[]
-      call xyz st - pla[i] pld[i]
+      xyz st - pla[i] pld[i]
       if z > 0
-         call turn
+         turn
          if xd > -1
             move xd yd
             if i = 7
-               call draw_moon
+               draw_moon
             else
                color plac[i]
                circle plm[i]
@@ -274,7 +273,7 @@ proc draw_info . .
       x = xdir[i]
       y = ydir[i]
       z = 0.001
-      call turn
+      turn
       if xd > -1
          move xd yd + 0.5
          text dir$[i]
@@ -284,11 +283,11 @@ proc draw_info . .
 subr draw_sky
    clear
    textsize 2.2
-   call draw_stars
-   call draw_planets
-   call draw_info
+   draw_stars
+   draw_planets
+   draw_info
    if disp = 2
-      call draw_consts
+      draw_consts
    .
 .
 subr update
@@ -296,14 +295,14 @@ subr update
    jd = sec / 86400.0 + 2440587.5
    st = 280.46061837 + 360.98564736629 * (jd - 2451545.0)
    st = (st + lon) mod 360
-   call calc_planets
+   calc_planets
    background skycol
-   call draw_sky
+   draw_sky
 .
 on timer
    sec = systime
    if time$ <> substr timestr sec 1 16
-      call update
+      update
    .
    timer 1
 .
@@ -316,7 +315,7 @@ on mouse_move
       elif wy < 35
          wy = 35
       .
-      call draw_sky
+      draw_sky
       mx = mouse_x
       my = mouse_y
    .
@@ -333,35 +332,35 @@ on key
    k$ = keybkey
    if k$ = "ArrowLeft"
       wx -= 1
-      call draw_sky
+      draw_sky
       timer 10
    elif k$ = "ArrowRight"
       wx += 1
-      call draw_sky
+      draw_sky
       timer 10
    elif k$ = "ArrowUp"
       if wy < 90
          wy += 1
-         call draw_sky
+         draw_sky
       .
       timer 10
    elif k$ = "ArrowDown"
       if wy > 35
          wy -= 1
-         call draw_sky
+         draw_sky
       .
       timer 10
    elif k$ = "m"
       sec += 60
-      call update
+      update
       timer 60
    elif k$ = "h"
       sec += 3600
-      call update
+      update
       timer 60
    elif k$ = "d"
       sec += 86400
-      call update
+      update
       timer 60
    elif k$ = "n"
       disp = (disp + 1) mod 3
@@ -370,7 +369,7 @@ on key
       else
          n_names = 0
       .
-      call draw_sky
+      draw_sky
    elif k$ = "v"
       if n_stars = 1000
          n_stars = len a[]
@@ -381,12 +380,12 @@ on key
       else
          n_stars = 300
       .
-      call draw_sky
+      draw_sky
    elif k$ = " "
       timer 0
    elif k$ = "z"
       dbg = 1 - dbg
-      call draw_sky
+      draw_sky
    elif k$ = "s"
       timer -1
    else

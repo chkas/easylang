@@ -87,9 +87,9 @@ proc hash pw[] . hash$ .
          swap pw[] pwn[]
       .
    .
-   call tostr pw[] hash$
+   tostr pw[] hash$
 .
-call hash [ 0 1 2 3 4 5 6 7 ] h$
+hash [ 0 1 2 3 4 5 6 7 ] h$
 print h$
 # 
 perm[] = [ 0 1 2 3 4 5 6 7 ]
@@ -98,19 +98,19 @@ global permlist[][] .
 proc mk_permlist k . .
    for i = k to len perm[]
       swap perm[i] perm[k]
-      call mk_permlist k + 1
+      mk_permlist k + 1
       swap perm[k] perm[i]
    .
    if k = len perm[]
       permlist[][] &= perm[]
    .
 .
-call mk_permlist 1
+mk_permlist 1
 # 
 for i to len permlist[][]
-   call hash permlist[i][] hash$
+   hash permlist[i][] hash$
    if hash$ = "fbgdceah"
-      call tostr permlist[i][] pw$
+      tostr permlist[i][] pw$
       print pw$
       break 1
    .

@@ -20,7 +20,7 @@ proc part1 . .
    .
    print ans
 .
-call part1
+part1
 # 
 proc part2 . .
    for i = inp[1] to inp[2]
@@ -51,7 +51,7 @@ proc part2 . .
    .
    print ans
 .
-call part2
+part2
 # 
 input_data
 10000-20000

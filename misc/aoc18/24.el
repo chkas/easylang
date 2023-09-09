@@ -34,7 +34,7 @@ proc read . .
                i += 2
                while s$[i] <> "immune" and s$[i] <> "with"
                   if s$[i] <> ""
-                     call type_id s$[i] h
+                     type_id s$[i] h
                      weak[ind][] &= h
                   .
                   i += 1
@@ -43,7 +43,7 @@ proc read . .
                i += 2
                while s$[i] <> "weak" and s$[i] <> "with"
                   if s$[i] <> ""
-                     call type_id s$[i] h
+                     type_id s$[i] h
                      imm[ind][] &= h
                   .
                   i += 1
@@ -51,14 +51,14 @@ proc read . .
             .
          .
          dam0[] &= number s$[i + 5]
-         call type_id s$[i + 6] h
+         type_id s$[i + 6] h
          dam_type[] &= h
          init[] &= number s$[i + 10]
          attac[] &= 0
       .
    .
 .
-call read
+read
 # 
 # 
 proc combat boost . winner res .
@@ -162,20 +162,20 @@ proc combat boost . winner res .
    .
    winner = tst[2]
 .
-call combat 0 winner res
+combat 0 winner res
 print res
 low = 1
 high = 2000
 while low + 1 < high
    boost = (high + low) div 2
-   call combat boost winner res
+   combat boost winner res
    if winner = 2
       low = boost
    else
       high = boost
    .
 .
-call combat high winner res
+combat high winner res
 print res
 # 
 input_data

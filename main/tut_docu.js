@@ -14,9 +14,8 @@ while i <= 10
 
 -
 
-# play 10000 times
-# roulette betting on 13
-#
++ Play 10000 times roulette betting on 13
+
 cash = 0
 for i = 1 to 10000
    cash -= 10
@@ -45,9 +44,8 @@ print "Max: " & max
 
 * Floating point
 
-# calculate PI using the
-# Leibniz formula
-#
++ Calculate PI using the Leibniz formula
+
 numfmt 4 0
 i = 1
 while i < 1000
@@ -63,9 +61,8 @@ print "PI: " & s * 4
 
 -
 
-# calculate PI using
-# Monte Carlo method
-#
++ Calculate PI using  Monte Carlo method
+
 for i = 1 to 100000
    x = randomf
    y = randomf
@@ -79,9 +76,8 @@ print "PI: " & 4.0 * hit / 100000
 
 -
 
-# get primes using the
-# Sieve of Eratosthenes
-#
++ Get primes using the Sieve of Eratosthenes
+
 len divisible[] 100
 max = sqrt len divisible[]
 for tst = 2 to max
@@ -117,6 +113,8 @@ else
 
 * Subroutines, Functions
 
++ Subroutines are defined with *subr*. Global variables are used for parameters and return values.
+
 subr gcd
    while b <> 0
       h = b
@@ -127,12 +125,12 @@ subr gcd
 .
 a = 120
 b = 35
-call gcd
+gcd
 print res
 
-+ Subroutines are defined with *subr* and called with *call*. Global variables are used for parameters and return values.
-
 -
+
++ Procedures are defined with *proc*. Value and reference parameters are specified after the procedure name. Variables that occur for the first time within a procedure are local to that procedure.
 
 proc gcd a b . res .
    while b <> 0
@@ -142,15 +140,27 @@ proc gcd a b . res .
    .
    res = a
 .
-call gcd 120 35 r
+gcd 120 35 r
 print r
 
-+ Functions are defined with *proc* and called with *call*. Value and reference parameters are specified after the procedure name. Variables that occur for the first time within a procedure are local to that procedure.
+-
+
++ Functions are defined with *func*. Only value parameters are allowed. *return* exits the function and returns the specified value.
+
+func gcd a b.
+   while b <> 0
+      h = b
+      b = a mod b
+      a = h
+   .
+   return a
+.
+print gcd 120 35
 
 * Sound
 
-# morse code
-#
++ Morse code
+
 txt$ = "sos sos"
 #
 chars$[] = strchars "abcdefghijklmnopqrstuvwxyz "
@@ -180,7 +190,7 @@ proc morse ch$ . .
    .
 .
 for ch$ in strchars txt$
-   call morse ch$
+   morse ch$
 .
 
 + *sound* plays a list of tones defined by their frequency and duration. The duration in *sound* and in *sleep* is specified in seconds.
@@ -193,8 +203,8 @@ for ch$ in strchars txt$
 
 * Graphics
 
-# drawing a house
-#
++ Drawing a house
+
 color 993
 move 20 0
 rect 60 45
@@ -221,8 +231,8 @@ text "MY HOUSE"
 
 -
 
-# sine wave
-#
++ Sine wave
+
 linewidth 0.1
 move 50 0
 line 50 100
@@ -245,8 +255,8 @@ for x = 0 step 0.5 to 100
 
 -
 
-# turtle graphics
-#
++ Turtle graphics
+
 deg = 0 ; x = 50 ; y = 50 ; down = 0
 #
 move x y
@@ -263,22 +273,21 @@ proc turn a . .
    deg -= a
 .
 #
-call forward 35
-call turn 90
+forward 35
+turn 90
 down = 1
 for i = 1 to 18
-   call forward 12
+   forward 12
    sleep 0.1
-   call turn 20
+   turn 20
 .
 
 + The semicolon allows you to group commands together in one line.
 
 -
 
-# visualization of the
-# Monte Carlo algorithm
-#
++ Visualization of the Monte Carlo algorithm
+
 for i = 1 to 100000
    x = randomf
    y = randomf
@@ -302,8 +311,8 @@ text "PI: " & 4.0 * hit / 100000
 
 * Event-drivern programming
 
-# watching your drawing
-#
++ Watching your drawing
+
 background 777
 clear
 col = 0
@@ -321,8 +330,8 @@ proc eye x y . .
 subr eyes
    mx = mouse_x
    my = mouse_y
-   call eye 20 80
-   call eye 40 80
+   eye 20 80
+   eye 40 80
 .
 linewidth 2
 on mouse_move
@@ -330,13 +339,13 @@ on mouse_move
       move mx my
       line mouse_x mouse_y
    .
-   call eyes
+   eyes
 .
 on mouse_down
    down = 1
    move mouse_x mouse_y
    circle 1
-   call eyes
+   eyes
 .
 on mouse_up
    down = 0
@@ -347,9 +356,9 @@ on key
    else
       col = 000
    .
-   call eyes
+   eyes
 .
-call eyes
+eyes
 
 + The *mouse* events are triggered after the corresponding mouse actions. *mouse_x* and *mouse_y* return the mouse position as floating point numbers.
 
@@ -357,8 +366,8 @@ call eyes
 
 -
 
-# color picker
-#
++ Color picker
+
 c[] = [ 9 0 0 ]
 proc picker . .
    for i = 0 to 9
@@ -389,17 +398,17 @@ proc picker . .
 on mouse_down
    if mouse_y < 30
       c[3 - mouse_y div 10] = mouse_x div 10
-      call picker
+      picker
    .
 .
-call picker
+picker
 
 *div* is an integer division. The number is rounded down after the division.
 
 * Timer, Animation
 
-# simple clock
-#
++ Simple clock
+
 on timer
    if t <> floor systime
       t = floor systime
@@ -434,8 +443,8 @@ timer 0
 
 -
 
-# bouncing ball
-#
++ Bouncing ball
+
 rad = 12 ; x = 50 ; y = 50
 vx = randomf * 4 - 2
 vy = randomf * 4 - 2
@@ -504,8 +513,24 @@ proc sort . d[] .
    .
 .
 d[] = [ 29 4 72 44 55 26 27 77 92 5 ]
-call sort d[]
+sort d[]
 print d[]
+
++ Name ID mapping
+
+name$[] = [ ]
+func name2id n$ .
+   for id = 1 to len name$[]
+      if name$[id] = n$
+         return id
+      .
+   .
+   name$[] &= n$
+   return id
+.
+for s$ in [ "alice" "bob" "trudy" "bob" ]
+   print s$ & ": " & name2id s$
+.
 
 * More about loops, input data
 
@@ -528,6 +553,8 @@ input_data
 
 -
 
++ With *break n* you can leave nested loops.
+
 sum = 80036
 for i = 0 to 50
    for j = 0 to 50
@@ -536,23 +563,6 @@ for i = 0 to 50
          break 2
       .
    .
-.
-
-+ With *break n* you can leave nested loops. It can also be used to exit a procedure or a subroutine.
-
-name$[] = [ ]
-proc name2id n$ . id .
-   for id = 1 to len name$[]
-      if name$[id] = n$
-         # leave loop and procedure
-         break 2
-      .
-   .
-   name$[] &= n$
-.
-for s$ in [ "alice" "bob" "trudy" "bob" ]
-   call name2id s$ id
-   print s$ & ": " & id
 .
 
 * Namespaces
@@ -579,10 +589,10 @@ proc pop . v .
 .
 prefix
 #
-call st_push 200
-call st_push 100
-call st_pop v ; print v
-call st_pop v ; print v
+st_push 200
+st_push 100
+st_pop v ; print v
+st_pop v ; print v
 print pos
 
 * Builtin functions
@@ -633,6 +643,8 @@ print a$[]
 
 * What else is there
 
++ *arrbase* changes the array index base, which is 1 by default, for an array. *range0* is used for a for-loop with 0 start value and exclusive end.
+
 a[] = [ 10 20 30 ]
 arrbase a[] 0
 print a[0]
@@ -642,16 +654,14 @@ for i range0 len a[]
     print a[i]
 .
 
-+ *arrbase* changes the array index base, which is 1 by default, for an array. *range0* is used for a for-loop with 0 start value and exclusive end.
-
 -
+
++ With the command *sys topleft* you can set the origin of the coordinate system to top left.
 
 sys topleft
 move 5 5
 textsize 4
 text "This is top left"
-
-+ With the command *sys topleft* you can set the origin of the coordinate system to top left.
 
 -
 

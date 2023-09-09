@@ -38,7 +38,7 @@ repeat
    s$ = input
    until s$ = ""
    ii += nc - l
-   call show
+   show
 .
 m0[] = m[]
 # 
@@ -54,7 +54,7 @@ for i range0 10000
    m[p] = (m[p] + 2) mod 4
    p += dir[dir]
    if i < 1700 and i mod 2 = 0
-      call show
+      show
    .
 .
 print infections
@@ -76,7 +76,7 @@ for i range0 10000000
    m[p] = (m[p] + 1) mod 4
    p += dir[dir]
    if i < 25000 and i mod 100 = 0
-      call show
+      show
    .
 .
 print infections

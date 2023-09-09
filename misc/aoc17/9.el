@@ -9,10 +9,10 @@ proc nextc . .
 .
 proc garbage . .
    repeat
-      call nextc
+      nextc
       while c$ = "!"
-         call nextc
-         call nextc
+         nextc
+         nextc
       .
       until c$ = ">" or c$ = ""
       cnt += 1
@@ -20,22 +20,22 @@ proc garbage . .
 .
 proc group lev . .
    repeat
-      call nextc
+      nextc
       if c$ = "{"
-         call group lev + 1
+         group lev + 1
          if c$ <> "}"
             print "error " & c$
          .
-         call nextc
+         nextc
       elif c$ = "<"
-         call garbage
-         call nextc
+         garbage
+         nextc
       .
       until c$ <> ","
    .
    score += lev
 .
-call group 0
+group 0
 print score
 print cnt
 # 

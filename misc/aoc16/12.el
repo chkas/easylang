@@ -67,8 +67,8 @@ proc run inp . .
    .
    print r[1]
 .
-call run 0
-call run 1
+run 0
+run 1
 # 
 # 
 input_data

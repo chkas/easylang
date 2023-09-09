@@ -20,6 +20,6 @@ proc run x y dir . .
     y += dy[dir]
   .
 .
-call run 70 40 0
-call show
+run 70 40 0
+show
 

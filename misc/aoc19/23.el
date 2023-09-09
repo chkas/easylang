@@ -55,10 +55,10 @@ proc run id . .
       oc0 = mem[pc]
       oc = oc0 mod 100
       until oc = 99 or oc = 3 and len in[] = 0
-      call mem_ind oc0 div 100 mod 10 pc + 1 ind
+      mem_ind oc0 div 100 mod 10 pc + 1 ind
       a = mem[ind]
       if oc = 1 or oc = 2 or oc >= 5 and oc <= 8
-         call mem_ind oc0 div 1000 mod 10 pc + 2 ind
+         mem_ind oc0 div 1000 mod 10 pc + 2 ind
          b = mem[ind]
          if oc = 1 or oc = 2 or oc = 7 or oc = 8
             h = 0
@@ -69,7 +69,7 @@ proc run id . .
             elif oc = 7 and a < b or oc = 8 and a = b
                h = 1
             .
-            call mem_ind oc0 div 10000 mod 10 pc + 3 ind
+            mem_ind oc0 div 10000 mod 10 pc + 3 ind
             mem[ind] = h
             pc += 4
          else
@@ -86,7 +86,7 @@ proc run id . .
             .
             len in[] len in[] - 1
          elif oc = 4
-            call outf a
+            outf a
          elif oc = 9
             base += a
          else
@@ -104,11 +104,11 @@ proc run id . .
 prefix
 # 
 proc part1 . .
-   call init
+   init
    repeat
       for id = 1 to n
          ic_in[id][] &= -1
-         call ic_run id
+         ic_run id
       .
       until nat[2] <> 0
    .
@@ -116,7 +116,7 @@ proc part1 . .
 .
 # 
 proc part2 . .
-   call init
+   init
    repeat
       repeat
          idle = 1
@@ -125,7 +125,7 @@ proc part2 . .
                idle = 0
             .
             ic_in[id][] &= -1
-            call ic_run id
+            ic_run id
          .
          until idle = 1
       .
@@ -137,8 +137,8 @@ proc part2 . .
    print nat[2]
 .
 if len code[] > 1
-   call part1
-   call part2
+   part1
+   part2
 else
    print "No input"
 .

@@ -42,25 +42,25 @@ proc xorcrypt key in[] . out[] .
   .
 .
 msg$ = "Hi Alice. We have a surprise birthday party for Trudy. Bob"
-call str2bytes msg$ msg[]
+str2bytes msg$ msg[]
 print msg[]
 print ""
 # 
 secrkey = 0x01164a34
 # 
-call xorcrypt secrkey msg[] encr[]
+xorcrypt secrkey msg[] encr[]
 print encr[]
 print ""
-call bytes2str encr[] s$
+bytes2str encr[] s$
 print s$
 print ""
-call xorcrypt secrkey encr[] r[]
-call bytes2str r[] s$
+xorcrypt secrkey encr[] r[]
+bytes2str r[] s$
 print s$
 # 
 print ""
 msg[] = [ 0 0 0 0 0 0 0 0 ]
-call xorcrypt 0x09080602 msg[] encr[]
+xorcrypt 0x09080602 msg[] encr[]
 print encr[]
 
 * Cracking XOR
@@ -95,7 +95,7 @@ proc crack_xor in[] . .
     for b = 0 to 0xff
       k[ki] = b
       key = k[1] + 0x100 * k[2] + 0x10000 * k[3] + 0x1000000 * k[4]
-      call xorcrypt key in[] out[]
+      xorcrypt key in[] out[]
       m = 0
       for i = ki step 4 to len out[] - 1
         if out[i] = 32 or out[i] >= 97 and out[i] <= 122
@@ -104,8 +104,8 @@ proc crack_xor in[] . .
       .
       if m > len out[] / 5
         print "Partial key " & ki & " : " & b
-        call xorcrypt key in[] out[]
-        call bytes2str out[] s$
+        xorcrypt key in[] out[]
+        bytes2str out[] s$
         print s$
         print ""
         break 1
@@ -115,7 +115,7 @@ proc crack_xor in[] . .
   print "Key: " & key
 .
 encr[] = [ 124 35 54 64 88 35 117 100 26 106 65 100 20 34 119 119 81 106 119 33 71 63 100 113 70 35 101 100 20 40 127 115 64 34 114 96 77 106 102 96 70 62 111 33 82 37 100 33 96 56 99 101 77 100 54 67 91 40 ]
-call crack_xor encr[]
+crack_xor encr[]
 
 * Block Cipher
 
@@ -153,14 +153,14 @@ proc sp_prepkey key . .
   b = key mod 0x100000000
   spkb[] = [ b ]
   for i = 0 to 21
-    call rot i a b
+    rot i a b
     spkb[] &= b
   .
 .
 proc sp_block . x y .
-  call rot spkb[1] x y
+  rot spkb[1] x y
   for i = 2 to 23
-    call rot spkb[i] x y
+    rot spkb[i] x y
   .
 .
 proc rotrev k . x y .
@@ -172,13 +172,13 @@ proc rotrev k . x y .
 .
 proc sp_blockrev . x y .
   for i = 23 downto 2
-    call rotrev spkb[i] x y
+    rotrev spkb[i] x y
   .
-  call rotrev spkb[1] x y
+  rotrev spkb[1] x y
 .
 # 
 proc sp_encr key . in[] out[] .
-  call sp_prepkey key
+  sp_prepkey key
   # padding
   if len in[] mod 8 <> 0
     len in[] len in[] + 8 - len in[] mod 8
@@ -188,7 +188,7 @@ proc sp_encr key . in[] out[] .
     x = bitor bitshift y 24 bitshift x -8
     y = bitor bitshift in[i] 24 bitshift y -8
     if i mod 8 = 0
-      call sp_block x y
+      sp_block x y
       for j = 1 to 8
         out[] &= x mod 0x100
         x = bitxor bitshift y 24 bitshift x -8
@@ -198,13 +198,13 @@ proc sp_encr key . in[] out[] .
   .
 .
 proc sp_decr key . in[] out[] .
-  call sp_prepkey key
+  sp_prepkey key
   out[] = [ ]
   for i = 1 to len in[]
     x = bitor bitshift y 24 bitshift x -8
     y = bitor bitshift in[i] 24 bitshift y -8
     if i mod 8 = 0
-      call sp_blockrev x y
+      sp_blockrev x y
       for j = 1 to 8
         out[] &= x mod 0x100
         x = bitxor bitshift y 24 bitshift x -8
@@ -214,23 +214,23 @@ proc sp_decr key . in[] out[] .
   .
 .
 msg$ = "Hi Alice. We have a surprise birthday party for Trudy. Bob"
-call str2bytes msg$ msg[]
+str2bytes msg$ msg[]
 # 
 secrkey = 18238004
 # 
-call sp_encr secrkey msg[] encr[]
+sp_encr secrkey msg[] encr[]
 print encr[]
 print ""
-call sp_decr secrkey encr[] r[]
-call bytes2str r[] s$
+sp_decr secrkey encr[] r[]
+bytes2str r[] s$
 print s$
 #  
 # 
 print ""
 print "ECB demo:"
 msg$ = "Hi Bob! Hi Joe! Hi Bob! "
-call str2bytes msg$ msg[]
-call sp_encr 1234567890 msg[] encr[]
+str2bytes msg$ msg[]
+sp_encr 1234567890 msg[] encr[]
 print encr[]
 
 * Brute Force
@@ -267,7 +267,7 @@ proc sp_prepkey key . .
   b = key mod 0x100000000
   spkb[] = [ b ]
   for i = 0 to 21
-    call rot i a b
+    rot i a b
     spkb[] &= b
   .
 .
@@ -280,19 +280,19 @@ proc rotrev k . x y .
 .
 proc sp_blockrev . x y .
   for i = 23 downto 2
-    call rotrev spkb[i] x y
+    rotrev spkb[i] x y
   .
-  call rotrev spkb[1] x y
+  rotrev spkb[1] x y
 .
 # 
 proc sp_decr key . in[] out[] .
-  call sp_prepkey key
+  sp_prepkey key
   out[] = [ ]
   for i = 1 to len in[]
     x = bitor bitshift y 24 bitshift x -8
     y = bitor bitshift in[i] 24 bitshift y -8
     if i mod 8 = 0
-      call sp_blockrev x y
+      sp_blockrev x y
       for j = 1 to 8
         out[] &= x mod 0x100
         x = bitxor bitshift y 24 bitshift x -8
@@ -309,7 +309,7 @@ proc brute_force in[] . key .
     if key mod 10000 = 0
       write "."
     .
-    call sp_decr key in[] out[]
+    sp_decr key in[] out[]
     m = 0
     for i = 1 to len out[]
       if out[i] >= 97 and out[i] <= 122
@@ -323,11 +323,11 @@ proc brute_force in[] . key .
     .
   .
 .
-call brute_force encr_data[] key
+brute_force encr_data[] key
 print ""
 print "Key: " & key
-call sp_decr key encr_data[] data[]
-call bytes2str data[] s$
+sp_decr key encr_data[] data[]
+bytes2str data[] s$
 print s$
 
 + Who can crack this secret message?
@@ -372,14 +372,14 @@ proc sp_prepkey key . .
   b = key mod 0x100000000
   spkb[] = [ b ]
   for i = 0 to 21
-    call rot i a b
+    rot i a b
     spkb[] &= b
   .
 .
 proc sp_block . x y .
-  call rot spkb[1] x y
+  rot spkb[1] x y
   for i = 2 to 23
-    call rot spkb[i] x y
+    rot spkb[i] x y
   .
 .
 proc rotrev k . x y .
@@ -391,13 +391,13 @@ proc rotrev k . x y .
 .
 proc sp_blockrev . x y .
   for i = 23 downto 2
-    call rotrev spkb[i] x y
+    rotrev spkb[i] x y
   .
-  call rotrev spkb[1] x y
+  rotrev spkb[1] x y
 .
 # 
 proc sp_encr key . in[] out[] .
-  call sp_prepkey key
+  sp_prepkey key
   # padding
   if len in[] mod 8 <> 0
     len in[] len in[] + 8 - len in[] mod 8
@@ -424,12 +424,12 @@ proc sp_encr key . in[] out[] .
     if i mod 8 = 1
       x = bitxor x x0
       y = bitxor y y0
-      call sp_block x y
+      sp_block x y
     .
   .
 .
 proc sp_decr key . in[] out[] .
-  call sp_prepkey key
+  sp_prepkey key
   out[] = [ ]
   for i = 1 to len in[]
     x0 = bitor bitshift y0 24 bitshift x0 -8
@@ -438,7 +438,7 @@ proc sp_decr key . in[] out[] .
       if i > 8
         x = x0
         y = y0
-        call sp_blockrev x y
+        sp_blockrev x y
         x = bitxor x xp
         y = bitxor y yp
         for j = 1 to 8
@@ -453,15 +453,15 @@ proc sp_decr key . in[] out[] .
   .
 .
 msg$ = "Hi Alice. We have a surprise birthday party for Trudy. Bob"
-call str2bytes msg$ msg[]
+str2bytes msg$ msg[]
 # 
 secrkey = 18238004
 # 
-call sp_encr secrkey msg[] encr[]
+sp_encr secrkey msg[] encr[]
 print encr[]
 print ""
-call sp_decr secrkey encr[] r[]
-call bytes2str r[] s$
+sp_decr secrkey encr[] r[]
+bytes2str r[] s$
 print s$
 
 * Counter Mode
@@ -506,24 +506,24 @@ proc sp_prepkey key . .
   b = key mod 0x100000000
   spkb[] = [ b ]
   for i = 0 to 21
-    call rot i a b
+    rot i a b
     spkb[] &= b
   .
 .
 proc sp_block . x y .
-  call rot spkb[1] x y
+  rot spkb[1] x y
   for i = 2 to 23
-    call rot spkb[i] x y
+    rot spkb[i] x y
   .
 .
 proc sp_ctrmode key ctr . in[] out[] .
-  call sp_prepkey key
+  sp_prepkey key
   out[] = [ ]
   for i = 1 to len in[]
     if i mod 8 = 1
       dx = ctr mod 0x100000000
       dy = ctr div 0x100000000
-      call sp_block dx dy
+      sp_block dx dy
       ctr += 1
     .
     out[] &= bitxor in[i] (dx mod 0x100)
@@ -532,16 +532,16 @@ proc sp_ctrmode key ctr . in[] out[] .
   .
 .
 msg$ = "Hi Alice. We have a surprise birthday party for Trudy. Bob"
-call str2bytes msg$ msg[]
+str2bytes msg$ msg[]
 # 
 secrkey = 18238004
 counter = 1423
 # 
-call sp_ctrmode secrkey counter msg[] encr[]
+sp_ctrmode secrkey counter msg[] encr[]
 print encr[]
 print ""
-call sp_ctrmode secrkey counter encr[] r[]
-call bytes2str r[] s$
+sp_ctrmode secrkey counter encr[] r[]
+bytes2str r[] s$
 print s$
 
 * The counter is important in counter mode.
@@ -568,24 +568,24 @@ proc sp_prepkey key . .
   b = key mod 0x100000000
   spkb[] = [ b ]
   for i = 0 to 21
-    call rot i a b
+    rot i a b
     spkb[] &= b
   .
 .
 proc sp_block . x y .
-  call rot spkb[1] x y
+  rot spkb[1] x y
   for i = 2 to 23
-    call rot spkb[i] x y
+    rot spkb[i] x y
   .
 .
 proc sp_ctrmode key ctr . in[] out[] .
-  call sp_prepkey key
+  sp_prepkey key
   out[] = [ ]
   for i = 1 to len in[]
     if i mod 8 = 1
       dx = ctr mod 0x100000000
       dy = ctr div 0x100000000
-      call sp_block dx dy
+      sp_block dx dy
       ctr += 1
     .
     out[] &= bitxor in[i] (dx mod 0x100)
@@ -605,8 +605,8 @@ msg$[] &= "Hi Bob. Well, what do you say we meet at the mall tomorrow midday? Al
 msg$[] &= "Hi Alice. Good idea. Well then see you tomorrow. Have a nice evening. Bob"
 # 
 for i = 1 to len msg$[]
-  call str2bytes msg$[i] msg[]
-  call sp_ctrmode secrkey counter msg[] encr[]
+  str2bytes msg$[i] msg[]
+  sp_ctrmode secrkey counter msg[] encr[]
   print encr[]
   print ""
 .
@@ -681,7 +681,7 @@ proc crack_xor . key[] .
     .
   .
 .
-call crack_xor key[]
+crack_xor key[]
 # 
 proc decrypt encr[] key[] . .
   out[] = [ ]
@@ -692,12 +692,12 @@ proc decrypt encr[] key[] . .
       out[] &= strcode "_"
     .
   .
-  call bytes2str out[] s$
+  bytes2str out[] s$
   print s$
   print ""
 .
 for i = 1 to len c[][]
-  call decrypt c[i][] key[]
+  decrypt c[i][] key[]
 .
 
 + That worked. Alice and Bob obviously messed up and generated the 
@@ -740,13 +740,13 @@ proc decrypt encr[] key[] . .
       out[] &= strcode "_"
     .
   .
-  call bytes2str out[] s$
+  bytes2str out[] s$
   print s$
   print ""
 .
 print ""
 txt$ = "______ __ We are going to have a surprise birthday party for Trudy."
-call str2bytes txt$ b[]
+str2bytes txt$ b[]
 key[] = [ ]
 for i = 1 to len b[]
   if b[i] = strcode "_"
@@ -756,7 +756,7 @@ for i = 1 to len b[]
   .
 .
 for i = 1 to len c[][]
-  call decrypt c[i][] key[]
+  decrypt c[i][] key[]
 .
 
 + Trudy did not crack the key, but only the bit sequence with 
@@ -795,14 +795,14 @@ global spkb[] .
 proc sp_prepkey a b . .
   spkb[] = [ b ]
   for i = 0 to 21
-    call rot i a b
+    rot i a b
     spkb[] &= b
   .
 .
 proc sp_block . x y .
-  call rot spkb[1] x y
+  rot spkb[1] x y
   for i = 2 to 23
-    call rot spkb[i] x y
+    rot spkb[i] x y
   .
 .
 proc rotrev k . x y .
@@ -814,13 +814,13 @@ proc rotrev k . x y .
 .
 proc sp_blockrev . x y .
   for i = 23 downto 2
-    call rotrev spkb[i] x y
+    rotrev spkb[i] x y
   .
-  call rotrev spkb[1] x y
+  rotrev spkb[1] x y
 .
 # 
 proc sp_encr key . in[] out[] .
-  call sp_prepkey key div 0x100000000 key mod 0x100000000
+  sp_prepkey key div 0x100000000 key mod 0x100000000
   # padding
   if len in[] mod 8 <> 0
     len in[] len in[] + 8 - len in[] mod 8
@@ -847,12 +847,12 @@ proc sp_encr key . in[] out[] .
     if i mod 8 = 1
       x = bitxor x x0
       y = bitxor y y0
-      call sp_block x y
+      sp_block x y
     .
   .
 .
 proc sp_decr key . in[] out[] .
-  call sp_prepkey key div 0x100000000 key mod 0x100000000
+  sp_prepkey key div 0x100000000 key mod 0x100000000
   out[] = [ ]
   for i = 1 to len in[]
     x0 = bitor bitshift y0 24 bitshift x0 -8
@@ -861,7 +861,7 @@ proc sp_decr key . in[] out[] .
       if i > 8
         x = x0
         y = y0
-        call sp_blockrev x y
+        sp_blockrev x y
         x = bitxor x xp
         y = bitxor y yp
         for j = 1 to 8
@@ -876,7 +876,7 @@ proc sp_decr key . in[] out[] .
   .
 .
 proc genkey s$ . k .
-  call str2bytes s$ b[]
+  str2bytes s$ b[]
   if len b[] mod 8 <> 0
     len b[] len b[] + 8 - len b[] mod 8
   .
@@ -886,8 +886,8 @@ proc genkey s$ . k .
     if i mod 8 = 0
       xp = x
       yp = y
-      call sp_prepkey a b
-      call sp_block x y
+      sp_prepkey a b
+      sp_block x y
       x = bitxor x xp
       y = bitxor y yp
     .
@@ -896,17 +896,17 @@ proc genkey s$ . k .
   k = x + y mod 2097152 * 0x100000000
 .
 # 
-call genkey "That is a very long password!!" key
+genkey "That is a very long password!!" key
 print key
 print ""
 msg$ = "Hi Alice. We have a surprise birthday party for Trudy. Bob"
-call str2bytes msg$ msg[]
+str2bytes msg$ msg[]
 # 
-call sp_encr key msg[] encr[]
+sp_encr key msg[] encr[]
 print encr[]
 print ""
-call sp_decr key encr[] r[]
-call bytes2str r[] s$
+sp_decr key encr[] r[]
+bytes2str r[] s$
 print s$
 
 + There are special functions for cryptographic hashes that basically work in the same way. The hashes are then at least 128 bits (MD5) or better 256 bits (SHA256).

@@ -16,7 +16,7 @@ proc build_rev . .
    .
    rev[] &= 1024
 .
-call build_rev
+build_rev
 # 
 proc edge_val s$ . n .
    n = 0
@@ -35,7 +35,7 @@ proc read . .
       id[] &= number substr s$ 6 4
       n[] &= 0
       s$ = input
-      call edge_val s$ n
+      edge_val s$ n
       e[] &= n
       s1$ = substr s$ 1 1
       s2$ = substr s$ 10 1
@@ -50,18 +50,18 @@ proc read . .
       s$ = input
       s1$ &= substr s$ 1 1
       s2$ &= substr s$ 10 1
-      call edge_val s2$ n
+      edge_val s2$ n
       e[] &= n
-      call edge_val s$ n
+      edge_val s$ n
       e[] &= rev[n + 1]
-      call edge_val s1$ n
+      edge_val s1$ n
       e[] &= rev[n + 1]
       s$ = input
       ed[][] &= [ ]
       swap ed[len ed[][]][] e[]
    .
 .
-call read
+read
 # 
 n_tiles = len ed[][]
 # 
@@ -102,7 +102,7 @@ proc part1 . .
    .
    print prod
 .
-call part1
+part1
 # 
 # 
 rows = sqrt n_tiles
@@ -188,9 +188,9 @@ proc build . .
                      if p1 = ed[i][4] and p2 = ed[i][1]
                         break 3
                      .
-                     call turn i
+                     turn i
                   .
-                  call flip i
+                  flip i
                .
             .
          .
@@ -199,13 +199,13 @@ proc build . .
          imgids[] &= i
          start = (i - 1) * 64
          if fl = 2
-            call turn_flip 5 start 8
+            turn_flip 5 start 8
          .
-         call turn_flip tu start 8
+         turn_flip tu start 8
       .
    .
 .
-call build
+build
 # 
 proc expand_img . .
    len imgn[] len img[]
@@ -226,7 +226,7 @@ proc expand_img . .
    swap imgn[] img[]
 .
 irows = rows * 8
-call expand_img
+expand_img
 # 
 proc show_grafic . .
    f = 100 / irows
@@ -283,18 +283,18 @@ proc search_monster . n_monster .
          sum += img[i]
       .
       print sum - n_monster * 30
-      call show_grafic
+      show_grafic
    .
 .
 for f range0 2
    for i range0 4
-      call search_monster found
+      search_monster found
       if found > 1
          break 2
       .
-      call turn_flip 2 0 irows
+      turn_flip 2 0 irows
    .
-   call turn_flip 5 0 irows
+   turn_flip 5 0 irows
 .
 # 
 # 

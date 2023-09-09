@@ -9,11 +9,11 @@ proc num2rom num . rom$ .
     .
   .
 .
-call num2rom 1990 r$
+num2rom 1990 r$
 print r$
-call num2rom 2008 r$
+num2rom 2008 r$
 print r$
-call num2rom 1666 r$
+num2rom 1666 r$
 print r$
 # 
 proc rom2int rom$ . val .
@@ -33,11 +33,11 @@ proc rom2int rom$ . val .
     oldv = v
   .
 .
-call rom2int "MCMXC" v
+rom2int "MCMXC" v
 print v
-call rom2int "MMVIII" v
+rom2int "MMVIII" v
 print v
-call rom2int "MDCLXVI" v
+rom2int "MDCLXVI" v
 print v
 
 

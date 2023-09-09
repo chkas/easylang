@@ -35,7 +35,7 @@ proc gcd a b . res .
   .
   res = a
 .
-call gcd 120 35 r
+gcd 120 35 r
 print r
 #
 # strings can be concatenated and numbers are
@@ -133,9 +133,9 @@ proc name2id name$ . id .
   .
   names$[] &= name$
 .
-call name2id "alice" id ; print id
-call name2id "bob" id ; print id
-call name2id "alice" id ; print id
+name2id "alice" id ; print id
+name2id "bob" id ; print id
+name2id "alice" id ; print id
 #
 # with 'repeat' you can make loops, which you can leave
 # in the loop body using 'until'

@@ -28,7 +28,7 @@ proc read . .
       .
    .
 .
-call read
+read
 npos = len m[]
 nr = npos div nc
 nc2 = nc - 2
@@ -43,7 +43,7 @@ proc lcm a b . res .
    .
    res = (a0 div a) * (b0 div a)
 .
-call lcm nc2 nr2 nstat
+lcm nc2 nr2 nstat
 # 
 proc blizn . .
    for i = 1 to len m[]
@@ -74,7 +74,7 @@ proc run start dest . cnt .
    while len todo[] > 0
       todon[] = [ ]
       cnt += 1
-      call blizn
+      blizn
       stat = cnt mod nstat
       for pos in todo[]
          for p in [ pos + 1 pos + nc pos - 1 pos - nc pos ]
@@ -93,10 +93,10 @@ proc run start dest . cnt .
       swap todon[] todo[]
    .
 .
-call run 2 npos - 1 cnt
+run 2 npos - 1 cnt
 print cnt
-call run npos - 1 2 cnt
-call run 2 npos - 1 cnt
+run npos - 1 2 cnt
+run 2 npos - 1 cnt
 print cnt
 # 
 input_data

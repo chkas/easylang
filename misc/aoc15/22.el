@@ -37,12 +37,12 @@ proc select cost sel mana hit bhit eff[] . .
       eff[3] = 5
    .
    if mana >= 0 and cost < min
-      call effect arm bhit mana eff[]
+      effect arm bhit mana eff[]
       if bhit <= 0
          min = lower min cost
       else
          hit -= higher 1 boss_dmg - arm
-         call player cost mana hit bhit eff[]
+         player cost mana hit bhit eff[]
       .
    .
 .
@@ -53,24 +53,24 @@ proc player cost mana hit bhit eff[] . .
       hit -= 1
    .
    if hit > 0
-      call effect arm bhit mana eff[]
+      effect arm bhit mana eff[]
       if bhit <= 0
          min = lower min cost
       else
          for sel to 5
             if sel <= 2 or eff[sel - 2] = 0
-               call select cost sel mana hit bhit eff[]
+               select cost sel mana hit bhit eff[]
             .
          .
       .
    .
 .
 # 
-call player 0 500 50 boss_hit [ 0 0 0 ]
+player 0 500 50 boss_hit [ 0 0 0 ]
 print min
 part2 = 1
 min = 1 / 0
-call player 0 500 50 boss_hit [ 0 0 0 ]
+player 0 500 50 boss_hit [ 0 0 0 ]
 print min
 #  
 input_data

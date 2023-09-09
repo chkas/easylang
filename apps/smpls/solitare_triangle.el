@@ -16,7 +16,7 @@ proc solve . solution$ .
           brd$[pos] = "·"
           brd$[pos + dir] = "·"
           brd$[pos + 2 * dir] = "●"
-          call solve solution$
+          solve solution$
           brd$[pos] = "●"
           brd$[pos + dir] = "●"
           brd$[pos + 2 * dir] = "·"
@@ -32,6 +32,6 @@ proc solve . solution$ .
     solution$ = strjoin brd$[]
   .
 .
-call solve solution$
+solve solution$
 print solution$
 

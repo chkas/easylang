@@ -66,8 +66,8 @@ proc part1 . .
    .
    print sum
 .
-call part1
-call show 0
+part1
+show 0
 # 
 proc sort . d[] .
    for i to len d[] - 1
@@ -83,21 +83,21 @@ proc expand pos . sz .
    sz += 1
    for i in [ pos - 1 pos + 1 pos - nc pos + nc ]
       if m[i] < 9
-         call expand i sz
+         expand i sz
       .
    .
 .
 proc part2 . .
    for i to len lowpt[]
       sz = 0
-      call expand lowpt[i] sz
+      expand lowpt[i] sz
       lowpt[i] = sz
-      call show 1
+      show 1
    .
-   call sort lowpt[]
+   sort lowpt[]
    print lowpt[1] * lowpt[2] * lowpt[3]
 .
-call part2
+part2
 # 
 input_data
 2199943210

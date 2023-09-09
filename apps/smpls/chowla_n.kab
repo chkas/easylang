@@ -17,7 +17,7 @@ proc sieve . c[] .
   i = 3
   while i * 3 <= len c[]
     if c[i] = 0
-      call chowla i h
+      chowla i h
       if h = 0
         j = 3 * i
         while j <= len c[]
@@ -43,14 +43,14 @@ proc commatize n . s$ .
 .
 print "chowla number from 1 to 37"
 for i = 1 to 37
-  call chowla i h
+  chowla i h
   print "  " & i & ": " & h
 .
 proc main . .
   print ""
   len c[] 10000000
   count = 1
-  call sieve c[]
+  sieve c[]
   power = 100
   i = 3
   while i <= len c[]
@@ -58,8 +58,8 @@ proc main . .
       count += 1
     .
     if i = power - 1
-      call commatize power p$
-      call commatize count c$
+      commatize power p$
+      commatize count c$
       print "There are " & c$ & " primes up to " & p$
       power *= 10
     .
@@ -74,9 +74,9 @@ proc main . .
   repeat
     p = k * kk
     until p > limit
-    call chowla p h
+    chowla p h
     if h = p - 1
-      call commatize p s$
+      commatize p s$
       print s$ & " is a perfect number"
       count += 1
     .
@@ -84,7 +84,7 @@ proc main . .
     kk += k
     i += 1
   .
-  call commatize limit s$
+  commatize limit s$
   print "There are " & count & " perfect mumbers up to " & s$
 .
-call main
+main

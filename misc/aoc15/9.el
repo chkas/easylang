@@ -15,8 +15,8 @@ repeat
    until s$ = ""
    inp$[] &= s$
    s$[] = strsplit s$ " "
-   call getid s$[1] a
-   call getid s$[3] b
+   getid s$[1] a
+   getid s$[3] b
 .
 n = len perm[]
 # 
@@ -24,8 +24,8 @@ len dist[] n * (n + 1)
 # 
 for s$ in inp$[]
    s$[] = strsplit s$ " "
-   call getid s$[1] a
-   call getid s$[3] b
+   getid s$[1] a
+   getid s$[3] b
    d = number s$[5]
    dist[a * n + b] = d
    dist[b * n + a] = d
@@ -34,14 +34,14 @@ global permlist[][] .
 proc mk_permlist k . .
    for i = k to len perm[]
       swap perm[i] perm[k]
-      call mk_permlist k + 1
+      mk_permlist k + 1
       swap perm[k] perm[i]
    .
    if k = len perm[]
       permlist[][] &= perm[]
    .
 .
-call mk_permlist 1
+mk_permlist 1
 # 
 min = 1 / 0
 for p = 1 to len permlist[][]

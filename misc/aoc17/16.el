@@ -18,7 +18,7 @@ for i range0 np
    prog[i] = i
    ind[i] = i
 .
-call tostr
+tostr
 prog$[] &= prog$
 # 
 repeat
@@ -44,7 +44,7 @@ repeat
       .
    .
    iter += 1
-   call tostr
+   tostr
    until prog$ = prog$[1]
    prog$[] &= prog$
 .

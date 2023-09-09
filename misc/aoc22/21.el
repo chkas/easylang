@@ -16,7 +16,7 @@ repeat
    s$ = input
    until s$ = ""
    h$ = substr s$ 1 4
-   call name2id h$ id
+   name2id h$ id
    if h$ = "root"
       root = id
    elif h$ = "humn"
@@ -24,10 +24,10 @@ repeat
    .
    if len s$ = 17
       h$ = substr s$ 7 4
-      call name2id h$ h
+      name2id h$ h
       a[id] = h
       h$ = substr s$ 14 4
-      call name2id h$ h
+      name2id h$ h
       b[id] = h
       h$ = substr s$ 12 1
       if h$ = "+"
@@ -49,8 +49,8 @@ proc solv id . v .
       v = a[id]
       break 1
    .
-   call solv a[id] a
-   call solv b[id] b
+   solv a[id] a
+   solv b[id] b
    if o[id] = 1
       v = a + b
    elif o[id] = 2
@@ -61,21 +61,21 @@ proc solv id . v .
       v = a / b
    .
 .
-call solv root v
+solv root v
 print v
 o[root] = 2
 # 
 low = -10000000000000
 high = 10000000000000
 a[humn] = low
-call solv root v
+solv root v
 if v > 0
    swap low high
 .
 repeat
    in = low + (high - low) div 2
    a[humn] = in
-   call solv root v
+   solv root v
    until v = 0
    if v < 0
       low = in

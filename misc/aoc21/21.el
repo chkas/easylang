@@ -23,7 +23,7 @@ proc part1 pos pos2 . .
    .
    print cnt * sum2
 .
-call part1 apos bpos
+part1 apos bpos
 # 
 proc calc start . done[] ndone[] .
    len cnt[] 21 * 10
@@ -62,8 +62,8 @@ proc calc start . done[] ndone[] .
    .
 .
 proc part2 . .
-   call calc apos adone[] anotdone[]
-   call calc bpos bdone[] bnotdone[]
+   calc apos adone[] anotdone[]
+   calc bpos bdone[] bnotdone[]
    # 
    for i = 2 to len adone[]
       awin += adone[i] * bnotdone[i - 1]
@@ -71,7 +71,7 @@ proc part2 . .
    .
    print higher awin bwin
 .
-call part2
+part2
 # 
 input_data
 Player 1 starting position: 4

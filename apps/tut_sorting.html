@@ -31,7 +31,7 @@ proc sort . d[] .
 .
 proc test . .
   d[] = [ 29 4 72 44 55 26 27 77 92 5 ]
-  call sort d[]
+  sort d[]
   print d[]
   print ""
 .
@@ -44,13 +44,13 @@ proc time_test . .
     .
     write strchar 10 & len d[]
     t = systime
-    call sort d[]
+    sort d[]
     write strchar 9 & systime - t
     len d[] 10 * len d[]
   .
 .
-call test
-call time_test
+test
+time_test
 
 * Insertion sort - fast for small arrays
 
@@ -78,12 +78,12 @@ proc time_test . .
     .
     write strchar 10 & len d[]
     t = systime
-    call sort d[]
+    sort d[]
     write strchar 9 & systime - t
     len d[] 10 * len d[]
   .
 .
-call time_test
+time_test
 
 * Heapsort - fast for larger arrays
 
@@ -132,12 +132,12 @@ proc time_test . .
     .
     write strchar 10 & len d[]
     t = systime
-    call sort d[]
+    sort d[]
     write strchar 9 & systime - t
     len d[] 10 * len d[]
   .
 .
-call time_test
+time_test
 
 * Mergesort - fast but needs space
 
@@ -190,12 +190,12 @@ proc time_test . .
     .
     write strchar 10 & len d[]
     t = systime
-    call sort d[]
+    sort d[]
     write strchar 9 & systime - t
     len d[] 10 * len d[]
   .
 .
-call time_test
+time_test
 
 * Quicksort - normally the fastest comparsion sort
 
@@ -256,12 +256,12 @@ proc time_test . .
     .
     write strchar 10 & len d[]
     t = systime
-    call sort d[]
+    sort d[]
     write strchar 9 & systime - t
     len d[] 10 * len d[]
   .
 .
-call time_test
+time_test
 
 + *Quicksort* is very fast - but for small arrays *Insertion sort* is faster. Combining these two sorting algorithms can make it even faster.
 
@@ -313,12 +313,12 @@ proc time_test . .
     .
     write strchar 10 & len d[]
     t = systime
-    call sort d[]
+    sort d[]
     write strchar 9 & systime - t
     len d[] 10 * len d[]
   .
 .
-call time_test
+time_test
 
 * Comparison
 
@@ -347,20 +347,20 @@ proc qsort left right . d[] .
     .
     swap d[left] d[mid]
     # 
-    call qsort left mid - 1 d[]
-    call qsort mid + 1 right d[]
+    qsort left mid - 1 d[]
+    qsort mid + 1 right d[]
   .
 .
 proc sort . d[] .
-  call qsort 1 len d[] d[]
+  qsort 1 len d[] d[]
 .
 d[] = [ 29 4 72 44 55 26 27 77 92 5 ]
-call sort d[]
+sort d[]
 print d[]
 
 + With the previous iterative variant and the reserved space for the uncompleted tasks we could make sure we were able to sort an array of a certain size. This is not possible with this recursive version - with a long list and "first element is pivot"  we get probably a stack overflow.
 
-+ With *tail call elimination* and ensuring that the smaller subarray is sorted first, we can also make the recursive variant *stack safe*. With bad input we then get "only" the worst-case time complexity.
++ With *tail elimination* and ensuring that the smaller subarray is sorted first, we can also make the recursive variant *stack safe*. With bad input we then get "only" the worst-case time complexity.
 
 proc qsort left right . d[] .
   while left < right
@@ -376,19 +376,19 @@ proc qsort left right . d[] .
     swap d[left] d[mid]
     # 
     if mid < (right + left) / 2
-      call qsort left mid - 1 d[]
+      qsort left mid - 1 d[]
       left = mid + 1
     else
-      call qsort mid + 1 right d[]
+      qsort mid + 1 right d[]
       right = mid - 1
     .
   .
 .
 proc sort . d[] .
-  call qsort 1 len d[] d[]
+  qsort 1 len d[] d[]
 .
 d[] = [ 29 4 72 44 55 26 27 77 92 5 ]
-call sort d[]
+sort d[]
 print d[]
 `
 

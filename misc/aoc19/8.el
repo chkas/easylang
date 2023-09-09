@@ -38,7 +38,7 @@ proc part1 . .
    .
    print cnt1 * cnt2
 .
-call part1
+part1
 # 
 proc part2 . .
    len img2[] sz
@@ -63,7 +63,7 @@ proc part2 . .
       .
    .
 .
-call part2
+part2
 # 
 input_data
 0222112222120000

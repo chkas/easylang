@@ -25,7 +25,7 @@ proc read . .
    .
    len f[] len f[] + n
 .
-call read
+read
 len p[] len f[]
 arrbase p[] 0
 # 
@@ -112,33 +112,33 @@ proc sum . r .
 proc run . .
    arrbase hash[] 0
    for i to 10
-      call update
-      call show
+      update
+      show
    .
-   call sum res
+   sum res
    print res
    # 
    while 1 = 1
-      call hash r
+      hash r
       for i range0 len hash[]
          if r = hash[i]
             break 2
          .
       .
       hash[] &= r
-      call update
-      call show
+      update
+      show
    .
    m = len hash[] - i
    ind = (1000000000 - i - 10) mod m
    for i range0 ind
-      call update
-      call show
+      update
+      show
    .
-   call sum res
+   sum res
    print res
 .
-call run
+run
 # 
 input_data
 .#.#...|#.

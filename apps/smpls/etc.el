@@ -8,7 +8,7 @@ proc mysqrt a . b .
    .
 .
 numfmt 0 20
-call mysqrt 2 r
+mysqrt 2 r
 print r
 
 

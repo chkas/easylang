@@ -5,20 +5,20 @@ f[] = number strsplit input " "
 proc parse a . b sum .
    b = a + 2
    for i to f[a]
-      call parse b b sum
+      parse b b sum
    .
    for i range0 f[a + 1]
       sum += f[b + i]
    .
    b += i
 .
-call parse 1 _ sum
+parse 1 _ sum
 print sum
 # 
 proc parse2 a . b sum .
    b = a + 2
    for i to f[a]
-      call parse2 b b v
+      parse2 b b v
       v[] &= v
    .
    sum = 0
@@ -36,7 +36,7 @@ proc parse2 a . b sum .
    .
    b += i
 .
-call parse2 1 _ sum
+parse2 1 _ sum
 print sum
 # 
 input_data

@@ -27,8 +27,8 @@ proc parse_opt . pos[] .
       elif c$ = "S"
          d = 1000
       elif c$ = "("
-         call nextc
-         call parse pos[]
+         nextc
+         parse pos[]
          if c$ <> ")"
             print "')' expected"
          .
@@ -42,18 +42,18 @@ proc parse_opt . pos[] .
             f[pos[i]] = 1
          .
       .
-      call nextc
+      nextc
    .
 .
 # 
 proc parse . pos0[] .
    pos[] = pos0[]
-   call parse_opt pos[]
+   parse_opt pos[]
    pos_res[] = pos[]
    while c$ = "|"
-      call nextc
+      nextc
       pos[] = pos0[]
-      call parse_opt pos[]
+      parse_opt pos[]
       for i = 1 to len pos[]
          for j = 1 to len pos_res[]
             if pos[i] = pos_res[j]
@@ -108,10 +108,10 @@ proc show solve . .
    sleep 0
 .
 proc build . .
-   call nextc
+   nextc
    pos[] &= 500500
    f[pos[1]] = 1
-   call parse_opt pos[]
+   parse_opt pos[]
    for i range0 len f[]
       if f[i] = 1
          if min = 0
@@ -120,9 +120,9 @@ proc build . .
          max = i
       .
    .
-   call show 0
+   show 0
 .
-call build
+build
 # 
 dir[] = [ -1 -1000 1 1000 ]
 todon[] = [ 500500 ]
@@ -146,7 +146,7 @@ while len todon[] > 0
          .
       .
    .
-   call show 1
+   show 1
 .
 print doors - 1
 print rooms

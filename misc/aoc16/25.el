@@ -80,7 +80,7 @@ proc run inp . ok .
    .
 .
 for i range0 1000
-   call run i ok
+   run i ok
    if ok = 1
       print i
       break 1

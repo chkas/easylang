@@ -13,7 +13,7 @@ proc md5init . .
     .
   .
 .
-call md5init
+md5init
 # 
 proc md5 inp$ . s$ .
   subr addinp
@@ -30,18 +30,18 @@ proc md5 inp$ . s$ .
   inp4 = 1
   for i = 1 to len inp$
     b = strcode substr inp$ i 1
-    call addinp
+    addinp
   .
   b = 0x80
-  call addinp
+  addinp
   while len inp[] mod 16 <> 14 or inp4 <> 1
     b = 0
-    call addinp
+    addinp
   .
   h = len inp$ * 8
   for i range0 4
     b = h mod 0x100
-    call addinp
+    addinp
     h = h div 0x100
   .
   inp[] &= 0
@@ -100,7 +100,7 @@ proc md5 inp$ . s$ .
 repeat
   s$ = input
   until error = 1
-  call md5 s$ h$
+  md5 s$ h$
   print h$
 .
 input_data

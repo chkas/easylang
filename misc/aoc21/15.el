@@ -101,7 +101,7 @@ proc read . .
       m[] &= 0
    .
 .
-call read
+read
 # 
 len prev[] len m[]
 endpos = len m[] - nc - 1
@@ -110,11 +110,11 @@ prev[pos] = -1
 len todo[][] 10
 todo[1][] &= pos
 for cost = 0 to 99999
-   call show
+   show
    for pos in todo[cost mod 10 + 1][]
       if pos = endpos
          print cost
-         call show_route
+         show_route
          break 2
       .
       for posn in [ pos - nc pos + 1 pos + nc pos - 1 ]

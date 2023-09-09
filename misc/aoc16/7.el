@@ -60,9 +60,9 @@ proc test2 s$ . ret .
 repeat
    s$ = input
    until s$ = ""
-   call test1 s$ r
+   test1 s$ r
    sum1 += r
-   call test2 s$ r
+   test2 s$ r
    sum2 += r
 .
 print sum1

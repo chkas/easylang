@@ -13,7 +13,7 @@ proc part1 a b . .
    .
    print match
 .
-call part1 a0 b0
+part1 a0 b0
 # 
 proc part2 a b . .
    for i to 5000000
@@ -31,7 +31,7 @@ proc part2 a b . .
    .
    print match
 .
-call part2 a0 b0
+part2 a0 b0
 # 
 input_data
 Generator A starts with 65

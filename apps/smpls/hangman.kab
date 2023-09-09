@@ -119,7 +119,7 @@ proc search_letter . .
   ind = c + r * 5 + 1
   if ind <= len sel[] and sel[ind] = 0
     sel[ind] = 1
-    call draw
+    draw
     if game_stat > 0
       for i = 1 to len w$[]
         move i * 8 - 4 83
@@ -140,13 +140,13 @@ proc search_letter . .
 on mouse_down
   if game_stat = 0
     if mouse_x < 58 and mouse_x > 3 and mouse_y < 75 and mouse_y > 3
-      call search_letter
+      search_letter
     .
   elif game_stat = 3
-    call init
-    call draw
+    init
+    draw
   .
 .
-call init
-call draw
+init
+draw
 

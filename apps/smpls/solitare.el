@@ -17,7 +17,7 @@ proc init . .
     brd$[] &= "\n"
   .
 .
-call init
+init
 # 
 proc movex pos dir . res .
   moves += 1
@@ -38,10 +38,10 @@ proc solve . res .
   for pos = 1 to len brd$[]
     if brd$[pos] = "●"
       for dir in [ -1 (-nc) 1 nc ]
-        call movex pos dir moved
+        movex pos dir moved
         if moved = 1
-          call solve solved
-          call unmove pos dir
+          solve solved
+          unmove pos dir
           if solved = 1
             break 2
           .
@@ -57,7 +57,7 @@ proc solve . res .
     res = 1
   .
 .
-call solve res
+solve res
 print moves & " moves tried"
 # 
 input_data

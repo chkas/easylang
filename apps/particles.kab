@@ -25,7 +25,7 @@ on animate
       if dx < thres
         dy = abs (y[j] - y)
         if dy < thres
-          call connect
+          connect
         .
       .
     .

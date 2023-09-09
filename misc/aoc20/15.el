@@ -18,8 +18,8 @@ proc run n_turn . .
    .
    print n
 .
-call run 2020
-call run 30000000
+run 2020
+run 30000000
 # 
 input_data
 0,3,6

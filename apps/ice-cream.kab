@@ -24,41 +24,41 @@ proc ice x y col . .
    color 432
    polygon [ x y + 8 x - 3.5 y + 1 x + 3.5 y + 1 ]
 .
-call ice 30 60 900
+ice 30 60 900
 proc draw_ice try . .
    color 990
    if try < 11
-      call ice 72 57 900
+      ice 72 57 900
    .
    if try < 10
-      call ice 92 57 449
+      ice 92 57 449
    .
    if try < 9
-      call ice 82 52 990
+      ice 82 52 990
    .
    if try < 8
-      call ice 72 42 733
+      ice 72 42 733
    .
    if try < 7
-      call ice 92 42 950
+      ice 92 42 950
    .
    if try < 6
-      call ice 82 37 765
+      ice 82 37 765
    .
    if try < 5
-      call ice 72 27 096
+      ice 72 27 096
    .
    if try < 4
-      call ice 92 27 888
+      ice 92 27 888
    .
    if try < 3
-      call ice 82 22 080
+      ice 82 22 080
    .
    if try < 2
-      call ice 72 12 900
+      ice 72 12 900
    .
    if try < 1
-      call ice 92 12 990
+      ice 92 12 990
    .
 .
 background 000
@@ -87,9 +87,9 @@ proc draw . .
    for ind to len sel[]
       k$ = alpha$[ind]
       if sel[ind] = 0
-         call drawkey ind 040 k$
+         drawkey ind 040 k$
       else
-         call drawkey ind 040 ""
+         drawkey ind 040 ""
          in = 0
          for pos to len w$[]
             if w$[pos] = k$
@@ -104,7 +104,7 @@ proc draw . .
          .
       .
    .
-   call draw_ice try
+   draw_ice try
    color 997
    if found = len w$[]
       game_stat = 2
@@ -131,7 +131,7 @@ proc smiley st . .
    .
 .
 proc sel . .
-   call draw
+   draw
    if game_stat > 1
       for i to len w$[]
          move i * 8 - 6 88
@@ -139,20 +139,20 @@ proc sel . .
       .
       move 60 70
       textsize 8
-      call smiley game_stat
+      smiley game_stat
    .
 .
 on timer
    if game_stat = 1
       game_stat = 0
-      call sel
+      sel
    elif game_stat >= 2
       game_stat = 4
    .
 .
 on mouse_up
    if gind <> -1
-      call drawkey gind 040 ""
+      drawkey gind 040 ""
    .
 .
 proc search_letter . .
@@ -161,7 +161,7 @@ proc search_letter . .
    gind = c + r * 5 + 1
    if gind <= len sel[] and sel[gind] = 0
       sel[gind] = 1
-      call drawkey gind 060 alpha$[gind]
+      drawkey gind 060 alpha$[gind]
       game_stat = 1
       timer 0.5
    else
@@ -172,12 +172,12 @@ on mouse_down
    gind = -1
    if game_stat = 0
       if mouse_x < 65 and mouse_y < 84
-         call search_letter
+         search_letter
       .
    elif game_stat = 4
-      call init
-      call draw
+      init
+      draw
    .
 .
-call init
-call draw
+init
+draw

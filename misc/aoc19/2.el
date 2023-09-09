@@ -26,7 +26,7 @@ proc part1 . .
    mem[] = mem0[]
    mem[1] = 12
    mem[2] = 2
-   call run
+   run
    print mem[0]
 .
 # 
@@ -37,7 +37,7 @@ proc part2 . .
          arrbase mem[] 0
          mem[1] = noun
          mem[2] = verb
-         call run
+         run
          if mem[0] = 19690720
             print 100 * noun + verb
             break 2
@@ -46,12 +46,12 @@ proc part2 . .
    .
 .
 if len mem0[] > 50
-   call part1
-   call part2
+   part1
+   part2
 else
    mem[] = mem0[]
    print mem[]
-   call run
+   run
    print mem[]
 .
 # 

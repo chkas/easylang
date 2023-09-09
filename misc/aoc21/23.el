@@ -121,8 +121,8 @@ global m0saved[] .
 proc init . .
    dim = 2
    m0[] = [ 1 2 3 4 1 2 3 4 ]
-   call tonum destid
-   call read
+   tonum destid
+   read
    m0saved[] = m0[]
 .
 # 
@@ -132,7 +132,7 @@ proc prepare_part2 . .
    for i = 0 to 15
       m0[] &= (i mod 4) + 1
    .
-   call tonum destid
+   tonum destid
    for i to 4
       m0[i] = m0saved[i]
       m0[12 + i] = m0saved[4 + i]
@@ -180,16 +180,16 @@ proc show_way . .
    .
    mp[] = m[]
    m0p[] = m0[]
-   call toarr list[len list[]]
+   toarr list[len list[]]
    if visualization = 1
       clear
       sleep 0.1
    .
-   call show cost 1
+   show cost 1
    for i = len list[] - 1 downto 1
       swap m[] mp[]
       swap m0[] m0p[]
-      call toarr list[i]
+      toarr list[i]
       for j to len m0[]
          if m0[j] <> m0p[j]
             c = (j - 1) mod 4 * 2 + 3
@@ -205,7 +205,7 @@ proc show_way . .
             break 1
          .
       .
-      call show cost 1
+      show cost 1
    .
 .
 # 
@@ -227,7 +227,7 @@ proc take_min . cur cost .
    len cost[] -1
 .
 proc go_home . cur .
-   call toarr cur
+   toarr cur
    while done = 0
       done = 1
       for i to 11
@@ -246,7 +246,7 @@ proc go_home . cur .
                      m0[dpos + h] = m[i]
                      m[i] = 0
                      cur0 = cur
-                     call tonum cur
+                     tonum cur
                      prev[] &= cur
                      prev[] &= cur0
                      break 2
@@ -294,9 +294,9 @@ proc add_ways cur cost . .
                .
                if m[i] = 0
                   m[i] = m
-                  call tonum new
+                  tonum new
                   m[i] = 0
-                  call hash new r
+                  hash new r
                   if r = 0
                      prev[] &= new
                      prev[] &= cur
@@ -312,36 +312,36 @@ proc add_ways cur cost . .
    .
 .
 proc run . .
-   call init_cost cost
-   call tonum h
+   init_cost cost
+   tonum h
    todo[] = [ h ]
    cost[] = [ cost ]
    prev[] &= h
    prev[] &= 1
    repeat
-      call take_min cur cost
+      take_min cur cost
       if cur = -1
          print "not solved"
          break 2
       .
-      call go_home cur
+      go_home cur
       if cnt mod 100 = 0
-         call show cost 0.01
+         show cost 0.01
       .
       cnt += 1
       until cur = destid
-      call add_ways cur cost
+      add_ways cur cost
    .
-   call show cost 2
+   show cost 2
    print cost
 .
-call init
-call run
-call show_way
+init
+run
+show_way
 # 
-call prepare_part2
-call run
-call show_way
+prepare_part2
+run
+show_way
 # 
 input_data
 #############

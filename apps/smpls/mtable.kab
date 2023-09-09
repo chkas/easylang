@@ -10,7 +10,7 @@ proc out h . .
 .
 write "     "
 for i = 1 to n
-  call out i
+  out i
 .
 print ""
 write "     "
@@ -19,13 +19,13 @@ for i = 1 to n
 .
 print ""
 for i = 1 to n
-  call out i
+  out i
   write "|"
   for j = 1 to n
     if j < i
       write "    "
     else
-      call out i * j
+      out i * j
     .
   .
   print ""

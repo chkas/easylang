@@ -10,7 +10,7 @@ proc traverse . sum .
       until s$ = "$ cd .." or s$ = ""
       s$[] = strsplit s$ " "
       if s$[1] = "$" and s$[2] = "cd"
-         call traverse s
+         traverse s
          sum += s
       elif s$[1] <> "dir"
          sum += number s$[1]
@@ -18,7 +18,7 @@ proc traverse . sum .
    .
    l[] &= sum
 .
-call traverse sum
+traverse sum
 free = 70000000 - sum
 tofree = 30000000 - free
 # 

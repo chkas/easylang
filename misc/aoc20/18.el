@@ -23,7 +23,7 @@ subr ntok
 .
 subr init
    linepos = 1
-   call ntok
+   ntok
 .
 # 
 # Part 1
@@ -33,22 +33,22 @@ procdecl parse_expr1 . res .
 proc parse_factor1 . res .
    if tok$ = "n"
       res = tokv
-      call ntok
+      ntok
    elif tok$ = "("
-      call ntok
-      call parse_expr1 res
+      ntok
+      parse_expr1 res
       if tok$ <> ")"
          print "error"
       .
-      call ntok
+      ntok
    .
 .
 proc parse_expr1 . res .
-   call parse_factor1 res
+   parse_factor1 res
    while tok$ = "+" or tok$ = "*"
       t$ = tok$
-      call ntok
-      call parse_factor1 r
+      ntok
+      parse_factor1 r
       if t$ = "+"
          res += r
       else
@@ -58,8 +58,8 @@ proc parse_expr1 . res .
 .
 sum = 0
 for lin$ in in$[]
-   call init
-   call parse_expr1 res
+   init
+   parse_expr1 res
    sum += res
 .
 print sum
@@ -71,36 +71,36 @@ procdecl parse_expr . res .
 proc parse_factor . res .
    if tok$ = "n"
       res = tokv
-      call ntok
+      ntok
    elif tok$ = "("
-      call ntok
-      call parse_expr res
+      ntok
+      parse_expr res
       if tok$ <> ")"
          print "error"
       .
-      call ntok
+      ntok
    .
 .
 proc parse_term . res .
-   call parse_factor res
+   parse_factor res
    while tok$ = "+"
-      call ntok
-      call parse_factor r
+      ntok
+      parse_factor r
       res += r
    .
 .
 proc parse_expr . res .
-   call parse_term res
+   parse_term res
    while tok$ = "*"
-      call ntok
-      call parse_term r
+      ntok
+      parse_term r
       res *= r
    .
 .
 sum = 0
 for lin$ in in$[]
-   call init
-   call parse_expr res
+   init
+   parse_expr res
    sum += res
 .
 print sum

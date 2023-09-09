@@ -21,7 +21,7 @@ proc getid n$ . id .
 .
 global na2$[] id2[] .
 proc add n$ s$ . id .
-   call getid n$ id
+   getid n$ id
    r$[id][] &= s$
    na2$[] &= s$
    id2[] &= id
@@ -31,7 +31,7 @@ repeat
    s$ = input
    until s$ = ""
    h$[] = strsplit s$ " "
-   call add h$[1] h$[3] id
+   add h$[1] h$[3] id
 .
 targ$ = input
 # 
@@ -43,9 +43,9 @@ for i to len targ$
       i += 1
    .
    s2$ = substr targ$ i + 1 999
-   call getid h$ id
+   getid h$ id
    for r$ in r$[id][]
-      call add_name s1$ & r$ & s2$
+      add_name s1$ & r$ & s2$
    .
 .
 print len name$[]

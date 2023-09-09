@@ -18,8 +18,8 @@ n = floor sqrt len inp$[] + 2
 len h[] n * n + n
 for s$ in inp$[]
    s$[] = strsplit s$ " ."
-   call getid s$[1] a
-   call getid s$[11] b
+   getid s$[1] a
+   getid s$[11] b
    h = number s$[4]
    if s$[3] = "lose"
       h = -h
@@ -30,7 +30,7 @@ global permlist[][] perm[] .
 proc mk_permlist k . .
    for i = k to len perm[]
       swap perm[i] perm[k]
-      call mk_permlist k + 1
+      mk_permlist k + 1
       swap perm[k] perm[i]
    .
    if k = len perm[]
@@ -44,7 +44,7 @@ for part to 2
       perm[] &= i
    .
    len permlist[][] 0
-   call mk_permlist 1
+   mk_permlist 1
    # 
    max = 0
    for p to len permlist[][]

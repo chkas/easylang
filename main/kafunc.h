@@ -1970,6 +1970,9 @@ S void op_callproc(ND* nd0) {
 		exec_sequ_slow(ndp->bxnd);
 		if (rt.slow > 32) rt.slow -= 1;
 	}
+//?	if (stop_flag) stop_flag -= 1;
+	stop_flag = 0;
+
 	rt.proc = proc_caller;
 
 	ifl = 0;
@@ -2019,8 +2022,6 @@ S void op_callproc(ND* nd0) {
 		ARR* a = arrs + ia;
 		if (a->p) free_arr(a);
 	}
-//?	if (stop_flag) stop_flag -= 1;
-	stop_flag = 0;
 }
 
 S ND* funcnd;

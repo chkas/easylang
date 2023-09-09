@@ -27,10 +27,10 @@ proc show . .
    clear
    for i range0 len m[]
       if m[i] = -2
-         call mark i 000
+         mark i 000
       .
    .
-   call mark zz 900
+   mark zz 900
 .
 # 
 proc parse . .
@@ -81,7 +81,7 @@ proc parse . .
       a5$[] = strchars input
    .
 .
-call parse
+parse
 proc connect . .
    for i = 1 to len port$[]
       s$ = port$[i]
@@ -99,12 +99,12 @@ proc connect . .
       .
    .
 .
-call connect
+connect
 # 
 offs[] = [ -nc 1 nc -1 ]
 # 
 proc part1 . .
-   call show
+   show
    len seen[] len port[]
    cur[] &= aa
    cur_d[] &= -1
@@ -132,7 +132,7 @@ proc part1 . .
                .
             .
          .
-         call mark pos 990
+         mark pos 990
       .
       n_steps += 1
       swap cur[] nxt[]
@@ -141,7 +141,7 @@ proc part1 . .
       len nxt_d[] 0
    .
 .
-call part1
+part1
 # 
 proc is_inner pos . r .
    x = pos mod nc
@@ -181,14 +181,14 @@ proc show2 . .
    for i range0 len m[]
       if m[i] = -2
          for l range0 6
-            call mark2 i 000 l
+            mark2 i 000 l
          .
       .
    .
-   call mark2 zz 900 0
+   mark2 zz 900 0
 .
 proc part2 . .
-   call show2
+   show2
    max_level = 30
    len seen[] len port[] * (max_level + 1)
    cur[] &= aa
@@ -204,7 +204,7 @@ proc part2 . .
             break 2
          .
          if m[pos] >= 0 and dir0 <> -1
-            call is_inner pos res
+            is_inner pos res
             if res = 0 and lev = 0 or res = 1 and lev = max_level
                # ok
             else
@@ -230,7 +230,7 @@ proc part2 . .
                .
             .
          .
-         call mark2 pos 990 lev
+         mark2 pos 990 lev
       .
       n_steps += 1
       swap cur[] nxt[]
@@ -241,7 +241,7 @@ proc part2 . .
       len nxt_l[] 0
    .
 .
-call part2
+part2
 # 
 input_data
              Z L X W       C                 

@@ -42,8 +42,8 @@ proc run n_moves . .
    .
    print max
 .
-call run n_marple
-call run n_marple * 100
+run n_marple
+run n_marple * 100
 # 
 input_data
 30 players; last marble is worth 5807 points

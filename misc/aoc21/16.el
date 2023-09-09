@@ -23,7 +23,7 @@ proc init . .
    .
    bi = 1
 .
-call init
+init
 # 
 proc getnum cnt . v .
    v = 0
@@ -33,30 +33,30 @@ proc getnum cnt . v .
 .
 global vers_sum .
 proc parse_pack . val .
-   call getnum 3 h
+   getnum 3 h
    vers_sum += h
-   call getnum 3 id
+   getnum 3 id
    if id = 4
       val = 0
       repeat
-         call getnum 5 h
+         getnum 5 h
          until h < 16
          val = val * 16 + h - 16
       .
       val = val * 16 + h
    else
-      call getnum 1 mode
+      getnum 1 mode
       if mode = 0
-         call getnum 15 lng
+         getnum 15 lng
          bi2 = bi + lng
          while bi <> bi2
-            call parse_pack h
+            parse_pack h
             list[] &= h
          .
       else
-         call getnum 11 lng
+         getnum 11 lng
          for i to lng
-            call parse_pack h
+            parse_pack h
             list[] &= h
          .
       .
@@ -89,7 +89,7 @@ proc parse_pack . val .
       .
    .
 .
-call parse_pack val
+parse_pack val
 print vers_sum
 print val
 # 

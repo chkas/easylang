@@ -37,7 +37,7 @@ proc read . .
    .
    nc = 150
 .
-call read
+read
 len m[] nc * nc
 dirs_even[] = [ -1 (-nc - 1) (-nc) 1 nc (nc - 1) ]
 dirs_odd[] = [ -1 (-nc) (-nc + 1) 1 (nc + 1) nc ]
@@ -91,7 +91,7 @@ proc show . .
    rect 100 100 - srow * f34
    move 5 85
    color 888
-   call sum_black sum
+   sum_black sum
    text sum & " black tiles"
    sleep 0.03
 .
@@ -126,7 +126,7 @@ proc show2 . .
    rect 100 100 - nc * f34
    move 5 85
    color 888
-   call sum_black sum
+   sum_black sum
    text sum & " black tiles"
    sleep 0.1
 .
@@ -143,12 +143,12 @@ proc part1 . .
          .
       .
       m[pos] = 1 - m[pos]
-      call show
+      show
    .
-   call sum_black sum
+   sum_black sum
    print sum
 .
-call part1
+part1
 # 
 # 
 len p[] len m[]
@@ -181,23 +181,23 @@ proc update . .
 .
 proc part2 . .
    for i to 100
-      call update
+      update
       if i <= 10
-         call show
+         show
          sleep 0.3
       else
          if i mod 5 = 0
-            call show2
+            show2
          .
       .
    .
-   call sum_black sum
+   sum_black sum
    print sum
 .
 if visual = 1
    sleep 1
 .
-call part2
+part2
 # 
 # 
 input_data

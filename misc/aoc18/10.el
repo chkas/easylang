@@ -22,7 +22,7 @@ proc show . .
    .
    sleep 0.1
 .
-call show
+show
 repeat
    yl = 1 / 0 ; yh = -1 / 0 ; xl = yl
    for i to len x[]
@@ -34,7 +34,7 @@ repeat
    .
    sec += 1
    if yh - yl < 500
-      call show
+      show
    .
    s = 0
    for x in x[]

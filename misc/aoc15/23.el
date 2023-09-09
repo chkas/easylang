@@ -35,8 +35,8 @@ proc run r[] . .
    .
    print r[2]
 .
-call run [ 0 0 ]
-call run [ 1 0 ]
+run [ 0 0 ]
+run [ 1 0 ]
 # 
 input_data
 inc b

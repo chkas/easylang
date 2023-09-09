@@ -47,7 +47,7 @@ proc init . .
     swap f[1] f[2]
   .
   textsize 12
-  call draw
+  draw
 .
 proc move_tile . .
   c = mouse_x div 25
@@ -62,7 +62,7 @@ proc move_tile . .
   elif c < 3 and f[i + 1] = 16
     swap f[i] f[i + 1]
   .
-  call draw
+  draw
   done = 1
   for i = 1 to 15
     if f[i] > f[i + 1]
@@ -77,10 +77,10 @@ proc move_tile . .
 .
 on mouse_down
   if done = 1
-    call init
+    init
   else
-    call move_tile
+    move_tile
   .
 .
-call init
+init
 

@@ -64,12 +64,12 @@ proc work nwrk timeadd . ord$ time .
       time += min
    .
 .
-call work 1 0 ord$ _
+work 1 0 ord$ _
 print ord$
 if ninp < 20
-   call work 2 0 _$ time
+   work 2 0 _$ time
 else
-   call work 5 60 _$ time
+   work 5 60 _$ time
 .
 print time
 # 

@@ -23,12 +23,12 @@ proc gsum pos sum sel . .
       .
    elif pos <= len n[]
       if sum + n[pos] <= destsum
-         call gsum pos + 1 sum + n[pos] sel + 1
+         gsum pos + 1 sum + n[pos] sel + 1
       .
-      call gsum pos + 1 sum sel
+      gsum pos + 1 sum sel
    .
 .
-call gsum 1 0 0
+gsum 1 0 0
 print n_comb
 print nmin
 # 

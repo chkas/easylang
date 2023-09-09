@@ -7,7 +7,7 @@ proc md5init . .
       md5k[i] = floor (0x100000000 * abs sin ((i + 1) * 180 / pi))
    .
 .
-call md5init
+md5init
 # 
 proc md5 inp$ . s$ .
    subr addinp
@@ -26,18 +26,18 @@ proc md5 inp$ . s$ .
    inp4 = 1
    for i to len inp$
       b = strcode substr inp$ i 1
-      call addinp
+      addinp
    .
    b = 0x80
-   call addinp
+   addinp
    while len inp[] mod 16 <> 14 or inp4 <> 1
       b = 0
-      call addinp
+      addinp
    .
    h = len inp$ * 8
    for i range0 4
       b = h mod 0x100
-      call addinp
+      addinp
       h = h div 0x100
    .
    inp[] &= 0
@@ -114,7 +114,7 @@ while len todo$[] <> 0
          .
          long = len p$
       else
-         call md5 inp$ & p$ h$
+         md5 inp$ & p$ h$
          md$[] = strchars substr h$ 1 4
          for i to 4
             open = 0

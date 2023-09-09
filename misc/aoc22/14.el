@@ -53,11 +53,11 @@ proc init . .
       m[(maxy + 2) * nc + x + 1] = 1
    .
 .
-call init
+init
 if visual = 1
    for p = 1 to len m[]
       if m[p] = 1
-         call show p
+         show p
       .
    .
    sleep 1
@@ -73,7 +73,7 @@ while 1 = 1
       .
    .
    m[s] = 0
-   call show s
+   show s
    if m[s + nc] = 0
       s += nc
    elif m[s + nc - 1] = 0
@@ -84,7 +84,7 @@ while 1 = 1
       m[s] = 2
       cnt += 1
       if visual = 1
-         call show s
+         show s
       .
       if s = nc / 2 + 1
          break 1
@@ -92,7 +92,7 @@ while 1 = 1
       s = nc / 2 + 1
    .
    m[s] = 2
-   call show s
+   show s
 .
 print cnt
 # 

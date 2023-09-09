@@ -39,7 +39,7 @@ proc init . .
    rock[][] &= [ 1 1 0 0 1 1 0 0 0 0 0 0 0 0 0 0 ]
    inp$ = input
 .
-call init
+init
 # 
 global high rock[] irock .
 # 
@@ -115,7 +115,7 @@ proc testhash . fnd .
          .
          mi += 2
       .
-      call hashset h fnd
+      hashset h fnd
       if fnd = 1
          fnd = h
       .
@@ -127,28 +127,28 @@ proc testhash . fnd .
 while 1 = 1
    irock = (high + 4) * 9 + 4
    swap rock[] rock[rock][]
-   # call show
+   # show
    repeat
       if substr inp$ inp 1 = "<"
-         call mov -1 block
+         mov -1 block
       else
-         call mov 1 block
+         mov 1 block
       .
       inp = inp mod len inp$ + 1
-      # call show
-      call mov -9 block
+      # show
+      mov -9 block
       until block = 1
-      # call show
+      # show
    .
-   call mkstone
+   mkstone
    # 
    if nrock > 2022
-      call testhash ind
+      testhash ind
       if ind > 0
          if cyc0 = 0
             cyc0 = nrock
             hash0 = ind
-            call hashclear
+            hashclear
          elif hash0 = ind
             rem = 1000000000000 - cyc0
             cyclen = nrock - cyc0

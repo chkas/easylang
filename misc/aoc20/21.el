@@ -27,7 +27,7 @@ proc read . .
       i = 1
       meal_ingre[][] &= [ ]
       while s$[i] <> "(contains"
-         call ingre_id s$[i] v
+         ingre_id s$[i] v
          meal_ingre[meal][] &= v
          i += 1
       .
@@ -35,14 +35,14 @@ proc read . .
       meal_allerg[][] &= [ ]
       while i <= len s$[]
          s$ = substr s$[i] 1 len s$[i] - 1
-         call allerg_id s$ v
+         allerg_id s$ v
          meal_allerg[meal][] &= v
          i += 1
       .
       meal += 1
    .
 .
-call read
+read
 # 
 n_meal = len meal_ingre[][]
 n_ingre = len ingre$[]
@@ -76,10 +76,10 @@ proc search allerg . .
       ingre_allerg[i] = 1
    .
    for meal to n_meal
-      call allerg_in_meal allerg meal is_in
+      allerg_in_meal allerg meal is_in
       if is_in = 1
          for ingre to n_ingre
-            call ingre_in_meal ingre meal is_in
+            ingre_in_meal ingre meal is_in
             if is_in = 0
                ingre_allerg[ingre] = 0
             .
@@ -94,21 +94,21 @@ proc search allerg . .
    allerg_ingre[][] &= ingre_allerg[]
 .
 for i to n_allerg
-   call search i
+   search i
 .
 # 
 proc part1 . .
    for ingre to n_ingre
       if ingre_allerg0[ingre] = 0
          for meal to n_meal
-            call ingre_in_meal ingre meal is_in
+            ingre_in_meal ingre meal is_in
             sum += is_in
          .
       .
    .
    print sum
 .
-call part1
+part1
 # 
 # 
 len allerg_ingre[] n_allerg
@@ -153,7 +153,7 @@ proc part2 . .
    .
    print ""
 .
-call part2
+part2
 # 
 input_data
 mxmxvkd kfcds sqjhc nhms (contains dairy, fish)

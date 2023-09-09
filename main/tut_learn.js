@@ -362,10 +362,10 @@ proc cod n$ v v$ . .
    .
    y -= 25
 .
-call cod "a ← 7 " 7 ""
-call cod "a ← 10 * a " 70 ""
-call cod "a > 20 ?" -1 "YES"
-call cod "\\"a is large\\"" -1 ""
+cod "a ← 7 " 7 ""
+cod "a ← 10 * a " 70 ""
+cod "a > 20 ?" -1 "YES"
+cod "\\"a is large\\"" -1 ""
 
 -
 
@@ -610,15 +610,15 @@ subr drawcar
    sleep 0.5
 end
 # 
-call drawcar
+drawcar
 x += 10
-call drawcar
+drawcar
 x += 10
-call drawcar
+drawcar
 
-+ With *subr* you can combine actions that can be called from different places using *call*. This is called a *subroutine*.
++ With *subr* you can combine actions that can be called from different places. This is called a *subroutine*.
 
-+de Mit *subr* können Aktionen zusammengefasst werden, die von verschiedenen Stellen aus mittels *call* aufgerufen werden können. Das nennt man *Unterprogramm* oder *Subroutine*.
++de Mit *subr* können Aktionen zusammengefasst werden, die von verschiedenen Stellen aus aufgerufen werden können. Das nennt man *Unterprogramm* oder *Subroutine*.
 
 + With *proc* you can also create *procedures* with parameters and local variables, but this is not covered in this beginner course.
 
@@ -792,7 +792,7 @@ proc dr ind v . .
 .
 a[] = [ 3 7 2 8 ]
 for i = 1 to len a[]
-  call dr i a[i]
+  dr i a[i]
 .
 textsize 9
 move 4 10

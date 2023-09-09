@@ -42,8 +42,8 @@ proc mk . .
       .
    .
 .
-call mk
-call show 0
+mk
+show 0
 p = nc + 1
 dest = 31 + 39 * nc
 # 
@@ -67,7 +67,7 @@ while len todon[] <> 0 and (part1 = 0 or part2 = 0)
       .
    .
    step += 1
-   call show 1
+   show 1
    if step = 50
       part2 = np
    .

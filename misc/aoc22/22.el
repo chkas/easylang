@@ -22,7 +22,7 @@ proc read . .
       r += 1
    .
 .
-call read
+read
 # 
 inc[] = [ 1 nc -1 (-nc) ]
 global sz .
@@ -39,7 +39,7 @@ global cur[] prev[] plane dif .
 proc takedir . nxt ni .
    if m[nxt + ni] = 0
       # left
-      call turn -1 ni
+      turn -1 ni
       nxt -= ni
       swap cur[] prev[]
       cur[] = prev[]
@@ -51,7 +51,7 @@ proc takedir . nxt ni .
       cur[dif] = 1 - cur[dif]
    else
       nxt += ni
-      call turn 1 ni
+      turn 1 ni
       if m[nxt + ni] <> 0
          # right
          swap cur[] prev[]
@@ -62,7 +62,7 @@ proc takedir . nxt ni .
          plane = i
       else
          # straight
-         call turn -1 ni
+         turn -1 ni
          nxt -= ni
          swap cur[] prev[]
          cur[] = prev[]
@@ -72,7 +72,7 @@ proc takedir . nxt ni .
    .
 .
 proc findedge . nxt ni .
-   call turn -1 ni
+   turn -1 ni
    h = nxt - nc
    if abs ni > 1
       h = h div nc
@@ -90,7 +90,7 @@ proc findedge . nxt ni .
    nxt += ni * off
    nxt0 = nxt
    while 1 = 1
-      call takedir nxt ni
+      takedir nxt ni
       if cur[] = [ 1 0 0 ] and prev[] = [ 0 0 0 ]
          offs = sz - 1 - offs
          break 1
@@ -104,7 +104,7 @@ proc findedge . nxt ni .
       .
    .
    nxt += ni * (off + 1)
-   call turn -1 ni
+   turn -1 ni
 .
 proc step part . ind inc .
    nxt = ind + inc
@@ -113,7 +113,7 @@ proc step part . ind inc .
    if m[nxt] = 0
       if part = 2
          nxt -= inc
-         call findedge nxt ni
+         findedge nxt ni
       else
          while m[nxt - inc] > 0
             nxt -= inc
@@ -143,16 +143,16 @@ proc go part inp$ . .
          inp$ = substr inp$ 2 -1
       .
       while n <> 0
-         call step part ind inc
+         step part ind inc
          n -= 1
       .
       until len inp$ = 0
       c$ = substr inp$ 1 1
       inp$ = substr inp$ 2 -1
       if c$ = "L"
-         call turn -1 inc
+         turn -1 inc
       elif c$ = "R"
-         call turn 1 inc
+         turn 1 inc
       else
          print "error input"
       .
@@ -166,8 +166,8 @@ proc go part inp$ . .
 .
 # 
 inp$ = input
-call go 1 inp$
-call go 2 inp$
+go 1 inp$
+go 2 inp$
 # 
 input_data
         ...#

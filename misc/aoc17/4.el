@@ -29,7 +29,7 @@ repeat
    until in$ = ""
    name$[] = [ ]
    for s$ in strsplit in$ " "
-      call name s$ r
+      name s$ r
       if r = 1
          ndbl1 += 1
          break 1
@@ -37,8 +37,8 @@ repeat
    .
    name$[] = [ ]
    for s$ in strsplit in$ " "
-      call sort s$
-      call name s$ r
+      sort s$
+      name s$ r
       if r = 1
          ndbl2 += 1
          break 1

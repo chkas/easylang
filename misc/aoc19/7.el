@@ -60,16 +60,16 @@ proc run0 inp . .
    ic_mem[] = code[]
    ic_in = inp
    ic_pc = 0
-   call ic_run
+   ic_run
 .
 arr[] = [ 0 1 2 3 4 ]
 proc runall . .
    ic_out = 0
    for i = 1 to 5
-      call run0 arr[i]
+      run0 arr[i]
       while ic_fin = 0
          ic_in = ic_out
-         call ic_run
+         ic_run
       .
    .
 .
@@ -78,21 +78,21 @@ max = 0
 proc permute k . .
    for i = k to len arr[]
       swap arr[i] arr[k]
-      call permute k + 1
+      permute k + 1
       swap arr[k] arr[i]
    .
    if k = len arr[]
-      call runall
+      runall
       if ic_out > max
          max = ic_out
       .
    .
 .
 proc part1 . .
-   call permute 1
+   permute 1
    print max
 .
-call part1
+part1
 # 
 # ---------------------------------------
 # 
@@ -107,23 +107,23 @@ proc init . .
 proc runid id . .
    swap mem[id][] ic_mem[]
    ic_pc = pc[id]
-   call ic_run
+   ic_run
    swap mem[id][] ic_mem[]
    pc[id] = ic_pc
 .
 # 
 arr[] = [ 5 6 7 8 9 ]
 proc runall2 . .
-   call init
+   init
    for id = 1 to 5
       ic_in = arr[id]
-      call runid id
+      runid id
    .
    ic_out = 0
    repeat
       for id = 1 to 5
          ic_in = ic_out
-         call runid id
+         runid id
       .
       until ic_fin = 1
    .
@@ -132,21 +132,21 @@ max = 0
 proc permute2 k . .
    for i = k to len arr[]
       swap arr[i] arr[k]
-      call permute2 k + 1
+      permute2 k + 1
       swap arr[i] arr[k]
    .
    if k = len arr[]
-      call runall2
+      runall2
       if ic_out > max
          max = ic_out
       .
    .
 .
 proc part2 . .
-   call permute2 1
+   permute2 1
    print max
 .
-call part2
+part2
 # 
 input_data
 3,31,3,32,1002,32,10,32,1001,31,-2,31,1007,31,0,33,1002,33,7,33,1,33,31,31,1,32,31,31,4,31,99,0,0,0

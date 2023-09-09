@@ -109,13 +109,13 @@ proc btn x y s$ . .
    text s$
 .
 subr draw_btn_song
-   call btn 82 61 "Song"
+   btn 82 61 "Song"
 .
 subr draw_btn_slow
-   call btn 59 61 "Slow"
+   btn 59 61 "Slow"
 .
 subr draw_btn_play
-   call btn 36 61 "Play"
+   btn 36 61 "Play"
 .
 proc draw_key down . .
    if down = 1
@@ -153,7 +153,7 @@ subr play_note
    clk += t
    ind = h mod 10 + 1
    if ind <= 8
-      call draw_key 1
+      draw_key 1
       sound [ f[ind] t * speed - 0.1 ]
    .
    stat = 3
@@ -170,7 +170,7 @@ subr play_note_done
       xn += 6.5
    .
    if ind <= 8
-      call draw_key 0
+      draw_key 0
    .
    note += 1
    if note <= len notes[]
@@ -183,7 +183,7 @@ subr play_note_done
 subr start_play
    clk = 0
    color 432
-   call draw_btn_play
+   draw_btn_play
    note = 1
    yn = 1
    stat = 2
@@ -191,57 +191,57 @@ subr start_play
 .
 subr change_song
    color 432
-   call draw_btn_song
+   draw_btn_song
    swap songs[song][] notes[]
    song = song mod len songs[][] + 1
    swap songs[song][] notes[]
-   call draw_notes
+   draw_notes
 .
 on timer
    if stat = 2
-      call play_note
+      play_note
    elif stat = 3
-      call play_note_done
+      play_note_done
    .
 .
 on mouse_down
    if stat >= 2
       timer -1
-      call play_note_done
+      play_note_done
       stat = 0
    .
    if mouse_y > 75
       ind = floor (mouse_x / 100 * 8) + 1
       sound [ f[ind] 10 ]
-      call draw_key 1
+      draw_key 1
       stat = 1
    elif mouse_y < 65 and mouse_y > 57
       if mouse_x > 77
-         call change_song
+         change_song
       elif mouse_x > 55
          speed = 0.4
-         call start_play
+         start_play
       elif mouse_x > 33
          speed = 0.25
-         call start_play
+         start_play
       .
    .
 .
 on mouse_up
    color 654
-   call draw_btn_song
+   draw_btn_song
    color 654
-   call draw_btn_play
+   draw_btn_play
    color 654
-   call draw_btn_slow
+   draw_btn_slow
    if stat = 1
       sound [ ]
-      call draw_key 0
+      draw_key 0
       stat = 0
    .
 .
 # 
-call initvars
+initvars
 color 321
 move 0 55
 rect 100 45
@@ -252,12 +252,12 @@ move 40 75
 rect 40 12
 textsize 6
 for ind = 1 to 8
-   call draw_key 0
+   draw_key 0
 .
 color 654
-call draw_btn_play
+draw_btn_play
 color 654
-call draw_btn_song
+draw_btn_song
 color 654
-call draw_btn_slow
-call draw_notes
+draw_btn_slow
+draw_notes

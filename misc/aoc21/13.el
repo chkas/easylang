@@ -44,7 +44,7 @@ repeat
       dim[i] = higher (a[i] + 1) dim[i]
    .
 .
-call draw
+draw
 repeat
    s$ = input
    until s$ = ""
@@ -66,7 +66,7 @@ repeat
    .
    dim[d] = fold
    swap m[] mn[]
-   call draw
+   draw
    if cnt = 0
       for i = 1 to len m[]
          cnt += m[i]

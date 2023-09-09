@@ -24,8 +24,8 @@ proc ntok . s$ tok .
 .
 proc cmp . s1$ s2$ win .
    repeat
-      call ntok s1$ tok1
-      call ntok s2$ tok2
+      ntok s1$ tok1
+      ntok s2$ tok2
       if tok1 = -2 and tok2 = -2
          done = 1
       elif tok1 = -2
@@ -38,7 +38,7 @@ proc cmp . s1$ s2$ win .
          elif tok2 <> -1
             s2$ = tok2 & "]" & s2$
          .
-         call cmp s1$ s2$ win
+         cmp s1$ s2$ win
       else
          if tok1 < tok2
             win = 1
@@ -50,10 +50,10 @@ proc cmp . s1$ s2$ win .
    .
 .
 proc compare s1$ s2$ . ok .
-   call ntok s1$ h
-   call ntok s2$ h
+   ntok s1$ h
+   ntok s2$ h
    win = 0
-   call cmp s1$ s2$ win
+   cmp s1$ s2$ win
    ok = 2 - win
 .
 proc run . .
@@ -63,20 +63,20 @@ proc run . .
       s$ = input
       if s$ = ""
          ind += 1
-         call compare spp$ sp$ ok
+         compare spp$ sp$ ok
          sum += ind * ok
          s$ = input
       .
       until s$ = ""
-      call compare s$ "[[2]]" ok
+      compare s$ "[[2]]" ok
       ind1 += ok
-      call compare s$ "[[6]]" ok
+      compare s$ "[[6]]" ok
       ind2 += ok
    .
    print sum
    print (ind1 + 1) * (ind2 + 2)
 .
-call run
+run
 # 
 input_data
 [1,1,3,1,1]

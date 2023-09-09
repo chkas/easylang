@@ -17,8 +17,8 @@ proc eye x y . .
 subr eyes
    mx = mouse_x
    my = mouse_y
-   call eye 20 80
-   call eye 40 80
+   eye 20 80
+   eye 40 80
 .
 linewidth 2
 on mouse_move
@@ -26,15 +26,15 @@ on mouse_move
       move mx my
       line mouse_x mouse_y
    .
-   call eyes
+   eyes
 .
 on mouse_down
    down = 1
    move mouse_x mouse_y
    circle 1
-   call eyes
+   eyes
 .
 on mouse_up
    down = 0
 .
-call eyes
+eyes

@@ -30,11 +30,11 @@ proc part_1 . .
       gam$ &= h
       eps$ &= 1 - h
    .
-   call binval gam$ gam
-   call binval eps$ eps
+   binval gam$ gam
+   binval eps$ eps
    print gam * eps
 .
-call part_1
+part_1
 # 
 proc find bit ln$[] . val .
    for i = 1 to nbits
@@ -52,7 +52,7 @@ proc find bit ln$[] . val .
          .
       .
       if len ln_nxt$[] = 1
-         call binval ln_nxt$[1] val
+         binval ln_nxt$[1] val
          break 2
       .
       swap ln_nxt$[] ln$[]
@@ -60,8 +60,8 @@ proc find bit ln$[] . val .
    .
    print "error"
 .
-call find 1 inp$[] oxy
-call find 0 inp$[] co2
+find 1 inp$[] oxy
+find 0 inp$[] co2
 print oxy * co2
 # 
 # 

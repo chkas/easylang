@@ -41,7 +41,7 @@ proc init . .
             j += 1
          .
          n$ = substr s$[j] 1 2
-         call getid n$ id
+         getid n$ id
          if substr s$[j + 1] 1 3 = "gen"
             ob[id] = fl
          else
@@ -57,7 +57,7 @@ proc init . .
    .
    destcod = nob * 4 + 3
 .
-call init
+init
 # 
 proc tocod . .
    cod = 0
@@ -66,7 +66,7 @@ proc tocod . .
    .
    cod = cod * 4 + el
 .
-call tocod
+tocod
 cod0 = cod
 # 
 proc toarr . .
@@ -96,8 +96,8 @@ proc add_check i1 i2 . .
       .
    .
    if i = 16
-      call tocod
-      call hash cod h
+      tocod
+      hash cod h
       if h = 0
          todon[] &= cod
       .
@@ -124,12 +124,12 @@ proc add_todo . .
       .
    .
    for i to len l1[]
-      call add_check l1[i] l2[i]
+      add_check l1[i] l2[i]
    .
    # gen+mic
    i = el0 * 4 + el0
    if ar[i] > 0
-      call add_check i el * 4 + el
+      add_check i el * 4 + el
    .
    # 
    # two objects
@@ -147,7 +147,7 @@ proc add_todo . .
             mj = j mod 4
             ij = l2[lj]
             if gi = gj or mi = mj
-               call add_check j ij
+               add_check j ij
             .
          .
       .
@@ -156,7 +156,7 @@ proc add_todo . .
    .
 .
 proc run . .
-   call tocod
+   tocod
    todon[] = [ cod ]
    todo[] = [ ]
    # 
@@ -168,28 +168,28 @@ proc run . .
             print step
             break 2
          .
-         call toarr
+         toarr
          el0 = el
          if el0 < 3
             el = el0 + 1
-            call add_todo
+            add_todo
          .
          if el0 > 0
             el = el0 - 1
-            call add_todo
+            add_todo
          .
       .
       step += 1
    .
 .
-call run
+run
 # 
 cod = cod0
-call toarr
+toarr
 el = 0
 destcod += 8
 ar[0] += 2
-call run
+run
 # 
 # 
 input_data

@@ -30,7 +30,7 @@ proc read . .
       s$ = input
    .
 .
-call read
+read
 proc update . .
    i0 = i0 - nc - 1
    i = i0
@@ -69,7 +69,7 @@ proc update . .
    swap mn[] m[]
 .
 for r to 50
-   call update
+   update
    if r = 2 or r = 50
       sum = 0
       for m in m[]

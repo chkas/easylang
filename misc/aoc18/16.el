@@ -18,7 +18,7 @@ proc read . .
       s$ = input
    .
 .
-call read
+read
 # 
 len r[] 4
 # 
@@ -95,7 +95,7 @@ proc part1 . .
       for op range0 16
          r[] = b[tst][]
          arrbase r[] 0
-         call opf op o[tst][2] o[tst][3] o[tst][4]
+         opf op o[tst][2] o[tst][3] o[tst][4]
          if r[] = a[tst][]
             ok += 1
          .
@@ -106,7 +106,7 @@ proc part1 . .
    .
    print res1
 .
-call part1
+part1
 # 
 proc part2 . .
    len op[] 16
@@ -127,7 +127,7 @@ proc part2 . .
                      if o[tst][1] = tst_op
                         r[] = b[tst][]
                         arrbase r[] 0
-                        call opf op o[tst][2] o[tst][3] o[tst][4]
+                        opf op o[tst][2] o[tst][3] o[tst][4]
                         if r[] <> a[tst][]
                            break 2
                         .
@@ -154,11 +154,11 @@ proc part2 . .
       s$ = input
       until s$ = ""
       s$[] = strsplit s$ " "
-      call opf op[number s$[1]] number s$[2] number s$[3] number s$[4]
+      opf op[number s$[1]] number s$[2] number s$[3] number s$[4]
    .
    print r[0]
 .
-call part2
+part2
 # 
 input_data
 Before: [3, 2, 1, 1]

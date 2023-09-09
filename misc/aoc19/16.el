@@ -38,7 +38,7 @@ proc part1 . .
    .
    print ""
 .
-call part1
+part1
 # 
 proc part2 . .
    n_in = len inp$
@@ -66,7 +66,7 @@ proc part2 . .
    print ""
 .
 if len inp$ >= 10
-   call part2
+   part2
 .
 # 
 input_data

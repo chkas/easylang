@@ -29,7 +29,7 @@ proc part1 . .
    s3 += 1
    print s1 * s3
 .
-call part1
+part1
 # 
 len cache[] d[len d[] - 1]
 # 
@@ -45,13 +45,13 @@ proc find_ways ind0 . n0 .
    n0 = 0
    ind = ind0 + 1
    while ind <= len d[] and d[ind] - d[ind0] <= 3
-      call find_ways ind n
+      find_ways ind n
       n0 += n
       ind += 1
    .
    cache[ind0] = n0
 .
-call find_ways 1 n
+find_ways 1 n
 print n
 # 
 input_data

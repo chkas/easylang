@@ -9,10 +9,10 @@ proc solve i maxw . items[] wres vres .
     vres = 0
     items[] = [ ]
   elif weight[i] > maxw
-    call solve i - 1 maxw items[] wres vres
+    solve i - 1 maxw items[] wres vres
   else
-    call solve i - 1 maxw items[] wres vres
-    call solve i - 1 maxw - weight[i] items1[] w1 v1
+    solve i - 1 maxw items[] wres vres
+    solve i - 1 maxw - weight[i] items1[] w1 v1
     v1 += value[i]
     if v1 > vres
       swap items[] items1[]
@@ -22,7 +22,7 @@ proc solve i maxw . items[] wres vres .
     .
   .
 .
-call solve len weight[] max_w items[] w v
+solve len weight[] max_w items[] w v
 print "weight: " & w
 print "value: " & v
 print "items:"

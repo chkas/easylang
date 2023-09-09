@@ -29,10 +29,10 @@ proc run . .
       oc0 = mem[pc]
       oc = oc0 mod 100
       until oc = 99 or oc = 3 and in = -1
-      call mem_ind oc0 div 100 mod 10 pc + 1 ind
+      mem_ind oc0 div 100 mod 10 pc + 1 ind
       a = mem[ind]
       if oc = 1 or oc = 2 or oc >= 5 and oc <= 8
-         call mem_ind oc0 div 1000 mod 10 pc + 2 ind
+         mem_ind oc0 div 1000 mod 10 pc + 2 ind
          b = mem[ind]
          if oc = 1 or oc = 2 or oc = 7 or oc = 8
             h = 0
@@ -43,7 +43,7 @@ proc run . .
             elif oc = 7 and a < b or oc = 8 and a = b
                h = 1
             .
-            call mem_ind oc0 div 10000 mod 10 pc + 3 ind
+            mem_ind oc0 div 10000 mod 10 pc + 3 ind
             mem[ind] = h
             pc += 4
          else
@@ -72,7 +72,7 @@ prefix
 # 
 proc go_dir d . out .
    ic_in = d
-   call ic_run
+   ic_run
    out = ic_out
 .
 len map[] 100 * 100
@@ -96,15 +96,15 @@ rev[] = [ 2 1 4 3 ]
 # 
 proc maze dir0 pos . min .
    map[pos] = 1
-   call draw pos 888
+   draw pos 888
    min = 1 / 0
    for dir = 1 to 4
       if dir <> dir0
-         call go_dir dir out
+         go_dir dir out
          if out = 1 or out = 2
             posn = pos + offs[dir]
             if out = 1
-               call maze rev[dir] posn h
+               maze rev[dir] posn h
                if h + 1 < min
                   min = h + 1
                .
@@ -112,7 +112,7 @@ proc maze dir0 pos . min .
                ox_pos = posn
                min = 1
             .
-            call go_dir rev[dir] h
+            go_dir rev[dir] h
          .
       .
    .
@@ -129,7 +129,7 @@ proc oxygen . .
          for dir = 1 to 4
             posn = pos + offs[dir]
             if map[posn] = 1
-               call draw posn 338
+               draw posn 338
                todon[] &= posn
             .
          .
@@ -145,11 +145,11 @@ proc oxygen . .
 if len ic_mem[] <= 1
    print "no input data"
 else
-   call maze -1 5051 res
-   call draw ox_pos 900
+   maze -1 5051 res
+   draw ox_pos 900
    print res
    # 
-   call oxygen
+   oxygen
 .
 # 
 input_data

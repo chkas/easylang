@@ -25,22 +25,22 @@ proc show col s$ . .
    txt$ = s$
 .
 subr wait
-   call show 500 "WAIT"
+   show 500 "WAIT"
    timer 1.5 + 2 * randomf
 .
 on timer
-   call show 060 "PRESS"
+   show 060 "PRESS"
    time0 = systime
 .
 on mouse_down
    if txt$ = "PRESS"
-      call show 060 systime - time0
+      show 060 systime - time0
    else
-      call wait
+      wait
    .
 .
 textsize 20
-call wait
+wait
 
 + A URL can be created, that can start a *code runner* with the program encoded in a URL parameter. 
 

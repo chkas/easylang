@@ -23,7 +23,7 @@ proc reduce . a$ .
    .
 .
 a$ = a0$
-call reduce a$
+reduce a$
 print len a$
 # 
 min = 50000
@@ -37,7 +37,7 @@ for k to 26
       .
    .
    a$ = strjoin a$[]
-   call reduce a$
+   reduce a$
    if len a$ < min
       min = len a$
    .

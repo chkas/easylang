@@ -38,9 +38,9 @@ subr count
    .
    print sum
 .
-call count
+count
 part2 = 1
-call count
+count
 # 
 input_data
   101  301  501

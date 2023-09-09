@@ -78,10 +78,10 @@ proc run . .
       oc0 = mem[pc]
       oc = oc0 mod 100
       until oc = 99
-      call mem_ind oc0 div 100 mod 10 pc + 1 ind
+      mem_ind oc0 div 100 mod 10 pc + 1 ind
       a = mem[ind]
       if oc = 1 or oc = 2 or oc >= 5 and oc <= 8
-         call mem_ind oc0 div 1000 mod 10 pc + 2 ind
+         mem_ind oc0 div 1000 mod 10 pc + 2 ind
          b = mem[ind]
          if oc = 1 or oc = 2 or oc = 7 or oc = 8
             h = 0
@@ -92,7 +92,7 @@ proc run . .
             elif oc = 7 and a < b or oc = 8 and a = b
                h = 1
             .
-            call mem_ind oc0 div 10000 mod 10 pc + 3 ind
+            mem_ind oc0 div 10000 mod 10 pc + 3 ind
             mem[ind] = h
             pc += 4
          else
@@ -103,10 +103,10 @@ proc run . .
          .
       else
          if oc = 3
-            call inpf h
+            inpf h
             mem[ind] = h
          elif oc = 4
-            call outpf a
+            outpf a
          elif oc = 9
             base += a
          else
@@ -120,12 +120,12 @@ proc run . .
 prefix
 # 
 if len code[] > 1
-   call ic_run
+   ic_run
    print n_painted
    # 
-   call init_part2
-   call ic_run
-   call make_pic
+   init_part2
+   ic_run
+   make_pic
 else
    print "No input"
 .

@@ -61,13 +61,13 @@ proc show . .
 proc find . .
    in[] = [ ]
    for i = 1 to 14
-      call run
+      run
       min = v[4]
       in[] &= 0
       for d = 1 to 9
          in[i] = d
-         call run
-         call show
+         run
+         show
          if v[4] < min / 10
             break 1
          .
@@ -80,8 +80,8 @@ proc find . .
             ds = in[j]
             for d = 1 to 9
                in[j] = d
-               call run
-               call show
+               run
+               show
                if v[4] < min / 10
                   break 2
                .
@@ -118,13 +118,13 @@ proc read . .
       .
    .
 .
-call read
+read
 if len cod$[] = 0
    print "need input"
 else
-   call find
+   find
    is_part2 = 1
-   call find
+   find
 .
 # 
 input_data

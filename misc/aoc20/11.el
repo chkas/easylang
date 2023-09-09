@@ -20,7 +20,7 @@ proc read . .
       seat[] &= 2
    .
 .
-call read
+read
 len f[] len seat[]
 len p[] len seat[]
 # 
@@ -54,7 +54,7 @@ proc run . .
             if seat[i] = 1 and stable[i] <> 1
                s = 0
                for dir in [ (-nc - 1) (-nc) (-nc + 1) (-1) 1 nc - 1 nc nc + 1 ]
-                  call look i dir s
+                  look i dir s
                .
                if is_part1 = 1 and s >= 4 or s >= 5
                   f[i] = 0
@@ -79,9 +79,9 @@ proc run . .
    print sum
 .
 is_part1 = 1
-call run
+run
 is_part1 = 0
-call run
+run
 # 
 # 
 input_data

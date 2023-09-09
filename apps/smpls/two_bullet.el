@@ -13,31 +13,31 @@ proc unload . .
 .
 proc load . .
   while cyl[1] = 1
-    call rshift
+    rshift
   .
   cyl[1] = 1
-  call rshift
+  rshift
 .
 proc spin . .
   lim = random 6
   for i = 1 to lim - 1
-    call rshift
+    rshift
   .
 .
 proc fire . shot .
   shot = cyl[1]
-  call rshift
+  rshift
 .
 proc method m[] . shot .
-  call unload
+  unload
   shot = 0
   for m in m[]
     if m = 1
-      call load
+      load
     elif m = 2
-      call spin
+      spin
     elif m = 3
-      call fire shot
+      fire shot
       if shot = 1
         break 1
       .
@@ -48,7 +48,7 @@ method$[] = [ "load" "spin" "fire" ]
 proc test m[] . .
   n = 100000
   for i = 1 to n
-    call method m[] shot
+    method m[] shot
     sum += shot
   .
   for i = 1 to len m[]
@@ -56,8 +56,8 @@ proc test m[] . .
   .
   print "-> " & 100 * sum / n & "% death"
 .
-call test [ 1 2 1 2 3 2 3 ]
-call test [ 1 2 1 2 3 3 ]
-call test [ 1 1 2 3 2 3 ]
-call test [ 1 1 2 3 3 ]
+test [ 1 2 1 2 3 2 3 ]
+test [ 1 2 1 2 3 3 ]
+test [ 1 1 2 3 2 3 ]
+test [ 1 1 2 3 3 ]
 

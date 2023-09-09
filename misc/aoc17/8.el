@@ -13,12 +13,12 @@ proc getid n$ . id .
 repeat
    inp$[] = strsplit input " "
    until len inp$[] < 7
-   call getid inp$[1] id
+   getid inp$[1] id
    v = number inp$[3]
    if inp$[2] = "dec"
       v = -v
    .
-   call getid inp$[5] id2
+   getid inp$[5] id2
    op$ = inp$[6]
    v2 = number inp$[7]
    inc = 0

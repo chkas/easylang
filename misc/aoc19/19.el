@@ -31,10 +31,10 @@ proc run . .
       oc0 = mem[pc]
       oc = oc0 mod 100
       until oc = 99 or oc = 3 and in = -1
-      call mem_ind oc0 div 100 mod 10 pc + 1 ind
+      mem_ind oc0 div 100 mod 10 pc + 1 ind
       a = mem[ind]
       if oc = 1 or oc = 2 or oc >= 5 and oc <= 8
-         call mem_ind oc0 div 1000 mod 10 pc + 2 ind
+         mem_ind oc0 div 1000 mod 10 pc + 2 ind
          b = mem[ind]
          if oc = 1 or oc = 2 or oc = 7 or oc = 8
             h = 0
@@ -45,7 +45,7 @@ proc run . .
             elif oc = 7 and a < b or oc = 8 and a = b
                h = 1
             .
-            call mem_ind oc0 div 10000 mod 10 pc + 3 ind
+            mem_ind oc0 div 10000 mod 10 pc + 3 ind
             mem[ind] = h
             pc += 4
          else
@@ -76,11 +76,11 @@ prefix
 # --------  --------
 # 
 proc in_beam in1 in2 . out .
-   call ic_reset
+   ic_reset
    ic_in = in1
-   call ic_run
+   ic_run
    ic_in = in2
-   call ic_run
+   ic_run
    out = ic_out
 .
 background 222
@@ -103,8 +103,8 @@ proc part1 . .
    cnt = 0
    for y range0 50
       for x range0 50
-         call in_beam x y h
-         call draw_light x y h
+         in_beam x y h
+         draw_light x y h
          cnt += h
       .
    .
@@ -114,25 +114,25 @@ proc part1 . .
 proc test x . y res .
    x += 99
    repeat
-      call in_beam x y h
+      in_beam x y h
       until h = 1
       y += 1
    .
-   call in_beam x - 99 y + 99 res
+   in_beam x - 99 y + 99 res
 .
 proc part2 . .
    y = 0
    x = 100
    repeat
-      call test x y res
+      test x y res
       until res = 1
       x += 1
    .
    print x * 10000 + y
 .
 if len ic_code[] > 1
-   call part1
-   call part2
+   part1
+   part2
 else
    print "No input"
 .

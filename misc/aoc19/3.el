@@ -50,7 +50,7 @@ vl[] = [ ]
 # 
 proc wire_1 . .
    for i = 1 to len w1$[]
-      call split w1$[i] d$ l
+      split w1$[i] d$ l
       if d$ = "L" or d$ = "R"
          hx[] &= x
          hy[] &= y
@@ -60,7 +60,7 @@ proc wire_1 . .
             l = -l
          .
          hl[] &= l
-         call drawline 990 x y x + l y
+         drawline 990 x y x + l y
          x += l
       else
          vx[] &= x
@@ -71,7 +71,7 @@ proc wire_1 . .
             l = -l
          .
          vl[] &= l
-         call drawline 990 x y x y + l
+         drawline 990 x y x y + l
          y += l
       .
    .
@@ -88,12 +88,12 @@ proc between v a l . r .
    .
 .
 proc intersect xh yh lh xv yv lv w . .
-   call between yh yv lv r
+   between yh yv lv r
    if r = 1
-      call between xv xh lh r
+      between xv xh lh r
       if r = 1
          w += abs (xv - xh) + abs (yv - yh)
-         call mark xv yh
+         mark xv yh
          d = abs xv + abs yh
          if d < min
             min = d
@@ -106,23 +106,23 @@ proc intersect xh yh lh xv yv lv w . .
 .
 proc wire_2 . .
    for i = 1 to len w2$[]
-      call split w2$[i] d$ l
+      split w2$[i] d$ l
       if d$ = "L" or d$ = "R"
          if d$ = "L"
             l = -l
          .
-         call drawline 099 x y x + l y
+         drawline 099 x y x + l y
          for j = 1 to len vx[]
-            call intersect x y l vx[j] vy[j] vl[j] vw[j] + w
+            intersect x y l vx[j] vy[j] vl[j] vw[j] + w
          .
          x += l
       else
          if d$ = "U"
             l = -l
          .
-         call drawline 099 x y x y + l
+         drawline 099 x y x y + l
          for j = 1 to len hx[]
-            call intersect hx[j] hy[j] hl[j] x y l hw[j] + w
+            intersect hx[j] hy[j] hl[j] x y l hw[j] + w
          .
          y += l
       .
@@ -130,9 +130,9 @@ proc wire_2 . .
    .
 .
 # 
-call wire_1
-call wire_2
-call mark_start
+wire_1
+wire_2
+mark_start
 print min
 print minw
 # 

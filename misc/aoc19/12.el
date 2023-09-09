@@ -38,7 +38,7 @@ proc part_1 . .
    .
    print e
 .
-call part_1
+part_1
 # 
 proc gcd a b . res .
    while b <> 0
@@ -49,9 +49,9 @@ proc gcd a b . res .
    res = a
 .
 proc lcm3 a b c . r .
-   call gcd a b h
+   gcd a b h
    r1 = a div h * b
-   call gcd r1 c h
+   gcd r1 c h
    r = r1 div h * c
 .
 proc part_2 . .
@@ -86,10 +86,10 @@ proc part_2 . .
       .
       steps[axis] += 1
    .
-   call lcm3 steps[0] steps[1] steps[2] r
+   lcm3 steps[0] steps[1] steps[2] r
    print r
 .
-call part_2
+part_2
 # 
 input_data
 <x=-1, y=0, z=2>

@@ -19,8 +19,8 @@ proc get_shared_secr priv publ . res .
       res = res mod 20201227
    .
 .
-call crack_priv publ1 priv1
-call get_shared_secr priv1 publ2 secr
+crack_priv publ1 priv1
+get_shared_secr priv1 publ2 secr
 print secr
 # 
 input_data

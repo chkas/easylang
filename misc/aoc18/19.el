@@ -20,7 +20,7 @@ proc read . .
       cd[] &= number s$[4]
    .
 .
-call read
+read
 # 
 len r[] 6
 arrbase r[] 0
@@ -98,13 +98,13 @@ proc part1 . .
       ind = ip * 4 + 1
       until ind > len cd[]
       r[ipr] = ip
-      call opf cd[ind] cd[ind + 1] cd[ind + 2] cd[ind + 3]
+      opf cd[ind] cd[ind + 1] cd[ind + 2] cd[ind + 3]
       ip = r[ipr]
       ip += 1
    .
    print r[0]
 .
-call part1
+part1
 # 
 proc part2 . .
    r[] = [ 1 0 0 0 0 0 ]
@@ -113,7 +113,7 @@ proc part2 . .
    repeat
       ind = ip * 4 + 1
       r[ipr] = ip
-      call opf cd[ind] cd[ind + 1] cd[ind + 2] cd[ind + 3]
+      opf cd[ind] cd[ind + 1] cd[ind + 2] cd[ind + 3]
       ip = r[ipr]
       until ip = 0
       ip += 1
@@ -135,7 +135,7 @@ proc part2 . .
    .
    print sum
 .
-call part2
+part2
 # 
 input_data
 #ip 0

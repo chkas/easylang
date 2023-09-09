@@ -18,7 +18,7 @@ proc inter p0 q0 p1 q1 . r0 r1 r .
 .
 proc intersect p[] q[] . r[] r .
    for d = 1 step 2 to 5
-      call inter p[d] q[d] p[d + 1] q[d + 1] r0 r1 r
+      inter p[d] q[d] p[d + 1] q[d + 1] r0 r1 r
       if r = 0
          break 1
       .
@@ -31,7 +31,7 @@ global pts[][] pts_sign[] .
 proc add pt[] ison . .
    len r[] 6
    for i to len pts[][]
-      call intersect pt[] pts[i][] r[] r
+      intersect pt[] pts[i][] r[] r
       if r = 1
          pts[][] &= r[]
          pts_sign[] &= pts_sign[i] * -1
@@ -51,7 +51,7 @@ proc volume pt[] . vol .
 proc volume_all . sum .
    sum = 0
    for i to len pts[][]
-      call volume pts[i][] vol
+      volume pts[i][] vol
       sum += vol * pts_sign[i]
    .
 .
@@ -72,12 +72,12 @@ repeat
    p[5] = number substr s1$[1] 3 9
    p[6] = number s1$[3]
    if abs p[1] > 50 and sum = 0
-      call volume_all sum
+      volume_all sum
       print sum
    .
-   call add p[] ison
+   add p[] ison
 .
-call volume_all sum
+volume_all sum
 print sum
 # 
 input_data

@@ -68,7 +68,7 @@ subr run
    .
 .
 len r[] 26
-call run
+run
 print snd
 # 
 part2 = 1
@@ -81,7 +81,7 @@ len r1[] 26
 r1[16] = 1
 # 
 while 1 = 1
-   call run
+   run
    if len q1[] = 0 or pc > len m$[]
       break 1
    .

@@ -67,8 +67,8 @@ proc run maxcnt . .
    .
    print cnt[1] * cnt[2]
 .
-call run 20
-call run 10000
+run 20
+run 10000
 # 
 input_data
 Monkey 0:

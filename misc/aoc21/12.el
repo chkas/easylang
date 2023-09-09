@@ -24,8 +24,8 @@ repeat
    s$ = input
    until s$ = ""
    a$[] = strsplit s$ "-"
-   call add a$[1] a
-   call add a$[2] b
+   add a$[1] a
+   add a$[2] b
    m[a][] &= b
    m[b][] &= a
 .
@@ -38,18 +38,18 @@ proc find pos seen[] twice . .
       seen[pos] += 1
       for d in m[pos][]
          if small[d] = 0 or seen[d] = 0
-            call find d seen[] twice
+            find d seen[] twice
          elif twice = 0 and seen[d] = 1 and d <> start
-            call find d seen[] 1
+            find d seen[] 1
          .
       .
    .
 .
 len seen[] len small[]
-call find start seen[] 1
+find start seen[] 1
 print n_found
 n_found = 0
-call find start seen[] 0
+find start seen[] 0
 print n_found
 # 
 input_data

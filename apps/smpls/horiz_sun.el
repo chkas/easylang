@@ -3,9 +3,9 @@ proc getn s$ . v .
   v = number input
   print v
 .
-call getn "Enter latitude: " lat
-call getn "Enter longitude: " lng
-call getn "Enter legal meridian: " merid
+getn "Enter latitude: " lat
+getn "Enter longitude: " lng
+getn "Enter legal meridian: " merid
 slat = sin lat
 diff = lng - merid
 print ""

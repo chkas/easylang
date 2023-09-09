@@ -11,8 +11,8 @@ proc nid n$ . i .
    name$[] &= n$
 .
 proc parse . .
-   call nid "ORE" h
-   call nid "FUEL" h
+   nid "ORE" h
+   nid "FUEL" h
    repeat
       s$ = input
       until s$ = ""
@@ -20,19 +20,19 @@ proc parse . .
       i = 1
       a$[] = strsplit s$ ", "
       repeat
-         call nid a$[i + 1] id
+         nid a$[i + 1] id
          recpt[] &= id
          recpt[] &= number a$[i]
          until a$[i + 2] = "=>"
          i += 3
       .
-      call nid a$[i + 4] id
+      nid a$[i + 4] id
       recpt[1] = id
       recpt[2] = number a$[i + 3]
       recpt0[][] &= recpt[]
    .
 .
-call parse
+parse
 # 
 proc produce_fuel need . n_ore .
    recpt[][] = recpt0[][]
@@ -65,7 +65,7 @@ proc produce_fuel need . n_ore .
    .
    n_ore = need[1]
 .
-call produce_fuel 1 n_ore
+produce_fuel 1 n_ore
 print n_ore
 # 
 proc part2 . .
@@ -73,7 +73,7 @@ proc part2 . .
    max = 9999999999
    while min + 1 < max
       t = (min + max) div 2
-      call produce_fuel t n_ore
+      produce_fuel t n_ore
       if n_ore <= 1000000000000
          min = t
       else
@@ -82,7 +82,7 @@ proc part2 . .
    .
    print min
 .
-call part2
+part2
 # 
 input_data
 171 ORE => 8 CNZTR

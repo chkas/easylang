@@ -35,7 +35,7 @@ proc read . .
    minpos = miny * 300
    maxpos = maxy * 300 + 300
 .
-call read
+read
 # 
 background 765
 global pos0 skip .
@@ -92,7 +92,7 @@ proc run . .
             f[pos] = 3
             pos += 300
          .
-         call show pos
+         show pos
          if f[pos] <> 3 and pos < maxpos
             repeat
                l = pos - 300
@@ -109,7 +109,7 @@ proc run . .
                for h = l + 1 to r - 1
                   f[h] = 2
                .
-               call show pos
+               show pos
                pos -= 300
             .
             if f[l] = 0
@@ -121,7 +121,7 @@ proc run . .
          .
       .
    .
-   call show pos
+   show pos
    for i range0 len f[]
       if f[i] > 1
          sum += 1
@@ -133,7 +133,7 @@ proc run . .
    print sum
    print sum2
 .
-call run
+run
 # 
 input_data
 x=495, y=2..7

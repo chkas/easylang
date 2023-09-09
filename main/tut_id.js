@@ -7,7 +7,7 @@ if (lang == "de") {
 	tut_descr = [
 		"Programmieren lernen",
 		"Dokumentation - Code-Beispiele",
-		"Prozeduren and Rekursion",
+		"Funktionen and Rekursion",
 		"Ein Spiel programmieren",
 	]
 } else {
@@ -15,7 +15,7 @@ if (lang == "de") {
 	tut_descr = [
 		"Learn programming",
 		"Documentation - Code snippets",
-		"Procedures and recursion",
+		"Functions and recursion",
 		"Making a game",
 	]
 }

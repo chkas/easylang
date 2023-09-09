@@ -21,8 +21,8 @@ proc run part jmp[] . .
    .
    print n
 .
-call run 1 jmp0[]
-call run 2 jmp0[]
+run 1 jmp0[]
+run 2 jmp0[]
 # 
 input_data
 0

@@ -13,7 +13,7 @@ proc init . .
       m[h] = 1
    .
 .
-call init
+init
 proc cntfaces id . res .
    for i = 1 to len m[]
       if m[i] = id
@@ -27,7 +27,7 @@ proc cntfaces id . res .
    .
    res = s
 .
-call cntfaces 1 nfaces
+cntfaces 1 nfaces
 print nfaces
 # 
 proc flood . .
@@ -63,8 +63,8 @@ proc flood . .
       swap todon[] todo[]
    .
 .
-call flood
-call cntfaces 0 h
+flood
+cntfaces 0 h
 print nfaces - h
 # 
 input_data

@@ -39,14 +39,14 @@ global permlist[][] .
 proc permutate_list k . .
    for i = k to len perm[]
       swap perm[i] perm[k]
-      call permutate_list k + 1
+      permutate_list k + 1
       swap perm[k] perm[i]
    .
    if k = len perm[]
       permlist[][] &= perm[]
    .
 .
-call permutate_list 1
+permutate_list 1
 # 
 proc codeperm perm s$ . cod .
    cod = 0
@@ -61,20 +61,20 @@ proc init . .
    .
    s$[] = strsplit "abcdef bc abdeg abcdg bcfg acdfg acdefg abc abcdefg abcdfg" " "
    for i = 0 to 9
-      call codeperm 1 s$[i + 1] cod
+      codeperm 1 s$[i + 1] cod
       digit[cod + 1] = i
    .
 .
-call init
+init
 # 
 global inp$ part1 part2 linenr .
 proc procline . .
    inp$[] = strsplit inp$ " "
    for perm = 1 to len permlist[][]
       for nr = 1 to 10
-         call codeperm perm inp$[nr] cod
+         codeperm perm inp$[nr] cod
          if linenr < 10
-            call draw nr * 6 - 4 linenr * 10 + 2 cod
+            draw nr * 6 - 4 linenr * 10 + 2 cod
          .
          if digit[cod + 1] = -1
             break 1
@@ -83,9 +83,9 @@ proc procline . .
       if nr = 11
          val = 0
          for nr = 12 to 15
-            call codeperm perm inp$[nr] cod
+            codeperm perm inp$[nr] cod
             if linenr < 10
-               call draw nr * 6 - 4 linenr * 10 + 2 cod
+               draw nr * 6 - 4 linenr * 10 + 2 cod
             .
             dig = digit[cod + 1]
             val = val * 10 + dig
@@ -103,7 +103,7 @@ proc procline . .
 repeat
    inp$ = input
    until inp$ = ""
-   call procline
+   procline
 .
 print part1
 print part2

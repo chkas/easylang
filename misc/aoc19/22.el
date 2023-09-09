@@ -19,7 +19,7 @@ proc parse . .
       .
    .
 .
-call parse
+parse
 # 
 proc part1 . .
    m = 10007
@@ -37,7 +37,7 @@ proc part1 . .
    .
    print pos
 .
-call part1
+part1
 # 
 # 
 proc multm a b m . r .
@@ -55,10 +55,10 @@ proc powm a e m . r .
    r = 1
    while e > 0
       if e mod 2 = 1
-         call multm r a m r
+         multm r a m r
       .
       e = e div 2
-      call multm a a m a
+      multm a a m a
    .
 .
 # 
@@ -74,22 +74,22 @@ proc part2 . .
          a = m - a
          b = m - b
       elif instr[i] = 2
-         call powm param[i] m - 2 m p
-         call multm a p m a
-         call multm b p m b
+         powm param[i] m - 2 m p
+         multm a p m a
+         multm b p m b
       else
          print "error"
       .
    .
    times = 101741582076661
-   call powm a times m powa
-   call multm powa 2020 m h1
-   call multm b powa + m - 1 m h
-   call powm a - 1 m - 2 m h2
-   call multm h h2 m h
+   powm a times m powa
+   multm powa 2020 m h1
+   multm b powa + m - 1 m h
+   powm a - 1 m - 2 m h2
+   multm h h2 m h
    print (h1 + h) mod m
 .
-call part2
+part2
 # 
 input_data
 deal into new stack

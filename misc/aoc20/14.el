@@ -39,7 +39,7 @@ proc part1 . .
             v = v div 2
             bitv *= 2
          .
-         call mem_wr1 ind$ val
+         mem_wr1 ind$ val
       .
    .
    for i to len mem[]
@@ -47,7 +47,7 @@ proc part1 . .
    .
    print sum
 .
-call part1
+part1
 # 
 # 
 proc mem_wr ind$ val . .
@@ -119,7 +119,7 @@ proc part2 . .
             .
             v = v div 2
          .
-         call mem_wr ind$ val
+         mem_wr ind$ val
       .
    .
    for k to len mem[]
@@ -136,7 +136,7 @@ proc part2 . .
 .
 len mem[] 0
 len memi$[] 0
-call part2
+part2
 # 
 input_data
 mask = 000000000000000000000000000000X1001X

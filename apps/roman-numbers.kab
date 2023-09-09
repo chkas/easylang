@@ -19,26 +19,26 @@ proc disp2 col s$ . .
    textsize 12
    text s$
 .
-proc num2rom num . rom$ .
+func$ num2rom num .
    values[] = [ 1000 900 500 400 100 90 50 40 10 9 5 4 1 ]
    symbol$[] = [ "M" "CM" "D" "CD" "C" "XC" "L" "XL" "X" "IX" "V" "IV" "I" ]
-   rom$ = ""
    for i = 1 to len values[]
       while num >= values[i]
          rom$ &= symbol$[i]
          num -= values[i]
       .
    .
+   return rom$
 .
 proc new_quest . .
    repeat
       num = random 2500
-      call num2rom num sol$
+      sol$ = num2rom num
       until len sol$ <= 12
    .
    ans$ = ""
-   call disp2 030 num
-   call disp 030 "_"
+   disp2 030 num
+   disp 030 "_"
 .
 sym$[] = [ "M" "D" "C" "L" "X" "V" "I" ]
 proc draw_key . .
@@ -68,10 +68,10 @@ proc init . .
    clear
    for ind = 0 to 8
       color 020
-      call draw_key
+      draw_key
    .
-   call new_quest
-   call disp 030 "_"
+   new_quest
+   disp 030 "_"
 .
 proc handle_key . .
    if ind = 8
@@ -103,7 +103,7 @@ proc handle_key . .
    if state = 0 and len h$ < 12
       h$ &= "_"
    .
-   call disp col h$
+   disp col h$
 .
 proc handle_inp r c . .
    if r = 0
@@ -112,33 +112,33 @@ proc handle_inp r c . .
       ind = (r - 1) * 4 + c + 1
    .
    color 040
-   call draw_key
-   call handle_key
+   draw_key
+   handle_key
 .
 on mouse_down
    if state = 3
       ind = -1
-      call init
+      init
    else
       c = mouse_x div 25
       r = (75 - mouse_y) div 25
       if r < 0
          if ans$ = ""
             ind = -1
-            call disp 050 "New game"
-            call disp2 030 ""
+            disp 050 "New game"
+            disp2 030 ""
             state = 4
             timer 2
          .
       elif state = 0
-         call handle_inp r c
+         handle_inp r c
       .
    .
 .
 on mouse_up
    if ind >= 0
       color 020
-      call draw_key
+      draw_key
       ind = -1
    .
 .
@@ -167,18 +167,18 @@ on timer
       if cnt = 0
          state = 3
          timer 2
-         call done
+         done
       else
-         call new_quest
+         new_quest
          state = 0
       .
    elif state = 2
       ans$ = ""
-      call disp 030 "_"
+      disp 030 "_"
       state = 0
    elif state = 4
-      call init
+      init
    .
 .
-call init
+init
 

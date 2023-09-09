@@ -36,9 +36,9 @@ proc mov . .
    cur = next[cur]
 .
 proc part1 . .
-   call init 0
+   init 0
    for _ to 100
-      call mov
+      mov
    .
    h = next[1]
    while h <> 1
@@ -47,16 +47,16 @@ proc part1 . .
    .
    print s$
 .
-call part1
+part1
 # 
 proc part2 . .
-   call init 1000000
+   init 1000000
    for _ to 10000000
-      call mov
+      mov
    .
    print next[1] * next[next[1]]
 .
-call part2
+part2
 # 
 input_data
 389125467

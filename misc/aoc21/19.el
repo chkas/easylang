@@ -73,7 +73,7 @@ proc test . found .
       for l to len c[][]
          if k <> l
             hind = 100000000 * (c[k][1] - c[l][1]) + 10000 * (c[k][2] - c[l][2]) + c[k][3] - c[l][3]
-            call hashget hind i
+            hashget hind i
             if i <> -1
                beacon[k] = 1
                cnt += 1
@@ -111,7 +111,7 @@ proc hashset_relpos . .
       for j to len c0[][]
          if i <> j
             hind = 100000000 * (c0[i][1] - c0[j][1]) + 10000 * (c0[i][2] - c0[j][2]) + c0[i][3] - c0[j][3]
-            call hashset hind i
+            hashset hind i
          .
       .
    .
@@ -120,27 +120,27 @@ proc all_rotations . .
    for ry to 2
       for rz to 3
          for rx to 4
-            call rotall [ 1 3 2 ] [ 1 -1 1 ]
-            call test found
+            rotall [ 1 3 2 ] [ 1 -1 1 ]
+            test found
             if found = 1
                break 4
             .
          .
          if ry = 2 and rz = 1
-            call rotall [ 1 2 3 ] [ -1 -1 1 ]
+            rotall [ 1 2 3 ] [ -1 -1 1 ]
          elif ry = 2 and rz = 2
-            call rotall [ 3 1 2 ] [ 1 -1 -1 ]
+            rotall [ 3 1 2 ] [ 1 -1 -1 ]
          else
-            call rotall [ 2 1 3 ] [ 1 -1 1 ]
+            rotall [ 2 1 3 ] [ 1 -1 1 ]
          .
       .
-      call rotall [ 3 2 1 ] [ -1 1 1 ]
+      rotall [ 3 2 1 ] [ -1 1 1 ]
    .
    todo[] &= sca
 .
 # 
 proc part1 . .
-   call load 1
+   load 1
    swap c0[][] c[][]
    # 
    for sca = 2 to len scan$[][]
@@ -150,14 +150,14 @@ proc part1 . .
       swap todo0[] todo[]
       len todo[] 0
       for sca in todo0[]
-         call load sca
-         call hashset_relpos
-         call all_rotations
+         load sca
+         hashset_relpos
+         all_rotations
       .
    .
    print len c0[][]
 .
-call part1
+part1
 # 
 # part two 
 # 
@@ -173,7 +173,7 @@ proc part2 . .
    .
    print max
 .
-call part2
+part2
 # 
 input_data
 --- scanner 0 ---

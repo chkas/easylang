@@ -10,6 +10,6 @@ proc fib n . res .
     val = res
   .
 .
-call fib 36 r
+fib 36 r
 print r
 

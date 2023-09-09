@@ -15,12 +15,12 @@ subr square
 subr close_card
    open[ind] = 0
    color 131
-   call square
+   square
 .
 subr open_card
    open[ind] = 1
    color 464
-   call square
+   square
    move x + 3 y + 3
    color 000
    text cards$[cards[ind]]
@@ -29,7 +29,7 @@ background 000
 subr start
    clear
    for ind to 16
-      call close_card
+      close_card
    .
    # shuffle
    for i = 16 downto 2
@@ -50,7 +50,7 @@ subr search_card
    if card1 <> -1 and card2 <> -1 or open[ind] = 1
       # sound [ 440 0.15 ]
    else
-      call open_card
+      open_card
       if card1 = -1
          card1 = ind
       elif (cards[card1] + 1) div 2 <> (cards[ind] + 1) div 2
@@ -67,9 +67,9 @@ subr search_card
 .
 on mouse_down
    if opencards = -1
-      call start
+      start
    elif opencards < 16
-      call search_card
+      search_card
    .
 .
 proc smiley t . .
@@ -101,12 +101,12 @@ on timer
       move 10 65
       t = floor (systime - starttime - 0.5)
       text "Time: " & t
-      call smiley t
+      smiley t
    else
       ind = card1
-      call close_card
+      close_card
       ind = card2
-      call close_card
+      close_card
       card1 = -1
       card2 = -1
    .
@@ -117,4 +117,4 @@ for i to 16
 .
 cards$[] = strchars "AABBDDEEFFGGHHII"
 len open[] 16
-call start
+start

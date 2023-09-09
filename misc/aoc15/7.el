@@ -13,7 +13,7 @@ proc getid n$ . id .
 proc gval s$ . r .
    r = number s$
    if error = 1
-      call getid s$ h
+      getid s$ h
       r = r[h]
    .
 .
@@ -32,21 +32,21 @@ for part to 2
          r = -1
          s$[] = strsplit s$ " "
          if len s$[] = 3
-            call getid s$[3] di
-            call gval s$[1] r
+            getid s$[3] di
+            gval s$[1] r
             if part = 2 and s$[3] = "b"
                r = av
             .
          elif s$[1] = "NOT"
-            call getid s$[4] di
-            call gval s$[2] h
+            getid s$[4] di
+            gval s$[2] h
             if h <> -1
                r = bitnot h
             .
          else
-            call gval s$[1] a
-            call gval s$[3] b
-            call getid s$[5] di
+            gval s$[1] a
+            gval s$[3] b
+            getid s$[5] di
             if a <> -1 and b <> -1
                if s$[2] = "AND"
                   r = bitand a b
@@ -69,7 +69,7 @@ for part to 2
       .
       until done = 1
    .
-   call getid "a" h
+   getid "a" h
    print r[h]
    av = r[h]
 .

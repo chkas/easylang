@@ -96,8 +96,8 @@ repeat
    .
 .
 for st to 9999
-   call step done
-   call show
+   step done
+   show
    if done = 1
       print st
       break 1

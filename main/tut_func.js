@@ -1,4 +1,4 @@
-txt_tutor=`+ Procedures and recursion
+txt_tutor=`+ Functions and recursion
 
 -
 
@@ -14,43 +14,70 @@ proc gcd a b . res .
    .
    res = a
 .
-call gcd 120 35 r
+gcd 120 35 r
 print r
 
 + *a*, *b* are value parameters, *res* is a reference (or inout) parameter and *h* is a local variable.
 
-* Recursive procedures
+-
+
++ Functions are defined with *func*. Only value parameters are allowed. *return* exits the function and returns the specified value.
+
+func gcd a b.
+   while b <> 0
+      h = b
+      b = a mod b
+      a = h
+   .
+   return a
+.
+print gcd 120 35
+
+-
+
++ *func$* indicates a string return.
+
+func$ tolower s$ .
+   for c$ in strchars s$
+      c = strcode c$
+      if c >= 65 and c <= 91
+         c += 32
+      .
+      r$ &= strchar c
+   .
+   return r$
+.
+print tolower "Hello World"
+
+* Recursive functions and procedures
 
 + The factorial of a number *n* is the product of numbers from *1* to *n*: *n! = n ** (n - 1) ** . . . ** 2 ** 1*
 
 + This can be easily calculated
 
-proc fact n . res .
+func fact n .
    res = 1
    while n > 1
       res = res * n
       n -= 1
    .
+   return res
 .
-call fact 6 res
-print res
+print fact 6
 
 + The factorial can be defined recursively: *n! = n ** (n - 1)!* and *1! = 1*
 
 + It can also be calculated recursively
 
-proc fact n . res .
-  if n = 1
-    res = 1
-  else
-    call fact n - 1 h
-    res = n * h
-  .
+func fact n .
+   if n = 1
+      return 1
+   .
+   return n * fact (n - 1)
 .
-call fact 6 res
-print res
+print fact 6
 
-+ The procedure is called within the procedure. Each calling instance requires a new set of local variables and parameters. This and the return address are stored on the stack. The recursion depth is limited.
++ The function is called within the function. Each calling instance requires a new set of local variables and parameters. This and the return address are stored on the stack. The recursion depth is limited.
 
 * Fractal tree
 
@@ -65,11 +92,11 @@ proc tree x y angle depth . .
    y += sin angle * depth * 1.4 * (randomf + 0.5)
    line x y
    if depth > 1
-      call tree x y angle - 20 depth - 1
-      call tree x y angle + 20 depth - 1
+      tree x y angle - 20 depth - 1
+      tree x y angle + 20 depth - 1
    .
 .
-call tree 50 5 90 10
+tree 50 5 90 10
 
 * Quicksort
 
@@ -87,15 +114,15 @@ proc qsort left right . d[] .
   .
   # 
   if left < right
-    call partition
-    call qsort left mid - 1 d[]
-    call qsort mid + 1 right d[]
+    partition
+    qsort left mid - 1 d[]
+    qsort mid + 1 right d[]
   .
 .
 for i = 1 to 100
   d[] &= random 1000
 .
-call qsort 1 len d[] d[]
+qsort 1 len d[] d[]
 print d[]
 
 + The subroutine *partition* is defined within the procedure *sort*. In the subroutine *partition*, access to the local variables of the procedure *sort* is then also possible.
@@ -153,19 +180,19 @@ proc move_disc src dst . .
    tow_height[src] -= 1
    tow_height[dst] += 1
    tow_disc[dst][tow_height[dst]] = d
-   call show
+   show
    sleep 0.5
 .
 proc hanoi n src dst aux . .
    if n >= 1
-      call hanoi n - 1 src aux dst
-      call move_disc src dst
-      call hanoi n - 1 aux dst src
+      hanoi n - 1 src aux dst
+      move_disc src dst
+      hanoi n - 1 aux dst src
    .
 .
-call init
-call show
-call hanoi ndisc 1 2 3
+init
+show
+hanoi ndisc 1 2 3
 
 * Maze
 
@@ -193,7 +220,7 @@ proc show_maze . .
 offs[] = [ 1 n -1 (-n) ]
 proc m_maze pos . .
    m[pos] = 0
-   call show_maze
+   show_maze
    d[] = [ 1 2 3 4 ]
    for i = 4 downto 1
       d = random i
@@ -201,7 +228,7 @@ proc m_maze pos . .
       d[d] = d[i]
       if m[pos + dir] = 1 and m[pos + 2 * dir] = 1
          m[pos + dir] = 0
-         call m_maze pos + 2 * dir
+         m_maze pos + 2 * dir
       .
    .
 .
@@ -217,11 +244,11 @@ proc make_maze . .
       m[n * n - n + i] = 2
    .
    h = 2 * random 15 - n + n * 2 * random 15
-   call m_maze h
+   m_maze h
    m[endpos] = 0
 .
-call make_maze
-call show_maze
+make_maze
+show_maze
 # 
 proc mark pos col . .
    x = (pos - 1) mod n
@@ -231,7 +258,7 @@ proc mark pos col . .
    circle f / 3.5
 .
 proc solve dir0 pos . found .
-   call mark pos 900
+   mark pos 900
    sleep 0.05
    if pos = endpos
       found = 1
@@ -242,16 +269,16 @@ proc solve dir0 pos . found .
       dir = (h + of) mod1 4
       posn = pos + offs[dir]
       if dir <> dir0 and m[posn] = 0 and found = 0
-         call solve (dir + 1) mod 4 + 1 posn found
+         solve (dir + 1) mod 4 + 1 posn found
          if found = 0
-            call mark posn 888
+            mark posn 888
             sleep 0.08
          .
       .
    .
 .
 sleep 1
-call solve 0 n + 2 found
+solve 0 n + 2 found
 
 * Eight queens puzzle
 
@@ -265,164 +292,164 @@ n = 8
 len col[] n
 # 
 proc print_solution . .
-  h$ = "┏"
-  for i = 1 to n - 1
-    h$ &= "━━━┳"
-  .
-  h$ &= "━━━┓"
-  print h$
-  h$ = "┣"
-  for i = 1 to n - 1
-    h$ &= "━━━╋"
-  .
-  h$ &= "━━━┫"
-  for i = 1 to n
-    s$ = "┃"
-    for j = 1 to n
-      if j = col[i]
-        s$ &= " Q ┃"
-      else
-        s$ &= "   ┃"
+   h$ = "┏"
+   for i = 1 to n - 1
+      h$ &= "━━━┳"
+   .
+   h$ &= "━━━┓"
+   print h$
+   h$ = "┣"
+   for i = 1 to n - 1
+      h$ &= "━━━╋"
+   .
+   h$ &= "━━━┫"
+   for i = 1 to n
+      s$ = "┃"
+      for j = 1 to n
+         if j = col[i]
+            s$ &= " Q ┃"
+         else
+            s$ &= "   ┃"
+         .
       .
-    .
-    print s$
-    if i = n
-      h$ = "┗"
-      for j = 1 to n - 1
-        h$ &= "━━━┻"
+      print s$
+      if i = n
+         h$ = "┗"
+         for j = 1 to n - 1
+            h$ &= "━━━┻"
+         .
+         h$ &= "━━━┛"
       .
-      h$ &= "━━━┛"
-    .
-    print h$
-  .
-  print ""
+      print h$
+   .
+   print ""
 .
 # 
-proc is_save col row . save .
-  save = 1
-  for i = 1 to row - 1
-    if col[i] = col or abs (col[i] - col) = abs (row - i)
-      save = 0
-      break 1
-    .
-  .
+func is_save col row .
+   for i = 1 to row - 1
+      if col[i] = col or abs (col[i] - col) = abs (row - i)
+         return 0
+      .
+   .
+   return 1
 .
 # 
 print "First 3 solutions: "
 print ""
 n_solutions = 0
 proc solve row . .
-  if row > n
-    n_solutions += 1
-    if n_solutions <= 3
-      call print_solution
-    .
-  else
-    for col = 1 to n
-      call is_save col row save
-      if save = 1
-        col[row] = col
-        call solve row + 1
+   if row > n
+      n_solutions += 1
+      if n_solutions <= 3
+         print_solution
       .
-    .
-  .
+   else
+      for col = 1 to n
+         if is_save col row = 1
+            col[row] = col
+            solve row + 1
+         .
+      .
+   .
 .
-call solve 1
+solve 1
 print "Number of solutions: " & n_solutions
 
 * Mutual recursion - parser
 
-+ A recursiv top-down parser for an arithmetic expression. There we have a *mutual recursion* for the procedures *parse_expr* and *parse_factor*. To do this, we need to make a procedure known with a *forward declaration* before implementing it.
++ A recursiv top-down parser for an arithmetic expression. There we have a *mutual recursion* for the functions *eval_expr* and *eval_factor*. To do this, we need to make a functions known with a *forward declaration* before implementing it.
 
 subr nch
-  if inp_ind > len inp$[]
-    ch$ = strchar 0
-  else
-    ch$ = inp$[inp_ind]
-    inp_ind += 1
-  .
-  ch = strcode ch$
+   if inp_ind > len inp$[]
+      ch$ = strchar 0
+   else
+      ch$ = inp$[inp_ind]
+      inp_ind += 1
+   .
+   ch = strcode ch$
 .
 # 
 subr ntok
-  if ch = 0
-    tok$ = "eof"
-  else
-    while ch$ = " "
-      call nch
-    .
-    if ch >= 48 and ch <= 58
-      tok$ = "numb"
-      s$ = ""
-      while ch >= 48 and ch <= 58 or ch$ = "."
-        s$ &= ch$
-        call nch
+   if ch = 0
+      tok$ = "eof"
+   else
+      while ch$ = " "
+         nch
       .
-      tokv = number s$
-    else
-      tok$ = ch$
-      call nch
-    .
-  .
+      if ch >= 48 and ch <= 58
+         tok$ = "numb"
+         s$ = ""
+         while ch >= 48 and ch <= 58 or ch$ = "."
+            s$ &= ch$
+            nch
+         .
+         tokv = number s$
+      else
+         tok$ = ch$
+         nch
+      .
+   .
 .
-procdecl parse_expr . res .
+funcdecl eval_expr .
 # 
-proc parse_factor . res .
-  if tok$ = "numb"
-    write tokv
-    res = tokv
-    call ntok
-  elif tok$ = "("
-    write tok$
-    call ntok
-    call parse_expr res
-    if tok$ <> ")"
-      print "error"
-    .
-    write tok$
-    call ntok
-  .
+func eval_factor .
+   if tok$ = "numb"
+      write tokv
+      res = tokv
+      ntok
+   elif tok$ = "("
+      write tok$
+      ntok
+      res = eval_expr
+      if tok$ <> ")"
+         print "error"
+      .
+      write tok$
+      ntok
+   .
+   return res
 .
-proc parse_term . res .
-  call parse_factor res
-  while tok$ = "*" or tok$ = "/"
-    write " " & tok$ & " "
-    t$ = tok$
-    call ntok
-    call parse_factor r
-    if t$ = "*"
-      res *= r
-    else
-      res /= r
-    .
-  .
+func eval_term .
+   res = eval_factor
+   while tok$ = "*" or tok$ = "/"
+      write " " & tok$ & " "
+      t$ = tok$
+      ntok
+      r = eval_factor
+      if t$ = "*"
+         res *= r
+      else
+         res /= r
+      .
+   .
+   return res
 .
-proc parse_expr . res .
-  call parse_term res
-  while tok$ = "+" or tok$ = "-"
-    write " " & tok$ & " "
-    t$ = tok$
-    call ntok
-    call parse_term r
-    if t$ = "+"
-      res += r
-    else
-      res -= r
-    .
-  .
+func eval_expr .
+   res = eval_term
+   while tok$ = "+" or tok$ = "-"
+      write " " & tok$ & " "
+      t$ = tok$
+      ntok
+      r = eval_term
+      if t$ = "+"
+         res += r
+      else
+         res -= r
+      .
+   .
+   return res
 .
-proc parse s$ . res .
-  inp$[] = strchars s$
-  inp_ind = 1
-  call nch
-  call ntok
-  call parse_expr res
+func eval s$ .
+   inp$[] = strchars s$
+   inp_ind = 1
+   nch
+   ntok
+   return eval_expr
 .
 repeat
-  inp$ = input
-  until inp$ = ""
-  call parse inp$ res
-  print " = " & res
+   inp$ = input
+   until inp$ = ""
+   print " = " & eval inp$
 .
 input_data
 4 * 6

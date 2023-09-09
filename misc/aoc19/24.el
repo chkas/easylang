@@ -10,7 +10,7 @@ proc parse . .
       .
    .
 .
-call parse
+parse
 # 
 n = 5
 n1 = n + 1
@@ -27,7 +27,7 @@ proc init . .
       .
    .
 .
-call init
+init
 # 
 divi[] = [ ]
 found = 0
@@ -75,7 +75,7 @@ proc update . .
 .
 proc part1 . .
    repeat
-      call show
+      show
       f = 1
       divi = 0
       for r range0 n
@@ -93,11 +93,11 @@ proc part1 . .
       .
       divi[] &= divi
       until found = 1
-      call update
+      update
    .
    print divi
 .
-call part1
+part1
 # 
 # 
 lev0 = 120
@@ -169,7 +169,7 @@ proc updatel lev . dirty .
             if r = 0
                s += p[b - 18]
             elif r = 3 and c = 2
-               call sum5 b + 45 1 s
+               sum5 b + 45 1 s
             else
                s += p[i - 5]
             .
@@ -177,7 +177,7 @@ proc updatel lev . dirty .
             if c = 0
                s += p[b - 14]
             elif c = 3 and r = 2
-               call sum5 b + 29 5 s
+               sum5 b + 29 5 s
             else
                s += p[i - 1]
             .
@@ -185,7 +185,7 @@ proc updatel lev . dirty .
             if c = 4
                s += p[b - 12]
             elif c = 1 and r = 2
-               call sum5 b + 25 5 s
+               sum5 b + 25 5 s
             else
                s += p[i + 1]
             .
@@ -193,7 +193,7 @@ proc updatel lev . dirty .
             if r = 4
                s += p[b - 8]
             elif r = 1 and c = 2
-               call sum5 b + 25 1 s
+               sum5 b + 25 1 s
             else
                s += p[i + 5]
             .
@@ -211,11 +211,11 @@ proc updatel lev . dirty .
 .
 proc update2 . .
    swap f[] p[]
-   call updatel lev0 h
+   updatel lev0 h
    repeat
       i += 1
-      call updatel lev0 - i dirty1
-      call updatel lev0 + i dirty2
+      updatel lev0 - i dirty1
+      updatel lev0 + i dirty2
       until dirty1 = 0 and dirty2 = 0 or i = lev0 - 1
    .
    if i = lev0 - 1
@@ -223,19 +223,19 @@ proc update2 . .
    .
 .
 proc part2 . .
-   call init2
-   call show2
+   init2
+   show2
    sleep 0.02
    for i range0 200
-      call update2
-      call show2
+      update2
+      show2
    .
    for i range0 len f[]
       s += f[i]
    .
    print s
 .
-call part2
+part2
 # 
 # 
 input_data

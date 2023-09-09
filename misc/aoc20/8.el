@@ -11,7 +11,7 @@ proc read_input . .
       arg[] &= number h$[2]
    .
 .
-call read_input
+read_input
 # 
 global acc err .
 proc run . .
@@ -39,10 +39,10 @@ proc run . .
 .
 # 
 proc part1 . .
-   call run
+   run
    print acc
 .
-call part1
+part1
 # 
 proc part2 . .
    fix = 1
@@ -51,14 +51,14 @@ proc part2 . .
          fix += 1
       .
       cod$[fix] = "nop"
-      call run
+      run
       until err = 0
       cod$[fix] = "jmp"
       fix += 1
    .
    print acc
 .
-call part2
+part2
 # 
 input_data
 nop +0

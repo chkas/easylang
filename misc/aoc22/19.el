@@ -23,15 +23,15 @@ proc search time skip geodes . .
                res[1] -= cost[r][1]
                res[2] -= cost[r][2]
                res[3] -= cost[r][3]
-               call robres 1
+               robres 1
                if r = 4
-                  call search time - 1 0 geodes + time
+                  search time - 1 0 geodes + time
                else
                   rob[r] += 1
-                  call search time - 1 0 geodes
+                  search time - 1 0 geodes
                   rob[r] -= 1
                .
-               call robres -1
+               robres -1
                res[1] += cost[r][1]
                res[2] += cost[r][2]
                res[3] += cost[r][3]
@@ -42,9 +42,9 @@ proc search time skip geodes . .
          .
       .
    .
-   call robres 1
-   call search time - 1 skipn geodes
-   call robres -1
+   robres 1
+   search time - 1 skipn geodes
+   robres -1
 .
 # 
 proc run . .
@@ -57,13 +57,13 @@ proc run . .
       max = 0
       res[] = [ 0 0 0 0 ]
       rob[] = [ 1 0 0 0 ]
-      call search 23 0 0
+      search 23 0 0
       sum += max * id
       id += 1
    .
    print sum
 .
-call run
+run
 # 
 input_data
 Blueprint 1: Each ore robot costs 4 ore. Each clay robot costs 2 ore. Each obsidian robot costs 3 ore and 14 clay. Each geode robot costs 2 ore and 7 obsidian.

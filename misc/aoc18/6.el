@@ -41,7 +41,7 @@ proc part1 . .
    .
    print mx
 .
-call part1
+part1
 # 
 proc part2 . .
    thre = 32
@@ -61,7 +61,7 @@ proc part2 . .
    .
    print save
 .
-call part2
+part2
 # 
 input_data
 1, 1

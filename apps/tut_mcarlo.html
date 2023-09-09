@@ -158,7 +158,7 @@ subr session
 .
 n = 1000
 for i = 1 to n
-   call session
+   session
    if cash < 10
       n_lose += 1
    .
@@ -255,7 +255,7 @@ subr session
   .
 .
 for i = 1 to 100
-  call session
+  session
   if cash >= 20000
     n_win += 1
   .
@@ -297,8 +297,8 @@ subr check
   .
 .
 while n_match < 6
-  call drawing
-  call check
+  drawing
+  check
   if n_match = 5
     print "5 correct after " & week div 52 & " years"
   .

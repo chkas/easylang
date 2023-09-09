@@ -22,8 +22,8 @@ proc tune n . .
       .
    .
 .
-call tune 4
-call tune 14
+tune 4
+tune 14
 # 
 input_data
 nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg

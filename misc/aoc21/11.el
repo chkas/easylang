@@ -64,7 +64,7 @@ repeat
       .
       until flash = 0
    .
-   call draw
+   draw
    h = n_flash
    for y to 10
       for x to 10

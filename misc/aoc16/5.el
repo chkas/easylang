@@ -9,7 +9,7 @@ proc init_hash . .
       k[i] = floor (0x100000000 * abs sin ((i + 1) * 180 / pi))
    .
 .
-call init_hash
+init_hash
 # 
 proc out h[] . s$ .
    s$ = ""
@@ -42,15 +42,15 @@ proc hash inp$ . hash[] .
    inp[] = [ ]
    inp4 = 1
    for i to len inp$
-      call addinp strcode substr inp$ i 1
+      addinp strcode substr inp$ i 1
    .
-   call addinp 0x80
+   addinp 0x80
    while len inp[] mod 16 <> 14 or inp4 <> 1
-      call addinp 0
+      addinp 0
    .
    h = len inp$ * 8
    for _ range0 4
-      call addinp h mod 0x100
+      addinp h mod 0x100
       h = h div 0x100
    .
    inp[] &= 0
@@ -93,8 +93,8 @@ proc hash inp$ . hash[] .
    .
    hash[] = [ a0 b0 c0 d0 ]
 .
-# call hash "abc5017308" h[]
-# call out h[] s$ ; print s$
+# hash "abc5017308" h[]
+# out h[] s$ ; print s$
 # 
 proc run . .
    print "That takes some time ..."
@@ -103,9 +103,9 @@ proc run . .
    pw2$[] = strchars "........"
    pw1 = 1
    for i range0 9999999999
-      call hash inp$ & i h[]
+      hash inp$ & i h[]
       if h[1] mod 65536 = 0
-         call out h[] s$
+         out h[] s$
          if substr s$ 1 5 = "00000"
             h$ = substr s$ 6 1
             if pw1 <= 8
@@ -131,7 +131,7 @@ proc run . .
       .
    .
 .
-call run
+run
 # 
 input_data
 abc

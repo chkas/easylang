@@ -24,7 +24,7 @@ for part to 2
       for i = 3 step 2 to 7
          n$ = substr s$[i] 1 len s$[i] - 1
          cnt = number s$[i + 1]
-         call getid n$ id
+         getid n$ id
          if part = 2 and (n$ = "cat" or n$ = "trees")
             if cnt[id] >= cnt
                break 1

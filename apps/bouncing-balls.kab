@@ -51,7 +51,7 @@ on animate
         dy = y - y[j]
         dxxyy = dx * dx + dy * dy
         if dxxyy < radrad4
-          call collide
+          collide
         .
       .
     .

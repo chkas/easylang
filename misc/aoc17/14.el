@@ -65,35 +65,35 @@ proc bits b[] . .
 .
 proc make_grid . .
    for i range0 128
-      call hash inp$ & "-" & i hash[]
-      call bits hash[]
+      hash inp$ & "-" & i hash[]
+      bits hash[]
    .
    for h in m[]
       sum += h
    .
    print sum
 .
-call make_grid
+make_grid
 # 
 proc expand ind . .
    m[ind] = 0
    if ind mod 128 <> 1 and m[ind - 1] = 1
-      call expand ind - 1
+      expand ind - 1
    .
    if ind > 128 and m[ind - 128] = 1
-      call expand ind - 128
+      expand ind - 128
    .
    if ind mod 128 <> 0 and m[ind + 1] = 1
-      call expand ind + 1
+      expand ind + 1
    .
    if ind <= 127 * 128 and m[ind + 128] = 1
-      call expand ind + 128
+      expand ind + 128
    .
 .
 for i to len m[]
    if m[i] = 1
       nreg += 1
-      call expand i
+      expand i
    .
 .
 

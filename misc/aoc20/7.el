@@ -17,12 +17,12 @@ proc read_inp . .
       inp$ = input
       until inp$ = ""
       s$[] = strsplit inp$ " "
-      call col_id s$[1] & " " & s$[2] s
+      col_id s$[1] & " " & s$[2] s
       if s$[5] <> "no"
          i = 5
          while i <= len s$[]
             cnt = number s$[i]
-            call col_id s$[i + 1] & " " & s$[i + 2] col
+            col_id s$[i + 1] & " " & s$[i + 2] col
             cont_col[s][] &= col
             cont_cnt[s][] &= cnt
             i += 4
@@ -30,8 +30,8 @@ proc read_inp . .
       .
    .
 .
-call read_inp
-call col_id "shiny gold" gold
+read_inp
+col_id "shiny gold" gold
 # 
 proc search i . fnd .
    for j to len cont_col[i][]
@@ -40,33 +40,33 @@ proc search i . fnd .
          fnd = 1
          break 1
       else
-         call search col fnd
+         search col fnd
       .
    .
 .
 proc part1 . .
    for i to len cont_col[][]
       fnd = 0
-      call search i fnd
+      search i fnd
       sum += fnd
    .
    print sum
 .
-call part1
+part1
 # 
 proc get_sum col . sum .
    sum = 0
    for i to len cont_col[col][]
-      call get_sum cont_col[col][i] s
+      get_sum cont_col[col][i] s
       h = cont_cnt[col][i]
       sum += h + h * s
    .
 .
 proc part2 . .
-   call get_sum gold sum
+   get_sum gold sum
    print sum
 .
-call part2
+part2
 # 
 input_data
 light red bags contain 1 bright white bag, 2 muted yellow bags.

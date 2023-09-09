@@ -73,13 +73,13 @@ repeat
          .
       .
    .
-   call show 1
+   show 1
 .
 for v in m[]
    sum += v
 .
 print sum
-call show 2
+show 2
 # 
 input_data
 rect 3x2

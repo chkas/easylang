@@ -14,14 +14,14 @@ proc tree x y l w ang dp p . .
     for i = -1 to 0
       an = ang + (i + 0.5) * 20
       an += (randomf - 0.5) * 60
-      call tree x y l w * 0.9 an dp - 1 0
+      tree x y l w * 0.9 an dp - 1 0
     .
   elif dp > 0 and ang > -45 and ang < 225
     ang += (randomf - 0.5) * 5
-    call tree x y l w * 0.96 ang dp - 1 p + 0.07
+    tree x y l w * 0.96 ang dp - 1 p + 0.07
   .
 .
 background 668
 clear
-call tree 50 100 2 5 90 60 0
+tree 50 100 2 5 90 60 0
 

@@ -18,13 +18,13 @@ proc combinations pos val . .
   if pos <= m
     for i = val to n - m
       result[pos] = pos + i
-      call combinations pos + 1 i
+      combinations pos + 1 i
     .
   else
     print result[]
   .
 .
-call combinations 1 0
+combinations 1 0
 #
 # print ""
 # Combinations_with_repetitions
@@ -47,22 +47,22 @@ proc output . .
 .
 proc combine pos val . .
   if pos > k
-    call output
+    output
   else
     for i = val to n
       result[pos] = i
-      call combine pos + 1 i
+      combine pos + 1 i
     .
   .
 .
-call combine 1 1
+combine 1 1
 # 
 n = 10
 k = 3
 len result[] k
 items$[] = [ ]
 n_results = 0
-call combine 1 1
+combine 1 1
 print ""
 print n_results & " results with 10 donuts"
 #
@@ -87,11 +87,11 @@ proc split sec . s$ .
     .
   .
 .
-call split 7259 s$
+split 7259 s$
 print s$
-call split 86400 s$
+split 86400 s$
 print s$
-call split 6000000 s$
+split 6000000 s$
 print s$
 #
 pr ""
@@ -124,7 +124,7 @@ proc factorial n . r .
     i += 1
   .
 .
-call factorial 7 r
+factorial 7 r
 print r
 #
 pr ""
@@ -150,14 +150,14 @@ proc power x n . r .
 proc nth_root x n . r .
   r = 2
   repeat
-    call power r n - 1 p
+    power r n - 1 p
     d = (x / p - r) / n
     r += d
     until abs d < 0.0001
   .
 .
-call power 3.1416 10 x
-call nth_root x 10 r
+power 3.1416 10 x
+nth_root x 10 r
 numfmt 0 4
 print r
 #

@@ -48,33 +48,33 @@ proc read_rules . .
    repeat
       s$ = input
       until len s$ > 20
-      call inarr s$ 1 2 f[]
-      call inarr s$ 10 3 out[]
+      inarr s$ 1 2 f[]
+      inarr s$ 10 3 out[]
       for flip range0 2
          for rot range0 4
-            call val f[] idx
+            val f[] idx
             r2[idx][] = out[]
-            call rotate f[]
+            rotate f[]
          .
-         call mirror f[]
+         mirror f[]
       .
    .
    repeat
-      call inarr s$ 1 3 f[]
-      call inarr s$ 16 4 out[]
+      inarr s$ 1 3 f[]
+      inarr s$ 16 4 out[]
       for flip range0 2
          for rot range0 4
-            call val f[] idx
+            val f[] idx
             r3[idx][] = out[]
-            call rotate f[]
+            rotate f[]
          .
-         call mirror f[]
+         mirror f[]
       .
       s$ = input
       until s$ = ""
    .
 .
-call read_rules
+read_rules
 # 
 img[] = [ 0 1 0 0 0 1 1 1 1 ]
 arrbase img[] 0
@@ -127,7 +127,7 @@ proc expand . .
    arrbase ids[] 0
    for r range0 nr
       for c range0 nr
-         call val_img r c ex v
+         val_img r c ex v
          ids[] &= v
       .
    .
@@ -143,19 +143,19 @@ proc expand . .
          else
             r[] = r2[ids[r * nr + c]][]
          .
-         call ins_img r c ex r[]
+         ins_img r c ex r[]
       .
    .
 .
 if len r2[0][] = 0
-   call show
+   show
    for i to 2
-      call expand
-      call show
+      expand
+      show
    .
 else
    for i to 18
-      call expand
+      expand
       if i = 5 or i = 18
          sum = 0
          for v in img[]

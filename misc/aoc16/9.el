@@ -24,7 +24,7 @@ proc getlen s$ . lng .
             i += 1
          .
          if is_part2 = 1
-            call getlen h$ l
+            getlen h$ l
          else
             l = len h$
          .
@@ -36,10 +36,10 @@ proc getlen s$ . lng .
    .
 .
 # 
-call getlen inp$ l
+getlen inp$ l
 print l
 is_part2 = 1
-call getlen inp$ l
+getlen inp$ l
 print l
 # 
 input_data

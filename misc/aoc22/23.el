@@ -20,7 +20,7 @@ proc read . .
       s$ = input
    .
 .
-call read
+read
 #  
 dirs[] = [ (-nc - 1) (-nc) (-nc + 1) 1 (nc + 1) nc (nc - 1) -1 ]
 dir[][] &= [ -nc (-nc - 1) (-nc + 1) ]
@@ -77,7 +77,7 @@ proc do . moved .
 .
 repeat
    round += 1
-   call do moved
+   do moved
    until moved = 0
    if round = 10
       minx = 1 / 0

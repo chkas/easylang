@@ -76,9 +76,9 @@ proc update part turn . sum .
    .
 .
 proc run part . .
-   call init
+   init
    for i to 6
-      call update part i sum
+      update part i sum
    .
    sum = 0
    for w range0 7
@@ -101,8 +101,8 @@ proc run part . .
    .
    print sum
 .
-call run 1
-call run 2
+run 1
+run 2
 # 
 # 
 input_data

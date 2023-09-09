@@ -23,7 +23,7 @@ proc read . .
       s$ = input
    .
 .
-call read
+read
 # 
 sc = 95 / nc
 sc2 = sc / 2
@@ -40,7 +40,7 @@ proc showall . .
    .
 .
 if visual = 1
-   call showall
+   showall
    background -1
 .
 #  
@@ -75,7 +75,7 @@ proc look p inc . .
       if m[p] > mx
          mx = m[p]
          if visual = 1
-            call show p 0
+            show p 0
          .
          seen[p] = 1
       .
@@ -84,21 +84,21 @@ proc look p inc . .
 .
 proc part1 . .
    for i = 1 to nc
-      call look (i - 1) * nc + 1 1
-      call look i * nc (-1)
-      call look i nc
-      call look i + nc * (nc - 1) (-nc)
+      look (i - 1) * nc + 1 1
+      look i * nc (-1)
+      look i nc
+      look i + nc * (nc - 1) (-nc)
    .
    for h in seen[]
       cnt += h
    .
    print cnt
    if visual = 1
-      call showt cnt
+      showt cnt
       sleep 1
    .
 .
-call part1
+part1
 # 
 # 
 proc count p inc . cnt .
@@ -115,7 +115,7 @@ proc count p inc . cnt .
       .
       cnt += 1
       if visual = 1
-         call show p 0
+         show p 0
       .
       until m[p] >= high
    .
@@ -124,33 +124,33 @@ proc part2 . .
    for p = 1 to nc * nc
       if visual = 1
          clear
-         call showt max & " " & h
+         showt max & " " & h
       .
-      call count p 1 c1
-      call count p (-1) c2
-      call count p nc c3
-      call count p (-nc) c4
+      count p 1 c1
+      count p (-1) c2
+      count p nc c3
+      count p (-nc) c4
       if visual = 1
-         call show p 1
+         show p 1
       .
       h = c1 * c2 * c3 * c4
       if h > max
          max = h
          maxp = p
          if visual = 1
-            call showt max
+            showt max
             sleep 1.5
          .
       .
    .
    if visual = 1
       clear
-      call show maxp 1
+      show maxp 1
       sleep 1
    .
    print max
 .
-call part2
+part2
 # 
 input_data
 

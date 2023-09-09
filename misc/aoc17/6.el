@@ -43,7 +43,7 @@ repeat
       m[i] += 1
       max -= 1
    .
-   call hash m[] cnt ret
+   hash m[] cnt ret
    until ret > 0
 .
 print cnt

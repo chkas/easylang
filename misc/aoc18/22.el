@@ -36,7 +36,7 @@ proc part1 . .
    .
    print risk
 .
-call part1
+part1
 # 
 nx2 = 2 * nx
 len w[] nx2 * ny
@@ -76,7 +76,7 @@ while len todon[] > 0
       pos = todo[i]
       w = w[pos]
       chng = 1 - pos mod 2 * 2
-      call add_todo pos + chng w + 7
+      add_todo pos + chng w + 7
       # 
       for j range0 4
          posx = -1
@@ -109,7 +109,7 @@ while len todon[] > 0
                .
             .
             if posx <> -1
-               call add_todo posx w + 1
+               add_todo posx w + 1
             .
          .
       .

@@ -17,13 +17,13 @@ proc name2id n$ . id .
 .
 global valv[] con[][] npos .
 proc read . .
-   call name2id "AA" aa
+   name2id "AA" aa
    repeat
       s$ = input
       until s$ = ""
       n$ = substr s$ 7 2
       if substr s$ 24 1 <> "0"
-         call name2id n$ id
+         name2id n$ id
       .
       s$[] &= s$
       conn[][] &= [ ]
@@ -32,10 +32,10 @@ proc read . .
    npos = len name$[]
    for s$ in s$[]
       a$[] = strsplit s$ "= ,"
-      call name2id a$[2] id
+      name2id a$[2] id
       valv[id] = number a$[6]
       for i = 11 step 2 to len a$[]
-         call name2id a$[i] h
+         name2id a$[i] h
          conn[id][] &= h
       .
    .
@@ -59,10 +59,10 @@ proc read . .
       .
    .
 .
-call read
+read
 # 
 subr init
-   call hashinit
+   hashinit
    len todo[][] 0
    len todo[][] 20
    itodo = 1
@@ -83,7 +83,7 @@ proc addways cod press time . .
    .
 .
 proc run nwrks time0 . .
-   call init
+   init
    todo[itodo][] = [ 1 * 10000 ]
    repeat
       for time = time0 downto 1
@@ -100,7 +100,7 @@ proc run nwrks time0 . .
             cod = e div 10000
             press = e mod 10000
             if press = hash[cod]
-               call addways cod press time
+               addways cod press time
             .
          .
          todo[itodo][] = [ ]
@@ -117,15 +117,15 @@ proc run nwrks time0 . .
             todo[itodo][] &= cod * 10000 + hash[i]
          .
       .
-      call hashinit
+      hashinit
    .
    for p in hash[]
       max = higher max p
    .
    print max
 .
-call run 1 29
-call run 2 25
+run 1 29
+run 2 25
 # 
 input_data
 Valve AA has flow rate=0; tunnels lead to valves DD, II, BB

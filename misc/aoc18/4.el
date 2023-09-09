@@ -40,7 +40,7 @@ for s$ in s$[]
       .
    else
       g = number substr h$[4] 2 99
-      call findgid g
+      findgid g
    .
 .
 # 

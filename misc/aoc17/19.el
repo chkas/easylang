@@ -68,7 +68,7 @@ subr show
    .
    sleep 0.001
 .
-call show
+show
 # 
 dirs[] = [ -nc 1 nc -1 ]
 dir = 3
@@ -77,7 +77,7 @@ while 1 = 1
    if m[pos] >= 65
       vis$ &= strchar m[pos]
    .
-   call show
+   show
    if m[pos + dirs[dir]] > 0
       dir = dir
    elif m[pos + dirs[dir mod 4 + 1]] > 0

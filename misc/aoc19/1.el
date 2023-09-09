@@ -14,7 +14,7 @@ repeat
    until s$ = ""
    w = number s$
    f1 += w div 3 - 2
-   call fuel2 w h
+   fuel2 w h
    f2 += h
 .
 print f1

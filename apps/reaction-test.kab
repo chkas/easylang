@@ -19,10 +19,10 @@ on mouse_down
     text systime - time0
     time0 = 0
   else
-    call wait
+    wait
   end
 end
 textsize 20
 move 20 50
-call wait
+wait
 

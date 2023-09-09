@@ -30,10 +30,10 @@ proc run . .
       oc0 = mem[pc]
       oc = oc0 mod 100
       until oc = 99 or oc = 3 and in = -1
-      call mem_ind oc0 div 100 mod 10 pc + 1 ind
+      mem_ind oc0 div 100 mod 10 pc + 1 ind
       a = mem[ind]
       if oc = 1 or oc = 2 or oc >= 5 and oc <= 8
-         call mem_ind oc0 div 1000 mod 10 pc + 2 ind
+         mem_ind oc0 div 1000 mod 10 pc + 2 ind
          b = mem[ind]
          if oc = 1 or oc = 2 or oc = 7 or oc = 8
             h = 0
@@ -44,7 +44,7 @@ proc run . .
             elif oc = 7 and a < b or oc = 8 and a = b
                h = 1
             .
-            call mem_ind oc0 div 10000 mod 10 pc + 3 ind
+            mem_ind oc0 div 10000 mod 10 pc + 3 ind
             mem[ind] = h
             pc += 4
          else
@@ -58,7 +58,7 @@ proc run . .
             mem[ind] = in
             in = -1
          elif oc = 4
-            call outf a
+            outf a
          elif oc = 9
             base += a
          else
@@ -130,7 +130,7 @@ proc ic_outf out . .
 # 
 proc put h . .
    ic_in = h
-   call ic_run
+   ic_run
 .
 proc say s$ . .
    if verbose = 1
@@ -139,14 +139,14 @@ proc say s$ . .
    a$[] = strchars s$
    for i = 1 to len a$[]
       h = strcode a$[i]
-      call put h
+      put h
    .
-   call put 10
+   put 10
 .
 # 
 dir$[] = [ "north" "east" "south" "west" ]
 proc go d . .
-   call say dir$[d]
+   say dir$[d]
 .
 avoid$[] = [ "escape pod" "photons" "molten lava" "giant electromagnet" "infinite loop" ]
 item$[] = [ ]
@@ -158,7 +158,7 @@ proc take_items . .
          .
       .
       if item$ <> ""
-         call say "take " & item$
+         say "take " & item$
          item$[] &= item$
       .
    .
@@ -167,11 +167,11 @@ proc collect_items dir0 . .
    if room$ <> "Secu"
       for dir = 1 to 4
          if dir <> dir0 and door[dir] = 1
-            call go dir
-            call take_items
+            go dir
+            take_items
             rdir = (dir + 1) mod 4 + 1
-            call collect_items rdir
-            call go rdir
+            collect_items rdir
+            go rdir
          .
       .
    .
@@ -188,14 +188,14 @@ proc to_checkpoint rev_dir . .
    else
       for dir = 1 to 4
          if dir <> rev_dir and door[dir] = 1
-            call go dir
+            go dir
             rdir = (dir + 1) mod 4 + 1
-            call to_checkpoint rdir
+            to_checkpoint rdir
             if pressure_floor <> -1
                # found
                break 1
             .
-            call go rdir
+            go rdir
          .
       .
    .
@@ -206,11 +206,11 @@ proc combine_items . .
    for i = 1 to n_item
       if item[i] = 0
          item[i] = 1
-         call say "take " & item$[i]
-         call go pressure_floor
+         say "take " & item$[i]
+         go pressure_floor
          if weight_fb = -1
             # still too low
-            call combine_items
+            combine_items
          .
          if weight_fb = 0
             # done
@@ -218,26 +218,26 @@ proc combine_items . .
          .
          # too high
          item[i] = 0
-         call say "drop " & item$[i]
+         say "drop " & item$[i]
       .
    .
 .
 proc run . .
-   call ic_run
-   call collect_items -1
-   call to_checkpoint -1
+   ic_run
+   collect_items -1
+   to_checkpoint -1
    n_item = len item$[]
    len item[] n_item
    for i = 1 to n_item
-      call say "drop " & item$[i]
+      say "drop " & item$[i]
    .
-   call combine_items
+   combine_items
    if verbose = 0
       print last_out$
    .
 .
 if len ic_mem[] > 1
-   call run
+   run
 else
    print "No input"
 .

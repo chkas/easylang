@@ -37,7 +37,7 @@ proc init . .
    .
    bline = len b[]
 .
-call init
+init
 n = len sx[]
 # 
 proc get_ranges y . xa[] xb[] .
@@ -66,7 +66,7 @@ proc get_ranges y . xa[] xb[] .
       xb[] &= xb
    .
 .
-call get_ranges max_coord div 2 xa[] xb[]
+get_ranges max_coord div 2 xa[] xb[]
 sum = -bline
 for i = 1 to len xa[]
    sum += xb[1] - xa[1] + 1
@@ -74,7 +74,7 @@ for i = 1 to len xa[]
 print sum
 # 
 for y = 1 to max_coord
-   call get_ranges y xa[] xb[]
+   get_ranges y xa[] xb[]
    if len xa[] = 2 and xb[1] + 2 = xa[2]
       print (xb[1] + 1) * 4000000 + y
       break 1

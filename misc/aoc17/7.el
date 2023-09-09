@@ -18,14 +18,14 @@ proc read . .
       in$ = input
       until in$ = ""
       h$[] = strsplit in$ " "
-      call name2id h$[1] id0
+      name2id h$[1] id0
       w[id0] = number substr h$[2] 2 len h$[2] - 2
       for i = 4 to len h$[]
          s$ = h$[i]
          if i < len h$[]
             s$ = substr s$ 1 len s$ - 1
          .
-         call name2id s$ id
+         name2id s$ id
          childs[id0][] &= id
          parent[id] = id0
       .
@@ -37,7 +37,7 @@ proc read . .
       .
    .
 .
-call read
+read
 # 
 print name$[root]
 # 
@@ -45,7 +45,7 @@ done = 0
 proc bala node . wr .
    for i to len childs[node][]
       nd = childs[node][i]
-      call bala nd w
+      bala nd w
       wsum += w
       if i >= 3 and (wp <> w or wpp <> w or wp <> wpp) and done = 0
          done = 1
@@ -66,7 +66,7 @@ proc bala node . wr .
    .
    wr = wsum + w[node]
 .
-call bala root w
+bala root w
 # 
 input_data
 pbga (66)

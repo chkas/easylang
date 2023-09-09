@@ -2254,9 +2254,21 @@ S ND* parse_sequ(void) {
 				parse_subr();
 				nd->vf = op_nop;
 			}
-			else if (tok >= t_swap && tok <= t_sys) {
+			else if (tok >= t_return && tok <= t_sys) {
 
-				if (tok == t_swap) {
+				if (tok == t_return) {
+					nd->vf = op_return;
+					csb_tok_nt();
+					if (proc->typ == 1) {
+						cs_spc();
+						nd->le = parse_ex();
+					}
+					else if (proc->typ == 2) {
+						cs_spc();
+						nd->le = parse_strex();
+					}
+				}
+				else if (tok == t_swap) {
 					parse_swap_stat(nd);
 				}
 				else if (tok == t_break) {
@@ -2363,9 +2375,6 @@ S ND* parse_sequ(void) {
 					else if (tokpr == t_random_seed) {
 						nd->vf = op_random_seed;
 					}
-					else if (tokpr == t_return) {
-						nd->vf = op_return;
-					}
 					else if (tokpr == t_translate) {
 						nd->vf = op_translate;
 					}
@@ -2403,17 +2412,6 @@ S ND* parse_sequ(void) {
 							cs_spc();
 							ndx->ex = parse_ex();
 						}
-					}
-				}
-				else if (tokpr == t_return) {
-					if (proc->typ == 1) {
-						nd->le = parse_ex();
-					}
-					else if (proc->typ == 2) {
-						nd->le = parse_strex();
-					}
-					else {
-						error("not in function");
 					}
 				}
 				else if (tokpr <= t_curve) {

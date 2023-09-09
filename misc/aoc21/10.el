@@ -19,8 +19,8 @@ proc nextc . .
 procdecl parse . .
 global score err .
 proc parse_expect b$ . .
-   call nextc
-   call parse
+   nextc
+   parse
    if c$ = "" and err = 0
       h = 4
       if b$ = ")"
@@ -41,18 +41,18 @@ proc parse_expect b$ . .
          err = 1197
       .
    .
-   call nextc
+   nextc
 .
 proc parse . .
    while 1 = 1
       if c$ = "("
-         call parse_expect ")"
+         parse_expect ")"
       elif c$ = "["
-         call parse_expect "]"
+         parse_expect "]"
       elif c$ = "{"
-         call parse_expect "}"
+         parse_expect "}"
       elif c$ = "<"
-         call parse_expect ">"
+         parse_expect ">"
       else
          break 1
       .
@@ -64,15 +64,15 @@ repeat
    inpi = 1
    err = 0
    score = 0
-   call nextc
-   call parse
+   nextc
+   parse
    if score <> 0
       score[] &= score
    .
    part1 += err
 .
 print part1
-call sort score[]
+sort score[]
 print score[len score[] div 2 + 1]
 # 
 input_data

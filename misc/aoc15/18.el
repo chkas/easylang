@@ -84,15 +84,15 @@ for part to 2
       f[] &= 0
    .
    if part = 2
-      call patch
+      patch
    .
    len p[] len f[]
    for step to 100
-      call update
+      update
       if part = 2
-         call patch
+         patch
       .
-      call show
+      show
    .
    sum = 0
    for v in f[]

@@ -24,12 +24,12 @@ proc remainder . n[] a[] r .
   .
   for i = 1 to len n[]
     p = prod / n[i]
-    call mul_inv p n[i] h
+    mul_inv p n[i] h
     sum += a[i] * h * p
     r = sum mod prod
   .
 .
 n[] = [ 3 5 7 ]
 a[] = [ 2 3 2 ]
-call remainder n[] a[] h
+remainder n[] a[] h
 print h

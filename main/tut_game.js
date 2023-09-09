@@ -18,13 +18,13 @@ proc square ind col s$ . .
 end
 textsize 8
 for i = 1 to 16
-   call square i 353 ""
+   square i 353 ""
 end
-call square 3 575 "A"
-call square 6 575 "A"
-call square 7 575 "D"
-call square 16 575 "D"
-call square 9 575 "E"
+square 3 575 "A"
+square 6 575 "A"
+square 7 575 "D"
+square 16 575 "D"
+square 9 575 "E"
 
 + We have 16 cards, which we arrange line by line from bottom to top. These cards and also the positions are numbered from 1 to 16.
 
@@ -45,7 +45,7 @@ proc square ind col n . .
 .
 textsize 6
 for i = 1 to 16
-  call square i 353 i
+  square i 353 i
 .
 
 + At first we create a procedure that draws a square at a position (0-15) in a certain color and a label.
@@ -65,8 +65,8 @@ proc draw_square ind col s$ . .
 end
 #
 textsize 16
-call draw_square 1 353  ""
-call draw_square 8 575  "A"
+draw_square 1 353  ""
+draw_square 8 575  "A"
 
 + *proc* defines a procedure. The variables up to the first point are the in-parameters, followed by the in-out- parameters. Variables that appear in a procedure for the first time are local.
 
@@ -100,7 +100,7 @@ for i = 2 to 16
 end
 # display
 for i = 1 to 16
-  call draw_square i 575 cards$[i]
+  draw_square i 575 cards$[i]
 end
 
 + On mouse-click we search for the card under the mouse pointer and uncover it.
@@ -120,7 +120,7 @@ cards$[] = strchars "AABBDDEEFFGGHHII"
 proc init . .
   # display covered cards
   for i = 1 to 16
-    call draw_square i 353 ""
+    draw_square i 353 ""
   end
   # shuffle
   for i = 2 to 16
@@ -133,10 +133,10 @@ on mouse_down
   r = mouse_y div 25
   ind = r * 4 + c + 1
   # uncover card 
-  call draw_square ind 575 cards$[ind]
+  draw_square ind 575 cards$[ind]
 end
 textsize 16
-call init
+init
 
 -
 
@@ -164,12 +164,12 @@ on mouse_down
     text systime - time0
     time0 = 0
   else
-    call wait
+    wait
   end
 end
 textsize 20
 move 20 50
-call wait
+wait
 
 + *systime* returns the seconds since 1.1.1970 00:00 as a floating point number. The timer event is triggered with a selectable delay by the *timer* command. *randomf* returns a random float value between 0 and 1.
 
@@ -202,12 +202,12 @@ cards$[] = strchars "AABBDDEEFFGGHHII"
 len open[] 16
 background 000
 proc init . .
-  call init_vars
+  init_vars
   clear
   # display covered cards
   for i = 1 to 16
     open[i] = 0
-    call draw_square i 353 ""
+    draw_square i 353 ""
   end
   # shuffle
   for i = 2 to 16
@@ -217,7 +217,7 @@ proc init . .
 end
 proc open ind . .
   open[ind] = 1
-  call draw_square ind 575 cards$[ind]
+  draw_square ind 575 cards$[ind]
   if card1 = 0
     # first card
     card1 = ind
@@ -245,10 +245,10 @@ end
 on timer
   # cover cards
   open[card1] = 0
-  call draw_square card1 353 ""
+  draw_square card1 353 ""
   card1 = 0
   open[card2] = 0
-  call draw_square card2 353 ""
+  draw_square card2 353 ""
   card2 = 0
 end
 proc search_card . .
@@ -256,19 +256,19 @@ proc search_card . .
   r = mouse_y div 25
   ind = r * 4 + c + 1
   if open[ind] = 0
-    call open ind
+    open ind
   end
 end
 on mouse_down
   if opencards = 16
     # new game
-    call init
+    init
   elif card2 = 0
-    call search_card
+    search_card
   end
 end
 textsize 16
-call init
+init
 
 -`
 

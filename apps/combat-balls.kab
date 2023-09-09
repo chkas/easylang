@@ -29,10 +29,10 @@ subr init
     timer -1
   .
 .
-call init
+init
 on mouse_down
   mode = (mode + 1) mod 2
-  call init
+  init
 .
 # 
 subr collide
@@ -101,7 +101,7 @@ on animate
         dy = y - y[j]
         dxxyy = dx * dx + dy * dy
         if dxxyy < radrad4
-          call collide
+          collide
         .
       .
     .

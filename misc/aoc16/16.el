@@ -22,9 +22,9 @@ proc run sz inp$ . .
    print s$
 .
 s$ = input
-# call run 20 s$
-call run 272 s$
-call run 35651584 s$
+# run 20 s$
+run 272 s$
+run 35651584 s$
 # 
 input_data
 10000

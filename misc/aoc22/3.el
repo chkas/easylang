@@ -15,11 +15,11 @@ repeat
    inp$[] &= s$
    l = len s$ div 2
    for c$ in strchars substr s$ 1 l
-      call code c$ c
+      code c$ c
       a[c] = 1
    .
    for c$ in strchars substr s$ l + 1 -1
-      call code c$ c
+      code c$ c
       if a[c] = 1
          a[c] = 0
          sum += c
@@ -34,15 +34,15 @@ print sum
 sum = 0
 for ii = 1 step 3 to len inp$[] - 2
    for c$ in strchars inp$[ii]
-      call code c$ c
+      code c$ c
       a[c] = 1
    .
    for c$ in strchars inp$[ii + 1]
-      call code c$ c
+      code c$ c
       b[c] = 1
    .
    for c$ in strchars inp$[ii + 2]
-      call code c$ c
+      code c$ c
       if a[c] = 1 and b[c] = 1
          a[c] = 0
          sum += c

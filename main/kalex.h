@@ -24,10 +24,9 @@ static const char* token_list[] = {
 	"color", "background", "mouse_cursor", "random_seed",
 	"move", "line", "coord_translate", "rect", "numfmt",
 	"color3", "circlearc",
-	"return",
 	"sound", "polygon", "curve",
 
-	"swap", "clear", "break", "drawgrid", "arrbase", "sys",
+	"return", "swap", "clear", "break", "drawgrid", "arrbase", "sys",
 
 	"systime", "error", "mouse_x", "mouse_y", "randomf", "pi",
 	"random",  "sqrt", "logn", "abs", "sign", "bitnot", "floor", "sin", "cos", "tan", "asin", "acos", "atan", 
@@ -45,7 +44,7 @@ static const char* token_list[] = {
 	"array element", "string array element",
 	"array", "string array",
 	"array array", "string array array",
-	"eof"
+	""
 };
 
 enum token_tok {
@@ -61,10 +60,9 @@ enum token_tok {
 	t_color, t_background, t_mouse_cursor, t_random_seed,
 	t_move, t_line, t_translate, t_rect, t_numfmt,
 	t_rgb, t_arc,
-	t_return,
 	t_sound, t_polygon, t_curve,
 
-	t_swap, t_clear, t_break, t_drawgrid, t_arrbase, t_sys,
+	t_return, t_swap, t_clear, t_break, t_drawgrid, t_arrbase, t_sys,
 	
 	t_systime, t_error, t_mouse_x, t_mouse_y, t_randomf, t_pi,
 	t_random,  t_sqrt, t_logn, t_abs, t_sign, t_bitnot, t_floor, t_sin, t_cos, t_tan, t_asin, t_acos, t_atan, 

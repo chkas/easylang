@@ -7,7 +7,7 @@ proc md5init . .
       md5k[i] = floor (0x100000000 * abs sin ((i + 1) * 180 / pi))
    .
 .
-call md5init
+md5init
 # 
 proc md5 inp$ . s$ .
    subr addinp
@@ -27,18 +27,18 @@ proc md5 inp$ . s$ .
    inp4 = 1
    for i to len inp$
       b = strcode substr inp$ i 1
-      call addinp
+      addinp
    .
    b = 0x80
-   call addinp
+   addinp
    while len inp[] mod 16 <> 14 or inp4 <> 1
       b = 0
-      call addinp
+      addinp
    .
    h = len inp$ * 8
    for i range0 4
       b = h mod 0x100
-      call addinp
+      addinp
       h = h div 0x100
    .
    inp[] &= 0
@@ -95,9 +95,9 @@ proc md5 inp$ . s$ .
    .
 .
 proc md5x in$ . h$ .
-   call md5 in$ h$
+   md5 in$ h$
    for i range0 2016
-      call md5 h$ h$
+      md5 h$ h$
    .
 .
 # 
@@ -107,9 +107,9 @@ part2 = 0
 proc run . .
    for i range0 25000
       if part2 = 1
-         call md5x inp$ & i md$
+         md5x inp$ & i md$
       else
-         call md5 inp$ & i md$
+         md5 inp$ & i md$
       .
       a$[] = strchars md$
       co$ = ""
@@ -148,9 +148,9 @@ proc run . .
    .
 .
 print "That takes some time ..."
-call run
+run
 part2 = 1
-call run
+run
 # 
 input_data
 abc

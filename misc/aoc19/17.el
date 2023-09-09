@@ -56,10 +56,10 @@ proc run . .
       oc0 = mem[pc]
       oc = oc0 mod 100
       until oc = 99 or oc = 3 and in = -1
-      call mem_ind oc0 div 100 mod 10 pc + 1 ind
+      mem_ind oc0 div 100 mod 10 pc + 1 ind
       a = mem[ind]
       if oc = 1 or oc = 2 or oc >= 5 and oc <= 8
-         call mem_ind oc0 div 1000 mod 10 pc + 2 ind
+         mem_ind oc0 div 1000 mod 10 pc + 2 ind
          b = mem[ind]
          if oc = 1 or oc = 2 or oc = 7 or oc = 8
             h = 0
@@ -70,7 +70,7 @@ proc run . .
             elif oc = 7 and a < b or oc = 8 and a = b
                h = 1
             .
-            call mem_ind oc0 div 10000 mod 10 pc + 3 ind
+            mem_ind oc0 div 10000 mod 10 pc + 3 ind
             mem[ind] = h
             pc += 4
          else
@@ -85,7 +85,7 @@ proc run . .
             in = -1
          elif oc = 4
             if a < 256
-               call outpf a
+               outpf a
             else
                print a
             .
@@ -102,8 +102,8 @@ proc run . .
 prefix
 # 
 proc part1 . .
-   call ic_init
-   call ic_run
+   ic_init
+   ic_run
    offs[] = [ -width 1 width -1 ]
    len scaf[] len scaf[] + width
    for y range0 height - 1
@@ -182,13 +182,13 @@ proc search_pat lev . .
    .
    s0$[] = s$[]
    for lng = 2 to 6
-      call search si lng matches[]
+      search si lng matches[]
       if len matches[] > 0
-         call apply lev si lng matches[]
+         apply lev si lng matches[]
          if lev < 3
-            call search_pat lev + 1
+            search_pat lev + 1
          else
-            call test_found
+            test_found
          .
          s$[] = s0$[]
       .
@@ -225,50 +225,50 @@ proc prog_rob . .
    for i = 1 to len sf$[]
       if i > 1
          ic_in = strcode ","
-         call ic_run
+         ic_run
       .
       ic_in = strcode sf$[i]
-      call ic_run
+      ic_run
    .
    print ""
    ic_in = 10
-   call ic_run
+   ic_run
    for fu = 1 to 3
       for i = 1 to len fuf$[fu][]
          h$[] = strchars fuf$[fu][i]
          if i > 1
             ic_in = strcode ","
-            call ic_run
+            ic_run
          .
          for j = 1 to len h$[]
             if j = 2
                ic_in = strcode ","
-               call ic_run
+               ic_run
             .
             ic_in = strcode h$[j]
-            call ic_run
+            ic_run
          .
       .
       ic_in = 10
-      call ic_run
+      ic_run
    .
    ic_in = strcode "n"
-   call ic_run
+   ic_run
    ic_in = 10
-   call ic_run
+   ic_run
 .
 proc part2 . .
-   call ic_init
+   ic_init
    ic_mem[0] = 2
-   call ic_run
-   call make_pat
+   ic_run
+   make_pat
    # 
-   call search_pat 1
-   call prog_rob
+   search_pat 1
+   prog_rob
 .
 if len ic_code[] > 1
-   call part1
-   call part2
+   part1
+   part2
 else
    print "No input"
 .

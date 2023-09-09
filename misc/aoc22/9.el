@@ -76,7 +76,7 @@ repeat
          cnt += 1
       .
       if visual = 1
-         call show
+         show
       .
    .
 .
@@ -160,7 +160,7 @@ repeat
          cnt += 1
       .
       if visual = 1
-         call show
+         show
       .
    .
 .

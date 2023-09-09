@@ -44,7 +44,7 @@ subr initvars
    .
    step = 0
    frame = 0
-   call go_home
+   go_home
 .
 proc show_maze . .
    linewidth c5
@@ -107,10 +107,10 @@ proc make_maze . .
    .
 .
 subr new_game
-   call make_maze
-   call show_maze
+   make_maze
+   show_maze
    background -1
-   call initvars
+   initvars
 .
 proc show_monster col row dirx diry . .
    x = col * c + c2 + c10 + dirx * step * c5
@@ -142,7 +142,7 @@ on mouse_down
    m_x = mouse_x
    m_y = mouse_y
    if stat < 0
-      call new_game
+      new_game
    .
 .
 on mouse_move
@@ -169,7 +169,7 @@ proc do_x . .
       .
       if x <> 0
          if me_col_s = 0
-            call f_dir me_col me_row x 0 v
+            f_dir me_col me_row x 0 v
          .
          if v = 0
             me_col_s += x
@@ -191,7 +191,7 @@ proc do_y . .
       .
       if y <> 0
          if me_row_s = 0
-            call f_dir me_col me_row 0 y v
+            f_dir me_col me_row 0 y v
          .
          if v = 0
             me_row_s += y
@@ -206,11 +206,11 @@ proc do_y . .
 .
 proc move_me . .
    if abs dme_x > abs dme_y
-      call do_x
-      call do_y
+      do_x
+      do_y
    else
-      call do_y
-      call do_x
+      do_y
+      do_x
    .
    me_x = me_col * c + c2 + c10 + me_col_s * c5
    me_y = me_row * c + c2 + c10 + me_row_s * c5
@@ -254,12 +254,12 @@ proc get_dir c r . x y .
       else
          y = 1
       .
-      call f_dir c r x y v
+      f_dir c r x y v
       if v = 1
          x = 0
          y = 0
       elif xo = -x and yo = -y
-         call f_all c r v
+         f_all c r v
          if v <> 3
             x = 0
             y = 0
@@ -270,7 +270,7 @@ proc get_dir c r . x y .
 .
 proc move_monster . .
    for i to n_mo
-      call show_monster m_col[i] m_row[i] m_dirx[i] m_diry[i]
+      show_monster m_col[i] m_row[i] m_dirx[i] m_diry[i]
    .
    frame += 1
    if frame >= monster_delay
@@ -288,7 +288,7 @@ proc move_monster . .
          for i to n_mo
             dx = m_dirx[i]
             dy = m_diry[i]
-            call get_dir m_col[i] m_row[i] dx dy
+            get_dir m_col[i] m_row[i] dx dy
             m_dirx[i] = dx
             m_diry[i] = dy
          .
@@ -305,18 +305,18 @@ proc move_monster . .
 .
 on timer
    if stat = 1
-      call go_home
+      go_home
       stat = 0
    .
 .
 subr do_next
    clear
-   call move_monster
+   move_monster
    if stat = 0
       dme_x = m_x - me_x
       dme_y = m_y - me_y
       if abs dme_x + abs dme_y < 8 * c
-         call move_me
+         move_me
       .
       for i to n_mo
          if me_col = m_col[i] and me_row = m_row[i]
@@ -329,7 +329,7 @@ subr do_next
    else
       color 886
    .
-   call show_me
+   show_me
    if n_mo = 0
       stat = -1
       color 000
@@ -345,7 +345,7 @@ subr do_next
 .
 on animate
    if stat >= 0
-      call do_next
+      do_next
    .
 .
-call new_game
+new_game

@@ -26,9 +26,9 @@ proc con pins used[] ln . str0 ln0 ln0str .
       if used[i] = 0 and (a[i] = pins or b[i] = pins)
          used[i] = 1
          if a[i] = pins
-            call con b[i] used[] ln + 1 str ln lnstr
+            con b[i] used[] ln + 1 str ln lnstr
          else
-            call con a[i] used[] ln + 1 str ln lnstr
+            con a[i] used[] ln + 1 str ln lnstr
          .
          used[i] = 0
          str += a[i] + b[i]
@@ -46,7 +46,7 @@ proc con pins used[] ln . str0 ln0 ln0str .
    .
 .
 # 
-call con 0 used[] 0 str ln lnstr
+con 0 used[] 0 str ln lnstr
 print str
 print lnstr
 # 

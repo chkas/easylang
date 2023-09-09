@@ -26,13 +26,13 @@ proc run rounds . .
    .
 .
 inp[] = number strsplit inp$ ","
-call init
-call run 1
+init
+run 1
 
-#call run 1
+#run 1
 print l[0] * l[1]
 # 
-call init
+init
 inp[] = [ ]
 for i to len inp$
    inp[] &= strcode substr inp$ i 1
@@ -43,7 +43,7 @@ inp[] &= 73
 inp[] &= 47
 inp[] &= 23
 # 
-call run 64
+run 64
 for i range0 16
    h = 0
    for j range0 16

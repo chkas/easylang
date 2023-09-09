@@ -33,7 +33,7 @@ proc show_quest . .
       m = m[sz]
    .
    sz -= 1
-   call disp 030 n & " × " & m & " = _"
+   disp 030 n & " × " & m & " = _"
    res = 0
 .
 proc sel_row . .
@@ -54,7 +54,7 @@ proc sel_row . .
          .
       .
       sz = 10
-      call show_quest
+      show_quest
    .
 .
 proc draw_key . .
@@ -86,14 +86,14 @@ proc draw_key . .
 .
 background 010
 proc init . .
-   call init_vars
+   init_vars
    clear
    for ind = 0 to 11
       color 020
-      call draw_key
+      draw_key
    .
    ind = -1
-   call disp 030 "Which row?"
+   disp 030 "Which row?"
 .
 proc sel_inp . .
    if ind = 11
@@ -123,13 +123,13 @@ proc sel_inp . .
       .
       col = 030
    .
-   call disp col n & " × " & m & " = " & h$
+   disp col n & " × " & m & " = " & h$
 .
 proc handle_key2 . .
    if row = -1
-      call sel_row
+      sel_row
    else
-      call sel_inp
+      sel_inp
    .
 .
 proc handle_key . .
@@ -147,8 +147,8 @@ proc handle_key . .
       .
    .
    color 040
-   call draw_key
-   call handle_key2
+   draw_key
+   handle_key2
 .
 on key
    ind = strcode keybkey - 48
@@ -163,27 +163,27 @@ on key
          ind = -1
       .
       if ind >= 0
-         call handle_key2
+         handle_key2
       .
    elif state = 3
-      call init
+      init
    .
 .
 on mouse_down
    if state = 3
-      call init
+      init
    elif state = 0
       if mouse_y < 75
-         call handle_key
+         handle_key
       elif res = 0
-         call init
+         init
       .
    .
 .
 on mouse_up
    if ind >= 0
       color 020
-      call draw_key
+      draw_key
    .
 .
 proc smiley t . .
@@ -221,7 +221,7 @@ proc done . .
    text "Row: " & s$
    move 10 56
    text "Time: " & t
-   call smiley t
+   smiley t
 .
 on timer
    if state = 2
@@ -229,10 +229,10 @@ on timer
    elif sz = 0
       state = 2
       timer 2
-      call done
+      done
    else
-      call show_quest
+      show_quest
       state = 0
    .
 .
-call init
+init
