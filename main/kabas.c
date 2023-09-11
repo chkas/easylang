@@ -218,8 +218,14 @@ extern int parse(const char* str, int opt, int pos) {
 				p += 1;
 			}
 		}
+		if (proc->start == NULL) {
+			error_pos("not implemented", proc->varcnt[0]);
+			caret_pos = code_utf8len;
+			return codestrln;
+		}
 		proc += 1;
 	}
+
 	caret_pos = pos;
 	if (caret_pos >= code_utf8len) pos = code_utf8len;
 

@@ -869,7 +869,11 @@ S int parse_proc_header(int mode, byte proctyp) {
 	const char* name = getn(tval);
 	proc = proc_get(name);
 	if (proc != NULL) {
-		if (mode == 1 && proc->start == NULL) mode = 2;
+		if (mode == 1 && proc->start == NULL) {
+			mode = 2;
+			// in procdecl source position is stored here, must be cleared
+			proc->varcnt[0] = 0;
+		}
 		else error("already defined");
 	}
 	else {
@@ -924,7 +928,7 @@ S int parse_proc_header(int mode, byte proctyp) {
 			return 0;
 		}
 		if (mode <= 1) proc->parms[i] = typ;
-		else if (proc->parms[i] != typ) error("procdecl doesn't match");
+		else if (proc->parms[i] != typ) error("decl doesn't match");
 		cs_spc();
 		i += 1;
 	}
@@ -1034,6 +1038,7 @@ S void parse_proc(byte typ) {
 
 S void parse_procdecl(byte typ) {
 	parse_proc_header(0, typ);
+	proc->varcnt[0] = code_utf8len;
 	proc = proc_p;
 }
 
@@ -2125,7 +2130,16 @@ S ND* parse_sequ(void) {
 			}
 			else if (tok == t_funcdecl) {
 				if (sequ_level != 0) error("not allowed here");
-				parse_procdecl(1);
+				if (c == '$') {
+					// funcdecl$
+					tval[8] ='$';
+					tval[9] = 0;
+					nextc();
+					parse_procdecl(2);
+				}
+				else {
+					parse_procdecl(1);
+				}
 			}
 			else if (tok == t_prefix) {
 				if (sequ_level != 0) error("not allowed here");
