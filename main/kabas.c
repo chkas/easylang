@@ -218,7 +218,7 @@ extern int parse(const char* str, int opt, int pos) {
 				p += 1;
 			}
 		}
-		if (proc->start == NULL) {
+		if (proc->start == NULL && proc != proc_p) {
 			error_pos("not implemented", proc->varcnt[0]);
 			caret_pos = code_utf8len;
 			return codestrln;
