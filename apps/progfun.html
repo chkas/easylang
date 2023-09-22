@@ -175,18 +175,18 @@ on animate
 `)
 
 src.push(`proc tree x y l w ang dp . .
-   move x y
-   x += l * cos ang
-   y += l * sin ang
    if dp <= 2
       color3 0 0.2 + randomf / 4 0
    else
       color3 0.15 + randomf / 8 0.1 0
    .
    linewidth w
+   move x y
+   x += l * cos ang
+   y += l * sin ang
    line x y
    if dp = 1
-      return
+      break 1
    .
    nb = 2 + if dp < 9
    for i = 1 to nb

@@ -44,21 +44,28 @@ proc draw . .
    move 1 1
    text "Short press to zoom in, long to zoom out"
 .
-on mouse_down
-   time0 = systime
-.
-on mouse_up
-   center_x += mid - mouse_x * res
-   center_y += mid - mouse_y * res
-   if systime - time0 < 0.3
-      center_x -= mid - center_x
-      center_y -= mid - center_y
-      scale *= 2
-   else
+on timer
+   if done = 0
       center_x += (mid - center_x) * 3 / 4
       center_y += (mid - center_y) * 3 / 4
       scale /= 4
+      draw
+      done = 1
    .
-   draw
+.
+on mouse_down
+   done = 0
+   center_x += mid - mouse_x * res
+   center_y += mid - mouse_y * res
+   timer 0.3
+.
+on mouse_up
+   if done = 0
+      center_x -= mid - center_x
+      center_y -= mid - center_y
+      scale *= 2
+      draw
+      done = 1
+   .
 .
 draw

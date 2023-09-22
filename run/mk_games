@@ -46,7 +46,7 @@ apps1="1x1-trainer math-trainer roman-numbers learning-clock piano"
 
 apps2="ice-cream letter-memory paint"
 
-apps3="mastermind mine-sweeper monster-maze tictactoe reaction-test catch-the-ball"
+apps3="mastermind mine-sweeper 15-puzzle monster-maze snake tictactoe reaction-test catch-the-ball"
 
 wrcode() {
 	f=$(echo $1 | cut -c1 | tr a-z A-Z)
@@ -76,12 +76,12 @@ wrlnk() {
 	f=$(echo $1 | cut -c1 | tr a-z A-Z)
 	n=$f$(echo $1 | cut -c2- | tr '-' ' ')
 
-	echo $1:$f:$n >&2
+	echo "$n" >&2
 
 	echo "<p><div>"
 
-	if test -f $1.png; then
-		cp $1.png $odir 
+	if test -f png/$1.png; then
+		cp png/$1.png $odir 
 		echo "<p><a href=javascript:inst($i)><img src=$1.png alt=$n></a>"
 		echo "<p><a href=javascript:inst($i)><p><b>$n</b></a>"
 #		echo "<p><b>$n</b>"
@@ -113,7 +113,7 @@ done
 echo "<div></div>"
 
 
-cp easyide.png $odir
+cp png/easyide.png $odir
 cat <<xxx
 <p>
 <h3>Make your own game</h3>

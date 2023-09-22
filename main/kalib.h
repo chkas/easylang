@@ -19,6 +19,14 @@
 #include <ctype.h>
 #include <stdarg.h>
 
+static void pr(const char *fmt, ... ) {
+    va_list ap;
+    va_start(ap, fmt);
+    vprintf(fmt, ap);
+	putchar('\n');
+    va_end(ap);
+}
+
 #ifdef _WIN32
 
 #include <windows.h>

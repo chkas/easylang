@@ -46,7 +46,7 @@ subr shuffle_drawer
    .
 .
 subr play_random
-   call shuffle_drawer
+   shuffle_drawer
    for prisoner = 1 to 100
       found = 0
       for i = 1 to 50
@@ -100,7 +100,7 @@ print "optimal: " & 100.0 * win / n & "%"
 *
 @ https://rosettacode.org/wiki/10001th_prime@Task
 *
-fastfunc isPrime num .
+fastfunc isprim num .
    if num mod 2 = 0 and num > 2
       return 0
    .
@@ -113,21 +113,20 @@ fastfunc isPrime num .
    .
    return 1
 .
-curPrime = 1
-for i = 1 to 10001
-   repeat
-      curPrime += 1
-      until isPrime curPrime = 1
+i = 2
+repeat
+   if isprim i = 1
+      nprim += 1
    .
+   until nprim = 10001
+   i += 1
 .
-print curPrime
+print i
 *
 * 15 puzzle game
 *
 @ https://rosettacode.org/wiki/15_puzzle_game@Task
 *
-# 15 Puzzle
-# 
 sys topleft
 background 432
 textsize 13
@@ -152,6 +151,21 @@ proc draw . .
    .
 .
 global done .
+proc smiley . .
+   s = 3.5
+   x = 86
+   y = 86
+   move x y
+   color 983
+   circle 2.8 * s
+   color 000
+   move x - s y - s
+   circle s / 3
+   move x + 3.5 y - 3.5
+   circle s / 3
+   linewidth s / 3
+   curve [ x - s y + s x y + 2 * s x + s y + s ]
+.
 proc init . .
    done = 0
    for i = 1 to 16
@@ -191,23 +205,28 @@ proc move_tile . .
       swap f[i] f[i + 1]
    .
    draw
-   done = 1
    for i = 1 to 15
       if f[i] > f[i + 1]
-         done = 0
+         return
       .
    .
-   if done = 1
-      clear
-      move 10 30
-      text "Well done!"
-   .
+   done = 1
+   timer 0.5
 .
 on mouse_down
-   if done = 1
-      init
-   else
+   if done = 0
       move_tile
+   elif done = 3
+      init
+   .
+.
+on timer
+   if done = 1
+      smiley
+      done = 2
+      timer 2
+   else
+      done = 3
    .
 .
 init
@@ -289,6 +308,34 @@ while i < len a$ and substr a$ i 1 <> " "
 a = number substr a$ 1 i
 b = number substr a$ i -1
 print a + b
+*
+* ABC problem
+*
+@ https://rosettacode.org/wiki/ABC_problem@Task
+*
+b$[][] = [ [ "B" "O" ] [ "X" "K" ] [ "D" "Q" ] [ "C" "P" ] [ "N" "A" ] [ "G" "T" ] [ "R" "E" ] [ "T" "G" ] [ "Q" "D" ] [ "F" "S" ] [ "J" "W" ] [ "H" "U" ] [ "V" "I" ] [ "A" "N" ] [ "O" "B" ] [ "E" "R" ] [ "F" "S" ] [ "L" "Y" ] [ "P" "C" ] [ "Z" "M" ] ]
+len b[] len b$[][]
+global w$[] cnt .
+#
+proc backtr wi . .
+   if wi > len w$[]
+      cnt += 1
+      return
+   .
+   for i = 1 to len b$[][]
+      if b[i] = 0 and (b$[i][1] = w$[wi] or b$[i][2] = w$[wi])
+         b[i] = 1
+         backtr wi + 1
+         b[i] = 0
+      .
+   .
+.
+for s$ in [ "A" "BARK" "BOOK" "TREAT" "COMMON" "SQUAD" "CONFUSE" ]
+   w$[] = strchars s$
+   cnt = 0
+   backtr 1
+   print s$ & " can be spelled in " & cnt & " ways"
+.
 *
 * Ackermann function
 *
@@ -383,14 +430,13 @@ on animate
 *
 @ https://rosettacode.org/wiki/Archimedean_spiral@Task
 *
-linewidth 0.2
+linewidth 0.4
 x = 50
 y = 50
-move x y
 while r < 50
    line r * cos t + x r * sin t + y
-   r += 0.1
-   t += 6
+   r += 0.05
+   t += 3
 .
 *
 * Arithmetic evaluation
@@ -942,7 +988,7 @@ print "Well done! " & attempts & " attempts needed."
 *
 @ https://rosettacode.org/wiki/Calculating_the_value_of_e@Task
 *
-numfmt 0 5
+numfmt 5 0
 fact = 1
 n = 2
 e = 2
@@ -974,7 +1020,7 @@ subr sqr2
    a = a * a
 .
 a = 5
-call sqr2
+sqr2
 print a
 *
 * Case-sensitivity of identifiers
@@ -1194,7 +1240,7 @@ proc main . .
    commatize limit s$
    print "There are " & count & " perfect mumbers up to " & s$
 .
-call main
+main
 *
 * Circular primes
 *
@@ -1359,6 +1405,61 @@ elif i mod 3 = 0
 else
   print i & " is not divisible by 2 or 3"
 .
+*
+* Continued fraction
+*
+@ https://rosettacode.org/wiki/Continued_fraction@Task
+*
+numfmt 8 0
+func calc_sqrt .
+   n = 100
+   sum = n
+   while n >= 1
+      a = 1
+      if n > 1
+         a = 2
+      .
+      b = 1
+      sum = a + b / sum
+      n -= 1
+   .
+   return sum
+.
+func calc_e .
+   n = 100
+   sum = n
+   while n >= 1
+      a = 2
+      if n > 1
+         a = n - 1
+      .
+      b = 1
+      if n > 1
+         b = n - 1
+      .
+      sum = a + b / sum
+      n -= 1
+   .
+   return sum
+.
+func calc_pi .
+   n = 100
+   sum = n
+   while n >= 1
+      a = 3
+      if n > 1
+         a = 6
+      .
+      b = 2 * n - 1
+      b *= b
+      sum = a + b / sum
+      n -= 1
+   .
+   return sum
+.
+print calc_sqrt
+print calc_e
+print calc_pi
 *
 * Convert seconds to compound duration
 *
@@ -1566,6 +1667,19 @@ for v in v[]
    sd v r
    print v & " " & r
 .
+*
+* Cullen and Woodall numbers
+*
+@ https://rosettacode.org/wiki/Cullen_and_Woodall_numbers@Task
+*
+for n = 1 to 20
+   write n * pow 2 n + 1 & " "
+.
+print ""
+for n = 1 to 20
+   write n * pow 2 n - 1 & " "
+.
+print ""
 *
 * Day of the week of Christmas and New Year
 *
@@ -1988,6 +2102,36 @@ sequence 25 3
 sequence 25 5
 sequence 25 11
 *
+* Farey sequence
+*
+@ https://rosettacode.org/wiki/Farey_sequence@Task
+*
+proc farey n . .
+   b = 1 ; c = 1 ; d = n
+   write n & ": "
+   repeat
+      if n <= 11
+         write " " & a & "/" & b
+      .
+      until c > n
+      k = (n + b) div d
+      aa = c ; bb = d ; cc = k * c - a ; dd = k * d - b
+      a = aa ; b = bb ; c = cc ; d = dd
+      items += 1
+   .
+   if n > 11
+      print items & " items"
+   else
+      print ""
+   .
+.
+for i = 1 to 11
+   farey i
+.
+for i = 100 step 100 to 1000
+   farey i
+.
+*
 * Fibonacci sequence
 *
 @ https://rosettacode.org/wiki/Fibonacci_sequence@Task
@@ -2037,10 +2181,9 @@ recurse 1
 *
 repeat
    i += 1
-   square = pow i 2
-   diffSquare = pow (i - 1) 2
-   difference = square - diffSquare
-   until difference > 1000
+   a = i * i
+   b = (i - 1) * (i - 1)
+   until a - b > 1000
 .
 print i
 *
@@ -2359,6 +2502,26 @@ write "Goodbye, World!"
 *
 print "Hello world!"
 *
+* Hilbert curve
+*
+@ https://rosettacode.org/wiki/Hilbert_curve@Task
+*
+order = 64
+linewidth 32 / order
+scale = 100 / order - 100 / (order * order)
+proc hilbert x y lg i1 i2 . .
+   if lg = 1
+      line (order - x) * scale (order - y) * scale
+      return
+   .
+   lg = lg / 2
+   hilbert x + i1 * lg y + i1 * lg lg i1 1 - i2
+   hilbert x + i2 * lg y + (1 - i2) * lg lg i1 i2
+   hilbert x + (1 - i1) * lg y + (1 - i1) * lg lg i1 i2
+   hilbert x + (1 - i2) * lg y + i2 * lg lg 1 - i1 i2
+.
+hilbert 0 0 order 0 0
+*
 * Horizontal sundial calculations
 *
 @ https://rosettacode.org/wiki/Horizontal_sundial_calculations@Task
@@ -2636,7 +2799,7 @@ proc test . .
    .
    for i to len dig[]
       if n mod dig[i] <> 0
-         break 2
+         return
       .
    .
    found = 1
@@ -2645,7 +2808,7 @@ proc test . .
 len use[] 9
 proc perm pos . .
    if found = 1
-      break 1
+      return
    .
    for i = 9 downto 1
       dig[pos] = i
@@ -2685,6 +2848,25 @@ for i = 1 to 100
       print ""
    .
 .
+*
+* Leonardo numbers
+*
+@ https://rosettacode.org/wiki/Literals/Leonardo_numbers@Task
+*
+proc leonardo L0 L1 add . .
+   print "L0:" & L0 & " L1:" & L1 & " add:" & add
+   write L0 & " "
+   write L1 & " "
+   for i = 2 to 24
+      tmp = L0
+      L0 = L1
+      L1 = tmp + L1 + add
+      write L1 & " "
+   .
+   print ""
+.
+leonardo 1 1 1
+leonardo 0 1 0
 *
 * Literals/Floating point
 *
@@ -3162,19 +3344,23 @@ proc mark pos col . .
    move x * f + f / 4 y * f + f / 4
    circle f / 3.5
 .
-proc solve dir0 pos . found .
+global found .
+proc solve dir0 pos . .
+   if found = 1
+      return
+   .
    mark pos 900
    sleep 0.05
    if pos = endpos
       found = 1
-      break 1
+      return
    .
    of = random 4 - 1
    for h = 1 to 4
       dir = (h + of) mod1 4
       posn = pos + offs[dir]
-      if dir <> dir0 and m[posn] = 0 and found = 0
-         solve (dir + 1) mod 4 + 1 posn found
+      if dir <> dir0 and m[posn] = 0
+         solve (dir + 1) mod 4 + 1 posn
          if found = 0
             mark posn 888
             sleep 0.08
@@ -3183,7 +3369,7 @@ proc solve dir0 pos . found .
    .
 .
 sleep 1
-solve 0 n + 2 found
+solve 0 n + 2
 *
 * MD5/Implementation
 *
@@ -3832,6 +4018,50 @@ numfmt 4 0
 x = power 3.1416 10
 print nth_root x 10
 *
+* Numbers with equal rises and falls
+*
+@ https://rosettacode.org/wiki/Numbers_with_equal_rises_and_falls@Task
+*
+fastfunc risefall n .
+   if n < 10
+      return 1
+   .
+   prev = -1
+   while n > 0
+      d = n mod 10
+      if prev >= 0
+         if d < prev
+            rises += 1
+         elif d > prev
+            falls += 1
+         .
+      .
+      prev = d
+      n = n div 10
+   .
+   if rises = falls
+      return 1
+   .
+   return 0
+.
+numfmt 0 4
+n = 1
+repeat
+   if risefall n = 1
+      cnt += 1
+      if cnt <= 200
+         write n
+         if cnt mod 20 = 0
+            print ""
+         .
+      .
+   .
+   until cnt = 1e7
+   n += 1
+.
+print ""
+print n
+*
 * Palindrome detection
 *
 @ https://rosettacode.org/wiki/Palindrome_detection@Task
@@ -3968,11 +4198,7 @@ linewidth 0.5
 for i = 1 to n
    x = x[i] * 9 / stx + 10
    y = y[i] / sty * 10 + 5
-   if i = 1
-      move x y
-   else
-      line x y
-   .
+   line x y
 .
 *
 * Polyspiral
@@ -4021,6 +4247,7 @@ func isprim n .
    .
    return 1
 .
+print isprim 1995937
 *
 * Prime decomposition
 *
@@ -4370,7 +4597,7 @@ proc test d[] . .
    .
    for i to len d[]
       if cnt[i] <> d[i]
-         break 2
+         return
       .
    .
    # found
@@ -4382,7 +4609,7 @@ proc test d[] . .
 proc backtr ind max . d[] .
    if ind > len d[]
       test d[]
-      break 1
+      return
    .
    for d = 0 to max
       if d < 10
@@ -4394,6 +4621,26 @@ proc backtr ind max . d[] .
 for i = 1 to 10
    len d[] i
    backtr 1 len d[] d[]
+.
+*
+* Sequence of non-squares
+*
+@ https://rosettacode.org/wiki/Sequence_of_non-squares@Task
+*
+func nonSqu n .
+   return n + floor (0.5 + sqrt n)
+.
+for i = 1 to 22
+   print nonSqu i
+.
+for i = 1 to 1e6
+   j = sqrt nonSqu i
+   if j = floor j
+      found = 1
+   .
+.
+if found = 0
+   print "No squares found"
 .
 *
 * Sequence of primes by trial division
@@ -4834,7 +5081,7 @@ proc solve . solution$ .
                brd$[pos + 2 * dir] = "·"
                if solution$ <> ""
                   solution$ = strjoin brd$[] & solution$
-                  break 3
+                  return
                .
             .
          .
@@ -5276,7 +5523,7 @@ proc solve pos . .
    if pos > 81
       # solved
       display
-      break 1
+      return
    .
    r = (pos - 1) div 9
    c = (pos - 1) mod 9
@@ -5453,7 +5700,7 @@ proc findInStrArray array$[] item$ . index .
    for i = 1 to len array$[]
       if array$[i] = item$
          index = i
-         break 2
+         return
       .
    .
    index = 0
@@ -5692,6 +5939,51 @@ on mouse_down
 .
 init
 *
+* Totient function
+*
+@ https://rosettacode.org/wiki/Totient_function@Task
+*
+func totient n .
+   tot = n
+   i = 2
+   while i <= sqrt n
+      if n mod i = 0
+         while n mod i = 0
+            n = n div i
+         .
+         tot -= tot div i
+      .
+      if i = 2
+         i = 1
+      .
+      i += 2
+   .
+   if n > 1
+      tot -= tot div n
+   .
+   return tot
+.
+numfmt 0 3
+print "  N Prim Phi"
+for n = 1 to 25
+   tot = totient n
+   x$ = "    "
+   if n - 1 = tot
+      x$ = " x  "
+   .
+   print n & x$ & tot
+.
+print ""
+for n = 1 to 100000
+   tot = totient n
+   if n - 1 = tot
+      cnt += 1
+   .
+   if n = 100 or n = 1000 or n = 10000 or n = 100000
+      print n & " - " & cnt & " primes"
+   .
+.
+*
 * Towers of Hanoi
 *
 @ https://rosettacode.org/wiki/Towers_of_Hanoi@Task
@@ -5778,12 +6070,11 @@ test [ 1 1 2 3 3 ]
 proc twoSum sum . array[] pair[] .
    i = 1
    j = len array[]
-   # The array remains empty if no sum is found
    pair[] = [ ]
    repeat
       if array[i] + array[j] = sum
          pair[] = [ i j ]
-         break 2
+         return
       elif array[i] + array[j] > sum
          j -= 1
       elif array[i] + array[j] < sum
@@ -5793,8 +6084,8 @@ proc twoSum sum . array[] pair[] .
    .
 .
 numbers[] = [ 0 2 11 19 90 ]
-call twoSum 21 numbers[] pair[]
-print "[" & pair[1] & ", " & pair[2] & "]"
+twoSum 21 numbers[] pair[]
+print pair[]
 *
 * User input/Text
 *

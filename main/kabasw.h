@@ -40,8 +40,10 @@ static void gr_rotate(double w) {
 static void gr_backcolor(int r, int g, int b) {
 	EM_ASM_({ push([15, $0, $1, $2])}, r, g, b);
 }
+static byte grline;
 static void gr_linewidth(double w) {
 	EM_ASM_({ push([8, $0])}, w);
+	grline = 0;
 }
 static void gr_mouse_cursor(ushort h) {
 	EM_ASM_({ push([11, $0])}, h);
@@ -84,9 +86,16 @@ static void gr_init(const char* s, int mask) {
 	gry = 100;
 	grbotleft = 1;
 	grtxty = 8 * 0.78;
+	grline = 0;
 }
 static void gr_sys(ushort h) {
-	if (h < 10) EM_ASM_({ push([7, $0])}, h);
+	if (h < 10) {
+		if (h == 1) {
+			// clear
+			grline = 0;
+		}
+		EM_ASM_({ push([7, $0])}, h);
+	}
 	else if (h == 11) grbotleft = 1;
 	else if (h == 12) grbotleft = 0;
 }
@@ -104,11 +113,12 @@ static void gr_move(double x, double y) {
 	grx = x;
 	if (grbotleft) gry = 100 - y;
 	else gry = y;
-//	EM_ASM_({ push([1, $0, $1])}, x, y);
+	grline = 1;
 }
 static void gr_line(double x, double y) {
 	if (grbotleft) y = 100 - y;
-	EM_ASM_({ push([2, $0, $1, $2, $3])}, grx, gry, x, y);
+	if (grline) EM_ASM_({ push([2, $0, $1, $2, $3])}, grx, gry, x, y);
+	else grline = 1;
 	grx = x;
 	gry = y;
 }

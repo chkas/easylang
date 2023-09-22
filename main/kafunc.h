@@ -1854,10 +1854,11 @@ void evt_func(int id, const char* v) {
 		rt.slow = 31 + id - 5;
 	}
 #endif
+	stop_flag = 0;
 }
 
 void evt_mouse(int id, double x, double y) {
-	if (id <= 2) {
+//	if (id <= 2) {
 		rt.mouse_x = x;
 #ifdef __EMSCRIPTEN__
 		if (grbotleft) rt.mouse_y = 100 - y;
@@ -1876,7 +1877,8 @@ void evt_mouse(int id, double x, double y) {
 		}
 		else if (id == 1) exsq(seq.mouse_up);
 		else exsq(seq.mouse_move);
-	}
+//	}
+	stop_flag = 0;
 }
 
 S void op_callproc(ND* nd0) {

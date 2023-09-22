@@ -2197,11 +2197,12 @@ S ND* parse_sequ(void) {
 						else if (tok == t_mineq) nd->vf = op_flassm;
 						else if (tok == t_asteq) nd->vf = op_flasst;
 						else if (tok == t_diveq) nd->vf = op_flassd;
-//						else error("= += -= *= /=");
-						else {
-							nd->vf = op_print;
-							nd->le = parse_strex();;
-						}
+						else error("= += -= *= /=");
+// ?????
+//						else {
+//							nd->vf = op_print;
+//							nd->le = parse_strex();;
+//						}
 						cs_tok_spc_nt();
 						nd->ri = parse_ex();
 						if (cod) {

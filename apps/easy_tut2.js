@@ -35,9 +35,6 @@ textarea {
 	font:normal normal normal 14px/1.3 monospace;
 	width:390px;
 	resize:none;
-    white-space: pre;
-    overflow-wrap: normal;
-    overflow-x: scroll;
 	transition:height 0.2s;
 }
 canvas.run { outline-style:solid;outline-color:#a00;outline-width:1px }

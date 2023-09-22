@@ -54,3 +54,18 @@ end
 
 
 sips -Z 200 x.png
+
+easy_tut2.js
+
+texarea
+    white-space: pre;
+    overflow-wrap: normal;
+    overflow-x: scroll;
+
+ide.html
+
+#out
+    white-space: pre;
+    overflow-wrap: normal;
+    overflow-x: scroll;
+
