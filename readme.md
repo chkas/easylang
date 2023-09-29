@@ -48,7 +48,7 @@ Install and activate a tested version
 source emsdk/emsdk_env.sh
 emsdk update ; emsdk list
 # vers=latest
-vers=3.1.40
+vers=3.1.46
 emsdk install $vers ; emsdk activate $vers
 ~~~
 

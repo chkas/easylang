@@ -36,8 +36,7 @@ static void wemitf(double d) {
 	wasmi += 8;
 }
 static void mf_err(const char* s) {
-	printf("fastfunc error - ");
-	printf("%s\n", s);
+	printf("fastfunc error - %s\n", s);
 	fastfunc_addr = 0;
 	error("fastfunc error");
 }
@@ -312,15 +311,16 @@ static void mf_sequ(ND* nd) {
 			wemit(W_END);
 
 		}
-		else if (p == op_flassp || p == op_flassm) {
+		else if (p == op_flassp || p == op_flassm || p == op_flasst) {
 			wemit(W_GET);
 			wemit(nd->v1);
 			if (nd->v1 < 0) {
 				mf_err("flass global");
 			}
 			mf_expr(nd->ri);
-			if (p == op_flassp) wemit(0xa0);
-			else wemit(0xa1);
+			if (p == op_flassp) wemit(W_ADD);
+			else if (p == op_flassm) wemit(W_SUB);
+			else wemit(W_MULT);
 
 			wemit(W_SET);
 			wemit(nd->v1);
@@ -400,6 +400,12 @@ static void parse_fastfunc(void) {
 
 	mf_sequ(proc->start->bxnd);
 
+
+	if (fastfunc_addr == 0) {
+		// error
+		goto cleanup;
+	}
+
 	// return 0
 	wemit(0x44);
 	wemitf(0);
@@ -410,7 +416,7 @@ static void parse_fastfunc(void) {
 
 	if (h >= 16384 - 3) {
 		error("fastfunc too big");
-		return;
+		goto cleanup;
 	}
 	wasm[fstart - 2] = (h & 127) | 128;
 	wasm[fstart - 1] = h >> 7;
@@ -436,6 +442,7 @@ static void parse_fastfunc(void) {
     );
 
 #endif
+cleanup:
 	free(wasm);
 	wasm = 0;
 }

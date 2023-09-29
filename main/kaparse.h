@@ -1612,7 +1612,6 @@ S void parse_for_stat(ND* nd) {
 	loop_level -= 1;
 }
 
-// TODO make short (1 statement) repeat, change le ri ?
 S void parse_repeat_stat(ND* nd) {
 
 	ND* ndx = mkndx();
@@ -1897,9 +1896,9 @@ S void parse_call_stat(ND* nd, struct proc* p) {
 
 		const char* name = getn(tval);
 		if (try_call_subr(nd, name)) return;
-
 		p = proc_get(name);
-		if (p == NULL) { 
+
+		if (p == NULL || p->typ != 0) { 
 			error("not defined");
 			return;
 		}
@@ -2185,8 +2184,9 @@ S ND* parse_sequ(void) {
 					if (p) {
 						if (p->typ == 0) parse_call_stat(nd, p);
 						else {
-							nd->vf = op_print;
-							nd->le = parse_strex();;
+							goto error_statement;
+//							nd->vf = op_print;
+//							nd->le = parse_strex();;
 						}
 					}
 					else {
@@ -2197,7 +2197,8 @@ S ND* parse_sequ(void) {
 						else if (tok == t_mineq) nd->vf = op_flassm;
 						else if (tok == t_asteq) nd->vf = op_flasst;
 						else if (tok == t_diveq) nd->vf = op_flassd;
-						else error("= += -= *= /=");
+						else goto error_statement;
+//						else error("= += -= *= /=");
 // ?????
 //						else {
 //							nd->vf = op_print;
@@ -2437,6 +2438,7 @@ S ND* parse_sequ(void) {
 				}
 			}
 			else {
+error_statement:
 				error("statement");
 				break;
 			}

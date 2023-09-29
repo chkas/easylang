@@ -254,6 +254,8 @@ S double op_logn(ND* nd) {
 }
 S double op_sin(ND* nd) {
 	return sin(numf(nd->le) / 180. * M_PI);
+// not supported in emscripten	
+// return __sinpi(numf(nd->le) / 180.);
 }
 S double op_cos(ND* nd) {
 	return cos(numf(nd->le) / 180. * M_PI);
@@ -2371,7 +2373,11 @@ S void dbg_delay(void) {
 S void dbg_line(ND* nd) {
 	if (rt.slow && rt.slow < 33) {
 		int i = 0;
-		while (opln_p[i].nd != nd) i++;
+		while (i < opln_len && opln_p[i].nd != nd) i++;
+		if (i == opln_len) {
+			pr("internal error - dbg_line");
+			return;
+		}
 		gr_debline(opln_p[i].line);
 		dbg_outvars();
 		if (rt.slow == 32 || rt.slow == 31) {
@@ -2437,21 +2443,21 @@ S void op_if_slow(ND* nd) {
 		exec_sequ_slow(nd->ri);
 	}
 }
+
 S void op_if_else_slow(ND* nd) {
 	dbg_delay();
+	ND* ndx = nd->ri;
 	if (intf(nd->le)) {
-		exec_sequ_slow(nd->ri);
+		exec_sequ_slow(ndx->ex);
 	}
 	else {
-		ND* ndx = nd + 1;
-		exec_sequ_slow(ndx->ex);
+		exec_sequ_slow(ndx->ex2);
 	}
 }
 
 S void op_callsubr_slow(ND* nd) {
 	if (rt.slow >= 32) rt.slow += 1;
 	exec_sequ_slow(nd->le->ex);
-//	exec_sequ_slow(nd->le);
 	if (rt.slow > 32) rt.slow -= 1;
 	if (stop_flag) stop_flag -= 1;
 }
