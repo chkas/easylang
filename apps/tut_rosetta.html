@@ -13,92 +13,9 @@ txt_split = "\n*\n"
 
 txt_tutor=`* Rosetta Code with Easylang
 *
-* 100 doors
-*
-@ https://rosettacode.org/wiki/100_doors@Task
-*
-len d[] 100
-for p = 1 to 100
-   i = p
-   while i <= 100
-      d[i] = 1 - d[i]
-      i += p
-   .
-.
-for i = 1 to 100
-   if d[i] = 1
-      print i
-   .
-.
-*
-* 100 prisoners
-*
-@ https://rosettacode.org/wiki/100_prisoners@Task
-*
-for i = 1 to 100
-   drawer[] &= i
-   sampler[] &= i
-.
-subr shuffle_drawer
-   for i = len drawer[] downto 2
-      r = random i
-      swap drawer[r] drawer[i]
-   .
-.
-subr play_random
-   shuffle_drawer
-   for prisoner = 1 to 100
-      found = 0
-      for i = 1 to 50
-         r = random (100 - i)
-         card = drawer[sampler[r]]
-         swap sampler[r] sampler[100 - i - 1]
-         if card = prisoner
-            found = 1
-            break 1
-         .
-      .
-      if found = 0
-         break 1
-      .
-   .
-.
-subr play_optimal
-   shuffle_drawer
-   for prisoner = 1 to 100
-      reveal = prisoner
-      found = 0
-      for i = 1 to 50
-         card = drawer[reveal]
-         if card = prisoner
-            found = 1
-            break 1
-         .
-         reveal = card
-      .
-      if found = 0
-         break 1
-      .
-   .
-.
-n = 10000
-win = 0
-for _ = 1 to n
-   play_random
-   win += found
-.
-print "random: " & 100.0 * win / n & "%"
-# 
-win = 0
-for _ = 1 to n
-   play_optimal
-   win += found
-.
-print "optimal: " & 100.0 * win / n & "%"
-*
 * 10001th prime
 *
-@ https://rosettacode.org/wiki/10001th_prime@Task
+@ https://www.rosettacode.org/wiki/10001th_prime@Task
 *
 fastfunc isprim num .
    if num mod 2 = 0 and num > 2
@@ -123,195 +40,9 @@ repeat
 .
 print i
 *
-* 15 puzzle game
-*
-@ https://rosettacode.org/wiki/15_puzzle_game@Task
-*
-sys topleft
-background 432
-textsize 13
-len f[] 16
-proc draw . .
-   clear
-   for i = 1 to 16
-      h = f[i]
-      if h < 16
-         x = (i - 1) mod 4 * 24 + 3
-         y = (i - 1) div 4 * 24 + 3
-         color 210
-         move x y
-         rect 22 22
-         move x + 4 y + 6
-         if h < 10
-            move x + 6 y + 6
-         .
-         color 885
-         text h
-      .
-   .
-.
-global done .
-proc smiley . .
-   s = 3.5
-   x = 86
-   y = 86
-   move x y
-   color 983
-   circle 2.8 * s
-   color 000
-   move x - s y - s
-   circle s / 3
-   move x + 3.5 y - 3.5
-   circle s / 3
-   linewidth s / 3
-   curve [ x - s y + s x y + 2 * s x + s y + s ]
-.
-proc init . .
-   done = 0
-   for i = 1 to 16
-      f[i] = i
-   .
-   # shuffle
-   for i = 15 downto 2
-      r = random i
-      swap f[r] f[i]
-   .
-   # make it solvable
-   inv = 0
-   for i = 1 to 15
-      for j = 1 to i - 1
-         if f[j] > f[i]
-            inv += 1
-         .
-      .
-   .
-   if inv mod 2 <> 0
-      swap f[1] f[2]
-   .
-   textsize 12
-   draw
-.
-proc move_tile . .
-   c = mouse_x div 25
-   r = mouse_y div 25
-   i = r * 4 + c + 1
-   if c > 0 and f[i - 1] = 16
-      swap f[i] f[i - 1]
-   elif r > 0 and f[i - 4] = 16
-      swap f[i] f[i - 4]
-   elif r < 3 and f[i + 4] = 16
-      swap f[i] f[i + 4]
-   elif c < 3 and f[i + 1] = 16
-      swap f[i] f[i + 1]
-   .
-   draw
-   for i = 1 to 15
-      if f[i] > f[i + 1]
-         return
-      .
-   .
-   done = 1
-   timer 0.5
-.
-on mouse_down
-   if done = 0
-      move_tile
-   elif done = 3
-      init
-   .
-.
-on timer
-   if done = 1
-      smiley
-      done = 2
-      timer 2
-   else
-      done = 3
-   .
-.
-init
-*
-* 21 game
-*
-@ https://rosettacode.org/wiki/21_game@Task
-*
-print "Who reaches 21, wins"
-print "Do you want to begin (y/n)"
-who = 1
-if input = "n"
-  who = 2
-.
-who$[] = [ "Human" "Computer" ]
-repeat
-  if who = 1
-    repeat
-      print ""
-      print "Choose 1,2 or 3 (q for quit)"
-      a$ = input
-      n = number a$
-      until a$ = "q" or (n >= 1 and n <= 3)
-    .
-  else
-    sleep 1
-    if sum mod 4 = 1
-      n = random 3
-    else
-      n = 4 - (sum + 3) mod 4
-    .
-  .
-  sum += n
-  print who$[who] & ": " & n & " --> " & sum
-  until sum >= 21 or a$ = "q"
-  who = who mod 2 + 1
-.
-if a$ <> "q"
-  print ""
-  if who = 0
-    print "Congratulation, you won"
-  else
-    print "Sorry, you lost"
-  .
-.
-*
-* 99 bottles of beer
-*
-@ https://rosettacode.org/wiki/99_bottles_of_beer@Task
-*
-func$ bottle num .
-   if num = 1
-      return "bottle"
-   .
-   return "bottles"
-.
-# 
-i = 99
-repeat
-   print i & " " & bottle i & " of beer on the wall"
-   print i & " " & bottle i & " of beer"
-   print "Take one down, pass it around"
-   i -= 1
-   until i = 0
-   print i & " " & bottle i & " of beer on the wall"
-   print ""
-.
-print "No more bottles of beer on the wall"
-*
-* A+B
-*
-@ https://rosettacode.org/wiki/A+B@Task
-*
-a$ = input
-i = 1
-while i < len a$ and substr a$ i 1 <> " "
-  i += 1
-.
-a = number substr a$ 1 i
-b = number substr a$ i -1
-print a + b
-*
 * ABC problem
 *
-@ https://rosettacode.org/wiki/ABC_problem@Task
+@ https://www.rosettacode.org/wiki/ABC_problem@Task
 *
 b$[][] = [ [ "B" "O" ] [ "X" "K" ] [ "D" "Q" ] [ "C" "P" ] [ "N" "A" ] [ "G" "T" ] [ "R" "E" ] [ "T" "G" ] [ "Q" "D" ] [ "F" "S" ] [ "J" "W" ] [ "H" "U" ] [ "V" "I" ] [ "A" "N" ] [ "O" "B" ] [ "E" "R" ] [ "F" "S" ] [ "L" "Y" ] [ "P" "C" ] [ "Z" "M" ] ]
 len b[] len b$[][]
@@ -339,7 +70,7 @@ for s$ in [ "A" "BARK" "BOOK" "TREAT" "COMMON" "SQUAD" "CONFUSE" ]
 *
 * Ackermann function
 *
-@ https://rosettacode.org/wiki/Ackermann_function@Task
+@ https://www.rosettacode.org/wiki/Ackermann_function@Task
 *
 func ackerm m n .
    if m = 0
@@ -352,66 +83,9 @@ func ackerm m n .
 .
 print ackerm 3 6
 *
-* Additive primes
-*
-@ https://rosettacode.org/wiki/Additive_primes@Task
-*
-func prime n .
-   if n mod 2 = 0 and n > 2
-      return 0
-   .
-   i = 3
-   sq = sqrt n
-   while i <= sq
-      if n mod i = 0
-         return 0
-      .
-      i += 2
-   .
-   return 1
-.
-func digsum n .
-   while n > 0
-      sum += n mod 10
-      n = n div 10
-   .
-   return sum
-.
-for i = 2 to 500
-   if prime i = 1
-      s = digsum i
-      if prime s = 1
-         write i & " "
-      .
-   .
-.
-print ""
-*
-* Amicable pairs
-*
-@ https://rosettacode.org/wiki/Amicable_pairs@Task
-*
-func sumdivs n .
-   sum = 1
-   for d = 2 to sqrt n
-      if n mod d = 0
-         sum += d + n div d
-      .
-   .
-   return sum
-.
-for n = 1 to 20000
-   m = sumdivs n
-   if m > n
-      if sumdivs m = n
-         print n & " " & m
-      .
-   .
-.
-*
 * Animate a pendulum
 *
-@ https://rosettacode.org/wiki/Animate_a_pendulum@Task
+@ https://www.rosettacode.org/wiki/Animate_a_pendulum@Task
 *
 ang = 45
 on animate
@@ -428,7 +102,7 @@ on animate
 *
 * Archimedean spiral
 *
-@ https://rosettacode.org/wiki/Archimedean_spiral@Task
+@ https://www.rosettacode.org/wiki/Archimedean_spiral@Task
 *
 linewidth 0.4
 x = 50
@@ -441,7 +115,7 @@ while r < 50
 *
 * Arithmetic evaluation
 *
-@ https://rosettacode.org/wiki/Arithmetic_evaluation@Task
+@ https://www.rosettacode.org/wiki/Arithmetic_evaluation@Task
 *
 subr nch
    if inp_ind > len inp$[]
@@ -586,165 +260,39 @@ input_data
 4.2 * ((5.3+8)*3 + 4)
 2.5 * 2 + 2 * 3.14
 *
-* Arithmetic numbers
+* Ascending primes
 *
-@ https://rosettacode.org/wiki/Arithmetic_numbers@Task
+@ https://www.rosettacode.org/wiki/Ascending_primes@Task
 *
-print "The first 100 arithmetic numbers are:"
-numfmt 0 3
-n = 1
-while aricnt <= 1e5
-   divi = 1 ; divcnt = 0 ; sum = 0
-   repeat
-      quot = n div divi
-      until quot < divi
-      if quot = divi and n mod divi = 0
-         sum += quot
-         divcnt += 1
-         break 1
-      .
-      if n mod divi = 0
-         sum += divi + quot
-         divcnt += 2
-      .
-      divi += 1
+func isprim num .
+   if num < 2
+      return 0
    .
-   if sum mod divcnt = 0
-      aricnt += 1
-      if aricnt <= 100
-         write n & " "
-         if aricnt mod 10 = 0
-            print ""
-         .
+   i = 2
+   while i <= sqrt num
+      if num mod i = 0
+         return 0
       .
-      if divcnt > 2
-         compcnt += 1
-      .
-      if aricnt = 1e3 or aricnt = 1e4 or aricnt = 1e5
-         print ""
-         print aricnt & "th arithmetic number: " & n
-         print "Composite arithmetic numbers: " & compcnt
-      .
+      i += 1
    .
-   n += 1
+   return 1
 .
-*
-* Arithmetic/Integer
-*
-@ https://rosettacode.org/wiki/Arithmetic/Integer@Task
-*
-a = number input
-b = number input
-print a + b
-print a - b
-print a * b
-print a div b
-print a mod b
-print pow a b
-*
-* Array concatenation
-*
-@ https://rosettacode.org/wiki/Array_concatenation@Task
-*
-a[] = [ 1 2 3 ]
-b[] = [ 4 5 6 ]
-c[] = a[]
-for h in b[]
-  c[] &= h
-.
-print c[]
-*
-* Array length
-*
-@ https://rosettacode.org/wiki/Array_length@Task
-*
-fruit$[] = [ "apples" "oranges" ]
-print len fruit$[]
-*
-* Arrays
-*
-@ https://rosettacode.org/wiki/Arrays@Task
-*
-len f[] 4
-for i = 1 to len f[]
-  f[i] = i
-.
-f[] &= 5
-for i = 1 to len f[]
-  print f[i]
-.
-*
-* Averages/Arithmetic mean
-*
-@ https://rosettacode.org/wiki/Averages/Arithmetic_mean@Task
-*
-proc mean . f[] r .
-   for i = 1 to len f[]
-      s += f[i]
+proc nextasc n . .
+   if isprim n = 1
+      write n & " "
    .
-   r = s / len f[]
-.
-f[] = [ 1 2 3 4 5 6 7 8 ]
-mean f[] r
-print r
-*
-* Averages/Median
-*
-@ https://rosettacode.org/wiki/Averages/Median@Task
-*
-proc quickselect k . list[] res .
-   # 
-   subr partition
-      mid = left
-      for i = left + 1 to right
-         if list[i] < list[left]
-            mid += 1
-            swap list[i] list[mid]
-         .
-      .
-      swap list[left] list[mid]
+   if n > 123456789
+      return
    .
-   left = 1
-   right = len list[]
-   while left < right
-      partition
-      if mid < k
-         left = mid + 1
-      elif mid > k
-         right = mid - 1
-      else
-         left = right
-      .
-   .
-   res = list[k]
-.
-proc median . list[] res .
-   h = len list[] div 2 + 1
-   quickselect h list[] res
-   if len list[] mod 2 = 0
-      quickselect h - 1 list[] h
-      res = (res + h) / 2
+   for d = n mod 10 + 1 to 9
+      nextasc n * 10 + d
    .
 .
-test[] = [ 4.1 5.6 7.2 1.7 9.3 4.4 3.2 ]
-median test[] med
-print med
-test[] = [ 4.1 7.2 1.7 9.3 4.4 3.2 ]
-median test[] med
-print med
-*
-* Babbage problem
-*
-@ https://rosettacode.org/wiki/Babbage_problem@Task
-*
-while n * n mod 1000000 <> 269696
-  n += 1
-.
-print n
+nextasc 0
 *
 * Barnsley fern
 *
-@ https://rosettacode.org/wiki/Barnsley_fern@Task
+@ https://www.rosettacode.org/wiki/Barnsley_fern@Task
 *
 color 060
 for i = 1 to 200000
@@ -768,140 +316,9 @@ for i = 1 to 200000
   rect 0.3 0.3
 .
 *
-* Binary digits
-*
-@ https://rosettacode.org/wiki/Binary_digits@Task
-*
-func$ bin num .
-   b$ = ""
-   if num = 0
-      b$ = "0"
-   .
-   while num > 0
-      b$ = num mod 2 & b$
-      num = num div 2
-   .
-   return b$
-.
-print bin 2
-print bin 50
-print bin 9000
-*
-* Binary search
-*
-@ https://rosettacode.org/wiki/Binary_search@Task
-*
-proc binSearch val . a[] res .
-   low = 1
-   high = len a[]
-   res = 0
-   while low <= high and res = 0
-      mid = (low + high) div 2
-      if a[mid] > val
-         high = mid - 1
-      elif a[mid] < val
-         low = mid + 1
-      else
-         res = mid
-      .
-   .
-.
-a[] = [ 2 4 6 8 9 ]
-binSearch 8 a[] r
-print r
-*
-* Bitwise operations
-*
-@ https://rosettacode.org/wiki/Bitwise_operations@Task
-*
-# numbers are doubles, bit operations use 32 bits and are unsigned
-x = 11
-y = 2
-print bitnot x
-print bitand x y
-print bitor x y
-print bitxor x y
-print bitshift x y
-print bitshift x -y
-*
-* Boolean values
-*
-@ https://rosettacode.org/wiki/Boolean_values@Task
-*
-boolNumber = 1
-if boolNumber = 1
-   print "True"
-else
-   print "False"
-.
-*
-* Brazilian numbers
-*
-@ https://rosettacode.org/wiki/Brazilian_numbers@Task
-*
-func sameDigits n b .
-   f = n mod b
-   repeat
-      n = n div b
-      until n = 0
-      if n mod b <> f
-         return 0
-      .
-   .
-   return 1
-.
-func isBrazilian7 n .
-   # n >= 7
-   if n mod 2 = 0
-      return 1
-   .
-   for b = 2 to n - 2
-      if sameDigits n b = 1
-         return 1
-      .
-   .
-   return 0
-.
-func prime n .
-   if n mod 2 = 0 and n > 2
-      return 0
-   .
-   i = 3
-   sq = sqrt n
-   while i <= sq
-      if n mod i = 0
-         return 0
-      .
-      i += 2
-   .
-   return 1
-.
-for kind$ in [ "" "odd" "prime" ]
-   print "First 20 " & kind$ & " Brazilian numbers:"
-   n = 7
-   cnt = 1
-   while cnt <= 20
-      if isBrazilian7 n = 1
-         write n & " "
-         cnt += 1
-      .
-      if kind$ = ""
-         n += 1
-      elif kind$ = "odd"
-         n += 2
-      else
-         repeat
-            n += 2
-            until prime n = 1
-         .
-      .
-   .
-   print ""
-.
-*
 * Brownian tree
 *
-@ https://rosettacode.org/wiki/Brownian_tree@Task
+@ https://www.rosettacode.org/wiki/Brownian_tree@Task
 *
 color3 0 1 1
 len f[] 200 * 200
@@ -937,56 +354,9 @@ while i < n
   .
 .
 *
-* Bulls and cows
-*
-@ https://rosettacode.org/wiki/Bulls_and_cows@Task
-*
-dig[] = [ 1 2 3 4 5 6 7 8 9 ]
-for i = 1 to 4
-  h = i - 1 + random (10 - i)
-  swap dig[i] dig[h]
-.
-# print dig[]
-len g[] 4
-attempts = 0
-repeat
-  repeat
-    ok = 0
-    s$[] = strchars input
-    if len s$[] = 4
-      ok = 1
-      for i = 1 to 4
-        g[i] = number s$[i]
-        if g[i] = 0
-          ok = 0
-        .
-      .
-    .
-    until ok = 1
-  .
-  print g[]
-  attempts += 1
-  bulls = 0
-  cows = 0
-  for i = 1 to 4
-    if g[i] = dig[i]
-      bulls += 1
-    else
-      for j = 1 to 4
-        if dig[j] = g[i]
-          cows += 1
-        .
-      .
-    .
-  .
-  print "bulls:" & bulls & " cows:" & cows
-  until bulls = 4
-.
-print "Well done! " & attempts & " attempts needed."
-*
 * Calculating the value of e
 *
-@ https://rosettacode.org/wiki/Calculating_the_value_of_e@Task
+@ https://www.rosettacode.org/wiki/Calculating_the_value_of_e@Task
 *
 numfmt 5 0
 fact = 1
@@ -1000,72 +370,9 @@ while abs (e - e0) > 0.0001
 .
 print e
 *
-* Call a function
-*
-@ https://rosettacode.org/wiki/Call_a_function@Task
-*
-func sqr n .
-   return n * n
-.
-sqr 3
-# 
-proc divmod a b . q r .
-   q = a div b
-   r = a mod b
-.
-divmod 11 3 q r
-print q & " " & r
-# 
-subr sqr2
-   a = a * a
-.
-a = 5
-sqr2
-print a
-*
-* Case-sensitivity of identifiers
-*
-@ https://rosettacode.org/wiki/Case-sensitivity_of_identifiers@Task
-*
-dog$ = "Benjamin"
-Dog$ = "Samba"
-DOG$ = "Bernie"
-# 
-print "The three dogs are named " & dog$ & ", " & Dog$ & ", and " & DOG$ & "."
-*
-* Catalan numbers
-*
-@ https://rosettacode.org/wiki/Catalan_numbers@Task
-*
-func catalan n .
-   if n = 0
-      return 1
-   .
-   return 2 * (2 * n - 1) * catalan (n - 1) div (1 + n)
-.
-for i = 0 to 14
-   print catalan i
-.
-*
-* Catalan numbers/Pascal's triangle
-*
-@ https://rosettacode.org/wiki/Catalan_numbers/Pascal's_triangle@Task
-*
-print 1
-for n = 2 to 15
-   num = 1
-   den = 1
-   for k = 2 to n
-      num *= n + k
-      den *= k
-      cat = num / den
-   .
-   print cat
-.
-*
 * Chaos game
 *
-@ https://rosettacode.org/wiki/Chaos_game@Task
+@ https://www.rosettacode.org/wiki/Chaos_game@Task
 *
 color 900
 x[] = [ 0 100 50 ]
@@ -1080,243 +387,9 @@ for i = 1 to 100000
   y = (y + y[h]) / 2
 .
 *
-* Character codes
-*
-@ https://rosettacode.org/wiki/Character_codes@Task
-*
-print strcode "a"
-print strchar 97
-*
-* Chebyshev coefficients
-*
-@ https://rosettacode.org/wiki/Chebyshev_coefficients@Task
-*
-numfmt 12 0
-a = 0
-b = 1
-n = 10
-len coef[] n
-len cheby[] n
-for i = 0 to n - 1
-   coef[i + 1] = cos (180 / pi * (cos (180 / n * (i + 1 / 2)) * (b - a) / 2 + (b + a) / 2))
-.
-for i = 0 to n - 1
-   w = 0
-   for j = 0 to n - 1
-      w += coef[j + 1] * cos (180 / n * i * (j + 1 / 2))
-   .
-   cheby[i + 1] = w * 2 / n
-   print cheby[i + 1]
-.
-*
-* Chinese remainder theorem
-*
-@ https://rosettacode.org/wiki/Chinese_remainder_theorem@Task
-*
-func mul_inv a b .
-   b0 = b
-   x1 = 1
-   if b <> 1
-      while a > 1
-         q = a div b
-         t = b
-         b = a mod b
-         a = t
-         t = x0
-         x0 = x1 - q * x0
-         x1 = t
-      .
-      if x1 < 0
-         x1 += b0
-      .
-   .
-   return x1
-.
-proc remainder . n[] a[] r .
-   prod = 1
-   sum = 0
-   for i = 1 to len n[]
-      prod *= n[i]
-   .
-   for i = 1 to len n[]
-      p = prod / n[i]
-      sum += a[i] * (mul_inv p n[i]) * p
-      r = sum mod prod
-   .
-.
-n[] = [ 3 5 7 ]
-a[] = [ 2 3 2 ]
-remainder n[] a[] h
-print h
-*
-* Chowla numbers
-*
-@ https://rosettacode.org/wiki/Chowla_numbers@Task
-*
-fastfunc chowla n .
-   sum = 0
-   i = 2
-   while i * i <= n
-      if n mod i = 0
-         j = n div i
-         if i = j
-            sum += i
-         else
-            sum += i + j
-         .
-      .
-      i += 1
-   .
-   return sum
-.
-proc sieve . c[] .
-   i = 3
-   while i * 3 <= len c[]
-      if c[i] = 0
-         if chowla i = 0
-            j = 3 * i
-            while j <= len c[]
-               c[j] = 1
-               j += 2 * i
-            .
-         .
-      .
-      i += 2
-   .
-.
-proc commatize n . s$ .
-   s$[] = strchars n
-   s$ = ""
-   l = len s$[]
-   for i = 1 to len s$[]
-      if i > 1 and l mod 3 = 0
-         s$ &= ","
-      .
-      l -= 1
-      s$ &= s$[i]
-   .
-.
-print "chowla number from 1 to 37"
-for i = 1 to 37
-   print "  " & i & ": " & chowla i
-.
-proc main . .
-   print ""
-   len c[] 10000000
-   count = 1
-   sieve c[]
-   power = 100
-   i = 3
-   while i <= len c[]
-      if c[i] = 0
-         count += 1
-      .
-      if i = power - 1
-         commatize power p$
-         commatize count c$
-         print "There are " & c$ & " primes up to " & p$
-         power *= 10
-      .
-      i += 2
-   .
-   print ""
-   limit = 35000000
-   count = 0
-   i = 2
-   k = 2
-   kk = 3
-   repeat
-      p = k * kk
-      until p > limit
-      if chowla p = p - 1
-         commatize p s$
-         print s$ & " is a perfect number"
-         count += 1
-      .
-      k = kk + 1
-      kk += k
-      i += 1
-   .
-   commatize limit s$
-   print "There are " & count & " perfect mumbers up to " & s$
-.
-main
-*
-* Circular primes
-*
-@ https://rosettacode.org/wiki/Circular_primes@Task
-*
-fastfunc prime n .
-   if n mod 2 = 0 and n > 2
-      return 0
-   .
-   i = 3
-   sq = sqrt n
-   while i <= sq
-      if n mod i = 0
-         return 0
-      .
-      i += 2
-   .
-   return 1
-.
-func cycle n .
-   m = n
-   p = 1
-   while m >= 10
-      p *= 10
-      m = m div 10
-   .
-   return m + n mod p * 10
-.
-func circprime p .
-   if prime p = 0
-      return 0
-   .
-   p2 = cycle p
-   while p2 <> p
-      if p2 < p or prime p2 = 0
-         return 0
-      .
-      p2 = cycle p2
-   .
-   return 1
-.
-p = 2
-while count < 19
-   if circprime p = 1
-      print p
-      count += 1
-   .
-   p += 1
-.
-*
-* Code Golf: Code Golf
-*
-@ https://rosettacode.org/wiki/Code_Golf:_Code_Golf@Task
-*
-# with string literal (16 characters)
-write"Code Golf"
-# without quoted literals (53 characters)
-# for i in [44 0 11 10 79 40 0 3 9]write strchar 111-i.
-for i in [44 0 11 10 79 40 0 3 9]write strchar 111-i.
-*
-* Collections
-*
-@ https://rosettacode.org/wiki/Collections@Task
-*
-array[] &= 1
-array[] &= 2
-array[] &= 3
-arrayArray[][] &= [ 1 2 ]
-arrayArray[][] &= [ 3 4 ]
-arrayArray[][] &= [ 5 6 ]
-print array[]
-print arrayArray[][]
-*
 * Colour bars/Display
 *
-@ https://rosettacode.org/wiki/Colour_bars/Display@Task
+@ https://www.rosettacode.org/wiki/Colour_bars/Display@Task
 *
 col[] = [ 000 900 090 009 909 099 990 999 ]
 w = 100 / len col[]
@@ -1326,171 +399,9 @@ for i = 1 to len col[]
    rect w 100
 .
 *
-* Combinations
-*
-@ https://rosettacode.org/wiki/Combinations@Task
-*
-n = 5
-m = 3
-len result[] m
-# 
-proc combinations pos val . .
-   if pos <= m
-      for i = val to n - m
-         result[pos] = pos + i
-         combinations pos + 1 i
-      .
-   else
-      print result[]
-   .
-.
-combinations 1 0
-*
-* Combinations with repetitions
-*
-@ https://rosettacode.org/wiki/Combinations_with_repetitions@Task
-*
-items$[] = [ "iced" "jam" "plain" ]
-n = len items$[]
-k = 2
-len result[] k
-n_results = 0
-# 
-proc output . .
-   n_results += 1
-   if len items$[] > 0
-      s$ = ""
-      for i = 1 to k
-         s$ &= items$[result[i]] & " "
-      .
-      print s$
-   .
-.
-proc combine pos val . .
-   if pos > k
-      output
-   else
-      for i = val to n
-         result[pos] = i
-         combine pos + 1 i
-      .
-   .
-.
-combine 1 1
-# 
-n = 10
-k = 3
-len result[] k
-items$[] = [ ]
-n_results = 0
-combine 1 1
-print ""
-print n_results & " results with 10 donuts"
-*
-* Comments
-*
-@ https://rosettacode.org/wiki/Comments@Task
-*
-# This is a comment
-*
-* Conditional structures
-*
-@ https://rosettacode.org/wiki/Conditional_structures@Task
-*
-i = random 10
-if i mod 2 = 0
-  print i & " is divisible by 2"
-elif i mod 3 = 0
-  print i & " is divisible by 3"
-else
-  print i & " is not divisible by 2 or 3"
-.
-*
-* Continued fraction
-*
-@ https://rosettacode.org/wiki/Continued_fraction@Task
-*
-numfmt 8 0
-func calc_sqrt .
-   n = 100
-   sum = n
-   while n >= 1
-      a = 1
-      if n > 1
-         a = 2
-      .
-      b = 1
-      sum = a + b / sum
-      n -= 1
-   .
-   return sum
-.
-func calc_e .
-   n = 100
-   sum = n
-   while n >= 1
-      a = 2
-      if n > 1
-         a = n - 1
-      .
-      b = 1
-      if n > 1
-         b = n - 1
-      .
-      sum = a + b / sum
-      n -= 1
-   .
-   return sum
-.
-func calc_pi .
-   n = 100
-   sum = n
-   while n >= 1
-      a = 3
-      if n > 1
-         a = 6
-      .
-      b = 2 * n - 1
-      b *= b
-      sum = a + b / sum
-      n -= 1
-   .
-   return sum
-.
-print calc_sqrt
-print calc_e
-print calc_pi
-*
-* Convert seconds to compound duration
-*
-@ https://rosettacode.org/wiki/Convert_seconds_to_compound_duration@Task
-*
-func$ split sec .
-   divs[] = [ 60 60 24 7 ]
-   n$[] = [ "sec" "min" "hr" "d" "wk" ]
-   len r[] 5
-   for i = 1 to 4
-      r[i] = sec mod divs[i]
-      sec = sec div divs[i]
-   .
-   r[5] = sec
-   for i = 5 downto 1
-      if r[i] <> 0
-         if s$ <> ""
-            s$ &= ", "
-         .
-         s$ &= r[i] & " " & n$[i]
-      .
-   .
-   return s$
-.
-print split 7259
-print split 86400
-print split 6000000
-*
 * Conway's Game of Life
 *
-@ https://rosettacode.org/wiki/Conway's_Game_of_Life@Task
+@ https://www.rosettacode.org/wiki/Conway's_Game_of_Life@Task
 *
 n = 70
 time = 0.1
@@ -1557,74 +468,9 @@ len p[] nx * nx + nx
 init
 timer 0
 *
-* Copy a string
-*
-@ https://rosettacode.org/wiki/Copy_a_string@Task
-*
-a$ = "hello"
-b$ = a$
-print b$
-*
-* Count in factors
-*
-@ https://rosettacode.org/wiki/Count_in_factors@Task
-*
-proc decompose num . primes[] .
-   primes[] = [ ]
-   t = 2
-   while t * t <= num
-      if num mod t = 0
-         primes[] &= t
-         num = num / t
-      else
-         t += 1
-      .
-   .
-   primes[] &= num
-.
-for i = 1 to 30
-   write i & ": "
-   decompose i primes[]
-   for j = 1 to len primes[]
-      if j > 1
-         write " x "
-      .
-      write primes[j]
-   .
-   print ""
-   primes[] = [ ]
-.
-*
-* Count in octal
-*
-@ https://rosettacode.org/wiki/Count_in_octal@Task
-*
-func$ oct v .
-   while v > 0
-      r$ = v mod 8 & r$
-      v = v div 8
-   .
-   if r$ = ""
-      r$ = 0
-   .
-   return r$
-.
-for i = 0 to 10
-   print oct i
-.
-print "."
-print "."
-max = pow 2 53
-i = max - 10
-repeat
-   print oct i
-   until i = max
-   i += 1
-.
-*
 * Count the coins
 *
-@ https://rosettacode.org/wiki/Count_the_coins@Task
+@ https://www.rosettacode.org/wiki/Count_the_coins@Task
 *
 len cache[] 100000 * 7 + 6
 val[] = [ 1 5 10 25 50 100 ]
@@ -1651,174 +497,9 @@ print count 100000 6
 # this is not exact, since numbers
 # are doubles and r > 2^53
 *
-* Cumulative standard deviation
-*
-@ https://rosettacode.org/wiki/Cumulative_standard_deviation@Task
-*
-global sum sum2 n .
-proc sd x . r .
-   sum += x
-   sum2 += x * x
-   n += 1
-   r = sqrt (sum2 / n - sum * sum / n / n)
-.
-v[] = [ 2 4 4 4 5 5 7 9 ]
-for v in v[]
-   sd v r
-   print v & " " & r
-.
-*
-* Cullen and Woodall numbers
-*
-@ https://rosettacode.org/wiki/Cullen_and_Woodall_numbers@Task
-*
-for n = 1 to 20
-   write n * pow 2 n + 1 & " "
-.
-print ""
-for n = 1 to 20
-   write n * pow 2 n - 1 & " "
-.
-print ""
-*
-* Day of the week of Christmas and New Year
-*
-@ https://rosettacode.org/wiki/Day_of_the_week_of_Christmas_and_New_Year@Task
-*
-func dayOfTheWeek year month day .
-   # Based on Conway's doomsday algorithm
-   century = floor (year / 100)
-   if century mod 4 = 0
-      centuryDoomsday = 2
-   elif century mod 4 = 1
-      centuryDoomsday = 0
-   elif century mod 4 = 2
-      centuryDoomsday = 5
-   elif century mod 4 = 3
-      centuryDoomsday = 3
-   .
-   mainYear = year mod 100
-   yearDoomsday = (floor (mainYear / 12) + mainYear mod 12 + floor (mainYear mod 12 / 4) + centuryDoomsday) mod 7
-   if mainYear = 0
-      if century mod 4 = 0
-         leap = 1
-      else
-         leap = 0
-      .
-   else
-      if mainYear mod 4 = 0
-         leap = 1
-      else
-         leap = 0
-      .
-   .
-   if leap = 1
-      januaryOne = (yearDoomsday + 4) mod 7
-   else
-      januaryOne = (yearDoomsday + 5) mod 7
-   .
-   monthDays[] = [ 0 31 59 90 120 151 181 212 243 273 304 334 ]
-   nthDay = monthDays[month]
-   if month > 2
-      nthDay += leap
-   .
-   nthDay += day
-   return (januaryOne + nthDay - 1) mod 7 + 1
-.
-days$[] = [ "Sunday" "Monday" "Tuesday" "Wednesday" "Thursday" "Friday" "Saturday" ]
-# 
-print "2021-12-25 is on " & days$[dayOfTheWeek 2021 12 25]
-print "2022-1-1 is on " & days$[dayOfTheWeek 2022 1 1]
-*
-* Department numbers
-*
-@ https://rosettacode.org/wiki/Department_numbers@Task
-*
-numfmt 0 3
-for pol = 2 step 2 to 6
-   for san = 1 to 7
-      for fire = 1 to 7
-         if pol <> san and san <> fire and fire <> pol
-            if pol + fire + san = 12
-               print pol & san & fire
-            .
-         .
-      .
-   .
-.
-*
-* Detect division by zero
-*
-@ https://rosettacode.org/wiki/Detect_division_by_zero@Task
-*
-func checkDivZero a b .
-   r = a / b
-   if r = number "nan" or r = number "inf" or r = number "-inf"
-      return 1
-   .
-.
-print checkDivZero 5 7
-print checkDivZero -1 0
-*
-* Determine if a string is numeric
-*
-@ https://rosettacode.org/wiki/Determine_if_a_string_is_numeric@Task
-*
-func is_numeric a$ .
-   h = number a$
-   # because every variable must be used
-   h = h
-   return 1 - error
-.
-for s$ in [ "abc" "21a" "1234" "-13" "7.65" ]
-   if is_numeric s$ = 1
-      print s$ & " is numeric"
-   else
-      print s$ & " is not numeric"
-   .
-.
-*
-* Digital root
-*
-@ https://rosettacode.org/wiki/Digital_root@Task
-*
-proc digitalRoot n . x persistence .
-   numberString$ = n
-   currentPersist = 0
-   while len numberString$ > 1
-      for i = 1 to len numberString$
-         sum += number substr numberString$ i 1
-      .
-      numberString$ = sum
-      currentPersist += 1
-      sum = 0
-   .
-   x = number numberString$
-   persistence = currentPersist
-.
-numbers[] = [ 627615 39390 588225 393900588225 ]
-for i in numbers[]
-   digitalRoot i x persistence
-   print i
-   print "Additive persistence: " & persistence
-   print "Digital root: " & x
-.
-*
-* Dot product
-*
-@ https://rosettacode.org/wiki/Dot_product@Task
-*
-func dotprod a[] b[] .
-   for i to len a[]
-      r += a[i] * b[i]
-   .
-   return r
-.
-print dotprod [ 1 3 -5 ] [ 4 -2 -1 ]
-*
 * Dragon curve
 *
-@ https://rosettacode.org/wiki/Dragon_curve@Task
+@ https://www.rosettacode.org/wiki/Dragon_curve@Task
 *
 color 050
 linewidth 0.5
@@ -1842,7 +523,7 @@ dragon 60 12 1
 *
 * Draw a clock
 *
-@ https://rosettacode.org/wiki/Draw_a_clock@Task
+@ https://www.rosettacode.org/wiki/Draw_a_clock@Task
 *
 proc draw hour min sec . .
    # dial
@@ -1896,17 +577,9 @@ on timer
 .
 timer 0
 *
-* Draw a pixel
-*
-@ https://rosettacode.org/wiki/Draw_a_pixel@Task
-*
-color 900
-move 50 50
-rect 0.5 0.5
-*
 * Draw a rotating cube
 *
-@ https://rosettacode.org/wiki/Draw_a_rotating_cube@Task
+@ https://www.rosettacode.org/wiki/Draw_a_rotating_cube@Task
 *
 node[][] = [ [ -1 -1 -1 ] [ -1 -1 1 ] [ -1 1 -1 ] [ -1 1 1 ] [ 1 -1 -1 ] [ 1 -1 1 ] [ 1 1 -1 ] [ 1 1 1 ] ]
 edge[][] = [ [ 1 2 ] [ 2 4 ] [ 4 3 ] [ 3 1 ] [ 5 6 ] [ 6 8 ] [ 8 7 ] [ 7 5 ] [ 1 5 ] [ 2 6 ] [ 3 7 ] [ 4 8 ] ]
@@ -1975,237 +648,9 @@ on animate
    draw
 .
 *
-* Empty string
-*
-@ https://rosettacode.org/wiki/Empty_string@Task
-*
-a$ = ""
-if a$ = ""
-  print "empty"
-.
-if a$ <> ""
-  print "no empty"
-.
-*
-* Ethiopian multiplication
-*
-@ https://rosettacode.org/wiki/Ethiopian_multiplication@Task
-*
-x = 17
-y = 34
-tot = 0
-while x >= 1
-  write x & "\t"
-  if (x + 1) mod 2 = 0
-    tot += y
-    print y
-  else
-    print ""
-  .
-  x = x div 2
-  y = 2 * y
-.
-print "=\t" & tot
-*
-* Euler's sum of powers conjecture
-*
-@ https://rosettacode.org/wiki/Euler's_sum_of_powers_conjecture@Task
-*
-n = 250
-len p5[] n
-len h5[] 65537
-for i = 0 to n - 1
-   p5[i + 1] = i * i * i * i * i
-   h5[p5[i + 1] mod 65537 + 1] = 1
-.
-func search a s .
-   y = -1
-   b = n
-   while a + 1 < b
-      i = (a + b) div 2
-      if p5[i + 1] > s
-         b = i
-      elif p5[i + 1] < s
-         a = i
-      else
-         a = b
-         y = i
-      .
-   .
-   return y
-.
-for x0 = 0 to n - 1
-   for x1 = 0 to x0
-      sum1 = p5[x0 + 1] + p5[x1 + 1]
-      for x2 = 0 to x1
-         sum2 = p5[x2 + 1] + sum1
-         for x3 = 0 to x2
-            sum = p5[x3 + 1] + sum2
-            if h5[sum mod 65537 + 1] = 1
-               y = search x0 sum
-               if y >= 0
-                  print x0 & " " & x1 & " " & x2 & " " & x3 & " " & y
-                  break 4
-               .
-            .
-         .
-      .
-   .
-.
-*
-* Factorial
-*
-@ https://rosettacode.org/wiki/Factorial@Task
-*
-func factorial n .
-   r = 1
-   for i = 2 to n
-      r *= i
-   .
-   return r
-.
-print factorial 7
-*
-* Factors of an integer
-*
-@ https://rosettacode.org/wiki/Factors_of_an_integer@Task
-*
-n = 720
-for i = 1 to n
-  if n mod i = 0
-    factors[] &= i
-  .
-.
-print factors[]
-*
-* Fairshare between two and more
-*
-@ https://rosettacode.org/wiki/Fairshare_between_two_and_more@Task
-*
-func fairshare ind base .
-   while ind > 0
-      r += ind mod base
-      ind = ind div base
-   .
-   r = r mod base
-   return r
-.
-proc sequence n base . .
-   write base & ": "
-   for ind range0 n
-      write (fairshare ind base) & " "
-   .
-   print ""
-.
-sequence 25 2
-sequence 25 3
-sequence 25 5
-sequence 25 11
-*
-* Farey sequence
-*
-@ https://rosettacode.org/wiki/Farey_sequence@Task
-*
-proc farey n . .
-   b = 1 ; c = 1 ; d = n
-   write n & ": "
-   repeat
-      if n <= 11
-         write " " & a & "/" & b
-      .
-      until c > n
-      k = (n + b) div d
-      aa = c ; bb = d ; cc = k * c - a ; dd = k * d - b
-      a = aa ; b = bb ; c = cc ; d = dd
-      items += 1
-   .
-   if n > 11
-      print items & " items"
-   else
-      print ""
-   .
-.
-for i = 1 to 11
-   farey i
-.
-for i = 100 step 100 to 1000
-   farey i
-.
-*
-* Fibonacci sequence
-*
-@ https://rosettacode.org/wiki/Fibonacci_sequence@Task
-*
-func fib n .
-   if n < 2
-      return n
-   .
-   prev = 0
-   val = 1
-   for i = 2 to n
-      h = prev + val
-      prev = val
-      val = h
-   .
-   return val
-.
-print fib 36
-*
-* Filter
-*
-@ https://rosettacode.org/wiki/Filter@Task
-*
-a[] = [ 1 2 3 4 5 6 7 8 9 ]
-for i = 1 to len a[]
-  if a[i] mod 2 = 0
-    b[] &= a[i]
-  .
-.
-print b[]
-*
-* Find limit of recursion
-*
-@ https://rosettacode.org/wiki/Find_limit_of_recursion@Task
-*
-proc recurse i . .
-   if i mod 10 = 0
-      print i
-   .
-   recurse i + 1
-.
-recurse 1
-*
-* Find square difference
-*
-@ https://rosettacode.org/wiki/Find_square_difference@Task
-*
-repeat
-   i += 1
-   a = i * i
-   b = (i - 1) * (i - 1)
-   until a - b > 1000
-.
-print i
-*
-* FizzBuzz
-*
-@ https://rosettacode.org/wiki/FizzBuzz@Task
-*
-for i = 1 to 100
-  if i mod 15 = 0
-    print "FizzBuzz"
-  elif i mod 5 = 0
-    print "Buzz"
-  elif i mod 3 = 0
-    print "Fizz"
-  else
-    print i
-  .
-.
-*
 * Forest fire
 *
-@ https://rosettacode.org/wiki/Forest_fire@Task
+@ https://www.rosettacode.org/wiki/Forest_fire@Task
 *
 p_fire = 0.00002
 p_tree = 0.002
@@ -2279,7 +724,7 @@ on timer
 *
 * Fractal tree
 *
-@ https://rosettacode.org/wiki/Fractal_tree@Task
+@ https://www.rosettacode.org/wiki/Fractal_tree@Task
 *
 # Fractal tree
 # 
@@ -2302,111 +747,9 @@ on timer
    timer 2
 .
 *
-* Function definition
-*
-@ https://rosettacode.org/wiki/Function_definition@Task
-*
-func multiply a b .
-   return a * b
-.
-print multiply 7 5
-*
-* Generate lower case ASCII alphabet
-*
-@ https://rosettacode.org/wiki/Generate_lower_case_ASCII_alphabet@Task
-*
-# Generated on an array
-for i = 97 to 122
-   alphabet$[] &= strchar i
-.
-print alphabet$[]
-# Generated on a string
-for i = 97 to 122
-   alphabet$ &= strchar i
-.
-print alphabet$
-*
-* Giuga numbers
-*
-@ https://rosettacode.org/wiki/Giuga_numbers@Task
-*
-func giuga m .
-   n = m
-   for f = 2 to sqrt n
-      while n mod f = 0
-         if (m div f - 1) mod f <> 0
-            return 0
-         .
-         n = n div f
-         if f > n
-            return 1
-         .
-      .
-   .
-.
-n = 3
-while cnt < 4
-   if giuga n = 1
-      cnt += 1
-      print n
-   .
-   n += 1
-.
-*
-* Goldbach's comet
-*
-@ https://rosettacode.org/wiki/Goldbach's_comet@Task
-*
-func isprim n .
-   if n mod 2 = 0 and n > 2
-      return 0
-   .
-   i = 3
-   sq = sqrt n
-   while i <= sq
-      if n mod i = 0
-         return 0
-      .
-      i += 2
-   .
-   return 1
-.
-func goldbach n .
-   for i = 2 to n div 2
-      if isprim i = 1
-         cnt += isprim (n - i)
-      .
-   .
-   return cnt
-.
-numfmt 0 3
-for n = 4 step 2 to 202
-   write goldbach n
-   if n mod 20 = 2
-      print ""
-   .
-.
-print goldbach 1000000
-*
-* Golden ratio/Convergence
-*
-@ https://rosettacode.org/wiki/Golden_ratio/Convergence@Task
-*
-phi0 = 1
-repeat
-   phi = 1 + 1 / phi0
-   until abs (phi - phi0) < 1e-5
-   phi0 = phi
-   iter += 1
-.
-numfmt 10 0
-print "Iterations: " & iter
-print "Result: " & phi
-print "Error: " & phi - (1 + sqrt 5) / 2
-*
 * Greatest common divisor
 *
-@ https://rosettacode.org/wiki/Greatest_common_divisor@Task
+@ https://www.rosettacode.org/wiki/Greatest_common_divisor@Task
 *
 func gcd a b .
    while b <> 0
@@ -2420,7 +763,7 @@ print gcd 120 35
 *
 * Greatest element of a list
 *
-@ https://rosettacode.org/wiki/Greatest_element_of_a_list@Task
+@ https://www.rosettacode.org/wiki/Greatest_element_of_a_list@Task
 *
 a[] = [ 2 9 4 3 8 5 ]
 for e in a[]
@@ -2430,7 +773,7 @@ print max
 *
 * Greyscale bars/Display
 *
-@ https://rosettacode.org/wiki/Greyscale_bars/Display@Task
+@ https://www.rosettacode.org/wiki/Greyscale_bars/Display@Task
 *
 n = 8
 for row = 0 to 3
@@ -2448,24 +791,9 @@ for row = 0 to 3
    n *= 2
 .
 *
-* Guess the number
-*
-@ https://rosettacode.org/wiki/Guess_the_number@Task
-*
-n = random 10
-write "Guess a number between 1 and 10: "
-repeat
-  g = number input
-  write g
-  until g = n
-  print " is wrong"
-  write "try again: "
-.
-print " is correct. Well guessed!"
-*
 * Guess the number/With feedback
 *
-@ https://rosettacode.org/wiki/Guess_the_number/With_feedback@Task
+@ https://www.rosettacode.org/wiki/Guess_the_number/With_feedback@Task
 *
 print "Guess a number between 1 and 100!"
 n = random 100
@@ -2485,26 +813,14 @@ print " is correct"
 *
 * Hello world/Graphical
 *
-@ https://rosettacode.org/wiki/Hello_world/Graphical@Task
+@ https://www.rosettacode.org/wiki/Hello_world/Graphical@Task
 *
 move 10 20
 text "Goodbye, World!"
 *
-* Hello world/Newline omission
-*
-@ https://rosettacode.org/wiki/Hello_world/Newline_omission@Task
-*
-write "Goodbye, World!"
-*
-* Hello world/Text
-*
-@ https://rosettacode.org/wiki/Hello_world/Text@Task
-*
-print "Hello world!"
-*
 * Hilbert curve
 *
-@ https://rosettacode.org/wiki/Hilbert_curve@Task
+@ https://www.rosettacode.org/wiki/Hilbert_curve@Task
 *
 order = 64
 linewidth 32 / order
@@ -2514,7 +830,7 @@ proc hilbert x y lg i1 i2 . .
       line (order - x) * scale (order - y) * scale
       return
    .
-   lg = lg / 2
+   lg = lg div 2
    hilbert x + i1 * lg y + i1 * lg lg i1 1 - i2
    hilbert x + i2 * lg y + (1 - i2) * lg lg i1 i2
    hilbert x + (1 - i1) * lg y + (1 - i1) * lg lg i1 i2
@@ -2522,134 +838,9 @@ proc hilbert x y lg i1 i2 . .
 .
 hilbert 0 0 order 0 0
 *
-* Horizontal sundial calculations
-*
-@ https://rosettacode.org/wiki/Horizontal_sundial_calculations@Task
-*
-func getn s$ .
-   write s$
-   v = number input
-   print v
-   return v
-.
-lat = getn "Enter latitude: "
-lng = getn "Enter longitude: "
-merid = getn "Enter legal meridian: "
-slat = sin lat
-diff = lng - merid
-print ""
-print "    sine of latitude: " & slat
-print "    diff longitude: " & diff
-print ""
-print "Hour\tSun hour angle\tDial hour line angle"
-for h = -6 to 6
-   hra = 15 * h - diff
-   hla = atan2 (slat * sin hra) cos hra
-   print h + 12 & "\t" & hra & "\t\t" & hla
-.
-*
-* Implicit type conversion
-*
-@ https://rosettacode.org/wiki/Implicit_type_conversion@Task
-*
-string$ = 32
-print string$
-*
-* Increment a numerical string
-*
-@ https://rosettacode.org/wiki/Increment_a_numerical_string@Task
-*
-a$ = "12"
-a$ = number a$ + 1
-print a$
-*
-* Input loop
-*
-@ https://rosettacode.org/wiki/Input_loop@Task
-*
-repeat
-  l$ = input
-  until error = 1
-  print l$
-.
-*
-* Integer comparison
-*
-@ https://rosettacode.org/wiki/Integer_comparison@Task
-*
-a = number input
-b = number input
-if a < b
-  print "less"
-.
-if a = b
-  print "equal"
-.
-if a > b
-  print "greater"
-.
-*
-* Integer sequence
-*
-@ https://rosettacode.org/wiki/Integer_sequence@Task
-*
-max = pow 2 53
-repeat
-   print i
-   if i = 10
-      print "."
-      print "."
-      i = max - 10
-   .
-   until i = max
-   i += 1
-.
-*
-* ISBN13 check digit
-*
-@ https://rosettacode.org/wiki/ISBN13_check_digit@Task
-*
-func ISBN13check isbn$ .
-   for c$ in strchars isbn$
-      if c$ <> "-"
-         ndigs += 1
-      .
-      dig = number c$
-      if ndigs mod 2 = 0
-         dig *= 3
-      .
-      sum += dig
-   .
-   if sum mod 10 <> 0
-      return 0
-   .
-   return 1
-.
-codes$[] = [ "978-0596528126" "978-0596528120" "978-1788399081" "978-1788399083" ]
-for code$ in codes$[]
-   if ISBN13check code$ = 1
-      print code$ & " is a valid ISBN"
-   else
-      print code$ & " is not a valid ISBN"
-   .
-.
-*
-* Josephus problem
-*
-@ https://rosettacode.org/wiki/Josephus_problem@Task
-*
-n = 41
-k = 3
-print "prisoners: " & n
-print "step size: " & k
-for i = 1 to n
-   lm = (lm + k) mod i
-.
-print "final survivor: " & lm
-*
 * Julia set
 *
-@ https://rosettacode.org/wiki/Julia_set@Task
+@ https://www.rosettacode.org/wiki/Julia_set@Task
 *
 cx = -0.7
 cy = 0.27015
@@ -2674,7 +865,7 @@ for y = 0 to 299
 *
 * Knapsack problem/0-1
 *
-@ https://rosettacode.org/wiki/Knapsack_problem/0-1@Task
+@ https://www.rosettacode.org/wiki/Knapsack_problem/0-1@Task
 *
 name$[] = [ "map" "compass" "water" "sandwich" "glucose" "tin" "banana" "apple" "cheese" "beer" "suntan cream" "camera" "t-shirt" "trousers" "umbrella" "waterproof trousers" "waterproof overclothes" "note-case" "sunglasses" "towel" "socks" "book" ]
 weight[] = [ 9 13 153 50 15 68 27 39 23 52 11 32 24 48 73 42 43 22 7 18 4 30 ]
@@ -2710,7 +901,7 @@ for item in items[]
 *
 * Knuth shuffle
 *
-@ https://rosettacode.org/wiki/Knuth_shuffle@Task
+@ https://www.rosettacode.org/wiki/Knuth_shuffle@Task
 *
 proc shuffle . a[] .
    for i = len a[] downto 2
@@ -2724,7 +915,7 @@ print arr[]
 *
 * Koch curve
 *
-@ https://rosettacode.org/wiki/Koch_curve@Task
+@ https://www.rosettacode.org/wiki/Koch_curve@Task
 *
 proc koch x1 y1 x2 y2 iter . .
    x3 = (x1 * 2 + x2) / 3
@@ -2761,7 +952,7 @@ for ang = 0 step 120 to 240
 *
 * Langton's ant
 *
-@ https://rosettacode.org/wiki/Langton's_ant@Task
+@ https://www.rosettacode.org/wiki/Langton's_ant@Task
 *
 len f[] 100 * 100
 proc show . .
@@ -2790,7 +981,7 @@ show
 *
 * Largest number divisible by its digits
 *
-@ https://rosettacode.org/wiki/Largest_number_divisible_by_its_digits@Task
+@ https://www.rosettacode.org/wiki/Largest_number_divisible_by_its_digits@Task
 *
 global found dig[] .
 proc test . .
@@ -2828,97 +1019,9 @@ for ndig = 9 downto 1
    perm 1
 .
 *
-* Largest proper divisor of n
-*
-@ https://rosettacode.org/wiki/Largest_proper_divisor_of_n@Task
-*
-func lpdiv v .
-   r = 1
-   for i = 2 to v div 2
-      if v mod i = 0
-         r = i
-      .
-   .
-   return r
-.
-numfmt 0 3
-for i = 1 to 100
-   write lpdiv i
-   if i mod 10 = 0
-      print ""
-   .
-.
-*
-* Leonardo numbers
-*
-@ https://rosettacode.org/wiki/Literals/Leonardo_numbers@Task
-*
-proc leonardo L0 L1 add . .
-   print "L0:" & L0 & " L1:" & L1 & " add:" & add
-   write L0 & " "
-   write L1 & " "
-   for i = 2 to 24
-      tmp = L0
-      L0 = L1
-      L1 = tmp + L1 + add
-      write L1 & " "
-   .
-   print ""
-.
-leonardo 1 1 1
-leonardo 0 1 0
-*
-* Literals/Floating point
-*
-@ https://rosettacode.org/wiki/Literals/Floating_point@Task
-*
-decimal = 57.1
-decimalWithE = 5710E-2
-hexadecimal = 0x39.1999999999
-print decimal
-print decimalWithE
-print hexadecimal
-*
-* Literals/Integer
-*
-@ https://rosettacode.org/wiki/Literals/Integer@Task
-*
-decimal = 57
-hexadecimal = 0x39
-print decimal
-print hexadecimal
-*
-* Literals/String
-*
-@ https://rosettacode.org/wiki/Literals/String@Task
-*
-print "EasyLang"
-print "简"
-*
-* Logical operations
-*
-@ https://rosettacode.org/wiki/Logical_operations@Task
-*
-proc logic a b . .
-   if a = 1 and b = 1
-      r1 = 1
-   .
-   if a = 1 or b = 1
-      r2 = 1
-   .
-   if a = 0
-      r3 = 1
-   .
-   print r1 & " " & r2 & " " & r3
-.
-logic 0 0
-logic 0 1
-logic 1 0
-logic 1 1
-*
 * Long multiplication
 *
-@ https://rosettacode.org/wiki/Long_multiplication@Task
+@ https://www.rosettacode.org/wiki/Long_multiplication@Task
 *
 func$ mult a$ b$ .
    a[] = number strchars a$
@@ -2943,110 +1046,9 @@ func$ mult a$ b$ .
 .
 print mult "18446744073709551616" "18446744073709551616"
 *
-* Loops/Break
-*
-@ https://rosettacode.org/wiki/Loops/Break@Task
-*
-repeat
-  a = random 20
-  print a
-  until a = 10
-  print random 20
-.
-*
-* Loops/Do-while
-*
-@ https://rosettacode.org/wiki/Loops/Do-while@Task
-*
-value = 0
-repeat
-   value += 1
-   print value
-   until value mod 6 = 0
-.
-*
-* Loops/Downward for
-*
-@ https://rosettacode.org/wiki/Loops/Downward_for@Task
-*
-for i = 10 downto 0
-  print i
-.
-*
-* Loops/For
-*
-@ https://rosettacode.org/wiki/Loops/For@Task
-*
-for i = 1 to 5
-  for j = 1 to i
-    write "*"
-  .
-  print ""
-.
-*
-* Loops/For with a specified step
-*
-@ https://rosettacode.org/wiki/Loops/For_with_a_specified_step@Task
-*
-# Prints even numbers from 0 to 100
-for i = 0 step 2 to 100
-   print i
-.
-*
-* Loops/Foreach
-*
-@ https://rosettacode.org/wiki/Loops/Foreach@Task
-*
-for i in [ 5 1 19 25 12 1 14 7 ]
-   print i
-.
-*
-* Loops/Infinite
-*
-@ https://rosettacode.org/wiki/Loops/Infinite@Task
-*
-while 1 = 1
-   print "SPAM"
-.
-*
-* Loops/N plus one half
-*
-@ https://rosettacode.org/wiki/Loops/N_plus_one_half@Task
-*
-for i = 1 to 10
-   write i
-   if i < 10
-      write ", "
-   .
-.
-*
-* Loops/Nested
-*
-@ https://rosettacode.org/wiki/Loops/Nested@Task
-*
-arr[][] = [ [ 2 12 10 4 ] [ 18 11 20 2 ] ]
-for i to len arr[][]
-   for j to len arr[i][]
-      if arr[i][j] = 20
-         print "20 at " & i & "," & j
-         break 2
-      .
-   .
-.
-*
-* Loops/While
-*
-@ https://rosettacode.org/wiki/Loops/While@Task
-*
-i = 1024
-while i > 0
-  print i
-  i = i div 2
-.
-*
 * Mandelbrot set
 *
-@ https://rosettacode.org/wiki/Mandelbrot_set@Task
+@ https://www.rosettacode.org/wiki/Mandelbrot_set@Task
 *
 # Mandelbrot
 #  
@@ -3113,178 +1115,10 @@ on mouse_up
 .
 draw
 *
-* Mastermind
-*
-@ https://rosettacode.org/wiki/Mastermind@Task
-*
-# Mastermind:w90
-# 
-col[] = [ 802 990 171 229 950 808 ]
-len code[] 4
-len guess[] 4
-# 
-subr init_vars
-   row = 0
-.
-proc draw_rate r black white . .
-   for j range0 2
-      for c range0 2
-         move c * 3.5 + 71.5 r * 11.5 + 9.4 - j * 3.5
-         if black > 0
-            color 000
-            circle 1.4
-            black -= 1
-         elif white > 0
-            color 999
-            circle 1.4
-            white -= 1
-         else
-            color 310
-            circle 0.7
-         .
-      .
-   .
-.
-proc show_code . .
-   color 531
-   move 22 92
-   rect 46 8
-   for i to 4
-      move i * 8 + 20 97
-      color col[code[i]]
-      circle 2
-   .
-.
-proc draw_guess . .
-   for c to 4
-      move c * 12 + 8 row * 11.5 + 7.5
-      color col[guess[c]]
-      circle 3.8
-   .
-.
-proc next_row . .
-   color 420
-   linewidth 11
-   move 17 row * 11.5 + 7.5
-   line 60 row * 11.5 + 7.5
-   draw_guess
-   move 73.5 row * 11.5 + 7.5
-   color 310
-   circle 5.0
-   color 753
-   move 71.5 row * 11.5 + 5
-   textsize 7
-   text "✓"
-.
-proc rate . .
-   move 73.5 row * 11.5 + 7.5
-   color 531
-   circle 5.2
-   c[] = code[]
-   g[] = guess[]
-   for i to 4
-      if c[i] = g[i]
-         black += 1
-         c[i] = -1
-         g[i] = -2
-      .
-   .
-   for i to 4
-      for j to 4
-         if c[i] = g[j]
-            white += 1
-            c[i] = -1
-            g[j] = -2
-         .
-      .
-   .
-   draw_rate row black white
-   color 531
-   linewidth 12
-   move 17 row * 11.5 + 7.5
-   line 60 row * 11.5 + 7.5
-   draw_guess
-   row += 1
-   if black = 4
-      row = 8
-   .
-   if row = 8
-      show_code
-      timer 2
-   else
-      next_row
-   .
-.
-on timer
-   row = -2
-.
-proc new . .
-   init_vars
-   for i to 4
-      code[i] = random 6
-   .
-   color 531
-   move 10 10
-   rect 70 80
-   linewidth 10
-   move 5 95
-   line 5 5
-   line 85 5
-   line 85 95
-   line 5 95
-   color 310
-   linewidth 7
-   move 28 96.5
-   line 58 96.5
-   move 30 95
-   color 864
-   textsize 4
-   text "Mastermind"
-   color 310
-   linewidth 0.5
-   move 10 90
-   line 10 4
-   move 67 90
-   line 67 4
-   move 80 90
-   line 80 4
-   for r range0 8
-      for c range0 4
-         move c * 12 + 20 r * 11.5 + 7.5
-         circle 2
-      .
-      draw_rate r 0 0
-   .
-   guess[1] = 1
-   guess[2] = 1
-   guess[3] = 2
-   guess[4] = 2
-   next_row
-.
-proc do_move . .
-   c = (mouse_x - 15) div 12
-   guess[c + 1] = guess[c + 1] mod 6 + 1
-   draw_guess
-.
-on mouse_down
-   if row = -2
-      new
-   elif mouse_y > row * 11.5 + 0.5 and mouse_y < row * 11.5 + 10.5 and row < 8
-      if mouse_x > 15 and mouse_x < 61
-         do_move
-      elif mouse_x > 67 and mouse_x < 80
-         rate
-      .
-   .
-.
-new
-*
 * Maze solving
 *
-@ https://rosettacode.org/wiki/Maze_solving@Task
+@ https://www.rosettacode.org/wiki/Maze_solving@Task
 *
-# maze generation and solving
-# 
 size = 15
 n = 2 * size + 1
 f = 100 / (n - 0.5)
@@ -3373,7 +1207,7 @@ solve 0 n + 2
 *
 * MD5/Implementation
 *
-@ https://rosettacode.org/wiki/MD5/Implementation@Task
+@ https://www.rosettacode.org/wiki/MD5/Implementation@Task
 *
 len md5k[] 64
 proc md5init . .
@@ -3480,277 +1314,9 @@ abcdefghijklmnopqrstuvwxyz
 ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789
 12345678901234567890123456789012345678901234567890123456789012345678901234567890
 *
-* Middle three digits
-*
-@ https://rosettacode.org/wiki/Middle_three_digits@Task
-*
-func$ midThreeDigits num .
-   trueNumber$ = abs num
-   if (len trueNumber$ < 3) or (len trueNumber$ mod 2 = 0)
-      r$ = "error"
-   else
-      r$ = substr trueNumber$ ((len trueNumber$ - 3) / 2 + 1) 3
-   .
-   return r$
-.
-numbers[] = [ 123 12345 1234567 987654321 10001 -10001 -123 -100 100 -12345 1 2 -1 -10 2002 -2002 0 ]
-for i in numbers[]
-   print midThreeDigits i
-.
-*
-* Minesweeper game
-*
-@ https://rosettacode.org/wiki/Minesweeper_game@Task
-*
-len cell[] 56
-len cnt[] 56
-len flag[] 56
-# 
-subr initvars
-   state = 0
-   ticks = 0
-   indx = -1
-   no_time = 0
-.
-func getind r c .
-   ind = -1
-   if r >= 0 and r <= 6 and c >= 0 and c <= 7
-      ind = r * 8 + c + 1
-   .
-   return ind
-.
-proc draw_cell ind h . .
-   ind -= 1
-   r = ind div 8
-   c = ind mod 8
-   x = c * 12 + 2.5
-   y = r * 12 + 2.5
-   move x y
-   rect 11 11
-   if h > 0
-      # count
-      move x + 3 y + 3
-      color 000
-      text h
-   elif h = -3
-      # flag
-      x += 4
-      color 000
-      linewidth 0.8
-      move x y + 3
-      line x y + 8
-      color 600
-      linewidth 2
-      move x + 0.5 y + 7
-      line x + 2 y + 7
-   elif h <> 0
-      # mine
-      color 333
-      if h = -2
-         color 800
-      .
-      move x + 5 y + 5
-      circle 3
-      line x + 8 y + 9
-   .
-.
-proc open ind . .
-   if ind <> -1 and cell[ind] = 0
-      cell[ind] = 2
-      flag[ind] = 0
-      color 686
-      draw_cell ind cnt[ind]
-      if cnt[ind] = 0
-         ind -= 1
-         r0 = ind div 8
-         c0 = ind mod 8
-         for r = r0 - 1 to r0 + 1
-            for c = c0 - 1 to c0 + 1
-               if r <> r0 or c <> c0
-                  open getind r c
-               .
-            .
-         .
-      .
-   .
-.
-proc show_mines m . .
-   for ind to 56
-      if cell[ind] = 1
-         color 686
-         if m = -1
-            color 353
-         .
-         draw_cell ind m
-      .
-   .
-.
-proc outp col s$ . .
-   move 2.5 87
-   color col
-   rect 59 11
-   color 000
-   move 5 90
-   text s$
-.
-proc upd_info . .
-   for i to 56
-      nm += flag[i]
-      if cell[i] < 2
-         nc += 1
-      .
-   .
-   if nc = 8
-      outp 484 "Well done"
-      show_mines -1
-      state = 1
-   else
-      outp 464 8 - nm & " mines left"
-   .
-.
-proc test ind . .
-   if cell[ind] < 2 and flag[ind] = 0
-      if cell[ind] = 1
-         show_mines -1
-         color 686
-         draw_cell ind -2
-         outp 844 "B O O M !"
-         state = 1
-      else
-         open ind
-         upd_info
-      .
-   .
-.
-background 676
-proc start . .
-   clear
-   color 353
-   for ind to 56
-      cnt[ind] = 0
-      cell[ind] = 0
-      flag[ind] = 0
-      draw_cell ind 0
-   .
-   n = 8
-   while n > 0
-      c = random 8 - 1
-      r = random 7 - 1
-      ind = r * 8 + c + 1
-      if cell[ind] = 0
-         n -= 1
-         cell[ind] = 1
-         for rx = r - 1 to r + 1
-            for cx = c - 1 to c + 1
-               ind = getind rx cx
-               if ind > -1
-                  cnt[ind] += 1
-               .
-            .
-         .
-      .
-   .
-   initvars
-   outp 464 ""
-   textsize 4
-   move 5 93
-   text "Minesweeper - 8 mines"
-   move 5 88.2
-   text "Long-press for flagging"
-   textsize 6
-   timer 0
-.
-on mouse_down
-   if state = 0
-      if mouse_y > 86 and mouse_x > 60
-         no_time = 1
-         move 64.5 87
-         color 464
-         rect 33 11
-      .
-      indx = getind ((mouse_y - 2) div 12) ((mouse_x - 2) div 12)
-      ticks0 = ticks
-   elif state = 3
-      start
-   .
-.
-on mouse_up
-   if state = 0 and indx <> -1
-      test indx
-   .
-   indx = -1
-.
-on timer
-   if state = 1
-      state = 2
-      timer 1
-   elif state = 2
-      state = 3
-   elif no_time = 0 and ticks > 3000
-      outp 844 "B O O M !"
-      show_mines -2
-      state = 2
-      timer 1
-   else
-      if indx > 0 and ticks = ticks0 + 2
-         if cell[indx] < 2
-            color 353
-            flag[indx] = 1 - flag[indx]
-            opt = 0
-            if flag[indx] = 1
-               opt = -3
-            .
-            draw_cell indx opt
-            upd_info
-         .
-         indx = -1
-      .
-      if no_time = 0 and ticks mod 10 = 0
-         move 64.5 87
-         color 464
-         if ticks >= 2500
-            color 844
-         .
-         rect 33 11
-         color 000
-         move 66 90
-         text "Time:" & 300 - ticks / 10
-      .
-      ticks += 1
-      timer 0.1
-   .
-.
-start
-*
-* Modular inverse
-*
-@ https://rosettacode.org/wiki/Modular_inverse@Task
-*
-func mod_inv a b .
-   b0 = b
-   x1 = 1
-   if b = 1
-      return 1
-   .
-   while a > 1
-      q = a div b
-      t = b
-      b = a mod b
-      a = t
-      t = x0
-      x0 = x1 - q * x0
-      x1 = t
-   .
-   if x1 < 0
-      x1 += b0
-   .
-   return x1
-.
-print mod_inv 42 2017
-*
 * Monte Carlo methods
 *
-@ https://rosettacode.org/wiki/Monte_Carlo_methods@Task
+@ https://www.rosettacode.org/wiki/Monte_Carlo_methods@Task
 *
 func mc n .
    for i = 1 to n
@@ -3768,83 +1334,18 @@ print mc 100000
 print mc 1000000
 print mc 10000000
 *
-* Morse code
-*
-@ https://rosettacode.org/wiki/Morse_code@Task
-*
-txt$ = "sos sos"
-# 
-chars$[] = strchars "abcdefghijklmnopqrstuvwxyz "
-code$[] = [ ".-" "-..." "-.-." "-.." "." "..-." "--." "...." ".." ".---" "-.-" ".-.." "--" "-." "---" ".--." "--.-" ".-." "..." "-" "..-" "...-" ".--" "-..-" "-.--" "--.." " " ]
-# 
-proc morse ch$ . .
-   ind = 1
-   while ind <= len chars$[] and chars$[ind] <> ch$
-      ind += 1
-   .
-   if ind <= len chars$[]
-      write ch$ & " "
-      sleep 0.4
-      for c$ in strchars code$[ind]
-         write c$
-         if c$ = "."
-            sound [ 440 0.2 ]
-            sleep 0.4
-         elif c$ = "-"
-            sound [ 440 0.6 ]
-            sleep 0.8
-         elif c$ = " "
-            sleep 0.8
-         .
-      .
-      print ""
-   .
-.
-for ch$ in strchars txt$
-   morse ch$
-.
-*
 * Mouse position
 *
-@ https://rosettacode.org/wiki/Mouse_position@Task
+@ https://www.rosettacode.org/wiki/Mouse_position@Task
 *
 on mouse_move
   clear
   text mouse_x & " " & mouse_y
 .
 *
-* Multiplication tables
-*
-@ https://rosettacode.org/wiki/Multiplication_tables@Task
-*
-n = 12
-numfmt 0 4
-write "     "
-for i = 1 to n
-   write i
-.
-print ""
-write "     "
-for i = 1 to n
-   write "----"
-.
-print ""
-for i = 1 to n
-   write i
-   write "|"
-   for j = 1 to n
-      if j < i
-         write "    "
-      else
-         write i * j
-      .
-   .
-   print ""
-.
-*
 * Munching squares
 *
-@ https://rosettacode.org/wiki/Munching_squares@Task
+@ https://www.rosettacode.org/wiki/Munching_squares@Task
 *
 sc = 100 / 64
 for x range0 64
@@ -3859,7 +1360,7 @@ for x range0 64
 *
 * Musical scale
 *
-@ https://rosettacode.org/wiki/Musical_scale@Task
+@ https://www.rosettacode.org/wiki/Musical_scale@Task
 *
 n[] = [ 262 294 330 349 392 440 494 523 ]
 for t in n[]
@@ -3867,43 +1368,9 @@ for t in n[]
   sleep 0.6
 .
 *
-* N'th
-*
-@ https://rosettacode.org/wiki/N'th@Task
-*
-func$ nth num .
-   last2 = num mod 100
-   last = num mod 10
-   if last2 >= 11 and last2 <= 13
-      return num & "th"
-   elif last = 1
-      return num & "st"
-   elif last = 2
-      return num & "nd"
-   elif last = 3
-      return num & "rd"
-   else
-      return num & "th"
-   .
-.
-print "0 to 25:"
-for i = 0 to 25
-   write nth i & " "
-.
-print ""
-print "250 to 265:"
-for i = 250 to 265
-   write nth i & " "
-.
-print ""
-print "1000 to 1025:"
-for i = 1000 to 1025
-   write nth i & " "
-.
-*
 * N-queens problem
 *
-@ https://rosettacode.org/wiki/N-queens_problem@Task
+@ https://www.rosettacode.org/wiki/N-queens_problem@Task
 *
 subr show_sol
    print "Solution " & n_sol
@@ -3955,141 +1422,9 @@ while y >= 1
 .
 print n_sol & " solutions"
 *
-* Narcissistic decimal number
-*
-@ https://rosettacode.org/wiki/Narcissistic_decimal_number@Task
-*
-while cnt < 25
-   s$ = n
-   ln = len s$
-   s = 0
-   for i to ln
-      s += pow number substr s$ i 1 ln
-   .
-   if s = n
-      print s
-      cnt += 1
-   .
-   n += 1
-.
-*
-* Nim game
-*
-@ https://rosettacode.org/wiki/Nim_game@Task
-*
-token = 12
-while token > 0
-   repeat
-      print "There are " & token & " tokens remaining."
-      write "How many would you like to take? (1,2 or 3) "
-      h = number input
-      print h
-      until h >= 1 and h <= 3
-   .
-   sleep 1
-   print "On my turn I will take " & 4 - h & " token(s)."
-   print ""
-   token -= 4
-.
-print "I got the last token. I win! Better luck next time."
-*
-* Nth root
-*
-@ https://rosettacode.org/wiki/Nth_root@Task
-*
-func power x n .
-   r = 1
-   for i = 1 to n
-      r *= x
-   .
-   return r
-.
-func nth_root x n .
-   r = 2
-   repeat
-      p = power r (n - 1)
-      d = (x / p - r) / n
-      r += d
-      until abs d < 0.0001
-   .
-   return r
-.
-numfmt 4 0
-x = power 3.1416 10
-print nth_root x 10
-*
-* Numbers with equal rises and falls
-*
-@ https://rosettacode.org/wiki/Numbers_with_equal_rises_and_falls@Task
-*
-fastfunc risefall n .
-   if n < 10
-      return 1
-   .
-   prev = -1
-   while n > 0
-      d = n mod 10
-      if prev >= 0
-         if d < prev
-            rises += 1
-         elif d > prev
-            falls += 1
-         .
-      .
-      prev = d
-      n = n div 10
-   .
-   if rises = falls
-      return 1
-   .
-   return 0
-.
-numfmt 0 4
-n = 1
-repeat
-   if risefall n = 1
-      cnt += 1
-      if cnt <= 200
-         write n
-         if cnt mod 20 = 0
-            print ""
-         .
-      .
-   .
-   until cnt = 1e7
-   n += 1
-.
-print ""
-print n
-*
-* Palindrome detection
-*
-@ https://rosettacode.org/wiki/Palindrome_detection@Task
-*
-func$ reverse s$ .
-   a$[] = strchars s$
-   for i = 1 to len a$[] div 2
-      swap a$[i] a$[len a$[] - i + 1]
-   .
-   return strjoin a$[]
-.
-func palin s$ .
-   if s$ = reverse s$
-      return 1
-   .
-   return 0
-.
-for s$ in [ "rotor" "rosetta" "step on no pets" "été" "🦊😀🦊" ]
-   if palin s$ = 1
-      print s$ & " is a palindrome"
-   else
-      print s$ & " is not a palindrome"
-   .
-.
-*
 * Pentagram
 *
-@ https://rosettacode.org/wiki/Pentagram@Task
+@ https://www.rosettacode.org/wiki/Pentagram@Task
 *
 xp = 10
 yp = 60
@@ -4108,59 +1443,27 @@ while angle < 720
 color 900
 polygon f[]
 *
-* Percolation/Mean run density
-*
-@ https://rosettacode.org/wiki/Percolation/Mean_run_density@Task
-*
-numfmt 3 6
-for p in [ 0.1 0.3 0.5 0.7 0.9 ]
-   theory = p * (1 - p)
-   print "p:" & p & " theory:" & theory
-   print "    n    sim"
-   for n in [ 1e2 1e3 1e4 ]
-      sum = 0
-      for t to 100
-         run = 0
-         for j to n
-            h = if randomf < p
-            if h = 1 and run = 0
-               sum += 1
-            .
-            run = h
-         .
-      .
-      print n & "  " & sum / n / t
-   .
-   print ""
-.
-*
 * Permutations
 *
-@ https://rosettacode.org/wiki/Permutations@Task
+@ https://www.rosettacode.org/wiki/Permutations@Task
 *
 proc permlist k . list[] .
+   if k = len list[]
+      print list[]
+      return
+   .
    for i = k to len list[]
       swap list[i] list[k]
       permlist k + 1 list[]
       swap list[k] list[i]
    .
-   if k = len list[]
-      print list[]
-   .
 .
 l[] = [ 1 2 3 ]
 permlist 1 l[]
 *
-* Pick random element
-*
-@ https://rosettacode.org/wiki/Pick_random_element@Task
-*
-ar$[] = [ "spring" "summer" "autumn" "winter" ]
-print ar$[random len ar$[]]
-*
 * Plot coordinate pairs
 *
-@ https://rosettacode.org/wiki/Plot_coordinate_pairs@Task
+@ https://www.rosettacode.org/wiki/Plot_coordinate_pairs@Task
 *
 x[] = [ 0 1 2 3 4 5 6 7 8 9 ]
 y[] = [ 2.7 2.8 31.4 38.1 58.0 76.2 100.5 130.0 149.3 180.0 ]
@@ -4203,7 +1506,7 @@ for i = 1 to n
 *
 * Polyspiral
 *
-@ https://rosettacode.org/wiki/Polyspiral@Task
+@ https://www.rosettacode.org/wiki/Polyspiral@Task
 *
 color 944
 linewidth 0.3
@@ -4226,32 +1529,9 @@ on animate
    .
 .
 *
-* Primality by trial division
-*
-@ https://rosettacode.org/wiki/Primality_by_trial_division@Task
-*
-func isprim n .
-   if n < 2
-      return 0
-   .
-   if n mod 2 = 0 and n > 2
-      return 0
-   .
-   i = 3
-   sq = sqrt n
-   while i <= sq
-      if n mod i = 0
-         return 0
-      .
-      i += 2
-   .
-   return 1
-.
-print isprim 1995937
-*
 * Prime decomposition
 *
-@ https://rosettacode.org/wiki/Prime_decomposition@Task
+@ https://www.rosettacode.org/wiki/Prime_decomposition@Task
 *
 proc decompose num . primes[] .
    primes[] = [ ]
@@ -4269,29 +1549,9 @@ proc decompose num . primes[] .
 decompose 9007199254740991 r[]
 print r[]
 *
-* Pseudo-random numbers/Middle-square method
-*
-@ https://rosettacode.org/wiki/Pseudo-random_numbers/Middle-square_method@Task
-*
-global seed .
-seed = 675248
-func rand .
-   strSeed$ = seed
-   s$ = seed * seed
-   while not len s$ = len strSeed$ * 2
-      s$ = "0" & s$
-   .
-   seed = number substr s$ (len strSeed$ / 2 + 1) len strSeed$
-   randNum = seed
-   return randNum
-.
-for i = 1 to 5
-   print rand
-.
-*
 * Pythagoras tree
 *
-@ https://rosettacode.org/wiki/Pythagoras_tree@Task
+@ https://www.rosettacode.org/wiki/Pythagoras_tree@Task
 *
 proc tree x1 y1 x2 y2 depth . .
    if depth < 8
@@ -4312,61 +1572,9 @@ proc tree x1 y1 x2 y2 depth . .
 .
 tree 41 10 59 10 0
 *
-* Quickselect algorithm
-*
-@ https://rosettacode.org/wiki/Quickselect_algorithm@Task
-*
-proc qselect k . list[] res .
-   # 
-   subr partition
-      mid = left
-      for i = left + 1 to right
-         if list[i] < list[left]
-            mid += 1
-            swap list[i] list[mid]
-         .
-      .
-      swap list[left] list[mid]
-   .
-   left = 1
-   right = len list[]
-   while left < right
-      partition
-      if mid < k
-         left = mid + 1
-      elif mid > k
-         right = mid - 1
-      else
-         left = right
-      .
-   .
-   res = list[k]
-.
-d[] = [ 9 8 7 6 5 0 1 2 3 4 ]
-for i = 1 to len d[]
-   qselect i d[] r
-   print r
-.
-*
-* Quine
-*
-@ https://rosettacode.org/wiki/Quine@Task
-*
-S$ = "print strchar 83 & strchar 36 & strchar 32 & strchar 61 & strchar 32 & strchar 34 & S$ & strchar 34 & strchar 10 & S$"
-print strchar 83 & strchar 36 & strchar 32 & strchar 61 & strchar 32 & strchar 34 & S$ & strchar 34 & strchar 10 & S$
-*
-* Random numbers
-*
-@ https://rosettacode.org/wiki/Random_numbers@Task
-*
-for i = 1 to 1000
-  a[] &= 1 + 0.5 * sqrt (-2 * logn randomf) * cos (360 * randomf)
-.
-print a[]
-*
 * Real constants and functions
 *
-@ https://rosettacode.org/wiki/Real_constants_and_functions@Task
+@ https://www.rosettacode.org/wiki/Real_constants_and_functions@Task
 *
 x = 1.5
 # calculate e
@@ -4393,54 +1601,9 @@ end
 # power
 print pow 2 x
 *
-* Recaman's sequence
-*
-@ https://rosettacode.org/wiki/Recaman's_sequence@Task
-*
-arrbase a[] 0
-arrbase seen[] 0
-len seen[] 100
-# 
-a[] &= 0
-seen[0] = 1
-i = 1
-repeat
-   h = a[i - 1] - i
-   if h <= 0 or seen[h] = 1
-      h = a[i - 1] + i
-   .
-   until seen[h] = 1
-   seen[h] = 1
-   a[] &= h
-   if i = 14
-      print a[]
-   .
-   i += 1
-.
-print h
-*
-* Remove duplicate elements
-*
-@ https://rosettacode.org/wiki/Remove_duplicate_elements@Task
-*
-a[] = [ 1 2 1 4 5 2 15 1 3 4 ]
-for a in a[]
-   found = 0
-   for b in b[]
-      if a = b
-         found = 1
-         break 1
-      .
-   .
-   if found = 0
-      b[] &= a
-   .
-.
-print b[]
-*
 * Return multiple values
 *
-@ https://rosettacode.org/wiki/Return_multiple_values@Task
+@ https://www.rosettacode.org/wiki/Return_multiple_values@Task
 *
 proc addSubtract a b . sum diff .
    sum = a + b
@@ -4452,7 +1615,7 @@ print "Difference: " & diff
 *
 * Reverse a string
 *
-@ https://rosettacode.org/wiki/Reverse_a_string@Task
+@ https://www.rosettacode.org/wiki/Reverse_a_string@Task
 *
 func$ reverse s$ .
    a$[] = strchars s$
@@ -4465,7 +1628,7 @@ print reverse "hello"
 *
 * Roman numerals/Decode
 *
-@ https://rosettacode.org/wiki/Roman_numerals/Decode@Task
+@ https://www.rosettacode.org/wiki/Roman_numerals/Decode@Task
 *
 func rom2dec rom$ .
    symbols$[] = [ "M" "D" "C" "L" "X" "V" "I" ]
@@ -4491,7 +1654,7 @@ print rom2dec "MDCLXVI"
 *
 * Roman numerals/Encode
 *
-@ https://rosettacode.org/wiki/Roman_numerals/Encode@Task
+@ https://www.rosettacode.org/wiki/Roman_numerals/Encode@Task
 *
 func$ dec2rom dec .
    values[] = [ 1000 900 500 400 100 90 50 40 10 9 5 4 1 ]
@@ -4508,171 +1671,9 @@ print dec2rom 1990
 print dec2rom 2008
 print dec2rom 1666
 *
-* Rot-13
-*
-@ https://rosettacode.org/wiki/Rot-13@Task
-*
-func$ rot13 str$ .
-   for c$ in strchars str$
-      code = strcode c$
-      if code >= 65 and code <= 90
-         encCode = code + 13
-         if encCode > 90
-            encCode = 64 + encCode - 90
-         .
-      elif code >= 97 and code <= 122
-         encCode = code + 13
-         if encCode > 122
-            encCode = 96 + encCode - 122
-         .
-      else
-         encCode = code
-      .
-      encStr$ &= strchar encCode
-   .
-   return encStr$
-.
-print rot13 "Rosetta Code"
-*
-* Run-length encoding
-*
-@ https://rosettacode.org/wiki/Run-length_encoding@Task
-*
-func$ rlenc in$ .
-   for c$ in strchars in$
-      if c$ = c0$
-         cnt += 1
-      else
-         if cnt > 0
-            out$ &= cnt & c0$ & " "
-         .
-         c0$ = c$
-         cnt = 1
-      .
-   .
-   out$ &= cnt & c0$
-   return out$
-.
-func$ rldec in$ .
-   for h$ in strsplit in$ " "
-      c$ = substr h$ len h$ 1
-      for i to number h$
-         out$ &= c$
-      .
-   .
-   return out$
-.
-s$ = input
-print s$
-s$ = rlenc s$
-print s$
-s$ = rldec s$
-print s$
-# 
-input_data
-WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWBWWWWWWWWWWWWWW
-*
-* Sattolo cycle
-*
-@ https://rosettacode.org/wiki/Sattolo_cycle@Task
-*
-proc sattolo_cycle . a[] .
-   for i = len a[] downto 2
-      r = random (i - 1)
-      swap a[r] a[i]
-   .
-.
-arr[] = [ 1 2 3 ]
-sattolo_cycle arr[]
-print arr[]
-*
-* Self-describing numbers
-*
-@ https://rosettacode.org/wiki/Self-describing_numbers@Task
-*
-proc test d[] . .
-   cnt[] = [ 0 0 0 0 0 0 0 0 0 0 ]
-   for d in d[]
-      cnt[d + 1] += 1
-   .
-   for i to len d[]
-      if cnt[i] <> d[i]
-         return
-      .
-   .
-   # found
-   for d in d[]
-      write d
-   .
-   print ""
-.
-proc backtr ind max . d[] .
-   if ind > len d[]
-      test d[]
-      return
-   .
-   for d = 0 to max
-      if d < 10
-         d[ind] = d
-         backtr ind + 1 max - d d[]
-      .
-   .
-.
-for i = 1 to 10
-   len d[] i
-   backtr 1 len d[] d[]
-.
-*
-* Sequence of non-squares
-*
-@ https://rosettacode.org/wiki/Sequence_of_non-squares@Task
-*
-func nonSqu n .
-   return n + floor (0.5 + sqrt n)
-.
-for i = 1 to 22
-   print nonSqu i
-.
-for i = 1 to 1e6
-   j = sqrt nonSqu i
-   if j = floor j
-      found = 1
-   .
-.
-if found = 0
-   print "No squares found"
-.
-*
-* Sequence of primes by trial division
-*
-@ https://rosettacode.org/wiki/Sequence_of_primes_by_trial_division@Task
-*
-func prime n .
-   if n mod 2 = 0 and n > 2
-      return 0
-   .
-   i = 3
-   while i <= sqrt n
-      if n mod i = 0
-         return 0
-      .
-      i += 2
-   .
-   return 1
-.
-proc primeSequ first last . sequ[] .
-   for i = first to last
-      if prime i = 1
-         sequ[] &= i
-      .
-   .
-.
-primeSequ 2 100 seq[]
-print seq[]
-*
 * Seven-sided dice from five-sided dice
 *
-@ https://rosettacode.org/wiki/Seven-sided_dice_from_five-sided_dice@Task
+@ https://www.rosettacode.org/wiki/Seven-sided_dice_from_five-sided_dice@Task
 *
 func dice5 .
    return random 5
@@ -4721,27 +1722,9 @@ for i to n
 .
 checkdist
 *
-* Shoelace formula for polygonal area
-*
-@ https://rosettacode.org/wiki/Shoelace_formula_for_polygonal_area@Task
-*
-proc shoelace . p[][] res .
-   sum = 0
-   for i = 1 to len p[][] - 1
-      sum += p[i][1] * p[i + 1][2]
-      sum -= p[i + 1][1] * p[i][2]
-   .
-   sum += p[i][1] * p[1][2]
-   sum -= p[1][1] * p[i][2]
-   res = abs sum / 2
-.
-data[][] = [ [ 3 4 ] [ 5 11 ] [ 12 8 ] [ 9 5 ] [ 5 6 ] ]
-shoelace data[][] res
-print res
-*
 * Show ASCII table
 *
-@ https://rosettacode.org/wiki/Show_ASCII_table@Task
+@ https://www.rosettacode.org/wiki/Show_ASCII_table@Task
 *
 numfmt 0 3
 for i range0 16
@@ -4760,7 +1743,7 @@ for i range0 16
 *
 * Sierpinski arrowhead curve
 *
-@ https://rosettacode.org/wiki/Sierpinski_arrowhead_curve@Task
+@ https://www.rosettacode.org/wiki/Sierpinski_arrowhead_curve@Task
 *
 x = 5
 y = 10
@@ -4787,7 +1770,7 @@ curv 7 90 -60
 *
 * Sierpinski carpet
 *
-@ https://rosettacode.org/wiki/Sierpinski_carpet@Task
+@ https://www.rosettacode.org/wiki/Sierpinski_carpet@Task
 *
 proc carp x y sz . .
    move x - sz / 2 y - sz / 2
@@ -4811,7 +1794,7 @@ carp 50 50 100 / 3
 *
 * Sierpinski pentagon
 *
-@ https://rosettacode.org/wiki/Sierpinski_pentagon@Task
+@ https://www.rosettacode.org/wiki/Sierpinski_pentagon@Task
 *
 order = 5
 # 
@@ -4841,7 +1824,7 @@ pentagon 25 15 50 order - 1
 *
 * Sierpinski triangle/Graphical
 *
-@ https://rosettacode.org/wiki/Sierpinski_triangle/Graphical@Task
+@ https://www.rosettacode.org/wiki/Sierpinski_triangle/Graphical@Task
 *
 proc triang lev x y size . .
    if lev = 0
@@ -4859,7 +1842,7 @@ triang 8 5 5 90
 *
 * Sieve of Eratosthenes
 *
-@ https://rosettacode.org/wiki/Sieve_of_Eratosthenes@Task
+@ https://www.rosettacode.org/wiki/Sieve_of_Eratosthenes@Task
 *
 len is_divisible[] 100
 max = sqrt len is_divisible[]
@@ -4878,7 +1861,7 @@ for i = 2 to len is_divisible[]
 *
 * Simple turtle graphics
 *
-@ https://rosettacode.org/wiki/Simple_turtle_graphics@Task
+@ https://www.rosettacode.org/wiki/Simple_turtle_graphics@Task
 *
 subr home
    deg = 0
@@ -4952,7 +1935,7 @@ bar [ 50 33 200 130 50 ]
 *
 * Snake
 *
-@ https://rosettacode.org/wiki/Snake@Task
+@ https://www.rosettacode.org/wiki/Snake@Task
 *
 subr fruit
    rx = (random 20 - 1) * 5 + 2.5
@@ -4972,28 +1955,53 @@ clear
 color 997
 text "SNAKE"
 textsize 5
-move 10 40
-text "Arrow keys for controlling"
-move 10 30
-text "Press space to to start"
+move 6 40
+text "Keys or mouse for controlling"
+move 6 30
+text "Space or click to to start"
 # 
 on key
-   if keybkey = "ArrowUp" and dir <> 3
-      dir = 1
-   elif keybkey = "ArrowRight" and dir <> 4
-      dir = 2
-   elif keybkey = "ArrowDown" and dir <> 1
-      dir = 3
-   elif keybkey = "ArrowLeft" and dir <> 2
-      dir = 4
-   elif keybkey = " " and game = 0
+   if game = 0 and keybkey = " "
       start
+      return
+   .
+   if dir mod 2 = 1
+      if keybkey = "ArrowRight"
+         dir = 2
+      elif keybkey = "ArrowLeft"
+         dir = 4
+      .
+   else
+      if keybkey = "ArrowUp"
+         dir = 1
+      elif keybkey = "ArrowDown"
+         dir = 3
+      .
+   .
+.
+on mouse_down
+   if game = 0
+      start
+      return
+   .
+   if dir mod 2 = 1
+      if mouse_x < sx
+         dir = 4
+      else
+         dir = 2
+      .
+   else
+      if mouse_y < sy
+         dir = 3
+      else
+         dir = 1
+      .
    .
 .
 on timer
    clear
    color 997
-   move 2 96
+   move 2 95
    text "Score: " & 10 * len sx[] - 50
    color 966
    move rx ry
@@ -5049,13 +2057,13 @@ on timer
    else
       color 997
       move 10 10
-      text "Press space for new game"
+      text "Space or click new game"
    .
 .
 *
 * Solve triangle solitare puzzle
 *
-@ https://rosettacode.org/wiki/Solve_triangle_solitare_puzzle@Task
+@ https://www.rosettacode.org/wiki/Solve_triangle_solitare_puzzle@Task
 *
 brd$[] = strchars "
 ┏━━━━━━━━━┓
@@ -5094,29 +2102,9 @@ proc solve . solution$ .
 solve solution$
 print solution$
 *
-* Sorting algorithms/Bubble sort
-*
-@ https://rosettacode.org/wiki/Sorting_algorithms/Bubble_sort@Task
-*
-proc bubbleSort . a[] .
-   repeat
-      changed = 0
-      for i = 1 to len a[] - 1
-         if a[i] > a[i + 1]
-            swap a[i] a[i + 1]
-            changed = 1
-         .
-      .
-      until changed = 0
-   .
-.
-array[] = [ 5 1 19 25 12 1 14 7 ]
-bubbleSort array[]
-print array[]
-*
 * Sorting algorithms/Heapsort
 *
-@ https://rosettacode.org/wiki/Sorting_algorithms/Heapsort@Task
+@ https://www.rosettacode.org/wiki/Sorting_algorithms/Heapsort@Task
 *
 proc sort . d[] .
    n = len d[]
@@ -5152,68 +2140,9 @@ data[] = [ 29 4 72 44 55 26 27 77 92 5 ]
 sort data[]
 print data[]
 *
-* Sorting algorithms/Insertion sort
-*
-@ https://rosettacode.org/wiki/Sorting_algorithms/Insertion_sort@Task
-*
-proc sort . d[] .
-   for i = 2 to len d[]
-      h = d[i]
-      j = i - 1
-      while j >= 1 and h < d[j]
-         d[j + 1] = d[j]
-         j -= 1
-      .
-      d[j + 1] = h
-   .
-.
-data[] = [ 29 4 72 44 55 26 27 77 92 5 ]
-sort data[]
-print data[]
-*
-* Sorting algorithms/Merge sort
-*
-@ https://rosettacode.org/wiki/Sorting_algorithms/Merge_sort@Task
-*
-proc sort . d[] .
-   len tmp[] len d[]
-   sz = 1
-   while sz < len d[]
-      swap tmp[] d[]
-      left = 1
-      while left < len d[]
-         # merge
-         mid = left + sz - 1
-         if mid > len d[]
-            mid = len d[]
-         .
-         right = mid + sz
-         if right > len d[]
-            right = len d[]
-         .
-         l = left
-         r = mid + 1
-         for i = left to right
-            if r > right or l <= mid and tmp[l] < tmp[r]
-               d[i] = tmp[l]
-               l += 1
-            else
-               d[i] = tmp[r]
-               r += 1
-            .
-         .
-         left += 2 * sz
-      .
-      sz *= 2
-   .
-.
-data[] = [ 29 4 72 44 55 26 27 77 92 5 ]
-sort data[]
-print data[]
-*
 * Sorting algorithms/Quicksort
 *
-@ https://rosettacode.org/wiki/Sorting_algorithms/Quicksort@Task
+@ https://www.rosettacode.org/wiki/Sorting_algorithms/Quicksort@Task
 *
 proc qsort left right . d[] .
    while left < right
@@ -5246,7 +2175,7 @@ print d[]
 *
 * Sorting algorithms/Radix sort
 *
-@ https://rosettacode.org/wiki/Sorting_algorithms/Radix_sort@Task
+@ https://www.rosettacode.org/wiki/Sorting_algorithms/Radix_sort@Task
 *
 proc sort . d[] .
    # radix = 10
@@ -5283,7 +2212,7 @@ print data[]
 *
 * Sorting algorithms/Selection sort
 *
-@ https://rosettacode.org/wiki/Sorting_algorithms/Selection_sort@Task
+@ https://www.rosettacode.org/wiki/Sorting_algorithms/Selection_sort@Task
 *
 proc sort . d[] .
    for i = 1 to len d[] - 1
@@ -5298,108 +2227,87 @@ data[] = [ 29 4 72 44 55 26 27 77 92 5 ]
 sort data[]
 print data[]
 *
-* Steffensen's method
+* Square form factorization
 *
-@ https://rosettacode.org/wiki/Steffensen's_method@Task
+@ https://www.rosettacode.org/wiki/Square_form_factorization@Task
 *
-func deCasteljau c0 c1 c2 t .
-   s = 1 - t
-   c01 = s * c0 + t * c1
-   c12 = s * c1 + t * c2
-   return s * c01 + t * c12
-.
-func xConvexLeftPar t .
-   return deCasteljau 2 (-8) 2 t
-.
-func yConvexRightPar t .
-   return deCasteljau 1 2 3 t
-.
-func implicitEq x y .
-   return 5 * x * x + y - 5
-.
-func f t r .
-   x = xConvexLeftPar t
-   y = yConvexRightPar t
-   r = implicitEq x y
-   return r + t
-.
-func aitken p0 .
-   p1 = f p0 p1
-   p2 = f p1 p2
-   p1m0 = p1 - p0
-   return p0 - p1m0 * p1m0 / (p2 - 2 * p1 + p0)
-.
-func steffAitken p0 tol maxiter .
-   for i to maxiter
-      p = aitken p0
-      if abs (p - p0) < tol
-         return p
-      .
-      p0 = p
+multiplier[] = [ 1 3 5 7 11 3 * 5 3 * 7 3 * 11 5 * 7 5 * 11 7 * 11 3 * 5 * 7 3 * 5 * 11 3 * 7 * 11 5 * 7 * 11 3 * 5 * 7 * 11 ]
+func gcd a b .
+   while b <> 0
+      a = a mod b
+      swap a b
    .
-   return number "nan"
+   return a
 .
-for i to 11
-   numfmt 1 0
-   write "t0 = " & t0 & " : "
-   t = steffAitken t0 0.00000001 1000
-   numfmt 3 0
-   if t <> t
-      # nan
-      print "no answer"
+func squfof N .
+   s = floor (sqrt N + 0.5)
+   if s * s = N
+      return s
+   .
+   for multiplier in multiplier[]
+      if N > 9007199254740992 / multiplier
+         print "Number " & N & " is too big"
+         break 1
+      .
+      D = multiplier * N
+      P = floor sqrt D
+      Po = P
+      Pprev = P
+      Qprev = 1
+      Q = D - Po * Po
+      L = 2 * floor sqrt (2 * s)
+      B = 3 * L
+      for i = 2 to B - 1
+         b = (Po + P) div Q
+         P = b * Q - P
+         q = Q
+         Q = Qprev + b * (Pprev - P)
+         r = floor (sqrt Q + 0.5)
+         if i mod 2 = 0 and r * r = Q
+            break 1
+         .
+         Qprev = q
+         Pprev = P
+      .
+      if i < B
+         b = (Po - P) div r
+         P = b * r + P
+         Pprev = P
+         Qprev = r
+         Q = (D - Pprev * Pprev) / Qprev
+         i = 0
+         repeat
+            b = (Po + P) div Q
+            Pprev = P
+            P = b * Q - P
+            q = Q
+            Q = Qprev + b * (Pprev - P)
+            Qprev = q
+            i += 1
+            until P = Pprev
+         .
+         r = gcd N Qprev
+         if r <> 1 and r <> N
+            return r
+         .
+      .
+   .
+   return 0
+.
+data[] = [ 2501 12851 13289 75301 120787 967009 997417 7091569 13290059 42854447 223553581 2027651281 11111111111 100895598169 1002742628021 60012462237239 287129523414791 9007199254740931 ]
+for example in data[]
+   factor = squfof example
+   if factor = 0
+      print example & " was not factored."
    else
-      x = xConvexLeftPar t
-      y = yConvexRightPar t
-      r = implicitEq x y
-      if abs r <= 0.000001
-         print "intersection at (" & x & " " & y & ")"
-      else
-         print "spurious solution"
-      .
+      quotient = example / factor
+      print example & " has factors " & factor & " " & quotient
    .
-   t0 += 0.1
 .
-*
-* String append
-*
-@ https://rosettacode.org/wiki/String_append@Task
-*
-a$ = "hello"
-a$ &= " world"
-print a$
-*
-* String case
-*
-@ https://rosettacode.org/wiki/String_case@Task
-*
-func$ toUpper s$ .
-   for c$ in strchars s$
-      code = strcode c$
-      if code >= 97 and code <= 122
-         code -= 32
-      .
-      res$ &= strchar code
-   .
-   return res$
-.
-func$ toLower s$ .
-   for c$ in strchars s$
-      code = strcode c$
-      if code >= 65 and code <= 90
-         code += 32
-      .
-      res$ &= strchar code
-   .
-   return res$
-.
-string$ = "alphaBETA"
-print string$
-print toUpper string$
-print toLower string$
 *
 * String comparison
 *
-@ https://rosettacode.org/wiki/String_comparison@Task
+@ https://www.rosettacode.org/wiki/String_comparison@Task
 *
 a$ = "hello"
 if a$ = "hello"
@@ -5418,55 +2326,9 @@ if number "10" > number "2"
    print "numerically after"
 .
 *
-* String concatenation
-*
-@ https://rosettacode.org/wiki/String_concatenation@Task
-*
-a$ = "hello"
-b$ = a$ & " world"
-print b$
-*
-* String length
-*
-@ https://rosettacode.org/wiki/String_length@Task
-*
-# 5
-print len "møøse"
-# 7
-print len "𝔘𝔫𝔦𝔠𝔬𝔡𝔢"
-# 8
-print len "J̲o̲s̲é̲"
-# 1
-print len "😀"
-*
-* String prepend
-*
-@ https://rosettacode.org/wiki/String_prepend@Task
-*
-string$ = "Lang"
-string$ = "Easy" & string$
-print string$
-*
-* Substring
-*
-@ https://rosettacode.org/wiki/Substring@Task
-*
-a$ = "2019-05-22 22:54:22"
-print substr a$ 12 5
-print substr a$ 12 -1
-*
-* Substring/Top and tail
-*
-@ https://rosettacode.org/wiki/Substring/Top_and_tail@Task
-*
-string$ = "EasyLang"
-print substr string$ 1 len string$ - 1 # Without the last character
-print substr string$ 2 len string$ - 1 # Without the first character
-print substr string$ 2 len string$ - 2 # Without the first and last characters
-*
 * Sudoku
 *
-@ https://rosettacode.org/wiki/Sudoku@Task
+@ https://www.rosettacode.org/wiki/Sudoku@Task
 *
 len row[] 90
 len col[] 90
@@ -5560,231 +2422,10 @@ input_data
 9 6 0  0 1 0  3 0 0
 0 5 0  6 9 0  0 1 0
 *
-* Sum and product of an array
-*
-@ https://rosettacode.org/wiki/Sum_and_product_of_an_array@Task
-*
-array[] = [ 5 1 19 25 12 1 14 7 ]
-product = 1
-for item in array[]
-   sum += item
-   product *= item
-.
-print "Sum: " & sum
-print "Product: " & product
-*
-* Sum digits of an integer
-*
-@ https://rosettacode.org/wiki/Sum_digits_of_an_integer@Task
-*
-func sumdig s$ .
-   for c$ in strchars s$
-      h = strcode c$ - 48
-      if h >= 10
-         h -= 39
-      .
-      r += h
-   .
-   return r
-.
-print sumdig "1"
-print sumdig "1234"
-print sumdig "fe"
-print sumdig "f0e"
-*
-* Sum of a series
-*
-@ https://rosettacode.org/wiki/Sum_of_a_series@Task
-*
-numfmt 8 0
-for i = 1 to 1000
-   s += 1 / (i * i)
-.
-print s
-*
-* Sum of squares
-*
-@ https://rosettacode.org/wiki/Sum_of_squares@Task
-*
-nums[] = [ 1 2 3 4 5 ]
-for v in nums[]
-   sum += v * v
-.
-print sum
-*
-* Summarize primes
-*
-@ https://rosettacode.org/wiki/Summarize_primes@Task
-*
-func prime n .
-   if n mod 2 = 0 and n > 2
-      return 0
-   .
-   i = 3
-   while i <= sqrt n
-      if n mod i = 0
-         return 0
-      .
-      i += 2
-   .
-   return 1
-.
-for i = 2 to 999
-   if prime i = 1
-      ind += 1
-      sum += i
-      if prime sum = 1
-         print ind & ": " & sum
-      .
-   .
-.
-*
-* Symmetric difference
-*
-@ https://rosettacode.org/wiki/Symmetric_difference@Task
-*
-a$[] = [ "John" "Bob" "Mary" "Serena" ]
-b$[] = [ "Jim" "Mary" "John" "Bob" ]
-for i to 2
-   for a$ in a$[]
-      for b$ in b$[]
-         if a$ = b$
-            break 1
-         .
-      .
-      if a$ <> b$
-         for c$ in c$[]
-            if c$ = a$
-               break 1
-            .
-         .
-         if c$ <> a$
-            c$[] &= a$
-         .
-      .
-   .
-   swap a$[] b$[]
-.
-print c$[]
-*
-* System time
-*
-@ https://rosettacode.org/wiki/System_time@Task
-*
-print timestr systime
-*
-* Temperature conversion
-*
-@ https://rosettacode.org/wiki/Temperature_conversion@Task
-*
-k = number input
-print k & " °K"
-print k - 273.15 & " °C"
-print k * 1.8 - 459.67 & " °F"
-print k * 1.8 & " °R"
-*
-* The Name Game
-*
-@ https://rosettacode.org/wiki/The_Name_Game@Task
-*
-proc toLowercase string$ . result$ .
-   for i = 1 to len string$
-      code = strcode substr string$ i 1
-      if code >= 65 and code <= 90
-         code += 32
-      .
-      result$ &= strchar code
-   .
-.
-proc findInStrArray array$[] item$ . index .
-   for i = 1 to len array$[]
-      if array$[i] = item$
-         index = i
-         return
-      .
-   .
-   index = 0
-.
-# This version actually handles consonant clusters
-name$ = input
-toLowercase name$ lowerName$
-vowels$[] = [ "a" "e" "i" "o" "u" ]
-for i = 1 to len lowerName$
-   letter$ = substr lowerName$ i 1
-   findInStrArray vowels$[] letter$ index
-   if index <> 0
-      truncName1$ = substr lowerName$ i len lowerName$
-      break 1
-   .
-   truncName1$ = ""
-.
-firstLetter$ = substr lowerName$ 1 1
-if firstLetter$ <> "b"
-   b$ = "b"
-.
-if firstLetter$ <> "f"
-   f$ = "f"
-.
-if firstLetter$ <> "m"
-   m$ = "m"
-.
-if b$ = "" or f$ = "" or m$ = ""
-   truncName2$ = substr lowerName$ 2 len lowerName$
-.
-# Determine the appropriate name for each line
-if b$ = ""
-   bName$ = truncName2$
-else
-   bName$ = truncName1$
-.
-if f$ = ""
-   fName$ = truncName2$
-else
-   fName$ = truncName1$
-.
-if m$ = ""
-   mName$ = truncName2$
-else
-   mName$ = truncName1$
-.
-# Print the song
-print name$ & ", " & name$ & ", " & "bo-" & b$ & bName$
-print "Banana-fana fo-" & f$ & fName$
-print "Fee-fi-mo-" & m$ & mName$
-print name$ & "!"
-*
-* The Twelve Days of Christmas
-*
-@ https://rosettacode.org/wiki/The_Twelve_Days_of_Christmas@Task
-*
-days$[] = [ "first" "second" "third" "forth" "fifth" "sixth" "seventh" "eighth" "ninth" "tenth" "eleventh" "twelfth" ]
-gifts$[] &= "Twelve drummers drumming"
-gifts$[] &= "Eleven pipers piping"
-gifts$[] &= "Ten lords a-leaping"
-gifts$[] &= "Nine ladies dancing"
-gifts$[] &= "Eight maids a-milking"
-gifts$[] &= "Seven swans a-swimming"
-gifts$[] &= "Six geese a-laying"
-gifts$[] &= "Five golden rings"
-gifts$[] &= "Four calling birds"
-gifts$[] &= "Three french hens"
-gifts$[] &= "Two turtle doves and"
-gifts$[] &= "A partridge in a pear tree."
-for i = 1 to 12
-   print "On the " & days$[i] & " day of Christmas,"
-   print "My true love gave to me:"
-   for j = 13 - i to 12
-      print gifts$[j]
-   .
-   print ""
-.
-*
 * Tic-tac-toe
 *
-@ https://rosettacode.org/wiki/Tic-tac-toe@Task
+@ https://www.rosettacode.org/wiki/Tic-tac-toe@Task
 *
-# Tic tac toe
-# 
 len f[] 9
 state = 0
 textsize 14
@@ -5939,54 +2580,39 @@ on mouse_down
 .
 init
 *
-* Totient function
+* Time a function
 *
-@ https://rosettacode.org/wiki/Totient_function@Task
+@ https://www.rosettacode.org/wiki/Time_a_function@Task
 *
-func totient n .
-   tot = n
-   i = 2
-   while i <= sqrt n
-      if n mod i = 0
-         while n mod i = 0
-            n = n div i
-         .
-         tot -= tot div i
-      .
-      if i = 2
-         i = 1
-      .
-      i += 2
+func fua lim .
+   # this is interpreted
+   i = 1
+   while i <= lim
+      sum += i
+      i += 1
    .
-   if n > 1
-      tot -= tot div n
-   .
-   return tot
+   return sum
 .
-numfmt 0 3
-print "  N Prim Phi"
-for n = 1 to 25
-   tot = totient n
-   x$ = "    "
-   if n - 1 = tot
-      x$ = " x  "
+start = systime
+print fua 1e8
+print systime - start
+# 
+fastfunc fub lim .
+   # this is compiled to wasm
+   i = 1
+   while i <= lim
+      sum += i
+      i += 1
    .
-   print n & x$ & tot
+   return sum
 .
-print ""
-for n = 1 to 100000
-   tot = totient n
-   if n - 1 = tot
-      cnt += 1
-   .
-   if n = 100 or n = 1000 or n = 10000 or n = 100000
-      print n & " - " & cnt & " primes"
-   .
-.
+start = systime
+print fub 1e8
+print systime - start
 *
 * Towers of Hanoi
 *
-@ https://rosettacode.org/wiki/Towers_of_Hanoi@Task
+@ https://www.rosettacode.org/wiki/Towers_of_Hanoi@Task
 *
 proc hanoi n src dst aux . .
    if n >= 1
@@ -5997,157 +2623,9 @@ proc hanoi n src dst aux . .
 .
 hanoi 5 1 2 3
 *
-* Two bullet roulette
-*
-@ https://rosettacode.org/wiki/Two_bullet_roulette@Task
-*
-len cyl[] 6
-proc rshift . .
-   h = cyl[6]
-   for i = 6 downto 2
-      cyl[i] = cyl[i - 1]
-   .
-   cyl[1] = h
-.
-proc unload . .
-   for i = 1 to 6
-      cyl[i] = 0
-   .
-.
-proc load . .
-   while cyl[1] = 1
-      rshift
-   .
-   cyl[1] = 1
-   rshift
-.
-proc spin . .
-   lim = random 6
-   for i = 1 to lim - 1
-      rshift
-   .
-.
-func fire .
-   shot = cyl[1]
-   rshift
-   return shot
-.
-func method m[] .
-   unload
-   for m in m[]
-      if m = 1
-         load
-      elif m = 2
-         spin
-      elif m = 3
-         if fire = 1
-            return 1
-         .
-      .
-   .
-   return 0
-.
-method$[] = [ "load" "spin" "fire" ]
-proc test m[] . .
-   n = 100000
-   for i = 1 to n
-      sum += method m[]
-   .
-   for i = 1 to len m[]
-      write method$[m[i]] & " "
-   .
-   print "-> " & 100 * sum / n & "% death"
-.
-test [ 1 2 1 2 3 2 3 ]
-test [ 1 2 1 2 3 3 ]
-test [ 1 1 2 3 2 3 ]
-test [ 1 1 2 3 3 ]
-*
-* Two sum
-*
-@ https://rosettacode.org/wiki/Two_sum@Task
-*
-proc twoSum sum . array[] pair[] .
-   i = 1
-   j = len array[]
-   pair[] = [ ]
-   repeat
-      if array[i] + array[j] = sum
-         pair[] = [ i j ]
-         return
-      elif array[i] + array[j] > sum
-         j -= 1
-      elif array[i] + array[j] < sum
-         i += 1
-      .
-      until i = j
-   .
-.
-numbers[] = [ 0 2 11 19 90 ]
-twoSum 21 numbers[] pair[]
-print pair[]
-*
-* User input/Text
-*
-@ https://rosettacode.org/wiki/User_input/Text@Task
-*
-write "Enter a string: "
-a$ = input
-print ""
-repeat
-  write "Enter the number 75000: "
-  h = number input
-  print ""
-  until h = 75000
-.
-print a$ & " " & h
-*
-* Van der Corput sequence
-*
-@ https://rosettacode.org/wiki/Van_der_Corput_sequence@Task
-*
-func vdc b n .
-   s = 1
-   while n > 0
-      s *= b
-      m = n mod b
-      v += m / s
-      n = n div b
-   .
-   return v
-.
-for b = 2 to 5
-   write "base " & b & ":"
-   for n range0 10
-      write " " & vdc b n
-   .
-   print ""
-.
-*
-* Van Eck sequence
-*
-@ https://rosettacode.org/wiki/Van_Eck_sequence@Task
-*
-len arr[] 1000
-for n to 1000 - 1
-   for m = n - 1 downto 1
-      if arr[m] = arr[n]
-         arr[n + 1] = n - m
-         break 1
-      .
-   .
-.
-for i to 10
-   write arr[i] & " "
-.
-print ""
-for i = 991 to 1000
-   write arr[i] & " "
-.
-*
 * Variables
 *
-@ https://rosettacode.org/wiki/Variables@Task
+@ https://www.rosettacode.org/wiki/Variables@Task
 *
 # it is statically typed
 # 
@@ -6175,7 +2653,7 @@ print fruits$[]
 *
 * Vibrating rectangles
 *
-@ https://rosettacode.org/wiki/Vibrating_rectangles@Task
+@ https://www.rosettacode.org/wiki/Vibrating_rectangles@Task
 *
 on timer
   sz -= 2
@@ -6194,7 +2672,7 @@ timer 0.2
 *
 * Vigenère cipher
 *
-@ https://rosettacode.org/wiki/Vigenère_cipher@Task
+@ https://www.rosettacode.org/wiki/Vigenère_cipher@Task
 *
 func$ encr txt$ pw$ d .
    txt$[] = strchars txt$
@@ -6219,117 +2697,6 @@ pw$ = "VIGENERECIPHER"
 r$ = encr s$ pw$ 1
 print r$
 print encr r$ pw$ -1
-*
-* Wagstaff primes
-*
-@ https://rosettacode.org/wiki/Wagstaff_primes@Task
-*
-func prime n .
-   if n mod 2 = 0 and n > 2
-      return 0
-   .
-   i = 3
-   while i <= sqrt n
-      if n mod i = 0
-         return 0
-      .
-      i += 2
-   .
-   return 1
-.
-pri = 1
-while nwag <> 10
-   pri += 2
-   if prime pri = 1
-      wag = (pow 2 pri + 1) / 3
-      if prime wag = 1
-         nwag += 1
-         print pri & " => " & wag
-      .
-   .
-.
-*
-* Water collected between towers
-*
-@ https://rosettacode.org/wiki/Water_collected_between_towers@Task
-*
-proc water h[] . .
-   n = len h[]
-   len left[] n
-   len right[] n
-   for i = 1 to n
-      max = higher max h[i]
-      left[i] = max
-   .
-   max = 0
-   for i = n downto 1
-      max = higher max h[i]
-      right[i] = max
-   .
-   for i = 1 to n
-      sum += (lower left[i] right[i]) - h[i]
-   .
-   print sum
-.
-repeat
-   s$ = input
-   until s$ = ""
-   water number strsplit s$ " "
-.
-# 
-input_data
-1 5 3 7 2
-5 3 7 2 6 4 5 9 1 2
-2 6 3 5 2 8 1 4 2 2 5 3 5 7 4 1
-5 5 5 5
-5 6 7 8
-8 7 7 6
-6 7 10 7 6
-*
-* Word wrap
-*
-@ https://rosettacode.org/wiki/Word_wrap@Task
-*
-linew = 40
-# 
-ind = 1
-repeat
-   if ind > len words$[]
-      inp$ = input
-      words$[] = strsplit inp$ " "
-      ind = 1
-   .
-   until inp$ = ""
-   w$ = words$[ind]
-   ind += 1
-   if len out$ + len w$ + 1 <= linew
-      if out$ <> ""
-         out$ &= " "
-      .
-      out$ &= w$
-   else
-      print out$
-      out$ = w$
-   .
-.
-print out$
-# 
-input_data
-In olden times when wishing still helped one, there lived a king
-whose daughters were all beautiful, but the youngest was so beautiful
-that the sun itself, which has seen so much, was astonished whenever
-it shone in her face. Close by the king's castle lay a great dark
-forest, and under an old lime-tree in the forest was a well, and when
-the day was very warm, the king's child went out into the forest and
-sat down by the side of the cool fountain, and when she was bored she
-took a golden ball, and threw it up on high and caught it, and this
-ball was her favorite plaything.’
-*
-* Zero to the zero power
-*
-@ https://rosettacode.org/wiki/Zero_to_the_zero_power@Task
-*
-print pow 0 0
 `
 function hook() {
 	var dom = window.location.host

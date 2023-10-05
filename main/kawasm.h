@@ -311,7 +311,7 @@ static void mf_sequ(ND* nd) {
 			wemit(W_END);
 
 		}
-		else if (p == op_flassp || p == op_flassm || p == op_flasst) {
+		else if (p == op_flassp || p == op_flassm || p == op_flasst || p == op_flassd) {
 			wemit(W_GET);
 			wemit(nd->v1);
 			if (nd->v1 < 0) {
@@ -320,7 +320,8 @@ static void mf_sequ(ND* nd) {
 			mf_expr(nd->ri);
 			if (p == op_flassp) wemit(W_ADD);
 			else if (p == op_flassm) wemit(W_SUB);
-			else wemit(W_MULT);
+			else if (p == op_flasst) wemit(W_MULT);
+			else wemit(W_DIV);
 
 			wemit(W_SET);
 			wemit(nd->v1);

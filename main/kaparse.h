@@ -1762,7 +1762,7 @@ S void parse_arr_swap2(ND* nd, byte arrtok, enum vartyp arrtype, char* s, ushort
 	}
 	else if (tok == arrtok - 2) {
 		nd->vf = op_swaparraelx;
-		ushort h = get_var(arrtype + 2, RW, tval, code_utf8len);
+		short h = get_var(arrtype + 2, RW, tval, code_utf8len);
 		if (cod && h != nd->v1) error("must be the same array");
 		cs(tval);
 		csbrl();
