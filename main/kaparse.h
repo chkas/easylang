@@ -1,4 +1,4 @@
-	/*	kaparse.h
+/*	kaparse.h
 
 	Copyright (c) Christof Kaser christof.kaser@gmail.com. 
 	All rights reserved.
@@ -889,9 +889,8 @@ S int parse_proc_header(int mode, byte proctyp) {
 	int i = 0;
 	char typ;
 	while (tok != t_dot) {
-//TODO: more parameters?
-		if (i == 8) {
-			error("max 8 parameters");
+		if (i == 15) {
+			error("max 15 parameters");
 			return 0;
 		}
 		if (tok == t_name) {
@@ -937,8 +936,8 @@ S int parse_proc_header(int mode, byte proctyp) {
 		cs_spc();
 		nexttok();
 		while (tok != t_dot) {
-			if (i == 8) {
-				error("max 8 parameters");
+			if (i == 15) {
+				error("max 15 parameters");
 				return 0;
 			}
 			if (tok == t_name) {
@@ -1014,9 +1013,18 @@ S void parse_proc(byte typ) {
 	nd->bx2 = proc->varcnt[2];
 
 	int i = 0;
-	while (proc->parms[i]) {
+	int offs = 0;
+	while (proc->parms[i + offs]) {
+		if (i == 8) {
+			ND* h = mknd();
+			h->bxnd = nd->bxnd;
+			nd->bxnd = h;
+			nd = h;
+			offs = 8;
+			i = 0;
+		}
 		byte ptyp;
-		char typ = proc->parms[i]; 
+		char typ = proc->parms[i + offs]; 
 		if (typ == 'f') ptyp = PAR_NUM;
 		else if (typ == 's') ptyp = PAR_STR;
 		else if (typ == 'g' || typ == 't') ptyp = PAR_ARR;

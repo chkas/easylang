@@ -655,7 +655,7 @@ struct vname {
 struct proc {
 	struct vname *vname_p;
 	char name[16];
-	char parms[9];
+	char parms[16];
 	ushort vname_len;
 	ND* start;
 // float, str, (intarr + numarr + strarr)

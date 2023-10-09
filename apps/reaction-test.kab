@@ -4,7 +4,7 @@ subr wait
   clear
   color 733
   text "WAIT"
-  timer 1 + 2 * randomf
+  timer 1.5 + 2 * randomf
 end
 on timer
   clear

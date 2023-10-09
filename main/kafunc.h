@@ -1913,6 +1913,10 @@ S void op_callproc(ND* nd0) {
 
 	int ind = 0;
 	while (nd) {
+		if (ind == 8) {
+			ndp = ndp->bxnd;
+			ind = 0;
+		}
 		int t = ndp->bx[ind];
 		if (t == PAR_NUM) {
 			nums[ifl] = numf(nd);
@@ -1932,8 +1936,11 @@ S void op_callproc(ND* nd0) {
 		ind += 1;
 		nd = nd->next;
 	}
-
 	while (nd) {
+		if (ind == 8) {
+			ndp = ndp->bxnd;
+			ind = 0;
+		}
 		int t = ndp->bx[ind];
 		if (t == PAR_RNUM) {
 			nums[ifl] = *(gnum(nd->v1));
@@ -1957,7 +1964,6 @@ S void op_callproc(ND* nd0) {
 		ind += 1;
 		nd = nd->next;
 	}
-
 	double* rtl_nums_caller = rtl_nums;
 	STR* rtl_strs_caller = rtl_strs;
 	ARR* rtl_arrs_caller = rtl_arrs;
@@ -1987,6 +1993,7 @@ S void op_callproc(ND* nd0) {
 	rtl_strs = rtl_strs_caller;
 	rtl_arrs = rtl_arrs_caller;
 
+	ndp = nd0->le;
 	nd = nd0->ri;
 	ind = 0;
 	while (nd) {
@@ -2016,6 +2023,10 @@ S void op_callproc(ND* nd0) {
 			iarr += 1;
 		}
 		ind += 1;
+		if (ind == 8) {
+			ndp = ndp->bxnd;
+			ind = 0;
+		}
 		nd = nd->next;
 	}
 
@@ -2227,7 +2238,7 @@ S double op_fastcall(ND* nd0) {
 	int i = 0;
 	while (nd) {
 		if (i == 4) {
-			fprintf(stderr, "internal error: fastcall");
+			internal_error(__LINE__);
 			return 0;
 		}
 		a[i++] = numf(nd);
@@ -2375,7 +2386,7 @@ S void dbg_line(ND* nd) {
 		int i = 0;
 		while (i < opln_len && opln_p[i].nd != nd) i++;
 		if (i == opln_len) {
-			pr("internal error - dbg_line");
+			internal_error(__LINE__);
 			return;
 		}
 		gr_debline(opln_p[i].line);
