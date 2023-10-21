@@ -90,7 +90,7 @@ proc draw_square ind col s$ . .
   color 000
   text s$
 end
-# 
+#
 textsize 16
 cards$[] = strchars "AABBDDEEFFGGHHII"
 # shuffle
@@ -132,7 +132,7 @@ on mouse_down
   c = mouse_x div 25
   r = mouse_y div 25
   ind = r * 4 + c + 1
-  # uncover card 
+  # uncover card
   draw_square ind 575 cards$[ind]
 end
 textsize 16
@@ -143,7 +143,7 @@ init
 + Now to another program - a reaction tester - to demonstrate *timer* and *systime*.
 
 # Reaction test
-# 
+#
 background 000
 subr wait
   clear
@@ -175,12 +175,12 @@ wait
 
 -
 
-+ Now we have everything we need to finish programming the game. 
++ Now we have everything we need to finish programming the game.
 
 + We need the *timer* to automatically close the face-up cards. And *systime* to measure how much time it takes the player to find all matches.
 
 # Letter memory
-# 
+#
 proc draw_square ind col s$ . .
   ind -= 1
   x = ind mod 4 * 24 + 3

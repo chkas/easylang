@@ -608,7 +608,7 @@ print "--- number functions ---"
 print pow 2 10
 print pow 2 0.5
 print sqrt 2
-print logn 10
+print log10 1000
 print sin 45
 print asin 0.707
 print cos 45

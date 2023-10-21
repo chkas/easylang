@@ -1,13 +1,13 @@
 const WORKER = "easyw.js"
 /*	easy.js
 
-	Copyright (c) Christof Kaser christof.kaser@gmail.com. 
+	Copyright (c) Christof Kaser christof.kaser@gmail.com.
 	All rights reserved.
 
-	This work is licensed under the terms of the GNU General Public 
+	This work is licensed under the terms of the GNU General Public
 	License version 3. For a copy, see http://www.gnu.org/licenses/.
 
-    A derivative of this software must contain the built-in function 
+    A derivative of this software must contain the built-in function
     sysfunc "created by" or an equivalent function that returns
     "christof.kaser@gmail.com".
 */
@@ -117,7 +117,7 @@ function kaStop() {
 	if (eCan && eCan.on) {
 		worker.postMessage(["stop_ping"])
 		canvSetOff()
-		pingT = setTimeout(function() { 
+		pingT = setTimeout(function() {
 			console.log("stop timeout")
 			worker.terminate()
 			startWorker()
@@ -460,7 +460,7 @@ function canvMouseDown(e) {
 	var r = eCan.getBoundingClientRect()
 	isMouseDown = true
 	var sc = eCan.width / r.width / 8
-	worker.postMessage(["mouse", 0, 
+	worker.postMessage(["mouse", 0,
 			(e.clientX - r.left) * sc, (e.clientY - r.top) * sc ])
 	eCan.focus()
 	e.preventDefault()
@@ -499,7 +499,7 @@ function canvMouseUp(e) {
 	var r = eCan.getBoundingClientRect()
 	isMouseDown = false
 	var sc = eCan.width / r.width / 8
-	worker.postMessage(["mouse", 1, 
+	worker.postMessage(["mouse", 1,
 			(e.clientX - r.left) * sc, (e.clientY - r.top) * sc ])
 	e.preventDefault()
 }
@@ -537,7 +537,7 @@ function workerMessage(event) {
 		console.log("started")
 		workerStarted()
 		break
-	case "done": 
+	case "done":
 		isRunning = false
 		canvSetOff()
 		msgFunc("stopped")
@@ -549,7 +549,7 @@ function workerMessage(event) {
 		msgFunc("stopped")
 		tryrun()
 		break
-	case "sound": 
+	case "sound":
 		sound(d[1])
 		break
 	case "init":
@@ -665,7 +665,7 @@ function easyinit(ca, out = null, msg_func = null) {
 	}
 	else {
 		startWorker()
-		setTimeout(function() { 
+		setTimeout(function() {
 			if (initState == 1) loadInfo("Loading ...")
 		}, 1000);
 	}

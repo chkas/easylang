@@ -41,7 +41,7 @@ end
 
 rad = 12 ; x = 50 ; y = 75 ; vx = 1.5
 color 700
-# 
+#
 on animate
    clear
    move x y

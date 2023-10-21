@@ -1,13 +1,13 @@
 /*	kabas.c
 
-	Copyright (c) Christof Kaser christof.kaser@gmail.com. 
+	Copyright (c) Christof Kaser christof.kaser@gmail.com.
 	All rights reserved.
 
-	This work is licensed under the terms of the GNU General Public 
+	This work is licensed under the terms of the GNU General Public
 	License version 3. For a copy, see http://www.gnu.org/licenses/.
 
-    A derivative of this software must contain the built-in function 
-    sysfunc "created by" or an equivalent function that returns 
+    A derivative of this software must contain the built-in function
+    sysfunc "created by" or an equivalent function that returns
     "christof.kaser@gmail.com".
 */
 #include "kalib.h"
@@ -96,7 +96,7 @@ ND* ndnxt;
 ND* mknd(void) {
 	if (!cod) return progmem;
 	if (ndnxt >= progmem + BLSZ - 2) {
-//		fprintf(stderr, "increase memory\n"); 
+//		fprintf(stderr, "increase memory\n");
 		ND* nd = malloc((BLSZ + 1) * sizeof(ND));
 		progmem[BLSZ].ex = nd;
 		progmem = nd;
@@ -114,7 +114,7 @@ S void code_free() {
 
 	while (nd) {
 		ND* h = nd[BLSZ].ex;
-//		fprintf(stderr, "free\n"); 
+//		fprintf(stderr, "free\n");
 		free(nd);
 		nd = h;
 	}
@@ -168,7 +168,7 @@ extern int parse(const char* str, int opt, int pos) {
 		error("<cmd>");
 	}
 
-	if (err) { 
+	if (err) {
 		// always when is_enter
 		int err_pos = codestrln;
 
@@ -179,7 +179,7 @@ extern int parse(const char* str, int opt, int pos) {
 		if (ind_tok > 0 && parse_str[ind_tok - 1] == '\n') ind_tok--;
 
 		co(parse_str + ind_tok);
- 
+
 		caret_pos = code_utf8len;
 		if (nestlevel_err >= 0) {
 			ushort npos = nest_block[nestlevel_err];
@@ -191,7 +191,7 @@ extern int parse(const char* str, int opt, int pos) {
 			else if (ch == 'e') codestr[npos + 11] = 'u'; // repeat
 			else if (ch == 'n') codestr[npos + 7] = 'u'; // on
 			else if (ch == 'a') codestr[npos + 13] = 'u'; // fastproc
-			else if (ch == 'u' && codestr[npos + 7] == '$') { 
+			else if (ch == 'u' && codestr[npos + 7] == '$') {
 				codestr[npos + 10] = 'u'; // func$
 			}
 			else {
@@ -233,10 +233,10 @@ extern int parse(const char* str, int opt, int pos) {
 	if (prog_props & 8) mask |= 2;
 	if ((prog_props & 1) || (prog_props & 4)) mask |= 4;
 
-	if (seq.mouse_down || seq.mouse_up || 
+	if (seq.mouse_down || seq.mouse_up ||
 			seq.mouse_move || seq.key_down ||
 			seq.animate || seq.timer) {
-		mask |= 8; 
+		mask |= 8;
 	}
 	return -mask;
 }
@@ -269,7 +269,7 @@ extern int exec(int opt, const char* args) {
 	gr_init(progname, onstats | (prog_props << 6));
 	rt.slow = 0;
 
-	int dbg = opt >> 1; 
+	int dbg = opt >> 1;
 	if (dbg) {
 		rt.slow = 1 << (dbg - 1);
 		exec_sequ_slow(proc_p->start);
@@ -315,7 +315,7 @@ char* codefr = "proc iter cx cy . iter . "
 "iter 0.6 0.5 iter "
 "pr iter";
 
-char* code4 = 
+char* code4 =
 	"while b + 1 < 1000000000 / 2"
 	"  b = b + 1 "
 	"  s = s + b "
@@ -409,7 +409,7 @@ int main(int argc, const char* argv[]) {
 			str_append(&args, argv[j + i]);
 		}
 	}
-	exec(0, str_ptr(&args)); 
+	exec(0, str_ptr(&args));
 	return 0;
 }
 

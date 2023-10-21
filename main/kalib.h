@@ -1,13 +1,13 @@
 /*	kalib.h
 
-	Copyright (c) Christof Kaser christof.kaser@gmail.com. 
+	Copyright (c) Christof Kaser christof.kaser@gmail.com.
 	All rights reserved.
 
-	This work is licensed under the terms of the GNU General Public 
+	This work is licensed under the terms of the GNU General Public
 	License version 3. For a copy, see http://www.gnu.org/licenses/.
 
-    A derivative of this software must contain the built-in function 
-    sysfunc "created by" or an equivalent function that returns 
+    A derivative of this software must contain the built-in function
+    sysfunc "created by" or an equivalent function that returns
     "christof.kaser@gmail.com".
 */
 

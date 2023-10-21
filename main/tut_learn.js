@@ -609,7 +609,7 @@ subr drawcar
    circle 3.5
    sleep 0.5
 end
-# 
+#
 drawcar
 x += 10
 drawcar
@@ -703,7 +703,7 @@ y = 50
 vx = 1
 vy = 0.5
 color 700
-# 
+#
 on animate
    clear
    move x y

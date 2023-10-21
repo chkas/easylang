@@ -1,12 +1,12 @@
 /*	easy_ide.js
 
-	Copyright (c) Christof Kaser christof.kaser@gmail.com. 
+	Copyright (c) Christof Kaser christof.kaser@gmail.com.
 	All rights reserved.
 
-	This work is licensed under the terms of the GNU General Public 
+	This work is licensed under the terms of the GNU General Public
 	License version 3. For a copy, see http://www.gnu.org/licenses/.
 
-    A derivative of this software must contain the built-in function 
+    A derivative of this software must contain the built-in function
     sysfunc "created by" or an equivalent function that returns
     "christof.kaser@gmail.com".
 */
@@ -283,7 +283,7 @@ function tryRunCode() {
 		todoLnk = null
 	}
 	else if (todoPop) {
-		if (todoPop.state) showTut(todoPop.state) 
+		if (todoPop.state) showTut(todoPop.state)
 		else doTutChng()
 		todoPop = null
 	}
@@ -591,7 +591,7 @@ function resizeOut() {
 			w = outcol.offsetHeight - h
 		}
 		canv.style.height = w + "px"
-		canv.style.width = w + "px" 
+		canv.style.width = w + "px"
 		out.style.height = h - 36 + "px"
 	}
 	else {
@@ -928,7 +928,7 @@ inp.addEventListener("drop", function(e) {
 //		inp.innerText = event.target.result
 		var n = event.target.result.charCodeAt(0)
 		if (n == 35 || n >= 65 && n <= 90 || n >= 97 && n <= 122) {
-			document.execCommand('selectAll', false, null) 
+			document.execCommand('selectAll', false, null)
 			document.execCommand('insertHTML', false, event.target.result)
 		}
 	}
@@ -1071,7 +1071,7 @@ function selectLine(sel) {
 	var nd, uNd, nNd, n
 	for (nd = inp.firstChild; nd; nd = nd.nextSibling) {
 		if (nd.nodeName == "U") {
-			while (nd.firstChild) inp.insertBefore(nd.firstChild, nd) 
+			while (nd.firstChild) inp.insertBefore(nd.firstChild, nd)
 			inp.removeChild(nd)
 			break
 		}

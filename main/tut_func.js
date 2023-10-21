@@ -81,7 +81,7 @@ print fact 6
 
 * Fractal tree
 
-+ A simple tree can be viewed recursively. It consists of a branch at the end of which two smaller trees, one slightly inclined to the left, the other slightly to the right, grow out. 
++ A simple tree can be viewed recursively. It consists of a branch at the end of which two smaller trees, one slightly inclined to the left, the other slightly to the right, grow out.
 
 + Such a tree can be drawn relatively easily with a recursive program.
 
@@ -101,7 +101,7 @@ tree 50 5 90 10
 * Quicksort
 
 proc qsort left right . d[] .
-  # 
+  #
   subr partition
     mid = left
     for i = left + 1 to right
@@ -112,7 +112,7 @@ proc qsort left right . d[] .
     .
     swap d[left] d[mid]
   .
-  # 
+  #
   if left < right
     partition
     qsort left mid - 1 d[]
@@ -140,7 +140,7 @@ len tow_disc[1][] ndisc
 len tow_disc[2][] ndisc
 len tow_disc[3][] ndisc
 textsize 7
-# 
+#
 proc init . .
    for i = 1 to ndisc
       tow_disc[1][i] = ndisc - i
@@ -202,7 +202,7 @@ size = 15
 n = 2 * size + 1
 f = 100 / (n - 0.5)
 len m[] n * n
-# 
+#
 background 000
 proc show_maze . .
    clear
@@ -249,7 +249,7 @@ proc make_maze . .
 .
 make_maze
 show_maze
-# 
+#
 proc mark pos col . .
    x = (pos - 1) mod n
    y = (pos - 1) div n
@@ -290,7 +290,7 @@ solve 0 n + 2 found
 n = 8
 # stores the position of the queen on row
 len col[] n
-# 
+#
 proc print_solution . .
    h$ = "┏"
    for i = 1 to n - 1
@@ -324,7 +324,7 @@ proc print_solution . .
    .
    print ""
 .
-# 
+#
 func is_save col row .
    for i = 1 to row - 1
       if col[i] = col or abs (col[i] - col) = abs (row - i)
@@ -333,7 +333,7 @@ func is_save col row .
    .
    return 1
 .
-# 
+#
 print "First 3 solutions: "
 print ""
 n_solutions = 0
@@ -368,7 +368,7 @@ subr nch
    .
    ch = strcode ch$
 .
-# 
+#
 subr ntok
    if ch = 0
       tok$ = "eof"
@@ -391,7 +391,7 @@ subr ntok
    .
 .
 funcdecl eval_expr .
-# 
+#
 func eval_factor .
    if tok$ = "numb"
       write tokv
@@ -454,6 +454,6 @@ repeat
 input_data
 4 * 6
 4.2 * ((5.3+8)*3 + 4)
-2.5 + 2 * 3.14 
+2.5 + 2 * 3.14
 `
 

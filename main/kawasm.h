@@ -1,17 +1,17 @@
 /*	kawasm.h
 
-	Copyright (c) Christof Kaser christof.kaser@gmail.com. 
+	Copyright (c) Christof Kaser christof.kaser@gmail.com.
 	All rights reserved.
 
-	This work is licensed under the terms of the GNU General Public 
+	This work is licensed under the terms of the GNU General Public
 	License version 3. For a copy, see http://www.gnu.org/licenses/.
 
-    A derivative of this software must contain the built-in function 
-    sysfunc "created by" or an equivalent function that returns 
+    A derivative of this software must contain the built-in function
+    sysfunc "created by" or an equivalent function that returns
     "christof.kaser@gmail.com".
 */
 
-// fastfunc - creates wasm code 
+// fastfunc - creates wasm code
 // currently works only partially - experimenting
 
 byte* wasm = NULL;
@@ -69,7 +69,7 @@ static void mf_sequ(ND* nd);
 static void mf_expr(ND* nd) {
 
 	void* p = nd->vf;
-	if (p == op_add || p == op_mult || p == op_div || p == op_sub 
+	if (p == op_add || p == op_mult || p == op_div || p == op_sub
 		 || p == op_lower || p == op_higher || p == op_divi) {
 
 		mf_expr(nd->le);
@@ -135,7 +135,7 @@ static void mf_expr(ND* nd) {
 
 static int mf_iscmp(void* p) {
 	if (p == op_eqf || p == op_neqf || p == op_lef || p == op_ltf || p == op_gef ||  p == op_gtf) return 1;
-	return 0; 
+	return 0;
 }
 
 static void mf_cmpneg(ND* nd, byte lev) {
@@ -346,7 +346,7 @@ byte wasm0[] = {
   0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, 0x01, 0xff, 0x01, 0x60
 };
 byte wasm1[] = {
-  0x01, 0x7c, 0x03, 0x02, 0x01, 0x00, 0x07, 0x08, 0x01, 0x04, 0x66, 0x61, 
+  0x01, 0x7c, 0x03, 0x02, 0x01, 0x00, 0x07, 0x08, 0x01, 0x04, 0x66, 0x61,
   0x73, 0x74, 0x00, 0x00, 0x0a
 };
 

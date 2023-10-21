@@ -249,8 +249,8 @@ S double op_pi(ND* nd) {
 S double op_sqrt(ND* nd) {
 	return sqrt(numf(nd->le));
 }
-S double op_logn(ND* nd) {
-	return log(numf(nd->le));
+S double op_log10(ND* nd) {
+	return log10(numf(nd->le));
 }
 S double op_sin(ND* nd) {
 	return sin(numf(nd->le) / 180. * M_PI);

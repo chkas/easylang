@@ -1,13 +1,13 @@
 /*	kaparse.h
 
-	Copyright (c) Christof Kaser christof.kaser@gmail.com. 
+	Copyright (c) Christof Kaser christof.kaser@gmail.com.
 	All rights reserved.
 
-	This work is licensed under the terms of the GNU General Public 
+	This work is licensed under the terms of the GNU General Public
 	License version 3. For a copy, see http://www.gnu.org/licenses/.
 
-    A derivative of this software must contain the built-in function 
-    sysfunc "created by" or an equivalent function that returns 
+    A derivative of this software must contain the built-in function
+    sysfunc "created by" or an equivalent function that returns
     "christof.kaser@gmail.com".
 */
 
@@ -44,7 +44,7 @@ S ND* parse_strterm(void);
 
 S double (*numf[])(ND*) = {
 	op_sys_time, op_error, op_mouse_x, op_mouse_y, op_randomf, op_pi,
-	op_random,  op_sqrt, op_logn, op_abs, op_sign, op_bitnot, op_floor, op_sin, op_cos, op_tan, op_asin, op_acos, op_atan, 
+	op_random,  op_sqrt, op_log10, op_abs, op_sign, op_bitnot, op_floor, op_sin, op_cos, op_tan, op_asin, op_acos, op_atan,
 	op_atan2, op_pow, op_bitand, op_bitor, op_bitxor, op_bitshift, op_lower, op_higher,
 	op_number, op_strcode, op_strcompare
 };
@@ -284,7 +284,7 @@ S ND* parse_callfunc(struct proc* p, byte isstr) {
 		nd->numf = op_fastcall;
 	}
 #endif
-	if (isstr) nd->strf = op_callfunc_str; 
+	if (isstr) nd->strf = op_callfunc_str;
 
 	ND* ndf = nd;
 	ushort i = 0;
@@ -351,10 +351,10 @@ S ND* parse_fac(void) {
 				nd->numf = op_lvnum;
 			}
 		}
-	} 
+	}
 	else if (is_numfunc()) {
 		nd = parse_numfunc();
-	} 
+	}
 	else if (tok == t_len) {
 		csb_tok_spc_nt();
 		nd = parse_lenfunc(0);
@@ -365,7 +365,7 @@ S ND* parse_fac(void) {
 		ND* h = parse_fac();
 		nd->le =h;
 		nd->numf = op_negf;
-	} 
+	}
 	else if (tok == t_pal) {
 		cs_tok_nt();
 		nd = parse_ex();
@@ -520,20 +520,20 @@ S ND* parse_lstr(void) {
 				buf2[j] = '\\';
 				j += 1;
 				ch = 't';
-			} 
+			}
 			else if (ch == '\n') {
 				buf2[j] = '\\';
 				j += 1;
 				ch = 'n';
-			} 
+			}
 			else if (ch == '"') {
 				buf2[j] = '\\';
 				j += 1;
-			} 
+			}
 			else if (ch == '\\') {
 				buf2[j] = '\\';
 				j += 1;
-			} 
+			}
 			buf2[j] = ch;
 			j += 1;
 			i += 1;
@@ -678,7 +678,7 @@ S void optimize_cmp(ND* nd) {
 			void* p = nd->intf;
 			if (p == op_ltf) nd->intf = op_ltx;
 			else if (p == op_gtf) nd->intf = op_gtx;
-			else if (p == op_lef) nd->intf = op_lex; 
+			else if (p == op_lef) nd->intf = op_lex;
 			else if (p == op_gef) nd->intf = op_gex;
 			else if (p == op_eqf) nd->intf = op_eqx;
 			else nd->intf = op_neqx;
@@ -723,7 +723,7 @@ S ND* parse_log_termx(ND* nd0) {
 		if (is_strfactor()) {
 			nd = parse_log_ex();
 			expt_ntok(t_par);
-		} 
+		}
 		else {
 			ND* h = parse_ex();
 			if (tok == t_par) {
@@ -744,7 +744,7 @@ S ND* parse_log_termx(ND* nd0) {
 	else if (is_strfactor()) {
 		nd = mknd();
 		parse_str_cmp(nd);
-	} 
+	}
 	else {
 		nd = mknd();
 		parse_cmp(nd, NULL);
@@ -824,7 +824,7 @@ S ND* parse_sequ_if(void) {
 		error("<cmd>, else, elif, end, .");
 	}
 	space_sub();
-	if (tok != t_elif) { 
+	if (tok != t_elif) {
 		cs_nl();
 		if (tok == t_else) {
 			if (!err && sequ_level < 16) nest_block[sequ_level] = codestrln;
@@ -1024,7 +1024,7 @@ S void parse_proc(byte typ) {
 			i = 0;
 		}
 		byte ptyp;
-		char typ = proc->parms[i + offs]; 
+		char typ = proc->parms[i + offs];
 		if (typ == 'f') ptyp = PAR_NUM;
 		else if (typ == 's') ptyp = PAR_STR;
 		else if (typ == 'g' || typ == 't') ptyp = PAR_ARR;
@@ -1096,7 +1096,7 @@ S void parse_on_stat(void) {
 	else if (*psq != NULL) {
 		error("already defined");
 		return;
-	} 
+	}
 	csb_tok_nt();
 	*psq = parse_sequ_end();
 
@@ -1574,12 +1574,12 @@ S void parse_for_stat(ND* nd) {
 				ndx->ex2 = parse_ex();
 				cs_spc();
 				if (strcmp(tval, "to") == 0) nd->vf = op_for;
-				else if (strcmp(tval, "downto") == 0) nd->vf = op_fordown; 
+				else if (strcmp(tval, "downto") == 0) nd->vf = op_fordown;
 				else if (strcmp(tval, "step") == 0) {
 					csk_tok_spc_nt();
 					ndx->ex3 = parse_ex();
 					cs_spc();
-					nd->vf = op_forstep; 
+					nd->vf = op_forstep;
 					if (strcmp(tval, "to") != 0) error("to");
 				}
 				else error("to, downto, step");
@@ -1906,7 +1906,7 @@ S void parse_call_stat(ND* nd, struct proc* p) {
 		if (try_call_subr(nd, name)) return;
 		p = proc_get(name);
 
-		if (p == NULL || p->typ != 0) { 
+		if (p == NULL || p->typ != 0) {
 			error("not defined");
 			return;
 		}
@@ -2163,7 +2163,7 @@ S ND* parse_sequ(void) {
 					cst(tok);
 					nexttok();
 				}
-			} 
+			}
 			else {  // t_input_data
 				if (sequ_level != 0) error("not allowed here");
 				csb(tval);
@@ -2244,16 +2244,16 @@ S ND* parse_sequ(void) {
 			else if (tok >= t_vnumael && tok <= t_vstrarrarr) {
 				if (tok == t_vnumael) {
 					parseael_ass(nd);
-				} 
+				}
 				else if (tok == t_vnumarr) {
 					parse_arr_ass(nd);
 				}
 				else if (tok == t_vstrarr) {
 					parse_strarr_ass(nd);
-				} 
+				}
 				else if (tok == t_vstrael) {
 					parse_strael_ass(nd);
-				} 
+				}
 				else if (tok == t_vnumarrarr) {
 					parse_arrarr_ass(nd);
 				}

@@ -1,18 +1,18 @@
 /*	kalex.h
 
-	Copyright (c) Christof Kaser christof.kaser@gmail.com. 
+	Copyright (c) Christof Kaser christof.kaser@gmail.com.
 	All rights reserved.
 
-	This work is licensed under the terms of the GNU General Public 
+	This work is licensed under the terms of the GNU General Public
 	License version 3. For a copy, see http://www.gnu.org/licenses/.
 
-    A derivative of this software must contain the built-in function 
-    sysfunc "created by" or an equivalent function that returns 
+    A derivative of this software must contain the built-in function
+    sysfunc "created by" or an equivalent function that returns
     "christof.kaser@gmail.com".
 */
 
 static const char* token_list[] = {
-	"", 
+	"",
 	"else", "elif", "until", "end",
 	"proc", "func", "fastfunc", "procdecl","funcdecl", "subr", "on", "prefix", "input_data", "global",
 	"if", "while", "for", "repeat",
@@ -20,7 +20,7 @@ static const char* token_list[] = {
 	"call",  "len",
 
 	"print", "pr", "write", "text",
-	"sleep", "timer", "textsize", "linewidth", "coord_rotate", "circle", 
+	"sleep", "timer", "textsize", "linewidth", "coord_rotate", "circle",
 	"color", "background", "mouse_cursor", "random_seed",
 	"move", "line", "coord_translate", "rect", "numfmt",
 	"color3", "circlearc",
@@ -29,7 +29,7 @@ static const char* token_list[] = {
 	"return", "swap", "clear", "break", "drawgrid", "arrbase", "sys",
 
 	"systime", "error", "mouse_x", "mouse_y", "randomf", "pi",
-	"random",  "sqrt", "logn", "abs", "sign", "bitnot", "floor", "sin", "cos", "tan", "asin", "acos", "atan", 
+	"random",  "sqrt", "log10", "abs", "sign", "bitnot", "floor", "sin", "cos", "tan", "asin", "acos", "atan",
 	"atan2", "pow", "bitand", "bitor", "bitxor", "bitshift", "lower", "higher",
 	"number", "strcode", "strcmp",
 
@@ -38,7 +38,7 @@ static const char* token_list[] = {
 	"+", "-", "*", "/", "#", "<", ">", ".", "=", "&",
 	"(", ")", "[", "]", "][", "<>", "<=", ">=", "&=", "+=", "*=", "/=", "-=",
 
-	"number", "string", 
+	"number", "string",
 	"name", "string variable",
 
 	"array element", "string array element",
@@ -55,7 +55,7 @@ enum token_tok {
 	t_and, t_or, t_not, t_mod, t_mod1, t_divi, t_divi1,
 	t_call, t_len,
 
-	t_print, t_pr, t_write, t_text, 
+	t_print, t_pr, t_write, t_text,
 	t_sleep, t_timer, t_textsize, t_linewidth, t_rotate, t_circle,
 	t_color, t_background, t_mouse_cursor, t_random_seed,
 	t_move, t_line, t_translate, t_rect, t_numfmt,
@@ -65,7 +65,7 @@ enum token_tok {
 	t_return, t_swap, t_clear, t_break, t_drawgrid, t_arrbase, t_sys,
 	
 	t_systime, t_error, t_mouse_x, t_mouse_y, t_randomf, t_pi,
-	t_random,  t_sqrt, t_logn, t_abs, t_sign, t_bitnot, t_floor, t_sin, t_cos, t_tan, t_asin, t_acos, t_atan, 
+	t_random,  t_sqrt, t_log10, t_abs, t_sign, t_bitnot, t_floor, t_sin, t_cos, t_tan, t_asin, t_acos, t_atan,
 	t_atan2, t_pow, t_bitand, t_bitor, t_bitxor, t_bitshift, t_lower, t_higher,
 	t_number, t_strord, t_strcompare,
 
@@ -74,11 +74,11 @@ enum token_tok {
 	t_plus, t_minus, t_mult, t_div, t_hash, t_lt, t_gt, t_dot, t_eq, t_amp,
 	t_pal, t_par, t_brl, t_brr, t_brrl, t_neq, t_le, t_ge, t_ampeq, t_pleq, t_asteq, t_diveq, t_mineq,
 
-	t_lnumber, t_lstr, 
+	t_lnumber, t_lstr,
 	t_name, t_vstr,
 
 	t_vnumael, t_vstrael,
-	t_vnumarr, t_vstrarr, 
+	t_vnumarr, t_vstrarr,
 	t_vnumarrarr, t_vstrarrarr,
 
 	t_eof
@@ -95,7 +95,7 @@ static int ind_tok, indc;
 
 static char is_enter;
 
-static const char* parse_str; 
+static const char* parse_str;
 
 #define INDENT 3
 
@@ -427,7 +427,7 @@ static void parse_input_data() {
 		csx(buf);
 		if (cod) {
 			uint h = input_data_size + strlen(buf) + 1;
-			input_data = realloc(input_data, h); 
+			input_data = realloc(input_data, h);
 			strcpy(input_data + input_data_size, buf);
 			input_data_size = h;
 		}
@@ -446,7 +446,7 @@ static int tbl_h[] = { t_higher, 0 };
 static int tbl_i[] = { t_if, t_input, t_input_data, 0 };
 static int tbl_j[] = { 0 };
 static int tbl_k[] = { t_keyb_key, 0 };
-static int tbl_l[] = { t_len, t_lower, t_line, t_linewidth, t_logn, 0 };
+static int tbl_l[] = { t_len, t_lower, t_line, t_linewidth, t_log10, 0 };
 static int tbl_m[] = { t_mod, t_mod1, t_move, t_mouse_x, t_mouse_y, t_mouse_cursor, 0 };
 static int tbl_n[] = { t_not, t_numfmt, t_number, 0 };
 static int tbl_o[] = { t_or, t_on, 0 };
@@ -459,10 +459,10 @@ static int tbl_u[] = { t_until, 0 };
 static int tbl_v[] = { 0 };
 static int tbl_w[] = { t_while, t_write, 0 };
 
-static int* tbl_all[] = { 
-	tbl_a, tbl_b, tbl_c, tbl_d, tbl_e, tbl_f, tbl_g, tbl_h, 
-	tbl_i, tbl_j, tbl_k, tbl_l, tbl_m, tbl_n, tbl_o, tbl_p, 
-	tbl_q, tbl_r, tbl_s, tbl_t, tbl_u, tbl_v, tbl_w 
+static int* tbl_all[] = {
+	tbl_a, tbl_b, tbl_c, tbl_d, tbl_e, tbl_f, tbl_g, tbl_h,
+	tbl_i, tbl_j, tbl_k, tbl_l, tbl_m, tbl_n, tbl_o, tbl_p,
+	tbl_q, tbl_r, tbl_s, tbl_t, tbl_u, tbl_v, tbl_w
 } ;
 
 static void nexttok() {
@@ -519,7 +519,7 @@ static void nexttok() {
 			ti += 1;
 		}
 #else
-		if (tval[1]) { 
+		if (tval[1]) {
 			int fc = tval[0];
 			if (fc >= 'a' && fc <= 'w') {
 				int* tbl = tbl_all[fc - 'a'];

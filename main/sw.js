@@ -28,7 +28,7 @@ self.addEventListener("install", evt => {
 						console.log(f + " missing")
 						return
 					}
-					if (resp.headers.get("Cross-Origin-Embedder-Policy") != "require-corp" || 
+					if (resp.headers.get("Cross-Origin-Embedder-Policy") != "require-corp" ||
 						resp.headers.get("Cross-Origin-Opener-Policy") != "same-origin") {
 
 						var head2 = new Headers(resp.headers);
