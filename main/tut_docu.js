@@ -1,4 +1,4 @@
-txt_tutor=`+ Documentation - Code snippets
+txt_tutor = String.raw`+ Documentation - Code snippets
 
 -
 

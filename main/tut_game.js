@@ -1,4 +1,4 @@
-txt_tutor=`+ Programming a letter memory game
+txt_tutor = String.raw`+ Programming a letter memory game
 
 -
 

@@ -53,7 +53,7 @@ xxx
 	if test $2 = learn; then
 		cat >>$o/tut_$n.html <<'xxx'
 txt_locale = "de"
-txt_tutor=`
+txt_tutor = String.raw`
 * Programming basics
 
 *de Programmier-Grundlagen

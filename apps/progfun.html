@@ -95,20 +95,6 @@ window.onresize = function() {
 window.onresize()
 var src = []
 
-src.push(`on animate
-   clear
-   for c = 0 to 1319
-      h = c + tick
-      x = sin (6 * h / pi) + sin (3 * h)
-      h = c + tick * 2
-      y = cos (6 * h / pi) + cos (3 * h)
-      move 20 * x + 50 20 * y + 50
-      circle 0.5
-   .
-   tick += 1
-.
-`)
-
 src.push(`ang = 45
 color 881
 #
@@ -196,7 +182,7 @@ src.push(`proc tree x y l w ang dp . .
       tree x y ln w * 0.7 an dp - 1
    .
 .
-background 668
+background 479
 textsize 3
 subr new
    clear
@@ -209,6 +195,31 @@ on mouse_down
    new
 .
 new
+`)
+
+src.push(`rad = 0.2
+n = 3000
+# 
+len x[] n ; len y[] n
+len vx[] n ; len vy[] n
+background 479
+color 999
+on animate
+   for i = 1 to 16
+      ind = (ind + 1) mod1 n
+      x[ind] = 50 + randomf
+      y[ind] = i / 4
+      vx[ind] = (randomf - 0.5) * 0.4
+      vy[ind] = 1.8 + randomf * 0.1
+   .
+   clear
+   for i = 1 to n
+      move x[i] y[i]
+      circle rad
+      x[i] += vx[i] ; y[i] += vy[i]
+      vy[i] -= 0.02
+   .
+.
 `)
 
 

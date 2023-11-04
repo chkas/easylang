@@ -862,7 +862,8 @@ inp.onkeydown = function(e) {
 			return
 		}
 	}
-	if (e.ctrlKey) {
+//	if (e.ctrlKey) {
+	if (e.ctrlKey || e.metaKey) {
 		if (k == 86 || k == 88) {	// v x
 			stBtn.disabled = false
 		}
@@ -909,7 +910,9 @@ inp.onkeydown = function(e) {
 		e.preventDefault()
 	}
 	// delete space tab
-	if (stBtn.disabled && (k >= 46 || k == 32 || k <= 9)) stBtn.disabled = false
+	if (stBtn.disabled) {
+		if (k >= 46 || k == 32 || k <= 9 ) stBtn.disabled = false
+	}
 }
 
 inp.addEventListener("paste", function(e) {

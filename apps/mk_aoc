@@ -70,7 +70,7 @@ xxx
 	cat <<'xxx'
 txt_split = "\n*\n"
 
-txt_tutor=`-
+txt_tutor = String.raw`-
 *
 xxx
 
@@ -81,11 +81,16 @@ xxx
 			echo "*"
 			echo "@ https://adventofcode.com/20$1/day/$i@AoC 20$1 - Day $i"
 			echo "*"
-			if test $1$i = 2019 -o $1$i = 1813 -o $1$i = 1512 -o $1$i = 158; then
-				cat $i.el | $src/tr.py
-			else
-				cat $i.el | tr '\\' '\\\\'
-			fi
+
+			cat $i.el
+
+# with String.raw not neccessary
+#
+#			if test $1$i = 2019 -o $1$i = 1813 -o $1$i = 1512 -o $1$i = 158; then
+#				cat $i.el | $src/tr.py
+#			else
+#				cat $i.el | tr '\\' '\\\\'
+#			fi
 			echo "*"
 		fi
 	done

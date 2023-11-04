@@ -1,5 +1,5 @@
 txt_locale = "de"
-txt_tutor=`+ Programming basics
+txt_tutor = String.raw`+ Programming basics
 
 +de Programmier-Grundlagen
 
@@ -365,7 +365,7 @@ proc cod n$ v v$ . .
 cod "a ← 7 " 7 ""
 cod "a ← 10 * a " 70 ""
 cod "a > 20 ?" -1 "YES"
-cod "\\"a is large\\"" -1 ""
+cod "\"a is large\"" -1 ""
 
 -
 

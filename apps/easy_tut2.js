@@ -175,14 +175,14 @@ function tutMsgFunc(msg, d) {
 	}
 
 	if (msg == "src") {
-		msg = "srcx"
+		msg = "src_tut"
 		actBtn.pre.offsetHeight
 		actBtn.pre.style.height = ""
 	}
     codeMsgF(msg, d)
 
 
-	if (msg == "srcx") {
+	if (msg == "src_tut") {
 		isActive = true
 		var h = -d[1]
 
@@ -352,7 +352,8 @@ function tutUpd() {
 		else {
 			var pre = create("pre")
 			codeInit(pre, runCB, stopped)
-			pre.innerHTML = s
+			pre.textContent = s
+//			pre.innerHTML = s
 			kaFormat(s, pres.push(pre) - 1)
 
 			var btn = create("button")
