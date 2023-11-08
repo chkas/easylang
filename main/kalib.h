@@ -243,7 +243,7 @@ inline static struct str str_numfx(double f, int sc, int spc) {
 	if (spc < 0) spc = 0;
 	else if (spc > 30) spc = 30;
 
-	if ((double)(long long)f == f) {
+	if (f < 9007199254740992 && f >= -9007199254740992 &&  (double)(long long)f == f) {
 		if (f == 0) f = 0;					// get rid off -0
 		sprintf(fmt, "%%%d.20g", spc);
 	}

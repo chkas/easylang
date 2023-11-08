@@ -32,7 +32,8 @@ static void wemitf(double d) {
 		wasm_len += 256;
 		wasm = realloc(wasm, wasm_len);
 	}
-	*(double*)(wasm + wasmi) = d;
+//kc	*(double*)(wasm + wasmi) = d;
+	memcpy(wasm + wasmi, &d, 8);
 	wasmi += 8;
 }
 static void mf_err(const char* s) {
