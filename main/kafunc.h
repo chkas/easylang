@@ -587,7 +587,8 @@ S double op_mod1(ND* nd) {	// as in Julia
 	double a = numf(nd->le) - 1;
 	double b = numf(nd->ri);
 	double r = fmod(a, b);
-	if (r < 0) r += b + 1;
+//	if (r < 0) r += b + 1;
+	if (r < 0) r += b;
 	return r + 1;
 }
 S double op_divi1(ND* nd) {	// as in Julia fld1

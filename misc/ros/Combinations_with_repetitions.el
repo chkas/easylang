@@ -1,0 +1,36 @@
+items$[] = [ "iced" "jam" "plain" ]
+n = len items$[]
+k = 2
+len result[] k
+n_results = 0
+# 
+proc output . .
+   n_results += 1
+   if len items$[] > 0
+      s$ = ""
+      for i = 1 to k
+         s$ &= items$[result[i]] & " "
+      .
+      print s$
+   .
+.
+proc combine pos val . .
+   if pos > k
+      output
+   else
+      for i = val to n
+         result[pos] = i
+         combine pos + 1 i
+      .
+   .
+.
+combine 1 1
+# 
+n = 10
+k = 3
+len result[] k
+items$[] = [ ]
+n_results = 0
+combine 1 1
+print ""
+print n_results & " results with 10 donuts"

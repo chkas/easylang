@@ -1,0 +1,424 @@
+1
+100 doors
+100 prisoners
+10001th prime
+15 puzzle game
+2
+21 game
+4
+4-rings or 4-squares puzzle
+9
+99 bottles of beer
+A
+A+B
+ABC problem
+Abundant odd numbers
+Abundant, deficient and perfect number classifications
+Ackermann function
+Additive primes
+Air mass
+Align columns
+Aliquot sequence classifications
+Almost prime
+Amicable pairs
+Angle difference between two bearings
+Angles (geometric), normalization and conversion
+Animate a pendulum
+Animation
+Anti-primes
+Append numbers at same position in strings
+Archimedean spiral
+Arithmetic evaluation
+Arithmetic numbers
+Arithmetic-geometric mean
+Arithmetic-geometric mean/Calculate Pi
+Arithmetic/Integer
+Array concatenation
+Array length
+Arrays
+Ascending primes
+Associative array/Creation
+Associative array/Iteration
+Attractive numbers
+Averages/Arithmetic mean
+Averages/Mean angle
+Averages/Mean time of day
+Averages/Median
+Averages/Mode
+Averages/Pythagorean means
+Averages/Root mean square
+Averages/Simple moving average
+B
+Babbage problem
+Balanced brackets
+Barnsley fern
+Bell numbers
+Benford's law
+Bifid cipher
+Bin given limits
+Binary digits
+Binary search
+Bioinformatics/base count
+Bitmap/Bresenham's line algorithm
+Bitwise operations
+Blum integer
+Boolean values
+Brazilian numbers
+Brownian tree
+Bulls and cows
+C
+Calculating the value of e
+Calendar
+Call a function
+Cantor set
+Carmichael 3 strong pseudoprimes
+Case-sensitivity of identifiers
+Casting out nines
+Catalan numbers
+Catalan numbers/Pascal's triangle
+Chaos game
+Character codes
+Chebyshev coefficients
+Chinese remainder theorem
+Chinese zodiac
+Chowla numbers
+Circles of given radius through two points
+Circular primes
+Cistercian numerals
+Closest-pair problem
+Code Golf: Code Golf
+Collect and sort square numbers in ascending order from three lists
+Collections
+Colour bars/Display
+Combinations
+Combinations and permutations
+Combinations with repetitions
+Comma quibbling
+Comments
+Common list elements
+Common sorted list
+Compare a list of strings
+Compare length of two strings
+Concatenate two primes is also prime
+Conditional structures
+Conjugate a Latin verb
+Continued fraction
+Convert seconds to compound duration
+Conway's Game of Life
+Copy a string
+Count how many vowels and consonants occur in a string
+Count in factors
+Count in octal
+Count occurrences of a substring
+Count the coins
+Cullen and Woodall numbers
+Cumulative standard deviation
+Curzon numbers
+CUSIP
+D
+Day of the week
+Day of the week of Christmas and New Year
+De Polignac numbers
+Deal cards for FreeCell
+Department numbers
+Descending primes
+Detect division by zero
+Determine if a string has all the same characters
+Determine if a string has all unique characters
+Determine if a string is numeric
+Digital root
+Disarium numbers
+Dot product
+Dragon curve
+Draw a clock
+Draw a pixel
+Draw a rotating cube
+E
+Eban numbers
+Elementary cellular automaton
+Empty string
+Entropy
+Ethiopian multiplication
+Euler's sum of powers conjecture
+Evaluate binomial coefficients
+Even or odd
+Execute Brain****
+Exponentiation operator
+Extreme floating point values
+F
+Factorial
+Factorial primes
+Factors of an integer
+Fairshare between two and more
+Farey sequence
+Fibonacci sequence
+Filter
+Find common directory path
+Find limit of recursion
+Find square difference
+Find the intersection of a line with a plane
+FizzBuzz
+Forest fire
+Four bit adder
+Fractal tree
+Function definition
+G
+Generate lower case ASCII alphabet
+Giuga numbers
+Goldbach's comet
+Golden ratio/Convergence
+Greatest common divisor
+Greatest element of a list
+Greyscale bars/Display
+Guess the number
+Guess the number/With feedback
+H
+Hailstone sequence
+Harshad or Niven series
+Haversine formula
+Hello world/Graphical
+Hello world/Newbie
+Hello world/Newline omission
+Hello world/Text
+Hilbert curve
+Hofstadter Q sequence
+Honaker primes
+Horizontal sundial calculations
+I
+Identity matrix
+Idiomatically determine all the lowercase and uppercase letters
+Idoneal numbers
+Image noise
+Implicit type conversion
+Inconsummate numbers in base 10
+Increment a numerical string
+Infinity
+Input loop
+Integer comparison
+Integer sequence
+ISBN13 check digit
+Isqrt (integer square root) of X
+J
+Jewels and stones
+Jordan-Pólya numbers
+Josephus problem
+Julia set
+K
+Klarner-Rado sequence
+Knapsack problem/0-1
+Knuth shuffle
+Koch curve
+L
+Lah numbers
+Langton's ant
+Largest number divisible by its digits
+Largest proper divisor of n
+Leonardo numbers
+L
+Letter frequency
+Levenshtein distance
+Literals/Floating point
+Literals/Integer
+Literals/String
+Logical operations
+Long multiplication
+Longest common substring
+Look-and-say sequence
+Loop over multiple arrays simultaneously
+Loops/Break
+Loops/Do-while
+Loops/Downward for
+Loops/For
+Loops/For with a specified step
+Loops/Foreach
+Loops/Increment loop index within loop body
+Loops/Infinite
+Loops/N plus one half
+Loops/Nested
+Loops/While
+M
+Magnanimous numbers
+Mandelbrot set
+Mastermind
+Matrix transposition
+Maximum triangle path sum
+Maze generation
+Maze solving
+McNuggets problem
+MD5/Implementation
+Middle three digits
+Minesweeper game
+Modular inverse
+Monte Carlo methods
+Monty Hall problem
+Morse code
+Motzkin numbers
+Mouse position
+Multifactorial
+Multiplication tables
+Munching squares
+Musical scale
+Möbius function
+N
+N'th
+N-queens problem
+Narcissistic decimal number
+Nim game
+Nth root
+Numbers which are not the sum of distinct squares
+Numbers which are the cube roots of the product of their proper divisors
+Numbers with equal rises and falls
+O
+O'Halloran numbers
+One-dimensional cellular automata
+Own digits power sum
+P
+Padovan n-step number sequences
+Pairs with common factors
+Palindrome detection
+Pangram checker
+Particle fountain
+Pentagram
+Percolation/Mean run density
+Perfect numbers
+Periodic table
+Perlin noise
+Permutations
+Permutations/Derangements
+Pick random element
+Plot coordinate pairs
+Polynomial regression
+Polyspiral
+Price fraction
+Primality by trial division
+Prime decomposition
+Primes: n*2^m+1
+Pseudo-random numbers/Middle-square method
+Pythagoras tree
+Q
+Quickselect algorithm
+Quine
+R
+Radical of an integer
+Random numbers
+Rare numbers
+Real constants and functions
+Recaman's sequence
+Remove duplicate elements
+Remove vowels from a string
+Repeat a string
+Return multiple values
+Reverse a string
+Riordan numbers
+Roman numerals/Decode
+Roman numerals/Encode
+Rot-13
+Round-robin tournament schedule
+Run-length encoding
+S
+Sattolo cycle
+Search a list
+Self-describing numbers
+Semiprime
+Sequence of non-squares
+Sequence of primes by trial division
+Sequence: smallest number with exactly n divisors
+Set puzzle
+Set, the card game
+Seven-sided dice from five-sided dice
+Shoelace formula for polygonal area
+Short-circuit evaluation
+Show ASCII table
+Sierpinski arrowhead curve
+Sierpinski carpet
+Sierpinski pentagon
+Sierpinski triangle/Graphical
+Sieve of Eratosthenes
+Simple turtle graphics
+Sisyphus sequence
+Sleep
+Smarandache-Wellin primes
+Smith numbers
+Snake
+Solve triangle solitare puzzle
+Sort disjoint sublist
+Sort three variables
+Sorting algorithms/Bubble sort
+Sorting algorithms/Counting sort
+Sorting algorithms/Gnome sort
+Sorting algorithms/Heapsort
+Sorting algorithms/Insertion sort
+Sorting algorithms/Merge sort
+Sorting algorithms/Quicksort
+Sorting algorithms/Radix sort
+Sorting algorithms/Selection sort
+Sorting algorithms/Stooge sort
+Soundex
+Split a character string based on change of character
+Square form factorization
+Statistics/Basic
+Steffensen's method
+Stirling numbers of the first kind
+Stirling numbers of the second kind
+String append
+String case
+String comparison
+String concatenation
+String length
+String matching
+String prepend
+Strip a set of characters from a string
+Strip block comments
+Strip comments from a string
+Strip control codes and extended characters from a string
+Strip whitespace from a string/Top and tail
+Sub-unit squares
+Subleq
+Substring
+Substring/Top and tail
+Subtractive generator
+Successive prime differences
+Sudoku
+Sum and product of an array
+Sum digits of an integer
+Sum of a series
+Sum of squares
+Summarize primes
+Sylvester's sequence
+Symmetric difference
+System time
+T
+Temperature conversion
+The Name Game
+The Twelve Days of Christmas
+Tic-tac-toe
+Time a function
+Tokenize a string
+Total circles area
+Totient function
+Towers of Hanoi
+Tree traversal
+Twelve statements
+Twin primes
+Two bullet roulette
+Two sum
+U
+Ulam spiral (for primes)
+User input/Text
+V
+Van der Corput sequence
+Van Eck sequence
+Variables
+Vibrating rectangles
+Vigenère cipher
+W
+Wagstaff primes
+Water collected between towers
+Wilson primes of order n
+Word wrap
+Z
+Zeckendorf number representation
+Zero to the zero power
+Zsigmondy numbers
+
+

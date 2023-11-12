@@ -97,9 +97,9 @@ line 50 50
 +de 🤔 Versuche das Quadrat fertig zu zeichnen!
 
 drawgrid
-move 10 30
-line 30 30
-line 30 50
+move 10 20
+line 10 40
+line 30 40
 
 + You can start the program with the *Run* button, with *Ctrl+R* or with *Shift+Enter*.
 
@@ -684,7 +684,7 @@ on key
       background 777
    end
    clear
-   move 5 5
+   move 5 90
    text keybkey
 end
 

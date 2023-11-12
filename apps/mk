@@ -10,6 +10,8 @@ src=$(pwd)
 o=$HOME/out/easylang/apps
 mkdir -p $o
 
+(cd ../misc/ros/ ; ./rosmk.sh) > $o/tut_rosetta.html
+
 for i in *.html easy_tut2.js; do
 	if test  ! -e  $o/$i -o $i -nt $o/$i; then
 		echo cp -p $i $o

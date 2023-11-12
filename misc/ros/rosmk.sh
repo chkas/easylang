@@ -1,0 +1,43 @@
+cat <<'EOF'
+<!doctype html>
+<meta charset=utf-8><title>Easylang - Rosetta Code</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<link rel="icon" href="../icon.png" type="image/x-png">
+
+<div id=tut><b>Loading ...</b></div>
+<script src=easy_code2.js></script>
+<script src=easy_tut2.js></script>
+
+<script>
+
+txt_split = "\n*\n"
+
+txt_tutor = String.raw`* Rosetta Code with Easylang
+EOF
+
+for f in *.el; do
+#	echo "$x" >&2
+	x=$(basename "$f" .el)
+	test $x = "A+B" || x=$(echo "$x" | tr + /)
+	n=$(echo "$x"|tr _ " ")
+	echo "*"
+	echo "* $n"
+	echo "*"
+	echo "@ "https://rosettacode.org/wiki/$x"@Task"
+	echo "*"
+	cat $f
+done < rosget.txt
+
+cat <<'EOF' 
+`
+function hook() {
+	var dom = window.location.host
+	tut.insertAdjacentHTML("beforeend", `
+<p><hr><p>
+The examples were created with <a href=..>${dom}<a>
+<p><small>christof.kaser@gmail.com</small>
+`)
+}
+</script>
+EOF
+
