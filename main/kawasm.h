@@ -171,15 +171,15 @@ static void mf_cmp(ND* nd, byte lev) {
 
 static void mf_andneg(ND* nd, byte lev) {
 	while (nd->intf == op_and) {
-		mf_cmpneg(nd->le, lev);
-		nd = nd->ri;
+		mf_cmpneg(nd->ri, lev);
+		nd = nd->le;
 	}
 	mf_cmpneg(nd, lev);
 }
 static void mf_and(ND* nd, byte lev) {
 	while (nd->intf == op_and) {
-		mf_cmp(nd->le, lev);
-		nd = nd->ri;
+		mf_cmp(nd->ri, lev);
+		nd = nd->le;
 	}
 	mf_cmp(nd, lev);
 }
@@ -209,8 +209,8 @@ static void mf_repand(ND* nd) {
 }
 static void mf_condrep(ND* nd) {
 	while (nd->intf == op_or) {
-		mf_repand(nd->le);
-		nd = nd->ri;
+		mf_repand(nd->ri);
+		nd = nd->le;
 	}
 	mf_repand(nd);
 }
@@ -221,11 +221,10 @@ static void mf_cond(ND* nd, byte lev) {
 		wemit(W_BLOCK);
 		wemit(W_VOID);
 		while (nd->intf == op_or) {
-			mf_and(nd->le, lev);
-			nd = nd->ri;
+			mf_and(nd->ri, lev);
+			nd = nd->le;
 		}
 		mf_and(nd, lev);
-
 		wemit(W_BR);
 		wemit(lev + 1);
 		wemit(W_END);

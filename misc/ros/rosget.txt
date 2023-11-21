@@ -1,4 +1,3 @@
-1
 100 doors
 100 prisoners
 10001th prime
@@ -135,15 +134,18 @@ Draw a pixel
 Draw a rotating cube
 E
 Eban numbers
+Egyptian division
 Elementary cellular automaton
 Empty string
 Entropy
 Ethiopian multiplication
+Euclid-Mullin sequence
 Euler's sum of powers conjecture
 Evaluate binomial coefficients
 Even or odd
 Execute Brain****
 Exponentiation operator
+Exponentiation order
 Extreme floating point values
 F
 Factorial
@@ -213,8 +215,8 @@ Lah numbers
 Langton's ant
 Largest number divisible by its digits
 Largest proper divisor of n
+Leap year
 Leonardo numbers
-L
 Letter frequency
 Levenshtein distance
 Literals/Floating point
@@ -286,9 +288,11 @@ Perlin noise
 Permutations
 Permutations/Derangements
 Pick random element
+Pig the dice game
 Plot coordinate pairs
 Polynomial regression
 Polyspiral
+Population count
 Price fraction
 Primality by trial division
 Prime decomposition
@@ -322,6 +326,7 @@ Self-describing numbers
 Semiprime
 Sequence of non-squares
 Sequence of primes by trial division
+Sequence: smallest number greater than previous term with exactly n divisors
 Sequence: smallest number with exactly n divisors
 Set puzzle
 Set, the card game
@@ -420,5 +425,3 @@ Z
 Zeckendorf number representation
 Zero to the zero power
 Zsigmondy numbers
-
-
