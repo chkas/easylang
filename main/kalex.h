@@ -670,7 +670,7 @@ struct procdecl {
 
 static struct proc* proc;
 static struct proc* proc_p;
-static ushort fastfunc_addr;
+//static ushort fastfunc_addr;
 static ushort proc_len;
 static struct procdecl* procdecl;
 static ushort procdecl_len;
@@ -915,7 +915,7 @@ static void parse_prepare() {
 	codestrspc = h + h / 2;
 	codestr = _realloc(NULL, codestrspc + 1);
 	proc = proc_add("_GLOBAL_");
-	fastfunc_addr = 0;
+//	fastfunc_addr = 0;
 
 	seq.mouse_down = NULL;
 	seq.mouse_up = NULL;

@@ -163,6 +163,9 @@ extern int parse(const char* str, int opt, int pos) {
 	sequ_level = 0;
 	fmtline = 0;
 	proc_p->start = parse_sequ();
+
+	build_fastfuncs();
+
 	if (tok != t_eof) {
 		cs_nl();
 		error("<cmd>");

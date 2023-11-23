@@ -2235,6 +2235,7 @@ S double op_fastcall(ND* nd0) {
 #ifdef __EMSCRIPTEN__
 
 	ND* nd = nd0->ri;
+	byte n = nd0->le->bx3 + 96;
 	double a[4];
 	int i = 0;
 	while (nd) {
@@ -2249,23 +2250,23 @@ S double op_fastcall(ND* nd0) {
 	double r;
 	if (i == 0) {
 		r = EM_ASM_DOUBLE(
-			{ return fastinst.exports.fast() });
+			{ return fastinst.exports[String.fromCharCode($0)]() }, n);
 	}
 	else if (i == 1) {
 		r = EM_ASM_DOUBLE(
-			{ return fastinst.exports.fast($0) }, a[0]);
+			{ return fastinst.exports[String.fromCharCode($0)]($1) }, n, a[0]);
 	}
 	else if (i == 2) {
 		r = EM_ASM_DOUBLE(
-			{ return fastinst.exports.fast($0, $1) }, a[0], a[1]);
+			{ return fastinst.exports[String.fromCharCode($0)]($1, $2) }, n, a[0], a[1]);
 	}
 	else if (i == 3) {
 		r = EM_ASM_DOUBLE(
-			{ return fastinst.exports.fast($0, $1, $2) }, a[0], a[1], a[2]);
+			{ return fastinst.exports[String.fromCharCode($0)]($1, $2, $3) }, n, a[0], a[1], a[2]);
 	}
 	else {	// if (i == 4)
 		r = EM_ASM_DOUBLE(
-			{ return fastinst.exports.fast($0, $1, $2) }, a[0], a[1], a[2], a[3]);
+			{ return fastinst.exports[String.fromCharCode($0)]($1, $2, $3) }, n, a[0], a[1], a[2], a[3]);
 	}
 	return r;
 

@@ -280,7 +280,8 @@ S ND* parse_callfunc(struct proc* p, byte isstr) {
 	}
 	nd->numf = op_callfunc;
 #ifdef FASTPROC
-	if (p - proc_p == fastfunc_addr) {
+//	if (p - proc_p == fastfunc_addr) {
+	if (p->start && p->start->bx3 != 0) {
 		nd->numf = op_fastcall;
 	}
 #endif
@@ -1011,6 +1012,7 @@ S void parse_proc(byte typ) {
 	nd->bx0 = proc->varcnt[0];
 	nd->bx1 = proc->varcnt[1];
 	nd->bx2 = proc->varcnt[2];
+	nd->bx3 = 0;
 
 	int i = 0;
 	int offs = 0;

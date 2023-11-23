@@ -14,11 +14,12 @@
 // fastfunc - creates wasm code
 // currently works only partially - experimenting
 
-byte* wasm = NULL;
-ushort wasm_len = 0;
+static byte* wasm = NULL;
+static ushort wasm_len = 0;
 
 static ushort wasmi;
 static ushort wavar;
+static byte fastfuncn;
 
 static void wemit(byte b) {
 	if (wasmi >= wasm_len) {
@@ -32,18 +33,18 @@ static void wemitf(double d) {
 		wasm_len += 256;
 		wasm = realloc(wasm, wasm_len);
 	}
-//kc	*(double*)(wasm + wasmi) = d;
 	memcpy(wasm + wasmi, &d, 8);
 	wasmi += 8;
 }
 static void mf_err(const char* s) {
 	printf("fastfunc error - %s\n", s);
-	fastfunc_addr = 0;
+	fastfuncn = 0;
 	error("fastfunc error");
 }
 
 #define W_BLOCK 0x02
 #define W_LOOP 0x03
+#define W_CALL 0x10
 #define W_VOID 0x40
 #define W_END 0x0b
 #define W_BRIF 0x0d
@@ -120,14 +121,15 @@ static void mf_expr(ND* nd) {
 		wemit(0x44);
 		wemitf(nd->cfl);
 	}
-	else if (p == op_callfunc && proc->start->bxnd == nd->le->bxnd) {
+//	else if ((p == op_callfunc && proc->start->bxnd == nd->le->bxnd) || p == op_fastcall) {
+	else if ((p == op_callfunc && nd->le->bx3) || p == op_fastcall) {
 		ND* ndh = nd->ri;
 		while (ndh) {
 			mf_expr(ndh);
 			ndh = ndh->next;
 		}
-		wemit(0x10);
-		wemit(0);
+		wemit(W_CALL);
+		wemit(nd->le->bx3 - 1);
 	}
 	else {
 		mf_err("expr");
@@ -342,28 +344,7 @@ static void mf_sequ(ND* nd) {
 	}
 }
 
-byte wasm0[] = {
-  0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, 0x01, 0xff, 0x01, 0x60
-};
-byte wasm1[] = {
-  0x01, 0x7c, 0x03, 0x02, 0x01, 0x00, 0x07, 0x08, 0x01, 0x04, 0x66, 0x61,
-  0x73, 0x74, 0x00, 0x00, 0x0a
-};
-
 static void parse_fastfunc(void) {
-
-//	printf("%d %d %d\n", proc->varcnt[0], proc->varcnt[1], proc->varcnt[2]);
-	if (proc->varcnt[1] + proc->varcnt[2] > 0) {
-		error("in fastfunc only mumbers are allowed");
-		return;
-	}
-	fastfunc_addr = proc - proc_p;
-
-	free(wasm);
-	wasm = malloc(1000);
-	wasm_len = 1000;
-	wasmi = sizeof(wasm0);
-	memcpy(wasm, wasm0, wasmi);	
 
 	// parameter
 	byte nparm;
@@ -373,24 +354,25 @@ static void parse_fastfunc(void) {
 	else if (strcmp(proc->parms, "ff") == 0) nparm = 2;
 	else if (strcmp(proc->parms, "fff") == 0) nparm = 3;
 	else {
-		error("a fastfunc have only in parameter");
+		error("a fastfunc has only number parameter");
 		return;
 	}
-	wasm[9] = 5 + nparm;
-
-	wemit(nparm);
-	for (byte i = 0; i < nparm; i++) wemit(0x7c);
-
-	memcpy(wasm + wasmi, wasm1, sizeof(wasm1));	
-	wasmi += sizeof(wasm1);
-
-	// code size
-	wasmi += 2;
-	wemit(0x1);
-	// func size
-	wasmi += 2;
+	if (proc->varcnt[1] + proc->varcnt[2] > 0) {
+		error("in fastfunc only mumbers are allowed");
+		return;
+	}
+	if (wasm == NULL) {
+		wasm = malloc(1000);
+		wasm_len = 1000;
+		wasmi = 0;
+		fastfuncn = 0;
+	}
+	fastfuncn += 1;
+	proc->start->bx3 = fastfuncn;
 
 	ushort fstart = wasmi;
+	// func size
+	wasmi += 2;
 
 	byte b = proc->varcnt[0] - nparm;
 	wavar = b + nparm;
@@ -401,8 +383,7 @@ static void parse_fastfunc(void) {
 
 	mf_sequ(proc->start->bxnd);
 
-
-	if (fastfunc_addr == 0) {
+	if (fastfuncn == 0) {
 		// error
 		goto cleanup;
 	}
@@ -413,25 +394,96 @@ static void parse_fastfunc(void) {
 
 	wemit(W_END);
 
-	ushort h = wasmi - fstart;
+	ushort h = wasmi - 2 - fstart;
 
 	if (h >= 16384 - 3) {
 		error("fastfunc too big");
 		goto cleanup;
 	}
-	wasm[fstart - 2] = (h & 127) | 128;
-	wasm[fstart - 1] = h >> 7;
-	h += 3;
-	wasm[fstart - 5] = (h & 127) | 128;
-	wasm[fstart - 4] = h >> 7;
+	// func size
+	wasm[fstart] = (h & 127) | 128;
+	wasm[fstart + 1] = h >> 7;
 
-	printf("fastfunc %s - size %d\n", proc->name, wasmi);
+	printf("fastfunc %s - size %d\n", proc->name, h);
+	return;
+
+cleanup:
+
+	free(wasm);
+	wasm = NULL;
+}
+
+static void build_fastfuncs(void) {
+
+	if (wasm == NULL) return;
+	byte wasmhd[200];
+
+	memcpy(wasmhd, "\0asm", 4);
+	memcpy(wasmhd + 4, "\1\0\0\0", 4);
+	wasmhd[8] = 1;	// section type
+
+	wasmhd[10] = 4;	// num types
+	byte k = 11;
+
+	for (byte j = 0; j < 4; j++) {
+		wasmhd[k++] = 0x60;	// func type
+		wasmhd[k++] = j;
+		for (byte i = 0; i < j; i++) {
+			wasmhd[k++] = 0x7c;
+		}
+		wasmhd[k++] = 1;		// 1 return value
+		wasmhd[k++] = 0x7c;		// return type
+	}
+	wasmhd[9] = k - 10;
+
+
+	wasmhd[k++] = 3;				// section function
+	wasmhd[k++] = 1 + fastfuncn;	// section size
+	wasmhd[k++] = fastfuncn;	// n functions
+
+	byte nparm;
+	struct proc *p = proc_p;
+	while (p < proc_p + proc_len) {
+		if (p->start->bx3 != 0) {
+			if (strcmp(p->parms, "") == 0) nparm = 0;
+			else if (strcmp(p->parms, "f") == 0) nparm = 1;
+			else if (strcmp(p->parms, "ff") == 0) nparm = 2;
+			else nparm = 3;
+			wasmhd[k++] = nparm;	// signature func 0
+		}
+		p += 1;
+	}
+	wasmhd[k++] = 7;					// exports
+	wasmhd[k++] = 1 + 4 * fastfuncn;	// size
+	wasmhd[k++] = fastfuncn;			// n exports
+
+	for (byte i = 0; i < fastfuncn; i++) {
+		wasmhd[k++] = 1;	// str len
+		wasmhd[k++] = 'a' + i;
+		wasmhd[k++] = 0;	// export kind
+		wasmhd[k++] = i;	// func index
+	}
+
+	wasmhd[k++] = 0x0a; // code
+
+	// code section size
+	ushort h = wasmi + 1;
+
+	wasmhd[k++] = (h & 127) | 128;
+	wasmhd[k++] = h >> 7;
+	wasmhd[k++] = fastfuncn; // n functions
 
 #ifdef __EMSCRIPTEN__
 
 	EM_ASM(
 		fastarr = Array();
 	);
+	for (int i = 0; i < k; i++) {
+	    EM_ASM_({
+			fastarr.push(getValue($0));
+		}, wasmhd + i);
+	}
+
 	for (int i = 0; i < wasmi; i++) {
 	    EM_ASM_({
 			fastarr.push(getValue($0));
@@ -443,8 +495,8 @@ static void parse_fastfunc(void) {
     );
 
 #endif
-cleanup:
+
 	free(wasm);
-	wasm = 0;
+	wasm = NULL;
 }
 
