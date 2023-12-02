@@ -32,7 +32,7 @@ for i in easyw.js easyw.wasm; do
 done
 
 cd ../aoc
-for i in $(seq 15 22); do
+for i in $(seq 15 23); do
 	ln -fs ../aoc$i $i
 done
 
@@ -110,7 +110,7 @@ xxx
 
 }
 
-for i in $(seq 15 22); do
+for i in $(seq 15 23); do
 	make_big $i
 done
 
@@ -162,7 +162,8 @@ A language that doesn’t have everything is actually easier to program in than 
 <a href=../aoc/19/>2019</a><p>
 <a href=../aoc/20/>2020</a><p>
 <a href=../aoc/21/>2021</a><p>
-<a href=../aoc/22/>2022</a>
+<a href=../aoc/22/>2022</a><p>
+<a href=../aoc/23/>2023</a>
 </div>
 xxx
 
@@ -180,6 +181,7 @@ vis19="3 8 10 20 24"
 vis20="20 24"
 vis21="8 9 11 13 15 23 24 25"
 vis22="8 9 14"
+vis23=""
 
 echo "<h3>Visualizations</h3>"
 echo "<div class=col>"
@@ -249,13 +251,14 @@ All tasks of one year on one big page. The programs are editable and runnable.
 <a href="aoc20.html">2020</a><p>
 <a href="aoc21.html">2021</a><p>
 <a href="aoc22.html">2022</a><p>
+<a href="aoc23.html">2023</a><p>
 </div>
 <p>
 <hr>
 <small><small>christof.kaser@gmail.com</small></small>
 xxx
 
-for i in $(seq 15 22); do
+for i in $(seq 15 23); do
 	mkdir -p $o/../aoc$i
 	cp $src/../misc/aoc$i/*.el $o/../aoc$i
 

@@ -3,25 +3,30 @@
 publ1 = number input
 publ2 = number input
 # 
-proc crack_priv publ . res .
-   prod = 1
-   res = 0
-   while prod <> publ
-      prod *= 7
-      prod = prod mod 20201227
-      res += 1
+func crack_priv a .
+   # 7 ^ x mod 20201227 = publ
+   p = 1
+   while p <> a
+      p *= 7
+      p = p mod 20201227
+      x += 1
    .
+   return x
 .
-proc get_shared_secr priv publ . res .
-   res = 1
-   for _ to priv
-      res *= publ
-      res = res mod 20201227
+func expmod a b .
+   # a ^ b mod 20201227
+   r = 1
+   while b >= 1
+      if b mod 2 = 1
+         r = r * a mod 20201227
+      .
+      b = b div 2
+      a = a * a mod 20201227
    .
+   return r
 .
-crack_priv publ1 priv1
-get_shared_secr priv1 publ2 secr
-print secr
+priv1 = crack_priv publ1
+print expmod publ2 priv1
 # 
 input_data
 5764801

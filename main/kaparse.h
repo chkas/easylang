@@ -1602,7 +1602,6 @@ S void parse_for_stat(ND* nd) {
 		}
 		else {
 			// for in
-			ndx->vx2 = get_var(VAR_NUM, 0, "_", code_utf8len);
 			csb_tok_spc_nt();
 			nd->ri = parse_numarrex();
 			nd->vf = op_for_in;
@@ -1612,7 +1611,7 @@ S void parse_for_stat(ND* nd) {
 		nd->v1 = parse_var(VAR_STR, RW);
 		cs_spc();
 		if (tok != t_name || strcmp(tval, "in") != 0) error("in");
-		ndx->vx2 = get_var(VAR_NUM, 0, "_", code_utf8len);
+		//kc ndx->vx2 = get_var(VAR_NUM, 0, "_", code_utf8len);
 		csb_tok_spc_nt();
 		nd->ri = parse_strarrex();
 		nd->vf = op_for_instr;

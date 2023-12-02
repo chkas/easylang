@@ -1192,25 +1192,6 @@ S void op_for_to(ND* nd) {
 	}
 }
 
-
-S void op_for_in(ND* nd) {
-	ND* ndx = nd + 1;
-	double* pnum = gnum(nd->v1);
-	double* pind = gnum(ndx->vx2);
-	ARR arr = arrf(nd->ri);
-	*pind = 0;
-	while (*pind < arr.len) {
-		*pnum = arr.pnum[(uint)*pind];
-		exec_sequ(ndx->ex);
-		if (stop_flag) {
-			stop_flag -= 1;
-			break;
-		}
-		*pind += 1;
-	}
-	free(arr.pnum);
-}
-
 S void op_forstep(ND* nd) {
 	ND* ndx = nd + 1;
 	double to = numf(nd->ri);
@@ -2542,51 +2523,76 @@ S void op_for_to_slow(ND* nd) {
 	}
 }
 
+S void op_for_in(ND* nd) {
+	ND* ndx = nd + 1;
+	double* pnum = gnum(nd->v1);
+	ARR arr = arrf(nd->ri);
+	int ind = 0;
+	double old = *pnum;
+	while (ind < arr.len) {
+		*pnum = arr.pnum[ind];
+		exec_sequ(ndx->ex);
+		if (stop_flag) {
+			stop_flag -= 1;
+			break;
+		}
+		ind += 1;
+	}
+	if (ind == arr.len) *pnum = old;
+	free(arr.pnum);
+}
+
 S void op_for_in_slow(ND* nd) {
 	ND* ndx = nd + 1;
 	double* pnum = gnum(nd->v1);
-	double* pind = gnum(ndx->vx2);
 	ARR arr = arrf(nd->ri);
-	*pind = 0;
-	while (*pind < arr.len) {
-		*pnum = arr.pnum[(uint)*pind];
+	int ind = 0;
+	double old = *pnum;
+	while (ind < arr.len) {
+		*pnum = arr.pnum[ind];
 		dbg_line(nd);
 		exec_sequ_slow(ndx->ex);
 		if (stop_flag) {
 			stop_flag -= 1;
 			break;
 		}
-		*pind += 1;
+		ind += 1;
 		dbg_delay();
 	}
+	if (ind == arr.len) *pnum = old;
 	free(arr.pnum);
 }
 
 S void op_for_instr(ND* nd) {
 	ND* ndx = nd + 1;
 	STR* pstr = gstr(nd->v1);
-	double* pind = gnum(ndx->vx2);
 	ARR arr = arrf(nd->ri);
-	*pind = 0;
-	while (*pind < arr.len) {
+	int ind = 0;
+	STR old = *pstr;
+	while (ind < arr.len) {
 		str_free(pstr);
-		*pstr = arr.pstr[(uint)*pind];
+		*pstr = arr.pstr[ind];
 
 		if (rt.slow == 0) exec_sequ(ndx->ex);
 		else {
 			dbg_line(nd);
 			exec_sequ_slow(ndx->ex);
 		}
-		*pind += 1;
 		if (stop_flag) {
 			stop_flag -= 1;
-			while (*pind < arr.len) {
-				str_free(arr.pstr + (uint)*pind);
-				*pind += 1;
+			int h = ind + 1;
+			while (h < arr.len) {
+				str_free(arr.pstr + h);
+				h += 1;
 			}
 			break;
 		}
+		ind += 1;
 		dbg_delay();
+	}
+	if (ind == arr.len) {
+		str_free(pstr);
+		*pstr = old;
 	}
 	free(arr.pstr);
 }
