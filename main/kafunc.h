@@ -2592,9 +2592,8 @@ S void op_for_instr(ND* nd) {
 		dbg_delay();
 		str_free(pstr);
 	}
-	if (ind == arr.len) {
-		*pstr = old;
-	}
+	if (ind == arr.len) *pstr = old;
+	else str_free(&old);
 	free(arr.pstr);
 }
 
