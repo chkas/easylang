@@ -2568,7 +2568,7 @@ S void op_for_instr(ND* nd) {
 	STR* pstr = gstr(nd->v1);
 	ARR arr = arrf(nd->ri);
 	int ind = 0;
-	STR old = *pstr;
+//	STR old = *pstr;
 	while (ind < arr.len) {
 		str_free(pstr);
 		*pstr = arr.pstr[ind];
@@ -2592,7 +2592,7 @@ S void op_for_instr(ND* nd) {
 	}
 	if (ind == arr.len) {
 		str_free(pstr);
-		*pstr = old;
+//		*pstr = old;
 	}
 	free(arr.pstr);
 }
