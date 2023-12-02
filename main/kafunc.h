@@ -2568,9 +2568,10 @@ S void op_for_instr(ND* nd) {
 	STR* pstr = gstr(nd->v1);
 	ARR arr = arrf(nd->ri);
 	int ind = 0;
-//	STR old = *pstr;
+
+	STR old = *pstr;
+
 	while (ind < arr.len) {
-		str_free(pstr);
 		*pstr = arr.pstr[ind];
 
 		if (rt.slow == 0) exec_sequ(ndx->ex);
@@ -2589,10 +2590,10 @@ S void op_for_instr(ND* nd) {
 		}
 		ind += 1;
 		dbg_delay();
+		str_free(pstr);
 	}
 	if (ind == arr.len) {
-		str_free(pstr);
-//		*pstr = old;
+		*pstr = old;
 	}
 	free(arr.pstr);
 }
