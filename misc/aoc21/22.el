@@ -60,17 +60,8 @@ len p[] 6
 repeat
    s$ = input
    until s$ = ""
-   s$[] = strsplit s$ ","
-   s1$[] = strsplit s$[1] "."
-   ison = if substr s1$[1] 1 2 = "on"
-   p[1] = number substr s1$[1] 7 - ison 9
-   p[2] = number s1$[3]
-   s1$[] = strsplit s$[2] "."
-   p[3] = number substr s1$[1] 3 9
-   p[4] = number s1$[3]
-   s1$[] = strsplit s$[3] "."
-   p[5] = number substr s1$[1] 3 9
-   p[6] = number s1$[3]
+   ison = if substr s$ 1 2 = "on"
+   p[] = number strsplit s$ "=."
    if abs p[1] > 50 and sum = 0
       volume_all sum
       print sum
@@ -141,6 +132,7 @@ off x=-27365..46395,y=31009..98017,z=15428..76570
 off x=-70369..-16548,y=22648..78696,z=-1892..86821
 on x=-53470..21291,y=-120233..-33476,z=-44150..38147
 off x=-93533..-4276,y=-16170..68771,z=-104985..-24507
+
 
 
 

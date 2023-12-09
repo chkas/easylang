@@ -45,7 +45,7 @@ repeat
    s$ = input
    until s$ = ""
    if substr s$ 1 4 = "rect"
-      v[] = number strsplit substr s$ 6 9 "x"
+      v[] = number strsplit s$ "x "
       for r range0 v[2]
          for c range0 v[1]
             m[c + nc * r] = 1
@@ -53,7 +53,7 @@ repeat
       .
    else
       s$[] = strsplit s$ " "
-      a = number substr s$[3] 3 9
+      a = number substr s$[3] 3 -1
       b = number s$[5]
       if s$[2] = "column"
          c = a

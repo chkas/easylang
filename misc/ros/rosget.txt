@@ -1,3 +1,4 @@
+1
 100 doors
 100 prisoners
 10001th prime
@@ -66,6 +67,7 @@ Brazilian numbers
 Brownian tree
 Bulls and cows
 C
+Caesar cipher
 Calculating the value of e
 Calendar
 Call a function
@@ -89,6 +91,7 @@ Code Golf: Code Golf
 Collect and sort square numbers in ascending order from three lists
 Collections
 Colour bars/Display
+Colour pinstripe/Display
 Combinations
 Combinations and permutations
 Combinations with repetitions
@@ -98,9 +101,12 @@ Common list elements
 Common sorted list
 Compare a list of strings
 Compare length of two strings
+Composite numbers k with no single digit factors whose factors are all substrings of k
 Concatenate two primes is also prime
 Conditional structures
 Conjugate a Latin verb
+Consecutive primes with ascending or descending differences
+Constrained random points on a circle
 Continued fraction
 Convert seconds to compound duration
 Conway's Game of Life
@@ -114,6 +120,7 @@ Cullen and Woodall numbers
 Cumulative standard deviation
 Curzon numbers
 CUSIP
+Cyclops numbers
 D
 Day of the week
 Day of the week of Christmas and New Year
@@ -124,9 +131,14 @@ Descending primes
 Detect division by zero
 Determine if a string has all the same characters
 Determine if a string has all unique characters
+Determine if a string is collapsible
 Determine if a string is numeric
+Determine if a string is squeezable
+Dice game probabilities
 Digital root
 Disarium numbers
+Discordian date
+Doomsday rule
 Dot product
 Dragon curve
 Draw a clock
@@ -136,6 +148,7 @@ E
 Eban numbers
 Egyptian division
 Elementary cellular automaton
+Empty program
 Empty string
 Entropy
 Ethiopian multiplication
@@ -143,9 +156,15 @@ Euclid-Mullin sequence
 Euler's sum of powers conjecture
 Evaluate binomial coefficients
 Even or odd
+Events
 Execute Brain****
+Execute Computer/Zero
+Execute HQ9+
+Execute SNUSP
 Exponentiation operator
 Exponentiation order
+Exponentiation with infix operators in (or operating on) the base
+Extensible prime generator
 Extreme floating point values
 F
 Factorial
@@ -192,6 +211,7 @@ Idiomatically determine all the lowercase and uppercase letters
 Idoneal numbers
 Image noise
 Implicit type conversion
+I
 Inconsummate numbers in base 10
 Increment a numerical string
 Infinity
@@ -250,6 +270,7 @@ McNuggets problem
 MD5/Implementation
 Middle three digits
 Minesweeper game
+Minimum multiple of m where digital sum equals m
 Modular inverse
 Monte Carlo methods
 Monty Hall problem
@@ -283,6 +304,7 @@ Particle fountain
 Pentagram
 Percolation/Mean run density
 Perfect numbers
+Perfect shuffle
 Periodic table
 Perlin noise
 Permutations
@@ -304,6 +326,7 @@ Quickselect algorithm
 Quine
 R
 Radical of an integer
+Ramer-Douglas-Peucker line simplification
 Random numbers
 Rare numbers
 Real constants and functions
@@ -386,6 +409,7 @@ Successive prime differences
 Sudoku
 Sum and product of an array
 Sum digits of an integer
+Sum multiples of 3 and 5
 Sum of a series
 Sum of squares
 Summarize primes
@@ -393,10 +417,13 @@ Sylvester's sequence
 Symmetric difference
 System time
 T
+Tau function
+Tau number
 Temperature conversion
 The Name Game
 The Twelve Days of Christmas
 Tic-tac-toe
+T
 Time a function
 Tokenize a string
 Total circles area
@@ -411,6 +438,7 @@ U
 Ulam spiral (for primes)
 User input/Text
 V
+Vampire number
 Van der Corput sequence
 Van Eck sequence
 Variables

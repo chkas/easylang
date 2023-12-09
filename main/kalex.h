@@ -131,7 +131,6 @@ static int utf8len(const char* s) {
 	return len;
 }
 
-
 static int codestrspc;
 static int codestrln;
 static char* codestr;
@@ -276,6 +275,7 @@ static void esc_html(const char* s) {
 	}
 }
 
+#if 0
 static void csx(const char* s) {
 	if (err) return;
 	if (*s == 0) return;
@@ -285,6 +285,7 @@ static void csx(const char* s) {
 	}
 	else co(s);
 }
+#endif
 
 static void csi(const char* s) {
 	if (err) return;
@@ -295,8 +296,7 @@ static void csi(const char* s) {
 		esc_html(s);
 		co("</i>");
 	}
-	else
-		co(s);
+	else co(s);
 }
 
 static char* bold1;
@@ -406,6 +406,8 @@ static void read_line(char* buf, int sz) {
 	if (i < sz) buf[i] = 0;
 }
 
+
+#if 0
 static void parse_comment() {
 
 	char buf[1024];
@@ -414,6 +416,29 @@ static void parse_comment() {
 	read_line(buf, 1024);
 	csi(buf);
 }
+#else
+static void parse_comment() {
+	char buf[1024];
+	if (c != '#') {
+		cs("# ");
+		if (c == ' ') nextc();
+		read_line(buf, 1024);
+		csi(buf);
+	}
+	else {
+		nextc();
+		cs("##");
+		while (1) {
+			read_line(buf, 1024);
+			if (strcmp(buf, "# #") == 0) break;
+			csi(buf);
+			if (c == EOT) return;
+			cs_nl();
+		}
+		cs("# #");
+	}
+}
+#endif
 
 static char* input_data = NULL;
 static uint input_data_size = 0;
@@ -424,7 +449,8 @@ static void parse_input_data() {
 	char buf[65536];
 	while (1) {
 		read_line(buf, 65536);
-		csx(buf);
+//		csx(buf);
+		csi(buf);
 		if (cod) {
 			uint h = input_data_size + strlen(buf) + 1;
 			input_data = realloc(input_data, h);

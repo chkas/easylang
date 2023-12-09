@@ -264,8 +264,6 @@ S ND* parse_lenfunc(ushort mode) {
 	return nd;
 }
 
-
-//kc
 S ND* parse_callfunc(struct proc* p, byte isstr) {
 
 	ND* nd = mknd();
@@ -280,7 +278,6 @@ S ND* parse_callfunc(struct proc* p, byte isstr) {
 	}
 	nd->numf = op_callfunc;
 #ifdef FASTPROC
-//	if (p - proc_p == fastfunc_addr) {
 	if (p->start && p->start->bx3 != 0) {
 		nd->numf = op_fastcall;
 	}
@@ -1000,6 +997,7 @@ S void parse_proc(byte typ) {
 
 	ND* nd = mknd();
 	proc->start = nd;
+	nd->bx3 = 0;
 	nd->bxnd = parse_sequ_end();
 	nexttok();
 
@@ -1012,7 +1010,6 @@ S void parse_proc(byte typ) {
 	nd->bx0 = proc->varcnt[0];
 	nd->bx1 = proc->varcnt[1];
 	nd->bx2 = proc->varcnt[2];
-	nd->bx3 = 0;
 
 	int i = 0;
 	int offs = 0;
@@ -1135,8 +1132,9 @@ S ND* parse_numarrex(void) {
 		ex->arrf = op_numarr_init;
 
 		ND* nd = ex;
-		while (tok != t_brr && tok != t_brrl && tok != t_eof && !err) {
+		while (tok != t_brr && tok != t_brrl) {
 			nd->next = parse_ex();
+			if (err || tok == t_eof) return ex;
 			nd = nd->next;
 			cs_spc();
 		}
@@ -1890,13 +1888,11 @@ S byte try_call_subr(ND* nd, const char* name) {
 	}
 	csf(tval);
 	nexttok();
-//	cs_tok_nt();
 	nd->le = pf->sstart;
 	nd->vf = op_callsubr;
 	return 1;
 }
 
-//kc
 S void parse_call_stat(ND* nd, struct proc* p) {
 
 	if (p == NULL) {
@@ -1915,7 +1911,6 @@ S void parse_call_stat(ND* nd, struct proc* p) {
 
 	csf(tval);
 	nexttok();
-//	cs_tok_nt();
 
 	nd->le = p->start;
 	if (p->start == NULL) {
@@ -2103,7 +2098,6 @@ S ND* parse_sequ(void) {
 					else {
 						if (c == '$' && tok == t_func) {
 							// func$
-//kc
 							tval[4] ='$';
 							tval[5] = 0;
 							nextc();

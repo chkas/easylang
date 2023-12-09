@@ -3,13 +3,11 @@
 repeat
    s$ = input
    until s$ = ""
-   h$[] = strsplit s$ " "
-   a$[] = strsplit h$[3] ","
-   b$[] = strsplit h$[4] "x"
-   x[] &= number a$[1]
-   y[] &= number substr a$[2] 1 -1
-   w[] &= number b$[1]
-   h[] &= number b$[2]
+   n[] = number strsplit s$ " ,x"
+   x[] &= n[1]
+   y[] &= n[2]
+   w[] &= n[3]
+   h[] &= n[4]
 .
 # 
 len f[] 1000 * 1000

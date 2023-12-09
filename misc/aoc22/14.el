@@ -33,11 +33,12 @@ proc init . .
       s$ = input
       until s$ = ""
       a[] = number strsplit s$ " ,"
-      for i = 4 step 3 to len a[]
-         xp = a[i - 3] - (500 - nc / 2)
-         yp = a[i - 2]
-         x = a[i] - (500 - nc / 2)
-         y = a[i + 1]
+      for i = 1 step 2 to len a[] - 3
+#      for i = 4 step 3 to len a[]
+         xp = a[i] - (500 - nc / 2)
+         yp = a[i + 1]
+         x = a[i + 2] - (500 - nc / 2)
+         y = a[i + 3]
          maxy = higher maxy y
          dx = sign (xp - x)
          dy = sign (yp - y)

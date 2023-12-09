@@ -2247,7 +2247,7 @@ S double op_fastcall(ND* nd0) {
 	}
 	else {	// if (i == 4)
 		r = EM_ASM_DOUBLE(
-			{ return fastinst.exports[String.fromCharCode($0)]($1, $2, $3) }, n, a[0], a[1], a[2], a[3]);
+			{ return fastinst.exports[String.fromCharCode($0)]($1, $2, $3, $4) }, n, a[0], a[1], a[2], a[3]);
 	}
 	return r;
 
@@ -2596,7 +2596,7 @@ S void op_for_instr(ND* nd) {
 	else str_free(&old);
 	free(arr.pstr);
 }
-
+#if 0
 S ARR op_map_number(ND* nd) {
 	ARR arr = arrf(nd->le);
 
@@ -2625,7 +2625,42 @@ S ARR op_map_number(ND* nd) {
 	free(arr.pstr);
 	return res;
 }
+#else
+// put only valid numbers in array
+S ARR op_map_number(ND* nd) {
+	ARR arr = arrf(nd->le);
 
+	ARR res;
+	res.len = 0;
+	res.typ = ARR_NUM;
+	res.base = arr.base;
+	res.p = NULL;
+	rt.sys_error = 0;
+	for (int i = 0; i < arr.len; i++) {
+		STR s = arr.pstr[i];
+		char *p;
+		const char *ps = str_ptr(&s);
+		double d = strtod(ps, &p);
+		if (p == ps) {
+//		if (p == ps || *p != 0) {
+			rt.sys_error = 1;
+		}
+		else {
+			res.len += 1;
+			res.p = realloc(res.p, res.len * sizeof(double));
+			if (res.p == NULL) {
+				out_of_mem(nd);
+				res.len = 0;
+				return res;
+			}
+			res.pnum[res.len - 1] = d;
+		}
+		str_free(&s);
+	}
+	free(arr.pstr);
+	return res;
+}
+#endif
 
 S void exec_slow(ND* nd) {
 	void (*vf)(ND*) = nd->vf;

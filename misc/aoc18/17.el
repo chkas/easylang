@@ -13,11 +13,9 @@ proc read . .
    repeat
       s$ = input
       until s$ = ""
-      s$[] = strsplit s$ "., "
-      a = number substr s$[1] 3 9
-      b = number substr s$[3] 3 9
-      c = number s$[5]
-      if substr s$[1] 1 1 = "x"
+      n[] = number strsplit s$ "=."
+      a = n[1] ; b = n[2] ; c = n[3]
+      if substr s$ 1 1 = "x"
          for y = b to c
             p = y * 300 + a - 300
             f[p] = 1
@@ -144,5 +142,3 @@ x=506, y=1..2
 x=498, y=10..13
 x=504, y=10..13
 y=13, x=498..504
-
-

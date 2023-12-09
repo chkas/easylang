@@ -9,21 +9,28 @@ proc init . .
       s$ = input
       until s$ = ""
       a[] = number strsplit s$ "=,:"
-      sx[] &= a[2]
-      sy[] &= a[4]
-      d = abs (a[2] - a[6]) + abs (a[4] - a[8])
+      #sx[] &= a[2]
+      #sy[] &= a[4]
+      #d = abs (a[2] - a[6]) + abs (a[4] - a[8])
+      sx[] &= a[1]
+      sy[] &= a[2]
+      d = abs (a[1] - a[3]) + abs (a[2] - a[4])
+
       if max_coord = 20 and d > 100
          # for real data
          max_coord = 4000000
       .
-      if a[8] = max_coord div 2
+      if a[4] = max_coord div 2
+#kc      if a[8] = max_coord div 2
          for i = 1 to len b[]
-            if a[6] = b[i]
+#            if a[6] = b[i]
+            if a[3] = b[i]
                break 1
             .
          .
          if i > len b[]
-            b[] &= a[6]
+            b[] &= a[3]
+#            b[] &= a[6]
          .
       .
       dist[] &= d
@@ -33,7 +40,8 @@ proc init . .
          swap sy[i] sy[i - 1]
          swap dist[i] dist[i - 1]
          i -= 1
-      .
+ 
+     .
    .
    bline = len b[]
 .

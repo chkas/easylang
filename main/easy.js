@@ -267,10 +267,10 @@ function sys(n) {
 		c.strokeStyle = h
 	}
 	else if (n == 5) {
-		// show grid
+		// drawgrid
 		var lw = c.lineWidth
 		var ss = c.strokeStyle
-		c.lineWidth = 0.2
+		c.lineWidth = 0.1
 		c.beginPath()
 		var i
 		for (i = 1; i < 10; i++) {
@@ -279,7 +279,7 @@ function sys(n) {
 			c.moveTo(10 * i, 0)
 			c.lineTo(10 * i, 100)
 		}
-		c.strokeStyle = "#444"
+		c.strokeStyle = "#888"
 		c.stroke()
 		c.lineWidth = lw
 		c.strokeStyle = ss

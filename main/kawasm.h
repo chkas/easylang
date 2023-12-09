@@ -353,8 +353,9 @@ static void parse_fastfunc(void) {
 	else if (strcmp(proc->parms, "f") == 0) nparm = 1;
 	else if (strcmp(proc->parms, "ff") == 0) nparm = 2;
 	else if (strcmp(proc->parms, "fff") == 0) nparm = 3;
+	else if (strcmp(proc->parms, "ffff") == 0) nparm = 3;
 	else {
-		error("a fastfunc has only number parameter");
+		error("a fastfunc has only max 4 number parameter");
 		return;
 	}
 	if (proc->varcnt[1] + proc->varcnt[2] > 0) {
@@ -422,10 +423,10 @@ static void build_fastfuncs(void) {
 	memcpy(wasmhd + 4, "\1\0\0\0", 4);
 	wasmhd[8] = 1;	// section type
 
-	wasmhd[10] = 4;	// num types
+	wasmhd[10] = 5;	// num types
 	byte k = 11;
 
-	for (byte j = 0; j < 4; j++) {
+	for (byte j = 0; j <= 4; j++) {
 		wasmhd[k++] = 0x60;	// func type
 		wasmhd[k++] = j;
 		for (byte i = 0; i < j; i++) {
@@ -448,7 +449,8 @@ static void build_fastfuncs(void) {
 			if (strcmp(p->parms, "") == 0) nparm = 0;
 			else if (strcmp(p->parms, "f") == 0) nparm = 1;
 			else if (strcmp(p->parms, "ff") == 0) nparm = 2;
-			else nparm = 3;
+			else if (strcmp(p->parms, "fff") == 0) nparm = 3;
+			else nparm = 4;
 			wasmhd[k++] = nparm;	// signature func 0
 		}
 		p += 1;

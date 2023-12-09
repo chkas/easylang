@@ -5,13 +5,11 @@
 # passes the target. vx can be at most x2,
 # vy from -y2 to y2.
 # 
-a$[] = strsplit input " "
-b$[] = strsplit a$[3] "."
-x1 = number substr b$[1] 3 99
-x2 = number substr b$[3] 1 len b$[2] - 1
-b$[] = strsplit a$[4] "."
-y1 = number b$[3]
-y2 = number substr b$[1] 3 99
+in[] = number strsplit input "=."
+x1 = in[1]
+x2 = in[2]
+y2 = in[3]
+y1 = in[4]
 # 
 for vx0 = 1 to x2
    for vy0 = y2 to -y2
@@ -37,4 +35,5 @@ print npos
 # 
 input_data
 target area: x=20..30, y=-10..-5
+
 

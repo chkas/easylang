@@ -27,9 +27,8 @@ repeat
    s$ = input
    until s$ = ""
    a[] = number strsplit s$ " "
-   m[] &= a[2]
-   m[] &= a[4]
-   m[] &= a[6]
+   m[] &= a[1] ; m[] &= a[2] ; m[] &= a[3]
+   #kc m[] &= a[2] ; m[] &= a[4] ; m[] &= a[6]
 .
 for part = 1 to 2
    for k = 1 step 3 to len m[]

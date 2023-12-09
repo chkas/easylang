@@ -1,8 +1,8 @@
 # AoC-15 - Day 21: RPG Simulator 20XX
 # 
-hit2s = number substr input 13 99
-dmg2s = number substr input 9 99
-arm2s = number substr input 8 99
+hit2s = number substr input 13 -1
+dmg2s = number substr input 9 -1
+arm2s = number substr input 8 -1
 # 
 wpn_dmg[] = [ 4 5 6 7 8 ]
 wpn_cost[] = [ 8 10 25 40 74 ]
