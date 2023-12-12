@@ -231,7 +231,7 @@ function tutUpd() {
 				ca.style.height = h * 2.6 + "px"
 			}
 			fr.appendChild(ca)
-			easyrun(s, ca)
+			easyrun(s.substring(s.indexOf("\n") + 1), ca)
 		}
 		else {
 			var pre = create("pre")

@@ -342,7 +342,7 @@ function tutUpd() {
 			var c = ca.getContext("2d")
 			c.clearRect(0, 0, 800, 800)
 			tut.appendChild(ca)
-			easyrun(s, ca)
+			easyrun(s.substring(s.indexOf("\n") + 1), ca)
 		}
 		else if (s.startsWith("~")) {
 			var b = create("pre")
