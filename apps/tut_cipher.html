@@ -703,7 +703,7 @@ proc sp_ctrmode key ctr . in[] out[] .
       if m = 0
          dx = ctr mod 0x100000000
          dy = ctr div 0x100000000
-         call sp_block dx dy
+         sp_block dx dy
          ctr += 1
       .
       if m <= 3
@@ -716,16 +716,16 @@ proc sp_ctrmode key ctr . in[] out[] .
    .
 .
 msg$ = "Hi Alice. We have a surprise birthday party for Trudy. Bob"
-call str2bytes msg$ msg[]
+str2bytes msg$ msg[]
 # 
 secrkey = 18238004
 counter = 1423
 # 
-call sp_ctrmode secrkey counter msg[] encr[]
+sp_ctrmode secrkey counter msg[] encr[]
 print encr[]
 print ""
-call sp_ctrmode secrkey counter encr[] r[]
-call bytes2str r[] s$
+sp_ctrmode secrkey counter encr[] r[]
+bytes2str r[] s$
 print s$
 
 * The counter is important in counter mode.
@@ -772,7 +772,7 @@ proc sp_ctrmode key ctr . in[] out[] .
       if m = 0
          dx = ctr mod 0x100000000
          dy = ctr div 0x100000000
-         call sp_block dx dy
+         sp_block dx dy
          ctr += 1
       .
       if m <= 3

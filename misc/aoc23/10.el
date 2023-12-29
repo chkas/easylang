@@ -38,7 +38,7 @@ proc read . .
       m1[] &= 0 ; m2[] &= 0
    .
 .
-call read
+read
 # 
 offs[] = [ -nc 1 nc (-1) ]
 proc step . pos dir .

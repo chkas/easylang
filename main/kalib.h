@@ -56,12 +56,12 @@ typedef unsigned char byte;
 
 static void (*out_of_memf)(void);
 
-static void* _realloc(void* p, unsigned sz) {
+static void* _realloc(void* p, unsigned long sz) {
 
 	void* pn = realloc(p, sz);
 	if (pn == NULL) {
 		if (out_of_memf) (*out_of_memf)();
-		fprintf(stderr, "realloc(%u) failed\n", sz);
+		fprintf(stderr, "realloc(%lu) failed\n", sz);
 		exit(1);
 	}
 	return pn;

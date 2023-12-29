@@ -1,24 +1,24 @@
 # AoC-22 - Day 17: Pyroclastic Flow
 #  
 hashsz = 199999
-len hashind[] hashsz
+len hashind0[] hashsz
+global hashind[] .
 # 
-proc hashset ind . ret .
+func hashset ind .
    hi = ind mod hashsz + 1
    while hashind[hi] <> ind and hashind[hi] <> 0
       hi = hi mod hashsz + 1
    .
    if hashind[hi] = ind
-      ret = 1
-   else
-      hashind[hi] = ind
-      ret = 0
+      return 1
    .
+   hashind[hi] = ind
+   return 0
 .
 proc hashclear . .
-   len hashind[] 0
-   len hashind[] hashsz
+   hashind[] = hashind0[]
 .
+hashclear
 #  
 len m[] 10000 * 9
 # 
@@ -101,7 +101,7 @@ proc mkstone . .
 .
 rock = 1
 inp = 1
-proc testhash . fnd .
+func testhash .
    if high >= 3
       h = inp
       h *= 5
@@ -115,13 +115,12 @@ proc testhash . fnd .
          .
          mi += 2
       .
-      hashset h fnd
+      fnd = hashset h
       if fnd = 1
-         fnd = h
+         return h
       .
-   else
-      fnd = 0
    .
+   return 0
 .
 # 
 while 1 = 1
@@ -143,7 +142,7 @@ while 1 = 1
    mkstone
    # 
    if nrock > 2022
-      testhash ind
+      ind = testhash
       if ind > 0
          if cyc0 = 0
             cyc0 = nrock
@@ -173,6 +172,3 @@ while 1 = 1
 # 
 input_data
 >>><<><>><<<>><>>><<<>>><<<><<<>><>><<>>
-
-
-

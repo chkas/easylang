@@ -69,7 +69,7 @@ proc part1 . .
    .
    print sum
 .
-call part1
+part1
 # 
 func num r c .
    if val m$[r][c] < 0
@@ -117,7 +117,7 @@ proc part2 . .
    .
    print sum
 .
-call part2
+part2
 # 
 input_data
 467..114..

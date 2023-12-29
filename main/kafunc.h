@@ -350,6 +350,7 @@ S void free_arr_members(ARR* a, int i0) {
 			str_free(a->pstr + i);
 		}
 	}
+//??
 	else if (a->typ == ARR_ARR) {
 		for (int i = i0; i < a->len; i++) {
 			free_arr_members(a->parr + i, 0);
@@ -364,21 +365,23 @@ S void free_arr(ARR* a) {
 	a->p = NULL;
 }
 
-S void arr_len(ND* nd, int sz, int typ) {
+S void arr_len(ND* nd, unsigned int sz, int typ) {
 	ND* ndx = nd + 1;
 	ARR* arr = garr(nd->v1);
 	arr->typ = typ;
-	if (typ >= ARR_AEL) {
+    if (typ > ARR_ARR) {
+		arr->typ = ARR_ARR;
+
 		int h = (int)numf(ndx->ex) - arr->base;
 		if (h < 0 || h >= arr->len) {
 			out_of_bounds(nd);
 			return;
 		}
 		arr = arr->parr + h;
-		typ = typ - (ARR_AEL - ARR_NUM);
+		typ = typ - (ARR_AEL - ARR_NUM );
 	}
 
-	int h = (int)numf(nd->ri);
+	long h = (long)numf(nd->ri);
 	if (h == arr->len) return;
 	if (h < 0) {
 		h = arr->len + h;
@@ -2281,6 +2284,7 @@ S const char* vexf(ushort typ) {
 }
 S void dbg_debv(STR* ps, struct proc* fu, double* nums, STR* strs, ARR* arrs) {
 
+	if (fu->vname_p == NULL) return;
 	struct vname *p = fu->vname_p;
 	while (p < fu->vname_p + fu->vname_len) {
 		if (p->typ == VAR_SUBR) {

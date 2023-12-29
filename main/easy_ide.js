@@ -108,8 +108,8 @@ var fulldiv
 
 async function showFull() {
 	hide(container)
-	canv.style.width = "calc(100vmin - 6px)"
-	canv.style.height = "calc(100vmin - 6px)"
+	canv.style.width = "calc(100vmin - 14px)"
+	canv.style.height = "calc(100vmin - 14px)"
 	canv.style.padding = "3px"
 
 	var fr = document.createDocumentFragment()

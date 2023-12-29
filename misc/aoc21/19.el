@@ -13,17 +13,16 @@ hashsz = 199999
 len hashind[] hashsz
 len hashv[] hashsz
 # 
-proc hashget ind . val .
+func hashget ind .
    hi = ind mod hashsz + 1
    repeat
       if hashind[hi] = ind
-         val = hashv[hi]
-         break 2
+         return hashv[hi]
       .
       until hashind[hi] = 0
       hi = hi mod hashsz + 1
    .
-   val = -1
+   return -1
 .
 proc hashset ind val . .
    hi = ind mod hashsz + 1
@@ -73,7 +72,7 @@ proc test . found .
       for l to len c[][]
          if k <> l
             hind = 100000000 * (c[k][1] - c[l][1]) + 10000 * (c[k][2] - c[l][2]) + c[k][3] - c[l][3]
-            hashget hind i
+            i = hashget hind
             if i <> -1
                beacon[k] = 1
                cnt += 1
@@ -312,5 +311,4 @@ input_data
 891,-625,532
 -652,-548,-490
 30,-46,-14
-
 

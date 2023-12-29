@@ -120,8 +120,8 @@ on mouse_down
          nxtplayer
       .
    elif stat = 4
-      call initvars
-      call show
+      initvars
+      show
    .
 .
 initvars

@@ -430,11 +430,15 @@ static void parse_comment() {
 		cs("##");
 		while (1) {
 			read_line(buf, 1024);
-			if (strcmp(buf, "# #") == 0) break;
+			int h = strlen(buf);
+			if (h >= 3 && strcmp(buf + h - 3, "# #") == 0) break; 
 			csi(buf);
 			if (c == EOT) return;
-			cs_nl();
+			cs("\n");
+			fmtline += 1;
+
 		}
+		cs(spc);
 		cs("# #");
 	}
 }
