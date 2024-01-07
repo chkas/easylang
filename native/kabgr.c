@@ -63,10 +63,12 @@ void gr_textsize(double sz) {
 
 static int linew;
 static int linew2;
+static int grline;
 
 void gr_linewidth(double w) {
 	linew = FX * w + 0.5;
 	linew2 = 0.5 * FX * w + 0.5;
+	grline = 0;
 }
 
 void gr_color(int r, int g, int b) {
@@ -147,17 +149,18 @@ void gr_init(const char* progname, int mask) {
 
 // #ifdef __linux__ 
 
-#ifdef _WIN32
 		const char* fontnames[] = {
+#ifdef _WIN32
 			"c:\\Windows\\Fonts\\courbd.ttf",
 			"c:\\Windows\\Fonts\\cour.ttf"
-		};
+#elif __APPLE__
+			"/Library/Fonts/Arial Unicode.ttf"
 #else
-		const char* fontnames[] = {
 			"/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf",
 			"/usr/share/fonts/truetype/ttf-bitstream-vera/VeraMoBd.ttf",
-		};
 #endif
+		};
+
 		int n = sizeof(fontnames) / sizeof(fontnames[0]);
 		int i;
 		for (i = 0; i < n; i++) {
@@ -170,6 +173,9 @@ void gr_init(const char* progname, int mask) {
 	}
 	if (mask & 16) do_animate = 1;
 	botleft = true;
+	grline = 0;
+	gx = 0;
+	gy = FX * 100;
 }
 
 double inv(double y) {
@@ -180,6 +186,7 @@ double inv(double y) {
 void gr_move(double x, double y) {
 	gx = FX * x;
 	gy = FX * inv(y);
+	grline = 1;
 }
 
 void gr_rect(double cx, double cy) {
@@ -302,13 +309,15 @@ void gr_line(double fx, double fy) {
 	int x = fx * FX; 
 	int y = inv(fy) * FX;
 
-	circle(gx, gy, linew);
-	if (gx == x && gy == y) return;
-
-	thline(gx, gy, x, y);
+	if (grline) {
+		circle(gx, gy, linew);
+		if (gx == x && gy == y) return;
+		thline(gx, gy, x, y);
+		circle(x, y, linew);
+	}
+	else grline = 1;
 	gx = x;
 	gy = y;
-	circle(gx, gy, linew);
 }
 
 void gr_curve(double* val, int len) {
@@ -400,6 +409,7 @@ SDL_Surface* backgr = NULL;
 void gr_sys(ushort h) {
 
 	if (h == 1) {	// clear
+		grline = 0;
 		if (backgr) {
 			SDL_Texture* t = SDL_CreateTextureFromSurface(renderer, backgr);
 			SDL_RenderCopy(renderer, t, NULL, NULL);
@@ -457,9 +467,10 @@ static void handle_event(SDL_Event* evt) {
 			}
 			else {
 				if (strcmp(s, "Right") == 0) evt_func(0, "ArrowRight");
-				if (strcmp(s, "Left") == 0) evt_func(0, "ArrowLeft");
-				if (strcmp(s, "Up") == 0) evt_func(0, "ArrowUp");
-				if (strcmp(s, "Down") == 0) evt_func(0, "ArrowDown");
+				else if (strcmp(s, "Left") == 0) evt_func(0, "ArrowLeft");
+				else if (strcmp(s, "Up") == 0) evt_func(0, "ArrowUp");
+				else if (strcmp(s, "Down") == 0) evt_func(0, "ArrowDown");
+				else if (strcmp(s, "Space") == 0) evt_func(0, " ");
 				else evt_func(0, s);
 			}
 			break;

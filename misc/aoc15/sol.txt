@@ -46,8 +46,8 @@ missing input
 3
 
 no input
-775
-758
+737
+742
 
 7
 6

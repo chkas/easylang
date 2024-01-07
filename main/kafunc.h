@@ -116,29 +116,30 @@ S void op_assp_fl(ND* nd) {
 	*p += (double)nd->cfl32;
 }
 
+S int arrind(ARR* arr, int ind, ND* nd) {
+	int h = ind - arr->base;
+	if (h < 0 || h >= arr->len) {
+#if 1
+		// handle negative indices
+
+		h = arr->len + h + 1;
+		if (h < 0 || h >= arr->len) {
+			out_of_bounds(nd);
+			return 0;
+		}
+#else
+		out_of_bounds(nd);
+		return 0;
+#endif
+	}
+	return h;
+}
+
 S double op_vnumael_lvar(ND* nd) {
 	ARR* arr = garr(nd->v1);
-	int h = rtl_nums[nd->v2] - arr->base;
-	if (h < 0 || h >= arr->len) {
-		out_of_bounds(nd);
-		return 0;
-	}
+	int h = arrind(arr, rtl_nums[nd->v2], nd);
 	return *(arr->pnum + h);
 }
-
-/*
-
-S double op_vnumael_var(ND* nd) {
-	ARR* arr = garr(nd->v1);
-	int h = rt_nums[nd->v2] - arr->base;
-	if (h < 0 || h >= arr->len) {
-		out_of_bounds(nd);
-		return 0;
-	}
-	return *(arr->pnum + h);
-}
-
-*/
 
 //  int_funcs  --------------------------------------------------
 
@@ -315,17 +316,9 @@ S double op_strcompare(ND* nd) {
 S double op_vnumaelael(ND* nd) {
 	ARR* arr = garr(nd->v1);
 	ND* ndx = nd->ri;
-	int h = (int)numf(ndx->ex) - arr->base;
-	if (h < 0 || h >= arr->len) {
-		out_of_bounds(nd);
-		return 0;
-	}
+	int h = arrind(arr, numf(ndx->ex), nd);
 	arr = arr->parr + h;
-	h = (int)numf(ndx->ex2) - arr->base;
-	if (h < 0 || h >= arr->len) {
-		out_of_bounds(nd);
-		return 0;
-	}
+	h = arrind(arr, numf(ndx->ex2), nd);
 	return *(arr->pnum + h);
 }
 
@@ -335,11 +328,7 @@ S double op_arr_len(ND* nd) {
 }
 S double op_arrarrael_len(ND* nd) {
 	ARR* arr = garr(nd->v1);
-	int h = (int)numf(nd->ri) - arr->base;
-	if (h < 0 || h >= arr->len) {
-		out_of_bounds(nd);
-		return 0;
-	}
+	int h = arrind(arr, numf(nd->ri), nd);
 	arr = arr->parr + h;
 	return arr->len;
 }
@@ -371,12 +360,7 @@ S void arr_len(ND* nd, unsigned int sz, int typ) {
 	arr->typ = typ;
     if (typ > ARR_ARR) {
 		arr->typ = ARR_ARR;
-
-		int h = (int)numf(ndx->ex) - arr->base;
-		if (h < 0 || h >= arr->len) {
-			out_of_bounds(nd);
-			return;
-		}
+		int h = arrind(arr, numf(ndx->ex), nd);
 		arr = arr->parr + h;
 		typ = typ - (ARR_AEL - ARR_NUM );
 	}
@@ -387,6 +371,7 @@ S void arr_len(ND* nd, unsigned int sz, int typ) {
 		h = arr->len + h;
 		if (h < 0) h = 0;
 	}
+
 	void* p;
 	if (h > arr->len) {
 		p = realloc(arr->p, h * sz);
@@ -448,11 +433,7 @@ S void op_arrbase(ND* nd) {
 S void op_arrbase2(ND* nd) {
 	ND* ndx = nd + 1;
 	ARR* arr = garr(nd->v1);
-	int h = (int)numf(ndx->ex) - arr->base;
-	if (h < 0 || h >= arr->len) {
-		out_of_bounds(nd);
-		return;
-	}
+	int h = arrind(arr, numf(ndx->ex), nd);
 	arr = arr->parr + h;
 	arr->base = 1;
 	h = (int)numf(nd->ri);
@@ -463,11 +444,7 @@ S void op_arrbase2(ND* nd) {
 
 S ARR* arrael_append(ND* nd, int arrtyp, int sz) {
 	ARR* arr = garr(nd->v1);
-	int h = (int)numf(nd->ri) - arr->base;
-	if (h < 0 || h >= arr->len) {
-		out_of_bounds(nd);
-		return 0;
-	}
+	int h = arrind(arr, numf(nd->ri), nd);
 	arr = arr->parr + h;
 	arr->typ = arrtyp;
 	arr->len += 1;
@@ -552,11 +529,7 @@ S double op_lvnum(ND* nd) {
 
 S double op_vnumael(ND* nd) {
 	ARR* arr = garr(nd->v1);
-	int h = (int)numf(nd->ri) - arr->base;
-	if (h < 0 || h >= arr->len) {
-		out_of_bounds(nd);
-		return 0;
-	}
+	int h = arrind(arr, numf(nd->ri), nd);
 	return *(arr->pnum + h);
 }
 
@@ -811,34 +784,25 @@ S STR op_lvstr(ND* nd) {
 
 S STR op_vstrael(ND* nd) {
 	ARR* arr = garr(nd->v1);
-	int h = (int)numf(nd->ri) - arr->base;
-	if (h < 0 || h >= arr->len) {
-		out_of_bounds(nd);
-		return str("");
-	}
+	int h = arrind(arr, numf(nd->ri), nd);
 	return str_str(arr->pstr + h);
 }
 S STR op_vstraelael(ND* nd) {
 	ARR* arr = garr(nd->v1);
 	ND* ndx = nd->ri;
-	int h = (int)numf(ndx->ex) - arr->base;
-	if (h < 0 || h >= arr->len) {
-		out_of_bounds(nd);
-		return str("");
-	}
+	int h = arrind(arr, numf(ndx->ex), nd);
 	arr = arr->parr + h;
-	h = (int)numf(ndx->ex2) - arr->base;
-	if (h < 0 || h >= arr->len) {
-		out_of_bounds(nd);
-		return str("");
-	}
+	h = arrind(arr, numf(ndx->ex2), nd);
 	return str_str(arr->pstr + h);
 }
 
 S STR op_substr(ND* nd) {
 	ND* ndx = nd + 1;
 	STR s = strf(nd->le);
-	STR r = str_substr(&s, (int)numf(nd->ri) - 1, (int)numf(ndx->ex));
+
+	int h = (int)numf(nd->ri);
+	if (h < 0) h = str_ulen(str_ptr(&s)) + h + 1;
+	STR r = str_substr(&s, h - 1, (int)numf(ndx->ex));
 	str_free(&s);
 	return r;
 }
@@ -1025,66 +989,42 @@ S void op_strassp(ND* nd) {
 
 S void op_flael_ass(ND* nd) {
 	ARR* arr = garr(nd->v1);
-	int h = (int)numf(nd->ri) - arr->base;
-	if (h < 0 || h >= arr->len) {
-		out_of_bounds(nd);
-		return;
-	}
+	int h = arrind(arr, numf(nd->ri), nd);
 	ND* ndx = nd + 1;
 	*(arr->pnum + h) = numf(ndx->ex);
 }
 
 S void op_flael_assp(ND* nd) {
 	ARR* arr = garr(nd->v1);
-	int h = (int)numf(nd->ri) - arr->base;
-	if (h < 0 || h >= arr->len) {
-		out_of_bounds(nd);
-		return;
-	}
+	int h = arrind(arr, numf(nd->ri), nd);
 	ND* ndx = nd + 1;
 	*(arr->pnum + h) += numf(ndx->ex);
 }
 
 S void op_flael_assm(ND* nd) {
 	ARR* arr = garr(nd->v1);
-	int h = (int)numf(nd->ri) - arr->base;
-	if (h < 0 || h >= arr->len) {
-		out_of_bounds(nd);
-		return;
-	}
+	int h = arrind(arr, numf(nd->ri), nd);
 	ND* ndx = nd + 1;
 	*(arr->pnum + h) -= numf(ndx->ex);
 }
 
 S void op_flael_asst(ND* nd) {
 	ARR* arr = garr(nd->v1);
-	int h = (int)numf(nd->ri) - arr->base;
-	if (h < 0 || h >= arr->len) {
-		out_of_bounds(nd);
-		return;
-	}
+	int h = arrind(arr, numf(nd->ri), nd);
 	ND* ndx = nd + 1;
 	*(arr->pnum + h) *= numf(ndx->ex);
 }
 
 S void op_flael_assd(ND* nd) {
 	ARR* arr = garr(nd->v1);
-	int h = (int)numf(nd->ri) - arr->base;
-	if (h < 0 || h >= arr->len) {
-		out_of_bounds(nd);
-		return;
-	}
+	int h = arrind(arr, numf(nd->ri), nd);
 	ND* ndx = nd + 1;
 	*(arr->pnum + h) /= numf(ndx->ex);
 }
 
 S void op_strael_ass(ND* nd) {
 	ARR* arr = garr(nd->v1);
-	int h = (int)numf(nd->ri) - arr->base;
-	if (h < 0 || h >= arr->len) {
-		out_of_bounds(nd);
-		return;
-	}
+	int h = arrind(arr, numf(nd->ri), nd);
 	str_free(arr->pstr + h);
 	ND* ndx = nd + 1;
 	*(arr->pstr + h) = strf(ndx->ex);
@@ -1092,11 +1032,7 @@ S void op_strael_ass(ND* nd) {
 
 S void op_strael_assp(ND* nd) {
 	ARR* arr = garr(nd->v1);
-	int h = (int)numf(nd->ri) - arr->base;
-	if (h < 0 || h >= arr->len) {
-		out_of_bounds(nd);
-		return;
-	}
+	int h = arrind(arr, numf(nd->ri), nd);
 	ND* ndx = nd + 1;
 	STR s = strf(ndx->ex);
 	str_append_str(arr->pstr + h, &s);
@@ -1252,16 +1188,8 @@ S void op_swapnum(ND* nd) {
 S void op_swapnumael(ND* nd) {
 	ND* ndx = nd + 1;
 	ARR* arr = garr(nd->v1);
-	int h1 = (int)numf(nd->ri) - arr->base;
-	int h2 = (int)numf(ndx->ex) - arr->base;
-	if (h1 < 0 || h1 >= arr->len) {
-		out_of_bounds(nd);
-		return;
-	}
-	if (h2 < 0 || h2 >= arr->len) {
-		out_of_bounds(nd);
-		return;
-	}
+	int h1 = arrind(arr, numf(nd->ri), nd);
+	int h2 = arrind(arr, numf(ndx->ex), nd);
 	double h = *(arr->pnum + h1);
 	*(arr->pnum + h1) = *(arr->pnum + h2);
 	*(arr->pnum + h2) = h;
@@ -1278,16 +1206,8 @@ S void op_swapstr(ND* nd) {
 S void op_swapstrael(ND* nd) {
 	ND* ndx = nd + 1;
 	ARR* arr = garr(nd->v1);
-	int h1 = (int)numf(nd->ri) - arr->base;
-	int h2 = (int)numf(ndx->ex) - arr->base;
-	if (h1 < 0 || h1 >= arr->len) {
-		out_of_bounds(nd);
-		return;
-	}
-	if (h2 < 0 || h2 >= arr->len) {
-		out_of_bounds(nd);
-		return;
-	}
+	int h1 = arrind(arr, numf(nd->ri), nd);
+	int h2 = arrind(arr, numf(ndx->ex), nd);
 	STR h = *(arr->pstr + h1);
 	*(arr->pstr + h1) = *(arr->pstr + h2);
 	*(arr->pstr + h2) = h;
@@ -1303,11 +1223,7 @@ S void op_swaparr(ND* nd) {
 
 S void op_swaparrael(ND* nd) {
 	ARR* arr = garr(nd->v1);
-	int h = (int)numf(nd->ri) - arr->base;
-	if (h < 0 || h >= arr->len) {
-		out_of_bounds(nd);
-		return;
-	}
+	int h = arrind(arr, numf(nd->ri), nd);
 	ARR* a1 = arr->parr + h;
 	ND* ndx = nd + 1;
 	ARR* a2 = garr(ndx->vx);
@@ -1318,18 +1234,10 @@ S void op_swaparrael(ND* nd) {
 
 S void op_swaparraelx(ND* nd) {
 	ARR* arr = garr(nd->v1);
-	int h = (int)numf(nd->ri) - arr->base;
-	if (h < 0 || h >= arr->len) {
-		out_of_bounds(nd);
-		return;
-	}
+	int h = arrind(arr, numf(nd->ri), nd);
 	ND* ndx = nd + 1;
 	ARR* a1 = arr->parr + h;
-	h = (int)numf(ndx->ex) - arr->base;
-	if (h < 0 || h >= arr->len) {
-		out_of_bounds(nd);
-		return;
-	}
+	h = arrind(arr, numf(ndx->ex), nd);
 	ARR* a2 = arr->parr + h;
 	ARR tmp = *a1;
 	*a1 = *a2;
@@ -1343,12 +1251,7 @@ S ARR o_arrx(ND* nd, int typ, int sz) {
 	ARR res;
 	if (typ >= ARR_AEL) {
 		typ -= 3;
-		int h = (int)numf(nd->ri) - arr->base;
-		if (h < 0 || h >= arr->len) {
-			out_of_bounds(nd);
-			res.len = 0;
-			return res;
-		}
+		int h = arrind(arr, numf(nd->ri), nd);
 		arr = arr->parr + h;
 	}
 
@@ -1733,18 +1636,10 @@ S void op_arr_ass(ND* nd) {
 S void o_aelael_ass(ND* nd, ushort typ) {
 	ARR* arr = garr(nd->v1);
 	ND* ndx = nd + 1;
-//	ND* ndx = codp + nd->o3;
-	int h = (int)numf(nd->ri) - arr->base;
-	if (h < 0 || h >= arr->len) {
-		out_of_bounds(nd);
-		return;
-	}
+	int h = arrind(arr, numf(nd->ri), nd);
 	arr = arr->parr + h;
-	h = (int)numf(ndx->ex) - arr->base;
-	if (h < 0 || h >= arr->len) {
-		out_of_bounds(nd);
-		return;
-	}
+	h = arrind(arr, numf(ndx->ex), nd);
+
 	if (typ == 0) {
 		*(arr->pnum + h) = numf(ndx->ex2);
 	}
@@ -1788,11 +1683,7 @@ S void op_flaelael_assd(ND* nd) {
 
 S void op_arrael_ass(ND* nd) {
 	ARR* arr = garr(nd->v1);
-	int h = (int)numf(nd->ri) - arr->base;
-	if (h < 0 || h >= arr->len) {
-		out_of_bounds(nd);
-		return;
-	}
+	int h = arrind(arr, numf(nd->ri), nd);
 	arr = arr->parr + h;
 	ND* ndx = nd + 1;
 	ARR a = arrf(ndx->ex);

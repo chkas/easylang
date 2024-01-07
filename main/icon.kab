@@ -1,6 +1,8 @@
+sys topleft
+# 
 c = 797
-color c
-rect 100 100
+background c
+clear
 color 000
 linewidth 6
 move 24 22
@@ -35,5 +37,3 @@ line 45 y
 color c
 move 75 64
 circle 2
-#sysfunc "id:10"
-

@@ -1,6 +1,7 @@
 # AoC-23 - Day 23: A Long Walk
 # 
-visualisation = 1
+visual = 1
+# 
 global m[] nc .
 proc read . .
    s$ = input
@@ -25,47 +26,38 @@ proc read . .
       s$ = input
       until s$ = ""
    .
-   for i to nc
-      m[] &= 0
-   .
 .
-# 
 read
-len seen[] len m[]
-max = 0
+# 
+# 
+start = 2
+dest = len m[] - 1
 # 
 sys topleft
 background 000
 textsize 5
 sc = 100 / nc
-colind = 1
-col[] = [ 955 595 559 995 959 599 ]
-proc show m . .
-   if visualisation = 0
-      return
-   .
-   if m = -1
-      sleep 3
-      return
-   .
-   if m = 2
-      col = col[colind]
+colind = 0
+col[] = [ 966 855 744 633 522 633 744 855 ]
+global vis[] max maxway[] .
+# 
+proc showm m . .
+   if m = 1
       colind = colind mod len col[] + 1
-   elif m = 1
-      col = 393
-   else
-      col = 955
+   elif m = 0
+      clear
    .
-   clear
    for r range0 nc
       for c range0 nc
          ind = r * nc + c + 1
-         if m[ind] >= 0
-            if seen[ind] = 1
-               color col
-            else
-               color 666
-            .
+         col = -1
+         if m = 0 and m[ind] >= 0
+            col = 888
+         elif m = 1 and vis[ind] = 1
+            col = col[colind]
+         .
+         if col >= 0
+            color col
             move c * sc r * sc
             rect sc sc
          .
@@ -77,20 +69,61 @@ proc show m . .
    color 666
    move 3 91
    text max
-   # 
-   if m = 2 or m = 1
-      sleep 0.2
-   elif m = 0
-      sleep 0.1
-   .
 .
-m[2] = -1
-start = nc + 2
-stop = nc * nc - 1 + nc
-seen[start] = 1
-# 
 d[] = [ 1 nc -1 (-nc) ]
 # 
+global pseen[] w[][] nddest ndpos[] .
+# 
+proc gond p d0 v . ndx .
+   p = p + d[d0]
+   repeat
+      if v = 1
+         vis[p] = 1
+      .
+      for d = 1 to 4
+         if d <> (d0 + 2) mod1 4 and m[p + d[d]] >= 0
+            break 1
+         .
+      .
+      p = p + d[d]
+      d0 = d
+      until pseen[p] <> 0
+   .
+   ndx = pseen[p]
+.
+proc gosteps nd ndn . .
+   p = ndpos[nd]
+   vis[p] = 1
+   d0 = 1
+   repeat
+      if m[p + d[d0]] >= 0
+         gond p d0 0 ndx
+      .
+      until ndx = ndn
+      d0 += 1
+   .
+   gond p d0 1 ndx
+.
+proc showmway . .
+   if visual = 0
+      return
+   .
+   showm 0
+   ndp = maxway[1]
+   for i = 2 to len maxway[]
+      nd = maxway[i]
+      vis[] = [ ]
+      len vis[] len m[]
+      gosteps ndp nd
+      ndp = nd
+      showm 1
+      sleep 0.05
+   .
+   sleep 0.5
+.
+# 
+part = 1
+maxavail = 0
 func is_border h .
    if h <= 2 * nc or h mod nc = (nc - 1)
       return 1
@@ -99,90 +132,131 @@ func is_border h .
       return 1
    .
 .
-#  
-part = 1
-#  
-proc solv p cnt d0 turn . .
-   seen_old[] = seen[]
-   while p <> stop
-      h0 = 0
-      d00 = d0
-      for t = -1 to 1
-         d = (d00 + t) mod1 4
-         h = p + d[d]
-         hx = p + 2 * d[d]
-         if m[h] >= 0 and seen[hx] = 0
-            ok = 1
-            if part = 1 and m[h] > 0 and m[h] <> d
-               ok = 0
-            .
-            if is_border hx = 1
-               if is_border p = 1 and (d = 3 or d = 4)
-                  ok = 0
-                  if h = nc * nc - 1
-                     ok = 1
-                  .
-               .
-            else
-               if turn < -2
-                  dx = (d + 1) mod1 4
-                  if seen[hx + 2 * d[dx]] = 1
-                     ok = 0
-                  .
-               elif turn > 3
-                  dx = (d - 1) mod1 4
-                  if seen[hx + 2 * d[dx]] = 1
-                     ok = 0
-                  .
-               .
-            .
-            if ok = 1
-               if h0 = 0
-                  d0 = d
-                  h0 = h
-                  hx0 = hx
-                  t0 = t
-               else
-                  seen[h] = 1
-                  seen[hx] = 1
-                  solv hx cnt + 2 d turn + t
-                  seen[hx] = 0
-                  seen[h] = 0
-               .
-            .
+proc makegraph node p d0 . .
+   vis[] = [ ]
+   len vis[] len m[]
+   p = p + d[d0]
+   repeat
+      vis[p] = 1
+      if m[p] > 0 and d0 <> m[p]
+         if part = 1
+            return
          .
       .
-      if h0 = 0
-         cnt = 0
+      c = 0
+      dx = (d0 + 2) mod1 4
+      for d = 1 to 4
+         if d <> dx and m[p + d[d]] >= 0
+            d0 = d
+            c += 1
+         .
+      .
+      cnt += 1
+      if c = 0
+         pr "dead end"
+         return
+      .
+      until c > 1
+      pn = p + d[d0]
+      if is_border pn = 1 and is_border p = 1 and (d0 = 3 or d0 = 4)
+         deny = 1
+      .
+      p = pn
+      if p = dest or p = start
          break 1
       .
-      turn += t0
-      seen[hx0] = 1
-      seen[h0] = 1
-      p = hx0
-      cnt += 2
    .
-   ##
-   if cnt = 0
-      show 0
-   else
-      show 1
+   nd = pseen[p]
+   if nd = 0
+      ndpos[] &= p
+      w[][] &= [ ]
+      nd = len w[][]
    .
-   # #
-   if cnt > max
-      max = cnt
-      # print max
-      show 2
+   maxavail += cnt
+   if deny = 1
+      return
    .
-   seen[] = seen_old[]
+   w[node][] &= nd
+   w[node][] &= cnt
+   seen = pseen[p]
+   pseen[p] = nd
+   if p = dest
+      maxavail += cnt + 1
+      nddest = nd
+   elif p <> start and seen = 0
+      pseen[p] = nd
+      for d = 1 to 4
+         if m[p + d[d]] >= 0
+            makegraph nd p d
+         .
+      .
+   .
 .
-solv start 0 1 0
-print max
-show -1
-part = 2
-solv start 0 1 0
-print max
+global seen[] nseen .
+func entercon nd ndn .
+   if seen[nd + nseen * ndn] = 0 and seen[ndn] = 0
+      seen[ndn] = 1
+      seen[nd + nseen * ndn] = 1
+      seen[ndn + nseen * nd] = 1
+      return 1
+   .
+.
+proc leavecon nd ndn . .
+   seen[ndn] = 0
+   seen[nd + nseen * ndn] = 0
+   seen[ndn + nseen * nd] = 0
+.
 # 
+proc solve nd dist avail way[] . .
+   way[] &= nd
+   if dist + avail <= max
+      return
+   .
+   if nd = nddest
+      if dist > max
+         maxway[] = way[]
+         max = dist
+      .
+      return
+   .
+   for i = 1 step 2 to len w[nd][] - 1
+      if seen[w[nd][i]] = 0
+         avail -= w[nd][i + 1]
+      .
+   .
+   for i = 1 step 2 to len w[nd][] - 1
+      ndn = w[nd][i]
+      d = w[nd][i + 1]
+      if entercon nd ndn = 1
+         solve ndn dist + d avail way[]
+         leavecon nd ndn
+      .
+   .
+.
+proc run . .
+   pseen[] = [ ]
+   len pseen[] len m[]
+   w[][] = [ [ ] ]
+   ndpos[] = [ start ]
+   maxavail = 0
+   makegraph 1 start 2
+   maxavail /= 2
+   nseen = len w[][]
+   seen[] = [ ]
+   len seen[] nseen * nseen + nseen
+   max = 0
+   solve 1 1 maxavail [ ]
+   print max
+   showmway
+.
+# 
+proc main . .
+   # 
+   run
+   part = 2
+   run
+.
+main
 # 
 input_data
 #.#####################

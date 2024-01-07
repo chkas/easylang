@@ -181,7 +181,7 @@ vis19="3 8 10 20 24"
 vis20="20 24"
 vis21="8 9 11 13 15 23 24 25"
 vis22="8 9 14"
-vis23=""
+vis23="23 24"
 
 echo "<h3>Visualizations</h3>"
 echo "<div class=col>"
@@ -234,6 +234,12 @@ for v in $vis22; do
 	f="${f}22/$v.el"
 done
 echo "<a href=show.html?f=$f>2022</a><p>"
+f=""
+for v in $vis23; do
+	test $f && f="$f,"
+	f="${f}23/$v.el"
+done
+echo "<a href=show.html?f=$f>2023</a><p>"
 
 cat <<xxx
 </div>
