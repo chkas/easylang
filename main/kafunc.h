@@ -254,12 +254,19 @@ S double op_log10(ND* nd) {
 	return log10(numf(nd->le));
 }
 S double op_sin(ND* nd) {
-	return sin(numf(nd->le) / 180. * M_PI);
-// not supported in emscripten	
+	double h = numf(nd->le);
+	if (h >= 360 || h <= -360) h = fmod(h, 360);
+	return sin(h / 180. * M_PI);
+
+//	return sin(numf(nd->le) / 180. * M_PI);
+// not supported in emscripten
 // return __sinpi(numf(nd->le) / 180.);
 }
 S double op_cos(ND* nd) {
-	return cos(numf(nd->le) / 180. * M_PI);
+	double h = numf(nd->le);
+	if (h >= 360 || h <= -360) h = fmod(h, 360);
+	return cos(h / 180. * M_PI);
+//	return cos(numf(nd->le) / 180. * M_PI);
 }
 S double op_tan(ND* nd) {
 	return tan(numf(nd->le) / 180. * M_PI);
@@ -299,6 +306,7 @@ S double op_number(ND* nd) {
 	rt.sys_error = 0;
 	if (p == ps || *p != 0) {
 		rt.sys_error = 1;
+		//if (p == ps) d = 0.0 / 0.0;
 	}
 	str_free(&s);
 	return d;

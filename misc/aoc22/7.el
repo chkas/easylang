@@ -1,7 +1,7 @@
 # AoC-22 - Day 7: No Space Left On Device
-# 
+#
 global l[] .
-# 
+#
 proc traverse . sum .
    sum = 0
    s$ = input
@@ -12,7 +12,7 @@ proc traverse . sum .
       if s$[1] = "$" and s$[2] = "cd"
          traverse s
          sum += s
-      elif s$[1] <> "dir"
+      elif s$[1] <> "$" and s$[1] <> "dir"
          sum += number s$[1]
       .
    .
@@ -21,7 +21,7 @@ proc traverse . sum .
 traverse sum
 free = 70000000 - sum
 tofree = 30000000 - free
-# 
+#
 min = 1 / 0
 for s in l[]
    if s <= 100000
@@ -33,7 +33,7 @@ for s in l[]
 .
 print part1
 print min
-# 
+#
 input_data
 $ cd /
 $ ls

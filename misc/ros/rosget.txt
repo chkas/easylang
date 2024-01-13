@@ -136,6 +136,7 @@ Determine if a string is numeric
 Determine if a string is squeezable
 Dice game probabilities
 Digital root
+Dijkstra's algorithm
 Disarium numbers
 Discordian date
 Doomsday rule
@@ -144,6 +145,7 @@ Dragon curve
 Draw a clock
 Draw a pixel
 Draw a rotating cube
+Dutch national flag problem
 E
 Eban numbers
 Egyptian division
@@ -172,12 +174,15 @@ Factorial primes
 Factors of an integer
 Fairshare between two and more
 Farey sequence
+FASTA format
+Feigenbaum constant calculation
 Fibonacci sequence
 Filter
 Find common directory path
 Find limit of recursion
 Find square difference
 Find the intersection of a line with a plane
+Find the last Sunday of each month
 FizzBuzz
 Forest fire
 Four bit adder
@@ -205,13 +210,14 @@ Hilbert curve
 Hofstadter Q sequence
 Honaker primes
 Horizontal sundial calculations
+H
+Humble numbers
 I
 Identity matrix
 Idiomatically determine all the lowercase and uppercase letters
 Idoneal numbers
 Image noise
 Implicit type conversion
-I
 Inconsummate numbers in base 10
 Increment a numerical string
 Infinity
@@ -235,6 +241,7 @@ Lah numbers
 Langton's ant
 Largest number divisible by its digits
 Largest proper divisor of n
+Last Friday of each month
 Leap year
 Leonardo numbers
 Letter frequency
@@ -244,6 +251,7 @@ Literals/Integer
 Literals/String
 Logical operations
 Long multiplication
+Long primes
 Longest common substring
 Look-and-say sequence
 Loop over multiple arrays simultaneously
@@ -279,21 +287,32 @@ Motzkin numbers
 Mouse position
 Multifactorial
 Multiplication tables
+Munchausen numbers
 Munching squares
 Musical scale
+Mutual recursion
 Möbius function
 N
 N'th
 N-queens problem
 Narcissistic decimal number
+Next highest int from digits
 Nim game
+Non-decimal radices/Convert
 Nth root
 Numbers which are not the sum of distinct squares
 Numbers which are the cube roots of the product of their proper divisors
 Numbers with equal rises and falls
 O
 O'Halloran numbers
+Odd word problem
+Old lady swallowed a fly
+Old Russian measure of length
+One of n lines in a file
 One-dimensional cellular automata
+OpenWebNet password
+Order two numerical lists
+Ormiston triples
 Own digits power sum
 P
 Padovan n-step number sequences
@@ -301,6 +320,7 @@ Pairs with common factors
 Palindrome detection
 Pangram checker
 Particle fountain
+Pascal's triangle
 Pentagram
 Percolation/Mean run density
 Perfect numbers
@@ -321,6 +341,7 @@ Prime decomposition
 Primes: n*2^m+1
 Pseudo-random numbers/Middle-square method
 Pythagoras tree
+Pythagorean triples
 Q
 Quickselect algorithm
 Quine
@@ -384,6 +405,7 @@ Sorting algorithms/Stooge sort
 Soundex
 Split a character string based on change of character
 Square form factorization
+Stack
 Statistics/Basic
 Steffensen's method
 Stirling numbers of the first kind
@@ -400,6 +422,7 @@ Strip block comments
 Strip comments from a string
 Strip control codes and extended characters from a string
 Strip whitespace from a string/Top and tail
+S
 Sub-unit squares
 Subleq
 Substring
@@ -423,7 +446,6 @@ Temperature conversion
 The Name Game
 The Twelve Days of Christmas
 Tic-tac-toe
-T
 Time a function
 Tokenize a string
 Total circles area

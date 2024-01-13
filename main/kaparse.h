@@ -32,7 +32,7 @@ S void csb_tok_spc_nt(void) {
 }
 S void csk_tok_spc_nt(void) {
 	if (*tval >= 'a') csb(tval);
-	else cs(tval);	
+	else cs(tval);
 	cs_spc();
 	nexttok();
 }
@@ -44,7 +44,7 @@ S ND* parse_strterm(void);
 
 S double (*numf[])(ND*) = {
 	op_sys_time, op_error, op_mouse_x, op_mouse_y, op_randomf, op_pi,
-	op_random,  op_sqrt, op_log10, op_abs, op_sign, op_bitnot, op_floor, op_sin, op_cos, op_tan, op_asin, op_acos, op_atan,
+	op_random, op_random, op_sqrt, op_log10, op_abs, op_sign, op_bitnot, op_floor, op_sin, op_cos, op_tan, op_asin, op_acos, op_atan,
 	op_atan2, op_pow, op_bitand, op_bitor, op_bitxor, op_bitshift, op_lower, op_higher,
 	op_number, op_strcode, op_strcompare
 };
@@ -2254,7 +2254,7 @@ S ND* parse_sequ(void) {
 				}
 				else {
 					parse_strarrarr_ass(nd);
-				}			
+				}
 			}
 			else if (tok == t_repeat) {
 				parse_repeat_stat(nd);

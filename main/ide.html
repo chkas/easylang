@@ -80,7 +80,6 @@ pre {
 #inp {
 	font-size:14px;
 	margin:0px;
-	margin-top:2px;
 	width:calc(100% - 10px);
 	height:calc(100% - 36px);
 	overflow:auto;
@@ -121,7 +120,6 @@ canvas { display:inline }
 	vertical-align:top;
 	margin-top:1px
 }
-
 select {
 	padding:2px 3px;
 	font-size:12px;
@@ -136,7 +134,7 @@ select {
 button {
 	cursor:pointer;
 	padding:4px 5px;
-	margin:0px 1px 0px 1px;
+	margin:0px 0px 0px 0px;
 	border:1px solid;
 	border-radius:8px;
 	font-size:12px;
@@ -158,9 +156,10 @@ button.del {
 }
 .tabd {overflow:hidden}
 button.tab  {
+	font-size:11px;
 	float:left;
 	padding:5px 12px;
-	margin-bottom:-2px;
+	margin-bottom:-3px;
 	margin-top:2px;
 	margin-right:-10px;
 	border:1px solid #888;
@@ -170,17 +169,10 @@ button.tab  {
 	position:relative;
 	z-index:1
 }
-button.tab:disabled {
-	font-size:13px;
-	margin-top:0px;
-	z-index:10
-}
+button.tab:disabled { font-size:12px; margin-top:1px; z-index:10}
 #expnd {font-size:10px}
 
-.lnk {
-	cursor:pointer;
-	text-decoration:underline;
-}
+.lnk {cursor:pointer; text-decoration:underline}
 a:hover {background:#666}
 a{color:#ddd}
 a:visited {color:#ddd}
@@ -188,46 +180,18 @@ xxu{font-weight:bold;text-decoration:none}
 *{scrollbar-width:auto}
 ::-webkit-scrollbar{width:10px;height:10px}
 
-body{background:#333;color:#fff}
-h3{background:#444;color:#fff}
-#docx{background:#111}
-.drag{background:#777}
-#inp{ background:#000}
+#hamdiv{float:right; margin:2px; margin-right:10px;}
+#hambtn{border-radius:4px;padding:2px;cursor: pointer; }
+.hamb {border-radius:2px;width:11px;height:1px;margin:3px;}
+#hamcnt{position:absolute;min-width:80px;box-shadow:0px 8px 16px 0px rgba(0,0,0,0.2); z-index:1;}
+#hamcnt div{padding:8px;font-size:12px;cursor:pointer;}
 
-pre i{font-weight:400;color:#9d9}
-pre b{font-weight:500;color:#fc9}
-pre s{text-decoration:none;font-weight:500;color:#9cf}
-pre u{color:#fff;background:#a44;text-decoration:none}
-::selection {color:#fff;background:#bbb}
+#hambtn:hover{ background-color:#bbb; }
+#hambtn{background-color:#ddd;border:1px solid #666}
+.hamb {background-color:#000}
+#hamcnt{background:#eee}
+#hamcnt div:hover{background:#ddd;}
 
-.tut pre{ background:#333}
-tt{background:#555;color:#efe;border-color:#888}
-#out{ background:#222;color:#ddd}
-canvas.run {outline-style:solid;outline-color:#a00;outline-width:1px}
-button{border-color:#888;background:#555;color:#fff}
-button.tab:enabled{background:#444;color:#888}
-button.tab:hover:enabled{background:#222}
-button.tab:disabled{background:#222;color:#eee}
-button:disabled{color:#777}
-button:hover:enabled{background:#999}
-button:active:enabled{background:#bbb}
-#moreBtn.act{background:#aaa}
-#dbg{background:#222;color:#ddd}
-.lnk:hover{background:#666}
-select{background:#333;color:#eee}
-select:hover:enabled{background:#999}
-.high{background:#d77}
-*{scrollbar-color:auto}
-::-webkit-scrollbar-track{background:#222}
-::-webkit-scrollbar-thumb{background:#666}
-</style>
-
-<script>
-var theme
-function chngTheme() {
-	if (theme == null) {
-		theme = document.createElement('style');
-		theme.innerHTML = `
 body{background:#ccc;color:#000}
 h3{background:#ccc;color:#444}
 #docx{background:#eee}
@@ -261,17 +225,64 @@ a {color:#000}
 a:visited {color:#000}
 ::-webkit-scrollbar-track{background:#aaa}
 ::-webkit-scrollbar-thumb{background:#ccc}
+</style>
+
+<script>
+var theme
+function chngTheme() {
+	if (theme == null) {
+		theme = document.createElement('style');
+		theme.innerHTML = `
+#hambtn:hover{ background-color:#999; }
+#hambtn{background-color:#444;border:1px solid #666}
+.hamb {background-color:#fff}
+#hamcnt{background:#333}
+#hamcnt div:hover{background:#555;}
+
+body{background:#333;color:#fff}
+h3{background:#444;color:#fff}
+#docx{background:#111}
+.drag{background:#777}
+#inp{ background:#000}
+
+pre i{font-weight:400;color:#9d9}
+pre b{font-weight:500;color:#fc9}
+pre s{text-decoration:none;font-weight:500;color:#9cf}
+pre u{color:#fff;background:#a44;text-decoration:none}
+::selection {color:#fff;background:#bbb}
+
+.tut pre{ background:#333}
+tt{background:#555;color:#efe;border-color:#888}
+#out{ background:#222;color:#ddd}
+canvas.run {outline-style:solid;outline-color:#a00;outline-width:1px}
+button{border-color:#888;background:#555;color:#fff}
+button.tab:enabled{background:#444;color:#888}
+button.tab:hover:enabled{background:#222}
+button.tab:disabled{background:#222;color:#eee}
+button:disabled{background:#444;color:#777}
+button:hover:enabled{background:#999}
+button:active:enabled{background:#bbb}
+#moreBtn.act{background:#aaa}
+#dbg{background:#222;color:#ddd}
+.lnk:hover{background:#666}
+select{background:#333;color:#eee}
+select:hover:enabled{background:#999}
+.high{background:#d77}
+*{scrollbar-color:auto}
+::-webkit-scrollbar-track{background:#222}
+::-webkit-scrollbar-thumb{background:#666}
 `
+
 		document.head.appendChild(theme)
-		window.localStorage.removeItem("xtheme")
+		window.localStorage.setItem("xtheme", "dark")
 	}
 	else {
 		document.head.removeChild(theme)
 		theme = null
-		window.localStorage.setItem("xtheme", "dark")
+		window.localStorage.removeItem("xtheme")
 	}
 }
-if (window.localStorage["xtheme"] != "dark") chngTheme()
+if (window.localStorage["xtheme"] == "dark") chngTheme()
 
 </script>
 
@@ -279,7 +290,7 @@ if (window.localStorage["xtheme"] != "dark") chngTheme()
 
 <div id=col1>
 	<div class=lnk id=notiUpd style=display:none>Click here to update to new version<br><br></div>
-	<div class=tabd>
+	<div id=tabs class=tabd>
 		<button id=expnd style=display:none;float:left>◀</button>
 		<button class=tab id=tab1 style=z-index:3>Tutor</button>
 		<button class=tab id=tab2 style=z-index:2>Saved</button>
@@ -303,9 +314,24 @@ if (window.localStorage["xtheme"] != "dark") chngTheme()
 </div>
 
 <div id=incol>
-	<button id=runBtn style="margin-left:20px">Run</button>
-	<button id=stBtn>Save</button>
-	<button id=moreBtn>More</button>
+	<div id=btns>
+		<button id=runBtn style="margin-left:32px">Run</button>
+		<button id=stBtn>Save</button>
+
+		<div id=hamdiv>
+			<div id=hambtn>
+				<div class=hamb></div>
+				<div class=hamb></div>
+				<div class=hamb></div>
+			</div>
+			<div id=hamcnt style=display:none;z-index:1>
+				<div id=moreBtn>Debug</div>
+				<div id=themeBtn>Theme</div>
+				<div id=urlBtn>Code URL</div>
+				<div id=url2Btn>App URL</div>
+			</div>
+		</div>
+	</div>
 
 	<pre id=inp contenteditable=true ondrop="return false" autocomplete=off
 		autocorrect=off autocapitalize=off spellcheck=false></pre>
@@ -323,8 +349,6 @@ if (window.localStorage["xtheme"] != "dark") chngTheme()
 			<option>Faster</option>
 		</select>
 	</span>
-	<button id=themeBtn style=float:right>Theme</button>
-	<button id=urlBtn style=float:right>URL</button>
 	<textarea id=dbg readonly spellcheck=false></textarea>
 	</span>
 </div>

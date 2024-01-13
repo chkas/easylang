@@ -22,6 +22,7 @@ window["easyrunxr"] = easyrunxr
 window["easyinit"] = easyinit
 window["easyinp"] = easyinp
 window["easystop"] = easystop
+window["outp"] = outp
 
 var eProg = []
 var initState = 0
@@ -420,7 +421,7 @@ function workerStarted() {
 }
 
 var nlsaved
-function print(s) {
+function outp(s) {
 	if (eOut) {
 		if (nlsaved) {
 			s = "\n" + s
@@ -522,7 +523,7 @@ function workerMessage(event) {
 		grafList(d[1])
 		break
 	case "print":
-		print(d[1])
+		outp(d[1])
 		break
 	case "ide":
 		d.shift()
@@ -641,7 +642,7 @@ var out0 = null
 
 function loadInfo(s) {
 	if (eOut) {
-		if (s) print(s + "\n")
+		if (s) outp(s + "\n")
 		else eOut.value = ""
 	}
 	else if (eCan) {

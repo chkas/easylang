@@ -13,8 +13,12 @@
 
 function eid(id) { return document.getElementById(id) }
 
+var hambtn = eid("hambtn")
+var hamcnt = eid("hamcnt")
 var runBtn = eid("runBtn")
 var stBtn = eid("stBtn")
+var btns = eid("btns")
+var tabs = eid("tabs")
 var tab1 = eid("tab1")
 var tab2 = eid("tab2")
 var tab3 = eid("tab3")
@@ -48,7 +52,7 @@ var stepBtn = eid("stepBtn")
 var step2Btn = eid("step2Btn")
 var step3Btn = eid("step3Btn")
 var urlBtn = eid("urlBtn")
-var fullBtn = eid("fullBtn")
+var url2Btn = eid("url2Btn")
 var themeBtn = eid("themeBtn")
 var chngTheme = window["chngTheme"]
 
@@ -98,69 +102,38 @@ async function decompr(txt) {
 
 themeBtn.onclick = function() {
 	chngTheme()
-//	moreShow(false)
 	inp.focus()
+	hide(hamcnt)
+}
+hambtn.onclick = function() {
+	if (isVisible(hamcnt)) hide(hamcnt)
+	else show(hamcnt)
+}
+document.addEventListener("click", function(event) {
+  if (event.target !== hambtn && !hambtn.contains(event.target)) {
+    hide(hamcnt)
+  }
+});
+
+moreBtn.onclick = function() {
+	moreShow(!isVisible(moreSpn))
+	hide(hamcnt)
+}
+urlBtn.onclick = async function() {
+	var h = await compr(inp.innerText)
+	//dbg.value = location.origin + "/ide/#cod=" + h
+	outp("\n\n  You can open this website with the current program using the following URL:\n\n")
+	outp(location.origin + "/ide/#cod=" + h)
+	hide(hamcnt)
+}
+url2Btn.onclick = async function() {
+	var h = await compr(inp.innerText)
+	outp("\n\n  You can open the current program in the code runner web app using the following URL:\n\n")
+	outp(location.origin + "/run/#cod=" + h)
+	hide(hamcnt)
 }
 
 show(container)
-
-var fulldiv
-
-async function showFull() {
-	hide(container)
-	canv.style.width = "calc(100vmin - 14px)"
-	canv.style.height = "calc(100vmin - 14px)"
-	canv.style.padding = "3px"
-
-	var fr = document.createDocumentFragment()
-	fulldiv = create("div")
-	fulldiv.style.margin = "12px"
-	fulldiv.style.cssFloat = "left"
-	fulldiv.style.width = "180px"
-
-	var btn = create("button")
-	btn.textContent = "Edit code"
-	btn.onclick = function() {
-		incol.insertBefore(runBtn, stBtn)
-		outcol.insertBefore(canv, out)
-		document.body.removeChild(fulldiv)
-		canv.style.width = "100%"
-		show(container)
-		resizeAll()
-	}
-	fulldiv.appendChild(btn)
-	incol.removeChild(runBtn)
-	fulldiv.appendChild(runBtn)
-	append(fulldiv, "p")
-	var p = location.pathname.slice(0, -5)
-
-	var h = await compr(inp.innerText)
-	var url = location.origin + p + "/run/#cod=" + h
-//	var url = location.origin + p + "/run/#code=" + encodeURIComponent(inp.innerText)
-
-	var lnk = create("a")
-	lnk.href = url
-	lnk.target = "_blank"
-	appendTxt(lnk, "Code runner")
-	fulldiv.appendChild(lnk)
-
-	btn = create("button")
-	btn.textContent = "Copy link"
-	btn.onclick = function() {
-		navigator.clipboard.writeText(url);
-	}
-	append(fulldiv, "p")
-	fulldiv.appendChild(btn)
-
-	append(fulldiv, "p")
-	appendTxt(fulldiv, "You can email this link to your smartphone and run the program there.")
-
-	fr.appendChild(fulldiv)
-	fr.appendChild(canv)
-	document.body.appendChild(fr)
-}
-
-fullBtn.onclick = showFull
 
 function tutUpd() {
 	var fr = document.createDocumentFragment()
@@ -532,6 +505,9 @@ var doco = null
 
 function expandEdit() {
 	if (docx.tab > 2) onTab(docx.tabdoc)
+
+	incol.insertBefore(btns, inp)
+
 	container.insertBefore(incol, outcol)
 	doce = null
 	hide(tab3)
@@ -551,6 +527,7 @@ function expandOut() {
 	show(dragb2)
 	col1.style.width = "200px"
 	outcol.style.width = "200px"
+	hamcnt.style.right = ""
 	resize2()
 }
 
@@ -558,9 +535,8 @@ function collapseEdit() {
 	container.removeChild(incol)
 	incol.style.width = "100%"
 	doce = create("div")
-	doce.style.height = "calc(100% - 36px)"
-	doce.style.borderTop = "1px solid grey"
-	doce.style.paddingTop = "8px"
+	doce.style.height = "100%"
+	tabs.insertBefore(btns, dragb)
 	doce.appendChild(incol)
 	show(tab3)
 	hide(dragb)
@@ -578,6 +554,7 @@ function collapseOut() {
 	hide(dragb2)
 	hide(expnd)
 	col1.style.width = "100%"
+	hamcnt.style.right = "10px"
 	onTab(2)
 }
 
@@ -601,11 +578,16 @@ function resizeOut() {
 
 function resize2() {
 	var w = container.offsetWidth
-	var dw = Math.round(w / 2)
-	var ow = w - dw - 6
-	var colH = outcol.offsetHeight
+	var dw = col1.offsetWidth
+	var ow = outcol.offsetWidth
 
-	var h = colH - 56
+	dw = dw * w / (ow + dw + 5)
+	if (dw > w * 3 / 4) dw = w * 3 / 4;
+	if (dw < 320) dw = 320;
+	dw = Math.round(dw)
+	ow = w - dw - 6
+
+	var h = outcol.offsetHeight - 56
 	if (ow > h) {
 		dw += ow - h
 		ow = h
@@ -620,7 +602,6 @@ function resize3() {
 	var iw = incol.offsetWidth
 	var ow = outcol.offsetWidth
 	var dw = col1.offsetWidth
-	var colH = outcol.offsetHeight
 	var f = w / (iw + ow + dw + 11)
 
 	dw *= f
@@ -638,11 +619,11 @@ function resize3() {
 		dw -= (120 - ow) / 2
 		ow = 120
 	}
-	dw = Math.floor(dw)
-	ow = Math.floor(ow)
+	dw = Math.round(dw)
+	ow = Math.round(ow)
 	iw = w - dw - ow - 12
 
-	var h = colH - 56
+	var h = outcol.offsetHeight - 56
 	if (ow > h) {
 		iw += ow - h
 		ow = h
@@ -754,7 +735,8 @@ function dragmove(e) {
 		incol.style.width = r + "px"
 	}
 	else {
-		if (l < 200 && d < 0) return
+		if (l < 320 && d < 0) return
+		//if (l < 200 && d < 0) return
 		if (r < 110 && d > 0) return
 		var h = colH - r - 40
 		if (h < 16 && d < 0) return
@@ -1143,7 +1125,7 @@ function selectLine(sel) {
 
 function showCanv() {
 	if (!isVisible(canv)) {
-		show(fullBtn)
+		//kc show(fullBtn)
 		show(canv)
 		resizeOut()
 	}
@@ -1151,7 +1133,7 @@ function showCanv() {
 
 function hideCanv() {
 	if (isVisible(canv)) {
-		hide(fullBtn)
+		//hide(fullBtn)
 		hide(canv)
 		resizeOut()
 		canv.height = 800
@@ -1277,7 +1259,6 @@ window.addEventListener("keydown", function(e) {
 
 function runDebug() {
 	removeCnd()
-//	dbg.textContent = ""
 	dbg.value = ""
 	var h = dbgSel.selectedIndex
 	if (h == 0 && !window["sab"]) h = 1
@@ -1331,19 +1312,6 @@ function moreShow(on) {
 	}
 }
 
-moreBtn.onmousedown = function() {
-	moreShow(!isVisible(moreSpn))
-}
-
-urlBtn.onclick = async function() {
-	var h = await compr(inp.innerText)
-	dbg.value = location.origin + "/ide/#cod=" + h
-	//var s = "#code="
-	//if (isVisible(canv)) s = "#run="
-	//var url = location.origin + "/ide/" + s + encodeURIComponent(inp.innerText)
-	//out.value = url
-//	moreShow(false)
-}
 
 tutchng.onclick = onTutChng
 tutchng2.onclick = onTutChng
@@ -1393,7 +1361,6 @@ window.onbeforeunload = function(e) {
 }
 
 function testReload() {
-
 	var nav = performance.getEntriesByType("navigation")[0]
 	if (nav && nav.type == "reload") {
 		for (var h = 0; h < tut_file.length; h++) {
@@ -1417,7 +1384,6 @@ async function main() {
 	resizeAll()
 
 	var q = location.hash.substring(1)
-	if (q == "") q = location.search.substring(1)
 	if (q != "") {
 		var vs = q.split("&")
 		for (var i = 0; i < vs.length; i++) {
@@ -1443,7 +1409,7 @@ async function main() {
 					codeToRun = "# URI error"
 				}
 				inp.value = codeToRun
-				if (h == 4) showFull()
+				//if (h == 4) showFull()
 			}
 			else if (h) {
 				try {
@@ -1453,7 +1419,7 @@ async function main() {
 					codeToRun = "# Decompression error"
 				}
 				inp.value = codeToRun
-				if (vs[i][0] == "r") showFull()
+				//if (vs[i][0] == "r") showFull()
 			}
 		}
 		history.replaceState(null, "", location.pathname)
