@@ -8,7 +8,7 @@ v = 411
 CC = emcc -O3 -Wall
 
 LDOPT := -sSTACK_SIZE=2MB
-ifeq ($(shell echo $(shell emcc -sSTACK_SIZE=2MB 2>&1 | wc -l)), 4)
+ifeq ($(shell echo $(shell cd /tmp;emcc -sSTACK_SIZE=2MB 2>&1 | wc -l)), 4)
 	LDOPT := ""
 endif
 
