@@ -24,6 +24,7 @@ var tab2 = eid("tab2")
 var tab3 = eid("tab3")
 var tab4 = eid("tab4")
 var dbgSel = eid("dbgSel")
+var dbgcls = eid("dbgcls")
 var inp = eid("inp")
 var tut = eid("tut")
 var incol = eid("incol")
@@ -44,7 +45,7 @@ var tutchng = eid("tutchng")
 var tutchng2 = eid("tutchng2")
 var tutinf = eid("tutinf")
 var expnd = eid("expnd")
-var moreBtn = eid("moreBtn")
+var dbgBtn = eid("dbgBtn")
 var moreSpn = eid("moreSpn")
 var trSpn = eid("trSpn")
 var dbg = eid("dbg")
@@ -115,9 +116,12 @@ document.addEventListener("click", function(event) {
   }
 });
 
-moreBtn.onclick = function() {
+dbgBtn.onclick = function() {
 	moreShow(!isVisible(moreSpn))
 	hide(hamcnt)
+}
+dbgcls.onclick = function() {
+	moreShow(false)
 }
 urlBtn.onclick = async function() {
 	var h = await compr(inp.innerText)
@@ -1302,16 +1306,15 @@ step3Btn.onclick = function() {
 function moreShow(on) {
 	if (on) {
 		inp.style.height = "calc(70% - 36px)"
-		moreBtn.className = "act"
+		dbgBtn.className = "act"
 		show(moreSpn)
 	}
 	else {
 		hide(moreSpn)
 		inp.style.height = "calc(100% - 38px)"
-		moreBtn.className = ""
+		dbgBtn.className = ""
 	}
 }
-
 
 tutchng.onclick = onTutChng
 tutchng2.onclick = onTutChng

@@ -158,7 +158,6 @@ button.del {
 button.tab  {
 	font-size:11px;
 	float:left;
-	xpadding:5px 12px;
 	padding:4px 10px;
 	margin-bottom:-3px;
 	margin-top:2px;
@@ -187,9 +186,27 @@ xxu{font-weight:bold;text-decoration:none}
 #hamcnt{position:absolute;min-width:80px;box-shadow:0px 8px 16px 0px rgba(0,0,0,0.2); z-index:1;}
 #hamcnt div{padding:8px;font-size:12px;cursor:pointer;}
 
-#hambtn:hover{ background-color:#bbb; }
-#hambtn{background-color:#ddd;border:1px solid #666}
-.hamb {background-color:#000}
+.close {
+	float:right;
+	margin:4px;
+	width: 16px;
+	height: 16px;
+	opacity: 0.4;
+}
+.close:hover{ opacity: 1;}
+.close:before, .close:after {
+	position: absolute;
+	content: ' ';
+	height: 17px;
+	width: 2px;
+}
+.close:before{ transform: rotate(45deg)}
+.close:after { transform: rotate(-45deg)}
+
+.close:before,.close:after{background: #333}
+#hambtn:hover{ background:#bbb; }
+#hambtn{background:#ddd;border:1px solid #666}
+.hamb{background:#000}
 #hamcnt{background:#eee}
 #hamcnt div:hover{background:#ddd;}
 
@@ -217,7 +234,7 @@ button.tab:enabled{color:#888}
 button:disabled{background:#ddd;color:#aaa}
 button:hover:enabled {background:#bbb}
 button:active:enabled {background:#999}
-#moreBtn.act{background:#aaa}
+#dbgBtn.act{background:#aaa}
 .lnk:hover {background:#ccc}
 select{background:#eee;color:#000}
 select:hover:enabled {background:#ddd}
@@ -234,9 +251,10 @@ function chngTheme() {
 	if (theme == null) {
 		theme = document.createElement('style');
 		theme.innerHTML = `
-#hambtn:hover{ background-color:#999; }
-#hambtn{background-color:#444;border:1px solid #666}
-.hamb {background-color:#fff}
+.close:before,.close:after{background:#fff}
+#hambtn:hover{ background:#999; }
+#hambtn{background:#444;border:1px solid #666}
+.hamb {background:#fff}
 #hamcnt{background:#333}
 #hamcnt div:hover{background:#555;}
 
@@ -263,7 +281,7 @@ button.tab:disabled{background:#222;color:#eee}
 button:disabled{background:#444;color:#777}
 button:hover:enabled{background:#999}
 button:active:enabled{background:#bbb}
-#moreBtn.act{background:#aaa}
+#dbgBtn.act{background:#aaa}
 #dbg{background:#222;color:#ddd}
 .lnk:hover{background:#666}
 select{background:#333;color:#eee}
@@ -326,7 +344,7 @@ if (window.localStorage["xtheme"] == "dark") chngTheme()
 				<div class=hamb></div>
 			</div>
 			<div id=hamcnt style=display:none;z-index:1>
-				<div id=moreBtn>Debug</div>
+				<div id=dbgBtn>Debug</div>
 				<div id=themeBtn>Theme</div>
 				<div id=urlBtn>Code URL</div>
 				<div id=url2Btn>App URL</div>
@@ -343,13 +361,14 @@ if (window.localStorage["xtheme"] == "dark") chngTheme()
 	<button id=step3Btn style=display:none>Out</button>
 	<span id=trSpn>
 		<select id=dbgSel>
-			<option selected>Steps</option>
+			<option>Steps</option>
 			<option>Slow</option>
-			<option>Medium</option>
+			<option selected>Medium</option>
 			<option>Fast</option>
 			<option>Faster</option>
 		</select>
 	</span>
+	<span id=dbgcls class=close></span>
 	<textarea id=dbg readonly spellcheck=false></textarea>
 	</span>
 </div>

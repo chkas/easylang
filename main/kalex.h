@@ -369,7 +369,7 @@ static void read_number(void) {
 	const char *p0 = parse_str + indc - 2;
 	tvalf = strtod(p0, &p);
 	indc = p - parse_str;
-	if (p >= p0 + 23) p = (char*)p0 + 23;
+	if (p > p0 + 23) p = (char*)p0 + 23;
 	memcpy(tval, p0, p - p0);
 	tval[p - p0] = 0;
 	cp = parse_str[indc - 1];
