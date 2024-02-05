@@ -39,14 +39,18 @@ for i = 1 to 10
    print i * i
 end
 
-rad = 12 ; x = 50 ; y = 75 ; vx = 1.5
+rad = 12
+x = 50
+y = 75
+vx = 1.5
 color 700
 #
 on animate
    clear
    move x y
    circle rad
-   x += vx ; y += vy
+   x += vx
+   y += vy
    if x > 100 - rad or x < rad
       vx = -vx
    end

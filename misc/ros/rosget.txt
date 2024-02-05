@@ -28,6 +28,7 @@ Animation
 Anti-primes
 Append numbers at same position in strings
 Archimedean spiral
+Arithmetic derivative
 Arithmetic evaluation
 Arithmetic numbers
 Arithmetic-geometric mean
@@ -71,8 +72,10 @@ Caesar cipher
 Calculating the value of e
 Calendar
 Call a function
+Canonicalize CIDR
 Cantor set
 Carmichael 3 strong pseudoprimes
+Cartesian product of two or more lists
 Case-sensitivity of identifiers
 Casting out nines
 Catalan numbers
@@ -122,10 +125,13 @@ Curzon numbers
 CUSIP
 Cyclops numbers
 D
+Damm algorithm
 Day of the week
 Day of the week of Christmas and New Year
+De Bruijn sequences
 De Polignac numbers
 Deal cards for FreeCell
+Deming's funnel
 Department numbers
 Descending primes
 Detect division by zero
@@ -145,6 +151,7 @@ Dragon curve
 Draw a clock
 Draw a pixel
 Draw a rotating cube
+Duffinian numbers
 Dutch national flag problem
 E
 Eban numbers
@@ -153,8 +160,10 @@ Elementary cellular automaton
 Empty program
 Empty string
 Entropy
+Equal prime and composite sums
 Ethiopian multiplication
 Euclid-Mullin sequence
+Euler's constant 0.5772...
 Euler's sum of powers conjecture
 Evaluate binomial coefficients
 Even or odd
@@ -171,6 +180,7 @@ Extreme floating point values
 F
 Factorial
 Factorial primes
+Factorize string into Lyndon words
 Factors of an integer
 Fairshare between two and more
 Farey sequence
@@ -182,6 +192,7 @@ Find common directory path
 Find limit of recursion
 Find square difference
 Find the intersection of a line with a plane
+Find the intersection of two lines
 Find the last Sunday of each month
 FizzBuzz
 Forest fire
@@ -189,6 +200,8 @@ Four bit adder
 Fractal tree
 Function definition
 G
+Gauss-Jordan matrix inversion
+Gaussian elimination
 Generate lower case ASCII alphabet
 Giuga numbers
 Goldbach's comet
@@ -208,9 +221,9 @@ Hello world/Newline omission
 Hello world/Text
 Hilbert curve
 Hofstadter Q sequence
+Hofstadter-Conway $10,000 sequence
 Honaker primes
 Horizontal sundial calculations
-H
 Humble numbers
 I
 Identity matrix
@@ -266,10 +279,12 @@ Loops/Infinite
 Loops/N plus one half
 Loops/Nested
 Loops/While
+Lyndon word
 M
 Magnanimous numbers
 Mandelbrot set
 Mastermind
+Matrix multiplication
 Matrix transposition
 Maximum triangle path sum
 Maze generation
@@ -316,8 +331,11 @@ Ormiston triples
 Own digits power sum
 P
 Padovan n-step number sequences
+Padovan sequence
 Pairs with common factors
+Palindrome dates
 Palindrome detection
+Pan base non-primes
 Pangram checker
 Particle fountain
 Pascal's triangle
@@ -325,41 +343,52 @@ Pentagram
 Percolation/Mean run density
 Perfect numbers
 Perfect shuffle
+Perfect totient numbers
 Periodic table
 Perlin noise
 Permutations
 Permutations/Derangements
 Pick random element
 Pig the dice game
+Pisano period
 Plot coordinate pairs
 Polynomial regression
 Polyspiral
 Population count
 Price fraction
 Primality by trial division
+Prime conspiracy
 Prime decomposition
 Primes: n*2^m+1
+Proper divisors
 Pseudo-random numbers/Middle-square method
 Pythagoras tree
 Pythagorean triples
 Q
+Queue/Definition
+Queue/Usage
 Quickselect algorithm
 Quine
 R
 Radical of an integer
+Ramanujan primes
+Ramanujan primes/twins
 Ramer-Douglas-Peucker line simplification
 Random numbers
 Rare numbers
 Real constants and functions
 Recaman's sequence
+Reduced row echelon form
 Remove duplicate elements
 Remove vowels from a string
+Rep-string
 Repeat a string
 Return multiple values
 Reverse a string
 Riordan numbers
 Roman numerals/Decode
 Roman numerals/Encode
+Roots of a function
 Rot-13
 Round-robin tournament schedule
 Run-length encoding
@@ -373,6 +402,7 @@ Sequence of primes by trial division
 Sequence: smallest number greater than previous term with exactly n divisors
 Sequence: smallest number with exactly n divisors
 Set puzzle
+Set right-adjacent bits
 Set, the card game
 Seven-sided dice from five-sided dice
 Shoelace formula for polygonal area
@@ -408,6 +438,7 @@ Square form factorization
 Stack
 Statistics/Basic
 Steffensen's method
+Stern-Brocot sequence
 Stirling numbers of the first kind
 Stirling numbers of the second kind
 String append
@@ -422,7 +453,6 @@ Strip block comments
 Strip comments from a string
 Strip control codes and extended characters from a string
 Strip whitespace from a string/Top and tail
-S
 Sub-unit squares
 Subleq
 Substring
@@ -451,6 +481,7 @@ Tokenize a string
 Total circles area
 Totient function
 Towers of Hanoi
+Trabb Pardo–Knuth algorithm
 Tree traversal
 Twelve statements
 Twin primes
@@ -470,8 +501,12 @@ W
 Wagstaff primes
 Water collected between towers
 Wilson primes of order n
+Wireworld
 Word wrap
+Y
+Yellowstone sequence
 Z
 Zeckendorf number representation
 Zero to the zero power
 Zsigmondy numbers
+Zumkeller numbers

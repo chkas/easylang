@@ -327,7 +327,6 @@ S ND* parse_fac(void) {
 	}
 	else if (tok == t_name) {
 
-//kc
 		const char* name = getn(tval);
 		struct proc* p = proc_get(name);
 		if (p) {
@@ -646,7 +645,8 @@ S ND* parse_strex(void) {
 
 S ND* parse_log_exx(ND* nd0);
 
-S void parse_str_cmp(ND* nd) {
+S ND* parse_str_cmp(void) {
+	ND* nd = mknd();
 	nd->le = parse_strex();;
 	cs_spc();
 	if (tok == t_eq) nd->intf = op_eqs;
@@ -654,9 +654,11 @@ S void parse_str_cmp(ND* nd) {
 	else error("=, <>");
 	cs_tok_spc_nt();
 	nd->ri = parse_strex();
+	return nd;
 }
 
-S void parse_arr_cmp(ND* nd) {
+S ND* parse_arr_cmp(void) {
+	ND* nd = mknd();
 	nd->le = parse_numarrex();
 	cs_spc();
 	if (tok == t_eq) nd->intf = op_eqarr;
@@ -664,6 +666,7 @@ S void parse_arr_cmp(ND* nd) {
 	else error("=, <>");
 	cs_tok_spc_nt();
 	nd->ri = parse_numarrex();
+	return nd;
 }
 
 S void optimize_cmp(ND* nd) {
@@ -686,7 +689,8 @@ S void optimize_cmp(ND* nd) {
 	}
 }
 
-S void parse_cmp(ND* nd, ND* nd0) {
+S ND* parse_cmp(ND* nd0) {
+	ND* nd = mknd();
 	nd->le = parse_exx(nd0);
 	cs_spc();
 	if (tok == t_lt) nd->intf = op_ltf;
@@ -700,14 +704,14 @@ S void parse_cmp(ND* nd, ND* nd0) {
 	nd->ri = parse_ex();
 
 	if (cod) optimize_cmp(nd);
+	return nd;
 }
 
 S ND* parse_log_termx(ND* nd0) {
 
 	ND* nd;
 	if (nd0) {
-		nd = mknd();
-		parse_cmp(nd, nd0);
+		nd = parse_cmp(nd0);
 	}
 	else if (tok == t_not) {
 		nd = mknd();
@@ -726,8 +730,7 @@ S ND* parse_log_termx(ND* nd0) {
 			ND* h = parse_ex();
 			if (tok == t_par) {
 				cs_tok_nt();
-				nd = mknd();
-				parse_cmp(nd, h);
+				nd = parse_cmp(h);
 			}
 			else {
 				nd = parse_log_exx(h);
@@ -736,16 +739,24 @@ S ND* parse_log_termx(ND* nd0) {
 		}
 	}
 	else if (tok == t_vnumarr) {
-		nd = mknd();
-		parse_arr_cmp(nd);
+		nd = parse_arr_cmp();
 	}
 	else if (is_strfactor()) {
-		nd = mknd();
-		parse_str_cmp(nd);
+		nd = parse_str_cmp();
+	}
+	else if (tok == t_name) {
+//kc
+		const char* name = getn(tval);
+		struct proc* p = proc_get(name);
+		if (p && p->typ == 2) {
+			nd = parse_str_cmp();
+		}
+		else {
+			nd = parse_cmp(NULL);
+		}
 	}
 	else {
-		nd = mknd();
-		parse_cmp(nd, NULL);
+		nd = parse_cmp(NULL);
 	}
 	return nd;
 }
