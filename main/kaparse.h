@@ -1179,7 +1179,11 @@ S ND* parse_numarrex(void) {
 		csb_tok_nt();
 		cs_spc();
 		ex->le = parse_strarrex();;
-	}
+	} else if (tok == t_name && strcmp(tval, "strbytes") == 0) {
+        ex->arrf = op_strbytes;
+        csb_tok_spc_nt();
+        ex->le = parse_strex();
+    }
 	else error("array");
 	return ex;
 }

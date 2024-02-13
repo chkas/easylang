@@ -1368,6 +1368,54 @@ S ARR op_arrarr_init(ND* nd) {
 	return o_arr_init(nd, ARR_ARR, sizeof(ARR));
 }
 
+S ARR op_strbytes(ND* nd) {
+    STR s = strf(nd->le);
+    const char* s_p = str_ptr(&s);
+
+    ARR res;
+    res.len = str_ulen(s_p);
+    res.typ = ARR_NUM;
+    res.base = 1;
+    res.p = realloc(NULL, res.len * sizeof(double));
+    if (res.p == NULL) {
+        out_of_mem(nd);
+        res.len = 0;
+        return res;
+    }
+
+    int str_loc = 0;
+    int cur_str_loc = 0;
+
+    while (str_loc < res.len) {
+        // similar to strcode but uses ulen instead of checking the numbers manualy
+        int sym_len = ulen(s_p[cur_str_loc]);
+        int cp = 0;
+
+        if (sym_len == 1) {
+            cp = s_p[cur_str_loc];
+        } else if (sym_len == 2) {
+            cp = s_p[cur_str_loc] & 0x1f;
+        } else if (sym_len == 3) {
+            cp = s_p[cur_str_loc] & 0x0f;
+        } else if (sym_len == 4) {
+            cp = s_p[cur_str_loc] & 0x07;
+        } else {
+            printf("ERROR: unknown symbol_len returned from ulen in kafunc op_strbytes\n");
+            return res;
+        }
+
+        for (int i = 1; i < sym_len; i++) {
+            cp = (cp << 6) | (s_p[cur_str_loc + i] & 0x3f);
+        }
+
+        cur_str_loc += sym_len;
+        res.pnum[str_loc++] = cp;
+    }
+
+    str_free(&s);
+    return res;
+}
+
 S ARR op_strchars(ND* nd) {
 
 	STR s = strf(nd->le);
