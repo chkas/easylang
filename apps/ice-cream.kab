@@ -1,5 +1,5 @@
 # Ice cream
-# 
+#
 if sysfunc "lang" = "de"
    alpha$[] = strchars "ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ"
    words$[] = [ "MAUS" "KATZE" "HUND" "ELEFANT" "PFERD" "NASHORN" "SPINNE" "AMEISE" "TIGER" "GEPARD" "SCHLANGE" "KUH" "SCHWEIN" "KROKODIL" "RATTE" "HUHN" "GIRAFFE" "SKORPION" "WAL" "DELFIN" "EIDECHSE" "FLIEGE" "RABE" "ADLER" "AMSEL" "SPECHT" "PINGUIN" "ESEL" "ZIEGE" "SCHAF" "ENTE" "SCHWAN" "MAULWURF" "BIENE" "WESPE" "ZECKE" "SCHNECKE" "FUCHS" "WOLF" "HAI" "FORELLE" "TAUBE" "BÄR" "DACHS" "EULE" "ERDMÄNNCHEN" "EICHHÖRNCHEN" "FROSCH" "FLEDERMAUS" "GOLDFISCH" "GEIER" "GANS" "GORILLA" "SCHIMPANSE" "HORNISSE" "HAMSTER" "HASE" "REH" "HIRSCH" "MURMELTIER" "IGEL" "KÄFER" "KAMEL" "KÄNGURU" "KREBS" "LÖWE" "LUCHS" "LAMA" "MOLCH" "NASHORN" "PAPAGEI" "PANDABÄR" "PAVIAN" "QUALLE" "REGENWURM" "SCHILDKRÖTE" "STINKTIER" "SEEPFERDCHEN" "ZEBRA" "BIBER" "ANTILOPE" "SEESTERN" "MUSCHEL" "CHAMÄLEON" "FAULTIER" "FLAMINGO" "KANINCHEN" "KOALABÄR" "KRÖTE" ]
@@ -9,12 +9,12 @@ else
 .
 sys topleft
 len sel[] len alpha$[]
-# 
+#
 subr init
    for i to len sel[]
       sel[i] = 0
    .
-   w$[] = strchars words$[random len words$[]]
+   w$[] = strchars words$[randint len words$[]]
    game_stat = 0
 .
 proc ice x y col . .

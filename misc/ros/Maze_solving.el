@@ -2,7 +2,7 @@ size = 15
 n = 2 * size + 1
 f = 100 / (n - 0.5)
 len m[] n * n
-# 
+#
 background 000
 proc show_maze . .
    clear
@@ -23,7 +23,7 @@ proc m_maze pos . .
    show_maze
    d[] = [ 1 2 3 4 ]
    for i = 4 downto 1
-      d = random i
+      d = randint i
       dir = offs[d[d]]
       d[d] = d[i]
       if m[pos + dir] = 1 and m[pos + 2 * dir] = 1
@@ -43,13 +43,13 @@ proc make_maze . .
       m[n * i - n + 1] = 2
       m[n * n - n + i] = 2
    .
-   h = 2 * random 15 - n + n * 2 * random 15
+   h = 2 * randint 15 - n + n * 2 * randint 15
    m_maze h
    m[endpos] = 0
 .
 make_maze
 show_maze
-# 
+#
 proc mark pos col . .
    x = (pos - 1) mod n
    y = (pos - 1) div n
@@ -68,7 +68,7 @@ proc solve dir0 pos . .
       found = 1
       return
    .
-   of = random 4 - 1
+   of = randint 4 - 1
    for h = 1 to 4
       dir = (h + of) mod1 4
       posn = pos + offs[dir]

@@ -120,7 +120,7 @@ proc qsort left right . d[] .
   .
 .
 for i = 1 to 100
-  d[] &= random 1000
+  d[] &= randint 1000
 .
 qsort 1 len d[] d[]
 print d[]
@@ -223,7 +223,7 @@ proc m_maze pos . .
    show_maze
    d[] = [ 1 2 3 4 ]
    for i = 4 downto 1
-      d = random i
+      d = randint i
       dir = offs[d[d]]
       d[d] = d[i]
       if m[pos + dir] = 1 and m[pos + 2 * dir] = 1
@@ -243,7 +243,7 @@ proc make_maze . .
       m[n * i - n + 1] = 2
       m[n * n - n + i] = 2
    .
-   h = 2 * random 15 - n + n * 2 * random 15
+   h = 2 * randint 15 - n + n * 2 * randint 15
    m_maze h
    m[endpos] = 0
 .
@@ -264,7 +264,7 @@ proc solve dir0 pos . found .
       found = 1
       break 1
    .
-   of = random 4 - 1
+   of = randint 4 - 1
    for h = 1 to 4
       dir = (h + of) mod1 4
       posn = pos + offs[dir]

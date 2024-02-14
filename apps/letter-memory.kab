@@ -1,5 +1,5 @@
 # Letter memory
-# 
+#
 subr square
    h = ind - 1
    x = h mod 4 * 24 + 6
@@ -33,7 +33,7 @@ subr start
    .
    # shuffle
    for i = 16 downto 2
-      r = random i
+      r = randint i
       swap cards[r] cards[i - 1]
    .
    card1 = -1

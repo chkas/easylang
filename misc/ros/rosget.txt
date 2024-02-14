@@ -163,6 +163,7 @@ Entropy
 Equal prime and composite sums
 Ethiopian multiplication
 Euclid-Mullin sequence
+Euclidean rhythm
 Euler's constant 0.5772...
 Euler's sum of powers conjecture
 Evaluate binomial coefficients
@@ -208,11 +209,13 @@ Goldbach's comet
 Golden ratio/Convergence
 Greatest common divisor
 Greatest element of a list
+G
 Greyscale bars/Display
 Guess the number
 Guess the number/With feedback
 H
 Hailstone sequence
+Happy numbers
 Harshad or Niven series
 Haversine formula
 Hello world/Graphical
@@ -259,6 +262,7 @@ Leap year
 Leonardo numbers
 Letter frequency
 Levenshtein distance
+Linear congruential generator
 Literals/Floating point
 Literals/Integer
 Literals/String
@@ -405,8 +409,10 @@ Set puzzle
 Set right-adjacent bits
 Set, the card game
 Seven-sided dice from five-sided dice
+Sexy primes
 Shoelace formula for polygonal area
 Short-circuit evaluation
+Shortest common supersequence
 Show ASCII table
 Sierpinski arrowhead curve
 Sierpinski carpet
@@ -416,6 +422,8 @@ Sieve of Eratosthenes
 Simple turtle graphics
 Sisyphus sequence
 Sleep
+S
+Sleeping Beauty problem
 Smarandache-Wellin primes
 Smith numbers
 Snake
@@ -433,9 +441,12 @@ Sorting algorithms/Radix sort
 Sorting algorithms/Selection sort
 Sorting algorithms/Stooge sort
 Soundex
+Spinning rod animation/Text
+Spiral matrix
 Split a character string based on change of character
 Square form factorization
 Stack
+Start from a main routine
 Statistics/Basic
 Steffensen's method
 Stern-Brocot sequence
@@ -453,19 +464,24 @@ Strip block comments
 Strip comments from a string
 Strip control codes and extended characters from a string
 Strip whitespace from a string/Top and tail
+Strong and weak primes
 Sub-unit squares
 Subleq
+Substitution cipher
 Substring
 Substring/Top and tail
 Subtractive generator
 Successive prime differences
+Sudan function
 Sudoku
 Sum and product of an array
 Sum digits of an integer
 Sum multiples of 3 and 5
 Sum of a series
+Sum of elements below main diagonal of matrix
 Sum of squares
 Summarize primes
+Superellipse
 Sylvester's sequence
 Symmetric difference
 System time

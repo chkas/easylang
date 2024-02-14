@@ -300,9 +300,9 @@ print "Hello " & n$
 
 +de *input* liest einen String von der Tastatur ein.
 
-+ You can also store strings in variables. The variable name then ends with a "$" character. The *&* character can be used to join strings.
++ You can also store strings in variables. The variable name then ends with a *$* character. The *&* character can be used to join strings.
 
-+de Du kannst auch Strings in Variablen speichern. Der Variablenname endet dann mit einem "$"-Zeichen. Mit dem *&*-Zeichen kann man Strings zusammenfügen.
++de Du kannst auch Strings in Variablen speichern. Der Variablenname endet dann mit einem *$*-Zeichen. Mit dem *&*-Zeichen kann man Strings zusammenfügen.
 
 -
 
@@ -473,7 +473,7 @@ print c & "°C = " & f & "°F"
 
 +de Ein kleines Spiel - Zahlenraten
 
-n = random 10
+n = randint 10
 print "------------------------------------"
 print " I chose a number between 1 and 10"
 print "------------------------------------"
@@ -494,9 +494,9 @@ end
 sleep 1
 print "The number was " & n
 
-+ *random 10* returns a random number from 1 - 10. *sleep 1* puts a pause of one second.
++ *randint 10* returns a random number from 1 - 10. *sleep 1* puts a pause of one second.
 
-+de *random 10* liefert eine Zufallszahl von 1 - 10. *sleep 1* legt eine Pause von einer Sekunde ein.
++de *randint 10* liefert eine Zufallszahl von 1 - 10. *sleep 1* legt eine Pause von einer Sekunde ein.
 
 + 🤔🤔 Just one try and that's it - it's no fun. You should be able to guess until you have guessed the number. For this you need .... - yeah right - a loop. Hint: *<>* stands for not equal.
 
@@ -736,9 +736,9 @@ background 000
 clear
 color 999
 for i = 1 to 50
-   x = random 101 - 1
-   y = random 101 - 1
-   mag = random 50
+   x = randint 101 - 1
+   y = randint 101 - 1
+   mag = randint 50
    move x y
    circle mag / 100
 end

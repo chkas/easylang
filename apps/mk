@@ -2,30 +2,38 @@
 
 echo $PWD $0 >&2
 
+
 #dom="easylang.online"
 #test $1 && dom=$1
 
+vers=$(cat ../vers.txt)
 src=$(pwd)
 
 o=$HOME/out/easylang/apps
 mkdir -p $o
 
-(cd ../misc/ros/ ; ./rosmk.sh) > $o/tut_rosetta.html
+(cd ../misc/ros/ ; ./rosmk.sh $vers) > $o/tut_rosetta.html
 
-for i in *.html easy_tut2.js; do
+xcp() {
+	if test  ! -e  $o/$1 -o $1 -nt $o/$1; then
+		echo cp -p $1 $o
+		cp -p $1 $o
+	fi
+}
+
+for i in *.html; do
 	if test  ! -e  $o/$i -o $i -nt $o/$i; then
-		echo cp -p $i $o
-		cp -p $i $o
+		echo "update $i $o"
+		sed s/.js/.js?$vers/g $i > $o/$i
 	fi
 done
 
+xcp easy_tut2.js
 cd $o/../ide
 for i in easy.js easy_code2.js; do
-	if test  ! -e  $o/$i -o $i -nt $o/$i; then
-		echo cp -p $i $o
-		cp -p $i $o
-	fi
+	xcp $i
 done
+
 cd $src
 
 mk_tut() {
@@ -45,8 +53,8 @@ xxx
 <link rel="icon" href="../icon.png" type="image/x-png">
 
 <div id=tut><b>Loading ...</b></div>
-<script src=easy_code2.js></script>
-<script src=easy_tut2.js></script>
+<script src=easy_code2.js?$vers></script>
+<script src=easy_tut2.js?$vers></script>
 <script>
 if (typeof WebAssembly != 'object') {
 	tut.innerHTML = "You need a browser with WebAssembly support for this website."
@@ -65,25 +73,27 @@ xxx
 		head -$((l-1)) ../main/tut_learn.js | tail +8 >>$o/tut_$n.html
 		tail +$((l+4)) ../main/tut_learn.js  >>$o/tut_$n.html
 
-cat <<'xxx' >>$o/tut_$n.html
-txt_tutor+=`
+		printf "txt_tutor+=String.raw\`\n" >>$o/tut_$n.html
+
+		cat <<xxx >>$o/tut_$n.html
 -
 
 + Congratulations on making it this far. If you could also solve the tasks, you are surely ready for something new. In the following tutorial you will learn how to program a simple board game that you can play on your smartphone.
 
 +de Glückwunsch, dass du es bis hierher geschafft hast. Wenn du auch die Aufgaben lösen konntest, bist du sicher bereit für etwas Neues. Im folgenden Tutorial lernst du, wie du ein einfaches Brettspiel programmierst, das du auf deinem Handy spielen kannst.
 
-@ ./tut_game.html@Programming a letter memory game
+@ ./tut_game.html?$vers@Programming a letter memory game
 
-@de ./tut_game.html@Ein Buchstaben-Memory-Spiel programmieren (in Englisch)
-`
+@de ./tut_game.html?$vers@Ein Buchstaben-Memory-Spiel programmieren (in Englisch)
 xxx
+
+		printf "\`\n" >> $o/tut_$n.html
 
 	else
 		echo "txt_tutor=\`" >>$o/tut_$n.html
 		echo "* $1" >>$o/tut_$n.html
 		echo  >>$o/tut_$n.html
-		lnk="@ ./tut_learn.html@A more basic tutorial for beginners can be found here."
+		lnk="@ ./tut_learn.html?$vers@A more basic tutorial for beginners can be found here."
 		echo $lnk >>$o/tut_$n.html
 		tail +4 ../main/tut_$2.js >>$o/tut_$n.html
 	fi
@@ -144,7 +154,7 @@ xxx
 	fi
 
 	cat >>$o/tut_$n.html <<'xxx'
-<p><hr><p>The examples were created with Easylang. This tutorial is integrated in the <a href=../ide/>IDE<a>
+<p><hr><p>The examples were created with <i>Easylang</i>. This tutorial is integrated in the <a href=../ide/>IDE<a>
 <p><small>christof.kaser@gmail.com</small>
 `)
 xxx
@@ -300,13 +310,12 @@ install.onclick = async function() {
 xxx
 
 printf "easyscript = \`"
-
 cat $k
+printf "\`"
 
-cat << "xxx"
-`
+cat << xxx
 </script>
-<script src=easy.js></script>
+<script src=easy.js?$vers></script>
 xxx
 
 done
@@ -412,16 +421,16 @@ A language that doesn’t have everything is actually easier to program in than 
 
 <h3>Interactive tutorials and blogs</h3>
 
-<p><a href="tut_learn.html">Learn Programming Basics</a>
-<p><a href="tut_docu.html">Documentation and Code Snippets</a>
-<p><a href="tut_func.html">Functions and Recursion</a>
-<p><a href="tut_game.html">Programming a Letter Memory Game</a>
-<p><a href="tut_sorting.html">Sorting Algorithms</a>
-<p><a href="tut_mcarlo.html">The Law of Large Numbers, or Why It Is a Bad Idea to Go to the Casino.</a>
-<p><a href="tut_blackj.html">Blackjack - Probabilties, Card Counting</a>
-<p><a href="tut_cipher.html">Symmetric Cipher - What can you do wrong with it</a>
+<p><a href="tut_learn.html?$vers">Learn Programming Basics</a>
+<p><a href="tut_docu.html?$vers">Documentation and Code Snippets</a>
+<p><a href="tut_func.html?$vers">Functions and Recursion</a>
+<p><a href="tut_game.html?$vers">Programming a Letter Memory Game</a>
+<p><a href="tut_sorting.html?$vers">Sorting Algorithms</a>
+<p><a href="tut_mcarlo.html?$vers">The Law of Large Numbers, or Why It Is a Bad Idea to Go to the Casino.</a>
+<p><a href="tut_blackj.html?$vers">Blackjack - Probabilties, Card Counting</a>
+<p><a href="tut_cipher.html?$vers">Symmetric Cipher - What can you do wrong with it</a>
 <p>
-<p><a href="tut_rosetta.html">Rosetta Code Examples</a>
+<p><a href="tut_rosetta.html?$vers">Rosetta Code Examples</a>
 <br><br>
 
 <h3>Web demos</h3>
@@ -436,7 +445,7 @@ for k in [^_]*.kab; do
 	i=${k%.*}.html
 	f=$(echo $i | cut -c1 | tr a-z A-Z)
 	n=$f$(echo ${i%.*} | cut -c2- | tr '-' ' ')
-	echo "<a href=$i>$n</a><p>"
+	echo "<a href=$i?$vers>$n</a><p>"
 done
 
 cat <<'xxx'
@@ -446,7 +455,7 @@ cat <<'xxx'
 <p>
 <div class=col>
 <a href="../sky/">Starry sky</a><p>
-<a href="progfun.html">Programming fun</a>
+<a href="progfun.html?$vers">Programming fun</a>
 </div>
 
 <br>
@@ -513,7 +522,7 @@ function runClock() {
 function runBall() {
   show(`
 # Ball
-# 
+#
 on animate
   clear
   color 555

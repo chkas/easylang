@@ -986,7 +986,7 @@ global n_cards .
 proc shuffle . .
   while n_cards < n_deck * 52
     n_cards += 1
-    j = random n_cards
+    j = randint n_cards
     swap cards[j] cards[n_cards]
   .
 .
@@ -1476,7 +1476,7 @@ global count n_cards .
 proc shuffle . .
   while n_cards < n_deck * 52
     n_cards += 1
-    j = random n_cards
+    j = randint n_cards
     swap cards[j] cards[n_cards]
   .
   count = 0

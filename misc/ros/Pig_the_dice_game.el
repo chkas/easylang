@@ -26,7 +26,7 @@ proc show . .
    move 8 66
    text "Total: " & sum[player]
    textsize 5
-   # 
+   #
    h = 3 - player
    color col[h]
    move 65 63
@@ -37,7 +37,7 @@ proc show . .
    textsize 4
    move 68 67
    text "Total: " & sum[h]
-   # 
+   #
    btn 20 20 "Roll"
    btn 70 20 "Hold"
 .
@@ -84,7 +84,7 @@ on timer
          rect 13 13
          color 000
          move 27 37
-         dice = random 6
+         dice = randint 6
          text dice
          tmcnt -= 1
          if tmcnt = 0

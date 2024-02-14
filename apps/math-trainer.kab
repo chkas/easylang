@@ -1,5 +1,5 @@
 # Math trainer
-# 
+#
 ind = -1
 q$ = ""
 subr init_vars
@@ -43,50 +43,50 @@ proc disp col s$ . .
 proc show_quest . .
    if res = resok
       if op = 1
-         a = random 8 + 1
-         b = random 8 + 1
+         a = randint 8 + 1
+         b = randint 8 + 1
          q$ = a & " · " & b & " = "
          resok = a * b
       elif op = 2
-         b = random 8 + 1
-         resok = random 8 + 1
+         b = randint 8 + 1
+         resok = randint 8 + 1
          a = b * resok
          q$ = a & " ÷ " & b & " = "
       elif op = 3
-         a = random 77 + 10
-         b = random (89 - a) + 10
+         a = randint 77 + 10
+         b = randint (89 - a) + 10
          q$ = a & " + " & b & " = "
          resok = a + b
       elif op = 4
-         a = random 70 + 29
-         b = random (a - 11) + 10
+         a = randint 70 + 29
+         b = randint (a - 11) + 10
          q$ = a & " - " & b & " = "
          resok = a - b
       elif op = 5
-         a = random 89 + 10
-         b = random 8 + 1
+         a = randint 89 + 10
+         b = randint 8 + 1
          q$ = a & " · " & b & " = "
          resok = a * b
       elif op = 6
-         b = random 8 + 2
-         resok = random 8 + 2
+         b = randint 8 + 2
+         resok = randint 8 + 2
          a = b * resok
-         c = random 10 + 3
+         c = randint 10 + 3
          d = a - c
          sn$ = " - "
-         if random 2 = 1
+         if randint 2 = 1
             sn$ = " + "
             d = a + c
          .
          q$ = b & " · x" & sn$ & c & " = " & d & "\nx = "
       elif op = 7
-         a = random 21 + 10
-         b = random 21 + 10
+         a = randint 21 + 10
+         b = randint 21 + 10
          q$ = a & " · " & b & " = "
          resok = a * b
       elif op = 8
-         b = random 21 + 10
-         resok = random 21 + 10
+         b = randint 21 + 10
+         resok = randint 21 + 10
          a = b * resok
          q$ = a & " ÷ " & b & " = "
       .
@@ -107,7 +107,7 @@ proc draw_key col ind . .
          y = 1
       elif h = 10
          y = 2
-         s$ = "×"
+         s$ = "⌫"
       else
          y = 0
          s$ = "✓"
@@ -132,13 +132,13 @@ proc start . .
    show_quest
 .
 menu$[] = [ "7 · 8 = _\n🤔" "56 ÷ 8 = _\n🤔" "34 + 23 = _\n🤔🤔" "67 - 21 = _\n🤔🤔" "13 · 7 = _\n🤔🤔" "3 · x - 4 = 8\n🤔🤔" "13 · 27 = _\n🤔🤔🤔" "837 ÷ 31 = _\n🤔🤔🤔" ]
-# 
+#
 proc draw_menu_key col i . .
    c = (i - 1) mod 2
    r = (i - 1) div 2
    y = (3 - r) * 24 + 3
    x = c * 48 + 3
-   # 
+   #
    move x y
    color col
    rect 45 22
@@ -209,7 +209,7 @@ on key
    ind = strcode keybkey - 48
    if state = 1
       if ind >= 0 and ind <= 9
-         # 
+         #
       elif ind = 21
          ind = 11
       elif ind = 18 or ind = 20

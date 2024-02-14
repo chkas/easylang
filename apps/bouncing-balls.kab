@@ -1,12 +1,12 @@
 # Bouncing balls
-# 
+#
 rad = 8
 n = 5
 speed = 1.5
-# 
+#
 rad2 = rad * 2
 radrad4 = rad2 * rad2
-# 
+#
 for i = 1 to n
   x[] &= randomf * (100 - rad2) + rad
   y[] &= randomf * (100 - rad2) + rad
@@ -14,7 +14,7 @@ for i = 1 to n
   vy[] &= randomf * speed * 2 - speed
   c = 0
   for j = 1 to 3
-    c = c * 10 + random 8 + 1
+    c = c * 10 + randint 8 + 1
   .
   col[] &= c
 .

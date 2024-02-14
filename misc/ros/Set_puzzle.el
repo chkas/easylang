@@ -2,7 +2,7 @@ attr$[][] &= [ "one  " "two  " "three" ]
 attr$[][] &= [ "solid  " "striped" "open   " ]
 attr$[][] &= [ "red   " "green " "purple" ]
 attr$[][] &= [ "diamond" "oval" "squiggle" ]
-# 
+#
 subr init
    for card = 0 to 80
       pack[] &= card
@@ -50,12 +50,12 @@ proc getsets . cards[] set[] .
    .
 .
 proc run ncards nsets . .
-   # 
+   #
    repeat
       init
       cards[] = [ ]
       for i to ncards
-         ind = random len pack[]
+         ind = randint len pack[]
          cards[] &= pack[ind]
          pack[ind] = pack[len pack[]]
          len pack[] -1

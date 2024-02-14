@@ -18,11 +18,11 @@ txt_tutor=`* The Law of Large Numbers, or Why It Is a Bad Idea to Go to the Casi
 
 + If we want to know how often heads come out of 1000 coin tosses, we do it or better let the computer do it.
 
-+ The computer program needs a random function that simulates the random landing of the coin. 
++ The computer program needs a random function that simulates the random landing of the coin.
 
-+ *random 2* returns an integer value between 1 and 2 inclusive, that is 1 or 2. 1 stands for *heads* and 2 for *tails*.
++ *randint 2* returns an integer value between 1 and 2 inclusive, that is 1 or 2. 1 stands for *heads* and 2 for *tails*.
 
-flip = random 2
+flip = randint 2
 if flip = 1
   print "Heads"
 else
@@ -33,7 +33,7 @@ else
 
 n = 1000
 for i = 1 to n
-  flip = random 2
+  flip = randint 2
   if flip = 1
     heads += 1
   .
@@ -49,7 +49,7 @@ print "That is " & 100.0 * heads / n & "%"
 
 n = 1000000
 for i = 1 to n
-  flip = random 2
+  flip = randint 2
   if flip = 1
     heads += 1
   .
@@ -67,7 +67,7 @@ print "That is " & 100.0 * heads / n & "%"
 
 + So let's play, we'll bet $10:
 
-numb = random 37 - 1
+numb = randint 37 - 1
 if numb >= 19
   print "You win $10"
 else
@@ -78,7 +78,7 @@ else
 
 for i = 1 to 1000
   cash -= 10
-  numb = random 37 - 1
+  numb = randint 37 - 1
   if numb >= 19
     cash += 20
   .
@@ -93,7 +93,7 @@ print "Cash after playing: $" & cash
 
 for i = 1 to 10000
   cash -= 10
-  numb = random 37 - 1
+  numb = randint 37 - 1
   if numb >= 19
     cash += 20
   .
@@ -112,7 +112,7 @@ print 10 * 10000 * (18 / 37 - 19 / 37)
 
 for i = 1 to 10000
   cash -= 10
-  numb = random 37 - 1
+  numb = randint 37 - 1
   if numb = 13
     cash += 360
   .
@@ -130,7 +130,7 @@ day = 1
 while cash < 2000 and cash >= 10
   game += 1
   cash -= 10
-  numb = random 37 - 1
+  numb = randint 37 - 1
   if numb >= 19
     cash += 20
   .
@@ -150,7 +150,7 @@ subr session
    cash = 1000
    while cash < 2000 and cash >= 10
       cash -= 10
-      numb = random 37 - 1
+      numb = randint 37 - 1
       if numb >= 19
          cash += 20
       .
@@ -181,7 +181,7 @@ while cash < 2000 and cash >= 10
     set_high = 0
   .
   cash -= 10
-  numb = random 37 - 1
+  numb = randint 37 - 1
   if set_high = 1 and numb >= 19
     cash += 20
   elif set_high = 0 and numb >= 1 and numb <= 18
@@ -209,7 +209,7 @@ bet = 10
 while cash < 20000 and cash >= 10
   game += 1
   cash -= bet
-  numb = random 37 - 1
+  numb = randint 37 - 1
   if numb >= 19
     cash += 2 * bet
     bet = 10
@@ -239,7 +239,7 @@ subr session
   bet = 10
   while cash < 20000 and cash >= 10
     cash -= bet
-    numb = random 37 - 1
+    numb = randint 37 - 1
     if numb >= 19
       cash += 2 * bet
       bet = 10
@@ -275,14 +275,14 @@ print n_win
 + How many years does it take to have a Lotto six (6 out of 49) if you give a tip every week? For a Lotto five, the years are also printed out.
 
 my_numbers[] = [ 3 7 13 27 31 49 ]
-# 
+#
 len box[] 49
 for i = 1 to 49
   box[i] = i
 .
 subr drawing
   for i = 1 to 6
-    h = random (50 - i) + i - 1
+    h = randint (50 - i) + i - 1
     swap box[i] box[h]
   .
 .
@@ -311,7 +311,7 @@ print "6 correct after " & week div 52 & " years"
 
 * Not only for gambling
 
-+ There are other things you can do with Monte Carlo methods. For example, you can approximate the value of *PI*. 
++ There are other things you can do with Monte Carlo methods. For example, you can approximate the value of *PI*.
 
 + Fire random points at a square with side length 1 and count the number of points inside the quarter circle. This can be easily determined by the theorem of Pythagoras. This number times four is close to PI.
 

@@ -1,19 +1,22 @@
-cat <<'EOF'
+#!/bin/sh
+
+vers=$1
+cat <<EOF
 <!doctype html>
 <meta charset=utf-8><title>Easylang - Rosetta Code</title>
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <link rel="icon" href="../icon.png" type="image/x-png">
 
 <div id=tut><b>Loading ...</b></div>
-<script src=easy_code2.js></script>
-<script src=easy_tut2.js></script>
+<script src=easy_code2.js?$vers></script>
+<script src=easy_tut2.js?$vers></script>
 
 <script>
 
 txt_split = "\n*\n"
-
-txt_tutor = String.raw`* Rosetta Code with Easylang
 EOF
+
+printf "txt_tutor = String.raw\`* Rosetta Code with Easylang\n"
 
 for f in *.el; do
 #	echo "$x" >&2
@@ -28,7 +31,7 @@ for f in *.el; do
 	cat $f
 done < rosget.txt
 
-cat <<'EOF' 
+cat <<'EOF'
 `
 function hook() {
 	var dom = window.location.host

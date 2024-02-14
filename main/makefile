@@ -1,6 +1,6 @@
 # source $HOME/emsdk/emsdk_env.sh
 
-v = 413
+include ../vers.txt
 
 #--------------------------------------------------------------------
 # DBG = true
@@ -102,17 +102,17 @@ $(or)/tut_id$(v).js: tut_id.js
 	tail +2 $< >>$@
 
 $(or)/easyw$(v).js: $(wrk)/kabas.o kabasw.js
-#$(or)/easyw$(v).js: $(wrk)/kabas.o kabasw.js makefile
+#$(or)/easyw$(v).js: $(wrk)/kabas.o kabasw.js ../vers.txt
 	echo "console.log('Easylang v$v - free to use - christof.kaser@gmail.com')" >$(wrk)/tmp_kabasw.js
 	cat kabasw.js >>$(wrk)/tmp_kabasw.js
 	$(LD) --post-js $(wrk)/tmp_kabasw.js $(wrk)/kabas.o -o $@
 	rm $(wrk)/tmp_kabasw.js
 
-$(wrk)/wvers: makefile
+$(wrk)/wvers: ../vers.txt
 	echo $v > $(wrk)/wvers
 
 #$(or)/tmp_ide.js: easy_ide.js easy.js
-$(wrk)/tmp_ide.js: easy_ide.js easy.js makefile
+$(wrk)/tmp_ide.js: easy_ide.js easy.js ../vers.txt
 	echo "const WORKER = 'easyw$v.js'" >$(wrk)/tmp.js
 	tail +2 easy.js >>$(wrk)/tmp.js
 	cat easy_ide.js >>$(wrk)/tmp.js
@@ -121,25 +121,26 @@ $(wrk)/tmp_ide.js: easy_ide.js easy.js makefile
 
 $(or)/index.html: $(wrk)/ide.html $(wrk)/tmp_ide.js
 	# head -n -5 $(wrk)/ide.html >$@
-	head -n $(shell expr $(shell wc -l<$(wrk)/ide.html) - 5) $(wrk)/ide.html >$@
+	head -n $(shell expr $(shell wc -l<$(wrk)/ide.html) - 5) $(wrk)/ide.html | sed s:/apps/:/apps/?v=$(v):g >$@
+	#head -n $(shell expr $(shell wc -l<$(wrk)/ide.html) - 5) $(wrk)/ide.html >$@
 	echo "<script src=tut_id$(v).js></script>" >>$@
 	echo "<script>" >>$@
 	cat swreg.js >>$@
 	cat $(wrk)/tmp_ide.js >>$@
 	echo "</script>" >>$@
 
-$(or)/sw.js: sw.js $(or)/index.html $(or)/easyw$(v).js makefile
+$(or)/sw.js: sw.js $(or)/index.html $(or)/easyw$(v).js ../vers.txt
 	echo "const CACHE = 'd$(shell date +%y%m%d-%H%M)'" >$@
 	echo "const VERS = '$v'" >>$@
 	tail +3 sw.js >>$@
 
 #--------------------------------------------------------------------
-$(wrk)/vers_easy.js: easy.js makefile
+$(wrk)/vers_easy.js: easy.js ../vers.txt
 	echo "const WORKER = 'easyw$v.js'" >$(or)/tmp.js
 	tail +2 easy.js >>$(or)/tmp.js
 	$(CLOSURE) $(CLOSOPT) --js $(or)/tmp.js --js_output_file $@
 
-$(wrk)/vers_easy_code.js: easy.js ../apps/easy_code.js makefile
+$(wrk)/vers_easy_code.js: easy.js ../apps/easy_code.js ../vers.txt
 	echo "const WORKER = 'easyw$v.js'" >$(or)/tmp.js
 	tail +2 easy.js >>$(or)/tmp.js
 	cat ../apps/easy_code.js >>$(or)/tmp.js

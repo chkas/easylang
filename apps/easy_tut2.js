@@ -79,7 +79,7 @@ button {
   border-radius:5px;
 }
 button:enabled:hover {background-color:#cec}
-button:enabled:active {background-color:#484} 
+button:enabled:active {background-color:#484}
 
 button.stop { display:none; }
 
@@ -153,7 +153,8 @@ function tutMsgFunc(msg, d) {
 	}
 	else if (msg == "input") {
 		input = create("input")
-		input.setAttribute("type", "text");
+		input.setAttribute("type", "text")
+		input.setAttribute("enterkeyhint", "done")
 		input.style.marginLeft = "12px"
 		actBtn.parentElement.appendChild(input)
 		input.focus()
@@ -214,7 +215,7 @@ function tutMsgFunc(msg, d) {
 
 		if (h & 2) {
 			if (!actBtn.out.parentNode) {
-				delay += 300 
+				delay += 300
 				actBtn.pre.div.appendChild(actBtn.out)
 				actBtn.out.style.height = "0px"
 				actBtn.out.offsetHeight
@@ -414,7 +415,7 @@ function runClick(btn) {
 	if (btn.disabled) return
 	prevBtn = actBtn
 	actBtn = btn
-	setTimeout(function() { 
+	setTimeout(function() {
 		if (actBtn != null) {
 			actBtn.stop.style.display = "inline"
 		}

@@ -1,9 +1,9 @@
 # Mastermind:w90
-# 
+#
 col[] = [ 802 990 171 229 950 808 ]
 len code[] 4
 len guess[] 4
-# 
+#
 subr init_vars
    row = 0
 .
@@ -102,7 +102,7 @@ on timer
 proc new . .
    init_vars
    for i to 4
-      code[i] = random 6
+      code[i] = randint 6
    .
    color 531
    move 10 10

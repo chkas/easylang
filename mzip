@@ -4,5 +4,5 @@ cd ~/daten
 h=$(date +%s)
 d=$(expr $h - 1672531200)
 echo $d
-zip -qr ~/archiv/easylang$d.zip easylang/apps/ easylang/misc/ easylang/run/ easylang/main/ easylang/native/ easylang/readme.md
+zip -qr ~/archiv/easylang$d.zip easylang/apps/ easylang/misc/ easylang/run/ easylang/main/ easylang/native/ easylang/readme.md easylang/vers.txt easylang/mk
 

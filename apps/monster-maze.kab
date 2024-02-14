@@ -1,9 +1,9 @@
 # Monster maze
-# 
+#
 size = 12
 n_monster = 6
 monster_delay = 8
-# 
+#
 sz = 2 * size + 1
 c = (100 - 24 / size) / size
 c2 = c / 2
@@ -13,7 +13,7 @@ c16 = c / 16
 c10 = c / 10
 c20 = c / 20
 csc2 = c2 - c10 - c / 128
-# 
+#
 len f[] sz * sz
 subr go_home
    me_col = 0
@@ -37,8 +37,8 @@ subr initvars
    n_mo = n_monster
    h = size div 5
    for i to n_mo
-      m_col[i] = random (size - h) + h - 1
-      m_row[i] = random (size - h) + h - 1
+      m_col[i] = randint (size - h) + h - 1
+      m_row[i] = randint (size - h) + h - 1
       m_dirx[i] = 0
       m_diry[i] = 0
    .
@@ -75,13 +75,13 @@ proc make_maze . .
    f[sz * sz - 1] = 0
    visited = 1
    hsz = sz div 2
-   x = 2 * random hsz - 1
-   y = 2 * random hsz - 1
+   x = 2 * randint hsz - 1
+   y = 2 * randint hsz - 1
    f[x + y * sz + 1] = 0
    while visited < hsz * hsz
       oldx = x
       oldy = y
-      dir = random 4
+      dir = randint 4
       if dir = 1
          if x + 2 < sz
             x += 2
@@ -244,7 +244,7 @@ proc get_dir c r . x y .
    xo = x
    yo = y
    repeat
-      d = random 4
+      d = randint 4
       if d = 1
          x = -1
       elif d = 2

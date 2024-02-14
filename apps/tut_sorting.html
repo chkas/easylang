@@ -40,7 +40,7 @@ proc time_test . .
   write "Length" & strchar 9 & "Time"
   for _ = 1 to 3
     for i = 1 to len d[]
-      d[i] = random 1000000 - 1
+      d[i] = randint 1000000 - 1
     .
     write strchar 10 & len d[]
     t = systime
@@ -74,7 +74,7 @@ proc time_test . .
   write "Length" & strchar 9 & "Time"
   for test = 1 to 3
     for i = 1 to len d[]
-      d[i] = random 1000000
+      d[i] = randint 1000000
     .
     write strchar 10 & len d[]
     t = systime
@@ -87,7 +87,7 @@ time_test
 
 * Heapsort - fast for larger arrays
 
-+ *Heapsort* is much faster than *Insertion sort* for larger arrays. It can be considered a much better variant of *Selection sort*: Each round, the maximum value is moved to the right side and the len of the array is reduced by one. The big improvement is that the maximum value is selected very quickly - this is achieved by keeping the left part in a *heap* structure. 
++ *Heapsort* is much faster than *Insertion sort* for larger arrays. It can be considered a much better variant of *Selection sort*: Each round, the maximum value is moved to the right side and the len of the array is reduced by one. The big improvement is that the maximum value is selected very quickly - this is achieved by keeping the left part in a *heap* structure.
 
 + In a *heap*, each node has two children smaller than the node. In an array where the node is at *i*, the left child is at *2i+1* and the right child at *2i+2*. The first sorting step is: convert the array into a *heap* array. The maximum value in a *heap* is always at *0*. If you move the maximum value into the sorted part of the array, the left side of the array must be converted to a *heap* again. This can be done quickly.
 
@@ -128,7 +128,7 @@ proc time_test . .
   write "Length" & strchar 9 & "Time"
   for test = 1 to 4
     for i = 1 to len d[]
-      d[i] = random 1000000
+      d[i] = randint 1000000
     .
     write strchar 10 & len d[]
     t = systime
@@ -143,7 +143,7 @@ time_test
 
 + The speed of *Mergesort* is similar to *Heapsort*, but takes up much more space. This is how it works: imagine you have a stack of numbered cards to sort. The *Mergesort* method is: take two cards each and merge them into stacks of 2 cards. Then take two 2-card stacks and merge them into sorted 4-card stacks, and so on.
 
-+ The *merge* subroutine merges two sorted subarrays into one sorted array. First the two subarrays are copied to a temporary location, then the temporary subarrays are scanned, with the lower element selected at each step and placed into the original array. 
++ The *merge* subroutine merges two sorted subarrays into one sorted array. First the two subarrays are copied to a temporary location, then the temporary subarrays are scanned, with the lower element selected at each step and placed into the original array.
 
 + The *sort* subroutine turns many small arrays, starting with size one, into larger arrays by merging two of each into one until a single array is created.
 
@@ -186,7 +186,7 @@ proc time_test . .
   write "Length" & strchar 9 & "Time"
   for test = 1 to 4
     for i = 1 to len d[]
-      d[i] = random 1000000
+      d[i] = randint 1000000
     .
     write strchar 10 & len d[]
     t = systime
@@ -216,7 +216,7 @@ proc sort . d[] .
   while 1 = 1
     if left < right
       #  partition
-      swap d[left + random (right - left)] d[left]
+      swap d[left + randint (right - left)] d[left]
       piv = d[left]
       mid = left
       for i = left + 1 to right
@@ -226,7 +226,7 @@ proc sort . d[] .
         .
       .
       swap d[left] d[mid]
-      # 
+      #
       if mid < (right + left) / 2
         stack[sp] = mid + 1
         stack[sp + 1] = right
@@ -252,7 +252,7 @@ proc time_test . .
   write "Length" & strchar 9 & "Time"
   for test = 1 to 4
     for i = 1 to len d[]
-      d[i] = random 1000000
+      d[i] = randint 1000000
     .
     write strchar 10 & len d[]
     t = systime
@@ -267,7 +267,7 @@ time_test
 
 * Radix sort - a non-comparison sort
 
-+ *Radix sort* works best with positive integers. 
++ *Radix sort* works best with positive integers.
 
 + First, the data is divided into buckets, with one bucket available for each digit (for *radix* 10). In the first pass, for example, the number 416 is placed in box 6. The numbers are then collected from the buckets and placed on a stack. At the next pass the same will be repeated with the tens, etc.
 
@@ -309,7 +309,7 @@ proc time_test . .
   write "Length" & strchar 9 & "Time"
   for test = 1 to 4
     for i = 1 to len d[]
-      d[i] = random 1000000
+      d[i] = randint 1000000
     .
     write strchar 10 & len d[]
     t = systime
@@ -336,7 +336,7 @@ time_test
 
 proc qsort left right . d[] .
   if left < right
-    # partition 
+    # partition
     piv = d[left]
     mid = left
     for i = left + 1 to right
@@ -346,7 +346,7 @@ proc qsort left right . d[] .
       .
     .
     swap d[left] d[mid]
-    # 
+    #
     qsort left mid - 1 d[]
     qsort mid + 1 right d[]
   .
@@ -364,7 +364,7 @@ print d[]
 
 proc qsort left right . d[] .
   while left < right
-    # partition 
+    # partition
     piv = d[left]
     mid = left
     for i = left + 1 to right
@@ -374,7 +374,7 @@ proc qsort left right . d[] .
       .
     .
     swap d[left] d[mid]
-    # 
+    #
     if mid < (right + left) / 2
       qsort left mid - 1 d[]
       left = mid + 1

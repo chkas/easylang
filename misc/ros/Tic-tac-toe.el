@@ -1,7 +1,7 @@
 len f[] 9
 state = 0
 textsize 14
-# 
+#
 proc init . .
    linewidth 2
    clear
@@ -82,7 +82,7 @@ proc minmax player alpha beta . rval rmov .
       .
    else
       rval = alpha
-      start = random 9
+      start = randint 9
       mov = start
       repeat
          if f[mov] = 0

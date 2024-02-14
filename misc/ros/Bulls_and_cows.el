@@ -1,6 +1,6 @@
 dig[] = [ 1 2 3 4 5 6 7 8 9 ]
 for i = 1 to 4
-  h = i - 1 + random (10 - i)
+  h = i - 1 + randint (10 - i)
   swap dig[i] dig[h]
 .
 # print dig[]

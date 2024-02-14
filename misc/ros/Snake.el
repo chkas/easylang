@@ -1,13 +1,13 @@
 subr fruit
-   rx = (random 20 - 1) * 5 + 2.5
-   ry = (random 20 - 1) * 5 + 2.5
+   rx = (randint 20 - 1) * 5 + 2.5
+   ry = (randint 20 - 1) * 5 + 2.5
 .
 subr start
    fruit
    game = 1
    sx[] = [ 52.5 0 0 0 0 ]
    sy[] = [ 52.5 0 0 0 0 ]
-   dir = random 4
+   dir = randint 4
    timer 0
 .
 background 242
@@ -20,7 +20,7 @@ move 6 40
 text "Keys or mouse for controlling"
 move 6 30
 text "Space or click to to start"
-# 
+#
 on key
    if game = 0 and keybkey = " "
       start
@@ -67,7 +67,7 @@ on timer
    color 966
    move rx ry
    circle 1.5
-   # 
+   #
    sx = sx[1] ; sy = sy[1]
    if dir = 1
       sy += 5

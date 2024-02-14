@@ -1,9 +1,9 @@
 # Minesweeper
-# 
+#
 len cell[] 56
 len cnt[] 56
 len flag[] 56
-# 
+#
 subr initvars
    state = 0
    ticks = 0
@@ -132,8 +132,8 @@ proc start . .
    .
    n = 8
    while n > 0
-      c = random 8 - 1
-      r = random 7 - 1
+      c = randint 8 - 1
+      r = randint 7 - 1
       ind = r * 8 + c + 1
       if cell[ind] = 0
          n -= 1

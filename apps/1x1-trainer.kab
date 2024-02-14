@@ -1,5 +1,5 @@
 # 1x1 trainer
-# 
+#
 len n[] 10
 len m[] 10
 subr init_vars
@@ -22,7 +22,7 @@ proc disp col s$ . .
    text s$
 .
 proc show_quest . .
-   j = random sz
+   j = randint sz
    if row < 10
       n = n[j]
       n[j] = n[sz]
@@ -49,8 +49,8 @@ proc sel_row . .
          .
       else
          for i = 1 to 10
-            n[i] = random 8 + 1
-            m[i] = random 8 + 1
+            n[i] = randint 8 + 1
+            m[i] = randint 8 + 1
          .
       .
       sz = 10
@@ -70,7 +70,7 @@ proc draw_key . .
          y = 1
       elif h = 10
          y = 2
-         s$ = "×"
+         s$ = "⌫"
       else
          y = 0
          s$ = "✓"
@@ -154,7 +154,7 @@ on key
    ind = strcode keybkey - 48
    if state = 0
       if ind >= 0 and ind <= 9
-         # 
+         #
       elif ind = 21
          ind = 11
       elif ind = 18 or ind = 20

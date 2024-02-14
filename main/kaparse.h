@@ -1176,8 +1176,9 @@ S ND* parse_numarrex(void) {
 	}
 	else if (tok == t_number) {
 		ex->arrf = op_map_number;
-		csb_tok_nt();
-		cs_spc();
+		csb_tok_spc_nt();
+//		csb_tok_nt();
+//		cs_spc();
 		ex->le = parse_strarrex();;
 	}
 	else error("array");
@@ -2303,8 +2304,9 @@ S ND* parse_sequ(void) {
 				}
 				else if (tok == t_break) {
 					if (loop_level == 0) error("not in a loop or procedure");
-					csb_tok_nt();
-					cs_spc();
+					csb_tok_spc_nt();
+					//csb_tok_nt();
+					//cs_spc();
 					ushort h = tvalf;
 					if (tok != t_lnumber || h != tvalf) error("break level");
 					if (loop_level < h) error("break level too high");
