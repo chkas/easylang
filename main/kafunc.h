@@ -1391,15 +1391,11 @@ S ARR op_strbytes(ND* nd) {
         int sym_len = ulen(s_p[cur_str_loc]);
         int cp = 0;
 
-        if (sym_len == 1) {
-            cp = s_p[cur_str_loc];
-        } else if (sym_len == 2) {
-            cp = s_p[cur_str_loc] & 0x1f;
-        } else if (sym_len == 3) {
-            cp = s_p[cur_str_loc] & 0x0f;
-        } else if (sym_len == 4) {
-            cp = s_p[cur_str_loc] & 0x07;
-        } else {
+        if 		(sym_len == 1) cp = s_p[cur_str_loc];
+        else if (sym_len == 2) cp = s_p[cur_str_loc] & 0x1f;
+        else if (sym_len == 3) cp = s_p[cur_str_loc] & 0x0f;
+        else if (sym_len == 4) cp = s_p[cur_str_loc] & 0x07;
+        else {
             printf("ERROR: unknown symbol_len returned from ulen in kafunc op_strbytes\n");
             return res;
         }
