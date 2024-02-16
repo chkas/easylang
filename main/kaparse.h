@@ -2363,8 +2363,8 @@ S ND* parse_sequ(void) {
 						nd->vf = op_rect;
 						prog_props |= 1;
 					}
-					else if (tokpr == t_arc) {
-						nd->vf = op_arc;
+					else if (tokpr == t_circseg) {
+						nd->vf = op_circseg;
 						prog_props |= 1;
 					}
 					else if (tokpr == t_rgb) {
@@ -2432,7 +2432,7 @@ S ND* parse_sequ(void) {
 				else if (tokpr <= t_text) {
 					nd->le = parse_strex();
 				}
-				else if (tokpr <= t_arc) {
+				else if (tokpr <= t_circseg) {
 					int t = tokpr;
 					ND* ndx;
 					if (t >= t_rgb) ndx = mkndx();

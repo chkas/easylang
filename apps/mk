@@ -153,9 +153,11 @@ function hook() {
 xxx
 	fi
 
-	cat >>$o/tut_$n.html <<'xxx'
-<p><hr><p>The examples were created with <i>Easylang</i>. This tutorial is integrated in the <a href=../ide/>IDE<a>
+	cat >>$o/tut_$n.html <<xxx
+<p><hr><p>The examples were created with <a href=./?$vers>Easylang</a>. This tutorial is integrated in the <a href=../ide/>IDE<a>
 <p><small>christof.kaser@gmail.com</small>
+xxx
+	cat >>$o/tut_$n.html <<'xxx'
 `)
 xxx
 	if test $2 = learn; then

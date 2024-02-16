@@ -1545,9 +1545,9 @@ S void op_translate(ND* nd) {
 S void op_rect(ND* nd) {
 	gr_rect(numf(nd->le), numf(nd->ri));
 }
-S void op_arc(ND* nd) {
+S void op_circseg(ND* nd) {
 	ND* ndx = nd + 1;
-	gr_arc(numf(nd->le), numf(nd->ri), numf(ndx->ex));
+	gr_circseg(numf(nd->le), numf(nd->ri), numf(ndx->ex));
 }
 
 S void op_text(ND* nd) {

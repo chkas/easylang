@@ -23,7 +23,7 @@ static const char* token_list[] = {
 	"sleep", "timer", "textsize", "linewidth", "coord_rotate", "circle",
 	"color", "background", "mouse_cursor", "random_seed",
 	"move", "line", "coord_translate", "rect", "numfmt",
-	"color3", "circlearc",
+	"color3", "circseg",
 	"sound", "polygon", "curve",
 
 	"return", "swap", "clear", "break", "drawgrid", "arrbase", "sys",
@@ -59,7 +59,7 @@ enum token_tok {
 	t_sleep, t_timer, t_textsize, t_linewidth, t_rotate, t_circle,
 	t_color, t_background, t_mouse_cursor, t_random_seed,
 	t_move, t_line, t_translate, t_rect, t_numfmt,
-	t_rgb, t_arc,
+	t_rgb, t_circseg,
 	t_sound, t_polygon, t_curve,
 
 	t_return, t_swap, t_clear, t_break, t_drawgrid, t_arrbase, t_sys,
@@ -466,9 +466,9 @@ static void parse_input_data() {
 		cs_nl();
 	}
 }
-static int tbl_a[] = { t_and, t_abs, t_arc, t_asin, t_acos, t_atan, t_atan2, t_arrbase, 0 } ;
+static int tbl_a[] = { t_and, t_abs, t_asin, t_acos, t_atan, t_atan2, t_arrbase, 0 } ;
 static int tbl_b[] = { t_break, t_background, t_bitand, t_bitor, t_bitxor, t_bitshift, t_bitnot, 0 } ;
-static int tbl_c[] = { t_call, t_clear, t_color, t_circle, t_cos, t_rgb, t_arc, t_curve, t_rotate, t_translate, 0 } ;
+static int tbl_c[] = { t_call, t_clear, t_color, t_circle, t_cos, t_rgb, t_circseg, t_curve, t_rotate, t_translate, 0 } ;
 static int tbl_d[] = { t_divi, t_divi1, t_drawgrid, 0 } ;
 static int tbl_e[] = { t_else, t_elif, t_end, t_error, 0 };
 static int tbl_f[] = { t_for, t_func, t_floor, t_funcdecl, t_fastfunc, 0 };

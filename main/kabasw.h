@@ -127,7 +127,7 @@ static void gr_rect(double x, double y) {
 	if (grbotleft) h -= y;
 	EM_ASM_({ push([4, $0, $1, $2, $3])}, grx, h, x, y);
 }
-static void gr_arc(double rad, double a, double b) {
+static void gr_circseg(double rad, double a, double b) {
 	EM_ASM_({ push([16, $0, $1, $2, $3, $4])}, grx, gry, rad, a, b);
 }
 static void gr_circle(double x) {

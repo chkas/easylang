@@ -4,7 +4,7 @@ sinlat = sin lat
 coslat = cos lat
 numfmt 4 0
 global a[] d[] m[] n$[] .
-# 
+#
 subr turn
    xd = -1
    yh = sin wx * x + cos wx * y
@@ -36,7 +36,7 @@ subr turns
    .
 .
 global jd skycol st n_names disp .
-# 
+#
 proc xyz a0 d0 . .
    z = sinlat * sin d0 + coslat * cos d0 * cos a0
    if z > 0
@@ -45,7 +45,7 @@ proc xyz a0 d0 . .
    .
 .
 n_stars = 300
-# 
+#
 proc draw_stars . .
    color 999
    for i = 1 to n_stars
@@ -66,9 +66,9 @@ proc draw_stars . .
    .
 .
 global const[][] const$[] .
-# 
+#
 linewidth 0.125
-# 
+#
 proc draw_consts . .
    textsize 3
    color 987
@@ -112,7 +112,7 @@ plac[] = [ 996 882 993 975 993 993 ]
 plm[] = [ 3 0.5 0.75 0.6125 0.6125 0.375 2 ]
 len pla[] len plm[]
 len pld[] len plm[]
-# 
+#
 proc draw_moon . .
    ph = (jd - 2459316.5208) mod 29.530588853
    color 995
@@ -127,24 +127,24 @@ proc draw_moon . .
       circle 3
    elif ph < 9.2
       color skycol
-      circlearc 2 90 270
+      circseg 2 90 270
    elif ph < 12.9
       color skycol
-      circlearc 2 100 260
+      circseg 2 100 260
       color 995
       move xd + 1.2 yd
-      circlearc 2.5 125 235
+      circseg 2.5 125 235
    elif ph < 16.6
-      # 
+      #
    elif ph < 20.3
       color skycol
-      circlearc 2 -80 80
+      circseg 2 -80 80
       color 995
       move xd - 1.2 yd
-      circlearc 2.5 -55 55
+      circseg 2.5 -55 55
    elif ph < 24
       color skycol
-      circlearc 2 270 90
+      circseg 2 270 90
    else
       move xd + 2.2 yd
       color skycol
@@ -180,7 +180,7 @@ el[][] &= [ 5.20288700 -0.00011607 0.04838624 -0.00013253 1.30439695 -0.00183714
 el[][] &= [ 9.53667594 -0.00125060 0.05386179 -0.00050991 2.48599187 0.00193609 49.95424423 1222.49362201 92.59887831 -0.41897216 113.66242448 -0.28867794 ]
 m1[] = [ 6.29 134.9 477198.85 (-1.27) 259.2 (-413335.38) 0.66 235.7 890534.23 0.21 269.9 954397.70 (-0.19) 357.5 35999.05 (-0.11) 186.6 966404.05 ]
 m2[] = [ 5.13 93.3 483202.03 0.28 228.2 960400.87 (-0.28) 318.3 6003.18 (-0.17) 217.6 (-407332.20) ]
-# 
+#
 proc calc_planets . .
    T = (jd - 2451545) / 36525
    for pli = 1 to len el[][]
@@ -192,7 +192,7 @@ proc calc_planets . .
       wi = el[9] + el[10] * T
       O = el[11] + el[12] * T
       swap el[] el[pli][]
-      # 
+      #
       w = wi - O
       M = (L - wi) mod 360
       h = 57.29578 * e
@@ -217,7 +217,7 @@ proc calc_planets . .
       ee = 23.43928
       y = cos ee * ye - sin ee * ze
       z = sin ee * ye + cos ee * ze
-      # 
+      #
       if pli = 1
          eax = x
          eay = y
@@ -261,7 +261,7 @@ dir$[] = [ "N" "E" "S" "W" ]
 xdir[] = [ -1 0 1 0 ]
 ydir[] = [ 0 1 0 -1 ]
 global time$ .
-# 
+#
 proc draw_info . .
    color 666
    textsize 2.5
@@ -404,7 +404,7 @@ wx = 0
 wa = 35
 sinwa = sin wa
 timer 0
-# 
+#
 repeat
    s$ = input
    until s$ = ""
@@ -430,7 +430,7 @@ repeat
    d[] &= number a$[2]
    m[] &= number a$[3] / 100
 .
-# 
+#
 input_data
 Aries
 49 104 457

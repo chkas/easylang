@@ -1,18 +1,18 @@
 # AoC-21 - Day 15: Chiton
-# 
+#
 # Dijkstra. To avoid the minimum search,
-# there are simply 10 lists, for cost +1, 
-# +2 etc .. And these are processed one 
+# there are simply 10 lists, for cost +1,
+# +2 etc .. And these are processed one
 # after the other. To display the optimal
-# path, we also need a predecessor list. 
-# 
+# path, we also need a predecessor list.
+#
 visualization = 1
 sys topleft
-# 
+#
 expnd = 4
 # for part one:
 # expnd = 0
-# 
+#
 global m[] nc cost todo[][] endpos prev[] .
 background 000
 clear
@@ -64,7 +64,7 @@ proc show_route . .
       until pos = -1
    .
 .
-# 
+#
 proc read . .
    inp$ = input
    sz = len inp$
@@ -79,7 +79,7 @@ proc read . .
    for ii to sz
       if inp$ = ""
          for i to sz
-            inp$ &= strchar (random 10 + 47)
+            inp$ &= strchar (randint 10 + 47)
          .
       .
       for i to sz
@@ -102,7 +102,7 @@ proc read . .
    .
 .
 read
-# 
+#
 len prev[] len m[]
 endpos = len m[] - nc - 1
 pos = nc + 1
@@ -126,5 +126,5 @@ for cost = 0 to 99999
    .
    todo[cost mod 10 + 1][] = [ ]
 .
-# 
+#
 input_data

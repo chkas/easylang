@@ -1,5 +1,5 @@
 # Piano
-# 
+#
 sys topleft
 subr initvars
    song = 1
@@ -62,14 +62,16 @@ proc draw_notes . .
             move x + 0.9 y
             line x + 0.9 y - 4
             if t = 1
-               linewidth 0.3
+               linewidth 0.25
+               move x + 0.9 y - 4
                line x + 1.8 y - 1.5
             .
          else
             move x - 0.9 y
             line x - 0.9 y + 4
             if t = 1
-               linewidth 0.3
+               linewidth 0.25
+               move x - 0.9 y + 4
                line x - 1.8 y + 1.5
             .
          .
@@ -240,7 +242,7 @@ on mouse_up
       stat = 0
    .
 .
-# 
+#
 initvars
 color 321
 move 0 55
