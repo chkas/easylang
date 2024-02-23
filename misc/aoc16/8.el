@@ -1,13 +1,13 @@
-# AoC-16 - Day 8: Two-Factor Authentication 
-# 
+# AoC-16 - Day 8: Two-Factor Authentication
+#
 visualization = 1
-# 
+#
 sys topleft
 nc = 50
 nr = 6
 len m[] nc * nr
 arrbase m[] 0
-# 
+#
 f = 90 / nc
 proc show m . .
    if visualization = 1
@@ -35,12 +35,12 @@ proc show m . .
       print ""
    .
 .
-# 
+#
 len r[] nr
 len c[] nc
 arrbase r[] 0
 arrbase c[] 0
-# 
+#
 repeat
    s$ = input
    until s$ = ""
@@ -53,7 +53,7 @@ repeat
       .
    else
       s$[] = strsplit s$ " "
-      a = number substr s$[3] 3 -1
+      a = number substr s$[3] 3 9
       b = number s$[5]
       if s$[2] = "column"
          c = a
@@ -80,7 +80,7 @@ for v in m[]
 .
 print sum
 show 2
-# 
+#
 input_data
 rect 3x2
 rotate column x=1 by 1

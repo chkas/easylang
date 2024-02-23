@@ -1,12 +1,12 @@
 # AoC-23 - Day 5: If You Give A Seed A Fertilizer
-# 
+#
 len dest[][] 7
 len src[][] 7
 len lng[][] 7
 global idn[] .
-# 
+#
 proc init . .
-   idn[] = number strsplit substr input 8 -1 " "
+   idn[] = number strsplit substr input 8 9 " "
    s$ = input
    s$ = input
    for t to 7
@@ -22,7 +22,7 @@ proc init . .
    .
 .
 init
-# 
+#
 proc part1 . .
    min = 1 / 0
    for id in idn[]
@@ -39,7 +39,7 @@ proc part1 . .
    print min
 .
 part1
-# 
+#
 proc part2 . .
    for t to 7
       swap id[] idn[]
@@ -57,7 +57,7 @@ proc part2 . .
                p2 = lower id2 r2
                idn[] &= p1 + dest[t][i] - r1
                idn[] &= p2 - p1
-               # 
+               #
                if id1 < p1
                   id[] &= id1
                   id[] &= p1 - id1
@@ -82,7 +82,7 @@ proc part2 . .
    print min
 .
 part2
-# 
+#
 input_data
 seeds: 79 14 55 13
 

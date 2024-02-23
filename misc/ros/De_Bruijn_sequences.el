@@ -81,7 +81,7 @@ proc main . .
    .
    validate dbr$
    print ""
-   db$ = substr db$ 1 4443 & "." & substr db$ 4445 -1
+   db$ = substr db$ 1 4443 & "." & substr db$ 4445 (1 / 0)
    print "Validating the overlaid de Bruijn sequence:"
    validate db$
    print ""

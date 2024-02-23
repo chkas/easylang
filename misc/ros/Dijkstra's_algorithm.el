@@ -5,7 +5,7 @@ proc read . .
       until s$ = ""
       a = (strcode substr s$ 1 1) - 96
       b = (strcode substr s$ 3 1) - 96
-      d = number substr s$ 5 -1
+      d = number substr s$ 5 9
       if a > len con[][]
          len con[][] a
       .
@@ -16,10 +16,10 @@ proc read . .
    n = len con[][]
 .
 read
-# 
+#
 len cost[] n
 len prev[] n
-# 
+#
 proc dijkstra . .
    for i = 2 to len cost[]
       cost[i] = 1 / 0
@@ -49,7 +49,7 @@ proc dijkstra . .
    .
 .
 dijkstra
-# 
+#
 func$ gpath nd$ .
    nd = strcode nd$ - 96
    while nd <> 1
@@ -60,7 +60,7 @@ func$ gpath nd$ .
 .
 print gpath "e"
 print gpath "f"
-# 
+#
 input_data
 a b 7
 a c 9

@@ -1,5 +1,5 @@
 # AoC-20 - Day 19: Monster Messages
-# 
+#
 repeat
    s$ = input
    until s$ = ""
@@ -10,14 +10,14 @@ repeat
    until s$ = ""
    in2$[] &= s$
 .
-# 
+#
 len rule[][] len in$[] + 20
 global a b .
-# 
+#
 proc init . .
    for i to len in$[]
       l$[] = strsplit in$[i] " "
-      ind = 1 + number substr l$[1] 1 -1
+      ind = 1 + number substr l$[1] 1 9
       if l$[2] = "\"a\""
          a = ind
       elif l$[2] = "\"b\""
@@ -36,7 +36,7 @@ proc init . .
    .
 .
 init
-# 
+#
 proc match s$ . nr[] res .
    #  pr s$
    #  pr nr[]
@@ -88,23 +88,23 @@ proc match s$ . nr[] res .
    .
 .
 nr0[] = [ 1 ]
-# 
+#
 for i to len in2$[]
    match in2$[i] nr0[] res
    sum += res
 .
 print sum
-# 
+#
 rule[9][] = [ 43 -1 43 9 ]
 rule[12][] = [ 43 32 -1 43 12 32 ]
-# 
+#
 sum = 0
 for i to len in2$[]
    match in2$[i] nr0[] res
    sum += res
 .
 print sum
-# 
+#
 input_data
 42: 9 14 | 10 1
 9: 14 27 | 1 26

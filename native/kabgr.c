@@ -1,13 +1,13 @@
 /*	kalib.h
 
-	Copyright (c) Christof Kaser christof.kaser@gmail.com. 
+	Copyright (c) Christof Kaser christof.kaser@gmail.com.
 	All rights reserved.
 
-	This work is licensed under the terms of the GNU General Public 
+	This work is licensed under the terms of the GNU General Public
 	License version 3. For a copy, see http://www.gnu.org/licenses/.
 
-    A derivative of this software must contain the built-in function 
-    sysfunc "creator" or an equivalent function that returns 
+    A derivative of this software must contain the built-in function
+    sysfunc "creator" or an equivalent function that returns
     "christof.kaser@gmail.com".
 */
 
@@ -47,7 +47,7 @@ static void errx(const char* s) {
 
 static bool exists(const char* name) {
 	struct stat buffer;
-	return (stat (name, &buffer) == 0); 
+	return (stat (name, &buffer) == 0);
 }
 
 double textsize;
@@ -111,7 +111,7 @@ void gr_init(const char* progname, int mask) {
 		FMX = FX;
 		FMY = FX;
 
-		window = SDL_CreateWindow(progname, 50, 50, SZ, SZ, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE); 
+		window = SDL_CreateWindow(progname, 50, 50, SZ, SZ, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 		renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC|SDL_RENDERER_ACCELERATED);
 
 		if (renderer == NULL) errx("Renderer NULL");
@@ -147,7 +147,7 @@ void gr_init(const char* progname, int mask) {
 	}
 	if (mask & 256) {
 
-// #ifdef __linux__ 
+// #ifdef __linux__
 
 		const char* fontnames[] = {
 #ifdef _WIN32
@@ -194,7 +194,7 @@ void gr_rect(double cx, double cy) {
 	double y;
 	if (botleft) y = gy - h;
 	else y = gy;
-	SDL_Rect r = {.x = gx, .y = y, .w = (int)(FX * cx) + 1, .h = (int)(FX * cy) + 1}; 
+	SDL_Rect r = {.x = gx, .y = y, .w = (int)(FX * cx) + 1, .h = (int)(FX * cy) + 1};
 	SDL_RenderFillRect(renderer, &r);
 }
 
@@ -250,7 +250,7 @@ static void circle(int x0, int y0, int lw) {
 		x++;
 		fx += 2;
 		f += fx + 1;
-		line(x0 - x, y0 - y, x0 + x, y0 - y);		
+		line(x0 - x, y0 - y, x0 + x, y0 - y);
 		line(x0 - y, y0 - x, x0 + y, y0 - x);
 		line(x0 - y, y0 + x, x0 + y, y0 + x);
 		line(x0 - x, y0 + y, x0 + x, y0 + y);
@@ -260,12 +260,12 @@ static void circle(int x0, int y0, int lw) {
 static void thline(int x1, int y1, int x2, int y2) {
 	if (y1 == y2) {
 		if (x1 > x2) swap(x1, x2);
-		SDL_Rect r = {.x = x1, .y = y1 - linew2, .w = x2 - x1, .h = linew}; 
+		SDL_Rect r = {.x = x1, .y = y1 - linew2, .w = x2 - x1, .h = linew};
 		SDL_RenderFillRect(renderer, &r);
 	}
 	else if (x1 == x2) {
 		if (y1 > y2) swap(y1, y2);
-		SDL_Rect r = {.x = x1 - linew2, .y = y1, .w = linew, .h = y2 - y1}; 
+		SDL_Rect r = {.x = x1 - linew2, .y = y1, .w = linew, .h = y2 - y1};
 		SDL_RenderFillRect(renderer, &r);
 	}
 	else {
@@ -306,7 +306,7 @@ void gr_circle(double rad) {
 }
 
 void gr_line(double fx, double fy) {
-	int x = fx * FX; 
+	int x = fx * FX;
 	int y = inv(fy) * FX;
 
 	if (grline) {
@@ -528,7 +528,7 @@ void gr_event_loop(void) {
 		while (true) {
 			SDL_SetRenderTarget(renderer, NULL);
 		 	SDL_RenderCopy(renderer, display, NULL, NULL);
-			SDL_RenderPresent(renderer);	
+			SDL_RenderPresent(renderer);
 			SDL_SetRenderTarget(renderer, display);
 
 			while (SDL_PollEvent(&evt)) {
@@ -537,11 +537,11 @@ void gr_event_loop(void) {
 			evt_func(1, 0);
 		}
 	}
-	else { 
+	else {
 		while (true) {
 			SDL_SetRenderTarget(renderer, NULL);
 		 	SDL_RenderCopy(renderer, display, NULL, NULL);
-			SDL_RenderPresent(renderer);	
+			SDL_RenderPresent(renderer);
 			SDL_SetRenderTarget(renderer, display);
 
 			SDL_WaitEvent(&evt);
@@ -644,7 +644,7 @@ void gr_debout(const char* s) {}
 char gr_input(char* buf) {
 
 	char* p = fgets(buf, 65536, stdin);
-	if (p != NULL) { 
+	if (p != NULL) {
 		int h = strlen(buf);
 		if (h > 0 && buf[h - 1] == '\n') {
 			h -= 1;
@@ -655,7 +655,7 @@ char gr_input(char* buf) {
 	buf[0] = 0;
 	return 1;
 }
-void gr_arc(double rad, double a, double b) {
+void gr_circseg(double rad, double a, double b) {
 	printf("** gr_arc is not implemented\n");
 }
 void gr_exit(void) { exit(1); }

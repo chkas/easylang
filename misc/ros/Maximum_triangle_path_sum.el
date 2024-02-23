@@ -6,7 +6,7 @@ repeat
    while substr s$ i 1 = " "
       i += 1
    .
-   s$ = "0 " & substr s$ i -1 & " 0"
+   s$ = "0 " & substr s$ i 999 & " 0"
    b[] = number strsplit s$ " "
    for i = 2 to len b[] - 1
       b[i] = higher (b[i] + a[i - 1]) (b[i] + a[i])
@@ -17,7 +17,7 @@ for v in a[]
    max = higher max v
 .
 print max
-# 
+#
 input_data
                           55
                         94 48

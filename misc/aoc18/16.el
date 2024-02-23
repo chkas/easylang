@@ -1,7 +1,7 @@
 # AoC-18 - Day 16: Chronal Classification
-# 
+#
 global b[][] o[][] a[][] .
-# 
+#
 proc read . .
    len b[] 4
    len o[] 4
@@ -9,9 +9,9 @@ proc read . .
    repeat
       s$ = input
       until s$ = ""
-      b[] = number strsplit substr s$ 10 -1 " "
+      b[] = number strsplit substr s$ 10 9 " "
       o[] = number strsplit input " "
-      a[] = number strsplit substr input 10 -1 " "
+      a[] = number strsplit substr input 10 9 " "
       b[][] &= b[]
       o[][] &= o[]
       a[][] &= a[]
@@ -19,9 +19,9 @@ proc read . .
    .
 .
 read
-# 
+#
 len r[] 4
-# 
+#
 proc opf op a b c . .
    if op = 0
       r[c] = r[a] + r[b]
@@ -31,7 +31,7 @@ proc opf op a b c . .
       r[c] = r[a] * r[b]
    elif op = 3
       r[c] = r[a] * b
-      # 
+      #
    elif op = 4
       h = bitand r[a] r[b]
       r[c] = h
@@ -44,12 +44,12 @@ proc opf op a b c . .
    elif op = 7
       h = bitor r[a] b
       r[c] = h
-      # 
+      #
    elif op = 8
       r[c] = r[a]
    elif op = 9
       r[c] = a
-      # 
+      #
    elif op = 10
       if a > r[b]
          r[c] = 1
@@ -68,7 +68,7 @@ proc opf op a b c . .
       else
          r[c] = 0
       .
-      # 
+      #
    elif op = 13
       if a = r[b]
          r[c] = 1
@@ -107,13 +107,13 @@ proc part1 . .
    print res1
 .
 part1
-# 
+#
 proc part2 . .
    len op[] 16
    len op_match[] 16
    arrbase op[] 0
    arrbase op_match[] 0
-   # 
+   #
    for i range0 16
       op[i] = -1
    .
@@ -159,7 +159,7 @@ proc part2 . .
    print r[0]
 .
 part2
-# 
+#
 input_data
 Before: [3, 2, 1, 1]
 9 2 1 2

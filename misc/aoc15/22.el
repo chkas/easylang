@@ -1,10 +1,10 @@
 # AoC-15 - Day 22: Wizard Simulator 20XX
-# 
-boss_hit = number substr input 13 -1
-boss_dmg = number substr input 9 -1
-# 
+#
+boss_hit = number substr input 13 9
+boss_dmg = number substr input 9 9
+#
 procdecl player cost mana hit bhit eff[] . .
-# 
+#
 min = 1 / 0
 proc effect . arm bhit mana eff[] .
    if eff[1] > 0
@@ -46,7 +46,7 @@ proc select cost sel mana hit bhit eff[] . .
       .
    .
 .
-# 
+#
 part2 = 0
 proc player cost mana hit bhit eff[] . .
    if part2 = 1
@@ -65,14 +65,14 @@ proc player cost mana hit bhit eff[] . .
       .
    .
 .
-# 
+#
 player 0 500 50 boss_hit [ 0 0 0 ]
 print min
 part2 = 1
 min = 1 / 0
 player 0 500 50 boss_hit [ 0 0 0 ]
 print min
-#  
+#
 input_data
 Hit Points: 68
 Damage: 9

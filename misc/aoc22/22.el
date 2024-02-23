@@ -1,8 +1,8 @@
-# AoC-22 - Day 22: Monkey Map 
-# 
+# AoC-22 - Day 22: Monkey Map
+#
 nc = 160
 len m[] nc * 210
-# 
+#
 proc read . .
    r = 1
    repeat
@@ -23,10 +23,10 @@ proc read . .
    .
 .
 read
-# 
+#
 inc[] = [ 1 nc -1 (-nc) ]
 global sz .
-# 
+#
 proc turn d . ni .
    for i to 4
       if inc[i] = ni
@@ -109,7 +109,7 @@ proc findedge . nxt ni .
 proc step part . ind inc .
    nxt = ind + inc
    ni = inc
-   # 
+   #
    if m[nxt] = 0
       if part = 2
          nxt -= inc
@@ -138,9 +138,9 @@ proc go part inp$ . .
    repeat
       n = number substr inp$ 1 2
       if n >= 10
-         inp$ = substr inp$ 3 -1
+         inp$ = substr inp$ 3 99
       else
-         inp$ = substr inp$ 2 -1
+         inp$ = substr inp$ 2 99
       .
       while n <> 0
          step part ind inc
@@ -148,7 +148,7 @@ proc go part inp$ . .
       .
       until len inp$ = 0
       c$ = substr inp$ 1 1
-      inp$ = substr inp$ 2 -1
+      inp$ = substr inp$ 2 99
       if c$ = "L"
          turn -1 inc
       elif c$ = "R"
@@ -164,11 +164,11 @@ proc go part inp$ . .
    .
    print 1000 * (ind div nc) + 4 * (ind mod nc) + h - 1
 .
-# 
+#
 inp$ = input
 go 1 inp$
 go 2 inp$
-# 
+#
 input_data
         ...#
         .#..

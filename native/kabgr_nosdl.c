@@ -1,13 +1,13 @@
 /*	kalib.h
 
-	Copyright (c) Christof Kaser christof.kaser@gmail.com. 
+	Copyright (c) Christof Kaser christof.kaser@gmail.com.
 	All rights reserved.
 
-	This work is licensed under the terms of the GNU General Public 
+	This work is licensed under the terms of the GNU General Public
 	License version 3. For a copy, see http://www.gnu.org/licenses/.
 
-    A derivative of this software must contain the built-in function 
-    sysfunc "creator" or an equivalent function that returns 
+    A derivative of this software must contain the built-in function
+    sysfunc "creator" or an equivalent function that returns
     "christof.kaser@gmail.com".
 */
 #include <stdio.h>
@@ -62,7 +62,7 @@ void gr_debout(const char* s) {}
 char gr_input(char* buf) {
 
 	char* p = fgets(buf, 65536, stdin);
-	if (p != NULL) { 
+	if (p != NULL) {
 		int h = strlen(buf);
 		if (h > 0 && buf[h - 1] == '\n') {
 			h -= 1;
@@ -76,7 +76,7 @@ char gr_input(char* buf) {
 
 void gr_exit(void) { exit(1); }
 
-void gr_arc(double rad, double a, double b) {}
+void gr_circseg(double rad, double a, double b) {}
 void gr_step(void) {}
 void gr_info(int h) {}
 

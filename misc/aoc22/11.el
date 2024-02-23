@@ -1,11 +1,11 @@
 # AoC-22 - Day 11: Monkey in the Middle
-# 
+#
 repeat
    s$ = input
    until s$ = ""
-   a[] = number strsplit substr input 19 -1 ","
+   a[] = number strsplit substr input 19 9 ","
    item0[][] &= a[]
-   a$[] = strsplit substr input 24 -1 " "
+   a$[] = strsplit substr input 24 9 " "
    h = 1
    if a$[1] = "*"
       h = 2
@@ -16,12 +16,12 @@ repeat
    .
    op[] &= h
    opn[] &= n
-   divs[] &= number substr input 21 -1
-   true[] &= 1 + number substr input 29 -1
-   false[] &= 1 + number substr input 30 -1
+   divs[] &= number substr input 21 9
+   true[] &= 1 + number substr input 29 9
+   false[] &= 1 + number substr input 30 9
    s$ = input
 .
-# 
+#
 prod = 1
 n = len op[]
 for i = 1 to n
@@ -69,7 +69,7 @@ proc run maxcnt . .
 .
 run 20
 run 10000
-# 
+#
 input_data
 Monkey 0:
   Starting items: 79, 98

@@ -1,7 +1,7 @@
 # AoC-23 - Day 19: Aplenty
-# 
+#
 global name$[] rule[][] set[] start .
-# 
+#
 func n2id n$ .
    if n$ = "A"
       return 0
@@ -18,7 +18,7 @@ func n2id n$ .
    rule[][] &= [ ]
    return id
 .
-# 
+#
 proc read . .
    start = n2id "in"
    repeat
@@ -26,7 +26,7 @@ proc read . .
       until s$ = ""
       s$[] = strsplit s$ "{}:,"
       id = n2id s$[1]
-      # 
+      #
       for i = 2 step 2 to len s$[] - 3
          if substr s$[i] 1 1 = "x"
             cat = 1
@@ -37,7 +37,7 @@ proc read . .
          else
             cat = 4
          .
-         n = number substr s$[i] 3 -1
+         n = number substr s$[i] 3 9
          if substr s$[i] 2 1 = "<"
             n = -n
          .
@@ -50,7 +50,7 @@ proc read . .
    .
 .
 read
-# 
+#
 func solve1 r .
    if r = 0
       return 1
@@ -85,7 +85,7 @@ proc part1 . .
    print sum
 .
 part1
-# 
+#
 func solve r a[] b[] .
    if r = 0
       s = 1
@@ -128,7 +128,7 @@ func solve r a[] b[] .
    return res + solve rule[r][ln] a[] b[]
 .
 print solve start [ 1 1 1 1 ] [ 4000 4000 4000 4000 ]
-# 
+#
 input_data
 px{a<2006:qkq,m>2090:A,rfg}
 pv{a>1716:R,A}

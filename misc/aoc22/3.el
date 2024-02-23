@@ -1,5 +1,5 @@
 # AoC-22 - Day 3: Rucksack Reorganization
-# 
+#
 proc code c$ . c .
    c = strcode c$ - strcode "a" + 1
    if c < 1
@@ -8,7 +8,7 @@ proc code c$ . c .
 .
 len a[] 52
 len b[] 52
-# 
+#
 repeat
    s$ = input
    until s$ = ""
@@ -18,7 +18,7 @@ repeat
       code c$ c
       a[c] = 1
    .
-   for c$ in strchars substr s$ l + 1 -1
+   for c$ in strchars substr s$ l + 1 99
       code c$ c
       if a[c] = 1
          a[c] = 0
@@ -30,7 +30,7 @@ repeat
    .
 .
 print sum
-# 
+#
 sum = 0
 for ii = 1 step 3 to len inp$[] - 2
    for c$ in strchars inp$[ii]
@@ -54,7 +54,7 @@ for ii = 1 step 3 to len inp$[] - 2
    .
 .
 print sum
-# 
+#
 input_data
 vJrwpWtwJgWrhcsFMMfFFhFp
 jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL

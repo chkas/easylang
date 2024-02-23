@@ -1,5 +1,5 @@
 # AoC-22 - Day 21: Monkey Math
-# 
+#
 global name$[] o[] a[] b[] .
 proc name2id n$ . id .
    for id = 1 to len name$[]
@@ -41,7 +41,7 @@ repeat
       .
    else
       o[id] = 0
-      a[id] = number substr s$ 7 -1
+      a[id] = number substr s$ 7 9
    .
 .
 proc solv id . v .
@@ -64,7 +64,7 @@ proc solv id . v .
 solv root v
 print v
 o[root] = 2
-# 
+#
 low = -10000000000000
 high = 10000000000000
 a[humn] = low
@@ -84,7 +84,7 @@ repeat
    .
 .
 print in
-# 
+#
 input_data
 root: pppw + sjmn
 dbpl: 5

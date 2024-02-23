@@ -1,5 +1,5 @@
 # AoC-22 - Day 10: Cathode-Ray Tube
-# 
+#
 cx = 20
 subr check
    if c >= x and c <= x + 2
@@ -25,11 +25,11 @@ repeat
    check
    if substr s$ 1 4 = "addx"
       check
-      x += number substr s$ 6 -1
+      x += number substr s$ 6 9
    .
 .
 print part1
-# 
+#
 input_data
 addx 15
 addx -11

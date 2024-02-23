@@ -1,7 +1,7 @@
 # AoC-23 - Day 20: Pulse Propagation
-# 
+#
 global name$[] con[][] confr[][] typ[] broadc exitnd[] .
-# 
+#
 func n2id n$ .
    for id to len name$[]
       if name$[id] = n$
@@ -14,7 +14,7 @@ func n2id n$ .
    confr[][] &= [ ]
    return id
 .
-# 
+#
 proc read . .
    broadc = n2id "roadcaster"
    rx = n2id "rx"
@@ -22,8 +22,8 @@ proc read . .
       s$ = input
       until s$ = ""
       s$[] = strsplit s$ ">, "
-      # 
-      id = n2id substr s$[1] 2 -1
+      #
+      id = n2id substr s$[1] 2 99
       if substr s$[1] 1 1 = "%"
          # flipflop
          typ[id] = -1
@@ -44,10 +44,10 @@ proc read . .
    .
 .
 read
-# 
-# 
+#
+#
 len lowhigh[] 2
-# 
+#
 proc run ncnt . .
    len stat[] len typ[]
    len exitcnt[] len exitnd[]
@@ -67,7 +67,7 @@ proc run ncnt . .
                .
                sig = if h <> len confr[id][]
                stat[id] = sig
-               # 
+               #
                if sig = 1
                   # part 2
                   for i to len exitnd[]

@@ -554,6 +554,8 @@ S ND* parse_numstr(void) {
 	return nd;
 }
 
+S ND* parse_strarr_term(void);
+
 S ND* parse_strterm(void) {
 
 	ND* nd = NULL;
@@ -621,6 +623,10 @@ S ND* parse_strterm(void) {
 	}
 	else if (is_numfactor()) {
 		nd = parse_numstr();
+	}
+//kc
+	else if (tok >= t_vnumarr && tok <= t_vstrarrarr) {
+		nd = parse_strarr_term();
 	}
 	else {
 		error("string");
@@ -2421,15 +2427,7 @@ S ND* parse_sequ(void) {
 						return 0;
 					}
 				}
-				if (tokpr == t_pr || tokpr == t_print) {
-					if (tok >= t_vnumarr && tok <= t_vstrarrarr) {
-						nd->le = parse_strarr_term();
-					}
-					else {
-						nd->le = parse_strex();
-					}
-				}
-				else if (tokpr <= t_text) {
+				if (tokpr <= t_text) {
 					nd->le = parse_strex();
 				}
 				else if (tokpr <= t_circseg) {

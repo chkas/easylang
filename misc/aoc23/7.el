@@ -1,10 +1,10 @@
 # AoC-23 - Day 7: Camel Cards
-# 
+#
 repeat
    s$ = input
    until s$ = ""
    cards$[] &= substr s$ 1 5
-   bid[] &= number substr s$ 7 -1
+   bid[] &= number substr s$ 7 9
 .
 Grande = 6
 Poker = 5
@@ -13,7 +13,7 @@ Three = 3
 TwoPairs = 2
 Pair = 1
 Nothing = 0
-# 
+#
 func value hand$ part .
    len cnt[] 14
    for c$ in strchars hand$
@@ -43,7 +43,7 @@ func value hand$ part .
          hand = Poker
       elif cnt[i] = 3
          hand += Three
-         # +3       
+         # +3
       elif cnt[i] = 2
          hand += Pair
          # +1
@@ -74,7 +74,7 @@ func value hand$ part .
    .
    return hand * 1000000 + cardval
 .
-# 
+#
 proc run part . .
    b[] = bid[]
    for c$ in cards$[]
@@ -94,10 +94,10 @@ proc run part . .
    .
    print s
 .
-# 
+#
 run 1
 run 2
-# 
+#
 input_data
 32T3K 765
 T55J5 684

@@ -1,5 +1,5 @@
 # AoC-22 - Day 13: Distress Signal
-# 
+#
 proc ntok . s$ tok .
    c$ = substr s$ 1 1
    h = 2
@@ -20,7 +20,7 @@ proc ntok . s$ tok .
          h += 1
       .
    .
-   s$ = substr s$ h -1
+   s$ = substr s$ h 999
 .
 proc cmp . s1$ s2$ win .
    repeat
@@ -77,7 +77,7 @@ proc run . .
    print (ind1 + 1) * (ind2 + 2)
 .
 run
-# 
+#
 input_data
 [1,1,3,1,1]
 [1,1,5,1,1]

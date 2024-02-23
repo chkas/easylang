@@ -248,6 +248,7 @@ Jordan-Pólya numbers
 Josephus problem
 Julia set
 K
+Kaprekar numbers
 Klarner-Rado sequence
 Knapsack problem/0-1
 Knuth shuffle
@@ -259,6 +260,7 @@ Largest number divisible by its digits
 Largest proper divisor of n
 Last Friday of each month
 Leap year
+Least common multiple
 Leonardo numbers
 Letter frequency
 Levenshtein distance
@@ -269,6 +271,8 @@ Literals/String
 Logical operations
 Long multiplication
 Long primes
+Long year
+Longest common subsequence
 Longest common substring
 Look-and-say sequence
 Loop over multiple arrays simultaneously
@@ -283,18 +287,27 @@ Loops/Infinite
 Loops/N plus one half
 Loops/Nested
 Loops/While
+Lucas-Lehmer test
 Lyndon word
 M
+Magic 8-ball
+Magic constant
+Magic squares of odd order
 Magnanimous numbers
 Mandelbrot set
 Mastermind
 Matrix multiplication
 Matrix transposition
+Maximum difference between adjacent elements of list
 Maximum triangle path sum
 Maze generation
 Maze solving
 McNuggets problem
+MD5
 MD5/Implementation
+Meissel–Mertens constant
+Mersenne primes
+Mertens function
 Middle three digits
 Minesweeper game
 Minimum multiple of m where digital sum equals m
@@ -321,6 +334,7 @@ Non-decimal radices/Convert
 Nth root
 Numbers which are not the sum of distinct squares
 Numbers which are the cube roots of the product of their proper divisors
+Numbers whose count of divisors is prime
 Numbers with equal rises and falls
 O
 O'Halloran numbers
@@ -351,19 +365,25 @@ Perfect totient numbers
 Periodic table
 Perlin noise
 Permutations
+Permutations by swapping
 Permutations/Derangements
+Pernicious numbers
 Pick random element
 Pig the dice game
 Pisano period
+Playing cards
 Plot coordinate pairs
 Polynomial regression
 Polyspiral
 Population count
 Price fraction
 Primality by trial division
+Primality by Wilson's theorem
 Prime conspiracy
 Prime decomposition
 Primes: n*2^m+1
+Probabilistic choice
+Problem of Apollonius
 Proper divisors
 Pseudo-random numbers/Middle-square method
 Pythagoras tree
@@ -402,6 +422,7 @@ Search a list
 Self-describing numbers
 Semiprime
 Sequence of non-squares
+S
 Sequence of primes by trial division
 Sequence: smallest number greater than previous term with exactly n divisors
 Sequence: smallest number with exactly n divisors
@@ -422,11 +443,11 @@ Sieve of Eratosthenes
 Simple turtle graphics
 Sisyphus sequence
 Sleep
-S
 Sleeping Beauty problem
 Smarandache-Wellin primes
 Smith numbers
 Snake
+Soloway's recurring rainfall
 Solve triangle solitare puzzle
 Sort disjoint sublist
 Sort three variables
@@ -478,8 +499,11 @@ Sum and product of an array
 Sum digits of an integer
 Sum multiples of 3 and 5
 Sum of a series
+Sum of divisors
 Sum of elements below main diagonal of matrix
+Sum of first n cubes
 Sum of squares
+Sum of two adjacent numbers are primes
 Summarize primes
 Superellipse
 Sylvester's sequence
@@ -489,8 +513,12 @@ T
 Tau function
 Tau number
 Temperature conversion
+Ternary logic
+Test integerness
 The Name Game
+The sieve of Sundaram
 The Twelve Days of Christmas
+Thue-Morse
 Tic-tac-toe
 Time a function
 Tokenize a string
@@ -499,28 +527,38 @@ Totient function
 Towers of Hanoi
 Trabb Pardo–Knuth algorithm
 Tree traversal
+Trigonometric functions
+Triplet of three numbers
+Truncatable primes
 Twelve statements
 Twin primes
 Two bullet roulette
+Two identical strings
 Two sum
 U
 Ulam spiral (for primes)
+Unbias a random generator
 User input/Text
 V
 Vampire number
 Van der Corput sequence
 Van Eck sequence
 Variables
+Vector
+Vector products
 Vibrating rectangles
 Vigenère cipher
+Voronoi diagram
 W
 Wagstaff primes
 Water collected between towers
+Wieferich primes
 Wilson primes of order n
 Wireworld
 Word wrap
 Y
 Yellowstone sequence
+Yin and yang
 Z
 Zeckendorf number representation
 Zero to the zero power
