@@ -264,7 +264,7 @@ S ND* parse_lenfunc(ushort mode) {
 	return nd;
 }
 
-S ND* parse_callfunc(struct proc* p, byte isstr) {
+S ND* parse_callfunc(struct proc* p, byte typ) {
 
 	ND* nd = mknd();
 	csf(tval);
@@ -277,13 +277,13 @@ S ND* parse_callfunc(struct proc* p, byte isstr) {
 		procdecl_len += 1;
 	}
 	nd->numf = op_callfunc;
-#ifdef FASTPROC
 	if (p->start && p->start->bx3 != 0) {
 		nd->numf = op_fastcall;
 	}
-#endif
-	if (isstr) nd->strf = op_callfunc_str;
-
+	if (typ) {
+		if (typ == 1) nd->strf = op_callfunc_str;
+		else nd->arrf = op_callfunc_arr;
+	}
 	ND* ndf = nd;
 	ushort i = 0;
 
@@ -614,17 +614,24 @@ S ND* parse_strterm(void) {
 		if (p) {
 			if (p->typ == 0) error("string");
 
+			else if (p->typ == 1) {
+				nd = parse_numstr();
+			}
 			else if (p->typ == 2) {
 				nd = parse_callfunc(p, 1);
 			}
-			else nd = parse_numstr();
+			else {
+//kc
+				nd = mknd();
+				nd->strf = op_numarrstr;
+				nd->le = parse_numarrex();;
+			}
 		}
 		else nd = parse_numstr();
 	}
 	else if (is_numfactor()) {
 		nd = parse_numstr();
 	}
-//kc
 	else if (tok >= t_vnumarr && tok <= t_vstrarrarr) {
 		nd = parse_strarr_term();
 	}
@@ -751,7 +758,6 @@ S ND* parse_log_termx(ND* nd0) {
 		nd = parse_str_cmp();
 	}
 	else if (tok == t_name) {
-//kc
 		const char* name = getn(tval);
 		struct proc* p = proc_get(name);
 		if (p && p->typ == 2) {
@@ -1183,9 +1189,16 @@ S ND* parse_numarrex(void) {
 	else if (tok == t_number) {
 		ex->arrf = op_map_number;
 		csb_tok_spc_nt();
-//		csb_tok_nt();
-//		cs_spc();
 		ex->le = parse_strarrex();;
+	}
+	else if (tok == t_name) {
+//kc
+		const char* name = getn(tval);
+		struct proc* p = proc_get(name);
+		if (p && p->typ == 3) {
+			ex = parse_callfunc(p, 2);
+		}
+		else error("array");
 	}
 	else error("array");
 	return ex;
@@ -1627,7 +1640,6 @@ S void parse_for_stat(ND* nd) {
 		nd->v1 = parse_var(VAR_STR, RW);
 		cs_spc();
 		if (tok != t_name || strcmp(tval, "in") != 0) error("in");
-		//kc ndx->vx2 = get_var(VAR_NUM, 0, "_", code_utf8len);
 		csb_tok_spc_nt();
 		nd->ri = parse_strarrex();
 		nd->vf = op_for_instr;
@@ -2106,7 +2118,6 @@ S ND* parse_sequ(void) {
 				if (!err && sequ_level < 16) nest_block[sequ_level] = codestrln;
 				if (tok == t_func || tok == t_fastfunc) {
 
-#ifdef FASTPROC
 					if (tok == t_fastfunc && cod) {
 						in_fastfunc = 1;
 						parse_proc(1);
@@ -2121,13 +2132,19 @@ S ND* parse_sequ(void) {
 							nextc();
 							parse_proc(2);
 						}
+						else if (c == '[' && cn == ']' && tok == t_func) {
+							// func[]
+							tval[4] ='[';
+							tval[5] =']';
+							tval[6] = 0;
+							nextc();
+							nextc();
+							parse_proc(3);
+						}
 						else {
 							parse_proc(1);
 						}
 					}
-#else
-					parse_proc(1);
-#endif
 				}
 				else {
 					parse_proc(0);
@@ -2304,6 +2321,10 @@ S ND* parse_sequ(void) {
 						cs_spc();
 						nd->le = parse_strex();
 					}
+					else if (proc->typ == 3) {
+						cs_spc();
+						nd->le = parse_numarrex();
+					}
 				}
 				else if (tok == t_swap) {
 					parse_swap_stat(nd);
@@ -2311,8 +2332,6 @@ S ND* parse_sequ(void) {
 				else if (tok == t_break) {
 					if (loop_level == 0) error("not in a loop or procedure");
 					csb_tok_spc_nt();
-					//csb_tok_nt();
-					//cs_spc();
 					ushort h = tvalf;
 					if (tok != t_lnumber || h != tvalf) error("break level");
 					if (loop_level < h) error("break level too high");

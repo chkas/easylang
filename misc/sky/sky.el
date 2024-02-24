@@ -390,6 +390,7 @@ on key
       timer -1
    else
       if substr k$ 1 2 = "p:"
+         time$ = ""
          s$[] = strsplit substr k$ 3 99 " "
          lat = number s$[1]
          lon = number s$[2]

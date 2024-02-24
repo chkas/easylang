@@ -123,14 +123,9 @@ S void code_free() {
 	ndnxt = progmem;
 }
 
-#define FASTPROC
-
 #include "kalex.h"
 #include "kafunc.h"
-
-#ifdef FASTPROC
 #include "kawasm.h"
-#endif
 
 #include "kaparse.h"
 
@@ -194,8 +189,10 @@ extern int parse(const char* str, int opt, int pos) {
 			else if (ch == 'e') codestr[npos + 11] = 'u'; // repeat
 			else if (ch == 'n') codestr[npos + 7] = 'u'; // on
 			else if (ch == 'a') codestr[npos + 13] = 'u'; // fastproc
-			else if (ch == 'u' && codestr[npos + 7] == '$') {
-				codestr[npos + 10] = 'u'; // func$
+			else if (ch == 'u') {
+				if (codestr[npos + 7] == '<') codestr[npos + 9] = 'u'; //func
+				else if (codestr[npos + 7] == '$') codestr[npos + 10] = 'u'; // func$
+				else codestr[npos + 11] = 'u'; // func[]
 			}
 			else {
 				codestr[npos + 9] = 'u'; //elif, else, proc, func, subr
@@ -263,7 +260,7 @@ extern int exec(int opt, const char* args) {
 
 //	pr("exec %lu", sizeof(struct str));
 
-#ifndef __EMSCRIPTEN__	
+#ifndef __EMSCRIPTEN__
 	srand((int)(long long)(sys_time() * 1000));
 #endif
 	freecodestr();

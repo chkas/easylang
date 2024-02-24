@@ -1,32 +1,28 @@
-proc vadd a[] b[] . r[] .
-   r[] = [ ]
+func[] vadd a[] b[] .
    for i to len a[]
       r[] &= a[i] + b[i]
    .
+   return r[]
 .
-proc vsub a[] b[] . r[] .
-   r[] = [ ]
+func[] vsub a[] b[] .
    for i to len a[]
       r[] &= a[i] - b[i]
    .
+   return r[]
 .
-proc vmul a[] b . r[] .
-   r[] = [ ]
+func[] vmul a[] b .
    for i to len a[]
       r[] &= a[i] * b
    .
+   return r[]
 .
-proc vdiv a[] b . r[] .
-   r[] = [ ]
+func[] vdiv a[] b .
    for i to len a[]
       r[] &= a[i] / b
    .
+   return r[]
 .
-vadd [ 5 7 ] [ 2 3 ] r[]
-print r[]
-vsub [ 5 7 ] [ 2 3 ] r[]
-print r[]
-vmul [ 5 7 ] 11 r[]
-print r[]
-vdiv [ 5 7 ] 2 r[]
-print r[]
+print vadd [ 5 7 ] [ 2 3 ]
+print vsub [ 5 7 ] [ 2 3 ]
+print vmul [ 5 7 ] 11
+print vdiv [ 5 7 ] 2
