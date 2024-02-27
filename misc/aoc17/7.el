@@ -1,5 +1,5 @@
 # AoC-17 - Day 7: Recursive Circus
-# 
+#
 global name$[] childs[][] parent[] w[] root .
 proc name2id n$ . id .
    for id to len name$[]
@@ -12,7 +12,7 @@ proc name2id n$ . id .
    parent[] &= 0
    w[] &= 0
 .
-# 
+#
 proc read . .
    repeat
       in$ = input
@@ -23,7 +23,7 @@ proc read . .
       for i = 4 to len h$[]
          s$ = h$[i]
          if i < len h$[]
-            s$ = substr s$ 1 len s$ - 1
+            s$ = substr s$ 1 (len s$ - 1)
          .
          name2id s$ id
          childs[id0][] &= id
@@ -38,9 +38,9 @@ proc read . .
    .
 .
 read
-# 
+#
 print name$[root]
-# 
+#
 done = 0
 proc bala node . wr .
    for i to len childs[node][]
@@ -67,7 +67,7 @@ proc bala node . wr .
    wr = wsum + w[node]
 .
 bala root w
-# 
+#
 input_data
 pbga (66)
 xhth (57)

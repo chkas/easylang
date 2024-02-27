@@ -1,7 +1,7 @@
 # AoC-20 - Day 21: Allergen Assessment
-# 
+#
 global ingre$[] allerg$[] meal_ingre[][] meal_allerg[][] .
-# 
+#
 proc ingre_id s$ . i .
    for i to len ingre$[]
       if ingre$[i] = s$
@@ -34,7 +34,7 @@ proc read . .
       i += 1
       meal_allerg[][] &= [ ]
       while i <= len s$[]
-         s$ = substr s$[i] 1 len s$[i] - 1
+         s$ = substr s$[i] 1 (len s$[i] - 1)
          allerg_id s$ v
          meal_allerg[meal][] &= v
          i += 1
@@ -43,11 +43,11 @@ proc read . .
    .
 .
 read
-# 
+#
 n_meal = len meal_ingre[][]
 n_ingre = len ingre$[]
 n_allerg = len allerg$[]
-# 
+#
 proc allerg_in_meal allerg meal . is_in .
    is_in = 0
    for i to len meal_allerg[meal][]
@@ -66,10 +66,10 @@ proc ingre_in_meal ingre meal . is_in .
       .
    .
 .
-# 
+#
 len ingre_allerg0[] n_ingre
 global allerg_ingre[][] .
-# 
+#
 proc search allerg . .
    len ingre_allerg[] n_ingre
    for i to n_ingre
@@ -96,7 +96,7 @@ proc search allerg . .
 for i to n_allerg
    search i
 .
-# 
+#
 proc part1 . .
    for ingre to n_ingre
       if ingre_allerg0[ingre] = 0
@@ -109,8 +109,8 @@ proc part1 . .
    print sum
 .
 part1
-# 
-# 
+#
+#
 len allerg_ingre[] n_allerg
 proc part2 . .
    for k to n_allerg
@@ -154,7 +154,7 @@ proc part2 . .
    print ""
 .
 part2
-# 
+#
 input_data
 mxmxvkd kfcds sqjhc nhms (contains dairy, fish)
 trh fvjkl sbzzf mxmxvkd (contains dairy)

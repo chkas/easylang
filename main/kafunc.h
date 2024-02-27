@@ -832,7 +832,7 @@ S STR op_time_str(ND* nd) {
 	return str;
 }
 
-S STR op_strchr(ND* nd) {
+S STR op_strchar(ND* nd) {
 	STR str;
 	str_init(&str);
 

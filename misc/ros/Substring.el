@@ -3,7 +3,7 @@ print substr a$ 12 5
 print substr a$ 12 99
 #
 a$ = "Hallo Österreich!"
-print substr a$ 1 len a$ - 1
+print substr a$ 1 (len a$ - 1)
 #
 c$ = "Ö"
 m = 2

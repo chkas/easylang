@@ -1,5 +1,5 @@
 # AoC-20 - Day 4: Passport Processing
-# 
+#
 repeat
    s$ = input
    until s$ = "" and sx$ = ""
@@ -13,7 +13,7 @@ repeat
       sx$ &= s$
    .
 .
-# 
+#
 for inp to len inp$[]
    h$[] = strsplit inp$[inp] " "
    msk = 0
@@ -42,7 +42,7 @@ for inp to len inp$[]
       elif e$[1] = "hgt"
          msk += 16
          l = len e$[2]
-         h$ = substr e$[2] l - 1 2
+         h$ = substr e$[2] (l - 1) 2
          h = number substr e$[2] 1 l - 2
          if h$ = "cm"
             if h >= 150 and h <= 193
@@ -101,7 +101,7 @@ for inp to len inp$[]
 .
 print n_valid1
 print n_valid2
-# 
+#
 input_data
 ecl:gry pid:860033327 eyr:2020 hcl:#fffffd
 byr:1937 iyr:2017 cid:147 hgt:183cm

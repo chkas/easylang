@@ -1,5 +1,5 @@
 # AoC-17 - Day 16: Permutation Promenade
-# 
+#
 m$[] = strsplit input ","
 np = 16
 len prog[] np
@@ -11,7 +11,7 @@ subr tostr
    prog$ = ""
    for i range0 np
       h = prog[(i + offs) mod np]
-      prog$ &= strchar h + 97
+      prog$ &= strchar (h + 97)
    .
 .
 for i range0 np
@@ -20,7 +20,7 @@ for i range0 np
 .
 tostr
 prog$[] &= prog$
-# 
+#
 repeat
    for m$ in m$[]
       c$ = substr m$ 1 1
@@ -50,7 +50,7 @@ repeat
 .
 print prog$[2]
 print prog$[1000000000 mod iter + 1]
-# 
+#
 input_data
 s1,x3/4,pe/b
 

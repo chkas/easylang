@@ -8,7 +8,7 @@ repeat
 proc tostr pw[] . pw$ .
    pw$ = ""
    for v in pw[]
-      pw$ &= strchar v + 97
+      pw$ &= strchar (v + 97)
    .
 .
 proc hash pw[] . hash$ .
@@ -16,7 +16,7 @@ proc hash pw[] . hash$ .
    len pwn[] np
    arrbase pw[] 0
    arrbase pwn[] 0
-   # 
+   #
    for inp$ in inp$[]
       s$[] = strsplit inp$ " "
       if s$[1] = "swap"
@@ -91,9 +91,9 @@ proc hash pw[] . hash$ .
 .
 hash [ 0 1 2 3 4 5 6 7 ] h$
 print h$
-# 
+#
 perm[] = [ 0 1 2 3 4 5 6 7 ]
-# 
+#
 global permlist[][] .
 proc mk_permlist k . .
    for i = k to len perm[]
@@ -106,7 +106,7 @@ proc mk_permlist k . .
    .
 .
 mk_permlist 1
-# 
+#
 for i to len permlist[][]
    hash permlist[i][] hash$
    if hash$ = "fbgdceah"
@@ -115,7 +115,7 @@ for i to len permlist[][]
       break 1
    .
 .
-# 
+#
 input_data
 swap position 4 with position 0
 swap letter d with letter b

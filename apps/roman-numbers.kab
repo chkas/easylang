@@ -1,5 +1,5 @@
 # Roman numbers
-# 
+#
 global ans$ sol$ state ind cnt pts same .
 proc disp col s$ . .
    color col
@@ -91,7 +91,7 @@ proc handle_key . .
       .
    else
       if ind = 0
-         ans$ = substr ans$ 1 len ans$ - 1
+         ans$ = substr ans$ 1 (len ans$ - 1)
       else
          if len ans$ < 12
             ans$ &= sym$[ind]

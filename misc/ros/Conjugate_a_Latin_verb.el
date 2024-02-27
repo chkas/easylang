@@ -3,7 +3,7 @@ proc conj inf$ . .
       print "Not a first conjugation verb."
       return
    .
-   stem$ = substr inf$ 1 len inf$ - 3
+   stem$ = substr inf$ 1 (len inf$ - 3)
    if stem$ = ""
       print "Stem cannot be empty."
       return

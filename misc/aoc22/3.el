@@ -18,7 +18,7 @@ repeat
       code c$ c
       a[c] = 1
    .
-   for c$ in strchars substr s$ l + 1 99
+   for c$ in strchars substr s$ (l + 1) 99
       code c$ c
       if a[c] = 1
          a[c] = 0

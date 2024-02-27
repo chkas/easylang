@@ -1,5 +1,5 @@
 # AoC-15 - Day 11: Corporate Policy
-# 
+#
 for c$ in strchars input
    pw[] &= strcode c$ - 97
 .
@@ -17,7 +17,7 @@ for part to 2
          print "overflow"
          break 1
       .
-      # 
+      #
       ok = 1
       for i to n
          if pw[i] = 8 or pw[i] = 11 or pw[i] = 14
@@ -48,11 +48,11 @@ for part to 2
    .
    pw$ = ""
    for v in pw[]
-      pw$ &= strchar v + 97
+      pw$ &= strchar (v + 97)
    .
    print pw$
 .
-# 
+#
 input_data
 ghijklmn
 

@@ -5,7 +5,7 @@ n = (len s$ + 1) div 4
 len st$[][] n
 while substr s$ 2 1 <> "1"
    for i = 1 to n
-      h$ = substr s$ 4 * i - 2 1
+      h$ = substr s$ (4 * i - 2) 1
       if h$ <> " "
          st$[i][] &= h$
       .
@@ -28,7 +28,7 @@ repeat
    until s$ = ""
    a[] = number strsplit s$ " "
    m[] &= a[1] ; m[] &= a[2] ; m[] &= a[3]
-   #kc m[] &= a[2] ; m[] &= a[4] ; m[] &= a[6]
+   # kc m[] &= a[2] ; m[] &= a[4] ; m[] &= a[6]
 .
 for part = 1 to 2
    for k = 1 step 3 to len m[]

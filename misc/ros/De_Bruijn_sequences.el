@@ -27,7 +27,7 @@ func$ debruijn k0 n0 .
    for v in seq[]
       buf$ &= v
    .
-   buf$ &= substr buf$ 1 n - 1
+   buf$ &= substr buf$ 1 (n - 1)
    return buf$
 .
 func alldigits s$ .

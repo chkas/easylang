@@ -1,5 +1,5 @@
 # AoC-15 - Day 8: Matchsticks
-# 
+#
 repeat
    s$ = input
    until s$ = ""
@@ -8,7 +8,7 @@ repeat
 for s$ in inp$[]
    lit += len s$
    mem += len s$ - 2
-   s$ = substr s$ 2 len s$ - 2
+   s$ = substr s$ 2 (len s$ - 2)
    s$[] = strchars s$
    i = 1
    while i <= len s$[]
@@ -26,7 +26,7 @@ for s$ in inp$[]
    .
 .
 print lit - mem
-# 
+#
 lit = 0
 mem = 0
 for s$ in inp$[]
@@ -39,7 +39,7 @@ for s$ in inp$[]
    .
 .
 print mem - lit
-#  
+#
 input_data
 ""
 "abc"

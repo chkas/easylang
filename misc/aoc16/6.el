@@ -1,5 +1,5 @@
 # AoC-16 - Day 6: Signals and Noise
-# 
+#
 repeat
    s$ = input
    until s$ = ""
@@ -17,17 +17,17 @@ for col to len w$[1][]
          m = i
       .
    .
-   w$ &= strchar m + 96
+   w$ &= strchar (m + 96)
    for i to 26
       if let[i] > 0 and let[i] < let[m]
          m = i
       .
    .
-   w2$ &= strchar m + 96
+   w2$ &= strchar (m + 96)
 .
 print w$
 print w2$
-# 
+#
 input_data
 eedadn
 drvtee

@@ -2,7 +2,7 @@ func$ car x$ .
    return substr x$ 1 1
 .
 func$ cdr x$ .
-   return substr x$ 2 1 / 0
+   return substr x$ 2 9999
 .
 func$ scs x$ y$ .
    if x$ = ""

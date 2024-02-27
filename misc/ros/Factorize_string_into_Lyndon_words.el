@@ -14,7 +14,7 @@ proc lyndonfact s$ . .
          j += 1
       .
       while i <= k
-         print substr s$ i j - k
+         print substr s$ i (j - k)
          i += j - k
       .
    .

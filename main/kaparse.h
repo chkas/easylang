@@ -82,7 +82,7 @@ S ND* parse_numarrex(void);
 S ND* parse_strarrex(void);
 
 struct str (*strf[])(ND*) = {
-	op_input, op_sysfunc, op_keyb_key, op_strchr, op_time_str, op_join, op_substr
+	op_input, op_sysfunc, op_keyb_key, op_strchar, op_time_str, op_join, op_substr
 };
 
 S ND* parse_strfunc(void) {
@@ -91,18 +91,18 @@ S ND* parse_strfunc(void) {
 	csb_tok_nt();
 	nd->strf = strf[tokpr - t_input];
 
-	if (tokpr >= t_strchr && tokpr <= t_timestr) {
+	if (tokpr >= t_strchar && tokpr <= t_timestr) {
 		cs_spc();
-		nd->le = parse_ex();
+		nd->le = parse_fac();
 	}
 	else if (tokpr == t_substr) {
 		ND* ndx = mkndx();
 		cs_spc();
 		nd->le = parse_strex();
 		cs_spc();
-		nd->ri = parse_ex();
+		nd->ri = parse_fac();
 		cs_spc();
-		ndx->ex = parse_ex();;
+		ndx->ex = parse_fac();;
 	}
 	else if (tokpr == t_sysfunc) {
 		cs_spc();

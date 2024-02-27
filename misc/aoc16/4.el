@@ -1,5 +1,5 @@
 # AoC-16 - Day 4: Security Through Obscurity
-# 
+#
 repeat
    s$ = input
    until s$ = ""
@@ -46,7 +46,7 @@ repeat
             w$ &= " "
          else
             h = (word[i] - 1 + id) mod 26
-            w$ &= strchar h + 97
+            w$ &= strchar (h + 97)
          .
       .
       if w$ = "northpole object storage" or w$ = "very encrypted name"
@@ -56,7 +56,7 @@ repeat
 .
 print sum
 print nosid
-# 
+#
 input_data
 aaaaa-bbb-z-y-x-123[abxyz]
 a-b-c-d-e-f-g-h-987[abcde]

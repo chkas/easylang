@@ -947,28 +947,28 @@ proc init . .
   for cardsum = 12 to 20
     s$ = input
     for dealer_card = 2 to 11
-      strat_hard$[dealer_card][cardsum] = substr s$ dealer_card * 3 1
+      strat_hard$[dealer_card][cardsum] = substr s$ (dealer_card * 3) 1
     .
   .
   s$ = input
   for cardsum = 12 to 20
     s$ = input
     for dealer_card = 2 to 11
-      strat_soft$[dealer_card][cardsum] = substr s$ dealer_card * 3 1
+      strat_soft$[dealer_card][cardsum] = substr s$ (dealer_card * 3) 1
     .
   .
   s$ = input
   for cardsum = 9 to 11
     s$ = input
     for dealer_card = 2 to 11
-      strat_dbl$[dealer_card][cardsum] = substr s$ dealer_card * 3 1
+      strat_dbl$[dealer_card][cardsum] = substr s$ (dealer_card * 3) 1
     .
   .
   s$ = input
   for cardsum = 2 to 11
     s$ = input
     for dealer_card = 2 to 11
-      strat_split$[dealer_card][cardsum] = substr s$ dealer_card * 3 1
+      strat_split$[dealer_card][cardsum] = substr s$ (dealer_card * 3) 1
     .
   .
   for i = 1 to n_deck * 52
@@ -1437,28 +1437,28 @@ proc init . .
   for cardsum = 12 to 20
     s$ = input
     for dealer_card = 2 to 11
-      strat_hard$[dealer_card][cardsum] = substr s$ dealer_card * 3 1
+      strat_hard$[dealer_card][cardsum] = substr s$ (dealer_card * 3) 1
     .
   .
   s$ = input
   for cardsum = 12 to 20
     s$ = input
     for dealer_card = 2 to 11
-      strat_soft$[dealer_card][cardsum] = substr s$ dealer_card * 3 1
+      strat_soft$[dealer_card][cardsum] = substr s$ (dealer_card * 3) 1
     .
   .
   s$ = input
   for cardsum = 9 to 11
     s$ = input
     for dealer_card = 2 to 11
-      strat_dbl$[dealer_card][cardsum] = substr s$ dealer_card * 3 1
+      strat_dbl$[dealer_card][cardsum] = substr s$ (dealer_card * 3) 1
     .
   .
   s$ = input
   for cardsum = 2 to 11
     s$ = input
     for dealer_card = 2 to 11
-      strat_split$[dealer_card][cardsum] = substr s$ dealer_card * 3 1
+      strat_split$[dealer_card][cardsum] = substr s$ (dealer_card * 3) 1
     .
   .
   for i = 1 to n_deck * 52

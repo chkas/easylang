@@ -1,5 +1,5 @@
 # AoC-16 - Day 3: Squares With Three Sides
-# 
+#
 repeat
    s$ = input
    until s$ = ""
@@ -12,9 +12,9 @@ subr count
       len d[] 3
       for i to 3
          if part2 = 1
-            d[i] = number substr s$[lin + i - 1] col * 5 + 1 5
+            d[i] = number substr s$[lin + i - 1] (col * 5 + 1) 5
          else
-            d[i] = number substr s$[lin] i * 5 - 4 5
+            d[i] = number substr s$[lin] (i * 5 - 4) 5
          .
       .
       if part2 = 1
@@ -41,7 +41,7 @@ subr count
 count
 part2 = 1
 count
-# 
+#
 input_data
   101  301  501
   102  302  502

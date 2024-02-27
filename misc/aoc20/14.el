@@ -1,11 +1,11 @@
 # AoC-20 - Day 14: Docking Data
-# 
+#
 repeat
    s$ = input
    inp$[] &= s$
    until s$ = ""
 .
-# 
+#
 global memi$[] mem[] .
 proc mem_wr1 ind$ val . .
    for i to len mem[]
@@ -26,7 +26,7 @@ proc part1 . .
       while substr inp$[ii] 1 3 = "mem"
          s$[] = strsplit inp$[ii] " "
          ii += 1
-         ind$ = substr s$[1] 5 len s$[1] - 5
+         ind$ = substr s$[1] 5 (len s$[1] - 5)
          val = number s$[3]
          v = val
          bitv = 1
@@ -48,8 +48,8 @@ proc part1 . .
    print sum
 .
 part1
-# 
-# 
+#
+#
 proc mem_wr ind$ val . .
    ind$[] = strchars ind$
    for k to len mem[]
@@ -90,7 +90,7 @@ proc mem_wr ind$ val . .
    .
    memi$[] &= ind$
    mem[] &= val
-   # 
+   #
    for i to len del[]
       mem[del[i]] = mem[len mem[] - i + 1]
       memi$[del[i]] = memi$[len mem[] - i + 1]
@@ -137,7 +137,7 @@ proc part2 . .
 len mem[] 0
 len memi$[] 0
 part2
-# 
+#
 input_data
 mask = 000000000000000000000000000000X1001X
 mem[42] = 100

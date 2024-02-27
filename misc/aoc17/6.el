@@ -1,12 +1,12 @@
 # AoC-17 - Day 6: Memory Reallocation
-# 
+#
 hasz = 199999
 len haind$[] hasz
 len haval[] hasz
-# 
+#
 proc hash ind[] val . ret .
    for i to len ind[]
-      ind$ &= strchar ind[i] + 65
+      ind$ &= strchar (ind[i] + 65)
    .
    for c$ in strchars ind$
       hi = (hi * 26 + strcode c$ - 26) mod hasz + 1
@@ -22,7 +22,7 @@ proc hash ind[] val . ret .
       ret = haval[hi]
    .
 .
-# 
+#
 in$ = input
 m[] = number strsplit in$ "\t "
 n = len m[]
@@ -48,7 +48,7 @@ repeat
 .
 print cnt
 print cnt - ret
-# 
+#
 input_data
 0 2 7 0
 

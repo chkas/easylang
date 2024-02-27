@@ -1,7 +1,7 @@
 # AoC-18 - Day 5: Alchemical Reduction
-# 
+#
 a0$ = input
-# 
+#
 proc reduce . a$ .
    repeat
       a$[] = strchars a$
@@ -25,11 +25,11 @@ proc reduce . a$ .
 a$ = a0$
 reduce a$
 print len a$
-# 
+#
 min = 50000
 for k to 26
-   x1$ = strchar k + 64
-   x2$ = strchar k + 96
+   x1$ = strchar (k + 64)
+   x2$ = strchar (k + 96)
    a$[] = strchars a0$
    for i to len a$[]
       if a$[i] = x1$ or a$[i] = x2$
@@ -43,7 +43,7 @@ for k to 26
    .
 .
 print min
-# 
+#
 input_data
 dabAcCaCBAcCcaDA
 

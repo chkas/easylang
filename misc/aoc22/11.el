@@ -3,7 +3,7 @@
 repeat
    s$ = input
    until s$ = ""
-   a[] = number strsplit substr input 19 9 ","
+   a[] = number strsplit substr input 19 999 ","
    item0[][] &= a[]
    a$[] = strsplit substr input 24 9 " "
    h = 1
@@ -17,8 +17,8 @@ repeat
    op[] &= h
    opn[] &= n
    divs[] &= number substr input 21 9
-   true[] &= 1 + number substr input 29 9
-   false[] &= 1 + number substr input 30 9
+   true[] &= number substr input 29 9 + 1
+   false[] &= number substr input 30 9 + 1
    s$ = input
 .
 #

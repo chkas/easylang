@@ -1,13 +1,13 @@
 year = 1969
-#  
+#
 wkdays$ = "Su Mo Tu We Th Fr Sa"
 pagewide = 80
 blank$ = ""
 month$[] = [ "  January " " February " "   March  " "   April  " "   May    " "  June    " "   July   " "  August  " " September" " October  " " November " " December " ]
 days[] = [ 31 28 31 30 31 30 31 31 30 31 30 31 ]
-# 
+#
 func$ center txt$ .
-   h$ = substr blank$ 1 (pagewide - len txt$) / 2
+   h$ = substr blank$ 1 ((pagewide - len txt$) / 2)
    return h$ & txt$ & h$
 .
 func$ makewk fst lst day .

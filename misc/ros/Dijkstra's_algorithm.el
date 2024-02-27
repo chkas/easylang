@@ -53,7 +53,7 @@ dijkstra
 func$ gpath nd$ .
    nd = strcode nd$ - 96
    while nd <> 1
-      s$ = " -> " & strchar nd + 96 & s$
+      s$ = " -> " & strchar (nd + 96) & s$
       nd = prev[nd]
    .
    return "a" & s$
