@@ -19,7 +19,7 @@ proc read . .
       until in$ = ""
       h$[] = strsplit in$ " "
       name2id h$[1] id0
-      w[id0] = number substr h$[2] 2 len h$[2] - 2
+      w[id0] = number substr h$[2] 2 (len h$[2] - 2)
       for i = 4 to len h$[]
          s$ = h$[i]
          if i < len h$[]

@@ -6,7 +6,7 @@ len lng[][] 7
 global idn[] .
 #
 proc init . .
-   idn[] = number strsplit substr input 8 9 " "
+   idn[] = number strsplit substr input 8 99 " "
    s$ = input
    s$ = input
    for t to 7

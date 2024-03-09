@@ -98,7 +98,7 @@ line 50 50
 
 drawgrid
 move 10 20
-line 10 40
+line 30 20
 line 30 40
 
 + You can start the program with the *Run* button, with *Ctrl+R* or with *Shift+Enter*.
@@ -198,9 +198,9 @@ text "MY HOUSE"
 
 +de 🤔🤔 Wenn du willst, kannst du einen blauen Hintergrund als Himmel verwenden und eine Sonne (*circle*) scheinen lassen.
 
-+ In *Trace* mode, you can watch the computer execute its instructions one by one.
++ In *Debug* mode, you can watch the computer execute its instructions one by one.
 
-+de Im *Trace*-Modus kannst du dem Computer zuschauen, wie er nacheinander seine Anweisungen ausführt.
++de Im *Debug*-Modus kannst du dem Computer zuschauen, wie er nacheinander seine Anweisungen ausführt.
 
 -
 
@@ -332,7 +332,6 @@ if a > 20
    print "WOW!"
    print "a is large."
 end
-print "a: " & a
 
 ##
 color 543
@@ -363,7 +362,7 @@ proc cod n$ v v$ . .
    y -= 25
 .
 cod "a ← 7 " 7 ""
-cod "a ← 10 * a " 70 ""
+cod "a ← 9 * a " 63 ""
 cod "a > 20 ?" -1 "YES"
 cod "\"a is large\"" -1 ""
 
@@ -373,13 +372,16 @@ cod "\"a is large\"" -1 ""
 
 +de Der Block nach *else* wird ausgeführt, wenn die Bedingung nicht erfüllt ist.
 
-a = 7
-if a > 20
-   print "a is large."
+write "How old are you? "
+age = number input
+print age
+if age < 20
+   x = 20 - age
+   print "In " & x & " years you are 20 years old"
 else
-   print "a is not large."
-end
-print "a: " & a
+   x = 100 - age
+   print "In " & x & " years you are 100 years old"
+.
 
 * Loop
 
@@ -395,11 +397,11 @@ while i <= 4
    i = i + 1
 end
 
-+ 🤔 Write a program that prints the square numbers up to 10 (1, 4, 9 ...)
++ 🤔 Write a program that outputs the square of the numbers 1 to 10 (1, 4, 9 ...).
 
 + 🤔🤔 Write a program that adds up the numbers from 1 to 10. (Result: 55)
 
-+de 🤔 Schreibe ein Programm, das die Quadratzahlen bis 10 ausgibt (1, 4, 9 ...).
++de 🤔 Schreibe ein Programm, das das Quadrat der Zahlen 1 bis 10 ausgibt (1, 4, 9 ...).
 
 +de 🤔🤔 Schreibe ein Programm, das die Zahlen von 1 bis 10 zusammenzählt. (Ergebnis: 55)
 

@@ -14,6 +14,7 @@ A+B
 ABC problem
 Abundant odd numbers
 Abundant, deficient and perfect number classifications
+Achilles numbers
 Ackermann function
 Additive primes
 Air mass
@@ -64,6 +65,7 @@ Bitmap/Bresenham's line algorithm
 Bitwise operations
 Blum integer
 Boolean values
+Box the compass
 Brazilian numbers
 Brownian tree
 Bulls and cows
@@ -207,9 +209,9 @@ Generate lower case ASCII alphabet
 Giuga numbers
 Goldbach's comet
 Golden ratio/Convergence
+G
 Greatest common divisor
 Greatest element of a list
-G
 Greyscale bars/Display
 Guess the number
 Guess the number/With feedback
@@ -389,6 +391,7 @@ Pseudo-random numbers/Middle-square method
 Pythagoras tree
 Pythagorean triples
 Q
+Quaternion type
 Queue/Definition
 Queue/Usage
 Quickselect algorithm
@@ -399,7 +402,9 @@ Ramanujan primes
 Ramanujan primes/twins
 Ramer-Douglas-Peucker line simplification
 Random numbers
+Range extraction
 Rare numbers
+Rate counter
 Real constants and functions
 Recaman's sequence
 Reduced row echelon form
@@ -409,20 +414,25 @@ Rep-string
 Repeat a string
 Return multiple values
 Reverse a string
+Reverse words in a string
 Riordan numbers
 Roman numerals/Decode
 Roman numerals/Encode
 Roots of a function
+Roots of unity
 Rot-13
+R
 Round-robin tournament schedule
+RPG attributes generator
 Run-length encoding
+Runge-Kutta method
 S
+Safe primes and unsafe primes
 Sattolo cycle
 Search a list
 Self-describing numbers
 Semiprime
 Sequence of non-squares
-S
 Sequence of primes by trial division
 Sequence: smallest number greater than previous term with exactly n divisors
 Sequence: smallest number with exactly n divisors
@@ -440,10 +450,12 @@ Sierpinski carpet
 Sierpinski pentagon
 Sierpinski triangle/Graphical
 Sieve of Eratosthenes
+Sieve of Pritchard
 Simple turtle graphics
 Sisyphus sequence
 Sleep
 Sleeping Beauty problem
+Smarandache prime-digital sequence
 Smarandache-Wellin primes
 Smith numbers
 Snake
@@ -451,6 +463,7 @@ Soloway's recurring rainfall
 Solve triangle solitare puzzle
 Sort disjoint sublist
 Sort three variables
+Sorting algorithms/Bogosort
 Sorting algorithms/Bubble sort
 Sorting algorithms/Counting sort
 Sorting algorithms/Gnome sort
@@ -465,6 +478,7 @@ Soundex
 Spinning rod animation/Text
 Spiral matrix
 Split a character string based on change of character
+Square but not cube
 Square form factorization
 Stack
 Start from a main routine

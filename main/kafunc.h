@@ -1996,8 +1996,10 @@ S double op_callfunc(ND* nd0) {
 	stop_flag = 0;
 
 	double retval = 0;
-	if (funcnd) retval = numf(funcnd);
-
+	if (funcnd) {
+		retval = numf(funcnd);
+		funcnd = NULL;
+	}
 	rt.proc = proc_caller;
 
 	ifl = 0;
@@ -2087,7 +2089,10 @@ S STR op_callfunc_str(ND* nd0) {
 
 	STR retval;
 	str_init(&retval);
-	if (funcnd) retval = strf(funcnd);
+	if (funcnd) {
+		retval = strf(funcnd);
+		funcnd = NULL;
+	}
 
 	rt.proc = proc_caller;
 
@@ -2178,7 +2183,10 @@ S ARR op_callfunc_arr(ND* nd0) {
 	stop_flag = 0;
 
 	ARR retval;
-	if (funcnd) retval = arrf(funcnd);
+	if (funcnd) {
+		retval = arrf(funcnd);
+		funcnd = NULL;
+	}
 	else {
 		retval.len = 0;
 		retval.typ = ARR_NUM;

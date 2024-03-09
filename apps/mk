@@ -69,7 +69,7 @@ txt_tutor = String.raw`
 *de Programmier-Grundlagen
 
 xxx
-		l=$(grep -n Trace ../main/tut_learn.js | head -1 | cut -f1 -d:)
+		l=$(grep -n Debug ../main/tut_learn.js | head -1 | cut -f1 -d:)
 		head -$((l-1)) ../main/tut_learn.js | tail +8 >>$o/tut_$n.html
 		tail +$((l+4)) ../main/tut_learn.js  >>$o/tut_$n.html
 
