@@ -1,6 +1,6 @@
 prefix qu_
 global q[] head tail .
-# 
+#
 proc enq n . .
    if tail = 0
       head = 1
@@ -19,19 +19,20 @@ func deq .
    r = q[head]
    old = head
    head = q[head + 2]
-   prev = q[-2]
+   last = len q[]
+   prev = q[last - 1]
    if prev <> 0
       q[prev + 2] = old
    .
-   next = q[-1]
+   next = q[last]
    if next <> 0
       q[next + 1] = old
    else
       tail = old
    .
-   q[old] = q[-3]
-   q[old + 1] = q[-2]
-   q[old + 2] = q[-1]
+   q[old] = q[last - 2]
+   q[old + 1] = q[last - 1]
+   q[old + 2] = q[last]
    len q[] -3
    if head = len q[] + 1
       head = old
@@ -47,7 +48,7 @@ func empty .
    return if head = 0
 .
 prefix
-# 
+#
 qu_enq 2
 qu_enq 5
 qu_enq 7

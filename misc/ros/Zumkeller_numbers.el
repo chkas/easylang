@@ -17,7 +17,7 @@ func ispartsum divs[] sum .
    if len divs[] = 0
       return 0
    .
-   last = divs[-1]
+   last = divs[len divs[]]
    len divs[] -1
    if last > sum
       return ispartsum divs[] sum
@@ -41,7 +41,7 @@ func iszumkeller n .
    .
    return ispartsum divs[] (sum / 2)
 .
-# 
+#
 print "The first 220 Zumkeller numbers are:"
 i = 2
 repeat

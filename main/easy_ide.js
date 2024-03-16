@@ -1145,7 +1145,7 @@ function hideCanv() {
 }
 
 function gotSrc(src, res, pos) {
-	inp.innerHTML = src
+	inp.innerHTML = src + "\n"
 	var h = -res
 	if (h & 4) showCanv()
 	else hideCanv()

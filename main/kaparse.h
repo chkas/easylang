@@ -1995,9 +1995,30 @@ S void parse_call_stat(ND* nd, struct proc* p) {
 			nd->v1 = parse_var(VAR_STR, RW);
 		}
 		else if (b == 'G') {
-			expt(t_vnumarr);
-			nd->v1 = parse_var(VAR_NUMARR, RW);
-			csbrr();
+//kc
+			if (tok == t_vnumarr) {
+				// a[]
+				nd->v1 = parse_var(VAR_NUMARR, RW);
+				nd->ri = NULL;
+				csbrr();
+			}
+			else if (tok == t_vnumael) {
+				// a[i][]
+				nd->v1 = get_var(VAR_NUMARRARR, RD, tval, code_utf8len);
+				cs(tval);
+				csbrl();
+				nexttok();
+				nd->ri = parse_ex();
+				expt_ntok(t_brrl);
+				expt_ntok(t_brr);
+			}
+			else {
+				expt(t_vnumarr);
+			}
+
+			// expt(t_vnumarr);
+			// nd->v1 = parse_var(VAR_NUMARR, RW);
+			// csbrr();
 		}
 		else if (b == 'H') {
 			expt(t_vnumarrarr);
@@ -2066,28 +2087,18 @@ S ND* parse_strarr_term(void) {
 		nd->strf = op_strarrstr;
 		nd->le = parse_strarrex();
 	}
+	//kc
 	else if (tok == t_vnumarrarr) {
-		nd->strf = op_numarrstr;
-		if (c == ']') {
-			nd->strf = op_numarrarrstr;
-			nd->v1 = parse_var(VAR_NUMARRARR, RD);
-			expt_ntok(t_brr);
-		}
-		else {
-			nd->le = parse_numarrex();
-		}
+		nd->strf = op_numarrarrstr;
+		nd->v1 = parse_var(VAR_NUMARRARR, RD);
+		expt_ntok(t_brr);
 	}
 	else {
-		nd->strf = op_strarrstr;
-		if (c == ']') {
-			nd->strf = op_strarrarrstr;
-			nd->v1 = parse_var(VAR_STRARRARR, RD);
-			expt_ntok(t_brr);
-		}
-		else {
-			nd->le = parse_strarrex();
-		}
+		nd->strf = op_strarrarrstr;
+		nd->v1 = parse_var(VAR_STRARRARR, RD);
+		expt_ntok(t_brr);
 	}
+
 	return nd;
 }
 

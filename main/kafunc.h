@@ -28,13 +28,6 @@
 
 #endif
 
-S void arrs_init(ARR* arrs, int n_arr) {
-	memset(arrs, 0, n_arr * sizeof(ARR));
-	for (int i = 0; i < n_arr; i++) {
-		arrs[i].base = 1;
-	}
-}
-
 S struct {
 	double mouse_x;
 	double mouse_y;
@@ -119,9 +112,8 @@ S void op_assp_fl(ND* nd) {
 S int arrind(ARR* arr, int ind, ND* nd) {
 	int h = ind - arr->base;
 	if (h < 0 || h >= arr->len) {
-#if 1
+#if 0
 		// handle negative indices
-
 		h = arr->len + h + 1;
 		if (h < 0 || h >= arr->len) {
 			out_of_bounds(nd);
@@ -360,6 +352,13 @@ S void free_arr(ARR* a) {
 	free_arr_members(a, 0);
 	free(a->p);
 	a->p = NULL;
+}
+
+S void arrs_init(ARR* arrs, int n_arr) {
+	memset(arrs, 0, n_arr * sizeof(ARR));
+	for (int i = 0; i < n_arr; i++) {
+		arrs[i].base = 1;
+	}
 }
 
 S void arr_len(ND* nd, unsigned int sz, int typ) {
@@ -1835,7 +1834,12 @@ S void op_callproc(ND* nd0) {
 			istr += 1;
 		}
 		else if (t == PAR_RARR) {
+//kc
 			ARR* arr = garr(nd->v1);
+			if (nd->ri) {
+				int h = arrind(arr, numf(nd->ri), nd);
+				arr = arr->parr + h;
+			}
 			arrs[iarr] = *arr;
 			// otherwise problems with global arr variables
 			arr->p = 0;
@@ -1899,9 +1903,14 @@ S void op_callproc(ND* nd0) {
 		}
 		else  {
 			// PAR_RARR
-			ARR* pa = garr(nd->v1);
-			if (pa->p != NULL) free(pa->p);
-			*pa = arrs[iarr];
+//kc
+			ARR* arr = garr(nd->v1);
+			if (nd->ri) {
+				int h = arrind(arr, numf(nd->ri), nd);
+				arr = arr->parr + h;
+			}
+			if (arr->p != NULL) free(arr->p);
+			*arr = arrs[iarr];
 			// don't free reference arrs
 			arrs[iarr].p = NULL;
 			iarr += 1;
@@ -2117,7 +2126,6 @@ S STR op_callfunc_str(ND* nd0) {
 }
 
 S ARR op_callfunc_arr(ND* nd0) {
-//kc
 	ND* ndp = nd0->le;
 	double* nums = NULL;
 	STR* strs = NULL;

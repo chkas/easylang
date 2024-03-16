@@ -4,15 +4,16 @@ func$ nextword n w$ alpha$ .
       x$ &= w$
    .
    x$[] = strchars substr x$ 1 n
-   while len x$[] > 0 and x$[-1] = alpha$[-1]
+   while len x$[] > 0 and x$[len x$[]] = alpha$[len alpha$[]]
       len x$[] -1
    .
-   if len x$[] > 0
+   lx = len x$[]
+   if lx > 0
       repeat
          i += 1
-         until alpha$[i] = x$[-1]
+         until alpha$[i] = x$[lx]
       .
-      x$[-1] = alpha$[i + 1]
+      x$[lx] = alpha$[i + 1]
    .
    return strjoin x$[]
 .
