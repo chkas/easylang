@@ -150,7 +150,7 @@ S int is_numfactor(void) {
 	return 0;
 }
 
-byte in_fastfunc;
+S byte in_fastfunc;
 
 S void optimize_vnumael(ND* nd) {
 
@@ -163,7 +163,7 @@ S void optimize_vnumael(ND* nd) {
 
 S ND* parse_log_ex(void);
 
-S ND* parse_lenfunc(ushort mode) {
+S ND* parse_lenfunc(void) {
 
 	ND* nd = mknd();
 	nd->numf = op_arr_len;
@@ -199,20 +199,18 @@ S ND* parse_lenfunc(ushort mode) {
 			nd = mknd();
 			nd->numf = op_strlen;
 			nd->le = h;
-
 		}
-		else if (tok == t_brrl) {
+		else {
 			// len a$[i][]
+			expt_ntok(t_brrl);
+			expt_ntok(t_brr);
 			nd->v1 = get_var(VAR_STRARRARR, RD, s, pos);
 			nd->numf = op_arrarrael_len;
 			opln_add(nd, fmtline);
-			expt_ntok(t_brrl);
-			expt_ntok(t_brr);
 		}
 	}
 	else if (tok == t_vnumael) {
 		// len a[i][]
-
 		char s[16];
 		strcpy(s, tval);
 		ushort pos = code_utf8len;
@@ -220,39 +218,10 @@ S ND* parse_lenfunc(ushort mode) {
 		csbrl();
 		nd->numf = op_arrarrael_len;
 		nd->ri = parse_ex();
-
-		if (mode == 0) {
-			nd->v1 = get_var(VAR_NUMARRARR, RD, s, pos);
-			expt_ntok(t_brrl);
-			expt_ntok(t_brr);
-		}
-		else {
-			if (tok == t_brrl) {
-				cs_tok_nt();
-				// len arr[1][] or arr[1][1]
-				if (tok == t_brr) {
-					nd->v1 = get_var(VAR_NUMARRARR, RD, s, pos);
-					cs_tok_nt();
-				}
-				else {
-					nd->v1 = get_var(VAR_NUMARRARR, RD, s, pos);
-					nd->numf = op_vnumaelael;
-					ND* ndx = mkndx();
-					ndx->ex = parse_ex();
-					expt_ntok(t_brr);
-				}
-			}
-			else if (tok == t_brr) {
-				// arr[1]
-				nd->v1 = get_var(VAR_NUMARR, RD, s, pos);
-				cs_tok_nt();
-				nd->numf = op_vnumael;
-			}
-			else {
-				error("]");
-			}
-		}
+		nd->v1 = get_var(VAR_NUMARRARR, RD, s, pos);
 		opln_add(nd, fmtline);
+		expt_ntok(t_brrl);
+		expt_ntok(t_brr);
 	}
 	else if (is_strfactor()) {
 		nd->numf = op_strlen;
@@ -354,7 +323,7 @@ S ND* parse_fac(void) {
 	}
 	else if (tok == t_len) {
 		csb_tok_spc_nt();
-		nd = parse_lenfunc(0);
+		nd = parse_lenfunc();
 	}
 	else if (tok == t_minus) {
 		nd = mknd();
@@ -2023,16 +1992,19 @@ S void parse_call_stat(ND* nd, struct proc* p) {
 		else if (b == 'H') {
 			expt(t_vnumarrarr);
 			nd->v1 = parse_var(VAR_NUMARRARR, RW);
+			nd->ri = NULL;
 			expt_ntok(t_brr);
 		}
 		else if (b == 'T') {
 			expt(t_vstrarr);
 			nd->v1 = parse_var(VAR_STRARR, RW);
+			nd->ri = NULL;
 			csbrr();
 		}
 		else if (b == 'U') {
 			expt(t_vstrarrarr);
 			nd->v1 = parse_var(VAR_STRARRARR, RW);
+			nd->ri = NULL;
 			expt_ntok(t_brr);
 		}
 		i += 1;
