@@ -596,7 +596,6 @@ end
 +de Ein fahrendes Auto.
 
 subr drawcar
-   clear
    linewidth 8
    color 333
    move x + 9 14
@@ -609,22 +608,18 @@ subr drawcar
    circle 3.5
    move x + 16 3
    circle 3.5
-   sleep 0.5
 end
 #
+x = 10
 drawcar
-x += 10
-drawcar
-x += 10
+sleep 0.5
+clear
+x = 20
 drawcar
 
 + With *subr* you can combine actions that can be called from different places. This is called a *subroutine*.
 
 +de Mit *subr* können Aktionen zusammengefasst werden, die von verschiedenen Stellen aus aufgerufen werden können. Das nennt man *Unterprogramm* oder *Subroutine*.
-
-+ With *proc* you can also create *procedures* with parameters and local variables, but this is not covered in this beginner course.
-
-+de Mit *proc* kann man auch *Prozeduren* mit Parametern und lokalen Variablen erstellen, das wird aber in diesem Einsteiger-Kurs nicht behandelt.
 
 + 🤔 Let the car move.
 
@@ -637,6 +632,12 @@ drawcar
 + 🤔🤔 Draw the house from above as background.
 
 +de 🤔🤔 Zeichne das Haus von oben als Hintergrund.
+
+-
+
++ With *proc* or *func* you can also create *procedures* or *functions* with parameters and local variables. But this is not covered in this beginner course.
+
++de Mit *proc* oder *func* kann man auch *Prozeduren* oder *Funktionen* mit Parametern und lokalen Variablen erstellen. Das wird aber in diesem Einsteiger-Kurs nicht behandelt.
 
 * Event-driven programming
 

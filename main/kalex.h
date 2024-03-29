@@ -31,7 +31,7 @@ static const char* token_list[] = {
 	"systime", "error", "mouse_x", "mouse_y", "randomf", "pi",
 	"random", "randint", "sqrt", "log10", "abs", "sign", "bitnot", "floor", "sin", "cos", "tan", "asin", "acos", "atan",
 	"atan2", "pow", "bitand", "bitor", "bitxor", "bitshift", "lower", "higher",
-	"number", "strcode", "strcmp",
+	"number", "strcode", "strpos", "strcmp",
 
 	"input", "sysfunc", "keybkey", "strchar", "timestr", "strjoin", "substr",
 
@@ -67,7 +67,7 @@ enum token_tok {
 	t_systime, t_error, t_mouse_x, t_mouse_y, t_randomf, t_pi,
 	t_random, t_randint, t_sqrt, t_log10, t_abs, t_sign, t_bitnot, t_floor, t_sin, t_cos, t_tan, t_asin, t_acos, t_atan,
 	t_atan2, t_pow, t_bitand, t_bitor, t_bitxor, t_bitshift, t_lower, t_higher,
-	t_number, t_strord, t_strcompare,
+	t_number, t_strord, t_strpos, t_strcompare,
 
 	t_input, t_sysfunc, t_keyb_key, t_strchar, t_timestr, t_strjoin, t_substr,
 
@@ -484,7 +484,7 @@ static int tbl_o[] = { t_or, t_on, 0 };
 static int tbl_p[] = { t_print, t_proc, t_procdecl, t_pr, t_pi, t_pow, t_polygon, t_prefix, 0 };
 static int tbl_q[] = { 0 };
 static int tbl_r[] = { t_repeat, t_return, t_randomf, t_randint, t_rect, t_random_seed, t_random, 0 };
-static int tbl_s[] = { t_swap, t_subr, t_sleep, t_systime, t_substr, t_sqrt, t_sin, t_strord, t_strcompare, t_sysfunc, t_strchar, t_strjoin, t_sign, t_sound, t_sys, 0 };
+static int tbl_s[] = { t_swap, t_subr, t_sleep, t_systime, t_substr, t_sqrt, t_sin, t_strord, t_strpos, t_strcompare, t_sysfunc, t_strchar, t_strjoin, t_sign, t_sound, t_sys, 0 };
 static int tbl_t[] = { t_tan, t_timestr, t_text, t_timer, t_textsize, 0 };
 static int tbl_u[] = { t_until, 0 };
 static int tbl_v[] = { 0 };

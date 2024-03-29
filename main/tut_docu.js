@@ -163,15 +163,12 @@ print gcd 120 35
 
 txt$ = "sos sos"
 #
-chars$[] = strchars "abcdefghijklmnopqrstuvwxyz "
+chars$ = "abcdefghijklmnopqrstuvwxyz "
 code$[] = [ ".-" "-..." "-.-." "-.." "." "..-." "--." "...." ".." ".---" "-.-" ".-.." "--" "-." "---" ".--." "--.-" ".-." "..." "-" "..-" "...-" ".--" "-..-" "-.--" "--.." " " ]
 #
 proc morse ch$ . .
-   ind = 1
-   while ind <= len chars$[] and chars$[ind] <> ch$
-      ind += 1
-   .
-   if ind <= len chars$[]
+   ind = strpos chars$ ch$
+   if ind > 0
       write ch$ & " "
       sleep 0.4
       for c$ in strchars code$[ind]
@@ -196,6 +193,8 @@ for ch$ in strchars txt$
 + *sound* plays a list of tones defined by their frequency and duration. The duration in *sound* and in *sleep* is specified in seconds.
 
 + *strchars* creates from a string a string array containing the individual characters.
+
++ *strpos* finds the first position of the second string argument within the first argument.
 
 + The *for in loop* iterates over each item in an array
 

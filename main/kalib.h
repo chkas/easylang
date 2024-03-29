@@ -269,7 +269,7 @@ inline static struct str str_add(struct str* a, struct str* b) {
 	return r;
 }
 
-inline static uint ulen(byte lb) {
+inline static uint uchlen(byte lb) {
 	if ((lb & 0x80) == 0) return 1;
 	if ((lb & 0xe0) == 0xc0) return 2;
 	if ((lb & 0xf0) == 0xe0) return 3;
@@ -281,7 +281,7 @@ inline static int str_ulen(const char* p) {
 	uint i = 0;
 	uint ind = 0;
 	while (i < strlen(p)) {
-		i += ulen(p[i]);
+		i += uchlen(p[i]);
 		ind++;
 	}
 	return ind;
@@ -291,7 +291,7 @@ inline static int str_upos(const char* p, uint start, uint nchars, uint max) {
 	uint i = start;
 	uint ind = 0;
 	while (i < max && ind < nchars) {
-		i += ulen(p[i]);
+		i += uchlen(p[i]);
 		ind++;
 	}
 	return i;

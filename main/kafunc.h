@@ -1367,6 +1367,29 @@ S ARR op_arrarr_init(ND* nd) {
 	return o_arr_init(nd, ARR_ARR, sizeof(ARR));
 }
 
+S double op_strpos(ND* nd) {
+
+	STR s1 = strf(nd->le);
+	STR s2 = strf(nd->ri);
+	int s2len = str_len(&s2);
+	const char* p = str_ptr(&s1);
+	const char* p2 = str_ptr(&s2);
+
+	int i = 0;
+	int ind = 1;
+	while (p[i]) {
+		if (strncmp(p + i, p2, s2len) == 0) {
+			break;
+		}
+		i += uchlen(p[i]);
+		ind += 1;
+	}
+	if (p[i] == 0) ind = 0;
+	str_free(&s1);
+	str_free(&s2);
+	return ind;
+}
+
 S ARR op_strchars(ND* nd) {
 
 	STR s = strf(nd->le);
@@ -1387,7 +1410,7 @@ S ARR op_strchars(ND* nd) {
 	int i = 0;
 	int l;
 	while (ind < res.len) {
-		l = ulen(p[i]);
+		l = uchlen(p[i]);
 		str_init(res.pstr + ind);
 
 		int h = 0;

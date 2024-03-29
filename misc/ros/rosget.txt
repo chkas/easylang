@@ -1,4 +1,3 @@
-1
 100 doors
 100 prisoners
 10001th prime
@@ -56,11 +55,13 @@ Balanced brackets
 Barnsley fern
 Bell numbers
 Benford's law
+Best shuffle
 Bifid cipher
 Bin given limits
 Binary digits
 Binary search
 Bioinformatics/base count
+Biorhythms
 Bitmap/Bresenham's line algorithm
 Bitwise operations
 Blum integer
@@ -82,9 +83,13 @@ Case-sensitivity of identifiers
 Casting out nines
 Catalan numbers
 Catalan numbers/Pascal's triangle
+Centre and radius of a circle passing through 3 points in a plane
+Chaocipher
 Chaos game
 Character codes
 Chebyshev coefficients
+Check if a polygon overlaps with a rectangle
+Check if two polygons overlap
 Chinese remainder theorem
 Chinese zodiac
 Chowla numbers
@@ -95,6 +100,7 @@ Closest-pair problem
 Code Golf: Code Golf
 Collect and sort square numbers in ascending order from three lists
 Collections
+Color wheel
 Colour bars/Display
 Colour pinstripe/Display
 Combinations
@@ -115,12 +121,15 @@ Constrained random points on a circle
 Continued fraction
 Convert seconds to compound duration
 Conway's Game of Life
+Coprimes
 Copy a string
 Count how many vowels and consonants occur in a string
 Count in factors
 Count in octal
 Count occurrences of a substring
 Count the coins
+Create a two-dimensional array at runtime
+Cuban primes
 Cullen and Woodall numbers
 Cumulative standard deviation
 Curzon numbers
@@ -133,6 +142,7 @@ Day of the week of Christmas and New Year
 De Bruijn sequences
 De Polignac numbers
 Deal cards for FreeCell
+Deceptive numbers
 Deming's funnel
 Department numbers
 Descending primes
@@ -145,8 +155,10 @@ Determine if a string is squeezable
 Dice game probabilities
 Digital root
 Dijkstra's algorithm
+Dinesman's multiple-dwelling problem
 Disarium numbers
 Discordian date
+Diversity prediction theorem
 Doomsday rule
 Dot product
 Dragon curve
@@ -163,6 +175,8 @@ Empty program
 Empty string
 Entropy
 Equal prime and composite sums
+Equilibrium index
+Erdős-Nicolas numbers
 Ethiopian multiplication
 Euclid-Mullin sequence
 Euclidean rhythm
@@ -190,6 +204,7 @@ Farey sequence
 FASTA format
 Feigenbaum constant calculation
 Fibonacci sequence
+File extension is in extensions list
 Filter
 Find common directory path
 Find limit of recursion
@@ -197,19 +212,27 @@ Find square difference
 Find the intersection of a line with a plane
 Find the intersection of two lines
 Find the last Sunday of each month
+Find the missing permutation
+First power of 2 that has leading decimal digits of 12
 FizzBuzz
+Flow-control structures
+Floyd's triangle
 Forest fire
 Four bit adder
 Fractal tree
 Function definition
+Fusc sequence
 G
+Galton box animation
+Gamma function
+Gapful numbers
 Gauss-Jordan matrix inversion
 Gaussian elimination
+Generate Chess960 starting position
 Generate lower case ASCII alphabet
 Giuga numbers
 Goldbach's comet
 Golden ratio/Convergence
-G
 Greatest common divisor
 Greatest element of a list
 Greyscale bars/Display
@@ -218,17 +241,20 @@ Guess the number/With feedback
 H
 Hailstone sequence
 Happy numbers
+Harmonic series
 Harshad or Niven series
 Haversine formula
 Hello world/Graphical
 Hello world/Newbie
 Hello world/Newline omission
 Hello world/Text
+Here document
 Hilbert curve
 Hofstadter Q sequence
 Hofstadter-Conway $10,000 sequence
 Honaker primes
 Horizontal sundial calculations
+Horner's rule for polynomial evaluation
 Humble numbers
 I
 Identity matrix
@@ -237,6 +263,7 @@ Idoneal numbers
 Image noise
 Implicit type conversion
 Inconsummate numbers in base 10
+Increasing gaps between consecutive Niven numbers
 Increment a numerical string
 Infinity
 Input loop
@@ -266,6 +293,7 @@ Least common multiple
 Leonardo numbers
 Letter frequency
 Levenshtein distance
+Levenshtein distance/Alignment
 Linear congruential generator
 Literals/Floating point
 Literals/Integer
@@ -290,6 +318,7 @@ Loops/N plus one half
 Loops/Nested
 Loops/While
 Lucas-Lehmer test
+Luhn test of credit card numbers
 Lyndon word
 M
 Magic 8-ball
@@ -311,6 +340,7 @@ Meissel–Mertens constant
 Mersenne primes
 Mertens function
 Middle three digits
+Mind boggling card trick
 Minesweeper game
 Minimum multiple of m where digital sum equals m
 Modular inverse
@@ -401,6 +431,7 @@ Radical of an integer
 Ramanujan primes
 Ramanujan primes/twins
 Ramer-Douglas-Peucker line simplification
+Random Latin squares
 Random numbers
 Range extraction
 Rare numbers
@@ -421,7 +452,6 @@ Roman numerals/Encode
 Roots of a function
 Roots of unity
 Rot-13
-R
 Round-robin tournament schedule
 RPG attributes generator
 Run-length encoding
@@ -518,6 +548,7 @@ Sum of elements below main diagonal of matrix
 Sum of first n cubes
 Sum of squares
 Sum of two adjacent numbers are primes
+Sum to 100
 Summarize primes
 Superellipse
 Sylvester's sequence
@@ -552,8 +583,10 @@ Two sum
 U
 Ulam spiral (for primes)
 Unbias a random generator
+Undulating numbers
 User input/Text
 V
+Validate International Securities Identification Number
 Vampire number
 Van der Corput sequence
 Van Eck sequence
