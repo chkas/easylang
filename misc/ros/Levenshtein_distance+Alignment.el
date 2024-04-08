@@ -40,7 +40,7 @@ proc align a$ b$ . ar$ br$ .
          br$ = "-" & br$
       else
          ar$ = "-" & ar$
-         br$ = subset b$ j 1 & br$
+         br$ = substr b$ j 1 & br$
          j -= 1
       .
    .

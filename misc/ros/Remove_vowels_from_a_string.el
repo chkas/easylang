@@ -1,9 +1,7 @@
 func$ rmv s$ .
    for c$ in strchars s$
-      for v$ in strchars "AEIOUaeiou"
-         if c$ = v$
-            c$ = ""
-         .
+      if strpos "AEIOUaeiou" c$ <> 0
+         c$ = ""
       .
       r$ &= c$
    .

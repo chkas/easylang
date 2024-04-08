@@ -3,7 +3,8 @@ while read n; do
 	echo "$n" >&2
 	expr "$n" : '.$' >/dev/null && continue
 	expr "$n" : '#' >/dev/null && continue
-	test "$n" = "Hello world/Newbie.el" && continue
+	test "$n" = "Hello world/Newbie" && continue
+	test "$n" = "Here document" && continue
 	x=$(echo $n|tr " " _)
 	dest=$(echo $n|tr " /" _+)
 	dest=~/easylang/misc/ros/"$dest.el"

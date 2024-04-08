@@ -13,7 +13,7 @@ func[] vcross a[] b[] .
 a[] = [ 3 4 5 ]
 b[] = [ 4 3 5 ]
 c[] = [ -5 -12 -13 ]
-#
+# 
 print vdot a[] b[]
 print vcross a[] b[]
 print vdot a[] vcross b[] c[]

@@ -13,13 +13,14 @@ if test "$1" = new; then
 fi
 if test $# = 0; then
 	set main apps games sky
+	emcc --version >misc/emcc_vers.txt
 fi
 while test $# != 0; do
 	if test $1 = main; then
 		(cd main; make)
 		(cd run; ./mk)
 		rm -f $HOME/out/easylang/src.zip
-		zip -r $HOME/out/easylang/src.zip ide run native >/dev/null
+		zip -r $HOME/out/easylang/src.zip ide run native misc/emcc_vers.txt >/dev/null
 	elif test $1 = apps; then
 		(cd main; make)
 		(cd apps; ./mk)

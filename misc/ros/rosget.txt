@@ -1,3 +1,4 @@
+1
 100 doors
 100 prisoners
 10001th prime
@@ -41,6 +42,7 @@ Ascending primes
 Associative array/Creation
 Associative array/Iteration
 Attractive numbers
+Average loop length
 Averages/Arithmetic mean
 Averages/Mean angle
 Averages/Mean time of day
@@ -66,15 +68,19 @@ Bitmap/Bresenham's line algorithm
 Bitwise operations
 Blum integer
 Boolean values
+Boustrophedon transform
 Box the compass
 Brazilian numbers
+Brilliant numbers
 Brownian tree
 Bulls and cows
 C
 Caesar cipher
 Calculating the value of e
 Calendar
+Calkin-Wilf sequence
 Call a function
+Camel case and snake case
 Canonicalize CIDR
 Cantor set
 Carmichael 3 strong pseudoprimes
@@ -129,6 +135,8 @@ Count in octal
 Count occurrences of a substring
 Count the coins
 Create a two-dimensional array at runtime
+CSV data manipulation
+CSV to HTML translation
 Cuban primes
 Cullen and Woodall numbers
 Cumulative standard deviation
@@ -200,6 +208,7 @@ Factorial primes
 Factorize string into Lyndon words
 Factors of an integer
 Fairshare between two and more
+F
 Farey sequence
 FASTA format
 Feigenbaum constant calculation
@@ -389,6 +398,8 @@ Pan base non-primes
 Pangram checker
 Particle fountain
 Pascal's triangle
+Peano curve
+Penrose tiling
 Pentagram
 Percolation/Mean run density
 Perfect numbers
@@ -408,6 +419,7 @@ Plot coordinate pairs
 Polynomial regression
 Polyspiral
 Population count
+P
 Price fraction
 Primality by trial division
 Primality by Wilson's theorem
@@ -460,6 +472,7 @@ S
 Safe primes and unsafe primes
 Sattolo cycle
 Search a list
+SEDOLs
 Self-describing numbers
 Semiprime
 Sequence of non-squares
@@ -477,7 +490,9 @@ Shortest common supersequence
 Show ASCII table
 Sierpinski arrowhead curve
 Sierpinski carpet
+Sierpinski curve
 Sierpinski pentagon
+Sierpinski square curve
 Sierpinski triangle/Graphical
 Sieve of Eratosthenes
 Sieve of Pritchard

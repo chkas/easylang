@@ -358,7 +358,7 @@ d[] = [ 29 4 72 44 55 26 27 77 92 5 ]
 sort d[]
 print d[]
 
-+ With the previous iterative variant and the reserved space for the uncompleted tasks we could make sure we were able to sort an array of a certain size. This is not possible with this recursive version - with a long list and "first element is pivot"  we get probably a stack overflow.
++ With the previous iterative variant and the reserved space for the uncompleted tasks we could make sure we were able to sort an array of a certain size. This is not possible with this recursive version - with a long sorted list and "first element is pivot"  we get a stack overflow.
 
 + With *tail elimination* and ensuring that the smaller subarray is sorted first, we can also make the recursive variant *stack safe*. With bad input we then get "only" the worst-case time complexity.
 

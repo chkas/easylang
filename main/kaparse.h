@@ -233,6 +233,8 @@ S ND* parse_lenfunc(void) {
 	return nd;
 }
 
+S ND* parse_numarrarrex(void);
+
 S ND* parse_callfunc(struct proc* p, byte typ) {
 
 	ND* nd = mknd();
@@ -270,6 +272,11 @@ S ND* parse_callfunc(struct proc* p, byte typ) {
 		}
 		else if (b == 'g') {
 			nd->next = parse_numarrex();
+			nd = nd->next;
+		}
+//kc
+		else if (b == 'h') {
+			nd->next = parse_numarrarrex();
 			nd = nd->next;
 		}
 		else if (b == 't') {
@@ -896,6 +903,12 @@ S int parse_proc_header(int mode, byte proctyp) {
 			csbrr();
 			typ = 'g';
 		}
+//kc
+		else if (tok == t_vnumarrarr) {
+			lvar(VAR_NUMARRARR, 1, mode);
+			expt_ntok(t_brr);
+			typ = 'h';
+		}
 		else if (tok == t_vstrarr) {
 			lvar(VAR_STRARR, 1, mode);
 			csbrr();
@@ -1018,7 +1031,7 @@ S void parse_proc(byte typ) {
 		char typ = proc->parms[i + offs];
 		if (typ == 'f') ptyp = PAR_NUM;
 		else if (typ == 's') ptyp = PAR_STR;
-		else if (typ == 'g' || typ == 't') ptyp = PAR_ARR;
+		else if (typ == 'g' || typ == 'h' || typ == 't') ptyp = PAR_ARR;
 
 		else if (typ == 'F') ptyp = PAR_RNUM;
 		else if (typ == 'S') ptyp = PAR_RSTR;
@@ -1937,6 +1950,11 @@ S void parse_call_stat(ND* nd, struct proc* p) {
 		}
 		else if (b == 'g') {
 			nd->next = parse_numarrex();
+			nd = nd->next;
+		}
+//kc
+		else if (b == 'h') {
+			nd->next = parse_numarrarrex();
 			nd = nd->next;
 		}
 		else if (b == 't') {
