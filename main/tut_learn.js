@@ -610,9 +610,11 @@ subr drawcar
    circle 3.5
 end
 #
+clear
 x = 10
 drawcar
 sleep 0.5
+#
 clear
 x = 20
 drawcar
@@ -672,6 +674,10 @@ end
 
 +de Die *mouse*-Ereignisse werden nach den entsprechenden Maus-Aktionen ausgelöst. *mouse_x* und *mouse_y* liefern die Maus-Position.
 
++ The computer runs an internal event loop that constantly checks whether a relevant event occurs.
+
++de Der Computer führt eine interne Ereignisschleife aus, die ständig überprüft, ob ein relevantes Ereignis auftritt.
+
 -
 
 + You can also handle keyboard events.
@@ -691,9 +697,9 @@ on key
    text keybkey
 end
 
-+ 🤔 Use the keyboard keys to change the colors of the previous painting program!
++ 🤔 Use the keyboard keys to change the drawing color of the previous painting program!
 
-+de 🤔 Verwende die Keyboard-Tasten, um die Farben des vorherigen Malprogramms zu ändern!
++de 🤔 Verwende die Keyboard-Tasten, um die Zeichen-Farbe des vorherigen Malprogramms zu ändern!
 
 -
 
@@ -823,11 +829,11 @@ print "Mean: " & m
 
 +de Zurück zum Sternenhimmel: Die X- und Y-Positionen und die Helligkeiten der Sterne stehen in jeweils einem Feld.
 
-x[] = [ 7 81 86 76 50 55 23 77 17 23 16 93 91 13 27 44 29 93 1 53 26 38 35 23 54 85 33 87 7 13 2 20 18 ]
+x[] = [ 23 13 1 2 81 85 86 29 23 76 77 50 54 93 20 93 17 35 38 7 7 44 16 91 33 26 53 18 27 13 87 55 23 ]
 #
-y[] = [ 13 29 50 15 65 42 91 24 92 19 86 48 37 58 95 25 17 13 31 39 44 32 72 61 21 36 94 75 66 52 11 92 72 ]
+y[] = [ 19 52 31 11 29 36 50 17 91 15 24 65 21 13 92 48 92 72 32 66 13 25 86 37 94 44 39 72 95 58 75 42 61 ]
 #
-mag[] = [ 55 37 37 36 35 34 33 33 33 33 32 32 31 30 28 28 27 27 26 25 24 23 23 23 22 22 22 22 21 21 20 20 20 ]
+mag[] = [ 33 21 26 20 37 22 36 27 33 35 33 35 22 27 20 32 33 23 23 21 55 28 32 31 22 24 25 20 28 30 22 34 23 ]
 #
 background 000
 clear
@@ -839,9 +845,9 @@ end
 
 -
 
-+ 🤔🤔 On the starry sky you can see the constellation *Big Dipper*. If you draw connected lines through the stars 4, 8, 2, 26, 13, 12, 3 and 26 (position in the array), you can make it visible. The star at position 5 is the Pole Star (Polaris).
++ 🤔🤔 On the starry sky you can see the constellation *Big Dipper*. If you draw connected lines through the stars 10, 11, 5, 6, 7, 16, 24 and 6 (position in the array), you can make it visible. The star at position 12 is the Pole Star (Polaris).
 
-+de 🤔🤔 Auf dem Sternenhimmel gibt es das Sternbild *Großer Wagen* zu sehen. Wenn man verbundene Linien durch die Sterne 4, 8, 2, 26, 13, 12, 3 und 26 (Position im Array) zieht, kann man es sichtbar machen. Der Stern an der Position 5 ist der Polarstern (Polaris).
++de 🤔🤔 Auf dem Sternenhimmel gibt es das Sternbild *Großer Wagen* zu sehen. Wenn man verbundene Linien durch die Sterne 10, 11, 5, 6, 7, 16, 24 und 6 (Position im Array) zieht, kann man es sichtbar machen. Der Stern an der Position 12 ist der Polarstern (Polaris).
 
 + 🤔🤔 Connect the stars of the constellation *Cassiopeia*, which can easily be recognized by its W-shape. To find the indices of the stars, output them using *text i* when drawing the star map.
 
@@ -855,25 +861,22 @@ background 000
 clear
 color 999
 for i = 1 to len x[]
-  move x[i] y[i]
-  circle m[i] / 100
+   move x[i] y[i]
+   circle m[i] / 100
 .
 textsize 3
 move x[5] y[5]
 text "Polaris"
 color 444
-linewidth 0.2
 si[][] &= [ 4 8 2 26 13 12 3 26 ]
 si[][] &= [ 11 9 7 15 27 ]
+linewidth 0.2
 for s = 1 to len si[][]
-  for i = 1 to len si[s][]
-    h = si[s][i]
-    if i = 1
-      move x[h] y[h]
-    else
+   text ""
+   for i = 1 to len si[s][]
+      h = si[s][i]
       line x[h] y[h]
-    .
-  .
+   .
 .
 
 * Working with an array, sorting
@@ -901,6 +904,8 @@ print min
 
 +de 🤔 Wir wollen nun auch wissen, was die größte Zahl ist.
 
+-
+
 + Now we want to put the smallest number in the first position. To do this, we go through all the elements starting from the second position. And if an element is smaller than the one at the first position, we swap the two elements.
 
 +de Nun wollen wir die kleinste Zahl an die erste Stelle setzen. Dazu gehen wir alle Elemente ab der zweiten Position durch. Und wenn ein Element kleiner ist als das an der ersten Position, vertauschen wir die beiden Elemente.
@@ -915,9 +920,9 @@ for i = 2 to len a[]
 end
 print a[]
 
-+ To swap two values, you can also use *swap*.
++ To swap two values, you can also use *swap a b*.
 
-+de Um zwei Werte zu tauschen, kannst du auch *swap* verwenden.
++de Um zwei Werte zu tauschen, kannst du auch *swap a b* verwenden.
 
 -
 
@@ -943,8 +948,8 @@ print a[]
 
 for i = 0 to 100
    r = i / 100
-   move 0 i
    color3 r 0 0
+   move 0 i
    line 100 i
 end
 
@@ -952,7 +957,7 @@ end
 
 + With *randomf* you get a random floating point number between 0 and 1. This simplifies the drawing of the starry sky.
 
-+de Mit *randomf* bekommt man eine zufälligen Gleitpunkt-Zahl zwischen 0 und 1. Das vereinfacht das Zeichnen des Sternenhimmels.
++de Mit *randomf* bekommt man eine zufälligen Gleitkommazahl zwischen 0 und 1. Das vereinfacht das Zeichnen des Sternenhimmels.
 
 background 000
 clear

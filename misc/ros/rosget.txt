@@ -1,4 +1,3 @@
-1
 100 doors
 100 prisoners
 10001th prime
@@ -107,6 +106,7 @@ Code Golf: Code Golf
 Collect and sort square numbers in ascending order from three lists
 Collections
 Color wheel
+Colorful numbers
 Colour bars/Display
 Colour pinstripe/Display
 Combinations
@@ -126,6 +126,7 @@ Consecutive primes with ascending or descending differences
 Constrained random points on a circle
 Continued fraction
 Convert seconds to compound duration
+Convex hull
 Conway's Game of Life
 Coprimes
 Copy a string
@@ -134,7 +135,9 @@ Count in factors
 Count in octal
 Count occurrences of a substring
 Count the coins
+Cramer's rule
 Create a two-dimensional array at runtime
+Create an HTML table
 CSV data manipulation
 CSV to HTML translation
 Cuban primes
@@ -142,6 +145,7 @@ Cullen and Woodall numbers
 Cumulative standard deviation
 Curzon numbers
 CUSIP
+Cut a rectangle
 Cyclops numbers
 D
 Damm algorithm
@@ -160,17 +164,22 @@ Determine if a string has all unique characters
 Determine if a string is collapsible
 Determine if a string is numeric
 Determine if a string is squeezable
+Determine if two triangles overlap
+Determine sentence type
 Dice game probabilities
 Digital root
+Digital root/Multiplicative digital root
 Dijkstra's algorithm
 Dinesman's multiple-dwelling problem
 Disarium numbers
 Discordian date
+Display a linear combination
 Diversity prediction theorem
 Doomsday rule
 Dot product
 Dragon curve
 Draw a clock
+Draw a cuboid
 Draw a pixel
 Draw a rotating cube
 Duffinian numbers
@@ -179,20 +188,26 @@ E
 Eban numbers
 Egyptian division
 Elementary cellular automaton
+Emirp primes
 Empty program
 Empty string
 Entropy
 Equal prime and composite sums
 Equilibrium index
 Erdős-Nicolas numbers
+Erdős-primes
+Esthetic numbers
 Ethiopian multiplication
 Euclid-Mullin sequence
 Euclidean rhythm
+Euler method
 Euler's constant 0.5772...
 Euler's sum of powers conjecture
 Evaluate binomial coefficients
 Even or odd
 Events
+Evolutionary algorithm
+Exactly three adjacent 3 in lists
 Execute Brain****
 Execute Computer/Zero
 Execute HQ9+
@@ -201,34 +216,53 @@ Exponentiation operator
 Exponentiation order
 Exponentiation with infix operators in (or operating on) the base
 Extensible prime generator
+Extra primes
+Extract file extension
 Extreme floating point values
+Extreme primes
 F
 Factorial
 Factorial primes
 Factorize string into Lyndon words
+Factors of a Mersenne number
 Factors of an integer
 Fairshare between two and more
-F
 Farey sequence
 FASTA format
 Feigenbaum constant calculation
+Fibonacci n-step number sequences
 Fibonacci sequence
+Fibonacci word
 File extension is in extensions list
 Filter
+Find adjacent primes which differ by a square integer
 Find common directory path
+Find first missing positive
 Find limit of recursion
+Find minimum number of coins that make a given value
+Find palindromic numbers in both binary and ternary bases
+Find prime n such that reversed n is also prime
+Find prime numbers of the form n*n*n+2
 Find square difference
+Find squares n where n+1 is prime
 Find the intersection of a line with a plane
 Find the intersection of two lines
 Find the last Sunday of each month
 Find the missing permutation
+First 9 prime Fibonacci number
+First perfect square in base n with n unique digits
 First power of 2 that has leading decimal digits of 12
+Five weekends
+Fivenum
 FizzBuzz
 Flow-control structures
 Floyd's triangle
 Forest fire
 Four bit adder
+Four is magic
+Four sides of square
 Fractal tree
+Frobenius numbers
 Function definition
 Fusc sequence
 G
@@ -237,11 +271,15 @@ Gamma function
 Gapful numbers
 Gauss-Jordan matrix inversion
 Gaussian elimination
+General FizzBuzz
 Generate Chess960 starting position
 Generate lower case ASCII alphabet
+Generate random numbers without repeating a value
+Getting the number of decimal places
 Giuga numbers
 Goldbach's comet
 Golden ratio/Convergence
+Gray code
 Greatest common divisor
 Greatest element of a list
 Greyscale bars/Display
@@ -373,10 +411,12 @@ Next highest int from digits
 Nim game
 Non-decimal radices/Convert
 Nth root
+Number names
 Numbers which are not the sum of distinct squares
 Numbers which are the cube roots of the product of their proper divisors
 Numbers whose count of divisors is prime
 Numbers with equal rises and falls
+Numbers with prime digits whose sum is 13
 O
 O'Halloran numbers
 Odd word problem
@@ -419,7 +459,6 @@ Plot coordinate pairs
 Polynomial regression
 Polyspiral
 Population count
-P
 Price fraction
 Primality by trial division
 Primality by Wilson's theorem

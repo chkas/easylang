@@ -322,7 +322,7 @@ S double op_vnumaelael(ND* nd) {
 	return *(arr->pnum + h);
 }
 
-S double op_arr_len(ND* nd) {
+S double op_arrlen(ND* nd) {
 	ARR* arr = garr(nd->v1);
 	return arr->len;
 }

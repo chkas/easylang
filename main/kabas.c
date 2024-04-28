@@ -158,13 +158,11 @@ extern int parse(const char* str, int opt, int pos) {
 	sequ_level = 0;
 	fmtline = 0;
 	proc_p->start = parse_sequ();
-
-	build_fastfuncs();
-
 	if (tok != t_eof) {
 		cs_nl();
 		error("<cmd>");
 	}
+	build_fastfuncs();
 
 	if (err) {
 		// always when is_enter
@@ -200,10 +198,11 @@ extern int parse(const char* str, int opt, int pos) {
 		}
 		return err_pos;
 	}
-
-	co("\n");
 	if (!cod) return 0;
 
+	if (!input_data) {
+		co("\n\n");
+	}
 	proc = proc_p;
 	while (proc < proc_p + proc_len) {
 		struct vname *p = proc->vname_p;

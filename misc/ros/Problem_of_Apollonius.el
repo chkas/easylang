@@ -3,7 +3,7 @@ proc solve c1[] c2[] c3[] s1 s2 s3 . r[] .
    x1 = c1[1] ; y1 = c1[2] ; r1 = c1[3]
    x2 = c2[1] ; y2 = c2[2] ; r2 = c2[3]
    x3 = c3[1] ; y3 = c3[2] ; r3 = c3[3]
-   # 
+   #
    v11 = 2 * x2 - 2 * x1
    v12 = 2 * y2 - 2 * y1
    v13 = x1 * x1 - x2 * x2 + y1 * y1 - y2 * y2 - r1 * r1 + r2 * r2
@@ -25,7 +25,7 @@ proc solve c1[] c2[] c3[] s1 s2 s3 . r[] .
    a = N * N + Q * Q - 1
    b = 2 * M * N - 2 * N * x1 + 2 * P * Q - 2 * Q * y1 + 2 * s1 * r1
    c = x1 * x1 + M * M - 2 * M * x1 + P * P + y1 * y1 - 2 * P * y1 - r1 * r1
-   # 
+   #
    D = b * b - 4 * a * c
    rs = (-b - sqrt D) / (2 * a)
    r[1] = M + N * rs
@@ -39,9 +39,9 @@ solve c1[] c2[] c3[] 1 1 1 r1[]
 print r1[]
 solve c1[] c2[] c3[] -1 -1 -1 r2[]
 print r2[]
-# 
+#
 proc circ x y r . .
-   linewidth 0.5
+   text ""
    for a = 0 to 360
       line x + sin a * r y + cos a * r
    .

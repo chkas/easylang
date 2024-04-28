@@ -166,7 +166,7 @@ S ND* parse_log_ex(void);
 S ND* parse_lenfunc(void) {
 
 	ND* nd = mknd();
-	nd->numf = op_arr_len;
+	nd->numf = op_arrlen;
 	if (tok == t_vnumarr) {
 		nd->v1 = parse_var(VAR_NUMARR, RD);
 		csbrr();
@@ -290,6 +290,13 @@ S ND* parse_callfunc(struct proc* p, byte typ) {
 	return ndf;
 }
 
+S ND* parse_ex_arr(ND** ndolp) {
+	ND** old = nd_doll;
+	nd_doll = ndolp;
+	ND* nd = parse_ex();
+	nd_doll = old;
+	return nd;
+}
 
 S ND* parse_fac(void) {
 
@@ -351,9 +358,8 @@ S ND* parse_fac(void) {
 		ushort pos = code_utf8len;
 		cs_tok_nt();
 		csbrl();
-
-		nd->ri = parse_ex();
-
+		ND* ndol = NULL;
+		nd->ri = parse_ex_arr(&ndol);
 		if (tok == t_brr) {
 			cs_tok_nt();
 
@@ -377,6 +383,8 @@ S ND* parse_fac(void) {
 		else {
 			error("], ][");
 		}
+		if (ndol != NULL) ndol->v1 = nd->v1;
+
 		opln_add(nd, fmtline);
 	}
 	else if (tok == t_if) {
@@ -385,8 +393,16 @@ S ND* parse_fac(void) {
 		nd->le = parse_log_ex();
 		nd->numf = op_numlog;
 	}
+	else if (nd_doll != NULL && tok == 0 && cp == '$' && *nd_doll == NULL) {
+		nd = mknd();
+		cs_tok_nt();
+		nd->numf = op_arrlen;
+		*nd_doll = nd;
+		nd_doll = NULL;
+	}
 	else {
 		nd = NULL;
+		//pr(":::%c:%c:%c:%d:%s:",cp, c, cn, tok,tval);
 		error("number");
 	}
 	return nd;
@@ -557,7 +573,8 @@ S ND* parse_strterm(void) {
 		ushort pos = code_utf8len;
 		cs_tok_nt();
 		cs("$[");
-		nd->ri = parse_ex();
+		ND* ndol = NULL;
+		nd->ri = parse_ex_arr(&ndol);
 
 		if (tok == t_brr) {
 			cs_tok_nt();
@@ -577,6 +594,7 @@ S ND* parse_strterm(void) {
 		else {
 			error("], ][");
 		}
+		if (ndol != NULL) ndol->v1 = nd->v1;
 		opln_add(nd, fmtline);
 	}
 	else if (is_strfunc()) {
@@ -597,7 +615,6 @@ S ND* parse_strterm(void) {
 				nd = parse_callfunc(p, 1);
 			}
 			else {
-//kc
 				nd = mknd();
 				nd->strf = op_numarrstr;
 				nd->le = parse_numarrex();;
@@ -1364,7 +1381,8 @@ S void parseael_ass(ND* nd) {
 	cs_tok_nt();
 	csbrl();
 	ND* ndx = mkndx();
-	nd->ri = parse_ex();
+	ND* ndol = NULL;
+	nd->ri = parse_ex_arr(&ndol);
 
 	if (tok == t_brr) {
 		//* f[i] = 2
@@ -1420,6 +1438,7 @@ S void parseael_ass(ND* nd) {
 	else {
 		error("], ][");
 	}
+	if (ndol != NULL) ndol->v1 = nd->v1;
 }
 
 S void parse_strael_ass(ND* nd) {
@@ -1430,7 +1449,8 @@ S void parse_strael_ass(ND* nd) {
 	cs_tok_nt();
 	cs("$[");
 	ND* ndx = mkndx();
-	nd->ri = parse_ex();
+	ND* ndol = NULL;
+	nd->ri = parse_ex_arr(&ndol);
 
 	if (tok == t_brr) {
 		//* f$[i] = "apple"
@@ -1477,6 +1497,7 @@ S void parse_strael_ass(ND* nd) {
 	else {
 		error("], ][");
 	}
+	if (ndol != NULL) ndol->v1 = nd->v1;
 }
 
 S void parse_global_stat(void) {
@@ -1813,7 +1834,8 @@ S void parse_swap_stat(ND* nd) {
 		cs_tok_nt();
 		csbrl();
 		ND* ndx = mkndx();
-		nd->ri = parse_ex();;
+		ND* ndol = NULL;
+		nd->ri = parse_ex_arr(&ndol);
 
 		if (tok == t_brr) {
 			//* swap f[i] f[j]
@@ -1825,7 +1847,7 @@ S void parse_swap_stat(ND* nd) {
 			expt(t_vnumael);
 			short h = parse_var(VAR_NUMARR, RD);
 			if (h != nd->v1 && cod) error("must be the same array");
-			ndx->ex = parse_ex();
+			ndx->ex = parse_ex_arr(&ndol);
 			expt_ntok(t_brr);
 		}
 		else if (tok == t_brrl) {
@@ -1833,8 +1855,8 @@ S void parse_swap_stat(ND* nd) {
 		}
 		else {
 			expt(t_brr);
-			
 		}
+		if (ndol != NULL) ndol->v1 = nd->v1;
 	}
 	else if (tok == t_vstr) {
 		nd->vf = op_swapstr;
@@ -1850,7 +1872,8 @@ S void parse_swap_stat(ND* nd) {
 		cs_tok_nt();
 		cs("$[");
 		ND* ndx = mkndx();
-		nd->ri = parse_ex();;
+		ND* ndol = NULL;
+		nd->ri = parse_ex_arr(&ndol);
 
 		if (tok == t_brr) {
 			// swap f$[i] f$[j]
@@ -1861,7 +1884,7 @@ S void parse_swap_stat(ND* nd) {
 			expt(t_vstrael);
 			short h = parse_var(VAR_STRARR, RD);
 			if (h != nd->v1 && cod) error("must be the same array");
-			ndx->ex = parse_ex();
+			ndx->ex = parse_ex_arr(&ndol);
 			expt_ntok(t_brr);
 		}
 		else if (tok == t_brrl) {
@@ -1870,6 +1893,7 @@ S void parse_swap_stat(ND* nd) {
 		else {
 			expt(t_brr);
 		}
+		if (ndol != NULL) ndol->v1 = nd->v1;
 	}
 // ----------------------------------------------------------------------------------------
 	else if (tok >= t_vnumarr && tok <= t_vstrarr) {

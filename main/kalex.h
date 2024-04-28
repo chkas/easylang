@@ -924,8 +924,13 @@ static void parse_clean() {
 	free(input_data);
 	input_data = NULL;
 }
+
+S ND** nd_doll;
+
 static void parse_prepare() {
 	parse_clean();
+
+	nd_doll = NULL;
 
 	code_utf8len = 0;
 	spc[0] = 0;

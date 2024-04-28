@@ -68,7 +68,6 @@ static int grline;
 void gr_linewidth(double w) {
 	linew = FX * w + 0.5;
 	linew2 = 0.5 * FX * w + 0.5;
-	grline = 0;
 }
 
 void gr_color(int r, int g, int b) {
@@ -402,6 +401,7 @@ void gr_text(const char* str) {
 
 	SDL_DestroyTexture(t);
 	SDL_FreeSurface(s);
+	grline = 0;
 }
 
 SDL_Surface* backgr = NULL;

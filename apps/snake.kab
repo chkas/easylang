@@ -21,8 +21,8 @@ textsize 5
 move 6 40
 text "Keys or mouse for controlling"
 move 6 30
-text "Space or click to to start"
-# 
+text "Space or click to start"
+#
 on key
    if game = 0 and keybkey = " "
       start
@@ -61,15 +61,18 @@ on mouse_down
       .
    .
 .
-on timer
-   clear
+proc over . .
    color 997
-   move 2 95
-   text "Score: " & 10 * len sx[] - 50
-   color 966
-   move rx ry
-   circle 1.5
-   # 
+   move 10 10
+   text "Space or click for new game"
+   game = 2
+   timer 1
+.
+on timer
+   if game = 2
+      game = 0
+      return
+   .
    sx = sx[1] ; sy = sy[1]
    if dir = 1
       sy += 5
@@ -81,13 +84,25 @@ on timer
       sx -= 5
    .
    if sx < 0 or sx > 100 or sy < 0 or sy > 100
-      game = 0
+      over
+      return
    .
-   color 494
    for i = len sx[] downto 2
       if sx = sx[i] and sy = sy[i]
-         game = 0
+         over
+         return
       .
+   .
+   clear
+   color 997
+   move 2 95
+   text "Score: " & 10 * len sx[] - 50
+   color 966
+   move rx ry
+   circle 1.5
+   #
+   color 494
+   for i = len sx[] downto 2
       sx[i] = sx[i - 1]
       sy[i] = sy[i - 1]
       if sx[i] > 0
@@ -115,11 +130,5 @@ on timer
       fruit
    .
    sx[1] = sx ; sy[1] = sy
-   if game = 1
-      timer 0.15
-   else
-      color 997
-      move 10 10
-      text "Space or click new game"
-   .
+   timer 0.15
 .

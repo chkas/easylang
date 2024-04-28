@@ -28,8 +28,10 @@ static void gr_print(const char* s) {
 static void gr_write(const char* s) {
 	EM_ASM_({ postMessage(['print', UTF8ToString($0)]) }, s);
 }
+static byte grline;
 static void gr_color(int r, int g, int b) {
 	EM_ASM_({ push([9, $0, $1, $2])}, r, g, b);
+//	grline = 0;
 }
 static void gr_translate(double x, double y) {
 	EM_ASM_({ push([13, $0, $1])}, x, y);
@@ -40,10 +42,9 @@ static void gr_rotate(double w) {
 static void gr_backcolor(int r, int g, int b) {
 	EM_ASM_({ push([15, $0, $1, $2])}, r, g, b);
 }
-static byte grline;
 static void gr_linewidth(double w) {
 	EM_ASM_({ push([8, $0])}, w);
-	grline = 0;
+//	grline = 0;
 }
 static void gr_mouse_cursor(ushort h) {
 	EM_ASM_({ push([11, $0])}, h);
@@ -108,6 +109,7 @@ static void gr_text(const char* s) {
 	double h = gry;
 	if (!grbotleft) h += grtxty;
 	EM_ASM_({ push([6, $0, $1, UTF8ToString($2)])}, grx, h, s);
+	grline = 0;
 }
 static void gr_move(double x, double y) {
 	grx = x;
