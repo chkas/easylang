@@ -177,6 +177,8 @@ extern int parse(const char* str, int opt, int pos) {
 		co(parse_str + ind_tok);
 
 		caret_pos = code_utf8len;
+
+		// active block highlight
 		if (nestlevel_err >= 0) {
 			ushort npos = nest_block[nestlevel_err];
 			codestr[npos + 1] = 'u';
@@ -189,8 +191,9 @@ extern int parse(const char* str, int opt, int pos) {
 			else if (ch == 'a') codestr[npos + 13] = 'u'; // fastproc
 			else if (ch == 'u') {
 				if (codestr[npos + 7] == '<') codestr[npos + 9] = 'u'; //func
-				else if (codestr[npos + 7] == '$') codestr[npos + 10] = 'u'; // func$
-				else codestr[npos + 11] = 'u'; // func[]
+				else if (codestr[npos + 8] == '<') codestr[npos + 10] = 'u'; // func$
+				else if (codestr[npos + 7] == '[') codestr[npos + 11] = 'u'; // func[]
+				else codestr[npos + 12] = 'u'; // func$[]
 			}
 			else {
 				codestr[npos + 9] = 'u'; //elif, else, proc, func, subr

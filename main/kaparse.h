@@ -143,7 +143,6 @@ S int is_numfactor(void) {
 	if (tok == t_minus) return 1;
 	if (tok == t_lnumber) return 1;
 	if (tok == t_name) return 1;
-	if (tok == t_vnumael) return 1;
 	if (tok == t_len) return 1;
 	if (tok == t_if) return 1;
 	if (is_numfunc()) return 1;
@@ -163,6 +162,59 @@ S void optimize_vnumael(ND* nd) {
 
 S ND* parse_log_ex(void);
 
+S ND* parse_ex_arr(ND** ndolp) {
+	ND** old = nd_doll;
+	nd_doll = ndolp;
+	ND* nd = parse_ex();
+	nd_doll = old;
+	return nd;
+}
+
+enum aeltype { AEL, ARRAEL, AELAEL };
+enum functype { FUNCPROC, FUNCNUM, FUNCSTR, FUNCARR, FUNCSTRARR  };
+
+S int parse_vstrael(ND* nd, int aelael) {
+
+	// e$[i] vs e$[i][j] vs e$[i][]
+	char s[16];
+	ushort pos = code_utf8len;
+	strcpy(s, tval);
+	cs_tok_nt();
+	cs("$[");
+	ND* ndol = NULL;
+	nd->ri = parse_ex_arr(&ndol);
+
+	int rc = AEL;
+	if (tok == t_brr) {
+		// a$[i]
+		cs_tok_nt();
+		nd->v1 = get_var(VAR_STRARR, RD, s, pos);
+		nd->strf = op_vstrael;
+	}
+
+	else if (tok == t_brrl) {
+		nd->v1 = get_var(VAR_STRARRARR, RD, s, pos);
+		cs_tok_nt();
+		if (tok == t_brr) {
+			nd->arrf = op_vstrarrael;
+			rc = ARRAEL;
+		}
+		else if (aelael) {
+			ND* ndx = mknd();
+			nd->strf = op_vstraelael;
+			ndx->ex = nd->ri;
+			nd->ri = ndx;
+			ndx->ex2 = parse_ex();
+			expt_ntok(t_brr);
+			rc = AELAEL;
+		}
+	}
+	else rc = -1;
+	if (ndol != NULL) ndol->v1 = nd->v1;
+	opln_add(nd, fmtline);
+	return rc;
+}
+
 S ND* parse_lenfunc(void) {
 
 	ND* nd = mknd();
@@ -181,44 +233,32 @@ S ND* parse_lenfunc(void) {
 		expt_ntok(t_brr);
 	}
 	else if (tok == t_vstrael) {
-		// len e$[i] vs len e$[i][]
-		char s[16];
-		ushort pos = code_utf8len;
-		strcpy(s, tval);
-		cs_tok_nt();
-		cs("$[");
-		nd->ri = parse_ex();;
-
-		if (tok == t_brr) {
-			// len a$[i]
-			cs_tok_nt();
-			nd->v1 = get_var(VAR_STRARR, RD, s, pos);
-			nd->strf = op_vstrael;
-			opln_add(nd, fmtline);
+		// len e$[i] vs len e$[i][] vs len e$[i][j]
+		int t = parse_vstrael(nd, 1);
+		if (t == AEL || t == AELAEL) {
 			ND* h = nd;
 			nd = mknd();
 			nd->numf = op_strlen;
 			nd->le = h;
 		}
-		else {
-			// len a$[i][]
-			expt_ntok(t_brrl);
-			expt_ntok(t_brr);
-			nd->v1 = get_var(VAR_STRARRARR, RD, s, pos);
+		else if (t == ARRAEL) {
+			cs_tok_nt();
 			nd->numf = op_arrarrael_len;
-			opln_add(nd, fmtline);
 		}
+		else error("]");
 	}
 	else if (tok == t_vnumael) {
 		// len a[i][]
-		char s[16];
-		strcpy(s, tval);
-		ushort pos = code_utf8len;
+		nd->v1 = get_var(VAR_NUMARRARR, RD, tval, code_utf8len);
 		cs_tok_nt();
 		csbrl();
 		nd->numf = op_arrarrael_len;
-		nd->ri = parse_ex();
-		nd->v1 = get_var(VAR_NUMARRARR, RD, s, pos);
+
+		ND* ndol = NULL;
+		nd->ri = parse_ex_arr(&ndol);
+		if (ndol != NULL) ndol->v1 = nd->v1;
+//kc	nd->ri = parse_ex();
+
 		opln_add(nd, fmtline);
 		expt_ntok(t_brrl);
 		expt_ntok(t_brr);
@@ -274,7 +314,6 @@ S ND* parse_callfunc(struct proc* p, byte typ) {
 			nd->next = parse_numarrex();
 			nd = nd->next;
 		}
-//kc
 		else if (b == 'h') {
 			nd->next = parse_numarrarrex();
 			nd = nd->next;
@@ -290,12 +329,43 @@ S ND* parse_callfunc(struct proc* p, byte typ) {
 	return ndf;
 }
 
-S ND* parse_ex_arr(ND** ndolp) {
-	ND** old = nd_doll;
-	nd_doll = ndolp;
-	ND* nd = parse_ex();
-	nd_doll = old;
-	return nd;
+S int parse_vnumael(ND* nd, int aelael) {
+	// e[i] vs e[i][j] vs e[i][]
+	int rc = AEL;
+	char s[16];
+	strcpy(s, tval);
+	ushort pos = code_utf8len;
+	cs_tok_nt();
+	csbrl();
+	ND* ndol = NULL;
+	nd->ri = parse_ex_arr(&ndol);
+	nd->numf = NULL;
+	if (tok == t_brr) {
+		cs_tok_nt();
+		nd->numf = op_vnumael;
+		nd->v1 = get_var(VAR_NUMARR, RD, s, pos);
+	}
+	else if (tok == t_brrl) {
+		nd->v1 = get_var(VAR_NUMARRARR, RD, s, pos);
+		cs_tok_nt();
+		if (tok == t_brr) {
+			rc = ARRAEL;
+			nd->arrf = op_vnumarrael;
+		}
+		else if (aelael) {
+			rc = AELAEL;
+			ND* ndx = mknd();
+			nd->numf = op_vnumaelael;
+			ndx->ex = nd->ri;
+			nd->ri = ndx;
+			ndx->ex2 = parse_ex();
+			expt_ntok(t_brr);
+		}
+	}
+	else rc = -1;
+	if (ndol != NULL) ndol->v1 = nd->v1;
+	opln_add(nd, fmtline);
+	return rc;
 }
 
 S ND* parse_fac(void) {
@@ -314,7 +384,7 @@ S ND* parse_fac(void) {
 		struct proc* p = proc_get(name);
 		if (p) {
 			if (p->typ != 1) {
-				error("func name");
+				error("number");
 				return NULL;
 			}
 			else nd = parse_callfunc(p, 0);
@@ -353,39 +423,13 @@ S ND* parse_fac(void) {
 	}
 	else if (tok == t_vnumael) {
 		nd = mknd();
-		char s[16];
-		strcpy(s, tval);
-		ushort pos = code_utf8len;
-		cs_tok_nt();
-		csbrl();
-		ND* ndol = NULL;
-		nd->ri = parse_ex_arr(&ndol);
-		if (tok == t_brr) {
-			cs_tok_nt();
-
-			if (cod) {
-				nd->v1 = get_var(VAR_NUMARR, RD, s, pos);
-				nd->numf = op_vnumael;
-				optimize_vnumael(nd);
-			}
+		int t = parse_vnumael(nd, 1);
+		if (t == AEL) {
+			optimize_vnumael(nd);
 		}
-		else if (tok == t_brrl) {
-			ND* ndx = mknd();
-			cs_tok_nt();
-			nd->v1 = get_var(VAR_NUMARRARR, RD, s, pos);
-			nd->numf = op_vnumaelael;
-
-			ndx->ex = nd->ri;
-			nd->ri = ndx;
-			ndx->ex2 = parse_ex();;
-			expt_ntok(t_brr);
-		}
-		else {
+		else if (t != AELAEL) {
 			error("], ][");
 		}
-		if (ndol != NULL) ndol->v1 = nd->v1;
-
-		opln_add(nd, fmtline);
 	}
 	else if (tok == t_if) {
 		nd = mknd();
@@ -407,7 +451,6 @@ S ND* parse_fac(void) {
 	}
 	return nd;
 }
-
 
 S ND* parse_termx(ND* ndx) {
 
@@ -458,11 +501,10 @@ S void optimize_ex(ND* nd) {
 
 S ND* parse_exx(ND* nd0) {
 
-	ND* nd;
 	ND* ndx = parse_termx(nd0);
 	while (tok == t_plus || tok == t_minus) {
 		cs_spc();
-		nd = mknd();
+		ND* nd = mknd();
 		nd->le = ndx;
 		if (tok == t_plus) nd->numf = op_add;
 		else nd->numf = op_sub;
@@ -476,7 +518,6 @@ S ND* parse_exx(ND* nd0) {
 S ND* parse_ex(void) {
 	return parse_exx(NULL);
 }
-
 
 S ND* parse_lstr(void) {
 	ND* nd = mknd();
@@ -568,34 +609,15 @@ S ND* parse_strterm(void) {
 	}
 	else if (tok == t_vstrael) {
 		nd = mknd();
-		char s[16];
-		strcpy(s, tval);
-		ushort pos = code_utf8len;
-		cs_tok_nt();
-		cs("$[");
-		ND* ndol = NULL;
-		nd->ri = parse_ex_arr(&ndol);
-
-		if (tok == t_brr) {
+		// e$[i] vs e$[i][] vs e$[i][j]
+		int t = parse_vstrael(nd, 1);
+		if (t == ARRAEL) {
 			cs_tok_nt();
-			nd->v1 = get_var(VAR_STRARR, RD, s, pos);
-			nd->strf = op_vstrael;
+			ND* ndx = nd;
+			nd = mknd();
+			nd->strf = op_strarrstr;
+			nd->le = ndx;
 		}
-		else if (tok == t_brrl) {
-			cs_tok_nt();
-			nd->v1 = get_var(VAR_STRARRARR, RD, s, pos);
-			nd->strf = op_vstraelael;
-			ND* ndx = mkndx();
-			ndx->ex = nd->ri;
-			nd->ri = ndx;
-			ndx->ex2 = parse_ex();;
-			expt_ntok(t_brr);
-		}
-		else {
-			error("], ][");
-		}
-		if (ndol != NULL) ndol->v1 = nd->v1;
-		opln_add(nd, fmtline);
 	}
 	else if (is_strfunc()) {
 		nd = parse_strfunc();
@@ -606,21 +628,43 @@ S ND* parse_strterm(void) {
 		const char* name = getn(tval);
 		struct proc* p = proc_get(name);
 		if (p) {
-			if (p->typ == 0) error("string");
+			if (p->typ == FUNCPROC) error("string");
 
-			else if (p->typ == 1) {
+			else if (p->typ == FUNCNUM) {
 				nd = parse_numstr();
 			}
-			else if (p->typ == 2) {
+			else if (p->typ == FUNCSTR) {
 				nd = parse_callfunc(p, 1);
 			}
-			else {
+			else if (p->typ == FUNCARR) {
 				nd = mknd();
 				nd->strf = op_numarrstr;
-				nd->le = parse_numarrex();;
+				nd->le = parse_numarrex();
+			}
+			else {  // if (p->typ == FUNCSTRARR) {
+				nd = mknd();
+				nd->strf = op_strarrstr;
+				nd->le = parse_strarrex();
 			}
 		}
 		else nd = parse_numstr();
+	}
+	else if (tok == t_vnumael) {
+		nd = mknd();
+		ND* ndx = mknd();
+		int t = parse_vnumael(ndx, 1);
+		nd->le = ndx;
+		if (t == ARRAEL) {
+			cs_tok_nt();
+			nd->strf = op_numarrstr;
+		}
+		else if (t != -1) {
+			nd->strf = op_numstr;
+			nd->le = parse_exx(ndx);
+		}
+		else {
+			error("], ][");
+		}
 	}
 	else if (is_numfactor()) {
 		nd = parse_numstr();
@@ -753,7 +797,7 @@ S ND* parse_log_termx(ND* nd0) {
 	else if (tok == t_name) {
 		const char* name = getn(tval);
 		struct proc* p = proc_get(name);
-		if (p && p->typ == 2) {
+		if (p && p->typ == FUNCSTR) {
 			nd = parse_str_cmp();
 		}
 		else {
@@ -920,7 +964,6 @@ S int parse_proc_header(int mode, byte proctyp) {
 			csbrr();
 			typ = 'g';
 		}
-//kc
 		else if (tok == t_vnumarrarr) {
 			lvar(VAR_NUMARRARR, 1, mode);
 			expt_ntok(t_brr);
@@ -1180,7 +1223,11 @@ S ND* parse_numarrex(void) {
 		cs(tval);
 		csbrl();
 		nexttok();
-		ex->ri = parse_ex();
+
+		ND* ndol = NULL;
+		ex->ri = parse_ex_arr(&ndol);
+		if (ndol != NULL) ndol->v1 = ex->v1;
+
 		expt_ntok(t_brrl);
 		expt_ntok(t_brr);
 		opln_add(ex, fmtline);
@@ -1191,10 +1238,9 @@ S ND* parse_numarrex(void) {
 		ex->le = parse_strarrex();;
 	}
 	else if (tok == t_name) {
-//kc
 		const char* name = getn(tval);
 		struct proc* p = proc_get(name);
-		if (p && p->typ == 3) {
+		if (p && p->typ == FUNCARR) {
 			ex = parse_callfunc(p, 2);
 		}
 		else error("array");
@@ -1255,22 +1301,36 @@ S ND* parse_strarrex(void) {
 		cs(tval);
 		cs("$[");
 		nexttok();
-		ex->ri = parse_ex();;
+
+		ND* ndol = NULL;
+		ex->ri = parse_ex_arr(&ndol);
+		if (ndol != NULL) ndol->v1 = ex->v1;
+
 		expt_ntok(t_brrl);
 		expt_ntok(t_brr);
 		opln_add(ex, fmtline);
 	}
-	else if (tok == t_name && strcmp(tval, "strchars") == 0) {
-		ex->arrf = op_strchars;
-		csb_tok_spc_nt();
-		ex->le = parse_strex();
-	}
-	else if (tok == t_name && strcmp(tval, "strsplit") == 0 ) {
-		ex->arrf = op_strsplit;
-		csb_tok_spc_nt();
-		ex->le = parse_strex();
-		cs_spc();
-		ex->ri = parse_strex();
+	else if (tok == t_name) {
+		if (strcmp(tval, "strchars") == 0) {
+			ex->arrf = op_strchars;
+			csb_tok_spc_nt();
+			ex->le = parse_strex();
+		}
+		else if (strcmp(tval, "strsplit") == 0 ) {
+			ex->arrf = op_strsplit;
+			csb_tok_spc_nt();
+			ex->le = parse_strex();
+			cs_spc();
+			ex->ri = parse_strex();
+		}
+		else  {
+			const char* name = getn(tval);
+			struct proc* p = proc_get(name);
+			if (p && p->typ == FUNCSTRARR) {
+				ex = parse_callfunc(p, 2);
+			}
+			else error("string array");
+		}
 	}
 	else error("string array");
 	return ex;
@@ -1724,7 +1784,10 @@ S void parse_len_stat(ND* nd) {
 		}
 		//* len a[i][] 2
 		nexttok();
-		ndx->ex = parse_ex();
+		ND* ndol = NULL;
+		ndx->ex = parse_ex_arr(&ndol);
+		if (ndol != NULL) ndol->v1 = nd->v1;
+		opln_add(nd, fmtline);
 		expt_ntok(t_brrl);
 		expt_ntok(t_brr);
 	}
@@ -1774,10 +1837,13 @@ S void parse_arr_swap(ND* nd, byte arrtok, enum vartyp arrtype) {
 		h = nd->v1;
 		nd->v1 = get_var(arrtype + 2, RD, tval, code_utf8len);
 		cs(tval);
+		if (arrtok == t_vstrarr) cs("$");
 		csbrl();
 		nexttok();
 		ndx->vx = h;
-		nd->ri = parse_ex();
+		ND* ndol = NULL;
+		nd->ri = parse_ex_arr(&ndol);
+		if (ndol != NULL) ndol->v1 = nd->v1;
 		expt_ntok(t_brrl);
 		expt_ntok(t_brr);
 	}
@@ -1786,16 +1852,11 @@ S void parse_arr_swap(ND* nd, byte arrtok, enum vartyp arrtype) {
 	}
 }
 
-S void parse_arr_swap2(ND* nd, byte arrtok, enum vartyp arrtype, char* s, ushort pos) {
+S void parse_arr_swap2(ND* nd, byte arrtok, enum vartyp arrtype) {
 
 	ND* ndx = nd + 1;
 	nd->vf = op_swaparrael;
-	nd->v1 = get_var(arrtype + 2, RW, s, pos);
-	cs(tval);
-	nexttok();
-	expt_ntok(t_brr);
 	cs_spc();
-
 	if (tok == arrtok) {
 		ndx->vx = parse_var(arrtype, RW);
 		csbrr();
@@ -1805,9 +1866,12 @@ S void parse_arr_swap2(ND* nd, byte arrtok, enum vartyp arrtype, char* s, ushort
 		short h = get_var(arrtype + 2, RW, tval, code_utf8len);
 		if (cod && h != nd->v1) error("must be the same array");
 		cs(tval);
+		if (arrtok == t_vstrarr) cs("$");
 		csbrl();
 		nexttok();
-		ndx->ex = parse_ex();
+		ND* ndol = NULL;
+		ndx->ex = parse_ex_arr(&ndol);
+		if (ndol != NULL) ndol->v1 = nd->v1;
 		expt_ntok(t_brrl);
 		expt_ntok(t_brr);
 	}
@@ -1828,35 +1892,27 @@ S void parse_swap_stat(ND* nd) {
 		nd->v2 = parse_var(VAR_NUM, RW);
 	}
 	else if (tok == t_vnumael) {
-		char s[16];
-		ushort pos = code_utf8len;
-		strcpy(s, tval);
-		cs_tok_nt();
-		csbrl();
 		ND* ndx = mkndx();
-		ND* ndol = NULL;
-		nd->ri = parse_ex_arr(&ndol);
-
-		if (tok == t_brr) {
-			//* swap f[i] f[j]
-			cs_tok_nt();
-			nd->v1 = get_var(VAR_NUMARR, RD, s, pos);
+		int t = parse_vnumael(nd, 0);
+		if (t == AEL) {
+			// swap f[i] f[j]
 			nd->vf = op_swapnumael;
 			cs_spc();
-
 			expt(t_vnumael);
 			short h = parse_var(VAR_NUMARR, RD);
 			if (h != nd->v1 && cod) error("must be the same array");
+			ND* ndol = NULL;
 			ndx->ex = parse_ex_arr(&ndol);
+			if (ndol != NULL) ndol->v1 = nd->v1;
 			expt_ntok(t_brr);
 		}
-		else if (tok == t_brrl) {
-			parse_arr_swap2(nd, t_vnumarr, VAR_NUMARR, s, pos);
+		else if (t == ARRAEL) {
+			cs_tok_nt();
+			parse_arr_swap2(nd, t_vnumarr, VAR_NUMARR);
 		}
 		else {
-			expt(t_brr);
+			error("]");
 		}
-		if (ndol != NULL) ndol->v1 = nd->v1;
 	}
 	else if (tok == t_vstr) {
 		nd->vf = op_swapstr;
@@ -1866,34 +1922,25 @@ S void parse_swap_stat(ND* nd) {
 		nd->v2 = parse_var(VAR_STR, RW);
 	}
 	else if (tok == t_vstrael) {
-		char s[16];
-		strcpy(s, tval);
-		ushort pos = code_utf8len;
-		cs_tok_nt();
-		cs("$[");
 		ND* ndx = mkndx();
-		ND* ndol = NULL;
-		nd->ri = parse_ex_arr(&ndol);
-
-		if (tok == t_brr) {
+		int t = parse_vstrael(nd, 0);
+		if (t == AEL) {
 			// swap f$[i] f$[j]
-			cs_tok_nt();
-			nd->v1 = get_var(VAR_STRARR, RD, s, pos);
 			nd->vf = op_swapstrael;
 			cs_spc();
 			expt(t_vstrael);
 			short h = parse_var(VAR_STRARR, RD);
 			if (h != nd->v1 && cod) error("must be the same array");
+			ND* ndol = NULL;
 			ndx->ex = parse_ex_arr(&ndol);
+			if (ndol != NULL) ndol->v1 = nd->v1;
 			expt_ntok(t_brr);
 		}
-		else if (tok == t_brrl) {
-			parse_arr_swap2(nd, t_vstrarr, VAR_STRARR, s, pos);
+		else if (t == ARRAEL) {
+			cs_tok_nt();
+			parse_arr_swap2(nd, t_vstrarr, VAR_STRARR);
 		}
-		else {
-			expt(t_brr);
-		}
-		if (ndol != NULL) ndol->v1 = nd->v1;
+		else error("]");
 	}
 // ----------------------------------------------------------------------------------------
 	else if (tok >= t_vnumarr && tok <= t_vstrarr) {
@@ -2006,7 +2053,6 @@ S void parse_call_stat(ND* nd, struct proc* p) {
 			nd->v1 = parse_var(VAR_STR, RW);
 		}
 		else if (b == 'G') {
-//kc
 			if (tok == t_vnumarr) {
 				// a[]
 				nd->v1 = parse_var(VAR_NUMARR, RW);
@@ -2019,7 +2065,12 @@ S void parse_call_stat(ND* nd, struct proc* p) {
 				cs(tval);
 				csbrl();
 				nexttok();
-				nd->ri = parse_ex();
+
+				ND* ndol = NULL;
+				nd->ri = parse_ex_arr(&ndol);
+				if (ndol != NULL) ndol->v1 = nd->v1;
+
+				//? nd->ri = parse_ex();
 				expt_ntok(t_brrl);
 				expt_ntok(t_brr);
 			}
@@ -2116,6 +2167,59 @@ S ND* parse_strarr_term(void) {
 	return nd;
 }
 
+S int getfunctype(void) {
+	if (c == '$' && tok == t_func) {
+		nextc();
+		// func$
+		tval[4] ='$';
+		if (c == '[' && cn == ']') {
+			tval[5] ='[';
+			tval[6] =']';
+			tval[7] = 0;
+			nextc();
+			nextc();
+			return 4;
+		}
+		tval[5] = 0;
+		return 2;
+	}
+	if (c == '[' && cn == ']' && tok == t_func) {
+		// func[]
+		tval[4] ='[';
+		tval[5] =']';
+		tval[6] = 0;
+		nextc();
+		nextc();
+		return 3;
+	}
+	return 1;
+}
+
+S void parse_funcproc(void) {
+
+	if (sequ_level != 0) error("not allowed here");
+	loop_level += 1;
+	if (!err && sequ_level < 16) nest_block[sequ_level] = codestrln;
+	if (tok == t_func || tok == t_fastfunc) {
+
+		if (tok == t_fastfunc && cod) {
+			in_fastfunc = 1;
+			parse_proc(1);
+			if (!err) parse_fastfunc();
+			in_fastfunc = 0;
+		}
+		else {
+			parse_proc(getfunctype());
+		}
+	}
+	else {
+		parse_proc(0);
+
+	}
+	proc = proc_p;
+	loop_level -= 1;
+}
+
 S ND* parse_sequ(void) {
 
 	ND* sequ = NULL;
@@ -2138,45 +2242,8 @@ S ND* parse_sequ(void) {
 				parse_global_stat();
 			}
 			else if (tok >= t_proc && tok <= t_fastfunc) {
-				if (sequ_level != 0) error("not allowed here");
-				loop_level += 1;
-				if (!err && sequ_level < 16) nest_block[sequ_level] = codestrln;
-				if (tok == t_func || tok == t_fastfunc) {
+				parse_funcproc();
 
-					if (tok == t_fastfunc && cod) {
-						in_fastfunc = 1;
-						parse_proc(1);
-						if (!err) parse_fastfunc();
-						in_fastfunc = 0;
-					}
-					else {
-						if (c == '$' && tok == t_func) {
-							// func$
-							tval[4] ='$';
-							tval[5] = 0;
-							nextc();
-							parse_proc(2);
-						}
-						else if (c == '[' && cn == ']' && tok == t_func) {
-							// func[]
-							tval[4] ='[';
-							tval[5] =']';
-							tval[6] = 0;
-							nextc();
-							nextc();
-							parse_proc(3);
-						}
-						else {
-							parse_proc(1);
-						}
-					}
-				}
-				else {
-					parse_proc(0);
-
-				}
-				proc = proc_p;
-				loop_level -= 1;
 			}
 			else if (tok == t_subr) {
 				if  (sequ_level != 0) goto statement; // subr inside proc
@@ -2188,20 +2255,24 @@ S ND* parse_sequ(void) {
 			}
 			else if (tok == t_procdecl) {
 				if (sequ_level != 0) error("not allowed here");
-				parse_procdecl(0);
+				parse_procdecl(FUNCPROC);
 			}
 			else if (tok == t_funcdecl) {
 				if (sequ_level != 0) error("not allowed here");
+
+				parse_procdecl(getfunctype());
+/*
 				if (c == '$') {
 					// funcdecl$
 					tval[8] ='$';
 					tval[9] = 0;
 					nextc();
-					parse_procdecl(2);
+					parse_procdecl(FUNCSTR);
 				}
 				else {
-					parse_procdecl(1);
+					parse_procdecl(FUNCNUM);
 				}
+*/
 			}
 			else if (tok == t_prefix) {
 				if (sequ_level != 0) error("not allowed here");
@@ -2342,13 +2413,17 @@ S ND* parse_sequ(void) {
 						cs_spc();
 						nd->le = parse_ex();
 					}
-					else if (proc->typ == 2) {
+					else if (proc->typ == FUNCSTR) {
 						cs_spc();
 						nd->le = parse_strex();
 					}
-					else if (proc->typ == 3) {
+					else if (proc->typ == FUNCARR) {
 						cs_spc();
 						nd->le = parse_numarrex();
+					}
+					else if (proc->typ == FUNCSTRARR) {
+						cs_spc();
+						nd->le = parse_strarrex();
 					}
 				}
 				else if (tok == t_swap) {
