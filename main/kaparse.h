@@ -929,10 +929,11 @@ S int parse_proc_header(int mode, byte proctyp) {
 	if (proc != NULL) {
 		if (mode == 1 && proc->start == NULL) {
 			mode = 2;
+			if (proctyp != proc->typ) goto err_declnotmatch;
 			// in procdecl source position is stored here, must be cleared
 			proc->varcnt[0] = 0;
 		}
-		else error("already defined");
+		else goto err_already_defined;
 	}
 	else {
 		proc = proc_add(name);
@@ -947,10 +948,7 @@ S int parse_proc_header(int mode, byte proctyp) {
 	int i = 0;
 	char typ;
 	while (tok != t_dot) {
-		if (i == 15) {
-			error("max 15 parameters");
-			return 0;
-		}
+		if (i == 15) goto err_maxparam;
 		if (tok == t_name) {
 			lvar(VAR_NUM, 1, mode);
 			typ = 'f';
@@ -983,14 +981,12 @@ S int parse_proc_header(int mode, byte proctyp) {
 				cst(t_dot);
 				space_add();
 				cs_nl();
-				error("");
-				return 0;
+				goto err;
 			}
-			error("., string or number variable");
-			return 0;
+			goto err_variable;
 		}
 		if (mode <= 1) proc->parms[i] = typ;
-		else if (proc->parms[i] != typ) error("decl doesn't match");
+		else if (proc->parms[i] != typ) goto err_declnotmatch;;
 		cs_spc();
 		i += 1;
 	}
@@ -999,10 +995,7 @@ S int parse_proc_header(int mode, byte proctyp) {
 		cs_spc();
 		nexttok();
 		while (tok != t_dot) {
-			if (i == 15) {
-				error("max 15 parameters");
-				return 0;
-			}
+			if (i == 15) goto err_maxparam;
 			if (tok == t_name) {
 				lvar(VAR_NUM, 3, mode);
 				typ = 'F';
@@ -1036,24 +1029,34 @@ S int parse_proc_header(int mode, byte proctyp) {
 					cst(t_dot);
 					space_add();
 					cs_nl();
-					error("");
-					return 0;
+					goto err;
 				}
-				error("., variable");
-				return 0;
+				goto err_variable;
 			}
 			if (mode <= 1) proc->parms[i] = typ;
-			else if (proc->parms[i] != typ) error("procdecl doesn't match");
+			else if (proc->parms[i] != typ) goto err_declnotmatch;
 			cs_spc();
 			i += 1;
 		}
 	}
 	if (mode <= 1) proc->parms[i] = 0;
-	else if (proc->parms[i] != 0) error("procdecl doesn't match");
+	else if (proc->parms[i] != 0) goto err_declnotmatch;
 
 	cst(t_dot);
 	nexttok();
 	return 1;
+
+err_declnotmatch:
+	error("decl doesn't match");
+err_maxparam:
+	error("max 15 parameters");
+err_variable:
+	error("., variable");
+err_already_defined:
+	error("already defined");
+err:
+	error("");
+	return 0;
 }
 
 S void parse_proc(byte typ) {
@@ -1243,9 +1246,12 @@ S ND* parse_numarrex(void) {
 		if (p && p->typ == FUNCARR) {
 			ex = parse_callfunc(p, 2);
 		}
-		else error("array");
+		else goto err_arr;
 	}
-	else error("array");
+	else goto err_arr;
+	return ex;
+err_arr:
+	error("array");
 	return ex;
 }
 
@@ -1329,10 +1335,13 @@ S ND* parse_strarrex(void) {
 			if (p && p->typ == FUNCSTRARR) {
 				ex = parse_callfunc(p, 2);
 			}
-			else error("string array");
+			else goto err_arr;
 		}
 	}
-	else error("string array");
+	else goto err_arr;
+	return ex;
+err_arr:
+	error("string array");
 	return ex;
 }
 
@@ -2168,26 +2177,29 @@ S ND* parse_strarr_term(void) {
 }
 
 S int getfunctype(void) {
-	if (c == '$' && tok == t_func) {
+
+	if (c == '$') {
+		int h = 0;
+		if (tok == t_funcdecl) h += 4;
 		nextc();
-		// func$
-		tval[4] ='$';
+		tval[4 + h] ='$';
 		if (c == '[' && cn == ']') {
-			tval[5] ='[';
-			tval[6] =']';
-			tval[7] = 0;
+			tval[5 + h] ='[';
+			tval[6 + h] =']';
+			tval[7 + h] = 0;
 			nextc();
 			nextc();
 			return 4;
 		}
-		tval[5] = 0;
+		tval[5 + h] = 0;
 		return 2;
 	}
-	if (c == '[' && cn == ']' && tok == t_func) {
-		// func[]
-		tval[4] ='[';
-		tval[5] =']';
-		tval[6] = 0;
+	if (c == '[' && cn == ']') {
+		int h = 0;
+		if (tok == t_funcdecl) h += 4;
+		tval[4 + h] ='[';
+		tval[5 + h] =']';
+		tval[6 + h] = 0;
 		nextc();
 		nextc();
 		return 3;
@@ -2259,20 +2271,7 @@ S ND* parse_sequ(void) {
 			}
 			else if (tok == t_funcdecl) {
 				if (sequ_level != 0) error("not allowed here");
-
 				parse_procdecl(getfunctype());
-/*
-				if (c == '$') {
-					// funcdecl$
-					tval[8] ='$';
-					tval[9] = 0;
-					nextc();
-					parse_procdecl(FUNCSTR);
-				}
-				else {
-					parse_procdecl(FUNCNUM);
-				}
-*/
 			}
 			else if (tok == t_prefix) {
 				if (sequ_level != 0) error("not allowed here");
