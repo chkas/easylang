@@ -192,8 +192,12 @@ extern int parse(const char* str, int opt, int pos) {
 			else if (ch == 'u') {
 				if (codestr[npos + 7] == '<') codestr[npos + 9] = 'u'; //func
 				else if (codestr[npos + 8] == '<') codestr[npos + 10] = 'u'; // func$
-				else if (codestr[npos + 7] == '[') codestr[npos + 11] = 'u'; // func[]
-				else codestr[npos + 12] = 'u'; // func$[]
+				else if (codestr[npos + 9] == '<') codestr[npos + 11] = 'u'; // func[]
+				else if (codestr[npos + 10] == '<') codestr[npos + 12] = 'u'; // func$[]
+				else codestr[npos + 13] = 'u'; // func[][]
+
+//				else if (codestr[npos + 7] == '[') codestr[npos + 11] = 'u'; // func[]
+//				else codestr[npos + 12] = 'u'; // func$[]
 			}
 			else {
 				codestr[npos + 9] = 'u'; //elif, else, proc, func, subr

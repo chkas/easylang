@@ -2,7 +2,7 @@ txt_tutor = String.raw`+ Functions and recursion
 
 -
 
-+ Procedures are defined with *proc* and called with *call*. The syntax of a procedure definition is: *proc <proc_name> <value parameters> . <reference parameters> .*
++ Procedures are defined with *proc*. The syntax of a procedure definition is: *proc <proc_name> <value parameters> . <reference parameters> .*
 
 + Variables that occur for the first time within a procedure are local to that procedure. Global variables declared above can be accessed.
 
@@ -359,7 +359,7 @@ print "Number of solutions: " & n_solutions
 
 + A recursiv top-down parser for an arithmetic expression. There we have a *mutual recursion* for the functions *eval_expr* and *eval_factor*. To do this, we need to make a functions known with a *forward declaration* before implementing it.
 
-subr nch
+subr nextch
    if inp_ind > len inp$[]
       ch$ = strchar 0
    else
@@ -369,24 +369,24 @@ subr nch
    ch = strcode ch$
 .
 #
-subr ntok
+subr nexttok
    if ch = 0
       tok$ = "eof"
    else
       while ch$ = " "
-         nch
+         nextch
       .
       if ch >= 48 and ch <= 58
          tok$ = "numb"
          s$ = ""
          while ch >= 48 and ch <= 58 or ch$ = "."
             s$ &= ch$
-            nch
+            nextch
          .
          tokv = number s$
       else
          tok$ = ch$
-         nch
+         nextch
       .
    .
 .
@@ -396,16 +396,16 @@ func eval_factor .
    if tok$ = "numb"
       write tokv
       res = tokv
-      ntok
+      nexttok
    elif tok$ = "("
       write tok$
-      ntok
+      nexttok
       res = eval_expr
       if tok$ <> ")"
          print "error"
       .
       write tok$
-      ntok
+      nexttok
    .
    return res
 .
@@ -414,7 +414,7 @@ func eval_term .
    while tok$ = "*" or tok$ = "/"
       write " " & tok$ & " "
       t$ = tok$
-      ntok
+      nexttok
       r = eval_factor
       if t$ = "*"
          res *= r
@@ -429,7 +429,7 @@ func eval_expr .
    while tok$ = "+" or tok$ = "-"
       write " " & tok$ & " "
       t$ = tok$
-      ntok
+      nexttok
       r = eval_term
       if t$ = "+"
          res += r
@@ -442,8 +442,8 @@ func eval_expr .
 func eval s$ .
    inp$[] = strchars s$
    inp_ind = 1
-   nch
-   ntok
+   nextch
+   nexttok
    return eval_expr
 .
 repeat
@@ -454,6 +454,5 @@ repeat
 input_data
 4 * 6
 4.2 * ((5.3+8)*3 + 4)
-2.5 + 2 * 3.14
-`
+2.5 + 2 * 3.14`
 

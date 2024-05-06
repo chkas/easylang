@@ -753,8 +753,8 @@ S void xnumarrarrstr(STR* str, ARR* a) {
 S STR op_numarrarrstr(ND* nd) {
 	STR str;
 	str_init(&str);
-	ARR* a = garr(nd->v1);
-	xnumarrarrstr(&str, a);
+	ARR arr = arrf(nd->le);
+	xnumarrarrstr(&str, &arr);
 	return str;
 }
 
@@ -2111,7 +2111,9 @@ S void callfunc(ND* nd0, double* ret, STR* retstr, ARR* retarr) {
 	if (funcnd) {
 		if (ret) *ret = numf(funcnd);
 		else if (retstr) *retstr = strf(funcnd);
-		else if (retarr) *retarr = arrf(funcnd);
+		else if (retarr) {
+			*retarr = arrf(funcnd);
+		}
 		funcnd = NULL;
 	}
 	rt.proc = proc_caller;
@@ -2147,6 +2149,7 @@ S STR op_callfunc_str(ND* nd0) {
 S ARR op_callfunc_arr(ND* nd0) {
 	ARR retval;
 	retval.len = 0;
+//kc??
 	retval.typ = ARR_NUM;
 	retval.base = 1;
 	retval.p = NULL;
