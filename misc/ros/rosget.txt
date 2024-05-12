@@ -1,3 +1,4 @@
+1
 100 doors
 100 prisoners
 10001th prime
@@ -206,6 +207,7 @@ Euler's sum of powers conjecture
 Evaluate binomial coefficients
 Even or odd
 Events
+E
 Evolutionary algorithm
 Exactly three adjacent 3 in lists
 Execute Brain****
@@ -282,11 +284,15 @@ Golden ratio/Convergence
 Gray code
 Greatest common divisor
 Greatest element of a list
+Greatest subsequential sum
 Greyscale bars/Display
 Guess the number
 Guess the number/With feedback
+Guess the number/With feedback (player)
 H
 Hailstone sequence
+Halt and catch fire
+Hamming numbers
 Happy numbers
 Harmonic series
 Harshad or Niven series
@@ -297,6 +303,7 @@ Hello world/Newline omission
 Hello world/Text
 Here document
 Hilbert curve
+Hofstadter Figure-Figure sequences
 Hofstadter Q sequence
 Hofstadter-Conway $10,000 sequence
 Honaker primes
@@ -314,13 +321,16 @@ Increasing gaps between consecutive Niven numbers
 Increment a numerical string
 Infinity
 Input loop
+Input/Output for pairs of numbers
 Integer comparison
+Integer roots
 Integer sequence
 ISBN13 check digit
 Isqrt (integer square root) of X
 J
 Jewels and stones
 Jordan-Pólya numbers
+JortSort
 Josephus problem
 Julia set
 K
@@ -332,11 +342,20 @@ Koch curve
 L
 Lah numbers
 Langton's ant
+Largest difference between adjacent primes
+Largest five adjacent number
+Largest int from concatenated ints
 Largest number divisible by its digits
+Largest palindrome product
+Largest prime factor
+Largest product in a grid
 Largest proper divisor of n
 Last Friday of each month
+Last letter-first letter
+Last list item
 Leap year
 Least common multiple
+Length of an arc between two angles
 Leonardo numbers
 Letter frequency
 Levenshtein distance
@@ -349,8 +368,13 @@ Logical operations
 Long multiplication
 Long primes
 Long year
+Longest common prefix
 Longest common subsequence
 Longest common substring
+Longest common suffix
+Longest increasing subsequence
+Longest palindromic substrings
+Longest substrings without repeating characters
 Look-and-say sequence
 Loop over multiple arrays simultaneously
 Loops/Break
@@ -365,6 +389,7 @@ Loops/N plus one half
 Loops/Nested
 Loops/While
 Lucas-Lehmer test
+Ludic numbers
 Luhn test of credit card numbers
 Lyndon word
 M
@@ -373,9 +398,11 @@ Magic constant
 Magic squares of odd order
 Magnanimous numbers
 Mandelbrot set
+Map range
 Mastermind
 Matrix multiplication
 Matrix transposition
+Matrix with two diagonals
 Maximum difference between adjacent elements of list
 Maximum triangle path sum
 Maze generation
@@ -390,14 +417,21 @@ Middle three digits
 Mind boggling card trick
 Minesweeper game
 Minimum multiple of m where digital sum equals m
+Minimum number of cells after, before, above and below NxN squares
+Minimum numbers of three lists
+Minimum primes
 Modular inverse
 Monte Carlo methods
 Monty Hall problem
 Morse code
+Mosaic matrix
 Motzkin numbers
 Mouse position
+Move-to-front algorithm
 Multifactorial
 Multiplication tables
+Multiplicatively perfect numbers
+Multisplit
 Munchausen numbers
 Munching squares
 Musical scale
@@ -407,7 +441,11 @@ N
 N'th
 N-queens problem
 Narcissistic decimal number
+Negative base numbers
+Neighbour primes
 Next highest int from digits
+Next special primes
+Nice primes
 Nim game
 Non-decimal radices/Convert
 Nth root
@@ -544,7 +582,7 @@ Smarandache-Wellin primes
 Smith numbers
 Snake
 Soloway's recurring rainfall
-Solve triangle solitare puzzle
+Solve triangle solitaire puzzle
 Sort disjoint sublist
 Sort three variables
 Sorting algorithms/Bogosort

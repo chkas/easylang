@@ -563,15 +563,18 @@ S double op_mod(ND* nd) {
 	double a = numf(nd->le);
 	double b = numf(nd->ri);
 	double r = fmod(a, b);
-	if (r < 0) r += b;		// make it positive, as in Julia, Python
+	if ((r < 0 && b > 0) || (b < 0 && r > 0)) {
+		r += b;		// as in Julia, Python
+	}
 	return r;
 }
 S double op_mod1(ND* nd) {	// as in Julia
 	double a = numf(nd->le) - 1;
 	double b = numf(nd->ri);
 	double r = fmod(a, b);
-//	if (r < 0) r += b + 1;
-	if (r < 0) r += b;
+	if ((r < 0 && b > 0) || (b < 0 && r > 0)) {
+		r += b;		// as in Julia, Python
+	}
 	return r + 1;
 }
 S double op_divi1(ND* nd) {	// as in Julia fld1
