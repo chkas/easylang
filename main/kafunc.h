@@ -1198,11 +1198,12 @@ S void op_swapnum(ND* nd) {
 S void op_swapnumael(ND* nd) {
 	ND* ndx = nd + 1;
 	ARR* arr = garr(nd->v1);
+	ARR* arr2 = garr(ndx->vx2);
 	int h1 = arrind(arr, numf(nd->ri), nd);
-	int h2 = arrind(arr, numf(ndx->ex), nd);
+	int h2 = arrind(arr2, numf(ndx->ex), nd);
 	double h = *(arr->pnum + h1);
-	*(arr->pnum + h1) = *(arr->pnum + h2);
-	*(arr->pnum + h2) = h;
+	*(arr->pnum + h1) = *(arr2->pnum + h2);
+	*(arr2->pnum + h2) = h;
 }
 
 S void op_swapstr(ND* nd) {
@@ -1216,11 +1217,12 @@ S void op_swapstr(ND* nd) {
 S void op_swapstrael(ND* nd) {
 	ND* ndx = nd + 1;
 	ARR* arr = garr(nd->v1);
+	ARR* arr2 = garr(ndx->vx2);
 	int h1 = arrind(arr, numf(nd->ri), nd);
-	int h2 = arrind(arr, numf(ndx->ex), nd);
+	int h2 = arrind(arr2, numf(ndx->ex), nd);
 	STR h = *(arr->pstr + h1);
-	*(arr->pstr + h1) = *(arr->pstr + h2);
-	*(arr->pstr + h2) = h;
+	*(arr->pstr + h1) = *(arr2->pstr + h2);
+	*(arr2->pstr + h2) = h;
 }
 
 S void op_swaparr(ND* nd) {
@@ -1243,12 +1245,13 @@ S void op_swaparrael(ND* nd) {
 }
 
 S void op_swaparraelx(ND* nd) {
-	ARR* arr = garr(nd->v1);
-	int h = arrind(arr, numf(nd->ri), nd);
 	ND* ndx = nd + 1;
+	ARR* arr = garr(nd->v1);
+	ARR* arr2 = garr(ndx->vx2);
+	int h = arrind(arr, numf(nd->ri), nd);
 	ARR* a1 = arr->parr + h;
-	h = arrind(arr, numf(ndx->ex), nd);
-	ARR* a2 = arr->parr + h;
+	h = arrind(arr2, numf(ndx->ex), nd);
+	ARR* a2 = arr2->parr + h;
 	ARR tmp = *a1;
 	*a1 = *a2;
 	*a2 = tmp;
@@ -1860,7 +1863,6 @@ S void op_callproc(ND* nd0) {
 			istr += 1;
 		}
 		else if (t == PAR_RARR) {
-//kc
 			ARR* arr = garr(nd->v1);
 			if (nd->ri) {
 				int h = arrind(arr, numf(nd->ri), nd);
@@ -1929,7 +1931,6 @@ S void op_callproc(ND* nd0) {
 		}
 		else  {
 			// PAR_RARR
-//kc
 			ARR* arr = garr(nd->v1);
 			if (nd->ri) {
 				int h = arrind(arr, numf(nd->ri), nd);

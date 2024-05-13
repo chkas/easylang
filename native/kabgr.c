@@ -393,8 +393,10 @@ void gr_text(const char* str) {
 	SDL_QueryTexture(t, NULL, NULL, &tw, &th);
 
 	int h;
-	if (botleft) h = FX * textsize - FX * textsize / 24;
-	else h = FX * textsize / 8 ;
+//	if (botleft) h = FX * textsize - FX * textsize / 24;
+	if (botleft) h = FX * textsize;
+//	else h = FX * textsize / 8;
+	else h = FX * textsize / 4;
 
 	SDL_Rect r = { gx, gy - h, tw, th };
 	SDL_RenderCopy(renderer, t, NULL, &r);

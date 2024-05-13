@@ -1886,15 +1886,14 @@ S void parse_arr_swap2(ND* nd, byte arrtok, enum vartyp arrtype) {
 	}
 	else if (tok == arrtok - 2) {
 		nd->vf = op_swaparraelx;
-		short h = get_var(arrtype + 2, RW, tval, code_utf8len);
-		if (cod && h != nd->v1) error("must be the same array");
+		ndx->vx2 = get_var(arrtype + 2, RW, tval, code_utf8len);
 		cs(tval);
 		if (arrtok == t_vstrarr) cs("$");
 		csbrl();
 		nexttok();
 		ND* ndol = NULL;
 		ndx->ex = parse_ex_arr(&ndol);
-		if (ndol != NULL) ndol->v1 = nd->v1;
+		if (ndol != NULL) ndol->v1 = ndx->vx2;
 		expt_ntok(t_brrl);
 		expt_ntok(t_brr);
 	}
@@ -1922,11 +1921,10 @@ S void parse_swap_stat(ND* nd) {
 			nd->vf = op_swapnumael;
 			cs_spc();
 			expt(t_vnumael);
-			short h = parse_var(VAR_NUMARR, RD);
-			if (h != nd->v1 && cod) error("must be the same array");
+			ndx->vx2 = parse_var(VAR_NUMARR, RD);
 			ND* ndol = NULL;
 			ndx->ex = parse_ex_arr(&ndol);
-			if (ndol != NULL) ndol->v1 = nd->v1;
+			if (ndol != NULL) ndol->v1 = ndx->vx2;
 			expt_ntok(t_brr);
 		}
 		else if (t == ARRAEL) {
@@ -1952,11 +1950,10 @@ S void parse_swap_stat(ND* nd) {
 			nd->vf = op_swapstrael;
 			cs_spc();
 			expt(t_vstrael);
-			short h = parse_var(VAR_STRARR, RD);
-			if (h != nd->v1 && cod) error("must be the same array");
+			ndx->vx2 = parse_var(VAR_STRARR, RD);
 			ND* ndol = NULL;
 			ndx->ex = parse_ex_arr(&ndol);
-			if (ndol != NULL) ndol->v1 = nd->v1;
+			if (ndol != NULL) ndol->v1 = ndx->vx2;
 			expt_ntok(t_brr);
 		}
 		else if (t == ARRAEL) {
