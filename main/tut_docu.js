@@ -42,6 +42,29 @@ print "Max: " & max
 
 + Array indices start at 1. *len* returns the array length.
 
+-
+
++ Get primes using the Sieve of Eratosthenes
+
+len sieve[] 100
+max = sqrt len sieve[]
+for i = 2 to max
+   if sieve[i] = 0
+      j = i * i
+      while j <= len sieve[]
+         sieve[j] = 1
+         j += i
+      .
+   .
+.
+for i = 2 to len sieve[]
+   if sieve[i] = 0
+      print i
+   .
+.
+
++ With *len* you can set the array length. The numeral array elements are initialized with *0*, for string array elements with *""*.
+
 * Floating point
 
 + Calculate PI using the Leibniz formula
@@ -73,29 +96,6 @@ for i = 1 to 100000
 print "PI: " & 4.0 * hit / 100000
 
 + *randomf* returns a random float value between 0 and 1 (exclusive).
-
--
-
-+ Get primes using the Sieve of Eratosthenes
-
-len divisible[] 100
-max = sqrt len divisible[]
-for tst = 2 to max
-   if divisible[tst] = 0
-      i = tst * tst
-      while i <= len divisible[]
-         divisible[i] = 1
-         i += tst
-      .
-   .
-.
-for i = 2 to len divisible[]
-   if divisible[i] = 0
-      print i
-   .
-.
-
-+ With *len* you can set the array length. The numeral array elements are initialized with *0*, for string array elements with *""*.
 
 * Strings
 

@@ -146,6 +146,7 @@ S int is_numfactor(void) {
 	if (tok == t_len) return 1;
 	if (tok == t_if) return 1;
 	if (is_numfunc()) return 1;
+	if (tok == t_vnumael) return 1;
 	return 0;
 }
 
@@ -435,6 +436,12 @@ S ND* parse_fac(void) {
 		nd->le = parse_log_ex();
 		nd->numf = op_numlog;
 	}
+	else if (tok == t_pal_consumed) {
+		tok = tokpr;
+		tokpr = t_pal;
+		nd = parse_ex();
+		expt_ntok(t_par);
+	}
 	else if (nd_doll != NULL && tok == 0 && cp == '$' && *nd_doll == NULL) {
 		nd = mknd();
 		cs_tok_nt();
@@ -667,6 +674,19 @@ S ND* parse_strterm(void) {
 		}
 		else {
 			error("], ][");
+		}
+	}
+	else if (tok == t_pal) {
+//kc
+		cs_tok_nt();
+		if (is_numfactor()) {
+			tokpr = tok;
+			tok = t_pal_consumed;
+			nd = parse_numstr();
+		}
+		else {
+			nd = parse_strex();
+			expt_ntok(t_par);
 		}
 	}
 	else if (is_numfactor()) {
@@ -2043,7 +2063,6 @@ S void parse_call_stat(ND* nd, struct proc* p) {
 			nd->next = parse_numarrex();
 			nd = nd->next;
 		}
-//kc
 		else if (b == 'h') {
 			nd->next = parse_numarrarrex();
 			nd = nd->next;
@@ -2172,7 +2191,6 @@ S ND* parse_strarr_term(void) {
 		nd->strf = op_strarrstr;
 		nd->le = parse_strarrex();
 	}
-	//kc
 	else if (tok == t_vnumarrarr) {
 		nd->strf = op_numarrarrstr;
 		nd->le = parse_numarrarrex();

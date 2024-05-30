@@ -101,31 +101,25 @@ tree 50 5 90 10
 * Quicksort
 
 proc qsort left right . d[] .
-  #
-  subr partition
-    mid = left
-    for i = left + 1 to right
+   if left >= right
+      return
+   .
+   mid = left
+   for i = left + 1 to right
       if d[i] < d[left]
-        mid += 1
-        swap d[i] d[mid]
+         mid += 1
+         swap d[i] d[mid]
       .
-    .
-    swap d[left] d[mid]
-  .
-  #
-  if left < right
-    partition
-    qsort left mid - 1 d[]
-    qsort mid + 1 right d[]
-  .
+   .
+   swap d[left] d[mid]
+   qsort left mid - 1 d[]
+   qsort mid + 1 right d[]
 .
 for i = 1 to 100
-  d[] &= randint 1000
+   d[] &= randint 1000
 .
 qsort 1 len d[] d[]
 print d[]
-
-+ The subroutine *partition* is defined within the procedure *sort*. In the subroutine *partition*, access to the local variables of the procedure *sort* is then also possible.
 
 * Tower of Hanoi
 
@@ -134,61 +128,55 @@ print d[]
 + The problem can be solved recursively: To move *n* discs to the target place, move *n-1* discs to the auxiliary place, then give the lowest disc to the target and then move the *n-1* discs from the auxiliary place to the target place.
 
 ndisc = 5
-len tow_height[] 3
-len tow_disc[][] 3
-len tow_disc[1][] ndisc
-len tow_disc[2][] ndisc
-len tow_disc[3][] ndisc
+len tow[][] 3
 textsize 7
-#
 proc init . .
-   for i = 1 to ndisc
-      tow_disc[1][i] = ndisc - i
+   for i = ndisc downto 1
+      tow[1][] &= i
    .
-   tow_height[1] = ndisc
 .
 proc show . .
    clear
    color 444
    move 0 0
    rect 100 10
-   for tow = 1 to 3
+   for t = 1 to 3
       linewidth 3
       color 444
-      x = 18 + 32 * (tow - 1)
+      x = 32 * t - 14
       move x 12 + ndisc * 6
       line x 10
       move x - 2 2
       color 998
-      text tow
+      text t
       linewidth 6
-      for i = 1 to tow_height[tow]
-         d = tow_disc[tow][i]
-         color 210 + d * 111
-         sz = 4 + 26 * d / ndisc
-         x = (tow - 1) * 32 + 6 + (24 - sz) / 2
+      for i = 1 to len tow[t][]
+         d = tow[t][i]
+         color 210 + (d - 1) * 111
+         sz = 26 * d / ndisc
+         x = t * 32 - 14 - sz / 2
          y = 7 + i * 6
          move x y
          line x + sz y
       .
    .
 .
-proc move_disc src dst . .
+proc movedisc src dst . .
    print "move " & src & " to " & dst
    sleep 0.5
-   d = tow_disc[src][tow_height[src]]
-   tow_height[src] -= 1
-   tow_height[dst] += 1
-   tow_disc[dst][tow_height[dst]] = d
+   last = len tow[src][]
+   tow[dst][] &= tow[src][last]
+   len tow[src][] -1
    show
    sleep 0.5
 .
 proc hanoi n src dst aux . .
-   if n >= 1
-      hanoi n - 1 src aux dst
-      move_disc src dst
-      hanoi n - 1 aux dst src
+   if n = 0
+      return
    .
+   hanoi n - 1 src aux dst
+   movedisc src dst
+   hanoi n - 1 aux dst src
 .
 init
 show

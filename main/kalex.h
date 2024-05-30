@@ -81,7 +81,9 @@ enum token_tok {
 	t_vnumarr, t_vstrarr,
 	t_vnumarrarr, t_vstrarrarr,
 
-	t_eof
+	t_eof,
+
+	t_pal_consumed
 };
 
 static byte tok;

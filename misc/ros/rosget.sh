@@ -1,4 +1,4 @@
-while read n; do
+./tasks.py | while read n; do
 	test "$n" = "" && break
 	echo "$n" >&2
 	expr "$n" : '.$' >/dev/null && continue
@@ -12,5 +12,5 @@ while read n; do
 		echo "..." >&2
 		curl -s "https://rosettacode.org/wiki/$x" | ./rosget.awk > "$dest"
 	fi
-done < rosget.txt
+done
 

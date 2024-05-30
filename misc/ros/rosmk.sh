@@ -29,7 +29,7 @@ for f in *.el; do
 	echo "@ "https://rosettacode.org/wiki/$x"@Task"
 	echo "*"
 	cat $f
-done < rosget.txt
+done
 
 cat <<'EOF'
 `

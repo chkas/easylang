@@ -188,19 +188,19 @@ on mouse_up
 .
 proc smiley t . .
    if t <= 60
-      move 65 30
+      move 65 35
       color 983
       circle 19
       color 000
-      move 58 37
+      move 58 42
       circle 2
-      move 72 37
+      move 72 42
       circle 2
       linewidth 2
       if t <= 30
-         curve [ 56 27 65 14 74 27 ]
+         curve [ 56 32 65 19 74 32 ]
       else
-         curve [ 58 23 65 17 72 23 ]
+         curve [ 58 28 65 22 72 28 ]
       .
    .
 .
@@ -210,17 +210,18 @@ proc done . .
    color 030
    rect 100 100
    color 888
-   move 10 84
+   move 10 82
    textsize 10
    text "Well done!"
-   move 10 70
+   move 10 66
+   text "Time: " & t
    s$ = "All"
    if row < 10
       s$ = row
    .
+   move 10 10
+   textsize 6
    text "Row: " & s$
-   move 10 56
-   text "Time: " & t
    smiley t
 .
 on timer
@@ -228,6 +229,7 @@ on timer
       state = 3
    elif sz = 0
       state = 2
+      ind = -1
       timer 2
       done
    else

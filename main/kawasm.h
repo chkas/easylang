@@ -37,7 +37,7 @@ static void wemitf(double d) {
 	wasmi += 8;
 }
 static void mf_err(const char* s) {
-	printf("fastfunc error - %s\n", s);
+	pr("fastfunc error - %s", s);
 	fastfuncn = 0;
 	error("fastfunc error");
 }
@@ -242,7 +242,7 @@ static void mf_sequ(ND* nd) {
 
 		if (0) {
 		}
-		else if (p == op_while) {			
+		else if (p == op_while) {
 
 			wemit(W_BLOCK);
 			wemit(W_VOID);
@@ -258,7 +258,7 @@ static void mf_sequ(ND* nd) {
 			wemit(W_END);
 
 		}
-		else if (p == op_if) {			
+		else if (p == op_if) {
 
 			wemit(W_BLOCK);
 			wemit(W_VOID);
@@ -269,7 +269,7 @@ static void mf_sequ(ND* nd) {
 			wemit(W_END);
 
 		}
-		else if (p == op_if_else) {			
+		else if (p == op_if_else) {
 			ND* ndx = nd->ri;
 
 			wemit(W_BLOCK);
@@ -290,7 +290,7 @@ static void mf_sequ(ND* nd) {
 			wemit(W_END);
 
 		}
-		else if (p == op_repeat) {			
+		else if (p == op_repeat) {
 
 			ND* ndx = nd + 1;
 
@@ -405,7 +405,7 @@ static void parse_fastfunc(void) {
 	wasm[fstart] = (h & 127) | 128;
 	wasm[fstart + 1] = h >> 7;
 
-	printf("fastfunc %s - size %d\n", proc->name, h);
+	// printf("fastfunc %s - size %d\n", proc->name, h);
 	return;
 
 cleanup:

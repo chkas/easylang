@@ -22,8 +22,8 @@
 static void pr(const char *fmt, ... ) {
     va_list ap;
     va_start(ap, fmt);
-    vprintf(fmt, ap);
-	putchar('\n');
+    vfprintf(stdout, fmt, ap);
+	fprintf(stdout, "\n");
     va_end(ap);
 }
 
