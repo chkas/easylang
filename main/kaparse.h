@@ -677,7 +677,6 @@ S ND* parse_strterm(void) {
 		}
 	}
 	else if (tok == t_pal) {
-//kc
 		cs_tok_nt();
 		if (is_numfactor()) {
 			tokpr = tok;
@@ -1146,11 +1145,11 @@ S void get_onref(const char* s, int* pid, ND*** ppsq) {
 		*ppsq = &seq.mouse_down;
 	}
 	else if (strcmp(s, "animate") == 0) {
-		*pid = 4;
+		*pid = 5;
 		*ppsq = &seq.animate;
 	}
 	else if (strcmp(s, "timer") == 0) {
-		*pid = 5;
+		*pid = 6;
 		*ppsq = &seq.timer;
 	}
 	else if (strcmp(s, "mouse_up") == 0) {
@@ -1169,6 +1168,10 @@ S void get_onref(const char* s, int* pid, ND*** ppsq) {
 		*pid = 3;
 		*ppsq = &seq.key_down;
 	}
+	else if (strcmp(s, "key_up") == 0) {
+		*pid = 4;
+		*ppsq = &seq.key_up;
+	}
 	else {
 		*ppsq = NULL;
 	}
@@ -1180,7 +1183,7 @@ S void parse_on_stat(void) {
 	ND** psq;
 	get_onref(tval, &id, &psq);
 	if (psq == NULL) {
-		error("mouse_down, mouse_up, mouse_move, key, animate, timer");
+		error("mouse_down, mouse_up, mouse_move, key_down, key_up, animate, timer");
 		return;
 	}
 	else if (*psq != NULL) {

@@ -349,7 +349,7 @@ on mouse_down
 on mouse_up
    down = 0
 .
-on key
+on key_down
    if keybkey = "r"
       col = 900
    else

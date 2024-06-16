@@ -195,9 +195,6 @@ extern int parse(const char* str, int opt, int pos) {
 				else if (codestr[npos + 9] == '<') codestr[npos + 11] = 'u'; // func[]
 				else if (codestr[npos + 10] == '<') codestr[npos + 12] = 'u'; // func$[]
 				else codestr[npos + 13] = 'u'; // func[][]
-
-//				else if (codestr[npos + 7] == '[') codestr[npos + 11] = 'u'; // func[]
-//				else codestr[npos + 12] = 'u'; // func$[]
 			}
 			else {
 				codestr[npos + 9] = 'u'; //elif, else, proc, func, subr
@@ -210,26 +207,29 @@ extern int parse(const char* str, int opt, int pos) {
 	if (!input_data) {
 		co("\n\n");
 	}
-	proc = proc_p;
-	while (proc < proc_p + proc_len) {
-		struct vname *p = proc->vname_p;
-		if (proc->vname_p) {	// because NULL + 0 is UB
-			while (p < proc->vname_p + proc->vname_len) {
-				if (p->typ <= VAR_NUMARRARR && p->access != RW) {
-					if (p->access == RD) error_pos("never set", p->srcpos);
-					else error_pos("never used", p->srcpos);
-					caret_pos = code_utf8len;
-					return codestrln;
+
+	if (opt & 16) {
+		proc = proc_p;
+		while (proc < proc_p + proc_len) {
+			struct vname *p = proc->vname_p;
+			if (proc->vname_p) {	// because NULL + 0 is UB
+				while (p < proc->vname_p + proc->vname_len) {
+					if (p->typ <= VAR_NUMARRARR && p->access != RW) {
+						if (p->access == RD) error_pos("never set", p->srcpos);
+						else error_pos("never used", p->srcpos);
+						caret_pos = code_utf8len;
+						return codestrln;
+					}
+					p += 1;
 				}
-				p += 1;
 			}
+			if (proc->start == NULL && proc != proc_p) {
+				error_pos("not implemented", proc->varcnt[0]);
+				caret_pos = code_utf8len;
+				return codestrln;
+			}
+			proc += 1;
 		}
-		if (proc->start == NULL && proc != proc_p) {
-			error_pos("not implemented", proc->varcnt[0]);
-			caret_pos = code_utf8len;
-			return codestrln;
-		}
-		proc += 1;
 	}
 
 	caret_pos = pos;
@@ -240,7 +240,7 @@ extern int parse(const char* str, int opt, int pos) {
 	if ((prog_props & 1) || (prog_props & 4)) mask |= 4;
 
 	if (seq.mouse_down || seq.mouse_up ||
-			seq.mouse_move || seq.key_down ||
+			seq.mouse_move || seq.key_down || seq.key_up ||
 			seq.animate || seq.timer) {
 		mask |= 8;
 	}

@@ -1752,6 +1752,11 @@ void evt_func(int id, const char* v) {
 		exsq(seq.key_down);
 		rt.key = "";
 	}
+	else if (id == 8) {
+		rt.key = v;
+		exsq(seq.key_up);
+		rt.key = "";
+	}
 #ifdef __EMSCRIPTEN__
 	else if (id == 3) {
 		// input

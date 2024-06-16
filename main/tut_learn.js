@@ -684,7 +684,7 @@ end
 
 +de Du kannst auch Tastatur-Ereignisse verarbeiten.
 
-on key
+on key_down
    if keybkey = "r"
       background 900
    elif keybkey = "g"

@@ -1,0 +1,87 @@
+# Paddle
+#
+rad = 5
+px = 50
+background 789
+#
+subr init
+   x = 50
+   y = 90
+   vx = 0.5
+   vy = -1
+   pv = 1
+   pts = 0
+   out = 0
+.
+init
+linewidth 4
+textsize 4
+on animate
+   clear
+   color 000
+   move 2 95
+   text "Pts: " & pts
+   move 78 95
+   text "High: " & high
+   color 700
+   move x y
+   circle rad
+   color 444
+   move px - 10 2
+   line px + 10 2
+   #
+   x += vx
+   y += vy
+   if right = 1 and px < 88
+      px += pv
+   .
+   if left = 1 and px > 12
+      px -= pv
+   .
+   if x > 100 - rad or x < rad
+      vx = -vx
+   .
+   if y > 100 - rad
+      vy = -vy
+   .
+   if y < rad + 2
+      if abs (x - px) < 16 and out = 0
+         vy = -vy
+         pv += 0.1
+         vy += 0.1
+         vx += 0.1 * sign vx
+         pts += 1
+      else
+         out = 1
+      .
+      if y < -100
+         high = higher high pts
+         init
+      .
+   .
+.
+on key_down
+   if keybkey = "ArrowRight"
+      right = 1
+   elif keybkey = "ArrowLeft"
+      left = 1
+   .
+.
+on key_up
+   if keybkey = "ArrowRight"
+      right = 0
+   elif keybkey = "ArrowLeft"
+      left = 0
+   .
+.
+on mouse_down
+   if mouse_x > 50
+      right = 1
+   else
+      left = 1
+   .
+.
+on mouse_up
+   right = 0
+   left = 0
+.

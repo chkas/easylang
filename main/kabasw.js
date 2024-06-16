@@ -90,6 +90,10 @@ onmessage = function(e) {
 		Module.ccall("evt_func", "null", ["int", "string"], [0, d[1]])
 		update()
 	}
+	else if (cmd == "keyup") {
+		Module.ccall("evt_func", "null", ["int", "string"], [8, d[1]])
+		update()
+	}
 	else if (cmd == "stop_ping") {
 		cancelTimer()
 		Module.ccall("k_free", "null", null, null)

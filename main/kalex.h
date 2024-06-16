@@ -769,6 +769,7 @@ static struct {
 	ND* mouse_up;
 	ND* mouse_move;
 	ND* key_down;
+	ND* key_up;
 	ND* animate;
 	ND* timer;
 } seq;
@@ -957,6 +958,7 @@ static void parse_prepare() {
 	seq.mouse_up = NULL;
 	seq.mouse_move = NULL;
 	seq.key_down = NULL;
+	seq.key_up = NULL;
 	seq.animate = NULL;
 	seq.timer = NULL;
 	prog_props = 0;

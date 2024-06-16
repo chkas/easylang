@@ -35,7 +35,7 @@ var canv = eid("canv")
 var out = eid("out")
 var col1 = eid("col1")
 // old service worker reference to doc
-var doc = eid("col1")
+// var doc = eid("col1")
 var docx = eid("docx")
 var labinp = eid("labinp")
 var input = eid("input")
@@ -54,6 +54,7 @@ var step2Btn = eid("step2Btn")
 var step3Btn = eid("step3Btn")
 var urlBtn = eid("urlBtn")
 var url2Btn = eid("url2Btn")
+var strictBtn = eid("strictBtn")
 var themeBtn = eid("themeBtn")
 var chngTheme = window["chngTheme"]
 
@@ -135,6 +136,19 @@ url2Btn.onclick = async function() {
 	outp("\n\n  You can open the current program in the code runner web app using the following URL:\n\n")
 	outp(location.origin + "/run/#cod=" + h)
 	hide(hamcnt)
+}
+
+var strictMode
+
+function strictSet() {
+	var s = "Strict"
+	if (!strictMode) s = "Not strict"
+	window.localStorage["xstrict"] = s
+	strictBtn.textContent = s
+}
+strictBtn.onclick = function() {
+	strictMode = !strictMode
+	strictSet()
 }
 
 show(container)
@@ -232,12 +246,13 @@ function tutUpd() {
 }
 
 function runCode(code, caret) {
-//	moreShow(false)
 	dbg.value = ""
 	tailSrc = null
 	stepBtn.disabled = true
 	showRun(false)
-	kaRun(code, 256 + 2, caret)
+	var opt = 256 + 2
+	if (strictMode) opt += 16
+	kaRun(code, opt, caret)
 }
 
 var codeToRun
@@ -326,11 +341,16 @@ function expandClick(btn) {
 		btn.preview = btn.pre.innerText
 		btn.pre.innerText = window.localStorage[btn.ref]
 		btn.textContent = "Collapse"
+		show(btn.nextSibling)
 	}
 	else {
 		btn.pre.innerText = btn.preview
 		btn.textContent = "Expand"
+		hide(btn.nextSibling)
 	}
+}
+function copyClick(btn) {
+	navigator.clipboard.writeText(window.localStorage[btn.ref])
 }
 
 function storeUpd() {
@@ -378,11 +398,21 @@ function storeUpd() {
 		btn.textContent = "Expand"
 		btn.ref = k
 		btn.pre = pre
-
 		btn.onclick = function() {
 			expandClick(this)
 		}
 		fr.appendChild(btn)
+
+		btn = create("button")
+		hide(btn)
+		btn.className = "del"
+		btn.textContent = "Copy"
+		btn.ref = k
+		btn.onclick = function() {
+			copyClick(this)
+		}
+		fr.appendChild(btn)
+
 		fr.appendChild(pre)
 	}
 	storage.appendChild(fr)
@@ -788,7 +818,7 @@ function tmove(e) {
 function store() {
 	removeCnd()
 	var sec = Math.floor(Date.now() / 1000)
-	window.localStorage.setItem("k" + sec, inp.innerText)
+	window.localStorage["k" + sec] = inp.innerText
 	stBtn.disabled = true
 	storeUpd()
 	inp.focus()
@@ -1354,8 +1384,8 @@ window.onbeforeunload = function(e) {
 		removeCnd()
 		t = inp.innerText
 	}
-	window.localStorage.setItem("xcode", t)
-	window.localStorage.setItem("x2col", isVisible(expnd))
+	window.localStorage["xcode"] = t
+	window.localStorage["x2col"] = isVisible(expnd)
 
 	if (tutf) {
 		tutf = null
@@ -1378,8 +1408,13 @@ function testReload() {
 
 async function main() {
 
+	if (window.localStorage["xstrict"] == "Strict") {
+		strictMode = true
+		strictSet()
+	}
+
 	var tabn = 1
-	if (window.localStorage.getItem("x2col") == "true") {
+	if (window.localStorage["x2col"] == "true") {
 		collapseEdit()
 		show(expnd)
 		tabn = 3
@@ -1432,7 +1467,7 @@ async function main() {
 	onTab(tabn)
 
 	if (!codeToRun) {
-		var t = window.localStorage.getItem("xcode")
+		var t = window.localStorage["xcode"]
 		if (!t || t == "\n") stBtn.disabled = true
 		if (t == null) t = 'print "Hello world"'
 		appendTxt(inp, t)

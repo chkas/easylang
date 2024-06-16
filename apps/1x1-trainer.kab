@@ -150,7 +150,7 @@ proc handle_key . .
    draw_key
    handle_key2
 .
-on key
+on key_down
    ind = strcode keybkey - 48
    if state = 0
       if ind >= 0 and ind <= 9

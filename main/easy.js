@@ -89,16 +89,10 @@ function canvInit() {
 	c.translate(0.04, 0.04)
 	c.scale(8, 8)
 }
-var doTrace = false
-
 function kaRun(s, opt = 0, pos = -1) {
 	eCan = canv0
 	eOut = out0
 	if (eCan) canvInit()
-
-	if (opt > 511) doTrace = true
-	else doTrace = false
-
 	isRunning = true
 	worker.postMessage(["run", s, opt, pos])
 }
@@ -147,6 +141,7 @@ function canvSetOff() {
 		eCan.removeEventListener("touchmove", canvTouchMove2)
 
 		eCan.removeEventListener("keydown", _keydown)
+		eCan.removeEventListener("keyup", _keyup)
 		eCan.removeAttribute("tabIndex");
 		if (eCan.aniFrame) {
 			cancelAnimationFrame(eCan.aniFrame)
@@ -587,11 +582,13 @@ function workerMessage(event) {
 			if (d[1] & 8) {
 				eCan.addEventListener("keydown", _keydown)
 				eCan.tabIndex = 0
-//kc?
 				// if (!"ontouchstart" in document)
 				eCan.focus()
 			}
 			if (d[1] & 16) {
+				eCan.addEventListener("keyup", _keyup)
+			}
+			if (d[1] & 32) {
 				if (!eCan.aniFrame) {
 					eCan.aniFrame = requestAnimationFrame(animate)
 				}
@@ -635,6 +632,10 @@ function animate(t) {
 
 function _keydown(e) {
 	worker.postMessage(["key", e.key])
+	e.preventDefault()
+}
+function _keyup(e) {
+	worker.postMessage(["keyup", e.key])
 	e.preventDefault()
 }
 var worker = null

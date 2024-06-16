@@ -170,7 +170,7 @@ void gr_init(const char* progname, int mask) {
 		TTF_Init();
 		gr_textsize(8);
 	}
-	if (mask & 16) do_animate = 1;
+	if (mask & 32) do_animate = 1;
 	botleft = true;
 	grline = 0;
 	gx = 0;
@@ -457,24 +457,26 @@ static void handle_event(SDL_Event* evt) {
 		case SDL_MOUSEMOTION:
 			evt_mouse(2, evt->motion.x / FMX, inv(evt->motion.y / FMY));
 			break;
+		case SDL_KEYUP:
 		case SDL_KEYDOWN: {
 			// printf("SDL_KEYDOWN: %s\n", SDL_GetKeyName(SDL_GetKeyFromScancode(evt->key.keysym.scancode)));
 			const char* s = SDL_GetKeyName(SDL_GetKeyFromScancode(evt->key.keysym.scancode));
+			char b[2];
+			const char* kn = b;
 			if (s[1] == 0) {
-				char b[2];
 				b[0] = s[0];
 				b[1] = 0;
 				if  (!(SDL_GetModState() & KMOD_SHIFT)) b[0] += 'a' - 'A';
-				evt_func(0, b);
 			}
 			else {
-				if (strcmp(s, "Right") == 0) evt_func(0, "ArrowRight");
-				else if (strcmp(s, "Left") == 0) evt_func(0, "ArrowLeft");
-				else if (strcmp(s, "Up") == 0) evt_func(0, "ArrowUp");
-				else if (strcmp(s, "Down") == 0) evt_func(0, "ArrowDown");
-				else if (strcmp(s, "Space") == 0) evt_func(0, " ");
-				else evt_func(0, s);
+				if (strcmp(s, "Right") == 0) kn = "ArrowRight";
+				else if (strcmp(s, "Left") == 0) kn = "ArrowLeft";
+				else if (strcmp(s, "Up") == 0) kn = "ArrowUp";
+				else if (strcmp(s, "Down") == 0) kn = "ArrowDown";
+				else if (strcmp(s, "Space") == 0) kn = " ";
 			}
+			if (evt->type == SDL_KEYDOWN) evt_func(0, kn);
+			else  evt_func(8, kn);
 			break;
 		}
 		case SDL_USEREVENT:

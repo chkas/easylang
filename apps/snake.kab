@@ -23,7 +23,7 @@ text "Keys or mouse for controlling"
 move 6 30
 text "Space or click to start"
 #
-on key
+on key_down
    if game = 0 and keybkey = " "
       start
       return
