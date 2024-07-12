@@ -12,12 +12,18 @@ subr init
    pv = 1
    pts = 0
    out = 0
+   usekeys = 0
+   mx = px
 .
 init
 linewidth 4
 textsize 4
 on animate
    clear
+   if pts = 0
+      move 15 70
+      text "Arrow keys or mouse to control"
+   .
    color 000
    move 2 95
    text "Pts: " & pts
@@ -32,6 +38,15 @@ on animate
    #
    x += vx
    y += vy
+   if usekeys = 0
+      left = 0
+      right = 0
+      if mx < px - 1
+         left = 1
+      elif mx > px + 1
+         right = 1
+      .
+   .
    if right = 1 and px < 88
       px += pv
    .
@@ -44,23 +59,24 @@ on animate
    if y > 100 - rad
       vy = -vy
    .
-   if y < rad + 2
+   if y < rad + 3
       if abs (x - px) < 16 and out = 0
          vy = -vy
          pv += 0.1
          vy += 0.1
          vx += 0.1 * sign vx
          pts += 1
+         high = higher high pts
       else
          out = 1
       .
       if y < -100
-         high = higher high pts
          init
       .
    .
 .
 on key_down
+   usekeys = 1
    if keybkey = "ArrowRight"
       right = 1
    elif keybkey = "ArrowLeft"
@@ -74,14 +90,6 @@ on key_up
       left = 0
    .
 .
-on mouse_down
-   if mouse_x > 50
-      right = 1
-   else
-      left = 1
-   .
-.
-on mouse_up
-   right = 0
-   left = 0
+on mouse_move
+   mx = mouse_x
 .

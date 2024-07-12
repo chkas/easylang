@@ -1,4 +1,4 @@
-emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.60 (42a6ea2052f19f70d7d994e8c324bcad2f1f8939)
+emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.62 (34c1aa36052b1882058f22aa1916437ba0872690)
 Copyright (C) 2014 the Emscripten authors (see AUTHORS.txt)
 This is free and open source software under the MIT license.
 There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.

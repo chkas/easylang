@@ -694,7 +694,7 @@ struct proc {
 // float, str, (intarr + numarr + strarr)
 	ushort varcnt[3];
 	byte typ;
-	byte anonym_id;
+//	byte anonym_id;
 };
 struct procdecl {
 	ushort proc_i;
@@ -711,14 +711,18 @@ static ushort procdecl_len;
 
 static char prefix[16];
 static int prefix_len;
-static char name_anonym[5];
+//static char name_anonym[5];
 
 static const char* getn(const char* name) {
+/*
+pr("getn %s", name);
+
 	if (name[0] == '_' && name[1] == 0) {
 		proc->anonym_id += 1;
 		sprintf(name_anonym, "_%d", proc->anonym_id);
 		name = name_anonym;
 	}
+*/
 	if (prefix_len) {
 		if (prefix_len + strlen(name) > 15) {
 			error("name too long");
@@ -822,7 +826,7 @@ static void lvar(byte typ, byte access, byte mode) {
 
 	if (cod && mode) {
 		const char* name = getn(tval);
-		if (name == name_anonym) access = RW;
+//		if (name == name_anonym) access = RW;
 
 		struct vname* p = get_vname(proc, name, typ);
 		if (p != NULL) error("already used");
@@ -851,8 +855,9 @@ static struct vname* add_var(struct proc* f, const char* name, ushort typ, ushor
 
 static short get_var(ushort typ, ushort access, const char* name, ushort pos) {
 	if (!cod) return 0;
+//pr("get_var %s", name);
 	name = getn(name);
-	if (name == name_anonym) access = RW;
+//	if (name == name_anonym) access = RW;
 
 	struct vname* p;
 	if (proc == proc_p) {

@@ -5,11 +5,12 @@ txt_tutor = String.raw`+ Programming basics
 
 -
 
-+ When programming, you tell the computer with a special code what to do.
++ When programming, you tell the computer what to do with a sequence of special commands.
 
-+de Beim Programmieren sagst du dem Computer mit einem speziellen Code, was er machen soll.
++de Beim Programmieren sagst du dem Computer mit einer Folge von speziellen Befehlen, was er machen soll.
 
 ##21
+#
 x = 20
 linewidth 8
 color 333
@@ -24,13 +25,13 @@ circle 3.5
 move x + 16 85
 circle 3.5
 
-+ You can tell the computer to draw two black circles at certain positions, and then a few thick round strokes in a certain color - and there you have a car on the screen.
++ You can tell the computer to draw two thick round lines in different colors at certain positions and then two black circles - and there you have a car on the screen.
 
-+ If this is done with a short pause at slightly shifted positions, the car will drive. How to program this and other things you can learn here.
++ If this is done repeatedly with a short pause at slightly shifted positions, the car will drive. How to program this and other things you can learn here.
 
-+de Man kann den Computer anweisen, zwei schwarze Kreise an bestimmten Positionen zu zeichnen und dann ein paar dicke runde Striche in einer bestimmten Farbe - und schon hat man ein Auto auf dem Bildschirm.
++de Man kann den Computer anweisen, zwei dicke runde Striche in verschiedenen Farben an bestimmten Positionen zu zeichnen und dann noch zwei schwarze Kreise  - und schon hat man ein Auto auf dem Bildschirm.
 
-+de Wenn dies mit einer kurzen Pause bei leicht verschobenen Positionen gemacht wird, fährt das Auto. Wie man dies und andere Dinge programmiert, erfährst du hier.
++de Wenn dies wiederholend mit einer kurzen Pause bei leicht verschobenen Positionen gemacht wird, fährt das Auto. Wie man dies und andere Dinge programmiert, erfährst du hier.
 
 * Graphics
 

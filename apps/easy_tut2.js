@@ -338,7 +338,7 @@ function tutUpd() {
 				var h = Number(s.substring(2, 4))
 				ca.width = 800
 				ca.height = 8 * h
-				ca.style.height = h * 3.2 + "px"
+				ca.style.height = h * 4 + "px"
 			}
 			var c = ca.getContext("2d")
 			c.clearRect(0, 0, 800, 800)
@@ -354,7 +354,6 @@ function tutUpd() {
 			var pre = create("pre")
 			codeInit(pre, runCB, stopped)
 			pre.textContent = s
-//			pre.innerHTML = s
 			kaFormat(s, pres.push(pre) - 1)
 
 			var btn = create("button")

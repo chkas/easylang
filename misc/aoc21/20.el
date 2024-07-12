@@ -1,10 +1,10 @@
-# AoC-21 - Day 20: Trench Map 
-# 
+# AoC-21 - Day 20: Trench Map
+#
 # The infinite grid changes between light
 # and dark at each update, because 0 points
 # to 1 and 511 to 0. This grid is mapped
-# by a 2 elements wide frame.  
-# 
+# by a 2 elements wide frame.
+#
 global alg[] i0 l0 nc mn[] m[] .
 proc read . .
    s$[] = strchars input
@@ -20,7 +20,7 @@ proc read . .
    l2 = l0 div 2
    i0 = nc * (nc div 2) + nc div 2 - l2 - l2 * nc + 1
    i = i0
-   for _ to l0
+   for k to l0
       s$[] = strchars s$
       for x to l0
          m[i] = if s$[x] = "#"
@@ -35,12 +35,12 @@ proc update . .
    i0 = i0 - nc - 1
    i = i0
    l0 += 2
-   for _ to l0
-      for _ to l0
+   for i1 to l0
+      for i2 to l0
          j = i - nc - 1
          v = 0
-         for _ to 3
-            for _ to 3
+         for i3 to 3
+            for i4 to 3
                v = v * 2 + m[j]
                j += 1
             .
@@ -54,7 +54,7 @@ proc update . .
    i = i0
    l = l0
    v = alg[1] - m[i - 1]
-   # 
+   #
    # create border
    for _ to 2
       i = i - nc - 1
@@ -78,7 +78,7 @@ for r to 50
       print sum
    .
 .
-# 
+#
 input_data
 ..#.#..#####.#.#.#.###.##.....###.##.#..###.####..#####..#....#..#..##..###..######.###...####..#..#####..##..#.#####...##.#.#..#.##..#.#......#.###.######.###.####...#.##.##..#..#..#####.....#.#....###..#.##......#.....#..#..#..##..#...##.######.####.####.#.#...#.......#..#.#.#...####.##.#......#..#...##.#.##..#...##.#.##..###.#......#.#.......#.#.#.####.###.##...#.....####.#..#..#.##.#....##..#.####....##...##..#...#......#.#.......#.......##..####..#...#.#.#...##..#.#..###..#####........#..####......#..#
 

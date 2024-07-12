@@ -69,8 +69,9 @@ txt_tutor = String.raw`
 *de Programmier-Grundlagen
 
 xxx
+		sed -ne '8,13p'  ../main/tut_learn.js >>$o/tut_$n.html
 		l=$(grep -n Debug ../main/tut_learn.js | head -1 | cut -f1 -d:)
-		head -$((l-1)) ../main/tut_learn.js | tail +8 >>$o/tut_$n.html
+		head -$((l-1)) ../main/tut_learn.js | tail +27 >>$o/tut_$n.html
 		tail +$((l+4)) ../main/tut_learn.js  >>$o/tut_$n.html
 
 		printf "txt_tutor+=String.raw\`\n" >>$o/tut_$n.html
@@ -163,14 +164,43 @@ xxx
 	if test $2 = learn; then
 		cat >>$o/tut_$n.html <<'xxx'
 	var srcx = `
-x = 21
-v = 0.4
+linewidth 8
+timer 0.5
+on timer
+   stat += 1
+   if stat = 0
+      clear
+   elif stat = 1
+      color 333
+      move 9 96
+      line 13 96
+   elif stat = 2
+      color 900
+      move 4 91
+      line 18 91
+   elif stat = 3
+      color 333
+      move 5 85
+      circle 3.5
+   elif stat = 4
+      move 16 85
+      circle 3.5
+   else
+      x = 0
+      return
+   .
+   timer 1.5
+.
 on animate
-   if x > 78 or x < 0
-      v = -v
+   if stat <> 5
+      return
+   .
+   if x > 78
+      stat = -1
+      timer 2
+      return
    .
    clear
-   linewidth 8
    color 333
    move x + 9 96
    line x + 13 96
@@ -182,10 +212,10 @@ on animate
    circle 3.5
    move x + 16 85
    circle 3.5
-   x += v
+   x += 0.4
 .
 on mouse_down
-   swap v vx
+   stat = 7
 .
 `
 	var canvx = document.querySelector('canvas')

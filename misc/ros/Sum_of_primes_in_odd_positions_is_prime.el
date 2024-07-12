@@ -8,15 +8,14 @@ fastfunc isprim num .
    .
    return 1
 .
-n = 20
-res = 1
-for p = 2 to n
+for p = 2 to 999
    if isprim p = 1
-      f = p
-      while f * p <= n
-         f = f * p
+      idx += 1
+      if idx mod 2 <> 0
+         s += p
+         if isprim s = 1
+            write "(" & idx & " " & p & " " & s & ") "
+         .
       .
-      res *= f
    .
 .
-print res

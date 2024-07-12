@@ -1,5 +1,5 @@
 # AoC-17 - Day 21: Fractal Art
-# 
+#
 proc inarr s$ i d . f[] .
    len f[] d * d
    arrbase f[] 0
@@ -43,7 +43,7 @@ len r2[][] 16
 len r3[][] 512
 arrbase r2[][] 0
 arrbase r3[][] 0
-# 
+#
 proc read_rules . .
    repeat
       s$ = input
@@ -75,11 +75,11 @@ proc read_rules . .
    .
 .
 read_rules
-# 
+#
 img[] = [ 0 1 0 0 0 1 1 1 1 ]
 arrbase img[] 0
 nc = 3
-# 
+#
 proc show . .
    d = sqrt len img[]
    for y range0 d
@@ -97,8 +97,8 @@ proc show . .
 proc val_img r c d . v .
    i = r * d * nc + c * d
    v = 0
-   for _ range0 d
-      for _ range0 d
+   for d1 range0 d
+      for d2 range0 d
          v = v * 2 + img[i]
          i += 1
       .
@@ -108,8 +108,8 @@ proc val_img r c d . v .
 proc ins_img r c d . ins[] .
    arrbase ins[] 0
    i = r * d * nc + c * d
-   for _ range0 d
-      for _ range0 d
+   for d1 range0 d
+      for d2 range0 d
          img[i] = ins[ii]
          i += 1
          ii += 1
@@ -165,8 +165,8 @@ else
       .
    .
 .
-# 
-# 
+#
+#
 input_data
 ../.# => ##./#../...
 .#./..#/### => #..#/..../..../#..#

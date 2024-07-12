@@ -235,6 +235,7 @@ inline static struct str str_num(int d) {
 	sprintf(r.d, "%d", d);
 	return r;
 }
+/*
 inline static struct str str_numfx(double f, int sc, int spc) {
 	char fmt[8];
 	char buf[32];
@@ -248,6 +249,28 @@ inline static struct str str_numfx(double f, int sc, int spc) {
 		sprintf(fmt, "%%%d.20g", spc);
 	}
 	else if (f <= 10e9 && f >= -10e9) sprintf(fmt, "%%%d.%df", spc, sc);
+	else sprintf(fmt, "%%%d.%dg", spc, sc);
+	struct str r;
+	str_init(&r);
+	sprintf(buf, fmt, f);
+	str_append(&r, buf);
+	return r;
+}
+*/
+inline static struct str str_numfx(double f, int sc, int spc) {
+	char fmt[8];
+	char buf[32];
+	if (sc < 0) sc = 0;
+	else if (sc > 20) sc = 20;
+	if (spc < 0) spc = 0;
+	else if (spc > 30) spc = 30;
+
+	double fa = fabs(f);
+	if (fa < 9007199254740992 &&  (double)(long long)f == f) {
+		if (f == 0) f = 0;					// get rid off -0
+		sprintf(fmt, "%%%d.20g", spc);
+	}
+	else if (fa <= 10e9 && fa >= 1e-9) sprintf(fmt, "%%%d.%df", spc, sc);
 	else sprintf(fmt, "%%%d.%dg", spc, sc);
 	struct str r;
 	str_init(&r);

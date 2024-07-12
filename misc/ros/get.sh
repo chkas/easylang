@@ -11,6 +11,11 @@
 	if test ! -e "$dest"; then
 		echo "..." >&2
 		curl -s "https://rosettacode.org/wiki/$x" | ./rosget.awk > "$dest"
+		if test $(du "$dest" | cut -f1) = 0; then
+			echo " -> 0 bytes"
+			rm "$dest"
+			echo ""
+		fi
 	fi
 done
 

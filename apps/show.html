@@ -1,4 +1,4 @@
-<!doctype html> 
+<!doctype html>
 <meta charset=utf-8>
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="description" content="easy and fun programming">
@@ -42,8 +42,11 @@ span.high {background-color:#666}
 }
 
 #code {
-	margin:2px;
+	margin:0px;
 	overflow-y:auto;
+	outline-style:solid;
+	outline-color:#444;
+	outline-width:1px
 }
 
 .lnk {
@@ -57,7 +60,7 @@ a:hover{background:#666}
 
 * {scrollbar-color:#666 #222}
 ::-webkit-scrollbar{ width:10px;height:10px;cursor:pointer}
-::-webkit-scrollbar-track {background: #222} 
+::-webkit-scrollbar-track {background: #222}
 ::-webkit-scrollbar-thumb {background: #666}
 
 </style>
@@ -84,9 +87,9 @@ window.onresize = function() {
 	var vh = window.innerHeight
 	var vw = window.innerWidth
 
-	var oh = 16
+	var oh = 20
 	if (out.style.display == "inline") {
-		oh = 42
+		oh = 47
 	}
 
 	var cw, pw, ph
@@ -132,7 +135,7 @@ var disabled
 
 function disableShort() {
 	disabled = true
-	setTimeout(function() { 
+	setTimeout(function() {
 		disabled = false
 	}, 500);
 }
@@ -156,7 +159,7 @@ codeInit(code, runlnk.onclick)
 function load(file) {
 	easystop()
 	var req = new XMLHttpRequest()
-	setTimeout(function() { 
+	setTimeout(function() {
 		if (req.status == 0) code.innerHTML = "Loading ..."
 	}, 500);
 
@@ -206,7 +209,7 @@ async function decompr(txt) {
 }
 
 var sadSmiley = `
-# 
+#
 move 20 83
 color 983
 circle 7
@@ -232,7 +235,7 @@ async function ready() {
 					code.innerText = await decompr(q.substring(5))
 				}
 				catch(e) {
-					code.innerText = "# Decompression error\n" + sadSmiley; 
+					code.innerText = "# Decompression error\n" + sadSmiley;
 				}
 			}
 			else code.innerText = "# The browser doesn't support\n# Compression Streams API\n" + sadSmiley
