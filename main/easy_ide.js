@@ -141,10 +141,14 @@ url2Btn.onclick = async function() {
 var strictMode
 
 function strictSet() {
-	var s = "Strict"
-	if (!strictMode) s = "Not strict"
-	window.localStorage["xstrict"] = s
-	strictBtn.textContent = s
+	if (strictMode) {
+		strictBtn.textContent = "Strict mode ✓"
+		window.localStorage["xstrict"] = "Strict"
+	}
+	else {
+		strictBtn.textContent = "Strict mode"
+		window.localStorage["xstrict"] = ""
+	}
 }
 strictBtn.onclick = function() {
 	strictMode = !strictMode

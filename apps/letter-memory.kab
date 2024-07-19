@@ -33,7 +33,7 @@ subr start
    .
    # shuffle
    for i = 16 downto 2
-      r = randint i
+      r = random i
       swap cards[r] cards[i - 1]
    .
    card1 = -1

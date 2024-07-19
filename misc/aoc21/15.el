@@ -79,7 +79,7 @@ proc read . .
    for ii to sz
       if inp$ = ""
          for i to sz
-            inp$ &= strchar (randint 10 + 47)
+            inp$ &= strchar (random 10 + 47)
          .
       .
       for i to sz

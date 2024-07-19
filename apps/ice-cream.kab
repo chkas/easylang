@@ -14,7 +14,7 @@ subr init
    for i to len sel[]
       sel[i] = 0
    .
-   w$[] = strchars words$[randint len words$[]]
+   w$[] = strchars words$[random len words$[]]
    game_stat = 0
 .
 proc ice x y col . .

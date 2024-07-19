@@ -14,7 +14,7 @@ for i = 1 to n
   vy[] &= randomf * speed * 2 - speed
   c = 0
   for j = 1 to 3
-    c = c * 10 + randint 8 + 1
+    c = c * 10 + random 8 + 1
   .
   col[] &= c
 .

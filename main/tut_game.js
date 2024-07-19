@@ -95,7 +95,7 @@ textsize 16
 cards$[] = strchars "AABBDDEEFFGGHHII"
 # shuffle
 for i = 2 to 16
-  r = randint i
+  r = random i
   swap cards$[r] cards$[i]
 end
 # display
@@ -124,7 +124,7 @@ proc init . .
   end
   # shuffle
   for i = 2 to 16
-    r = randint i
+    r = random i
     swap cards$[r] cards$[i]
   end
 end
@@ -211,7 +211,7 @@ proc init . .
   end
   # shuffle
   for i = 2 to 16
-    r = randint i
+    r = random i
     swap cards$[r] cards$[i]
   end
 end

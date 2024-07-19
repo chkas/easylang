@@ -40,7 +40,7 @@ proc time_test . .
   write "Length" & strchar 9 & "Time"
   for _ = 1 to 3
     for i = 1 to len d[]
-      d[i] = randint 1000000 - 1
+      d[i] = random 1000000 - 1
     .
     write strchar 10 & len d[]
     t = systime
@@ -74,7 +74,7 @@ proc time_test . .
   write "Length" & strchar 9 & "Time"
   for test = 1 to 3
     for i = 1 to len d[]
-      d[i] = randint 1000000
+      d[i] = random 1000000
     .
     write strchar 10 & len d[]
     t = systime
@@ -128,7 +128,7 @@ proc time_test . .
   write "Length" & strchar 9 & "Time"
   for test = 1 to 4
     for i = 1 to len d[]
-      d[i] = randint 1000000
+      d[i] = random 1000000
     .
     write strchar 10 & len d[]
     t = systime
@@ -186,7 +186,7 @@ proc time_test . .
   write "Length" & strchar 9 & "Time"
   for test = 1 to 4
     for i = 1 to len d[]
-      d[i] = randint 1000000
+      d[i] = random 1000000
     .
     write strchar 10 & len d[]
     t = systime
@@ -216,7 +216,7 @@ proc sort . d[] .
   while 1 = 1
     if left < right
       #  partition
-      swap d[left + randint (right - left)] d[left]
+      swap d[left + random (right - left)] d[left]
       piv = d[left]
       mid = left
       for i = left + 1 to right
@@ -252,7 +252,7 @@ proc time_test . .
   write "Length" & strchar 9 & "Time"
   for test = 1 to 4
     for i = 1 to len d[]
-      d[i] = randint 1000000
+      d[i] = random 1000000
     .
     write strchar 10 & len d[]
     t = systime
@@ -309,7 +309,7 @@ proc time_test . .
   write "Length" & strchar 9 & "Time"
   for test = 1 to 4
     for i = 1 to len d[]
-      d[i] = randint 1000000
+      d[i] = random 1000000
     .
     write strchar 10 & len d[]
     t = systime

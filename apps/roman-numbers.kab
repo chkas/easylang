@@ -32,7 +32,7 @@ func$ num2rom num .
 .
 proc new_quest . .
    repeat
-      num = randint 2500
+      num = random 2500
       sol$ = num2rom num
       until len sol$ <= 12
    .

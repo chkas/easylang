@@ -37,8 +37,8 @@ subr initvars
    n_mo = n_monster
    h = size div 5
    for i to n_mo
-      m_col[i] = randint (size - h) + h - 1
-      m_row[i] = randint (size - h) + h - 1
+      m_col[i] = random (size - h) + h - 1
+      m_row[i] = random (size - h) + h - 1
       m_dirx[i] = 0
       m_diry[i] = 0
    .
@@ -75,13 +75,13 @@ proc make_maze . .
    f[sz * sz - 1] = 0
    visited = 1
    hsz = sz div 2
-   x = 2 * randint hsz - 1
-   y = 2 * randint hsz - 1
+   x = 2 * random hsz - 1
+   y = 2 * random hsz - 1
    f[x + y * sz + 1] = 0
    while visited < hsz * hsz
       oldx = x
       oldy = y
-      dir = randint 4
+      dir = random 4
       if dir = 1
          if x + 2 < sz
             x += 2
@@ -244,7 +244,7 @@ proc get_dir c r . x y .
    xo = x
    yo = y
    repeat
-      d = randint 4
+      d = random 4
       if d = 1
          x = -1
       elif d = 2

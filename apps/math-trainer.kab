@@ -43,50 +43,50 @@ proc disp col s$ . .
 proc show_quest . .
    if res = resok
       if op = 1
-         a = randint 8 + 1
-         b = randint 8 + 1
+         a = random 8 + 1
+         b = random 8 + 1
          q$ = a & " · " & b & " = "
          resok = a * b
       elif op = 2
-         b = randint 8 + 1
-         resok = randint 8 + 1
+         b = random 8 + 1
+         resok = random 8 + 1
          a = b * resok
          q$ = a & " ÷ " & b & " = "
       elif op = 3
-         a = randint 77 + 10
-         b = randint (89 - a) + 10
+         a = random 77 + 10
+         b = random (89 - a) + 10
          q$ = a & " + " & b & " = "
          resok = a + b
       elif op = 4
-         a = randint 70 + 29
-         b = randint (a - 11) + 10
+         a = random 70 + 29
+         b = random (a - 11) + 10
          q$ = a & " - " & b & " = "
          resok = a - b
       elif op = 5
-         a = randint 89 + 10
-         b = randint 8 + 1
+         a = random 89 + 10
+         b = random 8 + 1
          q$ = a & " · " & b & " = "
          resok = a * b
       elif op = 6
-         b = randint 8 + 2
-         resok = randint 8 + 2
+         b = random 8 + 2
+         resok = random 8 + 2
          a = b * resok
-         c = randint 10 + 3
+         c = random 10 + 3
          d = a - c
          sn$ = " - "
-         if randint 2 = 1
+         if random 2 = 1
             sn$ = " + "
             d = a + c
          .
          q$ = b & " · x" & sn$ & c & " = " & d & "\nx = "
       elif op = 7
-         a = randint 21 + 10
-         b = randint 21 + 10
+         a = random 21 + 10
+         b = random 21 + 10
          q$ = a & " · " & b & " = "
          resok = a * b
       elif op = 8
-         b = randint 21 + 10
-         resok = randint 21 + 10
+         b = random 21 + 10
+         resok = random 21 + 10
          a = b * resok
          q$ = a & " ÷ " & b & " = "
       .

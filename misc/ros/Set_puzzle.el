@@ -55,7 +55,7 @@ proc run ncards nsets . .
       init
       cards[] = [ ]
       for i to ncards
-         ind = randint len pack[]
+         ind = random len pack[]
          cards[] &= pack[ind]
          pack[ind] = pack[len pack[]]
          len pack[] -1

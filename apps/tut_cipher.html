@@ -373,8 +373,8 @@ proc sp_blockrev . x y .
 #
 proc sp_encr key . in[] out[] .
    sp_prepkey key
-   x = randint 0x100000000
-   y = randint 0x100000000
+   x = random 0x100000000
+   y = random 0x100000000
    out[] = [ x y ]
    for i = 1 step 2 to len in[]
       x = bitxor in[i] x
@@ -597,8 +597,8 @@ proc sp_blockrev . x y .
 .
 proc sp_encr key . in[] out[] .
    sp_prepkey key
-   x = randint 0x100000000
-   y = randint 0x100000000
+   x = random 0x100000000
+   y = random 0x100000000
    out[] = [ x y ]
    for i = 1 step 2 to len in[]
       x = bitxor in[i] x

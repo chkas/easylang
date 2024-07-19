@@ -2,7 +2,7 @@ tool$[] = [ "rock" "paper" "scissors" ]
 repeat
    write "choose your weapon: "
    h$ = input
-   c = randint 3
+   c = random 3
    h$ = substr h$ 1 1
    until h$ = "q"
    h = strpos "rps" h$

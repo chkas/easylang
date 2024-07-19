@@ -14,7 +14,7 @@ proc read . .
    for i to nc
       if s$ = ""
          for j to nc
-            s$ &= strchar (randint 10 + 47)
+            s$ &= strchar (random 10 + 47)
          .
       .
       for h in number strchars s$

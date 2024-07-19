@@ -822,6 +822,9 @@ S ND* parse_log_termx(ND* nd0) {
 		if (p && p->typ == FUNCSTR) {
 			nd = parse_str_cmp();
 		}
+		else if (p && p->typ == FUNCARR) {
+			nd = parse_arr_cmp();
+		}
 		else {
 			nd = parse_cmp(NULL);
 		}

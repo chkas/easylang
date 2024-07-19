@@ -476,7 +476,7 @@ print c & "°C = " & f & "°F"
 
 +de Ein kleines Spiel - Zahlenraten
 
-n = randint 10
+n = random 10
 print "------------------------------------"
 print " I chose a number between 1 and 10"
 print "------------------------------------"
@@ -497,9 +497,9 @@ end
 sleep 1
 print "The number was " & n
 
-+ *randint 10* returns a random number from 1 - 10. *sleep 1* puts a pause of one second.
++ *random 10* returns a random number from 1 - 10. *sleep 1* puts a pause of one second.
 
-+de *randint 10* liefert eine Zufallszahl von 1 - 10. *sleep 1* legt eine Pause von einer Sekunde ein.
++de *random 10* liefert eine Zufallszahl von 1 - 10. *sleep 1* legt eine Pause von einer Sekunde ein.
 
 + 🤔🤔 Just one try and that's it - it's no fun. You should be able to guess until you have guessed the number. For this you need .... - yeah right - a loop. Hint: *<>* stands for not equal.
 
@@ -746,9 +746,9 @@ background 000
 clear
 color 999
 for i = 1 to 50
-   x = randint 101 - 1
-   y = randint 101 - 1
-   mag = randint 50
+   x = random 101 - 1
+   y = random 101 - 1
+   mag = random 50
    move x y
    circle mag / 100
 end

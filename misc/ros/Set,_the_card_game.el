@@ -23,10 +23,10 @@ proc prcards cards[] . .
    .
    print ""
 .
-ncards = randint 5 + 7
+ncards = random 5 + 7
 print "Take " & ncards & " cards:"
 for i to ncards
-   ind = randint len pack[]
+   ind = random len pack[]
    cards[] &= pack[ind]
    pack[ind] = pack[len pack[]]
    len pack[] -1

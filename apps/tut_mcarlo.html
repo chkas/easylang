@@ -10,7 +10,7 @@
 
 <script>
 
-txt_tutor=`* The Law of Large Numbers, or Why It Is a Bad Idea to Go to the Casino
+txt_tutor=`* The Law of Large Numbers or Why It Is a Bad Idea to Go to the Casino
 
 + A fairly simple way to get an answer to a task without having to analyze it mathematically is to simulate the task and see what happens. And this is best done with a computer program. These methods are also called *Monte Carlo methods* - in reference to the fact that one can also simulate gambling.
 
@@ -20,9 +20,9 @@ txt_tutor=`* The Law of Large Numbers, or Why It Is a Bad Idea to Go to the Casi
 
 + The computer program needs a random function that simulates the random landing of the coin.
 
-+ *randint 2* returns an integer value between 1 and 2 inclusive, that is 1 or 2. 1 stands for *heads* and 2 for *tails*.
++ *random 2* returns an integer value between 1 and 2 inclusive, that is 1 or 2. 1 stands for *heads* and 2 for *tails*.
 
-flip = randint 2
+flip = random 2
 if flip = 1
   print "Heads"
 else
@@ -33,7 +33,7 @@ else
 
 n = 1000
 for i = 1 to n
-  flip = randint 2
+  flip = random 2
   if flip = 1
     heads += 1
   .
@@ -49,7 +49,7 @@ print "That is " & 100 * heads / n & "%"
 
 n = 1000000
 for i = 1 to n
-  flip = randint 2
+  flip = random 2
   if flip = 1
     heads += 1
   .
@@ -67,7 +67,7 @@ print "That is " & 100 * heads / n & "%"
 
 + So let's play, we'll bet $10:
 
-numb = randint 37 - 1
+numb = random 37 - 1
 if numb >= 19
   print "You win $10"
 else
@@ -78,7 +78,7 @@ else
 
 for i = 1 to 1000
   cash -= 10
-  numb = randint 37 - 1
+  numb = random 37 - 1
   if numb >= 19
     cash += 20
   .
@@ -93,7 +93,7 @@ print "Cash after playing: $" & cash
 
 for i = 1 to 10000
   cash -= 10
-  numb = randint 37 - 1
+  numb = random 37 - 1
   if numb >= 19
     cash += 20
   .
@@ -112,7 +112,7 @@ print 10 * 10000 * (18 / 37 - 19 / 37)
 
 for i = 1 to 10000
   cash -= 10
-  numb = randint 37 - 1
+  numb = random 37 - 1
   if numb = 13
     cash += 360
   .
@@ -130,7 +130,7 @@ day = 1
 while cash < 2000 and cash >= 10
   game += 1
   cash -= 10
-  numb = randint 37 - 1
+  numb = random 37 - 1
   if numb >= 19
     cash += 20
   .
@@ -150,7 +150,7 @@ subr session
    cash = 1000
    while cash < 2000 and cash >= 10
       cash -= 10
-      numb = randint 37 - 1
+      numb = random 37 - 1
       if numb >= 19
          cash += 20
       .
@@ -181,7 +181,7 @@ while cash < 2000 and cash >= 10
     set_high = 0
   .
   cash -= 10
-  numb = randint 37 - 1
+  numb = random 37 - 1
   if set_high = 1 and numb >= 19
     cash += 20
   elif set_high = 0 and numb >= 1 and numb <= 18
@@ -209,7 +209,7 @@ bet = 10
 while cash < 20000 and cash >= 10
   game += 1
   cash -= bet
-  numb = randint 37 - 1
+  numb = random 37 - 1
   if numb >= 19
     cash += 2 * bet
     bet = 10
@@ -239,7 +239,7 @@ subr session
   bet = 10
   while cash < 20000 and cash >= 10
     cash -= bet
-    numb = randint 37 - 1
+    numb = random 37 - 1
     if numb >= 19
       cash += 2 * bet
       bet = 10
@@ -282,7 +282,7 @@ for i = 1 to 49
 .
 subr drawing
   for i = 1 to 6
-    h = randint (50 - i) + i - 1
+    h = random (50 - i) + i - 1
     swap box[i] box[h]
   .
 .

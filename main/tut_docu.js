@@ -19,14 +19,14 @@ while i <= 10
 cash = 0
 for i = 1 to 10000
    cash -= 10
-   numb = randint 37 - 1
+   numb = random 37 - 1
    if numb = 13
       cash += 350
    .
 .
 print "Your cash: " & cash
 
-+ *randint 37* returns a random integer between 0 and 36 inclusive.
++ *random 37* returns a random integer between 0 and 36 inclusive.
 
 * Arrays
 
@@ -452,7 +452,7 @@ on animate
    if systime > timeout
       # every 4 seconds
       timeout = systime + 4
-      color randint 999
+      color random 999
    .
    clear
    move x y
@@ -622,7 +622,7 @@ print floor 2.15
 print number "114.2"
 print systime
 print randomf
-print randint 10
+print random 10
 print number "123"
 print strcode "A"
 print error
