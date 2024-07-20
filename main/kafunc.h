@@ -1032,12 +1032,14 @@ S void op_flael_assd(ND* nd) {
 	*(arr->pnum + h) /= numf(ndx->ex);
 }
 
+//kc?
 S void op_strael_ass(ND* nd) {
 	ARR* arr = garr(nd->v1);
 	int h = arrind(arr, numf(nd->ri), nd);
-	str_free(arr->pstr + h);
 	ND* ndx = nd + 1;
-	*(arr->pstr + h) = strf(ndx->ex);
+	STR s = strf(ndx->ex);
+	str_free(arr->pstr + h);
+	*(arr->pstr + h) = s;
 }
 
 S void op_strael_assp(ND* nd) {
