@@ -1,10 +1,10 @@
 # AoC-18 - Day 17: Reservoir Research
-# 
+#
+sysconf topleft
 visual = 0
-# 
-sys topleft
+#
 global f[] maxpos minpos .
-# 
+#
 proc read . .
    len f[] 300 * 2500
    arrbase f[] 0
@@ -34,7 +34,7 @@ proc read . .
    maxpos = maxy * 300 + 300
 .
 read
-# 
+#
 background 765
 global pos0 skip .
 proc show p . .
@@ -132,7 +132,7 @@ proc run . .
    print sum2
 .
 run
-# 
+#
 input_data
 x=495, y=2..7
 y=7, x=495..501

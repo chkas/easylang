@@ -1,13 +1,13 @@
 # AoC-16 - Day 13: A Maze of Twisty Little Cubicles
-# 
+#
+sys topleft
 visualization = 1
 #
-sys topleft 
 inp = number input
 nc = 45
 len m[] nc * nc
 arrbase m[] 0
-# 
+#
 background 543
 clear
 proc show solve . .
@@ -46,11 +46,11 @@ mk
 show 0
 p = nc + 1
 dest = 31 + 39 * nc
-# 
+#
 todon[] = [ p ]
 m[p] = 2
 np = 1
-# 
+#
 while len todon[] <> 0 and (part1 = 0 or part2 = 0)
    swap todo[] todon[]
    todon[] = [ ]
@@ -74,6 +74,6 @@ while len todon[] <> 0 and (part1 = 0 or part2 = 0)
 .
 print part1
 print part2
-# 
+#
 input_data
 10

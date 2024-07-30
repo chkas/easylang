@@ -1,11 +1,11 @@
 # AoC-18 - Day 13: Mine Cart Madness
-# 
+#
+sys topleft
 visual = 1
-# 
-sys topleft 
+#
 global nc f[] car_dir[] car_pos[] .
 arrbase f[] 0
-# 
+#
 proc init . .
    repeat
       s$ = input
@@ -47,10 +47,10 @@ proc init . .
    .
 .
 init
-# 
+#
 first_show = 1
 global tick crash_pos[] crash_tick[] .
-# 
+#
 proc show crash_pos . .
    if visual = 0
       break 1
@@ -129,7 +129,7 @@ proc show crash_pos . .
 .
 dir[] = [ 1 nc -1 (-nc) ]
 len car_turn[] len car_dir[]
-# 
+#
 proc run . .
    ncars = len car_pos[]
    repeat
@@ -183,7 +183,7 @@ proc run . .
    .
 .
 run
-# 
+#
 input_data
 /->-\        
 |   |  /----\
@@ -195,5 +195,4 @@ input_data
 | | |  | |  |
 \-+-/  \-+--/
   \------/   
-
 

@@ -1,17 +1,17 @@
 # AoC-19 - Day 20: Donut Maze
-# 
-visual = 1
-#  
+#
 sys topleft
+visual = 1
+#
 global port[] port$[] aa zz m[] nc nc2 .
-# 
+#
 proc mark pos col . .
    f = 100 / nc2
    if visual = 0
       break 1
    .
    x = pos mod nc - 1
-   y = pos / nc - 1
+   y = pos div nc - 1
    color col
    move x * f y * f
    rect f f
@@ -32,7 +32,7 @@ proc show . .
    .
    mark zz 900
 .
-# 
+#
 proc parse . .
    a1$[] = strchars input
    nc = len a1$[] - 2
@@ -100,9 +100,9 @@ proc connect . .
    .
 .
 connect
-# 
+#
 offs[] = [ -nc 1 nc -1 ]
-# 
+#
 proc part1 . .
    show
    len seen[] len port[]
@@ -142,7 +142,7 @@ proc part1 . .
    .
 .
 part1
-# 
+#
 proc is_inner pos . r .
    x = pos mod nc
    y = pos div nc
@@ -242,7 +242,7 @@ proc part2 . .
    .
 .
 part2
-# 
+#
 input_data
              Z L X W       C                 
              Z P Q B       K                 

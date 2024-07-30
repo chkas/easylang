@@ -1,18 +1,18 @@
 # AoC-19 - Day 15: Oxygen System
-# 
-visual = 1
-# 
+#
 sys topleft
+visual = 1
+#
 ic_mem[] = number strsplit input ","
-# 
+#
 ic_out = -1
 ic_in = -1
-# 
+#
 prefix ic_
 # -------- intcode --------
 global base pc .
 arrbase mem[] 0
-# 
+#
 proc mem_ind mo ind . rind .
    rind = ind
    if mo = 0
@@ -69,7 +69,7 @@ proc run . .
 .
 # --------  --------
 prefix
-# 
+#
 proc go_dir d . out .
    ic_in = d
    ic_run
@@ -93,7 +93,7 @@ proc draw pos col . .
 .
 offs[] = [ -100 100 1 -1 ]
 rev[] = [ 2 1 4 3 ]
-# 
+#
 proc maze dir0 pos . min .
    map[pos] = 1
    draw pos 888
@@ -117,7 +117,7 @@ proc maze dir0 pos . min .
       .
    .
 .
-# 
+#
 proc oxygen . .
    todon[] = [ ox_pos ]
    repeat
@@ -148,10 +148,10 @@ else
    maze -1 5051 res
    draw ox_pos 900
    print res
-   # 
+   #
    oxygen
 .
-# 
+#
 input_data
 99
 

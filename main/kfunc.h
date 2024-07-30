@@ -1,4 +1,4 @@
-/*	kafunc.h
+/*	kfunc.h
 
 	Copyright (c) Christof Kaser christof.kaser@gmail.com.
 	All rights reserved.
@@ -16,15 +16,15 @@
 #include <emscripten.h>
 #include "emscripten/em_math.h"
 
-#include "kabasw.h"
+#include "kbasw.h"
 
 #elif defined(__RUN__) || defined(__NOSDL__)
 
-#include "../native/kabgr_nosdl.c"
+#include "../native/kbgr_nosdl.c"
 
 #elif defined(__SDL__)
 
-#include "../native/kabgr.c"
+#include "../native/kbgr.c"
 
 #endif
 
@@ -38,9 +38,11 @@ S struct {
 	ND* proc;
 	char sys_error;
 	ushort slow;
-	ushort sys;
+//	ushort sys;
 	uint input_data_pos;
 	int randseed;
+	ushort radians;
+	ushort arrbase;
 } rt;
 
 S volatile int stop_flag;
@@ -170,9 +172,9 @@ S double op_random(ND* nd) {
 		do {
 			h = randf() * 0x80000000;
 		} while (h >= max);
-		return h % range + 1;
+		return h % range + rt.arrbase;
 	}
-	else return (long long)(randf() * range) + 1;
+	else return (long long)(randf() * range) + rt.arrbase;
 }
 
 S double op_numlog(ND* nd) {
@@ -247,6 +249,7 @@ S double op_log10(ND* nd) {
 }
 S double op_sin(ND* nd) {
 	double h = numf(nd->le);
+	if (rt.radians) return sin(h);
 	if (h >= 360 || h <= -360) h = fmod(h, 360);
 	return sin(h / 180. * M_PI);
 
@@ -256,24 +259,35 @@ S double op_sin(ND* nd) {
 }
 S double op_cos(ND* nd) {
 	double h = numf(nd->le);
+	if (rt.radians) return cos(h);
 	if (h >= 360 || h <= -360) h = fmod(h, 360);
 	return cos(h / 180. * M_PI);
 //	return cos(numf(nd->le) / 180. * M_PI);
 }
 S double op_tan(ND* nd) {
-	return tan(numf(nd->le) / 180. * M_PI);
+	double h = numf(nd->le);
+	if (!rt.radians) h = h / 180. * M_PI;
+	return tan(h);
 }
 S double op_asin(ND* nd) {
-	return asin(numf(nd->le)) * 180 / M_PI;
+	double h = asin(numf(nd->le));
+	if (rt.radians) return h;
+	return  h * 180 / M_PI;
 }
 S double op_acos(ND* nd) {
-	return acos(numf(nd->le)) * 180 / M_PI;
+	double h = acos(numf(nd->le));
+	if (rt.radians) return h;
+	return  h * 180 / M_PI;
 }
 S double op_atan(ND* nd) {
-	return atan(numf(nd->le)) * 180 / M_PI;
+	double h = atan(numf(nd->le));
+	if (rt.radians) return h;
+	return  h * 180 / M_PI;
 }
 S double op_atan2(ND* nd) {
-	return atan2(numf(nd->le), numf(nd->ri)) * 180 / M_PI;
+	double h = atan2(numf(nd->le), numf(nd->ri));
+	if (rt.radians) return h;
+	return  h * 180 / M_PI;
 }
 S double op_pow(ND* nd) {
 	return pow(numf(nd->le), numf(nd->ri));
@@ -355,13 +369,15 @@ S void free_arr(ARR* a) {
 }
 
 S void arrs_init(ARR* arrs, int n_arr) {
+//pr("arrs_init");
 	memset(arrs, 0, n_arr * sizeof(ARR));
 	for (int i = 0; i < n_arr; i++) {
-		arrs[i].base = 1;
+		arrs[i].base = rt.arrbase;
 	}
 }
 
 S void arr_len(ND* nd, unsigned int sz, int typ) {
+//pr("arrlen %d %d", sz, typ);
 	ND* ndx = nd + 1;
 	ARR* arr = garr(nd->v1);
 	arr->typ = typ;
@@ -616,66 +632,6 @@ S double op_bitshift(ND* nd) {
 
 S double time_start;
 
-S STR str_sysfunc(STR* s) {
-
-	STR r;
-	str_init(&r);
-	const char* p = str_ptr(s);
-	if (strcmp(p, "lang") == 0) {
-#ifdef __EMSCRIPTEN__
-		int h = EM_ASM_INT({
-			return lang.charCodeAt(0) + 256 * lang.charCodeAt(1);
-		});
-		r.d[0] = h % 256;
-		r.d[1] = h / 256;
-		r.d[2] = 0;
-#else
-		strcpy(r.d, "en");
-#endif
-	}
-	else if (strcmp(p, "created by") == 0) {
-		str_init_const(&r, "\0christof.kaser@gmail.com");
-	}
-	else if (strcmp(p, "argc") == 0) {
-		int i = 0;
-		p = rt.args;
-		if (*p != 0) {
-			i = 1;
-			while (1) {
-				p = strchr(p, '&');
-				if (p == NULL) break;
-				p += 1;
-				i += 1;
-			}
-		}
-		sprintf(r.d, "%d", i);
-	}
-	else if (strncmp(p, "arg:", 4) == 0) {
-		int h = atoi(p + 4);
-		p = rt.args;
-		const char* p0 = p;
-
-		int i = 0;
-		while (1) {
-			p0 = p;
-			p = strchr(p, '&');
-			if (i == h) {
-				if (p == NULL) h = strlen(p0);
-				else h = p - p0;
-				break;
-			}
-			if (p == NULL) {
-				h = 0;
-				break;
-			}
-			p += 1;
-			i += 1;
-		}
-		str_append_n(&r, p0, h);
-	}
-	return r;
-}
-
 S STR op_lstr(ND* nd) {
 	uint ind = nd->str;
 	STR r;
@@ -810,15 +766,74 @@ S STR op_substr(ND* nd) {
 	ND* ndx = nd + 1;
 	STR s = strf(nd->le);
 
-	int h = (int)numf(nd->ri);
-	if (h < 0) h = str_ulen(str_ptr(&s)) + h + 1;
-	STR r = str_substr(&s, h - 1, (int)numf(ndx->ex));
+	int h = (int)numf(nd->ri) - rt.arrbase;
+	//if (h < 0) h = str_ulen(str_ptr(&s)) + h + 1;
+	STR r = str_substr(&s, h, (int)numf(ndx->ex));
 	str_free(&s);
 	return r;
 }
+
 S STR op_sysfunc(ND* nd) {
 	STR s = strf(nd->le);
-	STR r = str_sysfunc(&s);
+	STR r;
+	str_init(&r);
+	const char* p = str_ptr(&s);
+	if (strcmp(p, "lang") == 0) {
+#ifdef __EMSCRIPTEN__
+		int h = EM_ASM_INT({
+			return lang.charCodeAt(0) + 256 * lang.charCodeAt(1);
+		});
+		r.d[0] = h % 256;
+		r.d[1] = h / 256;
+		r.d[2] = 0;
+#else
+		strcpy(r.d, "en");
+#endif
+	}
+	else if (strcmp(p, "created by") == 0) {
+		str_init_const(&r, "\0christof.kaser@gmail.com");
+	}
+	else if (strcmp(p, "1") == 0) {
+		double h = sys_time() - time_start;
+		if (h >= 0 && h < 10e11) sprintf(r.d, "%.2f", h);
+	}
+	else if (strcmp(p, "argc") == 0) {
+		int i = 0;
+		p = rt.args;
+		if (*p != 0) {
+			i = 1;
+			while (1) {
+				p = strchr(p, '&');
+				if (p == NULL) break;
+				p += 1;
+				i += 1;
+			}
+		}
+		sprintf(r.d, "%d", i);
+	}
+	else if (strncmp(p, "arg:", 4) == 0) {
+		int h = atoi(p + 4) - 1;
+		p = rt.args;
+		const char* p0 = p;
+
+		int i = 0;
+		while (1) {
+			p0 = p;
+			p = strchr(p, '&');
+			if (i == h) {
+				if (p == NULL) h = strlen(p0);
+				else h = p - p0;
+				break;
+			}
+			if (p == NULL) {
+				h = 0;
+				break;
+			}
+			p += 1;
+			i += 1;
+		}
+		str_append_n(&r, p0, h);
+	}
 	str_free(&s);
 	return r;
 }
@@ -1261,6 +1276,7 @@ S void op_swaparraelx(ND* nd) {
 
 // -------------------------------------------------------
 S ARR o_arrx(ND* nd, int typ, int sz) {
+//pr("o_arrx");
 	ARR* arr = garr(nd->v1);
 
 	ARR res;
@@ -1302,6 +1318,7 @@ S ARR op_vstrarrael(ND* nd) {
 }
 
 S ARR op_varrarr(ND* nd) {
+//pr("op_varrarr");
 	ARR* arr = garr(nd->v1);
 	ARR res;
 	res.len = arr->len;
@@ -1338,10 +1355,11 @@ S ARR op_varrarr(ND* nd) {
 }
 
 S ARR o_arr_init(ND* nd0, int typ, int sz) {
+//pr("o_arr_init");
 	ARR res;
 	res.len = 0;
 	res.typ = typ;
-	res.base = 1;
+	res.base = rt.arrbase;
 	ND* nd = nd0->le;
 	while (nd) {
 		res.len += 1;
@@ -1399,14 +1417,14 @@ S double op_strpos(ND* nd) {
 }
 
 S ARR op_strchars(ND* nd) {
-
+//pr("op_strchars");
 	STR s = strf(nd->le);
 	const char* p = str_ptr(&s);
 
 	ARR res;
 	res.len = str_ulen(p);
 	res.typ = ARR_STR;
-	res.base = 1;
+	res.base = rt.arrbase;
 	res.p = realloc(NULL, res.len * sizeof(STR));
 	if (res.p == NULL) {
 		out_of_mem(nd);
@@ -1436,6 +1454,7 @@ S ARR op_strchars(ND* nd) {
 }
 
 S ARR op_strsplit(ND* nd) {
+//pr("o_strsplit");
 
 	STR s1 = strf(nd->le);
 	STR s2 = strf(nd->ri);
@@ -1444,7 +1463,7 @@ S ARR op_strsplit(ND* nd) {
 	ARR res;
 	res.len = 0;
 	res.typ = ARR_STR;
-	res.base = 1;
+	res.base = rt.arrbase;
 	res.p = NULL;
 	char* dup = strdup(str_ptr(&s1));
 	if (dup == NULL) {
@@ -1521,14 +1540,28 @@ S void op_write(ND* nd) {
 }
 
 S void op_sys(ND* nd) {
-	if (nd->v1 == 21) {	// time
+	if (nd->v1 <= 10) {
+		gr_sys(nd->v1);
+	}
+/*
+	if (nd->v1 == 31) {	// time
 		char buf[16];
 		sprintf(buf, "%.2f", sys_time() - time_start);
 		gr_print(buf);
 	}
+	else if (nd->v1 == 21) {	// radians
+		rt.radians = 1;
+	}
+	else if (nd->v1 == 22) {	// zero_based
+		rt.arrbase = 0;
+		for (int i = 0; i < proc_p->varcnt[2]; i++) {
+			rt_arrs[i].base = 0;
+		}
+	}
 	else {
 		gr_sys(nd->v1);
 	}
+*/
 }
 
 //------------------------------------------------------------------
@@ -2152,6 +2185,7 @@ S double op_callfunc(ND* nd0) {
 */
 
 S STR op_callfunc_str(ND* nd0) {
+//pr("op_callfuncstr");
 	STR retval;
 	str_init(&retval);
 	callfunc(nd0, NULL, &retval, NULL);
@@ -2162,7 +2196,7 @@ S ARR op_callfunc_arr(ND* nd0) {
 	retval.len = 0;
 //kc??
 	retval.typ = ARR_NUM;
-	retval.base = 1;
+	retval.base = rt.arrbase;
 	retval.p = NULL;
 	callfunc(nd0, NULL, NULL, &retval);
 	return retval;
@@ -2584,6 +2618,8 @@ S ARR op_map_number(ND* nd) {
 #else
 // put only valid numbers in array
 S ARR op_map_number(ND* nd) {
+//pr("op_map_number");
+
 	ARR arr = arrf(nd->le);
 
 	ARR res;
@@ -2683,8 +2719,6 @@ S void init_rt(void) {
 
 	h = proc_p->varcnt[2] * sizeof(ARR);
 	rt_arrs = (ARR*)_realloc(NULL, h);
-	arrs_init(rt_arrs, proc_p->varcnt[2]);
-//	memset(rt_arrs, 0, h);
 
 	time_start = sys_time();
 
@@ -2701,6 +2735,11 @@ S void init_rt(void) {
 	rt.input_data_pos = 0;
 	stop_flag = 0;
 	rt.randseed = -1;
+	rt.radians = 0;
+	if ((sysconfig & 2) != 0) rt.radians = 1;
+	rt.arrbase = 1;
+	if ((sysconfig & 4) != 0) rt.arrbase = 0;
+	arrs_init(rt_arrs, proc_p->varcnt[2]);
 }
 
 S void free_rt(void) {

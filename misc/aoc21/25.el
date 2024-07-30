@@ -4,9 +4,9 @@
 # have to notice if a cucumber has moved
 # in order not to move it again.
 # 
+sys topleft
 visualization = 1
 # 
-sys topleft
 global m[] nc .
 background 001
 col[] = [ 0 030 060 ]

@@ -1,4 +1,4 @@
-/*	kalex.h
+/*	klex.h
 
 	Copyright (c) Christof Kaser christof.kaser@gmail.com.
 	All rights reserved.
@@ -26,7 +26,7 @@ static const char* token_list[] = {
 	"color3", "circseg",
 	"sound", "polygon", "curve",
 
-	"return", "swap", "clear", "break", "drawgrid", "arrbase", "sys",
+	"return", "swap", "clear", "break", "drawgrid", "arrbase",
 
 	"systime", "error", "mouse_x", "mouse_y", "randomf", "pi",
 	"random", "randint", "sqrt", "log10", "abs", "sign", "bitnot", "floor", "sin", "cos", "tan", "asin", "acos", "atan",
@@ -62,7 +62,7 @@ enum token_tok {
 	t_rgb, t_circseg,
 	t_sound, t_polygon, t_curve,
 
-	t_return, t_swap, t_clear, t_break, t_drawgrid, t_arrbase, t_sys,
+	t_return, t_swap, t_clear, t_break, t_drawgrid, t_arrbase,
 	
 	t_systime, t_error, t_mouse_x, t_mouse_y, t_randomf, t_pi,
 	t_random, t_randint, t_sqrt, t_log10, t_abs, t_sign, t_bitnot, t_floor, t_sin, t_cos, t_tan, t_asin, t_acos, t_atan,
@@ -340,7 +340,7 @@ static void cs_nl() {
 		has_semicolon = 0;
 	}
 	else {
-		if (fmtline > 0) csnlspc();
+		csnlspc();
 		fmtline += 1;
 	}
 }
@@ -486,7 +486,7 @@ static int tbl_o[] = { t_or, t_on, 0 };
 static int tbl_p[] = { t_print, t_proc, t_procdecl, t_pr, t_pi, t_pow, t_polygon, t_prefix, 0 };
 static int tbl_q[] = { 0 };
 static int tbl_r[] = { t_repeat, t_return, t_randomf, t_randint, t_rect, t_random_seed, t_random, 0 };
-static int tbl_s[] = { t_swap, t_subr, t_sleep, t_systime, t_substr, t_sqrt, t_sin, t_strord, t_strpos, t_strcompare, t_sysfunc, t_strchar, t_strjoin, t_sign, t_sound, t_sys, 0 };
+static int tbl_s[] = { t_swap, t_subr, t_sleep, t_systime, t_substr, t_sqrt, t_sin, t_strord, t_strpos, t_strcompare, t_sysfunc, t_strchar, t_strjoin, t_sign, t_sound, 0 };
 static int tbl_t[] = { t_tan, t_timestr, t_text, t_timer, t_textsize, 0 };
 static int tbl_u[] = { t_until, 0 };
 static int tbl_v[] = { 0 };

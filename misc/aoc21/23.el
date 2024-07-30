@@ -6,8 +6,8 @@
 # number up to 5^23 and then create a "seen" 
 # hash map.
 # 
-visualization = 1
 sys topleft
+visualization = 1
 # 
 hashsz = 1999993
 len hashind[] hashsz

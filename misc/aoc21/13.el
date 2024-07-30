@@ -1,19 +1,19 @@
 # AoC-21 - Day 13: Transparent Origami
-# 
+#
 # First of all, the size of the sheet is
 # determined. And then all points above
-# the fold line (no matter if x or y fold) 
-# are placed relative from the double fold 
-# downwards. 
-# 
-visualization = 1
-# 
+# the fold line (no matter if x or y fold)
+# are placed relative from the double fold
+# downwards.
+#
 sys topleft
+visualization = 1
+#
 nc = 1500
 len m[] nc * nc
 len mn[] len m[]
 len dim[] 2
-# 
+#
 proc draw . .
    if visualization = 0
       break 1
@@ -34,7 +34,7 @@ proc draw . .
    .
    sleep 0.4
 .
-# 
+#
 repeat
    s$ = input
    until s$ = ""
@@ -74,7 +74,7 @@ repeat
       print cnt
    .
 .
-# 
+#
 input_data
 4,28
 20,4

@@ -7,10 +7,10 @@ D=$HOME/.cache/easylang
 mkdir -p $D
 
 test ! -e $D/$n && compile=1
-h="$S/kafunc.h $S/kalib.h $S/kalex.h $S/kaparse.h $S/../native/kabgr_nosdl.c $0"
-f="$S/kabas.c"
+h="$S/kfunc.h $S/klib.h $S/klex.h $S/kparse.h $S/../native/kbgr_nosdl.c $0"
+f="$S/kbas.c"
 for i in $f $h; do
-  test $i -nt $D/$n && compile=1 
+  test $i -nt $D/$n && compile=1
 done
 
 if test $compile; then

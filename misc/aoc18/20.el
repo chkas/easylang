@@ -1,8 +1,8 @@
 # AoC-18 - Day 20: A Regular Map
-# 
+#
+sys topleft
 visual = 1
 #
-sys topleft 
 inp$[] = strchars input
 ind = 2
 global c$ .
@@ -12,9 +12,9 @@ proc nextc . .
 .
 len f[] 1000 * 1000
 arrbase f[] 0
-# 
+#
 procdecl parse . pos[] .
-# 
+#
 proc parse_opt . pos[] .
    while 1 = 1
       d = 0
@@ -45,7 +45,7 @@ proc parse_opt . pos[] .
       nextc
    .
 .
-# 
+#
 proc parse . pos0[] .
    pos[] = pos0[]
    parse_opt pos[]
@@ -67,7 +67,7 @@ proc parse . pos0[] .
    .
    pos0[] = pos_res[]
 .
-# 
+#
 min = 0
 max = 0
 proc show solve . .
@@ -123,7 +123,7 @@ proc build . .
    show 0
 .
 build
-# 
+#
 dir[] = [ -1 -1000 1 1000 ]
 todon[] = [ 500500 ]
 while len todon[] > 0
@@ -150,7 +150,7 @@ while len todon[] > 0
 .
 print doors - 1
 print rooms
-# 
+#
 input_data
 ^WSSEESWWWNW(S|NENNEEEENN(ESSSSW(NWSW|SSEN)|WSWWN(E|WWS(E|SS))))$
 

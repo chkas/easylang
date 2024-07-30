@@ -1,4 +1,4 @@
-/*	kalib.h
+/*	klib.h
 
 	Copyright (c) Christof Kaser christof.kaser@gmail.com.
 	All rights reserved.

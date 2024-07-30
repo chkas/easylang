@@ -6,9 +6,9 @@
 # clicks). If not, then try the previous 
 # digits again.  
 # 
+sys topleft
 visualization = 1
 # 
-sys topleft
 global cod$[] a1[] a2[] a3[] v[] in[] is_part2 .
 proc run . .
    inpos = 1

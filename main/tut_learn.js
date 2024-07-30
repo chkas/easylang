@@ -214,40 +214,46 @@ text "MY HOUSE"
 +de *linewidth* stellt die Linienstärke ein. Die Linien sind an den Enden abgerundet.
 
 move 10 80
-circle 4
-move 30 80
-circle 6
+circle 2
 #
-linewidth 3
-move 10 60
-line 30 60
+color 990
+move 60 80
+circle 8
 #
-linewidth 8
+color 060
+linewidth 2
+move 15 60
+line 40 80
+#
+linewidth 10
 color 900
 move 10 40
 line 25 40
 #
 color 333
-move 10 20
-line 15 20
+move 50 50
+line 55 50
 
-+ 🤔 Try to draw this car.
+-
 
-+de 🤔 Versuche dieses Auto zu zeichnen.
++ A car
 
-##24
++de Ein Auto
+
 linewidth 8
 color 333
-move 29 96
-line 33 96
+move 9 14
+line 13 14
 color 900
-move 24 91
-line 38 91
+move 4 9
+line 18 9
 color 333
-move 25 85
+move 5 3
 circle 3.5
-move 36 85
-circle 3.5
+
++ 🤔 Something is missing ...
+
++de 🤔 Da fehlt noch was ...
 
 * Calculating, variable
 
@@ -524,9 +530,9 @@ while y < 100
    y += 10
 end
 
-+ With each loop cycle of the outer loop, the inner loop is executed completely. *i += 10* is short for *i = i + 10* and means: increment *i* by 10. With *background* you can set the color that *clear* uses when clearing the drawing area.
++ With each loop cycle of the outer loop, the inner loop is executed completely. *x += 10* is short for *x = x + 10* and means: increment *x* by 10. With *background* you can set the color that *clear* uses when clearing the drawing area.
 
-+de Mit jedem Schleifenzyklus der äußeren Schleife wird die innere Schleife vollständig ausgeführt. *i += 10* ist die Kurzform für *i = i + 10* und bedeutet: erhöhe *i* um 10. Mit *background* kannst du die Farbe festlegen, die *clear* beim Löschen der Zeichenfläche verwendet.
++de Mit jedem Schleifenzyklus der äußeren Schleife wird die innere Schleife vollständig ausgeführt. *x += 10* ist die Kurzform für *x = x + 10* und bedeutet: erhöhe *x* um 10. Mit *background* kannst du die Farbe festlegen, die *clear* beim Löschen der Zeichenfläche verwendet.
 
 + 🤔 Change the program a little to make the pattern even more beautiful.
 
@@ -624,9 +630,9 @@ drawcar
 
 +de Mit *subr* können Aktionen zusammengefasst werden, die von verschiedenen Stellen aus aufgerufen werden können. Das nennt man *Unterprogramm* oder *Subroutine*.
 
-+ 🤔 Let the car move.
++ 🤔 You can make the car drive using a loop.
 
-+de 🤔 Lass das Auto fahren.
++de 🤔 Mit einer Schleife kannst du das Auto fahren lassen.
 
 + 🤔🤔 Let the car move back and forth three times.
 
@@ -720,15 +726,18 @@ on animate
    circle 10
    x += vx
    y += vy
+   if x > 90
+      vx = -vx
+   end
 end
 
-+ 🤔 Let the ball bounce off the walls.
++ 🤔 Let the ball bounce off all the walls.
 
 + 🤔 Let the car drive back and forth! The car should be able to be stopped and restarted with a mouse click.
 
 + 🤔🤔 Try to control the speed with the keyboard keys!
 
-+de 🤔 Lass den Ball an den Wänden abprallen.
++de 🤔 Lass den Ball an allen Wänden abprallen.
 
 +de 🤔 Lass das Auto hin und her fahren! Das Auto sollte mit einem Mausklick angehalten und neu gestartet werden können.
 
@@ -746,8 +755,8 @@ background 000
 clear
 color 999
 for i = 1 to 50
-   x = random 101 - 1
-   y = random 101 - 1
+   x = random 99
+   y = random 99
    mag = random 50
    move x y
    circle mag / 100
@@ -761,11 +770,11 @@ end
 
 + Now let's draw a starry sky from a star map. For this we need something like a list.
 
-+ We use an *array* for this. The field elements can be accessed using square brackets and a position specification, also called index. The first element is at position 1, *len* returns the number of elements in the array.
++ We use an *array* for this. The field elements can be accessed using square brackets and a position specification, also called *index*. The first element is at position 1, *len* returns the number of elements in the array.
 
 +de Jetzt wollen wir einen Sternenhimmel nach einer Sternenkarte zeichnen. Dazu brauchen wir so etwas wie eine Liste.
 
-+de Wir verwenden dazu ein *Feld* (engl. *Array*). Auf die Feldelemente kann über eckige Klammern und eine Positionsangabe, auch Index genannt, zugegriffen werden. Das erste Element steht an der Position 1. *len* gibt die Anzahl der Elemente im Array zurück.
++de Wir verwenden dazu ein *Feld* (engl. *Array*). Auf die Feldelemente kann über eckige Klammern und eine Positionsangabe, auch *Index* genannt, zugegriffen werden. Das erste Element steht an der Position 1. *len* gibt die Anzahl der Elemente im Array zurück.
 
 a[] = [ 3 7 2 8 ]
 print len a[]
@@ -904,6 +913,10 @@ print min
 + 🤔 We now also want to know what the biggest number is.
 
 +de 🤔 Wir wollen nun auch wissen, was die größte Zahl ist.
+
++ 🤔🤔 The brightest star in the star map is called “Vega”. Try to find it and label it - with program code, of course.
+
++de 🤔🤔 Der hellste Stern auf der Sternkarte heißt “Vega”. Versuche, ihn zu finden und zu beschriften - natürlich mit Programmcode.
 
 -
 

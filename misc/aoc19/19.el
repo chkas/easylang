@@ -1,12 +1,12 @@
 # AoC-19 - Day 19: Tractor Beam
-# 
-visual = 1
-# 
+#
 sys topleft
+visual = 1
+#
 ic_code[] = number strsplit input ","
 ic_out = -1
 ic_in = -1
-# 
+#
 # -------- intcode --------
 prefix ic_
 subr reset
@@ -74,7 +74,7 @@ proc run . .
 .
 prefix
 # --------  --------
-# 
+#
 proc in_beam in1 in2 . out .
    ic_reset
    ic_in = in1
@@ -98,7 +98,7 @@ proc draw_light x y h . .
    rect 1.8 1.8
    sleep 0
 .
-# 
+#
 proc part1 . .
    cnt = 0
    for y range0 50
@@ -110,7 +110,7 @@ proc part1 . .
    .
    print cnt
 .
-# 
+#
 proc test x . y res .
    x += 99
    repeat
@@ -136,7 +136,7 @@ if len ic_code[] > 1
 else
    print "No input"
 .
-# 
+#
 input_data
 
 

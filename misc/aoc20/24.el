@@ -1,8 +1,8 @@
 # AoC-20 - Day 24: Lobby Layout
-# 
-visual = 1
+#
 sys topleft
-# 
+visual = 1
+#
 global go[][] nc .
 proc read . .
    l = 1
@@ -41,7 +41,7 @@ read
 len m[] nc * nc
 dirs_even[] = [ -1 (-nc - 1) (-nc) 1 nc (nc - 1) ]
 dirs_odd[] = [ -1 (-nc) (-nc + 1) 1 (nc + 1) nc ]
-# 
+#
 proc sum_black . s .
    s = 0
    for i to len m[]
@@ -53,7 +53,7 @@ proc show . .
    if visual = 0
       break 1
    .
-   # 
+   #
    srow = 30
    offs = (nc - srow) div 2
    clear
@@ -73,7 +73,7 @@ proc show . .
          .
          x2 = x + f2
          xn = x + f - fd2
-         # 
+         #
          y1 = y + f4 + fd2
          y2 = y + f34 - fd2
          yn = y + f - fd2
@@ -149,8 +149,8 @@ proc part1 . .
    print sum
 .
 part1
-# 
-# 
+#
+#
 len p[] len m[]
 proc update . .
    swap m[] p[]
@@ -198,8 +198,8 @@ if visual = 1
    sleep 1
 .
 part2
-# 
-# 
+#
+#
 input_data
 sesenwnenenewseeswwswswwnenewsewsw
 neeenesenwnwwswnenewnwwsewnenwseswesw

@@ -1,8 +1,8 @@
 # AoC-22 - Day 8: Treetop Tree House
 # 
+sys topleft
 visual = 1
 # 
-sys topleft
 global m[] nc .
 proc read . .
    s$ = input

@@ -1,9 +1,8 @@
 # AoC-17 - Day 19: A Series of Tubes
-# 
-visualization = 1
-# 
+#
 sys topleft
-# 
+visualization = 1
+#
 arrbase m[] 0
 repeat
    s$ = input
@@ -20,7 +19,7 @@ repeat
       .
    .
 .
-# 
+#
 len m[] nc * nc
 #
 for pos range0 nc
@@ -28,8 +27,8 @@ for pos range0 nc
       break 1
    .
 .
-# 
-# 
+#
+#
 f = 94 / nc
 background 000
 vis = 0
@@ -69,7 +68,7 @@ subr show
    sleep 0.001
 .
 show
-# 
+#
 dirs[] = [ -nc 1 nc -1 ]
 dir = 3
 while 1 = 1
@@ -91,8 +90,8 @@ while 1 = 1
 .
 print vis$
 print steps
-# 
-# 
+#
+#
 input_data
      |          
      |  +--+    
@@ -100,6 +99,4 @@ input_data
  F---|----E|--+ 
      |  |  |  D 
      +B-+  +--+ 
-
-
 

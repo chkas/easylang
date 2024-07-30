@@ -30,7 +30,7 @@ CLOSOPT = --compilation_level ADVANCED
 
 out := $(HOME)/out/easylang
 wrk := $(out)/wrk
-csrcf := $(wrk)/kabas.c $(wrk)/kafunc.h $(wrk)/kalex.h $(wrk)/kalib.h $(wrk)/kabasw.h $(wrk)/kaparse.h $(wrk)/kawasm.h
+csrcf := $(wrk)/kbas.c $(wrk)/kfunc.h $(wrk)/klex.h $(wrk)/klib.h $(wrk)/kbasw.h $(wrk)/kparse.h $(wrk)/kwasm.h
 
 all: ide
 
@@ -44,11 +44,11 @@ $(wrk):
 main: $(wrk)/easy_ide.js $(wrk)/easyw.js $(wrk)/easy.js $(wrk)/ide.html
 tut: $(wrk)/tut_id.js $(wrk)/tut_docu.js $(wrk)/tut_learn.js $(wrk)/tut_game.js $(wrk)/tut_func.js
 
-$(wrk)/kabas.o: $(csrcf)
+$(wrk)/kbas.o: $(csrcf)
 	$(CC) -c $< -o $@
 
-$(wrk)/easyw.js: $(wrk)/kabas.o kabasw.js
-	$(LD) --post-js kabasw.js $(wrk)/kabas.o -o $@
+$(wrk)/easyw.js: $(wrk)/kbas.o kbasw.js
+	$(LD) --post-js kbasw.js $(wrk)/kbas.o -o $@
 
 $(wrk)/%: %
 	cp -p $< $@
@@ -101,12 +101,12 @@ $(or)/tut_id$(v).js: tut_id.js
 	echo "const VERS = '$v'" >$@
 	tail +2 $< >>$@
 
-$(or)/easyw$(v).js: $(wrk)/kabas.o kabasw.js
-#$(or)/easyw$(v).js: $(wrk)/kabas.o kabasw.js ../vers.txt
-	echo "console.log('Easylang v$v - free to use - christof.kaser@gmail.com')" >$(wrk)/tmp_kabasw.js
-	cat kabasw.js >>$(wrk)/tmp_kabasw.js
-	$(LD) --post-js $(wrk)/tmp_kabasw.js $(wrk)/kabas.o -o $@
-	rm $(wrk)/tmp_kabasw.js
+$(or)/easyw$(v).js: $(wrk)/kbas.o kbasw.js
+#$(or)/easyw$(v).js: $(wrk)/kbas.o kbasw.js ../vers.txt
+	echo "console.log('Easylang v$v - free to use - christof.kaser@gmail.com')" >$(wrk)/tmp_kbasw.js
+	cat kbasw.js >>$(wrk)/tmp_kbasw.js
+	$(LD) --post-js $(wrk)/tmp_kbasw.js $(wrk)/kbas.o -o $@
+	rm $(wrk)/tmp_kbasw.js
 
 $(wrk)/wvers: ../vers.txt
 	echo $v > $(wrk)/wvers

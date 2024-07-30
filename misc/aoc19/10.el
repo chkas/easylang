@@ -1,11 +1,11 @@
 # AoC-19 - Day 10: Monitoring Station
-# 
-visual = 1
-# 
+#
 sys topleft
+visual = 1
+#
 global w monitor_stat .
 arrbase m[] 0
-# 
+#
 proc init . .
    s$ = input
    w = len s$
@@ -17,7 +17,7 @@ proc init . .
    .
 .
 init
-# 
+#
 sc = 100 / w
 background 000
 proc show . .
@@ -111,9 +111,9 @@ proc part1 . .
    .
    print max
 .
-# 
+#
 linewidth 0.5
-# 
+#
 proc find_next . dx dy ind .
    start_ang = atan2 dy dx
    ang = 1 / 0
@@ -171,7 +171,7 @@ show
 part1
 mark monitor_stat
 part2
-# 
+#
 input_data
 .#..##.###...#######
 ##.############..##.

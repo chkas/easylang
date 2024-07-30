@@ -1,4 +1,4 @@
-/*	kabasw.c
+/*	kbasw.c
 
 	Copyright (c) Christof Kaser christof.kaser@gmail.com.
 	All rights reserved.

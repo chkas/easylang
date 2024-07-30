@@ -1,4 +1,4 @@
-/*	kalib.h
+/*	kbgr.c
 
 	Copyright (c) Christof Kaser christof.kaser@gmail.com.
 	All rights reserved.
@@ -172,6 +172,7 @@ void gr_init(const char* progname, int mask) {
 	}
 	if (mask & 32) do_animate = 1;
 	botleft = true;
+	if (sysconfig & 1) botleft = false;
 	grline = 0;
 	gx = 0;
 	gy = FX * 100;
@@ -436,8 +437,8 @@ void gr_sys(ushort h) {
 	else if (h == 4) {	// set_background color
 		gr_color(bcol.r, bcol.g, bcol.b);
 	}
-	else if (h == 11) botleft = true;
-	else if (h == 12) botleft = false;
+//	else if (h == 11) botleft = true;
+//	else if (h == 12) botleft = false;
 	else {
 		fprintf(stderr, "** sys %d not handled", h);
 	}

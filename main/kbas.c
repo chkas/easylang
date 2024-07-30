@@ -1,4 +1,4 @@
-/*	kabas.c
+/*	kbas.c
 
 	Copyright (c) Christof Kaser christof.kaser@gmail.com.
 	All rights reserved.
@@ -10,7 +10,7 @@
     sysfunc "created by" or an equivalent function that returns
     "christof.kaser@gmail.com".
 */
-#include "kalib.h"
+#include "klib.h"
 
 #define S static
 
@@ -123,11 +123,13 @@ S void code_free() {
 	ndnxt = progmem;
 }
 
-#include "kalex.h"
-#include "kafunc.h"
-#include "kawasm.h"
+ushort sysconfig;
 
-#include "kaparse.h"
+#include "klex.h"
+#include "kfunc.h"
+#include "kwasm.h"
+
+#include "kparse.h"
 
 //--------------------------------------------------------------------------------------
 
@@ -156,8 +158,36 @@ extern int parse(const char* str, int opt, int pos) {
 	nexttok();
 
 	sequ_level = 0;
-	fmtline = 0;
-	proc_p->start = parse_sequ();
+	fmtline = 1;
+	sysconfig = 0;
+
+	while (1) {
+		if (tok == t_hash) {
+			parse_comment();
+			nexttok();
+		}
+		else if (tok == t_name && (strcmp(tval, "sysconf") == 0 || strcmp(tval, "sys") == 0)) {
+			csb_tok_spc_nt();
+			if (strcmp(tval, "topleft") == 0) {
+				sysconfig |= 1;
+			}
+			else if (strcmp(tval, "radians") == 0) {
+				sysconfig |= 2;
+			}
+			else if (strcmp(tval, "zero_based") == 0) {
+				sysconfig |= 4;
+			}
+			else {
+				error("topleft, radians, zero_based");
+			}
+			csb_tok_nt();
+		}
+		else break;
+		cs_nl();
+	}
+	if (tok != t_eof) {
+		proc_p->start = parse_sequ();
+	}
 	if (tok != t_eof) {
 		cs_nl();
 		error("<cmd>");
@@ -305,24 +335,12 @@ int main(void) {
 #elif defined(__RUN__)
 
 //test
-char* code2 = "proc f .. print 4 . f";
-
-char* codefr = "proc iter cx cy . iter . "
-   "iter = 1 "
-   "repeat "
-      "y = (x + x) * y + cy "
-      "x = xx - yy + cx "
-      "xx = x * x "
-      "yy = y * y "
-      "until xx + yy > 4 or iter = 128 "
-      "iter += 1 "
-   ". "
-". "
-"iter 0.6 0.5 iter "
-"pr iter";
-
+char* code =
+	"#\n"
+;
 char* code4 =
-	"while b + 1 < 1000000000 / 2"
+	"#\n"
+	"while b + 1 < 100000000 / 2"
 	"  b = b + 1 "
 	"  s = s + b "
 	". "
@@ -332,7 +350,7 @@ char* code4 =
 int main(void) {
 
 	fprintf(stderr, "main\n");
-	if (parse(code, 0, 0) < 0) {
+	if (parse(code4, 0, 0) < 0) {
 		exec(0, "");
 //		printf("%s", format());
 	}
@@ -343,7 +361,7 @@ int main(void) {
 #else
 
 static void err_exit(void) {
-	fprintf(stderr, "kabas [-f] [filename]\n");
+	fprintf(stderr, "run [-f] [filename]\n");
 	exit(1);
 }
 
@@ -357,17 +375,18 @@ int main(int argc, const char* argv[]) {
 		form = 1;
 		i++;
 	}
-	if (argc > i + 1) err_exit();
 	FILE* f = stdin;
 	if (argc > i) {
-
-		if (argv[i][0] == '-') err_exit();
-		progname = argv[i];
-		f = fopen(argv[i], "rb");
-		if (!f) {
-			fprintf(stderr, "Could not open %s\n", argv[i]);
-			exit(1);
+		if (strcmp(argv[i], "-") != 0) {
+			if (argv[i][0] == '-') err_exit();
+			progname = argv[i];
+			f = fopen(argv[i], "rb");
+			if (!f) {
+				fprintf(stderr, "Could not open %s\n", argv[i]);
+				exit(1);
+			}
 		}
+		i += 1;
 	}
 	char* fstr;
 	if (f == stdin) {
@@ -404,8 +423,6 @@ int main(int argc, const char* argv[]) {
 		printf("%s\n", format());
 		return 0;
 	}
-
-	i++;
 	int n_args = argc - i;
 	struct str args;
 	str_init(&args);

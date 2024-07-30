@@ -1,7 +1,8 @@
 # AoC-23 - Day 23: A Long Walk
-# 
+#
+sys topleft
 visual = 1
-# 
+#
 global m[] nc .
 proc read . .
    s$ = input
@@ -28,19 +29,18 @@ proc read . .
    .
 .
 read
-# 
-# 
+#
+#
 start = 2
 dest = len m[] - 1
-# 
-sys topleft
+#
 background 000
 textsize 5
 sc = 100 / nc
 colind = 0
 col[] = [ 966 855 744 633 522 633 744 855 ]
 global vis[] max maxway[] .
-# 
+#
 proc showm m . .
    if m = 1
       colind = colind mod len col[] + 1
@@ -71,9 +71,9 @@ proc showm m . .
    text max
 .
 d[] = [ 1 nc -1 (-nc) ]
-# 
+#
 global pseen[] w[][] nddest ndpos[] .
-# 
+#
 proc gond p d0 v . ndx .
    p = p + d[d0]
    repeat
@@ -121,7 +121,7 @@ proc showmway . .
    .
    sleep 0.5
 .
-# 
+#
 part = 1
 maxavail = 0
 func is_border h .
@@ -206,7 +206,7 @@ proc leavecon nd ndn . .
    seen[nd + nseen * ndn] = 0
    seen[ndn + nseen * nd] = 0
 .
-# 
+#
 proc solve nd dist avail way[] . .
    way[] &= nd
    if dist + avail <= max
@@ -249,15 +249,15 @@ proc run . .
    print max
    showmway
 .
-# 
+#
 proc main . .
-   # 
+   #
    run
    part = 2
    run
 .
 main
-# 
+#
 input_data
 #.#####################
 #.......#########...###

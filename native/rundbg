@@ -7,17 +7,17 @@ D=$HOME/.cache/easylang
 mkdir -p $D
 
 test ! -e $D/$n && compile=1
-h="$S/kafunc.h $S/kalib.h $S/kalex.h $S/kaparse.h $S/../native/kabgr.c $S/kawasm.h $0"
-f="$S/kabas.c"
+h="$S/kfunc.h $S/klib.h $S/klex.h $S/kparse.h $S/../native/kbgr.c $S/kwasm.h $0"
+f="$S/kbas.c"
 for i in $f $h; do
-  test $i -nt $D/$n && compile=1 
+  test $i -nt $D/$n && compile=1
 done
 
 if test -d /System; then
   if test $compile; then
     rm -f $D/$n
     echo "Compiling easylang debug ..." >&2
-    fl="-g3 -Wall -Wextra" 
+    fl="-g3 -Wall -Wextra"
     fl="$fl -Wdouble-promotion -Wno-unused-parameter"
     fl="$fl -fsanitize=undefined"
     #fl="$fl -fsanitize=undefined,address"

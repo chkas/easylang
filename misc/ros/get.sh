@@ -10,7 +10,7 @@
 	dest=~/easylang/misc/ros/"$dest.el"
 	if test ! -e "$dest"; then
 		echo "..." >&2
-		curl -s "https://rosettacode.org/wiki/$x" | ./rosget.awk > "$dest"
+		curl -s "https://rosettacode.org/wiki/$x" | ./_rosget.awk > "$dest"
 		if test $(du "$dest" | cut -f1) = 0; then
 			echo " -> 0 bytes"
 			rm "$dest"

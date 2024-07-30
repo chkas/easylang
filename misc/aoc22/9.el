@@ -1,8 +1,8 @@
 # AoC-22 - Day 9: Rope Bridge
 #
+sys topleft
 visual = 1
 #
-sys topleft
 # for part 1: rl = 2
 rl = 10
 #

@@ -1,4 +1,4 @@
-/*	kaparse.h
+/*	kparse.h
 
 	Copyright (c) Christof Kaser christof.kaser@gmail.com.
 	All rights reserved.
@@ -888,6 +888,7 @@ S void stat_begin_nest(void) {
 
 S ND* parse_sequ_end(void) {
 	space_add();
+	cs_nl();
 	ND* nd = parse_sequ();
 	if (tok != t_dot && tok != t_end) {
 		cs_nl();
@@ -901,6 +902,7 @@ S ND* parse_sequ_end(void) {
 
 S ND* parse_sequ_if(void) {
 	space_add();
+	cs_nl();
 	ND* nd = parse_sequ();
 	if (tok != t_dot && tok != t_else && tok != t_elif && tok != t_end) {
 		cs_nl();
@@ -1200,26 +1202,31 @@ S void parse_on_stat(void) {
 	onstats |= 1 << id;
 	nexttok();
 }
+/*
 S void parse_sys_stat(ND* nd) {
 	csb_tok_spc_nt();
 
 	nd->vf = op_sys;
-	if (strcmp(tval, "botleft") == 0) {
-		nd->v1 = 11;
-	}
-	else if (strcmp(tval, "topleft") == 0) {
+	if (strcmp(tval, "topleft") == 0 || strcmp(tval, "origin_topleft") == 0) {
 		nd->v1 = 12;
+	}
+	else if (strcmp(tval, "radians") == 0) {
+		nd->v1 = 21;
+	}
+	else if (strcmp(tval, "zero_based") == 0) {
+		nd->v1 = 22;
 	}
 	// undocumented
 	else if (strcmp(tval, "time") == 0) {
-		nd->v1 = 21;
+		nd->v1 = 31;
 	}
 	else {
-		error("topleft, botleft");
+		error("topleft, radians");
 		return;
 	}
 	csb_tok_nt();
 }
+*/
 
 S ND* parse_numarrex(void) {
 
@@ -1768,6 +1775,7 @@ S void parse_repeat_stat(ND* nd) {
 	if (!err && sequ_level < 16) nest_block[sequ_level] = codestrln;
 	csb_tok_nt();
 	space_add();
+	cs_nl();
 	nd->ri = parse_sequ();
 	space_sub();
 	cs_nl();
@@ -2282,7 +2290,6 @@ S ND* parse_sequ(void) {
 
 	while (1) {
 
-		cs_nl();
 		if (tok == t_eof && is_enter) {
 			error("");
 			break;
@@ -2446,7 +2453,7 @@ S ND* parse_sequ(void) {
 				parse_subr();
 				nd->vf = op_nop;
 			}
-			else if (tok >= t_return && tok <= t_sys) {
+			else if (tok >= t_return && tok <= t_arrbase) {
 
 				if (tok == t_return) {
 					nd->vf = op_return;
@@ -2494,16 +2501,14 @@ S ND* parse_sequ(void) {
 					nd->vf = op_clear;
 					prog_props |= 1;
 				}
-				else if (tok == t_arrbase) {
-					parse_arrbase_stat(nd);
-				}
 				else if (tok == t_drawgrid) {
 					csb_tok_nt();
 					nd->vf = op_sys;
 					nd->v1 = 5;
 				}
-				else  {				// t_sys
-					parse_sys_stat(nd);
+				else {	// t_arrbase
+				// else if (tok == t_arrbase) {
+					parse_arrbase_stat(nd);
 				}
 			}
 
@@ -2626,6 +2631,7 @@ error_statement:
 		}
 		if (tok == t_dot || tok <= t_end) break;
 		if (tok == t_eof && !is_enter) break;
+		cs_nl();
 	}
 	if (sequ != NULL) ndp->next = NULL;
 	return sequ;

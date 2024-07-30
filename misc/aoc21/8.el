@@ -1,13 +1,13 @@
 # AoC-21 - Day 8: Seven Segment Search
-# 
+#
 # "Simple" brute force strategy, which
 # tries all possible connections
 # (permutations) until all displays show
 # a digit.
-# 
-visualization = 1
-# 
+#
 sys topleft
+visualization = 1
+#
 background 000
 clear
 proc draw x y cod . .
@@ -33,7 +33,7 @@ proc draw x y cod . .
    .
    sleep 0.001
 .
-# 
+#
 perm[] = [ 0 1 2 3 4 5 6 ]
 global permlist[][] .
 proc permutate_list k . .
@@ -47,7 +47,7 @@ proc permutate_list k . .
    .
 .
 permutate_list 1
-# 
+#
 proc codeperm perm s$ . cod .
    cod = 0
    for c$ in strchars s$
@@ -66,7 +66,7 @@ proc init . .
    .
 .
 init
-# 
+#
 global inp$ part1 part2 linenr .
 proc procline . .
    inp$[] = strsplit inp$ " "
@@ -107,7 +107,7 @@ repeat
 .
 print part1
 print part2
-# 
+#
 input_data
 be cfbegad cbdgef fgaecd cgeb fdcge agebfd fecdb fabcd edb | fdgacbe cefdb cefbgd gcbe
 edbfga begcd cbg gc gcadebf fbgde acbgfd abcde gfcbed gfec | fcgedb cgb dgebacf gc

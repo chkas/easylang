@@ -1,8 +1,8 @@
 # AoC-22 - Day 14: Regolith Reservoir
 # 
+sys topleft
 visual = 1
 # 
-sys topleft
 nc = 400
 len m[] nc * nc / 2
 global maxy .

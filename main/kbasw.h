@@ -75,7 +75,7 @@ static char gr_input(char* buf) {
 
 static double grx;
 static double gry;
-static int grbotleft;
+static char grbotleft;
 static double grtxty;
 
 static void gr_init(const char* s, int mask) {
@@ -86,6 +86,7 @@ static void gr_init(const char* s, int mask) {
 	grx = 0;
 	gry = 100;
 	grbotleft = 1;
+	if (sysconfig & 1) grbotleft = 0;
 	grtxty = 8 * 0.78;
 	grline = 0;
 }
@@ -97,8 +98,8 @@ static void gr_sys(ushort h) {
 		}
 		EM_ASM_({ push([7, $0])}, h);
 	}
-	else if (h == 11) grbotleft = 1;
-	else if (h == 12) grbotleft = 0;
+//	else if (h == 11) grbotleft = 1;
+//	else if (h == 12) grbotleft = 0;
 }
 static void gr_textsize(double h) {
 	EM_ASM_({ push([10, $0])}, h);

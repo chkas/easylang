@@ -1,15 +1,15 @@
 # AoC-21 - Day 9: Smoke Basin
-# 
+#
 # Place a guard border with height 9 around
 # it. The determination of the low point is
 # straightforward. You can find the basins by
-# finding basins of the neighboring points, 
-# starting from the low points. 
-# 
+# finding basins of the neighboring points,
+# starting from the low points.
+#
+sys topleft
 visualization = 1
 # don't look good with test data
 #
-sys topleft 
 global m[] nc nr lowpt[] .
 proc show upd . .
    if visualization = 0
@@ -68,7 +68,7 @@ proc part1 . .
 .
 part1
 show 0
-# 
+#
 proc sort . d[] .
    for i to len d[] - 1
       for j = i + 1 to len d[]
@@ -98,7 +98,7 @@ proc part2 . .
    print lowpt[1] * lowpt[2] * lowpt[3]
 .
 part2
-# 
+#
 input_data
 2199943210
 3987894921

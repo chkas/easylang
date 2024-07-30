@@ -1,9 +1,9 @@
 # AoC-18 - Day 15: Beverage Bandits
-# 
+#
+sys topleft
 visual = 1
 delay = 0.3
-# 
-sys topleft 
+#
 global f0[] nc un0[] hp0[] .
 proc read . .
    repeat
@@ -31,7 +31,7 @@ proc read . .
    arrbase f0[] 0
 .
 read
-# 
+#
 att_p[] = [ 3 3 ]
 dir[] = [ -nc (-1) 1 nc ]
 global f[] un[] hp[] .
@@ -65,12 +65,12 @@ proc show . .
    .
    sleep delay
 .
-# 
+#
 proc battle . res .
    f[] = f0[]
    un[] = un0[]
    hp[] = hp0[]
-   # 
+   #
    while 1 = 1
       unit_pos[] = [ ]
       unit_id[] = [ ]
@@ -101,7 +101,7 @@ proc battle . res .
                .
                res = hp * round
                break 2
-               # 
+               #
             .
             for i to 4
                h = f[pos + dir[i]]
@@ -191,7 +191,7 @@ proc battle . res .
 .
 battle res
 print res
-# 
+#
 proc part2 . .
    delay /= 10
    repeat
@@ -205,8 +205,8 @@ proc part2 . .
    print res
 .
 part2
-# 
-# 
+#
+#
 input_data
 #########
 #G......#

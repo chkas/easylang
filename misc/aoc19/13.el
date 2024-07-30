@@ -1,12 +1,12 @@
 # AoC-19 - Day 13: Care Package
-# 
-visual = 0
 #
 sys topleft
+visual = 0
+#
 ic_mem[] = number strsplit input ","
-# 
+#
 global ball_x pad_x .
-# 
+#
 proc ic_inpf . in .
    if ball_x > pad_x
       in = 1
@@ -22,7 +22,7 @@ proc ic_inpf . in .
 textsize 4
 background 000
 clear
-# 
+#
 proc draw_score v . .
    if visual = 0
       break 1
@@ -47,7 +47,7 @@ proc draw x y v . .
    .
 .
 global x y out_ind n_blocks n_points .
-# 
+#
 proc ic_outpf out . .
    if out_ind = 0
       x = out
@@ -70,9 +70,9 @@ proc ic_outpf out . .
    .
    out_ind = (out_ind + 1) mod 3
 .
-# 
+#
 prefix ic_
-# -------- intcode -------- 
+# -------- intcode --------
 base = 0
 arrbase mem[] 0
 proc mem_ind mo ind . rind .
@@ -130,20 +130,20 @@ proc run . .
       .
    .
 .
-# --------  -------- 
+# --------  --------
 prefix
-# 
+#
 if len ic_mem[] > 1
    ic_run
    print n_blocks
-   # 
+   #
    ic_mem[0] = 2
    ic_run
    print n_points
 else
    print "No input"
 .
-# 
+#
 input_data
 
 

@@ -1,8 +1,8 @@
 # AoC-16 - Day 8: Two-Factor Authentication
 #
+sys topleft
 visualization = 1
 #
-sys topleft
 nc = 50
 nr = 6
 len m[] nc * nr
