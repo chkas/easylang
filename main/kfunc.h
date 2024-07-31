@@ -2736,9 +2736,9 @@ S void init_rt(void) {
 	stop_flag = 0;
 	rt.randseed = -1;
 	rt.radians = 0;
-	if ((sysconfig & 2) != 0) rt.radians = 1;
+	if (sysconfig & 2) rt.radians = 1;
 	rt.arrbase = 1;
-	if ((sysconfig & 4) != 0) rt.arrbase = 0;
+	if (sysconfig & 4) rt.arrbase = 0;
 	arrs_init(rt_arrs, proc_p->varcnt[2]);
 }
 

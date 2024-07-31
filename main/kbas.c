@@ -185,7 +185,10 @@ extern int parse(const char* str, int opt, int pos) {
 		else break;
 		cs_nl();
 	}
-	if (tok != t_eof) {
+	if (tok == t_eof) {
+		if (is_enter) error("");
+	}
+	else {
 		proc_p->start = parse_sequ();
 	}
 	if (tok != t_eof) {
