@@ -1,6 +1,6 @@
 # AoC-18 - Day 20: A Regular Map
 #
-sys topleft
+sysconf topleft
 visual = 1
 #
 inp$[] = strchars input

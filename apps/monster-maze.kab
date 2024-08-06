@@ -1,5 +1,6 @@
 # Monster maze
 #
+sysconf topleft
 size = 12
 n_monster = 6
 monster_delay = 8
@@ -119,24 +120,24 @@ proc show_monster col row dirx diry . .
    move x y
    circle csc2
    color 000
-   move x - c8 y + c10
+   move x - c8 y - c10
    circle c20
-   move x + c8 y + c10
+   move x + c8 y - c10
    circle c20
-   move x y - c5
+   move x y + c5
    circle c16 * abs step
 .
 subr show_me
    move me_x me_y
    circle csc2
    color 000
-   move me_x - c8 me_y + c10
+   move me_x - c8 me_y - c10
    circle c20
-   move me_x + c8 me_y + c10
+   move me_x + c8 me_y - c10
    circle c20
    linewidth c16
-   move me_x - c10 me_y - c5
-   line me_x + c10 me_y - c5
+   move me_x - c10 me_y + c5
+   line me_x + c10 me_y + c5
 .
 on mouse_down
    m_x = mouse_x
@@ -204,6 +205,31 @@ proc do_y . .
       .
    .
 .
+proc leveldone . .
+   # sound [ 440 0.2 494 0.2 523 0.4 ]
+   stat = -1
+   color 000
+   move 0 0
+   rect 100 100
+   textsize 8
+   color 995
+   move 5 14
+   text "Super! You made it."
+   textsize 6
+   move 5 26
+   text "Monsters: " & n_monster
+   move 5 34
+   text "Time: " & floor (systime - time_start - 0.5)
+   color 822
+   move 5 50
+   text "More and more monsters"
+   move 5 58
+   text "are coming and they"
+   move 5 66
+   text "are getting faster!"
+   monster_delay -= 1
+   n_monster += 1
+.
 proc move_me . .
    if abs dme_x > abs dme_y
       do_x
@@ -215,29 +241,7 @@ proc move_me . .
    me_x = me_col * c + c2 + c10 + me_col_s * c5
    me_y = me_row * c + c2 + c10 + me_row_s * c5
    if me_y > 100 - c2
-      # sound [ 440 0.2 494 0.2 523 0.4 ]
-      stat = -1
-      color 000
-      move 0 0
-      rect 100 100
-      textsize 8
-      color 995
-      move 5 86
-      text "Super! You made it."
-      textsize 6
-      move 5 74
-      text "Monsters: " & n_monster
-      move 5 66
-      text "Time: " & floor (systime - time_start - 0.5)
-      color 822
-      move 5 50
-      text "More and more monsters"
-      move 5 42
-      text "are coming and they"
-      move 5 34
-      text "are getting faster!"
-      monster_delay -= 1
-      n_monster += 1
+      leveldone
    .
 .
 proc get_dir c r . x y .

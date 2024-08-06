@@ -1,6 +1,6 @@
 # AoC-19 - Day 15: Oxygen System
 #
-sys topleft
+sysconf topleft
 visual = 1
 #
 ic_mem[] = number strsplit input ","

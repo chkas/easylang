@@ -1,6 +1,6 @@
 # AoC-16 - Day 8: Two-Factor Authentication
 #
-sys topleft
+sysconf topleft
 visualization = 1
 #
 nc = 50

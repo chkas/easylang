@@ -1,6 +1,6 @@
 # AoC-19 - Day 19: Tractor Beam
 #
-sys topleft
+sysconf topleft
 visual = 1
 #
 ic_code[] = number strsplit input ","

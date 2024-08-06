@@ -6,7 +6,7 @@
 # finding basins of the neighboring points,
 # starting from the low points.
 #
-sys topleft
+sysconf topleft
 visualization = 1
 # don't look good with test data
 #

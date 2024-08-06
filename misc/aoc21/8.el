@@ -5,7 +5,7 @@
 # (permutations) until all displays show
 # a digit.
 #
-sys topleft
+sysconf topleft
 visualization = 1
 #
 background 000

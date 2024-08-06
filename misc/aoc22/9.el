@@ -1,6 +1,6 @@
 # AoC-22 - Day 9: Rope Bridge
 #
-sys topleft
+sysconf topleft
 visual = 1
 #
 # for part 1: rl = 2

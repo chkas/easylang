@@ -1,6 +1,6 @@
 # AoC-19 - Day 11: Space Police
 # 
-sys topleft
+sysconf topleft
 code[] = number strsplit input ","
 # 
 nc = 100

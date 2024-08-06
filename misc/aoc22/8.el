@@ -1,6 +1,6 @@
 # AoC-22 - Day 8: Treetop Tree House
 # 
-sys topleft
+sysconf topleft
 visual = 1
 # 
 global m[] nc .

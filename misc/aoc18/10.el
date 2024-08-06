@@ -1,6 +1,6 @@
 # AoC-18 - Day 10: The Stars Align
 #
-sys topleft 
+sysconf topleft 
 repeat
    s$ = input
    until s$ = ""

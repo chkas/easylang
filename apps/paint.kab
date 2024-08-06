@@ -1,13 +1,13 @@
 # Paint
-# 
-sys topleft
+#
+sysconf topleft
 col[] = [ 900 090 009 990 620 000 888 ]
 thick[] = [ 1 2 4 ]
 sel_thick = 2
 sel_col = 1
 state = 0
 down = 0
-# 
+#
 proc showpen . .
    color 444
    move 0 0

@@ -1,6 +1,6 @@
 # AoC-19 - Day 13: Care Package
 #
-sys topleft
+sysconf topleft
 visual = 0
 #
 ic_mem[] = number strsplit input ","

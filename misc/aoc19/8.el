@@ -1,6 +1,6 @@
 # AoC-19 - Day 8: Space Image Format
 # 
-sys topleft
+sysconf topleft
 img[] = number strchars input
 arrbase img[] 0
 w = 25

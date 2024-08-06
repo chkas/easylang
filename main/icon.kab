@@ -1,5 +1,5 @@
-sys topleft
-# 
+sysconf topleft
+#
 c = 797
 background c
 clear
@@ -13,7 +13,7 @@ line 24 22
 linewidth 10
 move 20 72
 line 80 72
-# 
+#
 linewidth 2
 y = 30
 move 30 y
@@ -33,7 +33,7 @@ line 45 y
 y += 5
 move 30 y
 line 45 y
-# 
+#
 color c
 move 75 64
 circle 2

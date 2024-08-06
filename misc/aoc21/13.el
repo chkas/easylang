@@ -6,7 +6,7 @@
 # are placed relative from the double fold
 # downwards.
 #
-sys topleft
+sysconf topleft
 visualization = 1
 #
 nc = 1500

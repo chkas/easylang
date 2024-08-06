@@ -6,7 +6,7 @@
 # clicks). If not, then try the previous 
 # digits again.  
 # 
-sys topleft
+sysconf topleft
 visualization = 1
 # 
 global cod$[] a1[] a2[] a3[] v[] in[] is_part2 .

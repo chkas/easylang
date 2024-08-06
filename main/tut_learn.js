@@ -787,7 +787,7 @@ for i = 1 to len a[]
 end
 
 ##85
-sys topleft
+sysconf topleft
 color 543
 textsize 6
 linewidth 0.8

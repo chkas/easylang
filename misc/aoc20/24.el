@@ -1,6 +1,6 @@
 # AoC-20 - Day 24: Lobby Layout
 #
-sys topleft
+sysconf topleft
 visual = 1
 #
 global go[][] nc .

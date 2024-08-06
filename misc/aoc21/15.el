@@ -6,7 +6,7 @@
 # after the other. To display the optimal
 # path, we also need a predecessor list.
 #
-sys topleft
+sysconf topleft
 visualization = 1
 #
 expnd = 4

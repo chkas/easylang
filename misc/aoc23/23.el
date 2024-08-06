@@ -1,6 +1,6 @@
 # AoC-23 - Day 23: A Long Walk
 #
-sys topleft
+sysconf topleft
 visual = 1
 #
 global m[] nc .

@@ -1,6 +1,6 @@
 # Piano
 #
-sys topleft
+sysconf topleft
 subr initvars
    song = 1
    songs[][] &= [ 10 11 12 13 34 34 15 15 15 15 34 39 15 15 15 15 34 39 13 13 13 13 32 32 11 11 11 11 30 39 ]

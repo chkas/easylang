@@ -1,6 +1,6 @@
 # AoC-20 - Day 20: Jurassic Jigsaw
 # 
-sys topleft
+sysconf topleft
 global id[] n[] ed[][] rev[] .
 # 
 proc build_rev . .

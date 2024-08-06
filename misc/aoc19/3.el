@@ -1,6 +1,6 @@
 # AoC-19 - Day 3: Crossed Wires
 # 
-sys topleft
+sysconf topleft
 w1$[] = strsplit input ","
 w2$[] = strsplit input ","
 # 

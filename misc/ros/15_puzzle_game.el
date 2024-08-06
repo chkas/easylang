@@ -1,4 +1,4 @@
-sys topleft
+sysconf topleft
 background 432
 textsize 13
 len f[] 16

@@ -1,6 +1,6 @@
 # AoC-16 - Day 13: A Maze of Twisty Little Cubicles
 #
-sys topleft
+sysconf topleft
 visualization = 1
 #
 inp = number input

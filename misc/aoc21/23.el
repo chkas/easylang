@@ -6,7 +6,7 @@
 # number up to 5^23 and then create a "seen" 
 # hash map.
 # 
-sys topleft
+sysconf topleft
 visualization = 1
 # 
 hashsz = 1999993

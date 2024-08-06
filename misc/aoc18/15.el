@@ -1,6 +1,6 @@
 # AoC-18 - Day 15: Beverage Bandits
 #
-sys topleft
+sysconf topleft
 visual = 1
 delay = 0.3
 #

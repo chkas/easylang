@@ -1,6 +1,6 @@
 # AoC-22 - Day 14: Regolith Reservoir
 # 
-sys topleft
+sysconf topleft
 visual = 1
 # 
 nc = 400

@@ -34,7 +34,7 @@ read
 len seen[] len m[]
 max = 0
 # 
-sys topleft
+sysconf topleft
 background 000
 textsize 5
 sc = 100 / nc

@@ -1,6 +1,6 @@
 # AoC-17 - Day 19: A Series of Tubes
 #
-sys topleft
+sysconf topleft
 visualization = 1
 #
 arrbase m[] 0

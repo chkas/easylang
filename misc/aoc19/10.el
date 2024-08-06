@@ -1,6 +1,6 @@
 # AoC-19 - Day 10: Monitoring Station
 #
-sys topleft
+sysconf topleft
 visual = 1
 #
 global w monitor_stat .

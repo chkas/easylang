@@ -38,7 +38,7 @@ xxx
 
 #<h2>Learning Apps, Learning Games and Games</h2>
 
-apps1="1x1-trainer math-trainer roman-numbers learning-clock piano"
+apps1="1st-math-trainer 1x1-trainer math-trainer roman-numbers learning-clock piano"
 apps2="ice-cream letter-memory paint"
 apps3="mastermind mine-sweeper 15-puzzle monster-maze snake tictactoe reaction-test catch-the-ball"
 
@@ -73,7 +73,8 @@ for k in $apps1; do
 	wrcode $k
 done
 
-cp png/easyide.png $odir
+cp png/*.png $odir
+#cp png/easyide.png $odir
 cat <<xxx
 <p>
 <h3>Make your own game</h3>

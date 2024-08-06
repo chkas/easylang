@@ -1,6 +1,6 @@
 # AoC-19 - Day 18: Many-Worlds Interpretation
 #  
-sys topleft
+sysconf topleft
 inp$ = input
 a$[] = strchars inp$
 sz = len a$[]

@@ -1,0 +1,10 @@
+func$ bin num .
+   while num > 1
+      b$ = num mod 2 & b$
+      num = num div 2
+   .
+   return num & b$
+.
+print bin 5
+print bin 50
+print bin 9000

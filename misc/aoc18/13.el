@@ -1,6 +1,6 @@
 # AoC-18 - Day 13: Mine Cart Madness
 #
-sys topleft
+sysconf topleft
 visual = 1
 #
 global nc f[] car_dir[] car_pos[] .

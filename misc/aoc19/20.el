@@ -1,6 +1,6 @@
 # AoC-19 - Day 20: Donut Maze
 #
-sys topleft
+sysconf topleft
 visual = 1
 #
 global port[] port$[] aa zz m[] nc nc2 .

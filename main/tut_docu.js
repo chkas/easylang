@@ -655,9 +655,9 @@ for i range0 len a[]
 
 -
 
-+ With the command *sys topleft* you can set the origin of the coordinate system to top left.
++ With the configuration command *sysconf topleft* you can set the origin of the coordinate system to top left.
 
-sys topleft
+sysconf topleft
 move 5 5
 textsize 4
 text "This is top left"

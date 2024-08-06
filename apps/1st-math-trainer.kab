@@ -1,0 +1,197 @@
+# 1st math trainer
+#
+global q$ .
+subr initvars
+   state = 1
+   todo = 5
+   ind = -1
+   time0 = systime
+   res = 0
+   resok = 0
+.
+proc disp col s$ . .
+   color col
+   move 3 76
+   rect 94 21
+   color 888
+   move 7 82
+   textsize 12
+   text s$
+.
+proc showquest . .
+   if res = resok
+      if randomf < 0.66
+         a = random 14 + 2
+         b = random (20 - a - 2) + 2
+         q$ = a & " + " & b & " = "
+         resok = a + b
+      else
+         a = random 11 + 9
+         b = random (a - 4) + 2
+         q$ = a & " - " & b & " = "
+         resok = a - b
+      .
+   .
+   disp 030 q$ & "_"
+   res = 0
+.
+proc drawkey . .
+   s$ = strchar (ind + 48)
+   h = ind
+   if h < 10 and h > 0
+      h -= 1
+      x = h mod 3 * 24 + 3
+      y = 2 - h div 3
+   else
+      x = 3 * 24 + 3
+      if h = 0
+         y = 1
+      elif h = 10
+         y = 2
+         s$ = "⌫"
+      else
+         y = 0
+         s$ = "✓"
+      .
+   .
+   y = y * 24 + 3
+   move x y
+   rect 22 22
+   move x + 5 y + 4.5
+   color 888
+   textsize 16
+   text s$
+.
+background 010
+proc start . .
+   clear
+   for ind = 0 to 11
+      color 020
+      drawkey
+   .
+   initvars
+   showquest
+.
+proc init . .
+   ind = -1
+   state = 0
+   textsize 9
+   clear
+   color 060
+   move 10 60
+   text "Dominiks First"
+   move 10 46
+   text "Math Trainer"
+.
+proc check . .
+   if ind = 11
+      state = 2
+      if res = resok
+         col = 050
+         todo -= 1
+         timer 0.5
+      else
+         col = 500
+         timer 2
+      .
+      disp col q$ & res
+   else
+      if ind = 10
+         res = res div 10
+         h$ = res
+         if res = 0
+            h$ = "_"
+         .
+      else
+         if res >= 100
+            res = 0
+         .
+         res = res * 10 + ind
+         h$ = res
+      .
+      disp 030 q$ & h$
+   .
+.
+proc handle_key . .
+   c = mouse_x div 25
+   r = 2 - mouse_y div 25
+   if c < 3
+      ind = r * 3 + c + 1
+   else
+      if r = 1
+         ind = 0
+      elif r = 0
+         ind = 10
+      else
+         ind = 11
+      .
+   .
+   color 040
+   drawkey
+   check
+.
+proc smiley t . .
+   if t <= 60
+      move 65 35
+      color 983
+      circle 19
+      color 000
+      move 58 42
+      circle 2
+      move 72 42
+      circle 2
+      linewidth 2
+      if t <= 30
+         curve [ 56 32 65 19 74 32 ]
+      else
+         curve [ 58 28 65 22 72 28 ]
+      .
+   .
+.
+proc showresult . .
+   t = floor (systime - time0)
+   move 0 0
+   color 030
+   rect 100 100
+   color 888
+   move 10 82
+   textsize 10
+   text "Well done!"
+   move 10 66
+   text "Time: " & t
+   move 10 10
+   textsize 4
+   text "1st math trainer"
+   smiley t
+.
+on mouse_down
+   if state = 0
+      start
+   elif state = 1
+      if mouse_y < 75
+         handle_key
+      elif res = 0
+         init
+      .
+   .
+.
+on mouse_up
+   if ind >= 0
+      color 020
+      drawkey
+   .
+.
+on timer
+   if state = 3
+      state = 0
+   elif state = 2 and todo = 0
+      ind = -1
+      showresult
+      state = 3
+      timer 2
+   elif state = 2
+      showquest
+      state = 1
+   .
+.
+init

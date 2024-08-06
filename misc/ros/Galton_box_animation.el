@@ -1,4 +1,4 @@
-sys topleft
+sysconf topleft
 # 
 proc drawpins . .
    for i to 9
