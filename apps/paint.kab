@@ -2,8 +2,8 @@
 #
 sysconf topleft
 col[] = [ 900 090 009 990 620 000 888 ]
-thick[] = [ 1 2 4 ]
-sel_thick = 2
+thick[] = [ 1 2 4 8 ]
+sel_thick = 3
 sel_col = 1
 state = 0
 down = 0
@@ -32,8 +32,8 @@ proc showpen . .
       if i = sel_thick
          color col[sel_col]
       .
-      move 72 + i * 8 - 4 4
-      circle thick[i] * 0.75
+      move 64 + i * 8 4
+      circle i
    .
    color col[sel_col]
    linewidth thick[sel_thick]
@@ -69,8 +69,8 @@ proc action x y . .
             picker
          elif x < 64
             sel_col = x div 8
-         elif x > 72 and x < 96
-            sel_thick = (x - 72) div 8 + 1
+         elif x > 68 and x < 96
+            sel_thick = (x - 68) div 8 + 1
          .
          showpen
       else

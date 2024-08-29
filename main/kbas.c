@@ -37,22 +37,28 @@ struct node {
 				STR (*strf)(struct node*);
 				ARR (*arrf)(struct node*);
 			};
+			struct node* next;
 			union {
 				struct {
 					union {
 						struct node* le;
-						short v1;
+						struct {
+							short v1;
+							short v1a;
+						};
 					};
 					union {
 						struct node* ri;
-						short v2;
+						struct {
+							short v2;
+							short v2a;
+						};
 						float cfl32;
 					};
 				};
 				double cfl;
 				uint str;
 			};
-			struct node* next;
 		};
 
 // for extendend op
@@ -61,21 +67,28 @@ struct node {
 				struct {
 					union {
 						struct node* ex;
-						short vx;
+						struct {
+							short vx;
+							short vxa;
+						};
 					};
 					union {
 						struct node* ex2;
-						short vx2;
+						struct {
+							short vx2;
+							short vx2a;
+						};
 					};
 					struct node* ex3;
+					struct node* ex4;
 				};
 				struct {
+					struct node* bxnd;
 					byte bx0;
 					byte bx1;
 					byte bx2;
 					byte bx3;
 					byte bx[8];
-					struct node* bxnd;
 				};
 			};
 		};
@@ -331,6 +344,7 @@ extern int exec(int opt, const char* args) {
 #ifdef __EMSCRIPTEN__
 
 int main(void) {
+//	pr("sizeof(struct node): %d", sizeof(struct node));
 	EM_ASM( postMessage(['started']));
 	return 0;
 }

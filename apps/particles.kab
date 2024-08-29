@@ -2,7 +2,7 @@
 # 
 n_part = 40
 thres = 15
-# 
+#
 subr connect
   h = dx * dx + dy * dy
   dist = sqrt h

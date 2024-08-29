@@ -20,8 +20,6 @@ end
 
 ## Website
 
-**[easylang.dev](https://easylang.dev/)**
-
 **[easylang.online](https://easylang.online/)**
 
 **[chkas.github.io](https://chkas.github.io/)**

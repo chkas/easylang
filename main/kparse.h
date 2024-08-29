@@ -351,14 +351,17 @@ S int parse_vnumael(ND* nd, int aelael) {
 			rc = ARRAEL;
 			nd->arrf = op_vnumarrael;
 		}
-		else if (aelael) {
+//		else if (aelael) {
+		else {
 			rc = AELAEL;
-			ND* ndx = mknd();
-			nd->numf = op_vnumaelael;
-			ndx->ex = nd->ri;
-			nd->ri = ndx;
-			ndx->ex2 = parse_ex();
-			expt_ntok(t_brr);
+			if (aelael) {
+				ND* ndx = mknd();
+				nd->numf = op_vnumaelael;
+				ndx->ex = nd->ri;
+				nd->ri = ndx;
+				ndx->ex2 = parse_ex();
+				expt_ntok(t_brr);
+			}
 		}
 	}
 	else rc = -1;
@@ -1965,8 +1968,31 @@ S void parse_swap_stat(ND* nd) {
 			cs_tok_nt();
 			parse_arr_swap2(nd, t_vnumarr, VAR_NUMARR);
 		}
+		else if (t == AELAEL) {
+// swap a[1][1] b[1][1]
+			nd->vf = op_swapnumaelael;
+			ndx->ex = parse_ex();
+			expt_ntok(t_brr);
+			cs_spc();
+			expt(t_vnumael);
+
+			//nd->v1a = parse_var(VAR_NUMARRARR, RD);
+			nd->v1a = get_var(VAR_NUMARRARR, RD, tval, code_utf8len);
+			cs_tok_nt();
+			csbrl();
+//pr("X %d %d %s", nd->v1, nd->v1a, tval);
+
+			ND* ndol = NULL;
+			ndx->ex2 = parse_ex_arr(&ndol);
+			if (ndol != NULL) ndol->v1 = nd->v1a;
+			expt_ntok(t_brrl);
+			ndx->ex3 = parse_ex();
+			expt_ntok(t_brr);
+		}
 		else {
-			error("]");
+			error("], ][");
+//kc
+//			error("]");
 		}
 	}
 	else if (tok == t_vstr) {

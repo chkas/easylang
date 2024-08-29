@@ -38,7 +38,6 @@ S struct {
 	ND* proc;
 	char sys_error;
 	ushort slow;
-//	ushort sys;
 	uint input_data_pos;
 	int randseed;
 	ushort radians;
@@ -1208,9 +1207,9 @@ S void op_print(ND* nd);
 S void op_swapnum(ND* nd) {
 	double* p1 = gnum(nd->v1);
 	double* p2 = gnum(nd->v2);
-	double h = *p1;
+	double tmp = *p1;
 	*p1 = *p2;
-	*p2 = h;
+	*p2 = tmp;
 }
 S void op_swapnumael(ND* nd) {
 	ND* ndx = nd + 1;
@@ -1218,9 +1217,25 @@ S void op_swapnumael(ND* nd) {
 	ARR* arr2 = garr(ndx->vx2);
 	int h1 = arrind(arr, numf(nd->ri), nd);
 	int h2 = arrind(arr2, numf(ndx->ex), nd);
-	double h = *(arr->pnum + h1);
+	double tmp = *(arr->pnum + h1);
 	*(arr->pnum + h1) = *(arr2->pnum + h2);
-	*(arr2->pnum + h2) = h;
+	*(arr2->pnum + h2) = tmp;
+}
+
+//kc
+S void op_swapnumaelael(ND* nd) {
+	ND* ndx = nd + 1;
+	ARR* arr1 = garr(nd->v1);
+	ARR* arr2 = garr(nd->v1a);
+	int h1 = arrind(arr1, numf(nd->ri), nd);
+	arr1 = arr1->parr + h1;
+	h1 = arrind(arr1, numf(ndx->ex), nd);
+	int h2 = arrind(arr2, numf(ndx->ex2), nd);
+	arr2 = arr2->parr + h2;
+	h2 = arrind(arr2, numf(ndx->ex3), nd);
+	double tmp = *(arr1->pnum + h1);
+	*(arr1->pnum + h1) = *(arr2->pnum + h2);
+	*(arr2->pnum + h2) = tmp;
 }
 
 S void op_swapstr(ND* nd) {
@@ -1402,7 +1417,7 @@ S double op_strpos(ND* nd) {
 	const char* p2 = str_ptr(&s2);
 
 	int i = 0;
-	int ind = 1;
+	int ind = 0;
 	while (p[i]) {
 		if (strncmp(p + i, p2, s2len) == 0) {
 			break;
@@ -1410,10 +1425,10 @@ S double op_strpos(ND* nd) {
 		i += uchlen(p[i]);
 		ind += 1;
 	}
-	if (p[i] == 0) ind = 0;
+	if (p[i] == 0) ind = -1;
 	str_free(&s1);
 	str_free(&s2);
-	return ind;
+	return ind + rt.arrbase;
 }
 
 S ARR op_strchars(ND* nd) {

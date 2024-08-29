@@ -30,7 +30,7 @@ subr turns
          z = -x * sin -wy + z * cos -wy
          if z > -sinwa - 0.125 and z < sinwa + 0.125
             xd = (yh + sinwa) * 50 / sinwa
-            yd = 100 - (z + sinwa) * 50 / sinwa
+            yd = (z + sinwa) * 50 / sinwa
          .
       .
    .
