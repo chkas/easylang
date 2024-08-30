@@ -27,8 +27,6 @@ function setTimer(s) {
 	cancelTimer()
 	if (s >= 0) timer = setTimeout(timerF, 1000 * s)
 }
-
-
 function update() {
 	if (cmds.length > 0) {
 		postMessage(["list", cmds])
@@ -136,11 +134,13 @@ onmessage = function(e) {
 	}
 }
 
+function errmsg(s) {
+	console.log(s)
+	postMessage(["ide", "print", s])
+}
 function input() {
 	if (sab == null) {
-		var s = "ERROR: 'input' does not work, because 'SharedArrayBuffer' is disabled in your browser\n"
-		console.log(s)
-		postMessage(["ide", "print", s])
+		errmsg("Error: 'input' needs 'SharedArrayBuffer' in browser\n")
 		return
 	}
 	update()
@@ -156,6 +156,18 @@ function input() {
 	}
 	else {
 		Module.ccall("evt_func", "null", ["int", "string"], [4, ""])
+	}
+}
+function sleep(sec) {
+	if (sab == null) {
+		errmsg("Error: 'sleep' needs 'SharedArrayBuffer' in browser\n")
+	}
+	update()
+	if (sec > 0) {
+		postMessage(["sleep", sec])
+		var vw = new Int32Array(sab)
+		Atomics.wait(vw, 1, 0)
+		Atomics.store(vw, 1, 0)
 	}
 }
 

@@ -287,7 +287,8 @@ for i = 1 to 18
 
 + Visualization of the Monte Carlo algorithm
 
-for i = 1 to 100000
+n = 300000
+for i = 1 to n
    x = randomf
    y = randomf
    if x * x + y * y < 1
@@ -297,14 +298,14 @@ for i = 1 to 100000
       color 000
    .
    move x * 100 y * 100
-   circle 0.5
+   circle 0.2
    if i mod 1000 = 0
       sleep 0.01
    .
 .
 color 000
 move 10 10
-text "PI: " & 4.0 * hit / 100000
+text "PI: " & 4.0 * hit / n
 
 + The drawing area is updated when *sleep* is called.
 

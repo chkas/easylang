@@ -2262,7 +2262,6 @@ S double op_fastcall(ND* nd0) {
 #endif
 }
 
-
 #define sl_as(ps, s) str_append(ps, s)
 
 S void sl_an(STR* ps, int h) {

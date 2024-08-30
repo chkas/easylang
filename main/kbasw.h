@@ -1,13 +1,7 @@
 #include <unistd.h>
 
-static void do_sleep(double sec) {
-	sleep((int)sec);
-	useconds_t us = (useconds_t)((sec - (int)sec)  * 1000000);
-	usleep(us);
-}
 static void gr_sleep(double sec) {
-	EM_ASM(update());
-	do_sleep(sec);
+	EM_ASM_({ sleep($0)}, sec);
 }
 static void gr_timer(double sec) {
 	EM_ASM_({ setTimer($0)}, sec);
@@ -23,7 +17,7 @@ static void gr_debout(const char* s) {
 }
 static void gr_print(const char* s) {
 	EM_ASM_({ postMessage(['print', UTF8ToString($0) + '\n']) }, s);
-	do_sleep(0.01);
+	gr_sleep(0.005);
 }
 static void gr_write(const char* s) {
 	EM_ASM_({ postMessage(['print', UTF8ToString($0)]) }, s);
@@ -31,7 +25,6 @@ static void gr_write(const char* s) {
 static byte grline;
 static void gr_color(int r, int g, int b) {
 	EM_ASM_({ push([9, $0, $1, $2])}, r, g, b);
-//	grline = 0;
 }
 static void gr_translate(double x, double y) {
 	EM_ASM_({ push([13, $0, $1])}, x, y);
@@ -44,14 +37,13 @@ static void gr_backcolor(int r, int g, int b) {
 }
 static void gr_linewidth(double w) {
 	EM_ASM_({ push([8, $0])}, w);
-//	grline = 0;
 }
 static void gr_mouse_cursor(ushort h) {
 	EM_ASM_({ push([11, $0])}, h);
 }
 static void gr_exit(void) {
 	EM_ASM(update(); postMessage(['exit']));
-	sleep(60);
+	gr_sleep(60);
 }
 static void gr_sound(double* val, int len) {
 	EM_ASM(list = []);
@@ -98,8 +90,6 @@ static void gr_sys(ushort h) {
 		}
 		EM_ASM_({ push([7, $0])}, h);
 	}
-//	else if (h == 11) grbotleft = 1;
-//	else if (h == 12) grbotleft = 0;
 }
 static void gr_textsize(double h) {
 	EM_ASM_({ push([10, $0])}, h);

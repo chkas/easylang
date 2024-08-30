@@ -107,12 +107,20 @@ function kaFormat(s, id = null) {
 
 var pingT
 
-function kaStop() {
+function stopAll() {
 	audStop()
+	if (sleepTimer) {
+		clearTimeout(sleepTimer)
+		sleepTimer = null
+	}
+}
+function kaStop() {
+	stopAll()
 	if (eCan && eCan.on) {
 		worker.postMessage(["stop_ping"])
 		canvSetOff()
 		pingT = setTimeout(function() {
+			pingT = null
 			console.log("stop timeout")
 			worker.terminate()
 			startWorker()
@@ -394,6 +402,7 @@ function sound(vals) {
 	if (!aud) initAudio();
 	if (aud.timer) {
 		clearTimeout(aud.timer)
+		aud.timer = null
 		aud.gain.gain.setTargetAtTime(0, aud.currentTime, 0.05)
 	}
 	sound_vals = vals
@@ -511,6 +520,8 @@ function canvMouseMove(e) {
 // ------------------------------------------
 
 var lastTouch
+var sleepTimer
+
 function workerMessage(event) {
 	var d = event.data
 	var cmd = d[0]
@@ -520,6 +531,14 @@ function workerMessage(event) {
 		break
 	case "print":
 		outp(d[1])
+		break
+	case "sleep":
+		sleepTimer = setTimeout(function() {
+			var vw = new Int32Array(window["sab"])
+			sleepTimer = null
+			Atomics.store(vw, 1, 1)
+			Atomics.notify(vw, 1)
+		}, d[1] * 1000);
 		break
 	case "ide":
 		d.shift()
@@ -542,6 +561,7 @@ function workerMessage(event) {
 		break
 	case "stop_pong":
 		clearTimeout(pingT)
+		pingT = null
 		isRunning = false
 		msgFunc("stopped")
 		tryrun()
@@ -602,7 +622,7 @@ function workerMessage(event) {
 		break
 	case "exit":
 		canvSetOff()
-		audStop()
+		stopAll()
 		worker.terminate()
 		msgFunc("info", [0])
 		startWorker()
@@ -692,8 +712,7 @@ function easyinp(s) {
 	}
 	vw = new Int32Array(window["sab"])
 	Atomics.store(vw, 1, 1)
-	if (Atomics.notify) Atomics.notify(vw, 1, 1)
-	else Atomics.wake(vw, 1, 1)
+	Atomics.notify(vw, 1)
 }
 
 if (window["easyscript"]) {

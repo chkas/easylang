@@ -1321,10 +1321,8 @@ function stepNoti(w) {
 	var vw = new Int32Array(window["sab"])
 	Atomics.store(vw, 2, w)
 	Atomics.store(vw, 0, 1)
-	if (Atomics.notify) Atomics.notify(vw, 0, 1)
-	else Atomics.wake(vw, 0, 1)
+	Atomics.notify(vw, 0)
 }
-
 stepBtn.onclick = function() {
 	if (runBtn.run) runDebug()
 	else stepNoti(0)
