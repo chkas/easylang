@@ -666,7 +666,7 @@ text "This is top left"
 -
 
 if sysfunc "lang" = "de"
-    print "Die Systemsprache ist deutsch."
+    print "Die Systemsprache ist Deutsch."
 else
    print "The system language is not German."
 .

@@ -107,12 +107,15 @@ function kaFormat(s, id = null) {
 
 var pingT
 
-function stopAll() {
-	audStop()
+function stopSleep() {
 	if (sleepTimer) {
 		clearTimeout(sleepTimer)
 		sleepTimer = null
 	}
+}
+function stopAll() {
+	audStop()
+	stopSleep()
 }
 function kaStop() {
 	stopAll()
@@ -416,6 +419,9 @@ function workerStarted() {
 	if (typeof SharedArrayBuffer == "function") {
 		window["sab"] = new SharedArrayBuffer(112)
 	}
+	else {
+		console.log("Warning: SharedArrayBuffer not available")
+	}
 	worker.postMessage(["init", window["sab"], navigator.language.substring(0, 2)])
 
 	if (initState == 1) loadInfo(null)
@@ -466,8 +472,10 @@ function canvMouseDown(e) {
 	var r = eCan.getBoundingClientRect()
 	isMouseDown = true
 	var sc = eCan.width / r.width / 8
-	worker.postMessage(["mouse", 0,
-			(e.clientX - r.left) * sc, (e.clientY - r.top) * sc ])
+	var x = (e.clientX - r.left) * sc
+	var y = (e.clientY - r.top) * sc
+	if (waitEvent) waitDone(0, x, y)
+	else worker.postMessage(["mouse", 0, x, y ])
 	eCan.focus()
 	e.preventDefault()
 }
@@ -505,15 +513,19 @@ function canvMouseUp(e) {
 	var r = eCan.getBoundingClientRect()
 	isMouseDown = false
 	var sc = eCan.width / r.width / 8
-	worker.postMessage(["mouse", 1,
-			(e.clientX - r.left) * sc, (e.clientY - r.top) * sc ])
+	var x = (e.clientX - r.left) * sc
+	var y = (e.clientY - r.top) * sc
+	if (waitEvent) waitDone(1, x, y)
+	else worker.postMessage(["mouse", 1, x, y ])
 	e.preventDefault()
 }
 function canvMouseMove(e) {
 	var r = eCan.getBoundingClientRect()
 	var sc = eCan.width / r.width / 8
-	worker.postMessage(["mouse", 2,
-			(e.clientX - r.left) * sc, (e.clientY - r.top) * sc ])
+	var x = (e.clientX - r.left) * sc
+	var y = (e.clientY - r.top) * sc
+	if (waitEvent) waitDone(2, x, y)
+	else worker.postMessage(["mouse", 2, x, y ])
 	e.preventDefault()
 }
 
@@ -533,12 +545,12 @@ function workerMessage(event) {
 		outp(d[1])
 		break
 	case "sleep":
-		sleepTimer = setTimeout(function() {
-			var vw = new Int32Array(window["sab"])
-			sleepTimer = null
-			Atomics.store(vw, 1, 1)
-			Atomics.notify(vw, 1)
-		}, d[1] * 1000);
+		if (d[1] > 0)
+			sleepTimer = setTimeout(function() {
+				sleepTimer = null
+				waitDone(6)
+			}, d[1] * 1000);
+		waitEvent = true
 		break
 	case "ide":
 		d.shift()
@@ -581,6 +593,7 @@ function workerMessage(event) {
 		}
 		if (d[1] & 63) {
 			msgFunc("canvon")
+			waitEvent = false
 			eCan.on = true
 			eCan.focus()
 			if (d[1] & 1) {
@@ -644,20 +657,41 @@ function startWorker() {
 var timePrev = 0
 function animate(t) {
 	if (t - timePrev > 12) {
-		worker.postMessage(["animate"])
+		if (waitEvent) waitDone(5)
+		else worker.postMessage(["animate"])
 		timePrev = t
 	}
 	eCan.aniFrame = requestAnimationFrame(animate)
 }
 
 function _keydown(e) {
-	worker.postMessage(["key", e.key])
+	if (waitEvent) waitDone(3, e.key)
+	else worker.postMessage(["key", e.key])
 	e.preventDefault()
 }
 function _keyup(e) {
 	worker.postMessage(["keyup", e.key])
 	e.preventDefault()
 }
+var waitEvent
+function waitDone(evt, a = 0, b = 0) {
+	waitEvent = false
+	var vw = new Uint16Array(window["sab"])
+	vw[4] = evt
+	if (evt <= 2) {
+		vw[5] = a * 600
+		vw[6] = b * 600
+	}
+	else if (evt <= 4) {
+		vw[5] = a.length + 1
+		for (var i = 0; i < a.length; i++) {
+			vw[i + 6] = a.charCodeAt(i)
+		}
+	}
+	stopSleep()
+	sabNotify(1, 1)
+}
+
 var worker = null
 var canv0 = null
 var out0 = null
@@ -699,6 +733,12 @@ function easykey(s) {
 	worker.postMessage(["key", s])
 }
 
+function sabNotify(a, b) {
+	var vw = new Int32Array(window["sab"])
+	Atomics.store(vw, a, b)
+	Atomics.notify(vw, a)
+}
+
 function easyinp(s) {
 	var vw = new Uint16Array(window["sab"])
 	if (s) {
@@ -710,9 +750,7 @@ function easyinp(s) {
 	else {
 		vw[4] = 0
 	}
-	vw = new Int32Array(window["sab"])
-	Atomics.store(vw, 1, 1)
-	Atomics.notify(vw, 1)
+	sabNotify(1, 1)
 }
 
 if (window["easyscript"]) {

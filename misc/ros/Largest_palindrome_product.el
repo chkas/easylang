@@ -13,3 +13,4 @@ for i = 100 to 999
       .
    .
 .
+print max

@@ -20,7 +20,7 @@ function cancelTimer() {
 	}
 }
 function timerF() {
-	Module.ccall("evt_func", "null", ["int", "string"], [2, null])
+	Module.ccall("evt_func", "null", ["int", "string"], [1, null])
 	update()
 }
 function setTimer(s) {
@@ -76,20 +76,20 @@ onmessage = function(e) {
 	var d = e.data
 	var cmd = d[0]
 
-	if (cmd == "mouse") {
+	if (cmd == "animate") {
+		Module.ccall("evt_func", "null", ["int", "string"], [0, null])
+		update()
+	}
+	else if (cmd == "mouse") {
 		Module.ccall("evt_mouse", "null", ["int", "float", "float"], [d[1], d[2], d[3]])
 		update()
 	}
-	else if (cmd == "animate") {
-		Module.ccall("evt_func", "null", ["int", "string"], [1, null])
-		update()
-	}
 	else if (cmd == "key") {
-		Module.ccall("evt_func", "null", ["int", "string"], [0, d[1]])
+		Module.ccall("evt_func", "null", ["int", "string"], [2, d[1]])
 		update()
 	}
 	else if (cmd == "keyup") {
-		Module.ccall("evt_func", "null", ["int", "string"], [8, d[1]])
+		Module.ccall("evt_func", "null", ["int", "string"], [3, d[1]])
 		update()
 	}
 	else if (cmd == "stop_ping") {
@@ -152,22 +152,34 @@ function input() {
 
 	if (vw[4] != 0) {
 		var s = String.fromCharCode.apply(null, vw.slice(5, vw[4] + 4))
-		Module.ccall("evt_func", "null", ["int", "string"], [3, s])
+		Module.ccall("evt_func", "null", ["int", "string"], [5, s])
 	}
 	else {
-		Module.ccall("evt_func", "null", ["int", "string"], [4, ""])
+		Module.ccall("evt_func", "null", ["int", "string"], [6, ""])
 	}
 }
 function sleep(sec) {
+	update()
 	if (sab == null) {
 		errmsg("Error: 'sleep' needs 'SharedArrayBuffer' in browser\n")
+		return
 	}
-	update()
-	if (sec > 0) {
+	if (sec != 0) {
 		postMessage(["sleep", sec])
 		var vw = new Int32Array(sab)
 		Atomics.wait(vw, 1, 0)
 		Atomics.store(vw, 1, 0)
+		vw = new Uint16Array(sab)
+		if (vw[4] <= 2) {
+			Module.ccall("evt_mouse", "null", ["int", "float", "float"], [vw[4], vw[5] / 600, vw[6] / 600])
+		}
+		else if (vw[4] <= 4) {
+			var s = String.fromCharCode.apply(null, vw.slice(6, vw[5] + 5))
+			Module.ccall("evt_func", "null", ["int", "string"], [vw[4] - 1, s])
+		}
+		else { // animate
+			Module.ccall("evt_func", "null", ["int", "string"], [0, null])
+		}
 	}
 }
 
@@ -177,6 +189,6 @@ function step() {
 	var vw = new Int32Array(sab)
 	Atomics.wait(vw, 0, 0)
 	Atomics.store(vw, 0, 0)
-	Module.ccall("evt_func", "null", ["int"], [5 + vw[2]])
+	Module.ccall("evt_func", "null", ["int"], [10 + vw[2]])
 }
 

@@ -112,6 +112,10 @@ S ND* parse_strfunc(void) {
 		cs_spc();
 		nd->le = parse_strarrex();
 	}
+	else if (tokpr == t_keyb_key) {
+		// kc
+		prog_props |= 17;
+	}
 	return nd;
 }
 

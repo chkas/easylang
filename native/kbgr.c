@@ -666,6 +666,9 @@ void gr_circseg(double rad, double a, double b) {
 void gr_exit(void) { exit(1); }
 void gr_step(void) {}
 void gr_info(int h) {}
+void gr_key_sync(char* buf) {
+	buf[0] = 0;
+}
 
 #ifdef TEST
 

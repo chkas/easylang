@@ -352,7 +352,6 @@ S void free_arr_members(ARR* a, int i0) {
 			str_free(a->pstr + i);
 		}
 	}
-//??
 	else if (a->typ == ARR_ARR) {
 		for (int i = i0; i < a->len; i++) {
 			free_arr_members(a->parr + i, 0);
@@ -368,7 +367,6 @@ S void free_arr(ARR* a) {
 }
 
 S void arrs_init(ARR* arrs, int n_arr) {
-//pr("arrs_init");
 	memset(arrs, 0, n_arr * sizeof(ARR));
 	for (int i = 0; i < n_arr; i++) {
 		arrs[i].base = rt.arrbase;
@@ -376,7 +374,6 @@ S void arrs_init(ARR* arrs, int n_arr) {
 }
 
 S void arr_len(ND* nd, unsigned int sz, int typ) {
-//pr("arrlen %d %d", sz, typ);
 	ND* ndx = nd + 1;
 	ARR* arr = garr(nd->v1);
 	arr->typ = typ;
@@ -880,8 +877,17 @@ S STR op_strchar(ND* nd) {
 }
 
 S STR op_keyb_key(ND* nd) {
-	STR r = str(rt.key);
-	return r;
+	return str(rt.key);
+/*
+	if (seq.key_down) {
+		return str(rt.key);
+	}
+	else {
+		char buf[16];
+		gr_key_sync(buf);
+		return str(buf);
+	}
+*/
 }
 
 S STR op_stradd(ND* nd) {
@@ -1222,7 +1228,6 @@ S void op_swapnumael(ND* nd) {
 	*(arr2->pnum + h2) = tmp;
 }
 
-//kc
 S void op_swapnumaelael(ND* nd) {
 	ND* ndx = nd + 1;
 	ARR* arr1 = garr(nd->v1);
@@ -1291,7 +1296,6 @@ S void op_swaparraelx(ND* nd) {
 
 // -------------------------------------------------------
 S ARR o_arrx(ND* nd, int typ, int sz) {
-//pr("o_arrx");
 	ARR* arr = garr(nd->v1);
 
 	ARR res;
@@ -1333,7 +1337,6 @@ S ARR op_vstrarrael(ND* nd) {
 }
 
 S ARR op_varrarr(ND* nd) {
-//pr("op_varrarr");
 	ARR* arr = garr(nd->v1);
 	ARR res;
 	res.len = arr->len;
@@ -1370,7 +1373,6 @@ S ARR op_varrarr(ND* nd) {
 }
 
 S ARR o_arr_init(ND* nd0, int typ, int sz) {
-//pr("o_arr_init");
 	ARR res;
 	res.len = 0;
 	res.typ = typ;
@@ -1432,7 +1434,6 @@ S double op_strpos(ND* nd) {
 }
 
 S ARR op_strchars(ND* nd) {
-//pr("op_strchars");
 	STR s = strf(nd->le);
 	const char* p = str_ptr(&s);
 
@@ -1469,8 +1470,6 @@ S ARR op_strchars(ND* nd) {
 }
 
 S ARR op_strsplit(ND* nd) {
-//pr("o_strsplit");
-
 	STR s1 = strf(nd->le);
 	STR s2 = strf(nd->ri);
 	const char* s2p = str_ptr(&s2);
@@ -1558,30 +1557,14 @@ S void op_sys(ND* nd) {
 	if (nd->v1 <= 10) {
 		gr_sys(nd->v1);
 	}
-/*
-	if (nd->v1 == 31) {	// time
-		char buf[16];
-		sprintf(buf, "%.2f", sys_time() - time_start);
-		gr_print(buf);
-	}
-	else if (nd->v1 == 21) {	// radians
-		rt.radians = 1;
-	}
-	else if (nd->v1 == 22) {	// zero_based
-		rt.arrbase = 0;
-		for (int i = 0; i < proc_p->varcnt[2]; i++) {
-			rt_arrs[i].base = 0;
-		}
-	}
-	else {
-		gr_sys(nd->v1);
-	}
-*/
 }
 
 //------------------------------------------------------------------
 
 S void op_sleep(ND* nd) {
+	rt.key = "";
+	rt.mouse_x = -1;
+	rt.mouse_y = -1;
 	gr_sleep(numf(nd->le));
 }
 S void op_timer(ND* nd) {
@@ -1791,62 +1774,61 @@ S void exsq(ND* sq) {
 
 void evt_func(int id, const char* v) {
 
-	if (id == 1) {
+	if (id == 0) {
 		exsq(seq.animate);
 	}
-	else if (id == 2) {
+	else if (id == 1) {
 		exsq(seq.timer);
 	}
-	else if (id == 0) {
+	else if (id == 2) {
 		rt.key = v;
 		exsq(seq.key_down);
-		rt.key = "";
+		//rt.key = "";
 	}
-	else if (id == 8) {
+	else if (id == 3) {
 		rt.key = v;
 		exsq(seq.key_up);
-		rt.key = "";
+		//rt.key = "";
 	}
 #ifdef __EMSCRIPTEN__
-	else if (id == 3) {
+	else if (id == 5) {
 		// input
 		*input_str = 0;
 		strncat(input_str, v, 1024);
 	}
-	else if (id == 4) {
+	else if (id == 6) {
 		// input_cancel
 		*input_str = 0;
 		input_str = NULL;
 	}
-	else if (id >= 5 && id <= 7) {
+	else if (id >= 10 && id <= 12) {
 		// debug step:31, over:32, out:33
-		rt.slow = 31 + id - 5;
+		rt.slow = 31 + id - 10;
 	}
 #endif
 	stop_flag = 0;
 }
 
 void evt_mouse(int id, double x, double y) {
-//	if (id <= 2) {
-		rt.mouse_x = x;
+	rt.mouse_x = x;
 #ifdef __EMSCRIPTEN__
-		if (grbotleft) rt.mouse_y = 100 - y;
-		else rt.mouse_y = y;
+	if (grbotleft) rt.mouse_y = 100 - y;
+	else rt.mouse_y = y;
 #else
-		rt.mouse_y = y;
+	rt.mouse_y = y;
 #endif
-		if (id == 0) {
-			// on phones it's sometimes >= 100 or < 0
-			if (x > 99.99609375) rt.mouse_x = 99.99609375;
-			else if (x < 0) rt.mouse_x = 0;
-			if (y > 99.99609375) rt.mouse_y = 99.99609375;
-			else if (y < 0) rt.mouse_y = 0;
+	if (id == 0) {
+		// on phones it's sometimes >= 100 or < 0
+		if (x > 99.99609375) rt.mouse_x = 99.99609375;
+		else if (x < 0) rt.mouse_x = 0;
+		if (y > 99.99609375) rt.mouse_y = 99.99609375;
+		else if (y < 0) rt.mouse_y = 0;
 
-			exsq(seq.mouse_down);
-		}
-		else if (id == 1) exsq(seq.mouse_up);
-		else exsq(seq.mouse_move);
-//	}
+		exsq(seq.mouse_down);
+	}
+	else if (id == 1) exsq(seq.mouse_up);
+	else exsq(seq.mouse_move);
+
 	stop_flag = 0;
 }
 
@@ -2200,7 +2182,6 @@ S double op_callfunc(ND* nd0) {
 */
 
 S STR op_callfunc_str(ND* nd0) {
-//pr("op_callfuncstr");
 	STR retval;
 	str_init(&retval);
 	callfunc(nd0, NULL, &retval, NULL);
@@ -2209,7 +2190,7 @@ S STR op_callfunc_str(ND* nd0) {
 S ARR op_callfunc_arr(ND* nd0) {
 	ARR retval;
 	retval.len = 0;
-//kc??
+
 	retval.typ = ARR_NUM;
 	retval.base = rt.arrbase;
 	retval.p = NULL;
@@ -2632,8 +2613,6 @@ S ARR op_map_number(ND* nd) {
 #else
 // put only valid numbers in array
 S ARR op_map_number(ND* nd) {
-//pr("op_map_number");
-
 	ARR arr = arrf(nd->le);
 
 	ARR res;

@@ -1,4 +1,15 @@
-#include <unistd.h>
+/*	kbasw.h
+
+	Copyright (c) Christof Kaser christof.kaser@gmail.com.
+	All rights reserved.
+
+	This work is licensed under the terms of the GNU General Public
+	License version 3. For a copy, see http://www.gnu.org/licenses/.
+
+    A derivative of this software must contain the built-in function
+    sysfunc "created by" or an equivalent function that returns
+    "christof.kaser@gmail.com".
+*/
 
 static void gr_sleep(double sec) {
 	EM_ASM_({ sleep($0)}, sec);
@@ -64,7 +75,6 @@ static char gr_input(char* buf) {
 	EM_ASM(input());
 	return input_str == NULL;
 }
-
 static double grx;
 static double gry;
 static char grbotleft;

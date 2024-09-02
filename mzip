@@ -4,6 +4,11 @@ cd ~/daten
 # h=$(date +%s)
 #d=$(expr $h - 1672531200)
 d=$(date +%y%m%d)
-echo $d
-zip -qr ~/archiv/easylang$d.zip easylang/apps/ easylang/misc/ easylang/run/ easylang/main/ easylang/native/ easylang/readme.md easylang/vers.txt easylang/mk
+f=~/archiv/easylang$d.zip
+echo $f
+if test -f $f; then
+	echo "File exists - exit"
+	exit 1
+fi
+zip -qr $f easylang/apps/ easylang/misc/ easylang/run/ easylang/main/ easylang/native/ easylang/readme.md easylang/vers.txt easylang/mk
 
