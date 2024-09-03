@@ -63,3 +63,4 @@ end
 
 -`
 
+tutinf.innerHTML = "<a href=../apps/ target=_blank>More about Easylang</a><p><small>Version: " + VERS + "<small>"

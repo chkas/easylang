@@ -70,6 +70,7 @@ function runx(dbg = 0) {
 	}
 	update()
 	if (on == 0) postMessage(["done"])
+	else postMessage(["events"])
 }
 
 onmessage = function(e) {
@@ -85,11 +86,7 @@ onmessage = function(e) {
 		update()
 	}
 	else if (cmd == "key") {
-		Module.ccall("evt_func", "null", ["int", "string"], [2, d[1]])
-		update()
-	}
-	else if (cmd == "keyup") {
-		Module.ccall("evt_func", "null", ["int", "string"], [3, d[1]])
+		Module.ccall("evt_func", "null", ["int", "string"], [d[1], d[2]])
 		update()
 	}
 	else if (cmd == "stop_ping") {

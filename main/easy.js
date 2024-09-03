@@ -151,8 +151,8 @@ function canvSetOff() {
 		eCan.removeEventListener("touchmove", canvTouchMove1)
 		eCan.removeEventListener("touchmove", canvTouchMove2)
 
-		eCan.removeEventListener("keydown", _keydown)
-		eCan.removeEventListener("keyup", _keyup)
+		eCan.removeEventListener("keydown", canvKeydown)
+		eCan.removeEventListener("keyup", canvKeyup)
 		eCan.removeAttribute("tabIndex");
 		if (eCan.aniFrame) {
 			cancelAnimationFrame(eCan.aniFrame)
@@ -468,14 +468,13 @@ function actAudio() {
 
 //--------------------------------------
 
+var evts
+
 function canvMouseDown(e) {
 	var r = eCan.getBoundingClientRect()
 	isMouseDown = true
 	var sc = eCan.width / r.width / 8
-	var x = (e.clientX - r.left) * sc
-	var y = (e.clientY - r.top) * sc
-	if (waitEvent) waitDone(0, x, y)
-	else worker.postMessage(["mouse", 0, x, y ])
+	evtdo([ "mouse", 0, (e.clientX - r.left) * sc, (e.clientY - r.top) * sc ])
 	eCan.focus()
 	e.preventDefault()
 }
@@ -515,8 +514,7 @@ function canvMouseUp(e) {
 	var sc = eCan.width / r.width / 8
 	var x = (e.clientX - r.left) * sc
 	var y = (e.clientY - r.top) * sc
-	if (waitEvent) waitDone(1, x, y)
-	else worker.postMessage(["mouse", 1, x, y ])
+	evtdo(["mouse", 1, x, y ])
 	e.preventDefault()
 }
 function canvMouseMove(e) {
@@ -524,8 +522,7 @@ function canvMouseMove(e) {
 	var sc = eCan.width / r.width / 8
 	var x = (e.clientX - r.left) * sc
 	var y = (e.clientY - r.top) * sc
-	if (waitEvent) waitDone(2, x, y)
-	else worker.postMessage(["mouse", 2, x, y ])
+	evtdo(["mouse", 2, x, y ])
 	e.preventDefault()
 }
 
@@ -548,9 +545,9 @@ function workerMessage(event) {
 		if (d[1] > 0)
 			sleepTimer = setTimeout(function() {
 				sleepTimer = null
-				waitDone(6)
+				waitDone(["sleep"])
 			}, d[1] * 1000);
-		waitEvent = true
+		lookEvents()
 		break
 	case "ide":
 		d.shift()
@@ -570,6 +567,10 @@ function workerMessage(event) {
 		canvSetOff()
 		msgFunc("stopped")
 		tryrun()
+		break
+	case "events":
+		for (msg of evts) worker.postMessage(msg)
+		evts = null
 		break
 	case "stop_pong":
 		clearTimeout(pingT)
@@ -593,6 +594,7 @@ function workerMessage(event) {
 		}
 		if (d[1] & 63) {
 			msgFunc("canvon")
+			evts = []
 			waitEvent = false
 			eCan.on = true
 			eCan.focus()
@@ -613,13 +615,13 @@ function workerMessage(event) {
 				eCan.addEventListener("touchmove", canvTouchMove2)
 			}
 			if (d[1] & 8) {
-				eCan.addEventListener("keydown", _keydown)
+				eCan.addEventListener("keydown", canvKeydown)
 				eCan.tabIndex = 0
 				// if (!"ontouchstart" in document)
 				eCan.focus()
 			}
 			if (d[1] & 16) {
-				eCan.addEventListener("keyup", _keyup)
+				eCan.addEventListener("keyup", canvKeyup)
 			}
 			if (d[1] & 32) {
 				if (!eCan.aniFrame) {
@@ -657,32 +659,44 @@ function startWorker() {
 var timePrev = 0
 function animate(t) {
 	if (t - timePrev > 12) {
-		if (waitEvent) waitDone(5)
-		else worker.postMessage(["animate"])
+		evtdo(["animate"])
 		timePrev = t
 	}
 	eCan.aniFrame = requestAnimationFrame(animate)
 }
 
-function _keydown(e) {
-	if (waitEvent) waitDone(3, e.key)
-	else worker.postMessage(["key", e.key])
+function canvKeydown(e) {
+	evtdo(["key", 2, e.key])
 	e.preventDefault()
 }
-function _keyup(e) {
-	worker.postMessage(["keyup", e.key])
+function canvKeyup(e) {
+	evtdo(["key", 3, e.key])
 	e.preventDefault()
 }
 var waitEvent
-function waitDone(evt, a = 0, b = 0) {
+function waitDone(msg) {
 	waitEvent = false
 	var vw = new Uint16Array(window["sab"])
+
+	var evt
+	if (msg[0] == "mouse") {
+		evt = msg[1]
+	}
+	else if (msg[0] == "animate") {
+		evt = 5
+	}
+	else if (msg[0] == "key") {
+		evt = msg[1] + 1
+	}
+	else evt = 6
+
 	vw[4] = evt
 	if (evt <= 2) {
-		vw[5] = a * 600
-		vw[6] = b * 600
+		vw[5] = msg[2] * 600
+		vw[6] = msg[3] * 600
 	}
 	else if (evt <= 4) {
+		var a = msg[2]
 		vw[5] = a.length + 1
 		for (var i = 0; i < a.length; i++) {
 			vw[i + 6] = a.charCodeAt(i)
@@ -690,6 +704,18 @@ function waitDone(evt, a = 0, b = 0) {
 	}
 	stopSleep()
 	sabNotify(1, 1)
+}
+function lookEvents() {
+	if (!evts) return
+	waitEvent = true
+	if (evts.length) {
+		waitDone(evts.shift())
+	}
+}
+function evtdo(msg) {
+	if (!evts) worker.postMessage(msg)
+	else if (waitEvent) waitDone(msg)
+	else evts.push(msg)
 }
 
 var worker = null
