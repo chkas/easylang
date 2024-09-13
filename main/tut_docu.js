@@ -233,8 +233,6 @@ text "MY HOUSE"
 + Sine wave
 
 linewidth 0.1
-move 50 0
-line 50 100
 move 0 50
 line 100 50
 #
