@@ -416,7 +416,6 @@ cleanup:
 
 static void build_fastfuncs(void) {
 
-	if (wasm == NULL) return;
 	byte wasmhd[200];
 
 	memcpy(wasmhd, "\0asm", 4);

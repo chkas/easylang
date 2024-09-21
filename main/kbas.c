@@ -208,7 +208,13 @@ extern int parse(const char* str, int opt, int pos) {
 		cs_nl();
 		error("<cmd>");
 	}
-	build_fastfuncs();
+	if (wasm) {
+		if (err) {
+			free(wasm);
+			wasm = NULL;
+		}
+		else build_fastfuncs();
+	}
 
 	if (err) {
 		// always when is_enter

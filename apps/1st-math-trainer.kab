@@ -20,7 +20,8 @@ proc disp col s$ . .
 .
 proc showquest . .
    if res = resok
-      if randomf < 0.66
+      if todo mod 2 = 1
+         # if randomf < 0.66
          a = random 14 + 2
          b = random (20 - a - 2) + 2
          q$ = a & " + " & b & " = "
