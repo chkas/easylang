@@ -310,9 +310,9 @@ inline static int str_ulen(const char* p) {
 	return ind;
 }
 
-inline static int str_upos(const char* p, uint start, uint nchars, uint max) {
-	uint i = start;
-	uint ind = 0;
+inline static int str_upos(const char* p, int start, int nchars, int max) {
+	int i = start;
+	int ind = 0;
 	while (i < max && ind < nchars) {
 		i += uchlen(p[i]);
 		ind++;
@@ -324,9 +324,9 @@ inline static int str_upos(const char* p, uint start, uint nchars, uint max) {
 inline static struct str str_substr(struct str* s, int a, int l) {
 	// utf8 safe, therefor slow
 	//
-	uint sl = str_len(s);
-	uint ca = str_upos(str_ptr(s), 0, a, sl);
-	uint cb = str_upos(str_ptr(s), ca, l, sl);
+	int sl = str_len(s);
+	int ca = str_upos(str_ptr(s), 0, a, sl);
+	int cb = str_upos(str_ptr(s), ca, l, sl);
 
 	struct str r;
 	str_init(&r);

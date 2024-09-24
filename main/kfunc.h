@@ -762,9 +762,14 @@ S STR op_substr(ND* nd) {
 	ND* ndx = nd + 1;
 	STR s = strf(nd->le);
 
-	int h = (int)numf(nd->ri) - rt.arrbase;
-	//if (h < 0) h = str_ulen(str_ptr(&s)) + h + 1;
-	STR r = str_substr(&s, h, (int)numf(ndx->ex));
+	int a = (int)numf(nd->ri) - rt.arrbase;
+	//if (a < 0) a = str_ulen(str_ptr(&s)) + a + 1;
+	int l = (int)numf(ndx->ex);
+	if (a < 0) {
+		l += a;
+		a = 0;
+	}
+	STR r = str_substr(&s, a, l);
 	str_free(&s);
 	return r;
 }
