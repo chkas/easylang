@@ -388,7 +388,7 @@ if age < 20
 else
    x = 100 - age
    print "In " & x & " years you are 100 years old"
-.
+end
 
 * Loop
 

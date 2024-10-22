@@ -189,7 +189,7 @@ on timer
       x = 0
       return
    .
-   timer 1.5
+   timer 1.2
 .
 on animate
    if stat <> 5
@@ -388,15 +388,16 @@ textarea {
 	font:normal normal normal 11.5px/1.3 monospace;
 }
 
-h2 {background-color:#bdb;padding:7px;padding-left:12px}
-h3 {background-color:#bdb;padding:5px;padding-left:12px;margin-top:20px}
+h2 {background-color:#adf;padding:7px;padding-left:12px}
+h3 {background-color:#adf;padding:5px;padding-left:12px;margin-top:20px}
 
-a:hover {background-color:#bdb}
+a:hover {background-color:#adf}
 a {color: #000}
 a:visited {color: #000}
 
 button {
-	background-color: #dfd;
+	color:#fff;
+	background-color:#4af;
 	cursor: pointer;
 	padding: 4px 4px;
 	margin: 4px 8px;
@@ -404,8 +405,8 @@ button {
 	border:1px solid gray;
 	border-radius:8px;
 }
-button:enabled:hover {background-color:#cec}
-button:enabled:active {background-color:#484}
+button:enabled:hover {background-color:#07d}
+xbutton:enabled:active {background-color:#484}
 
 .flex {
 	display:inline-flex;

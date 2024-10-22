@@ -1,14 +1,39 @@
 {
-  "name": "Easylang",
-  "icons": [{
-    "src": "/ide/icon.png",
-    "type": "image/png",
-    "sizes": "256x256",
-    "purpose": "any maskable"
-  }],
-  "start_url": "/ide/",
-  "display": "standalone",
-  "background_color": "#bdb",
-  "theme_color": "#bdb"
+	"name": "Easylang IDE",
+	"icons": [
+		{
+			"src": "/ide/icon.png",
+			"type": "image/png",
+			"sizes": "256x256",
+			"purpose": "maskable"
+		},
+		{
+			"src": "/ide/icon.png",
+			"type": "image/png",
+			"sizes": "256x256",
+			"purpose": "any"
+		},
+		{
+			"src": "/ide/icon.svg",
+			"type": "image/svg+xml",
+			"sizes": "512x512",
+			"purpose": "any"
+		}
+	],
+	"start_url": "/ide/",
+	"display": "standalone",
+	"background_color": "#bef",
+	"theme_color": "#bef",
+	"short_name": "Easy IDE",
+	"id": "easylang.online/ide",
+	"description": "Easylang programming IDE",
+	"dir": "ltr",
+	"lang": "en",
+	"orientation": "any",
+	"display_override": [
+		"window-controls-overlay"
+	],
+	"categories": [
+		"education"
+	]
 }
-

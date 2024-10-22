@@ -2,6 +2,7 @@
 <meta charset=utf-8>
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="description" content="easy browser based educational programming language to learn programming">
+<meta name="theme-color" content="#aaa">
 <link rel="icon" href="icon.png" type="image/x-png">
 <link rel="manifest" href="mfst.json">
 
@@ -53,7 +54,7 @@ hr {border:1px solid #888;margin-top:6px;margin-bottom:6px}
 	height:20px;
 	width:16px;
 	cursor:col-resize;
-	border:1px solid #888;
+	border:1px solid #999;
 	border-radius:6px;
 	margin-bottom:2px;
 }
@@ -87,6 +88,10 @@ pre {
 	outline:none;
 	white-space:pre
 }
+pre b{font-weight:500}
+pre s{text-decoration:none;font-weight:500}
+pre u{text-decoration:none}
+
 #dbg {
 	margin:0px;
 	margin-top:2px;
@@ -132,10 +137,9 @@ select {
 	outline:none
 }
 button {
-	cursor:pointer;
 	padding:4px 5px;
 	margin:0px 0px 0px 0px;
-	border:1px solid;
+	border:0px;
 	border-radius:8px;
 	font-size:12px;
 	outline:none;
@@ -158,102 +162,98 @@ button.del {
 }
 .tabd {overflow:hidden}
 button.tab  {
-	font-size:11px;
 	float:left;
 	padding:4px 10px;
-	margin-bottom:-3px;
+	margin-bottom:-6px;
 	margin-top:2px;
 	margin-right:-10px;
-	border:1px solid #888;
 	border-radius:0px;
 	border-top-left-radius:12px;
 	border-top-right-radius:12px;
 	position:relative;
-	z-index:1
+	z-index:1;
+	border:1px solid #888
 }
-button.tab:disabled { font-size:12px; margin-top:1px; z-index:10}
+button.tab:disabled {z-index:10}
 #expnd {font-size:10px}
 
-.lnk {cursor:pointer; text-decoration:underline}
+.lnk {cursor:pointer;text-decoration:underline}
 a:hover {background:#666}
 a{color:#ddd}
 a:visited {color:#ddd}
-xxu{font-weight:bold;text-decoration:none}
 *{scrollbar-width:auto}
 ::-webkit-scrollbar{width:10px;height:10px}
 
-#hamdiv{float:right; margin:2px; margin-right:10px;}
-#hambtn{border-radius:4px;padding:2px;cursor: pointer; }
-.hamb {border-radius:2px;width:11px;height:1px;margin:3px;}
-#hamcnt{position:absolute;min-width:80px;box-shadow:0px 8px 16px 0px rgba(0,0,0,0.2); z-index:1;}
-#hamcnt div{padding:8px;font-size:12px;cursor:pointer;}
+#hamdiv{float:right; margin:2px; margin-right:10px}
+#hambtn{border-radius:4px;padding:2px;cursor:pointer}
+.hamb {border-radius:2px;width:12px;height:1px;margin:3px}
+#hamcnt{position:absolute;min-width:80px;box-shadow:0px 8px 16px 0px rgba(0,0,0,0.2);z-index:1}
+#hamcnt div{padding:8px;font-size:12px;cursor:pointer}
 
-.close {
-	float:right;
-	margin:4px;
-	width: 16px;
-	height: 16px;
-	opacity: 0.4;
-}
-.close:hover{ opacity: 1;}
-.close:before, .close:after {
-	position: absolute;
-	content: ' ';
-	height: 17px;
-	width: 2px;
-}
-.close:before{ transform: rotate(45deg)}
-.close:after { transform: rotate(-45deg)}
+.close{float:right;margin:4px;width:16px;height:16px;opacity:0.4}
+.close:hover{opacity: 1;}
+.close:before, .close:after{position: absolute;content: ' ';height: 17px;width:2px}
+.close:before{transform:rotate(45deg)}
+.close:after{transform:rotate(-45deg)}
 canvas.run {outline-style:solid;outline-color:#a00;outline-width:1px}
 
-.close:before,.close:after{background: #333}
-#hambtn:hover{ background:#bbb; }
-#hambtn{background:#ddd;border:1px solid #666}
-.hamb{background:#000}
-#hamcnt{background:#eee}
-#hamcnt div:hover{background:#ddd;}
+.close:before,.close:after{background:#333}
 
-body{background:#ccc;color:#000}
-h3{background:#ccc;color:#444}
-#docx{background:#eee}
-.tut pre{background:#f8f8f8}
+#hambtn:hover{background:#18e}
+#hambtn{background:#4af}
+.hamb{background:#fff}
+#hamcnt{background:#4af;color:#fff}
+#hamcnt div:hover{background:#18e}
+
+body{background:#f0f8ff;color:#000}
+h3{background:#9df;color:#000}
+#docx{background:#f0f8ff}
+.tut pre{background:#fff}
 #inp{background:#fff}
-#dbg{background:#eee;color:#000}
+#dbg{background:#f0f8ff;color:#000}
 tt{border-color:#ccc;background:#fff;color:#000}
 
 pre i{color:#088}
-pre b{font-weight:500;color:#920}
-pre s{text-decoration:none;font-weight:500;color:#080}
+pre b{color:#920}
+pre s{color:#080}
+pre u{color:#000;background:#fdd}
 ::selection {color:#000;background:#bbb}
-pre u{color:#000;background:#fdd;text-decoration:none}
+#out{background:#f0f8ff;color:#000}
+button.tab:enabled{background:#f0f8ff;color:#888}
+button.tab:hover:enabled{background:#e0e8ef}
+button.tab:disabled{background:#bdf;color:#000}
+.drag{background:#bdf}
 
-#out{background:#eee;color:#000}
-button{border-color:#aaa;background:#ddd;color:#000}
-button.tab:enabled{background:#ccc;color:#888}
-button.tab:hover:enabled{background:#ddd}
-button.tab:disabled{background:#eee;color:#000}
-button.tab:enabled{color:#888}
-.drag{background:#ddd}
-button:disabled{background:#ddd;color:#aaa}
-button:hover:enabled {background:#bbb}
-button:active:enabled {background:#999}
-#dbgBtn.act{background:#aaa}
-.lnk:hover {background:#ccc}
-select{background:#eee;color:#000}
-select:hover:enabled {background:#ddd}
+button:disabled{background:#e8f0f8;color:#aaa;cursor:default}
+button:hover:enabled {background:#18e}
+button:enabled{background:#4af;color:#fff}
+
+.lnk:hover{background:#9df}
+select{background:#4af;color:#fff}
+select:hover:enabled{background:#18e}
 .high{background:#e88}
-a {color:#000}
-a:visited {color:#000}
-::-webkit-scrollbar-track{background:#aaa}
-::-webkit-scrollbar-thumb{background:#ccc}
+a{color:#000}
+a:visited{color:#000}
+a:hover{background:#9df}
+::-webkit-scrollbar-track{background:#e8f0f8}
+::-webkit-scrollbar-thumb{background:#bdf}
 </style>
 
 <script>
 var theme
-function chngTheme() {
-	if (theme == null) {
+function setTheme(th) {
+	var thcolor = document.querySelector('meta[name="theme-color"]')
+	if (theme != null) {
+		document.head.removeChild(theme)
+		theme = null
+		window.localStorage.removeItem("xtheme")
+		if (thcolor) thcolor.setAttribute('content', '#cef')
+	}
+	if (th != null) {
 		theme = document.createElement('style');
-		theme.innerHTML = `
+		if (th == "dark") {
+			if (thcolor) thcolor.setAttribute('content', '#444')
+			theme.innerHTML = `
 .close:before,.close:after{background:#fff}
 #hambtn:hover{ background:#999; }
 #hambtn{background:#444;border:1px solid #666}
@@ -267,20 +267,23 @@ h3{background:#444;color:#fff}
 .drag{background:#777}
 #inp{ background:#000}
 
-pre i{font-weight:400;color:#9d9}
-pre b{font-weight:500;color:#fc9}
-pre s{text-decoration:none;font-weight:500;color:#9cf}
-pre u{color:#fff;background:#a44;text-decoration:none}
+pre i{color:#9d9}
+pre b{color:#fc9}
+pre s{color:#9cf}
+pre u{color:#fff;background:#a44}
 ::selection {color:#fff;background:#bbb}
 
 .tut pre{ background:#333}
 tt{background:#555;color:#efe;border-color:#888}
 #out{ background:#222;color:#ddd}
-button{border-color:#888;background:#555;color:#fff}
+button{border-color:#888;color:#fff}
 button.tab:enabled{background:#444;color:#888}
 button.tab:hover:enabled{background:#222}
 button.tab:disabled{background:#222;color:#eee}
+
 button:disabled{background:#444;color:#777}
+button:enabled{background:#555;color:#fff}
+
 button:hover:enabled{background:#999}
 button:active:enabled{background:#bbb}
 #dbgBtn.act{background:#aaa}
@@ -293,17 +296,68 @@ select:hover:enabled{background:#999}
 ::-webkit-scrollbar-track{background:#222}
 ::-webkit-scrollbar-thumb{background:#666}
 `
+		}
+		else {
+			if (thcolor) thcolor.setAttribute('content', '#ddd')
+			theme.innerHTML = `
+.close:before,.close:after{background: #333}
+#hambtn:hover{ background:#bbb; }
+#hambtn{background:#ddd;border:1px solid #999}
+.hamb{background:#000}
+#hamcnt{background:#eee;color:#000}
+#hamcnt div:hover{background:#ddd;}
 
+body{background:#ccc;color:#000}
+h3{background:#ccc;color:#444}
+#docx{background:#eee}
+.tut pre{background:#f8f8f8}
+#inp{background:#fff}
+#dbg{background:#eee;color:#000}
+tt{border-color:#ccc;background:#fff;color:#000}
+
+pre i{color:#088}
+pre b{color:#920}
+pre s{color:#080}
+pre u{color:#000;background:#fdd}
+::selection {color:#000;background:#bbb}
+
+#out{background:#eee;color:#000}
+button{border-color:#aaa;background:#ddd;color:#000}
+button.tab:enabled{background:#ccc;color:#888}
+button.tab:hover:enabled{background:#ddd}
+button.tab:disabled{background:#eee;color:#000}
+button.tab:enabled{color:#888}
+.drag{background:#ddd}
+button:disabled{background:#ddd;color:#aaa}
+button:enabled{background:#ddd;color:#000}
+
+button:hover:enabled {background:#bbb}
+button:active:enabled {background:#999}
+
+#dbgBtn.act{background:#aaa}
+.lnk:hover {background:#ccc}
+select{background:#eee;color:#000}
+select:hover:enabled {background:#ddd}
+.high{background:#e88}
+a {color:#000}
+a:visited {color:#000}
+::-webkit-scrollbar-track{background:#aaa}
+::-webkit-scrollbar-thumb{background:#ccc}
+`
+		}
 		document.head.appendChild(theme)
-		window.localStorage.setItem("xtheme", "dark")
-	}
-	else {
-		document.head.removeChild(theme)
-		theme = null
-		window.localStorage.removeItem("xtheme")
+		window.localStorage.setItem("xtheme", th)
 	}
 }
-if (window.localStorage["xtheme"] == "dark") chngTheme()
+setTheme(window.localStorage["xtheme"])
+
+function chngTheme() {
+	var th = window.localStorage["xtheme"]
+	if (th == null) th = "grey";
+	else if (th == "grey") th = "dark";
+	else th = null;
+	setTheme(th);
+}
 </script>
 
 <div id=container style=display:none>
@@ -315,7 +369,7 @@ if (window.localStorage["xtheme"] == "dark") chngTheme()
 		<button class=tab id=tab1 style=z-index:3>Tutor</button>
 		<button class=tab id=tab2 style=z-index:2>Saved</button>
 		<button class=tab id=tab3 style=display:none;z-index:1>Edit</button>
-		<button class=tab id=tab4 style=display:none;z-index:0>Output</button>
+		<button class=tab id=tab4 style=display:none;z-index:0>Out</button>
 		<canvas id=dragb class=drag style=float:right></canvas>
 	</div>
 	<div id=docx tabindex=0>

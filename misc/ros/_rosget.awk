@@ -11,6 +11,7 @@ function unesc(s) {
 	gsub("&gt;", ">", s)
 	gsub("&#160;", " ", s)
 	gsub("&quot;", "\"", s)
+	gsub("&#39;", "'", s)
 	return s
 }
 

@@ -245,19 +245,23 @@ proc mark pos col . .
    move x * f + f / 4 y * f + f / 4
    circle f / 3.5
 .
-proc solve dir0 pos . found .
+found = 0
+proc solve dir0 pos . .
+   if found = 1
+      return
+   .
    mark pos 900
    sleep 0.05
    if pos = endpos
       found = 1
-      break 1
+      return
    .
    of = random 4 - 1
    for h = 1 to 4
       dir = (h + of) mod1 4
       posn = pos + offs[dir]
-      if dir <> dir0 and m[posn] = 0 and found = 0
-         solve (dir + 1) mod 4 + 1 posn found
+      if dir <> dir0 and m[posn] = 0
+         solve (dir + 1) mod 4 + 1 posn
          if found = 0
             mark posn 888
             sleep 0.08
@@ -266,7 +270,7 @@ proc solve dir0 pos . found .
    .
 .
 sleep 1
-solve 0 n + 2 found
+solve 0 n + 2
 
 * Eight queens puzzle
 

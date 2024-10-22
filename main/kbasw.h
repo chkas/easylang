@@ -88,7 +88,10 @@ static void gr_init(const char* s, int mask) {
 	grx = 0;
 	gry = 100;
 	grbotleft = 1;
-	if (sysconfig & 1) grbotleft = 0;
+	if (sysconfig & 1) {
+		gry = 0;
+		grbotleft = 0;
+	}
 	grtxty = 8 * 0.78;
 	grline = 0;
 }

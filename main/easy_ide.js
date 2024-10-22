@@ -1338,13 +1338,13 @@ step3Btn.onclick = function() {
 function moreShow(on) {
 	if (on) {
 		inp.style.height = "calc(70% - 36px)"
-		dbgBtn.className = "act"
+		//dbgBtn.className = "act"
 		show(moreSpn)
 	}
 	else {
 		hide(moreSpn)
 		inp.style.height = "calc(100% - 38px)"
-		dbgBtn.className = ""
+		//dbgBtn.className = ""
 	}
 }
 

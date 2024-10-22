@@ -17,7 +17,7 @@ for v in a[]
    max = higher max v
 .
 print max
-#
+# 
 input_data
                           55
                         94 48

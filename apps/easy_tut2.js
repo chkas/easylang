@@ -64,22 +64,23 @@ canvas {
 	}
 }
 
-h3{background-color:#beb;padding:4px;padding-left:12px;margin-bottom:12px}
+h3{background-color:#adf;padding:4px;padding-left:12px;margin-bottom:12px}
 h3:not(:first-child) { margin-top:24px}
 
-tt {padding:1px;background-color:#dfd;}
+tt {padding:1px;background-color:#def;}
 
 button {
-  background-color: #dfd;
-  cursor: pointer;
-  margin: 0px 0px 4px 12px;
-  padding: 4px;
-  font-size: 110%;
-  border:1px solid gray;
-  border-radius:5px;
+	color:#fff;
+	cursor:pointer;
+	margin:0px 0px 4px 12px;
+	padding:4px;
+	font-size:110%;
+	border:1px solid gray;
+	border-radius:5px;
 }
-button:enabled:hover {background-color:#cec}
-button:enabled:active {background-color:#484}
+button:hover:enabled{background:#07d}
+button:enabled{background:#4af}
+button:disabled{background:#8cf;color:#eee;cursor:default}
 
 button.stop { display:none; }
 

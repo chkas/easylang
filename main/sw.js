@@ -10,6 +10,7 @@ var urls = [
 	"/ide/tut_docu" + VERS + ".js",
 	"/ide/tut_func" + VERS + ".js",
 	"/ide/tut_game" + VERS + ".js",
+	"/ide/icon.svg",
 	"/ide/icon.png",
 	"/ide/mfst.json"
 ]

@@ -5,18 +5,20 @@ func fac n .
    .
    return f
 .
-global elements[] nperm .
-proc init n n2 . .
+global elements[] nperm permb perma .
+proc perminit a b . .
+   perma = a
+   permb = b
    elements[] = [ ]
-   for i to n
+   for i to a
       elements[] &= i - 1
    .
-   nperm = fac n / fac n2
+   nperm = fac a / fac b
 .
-func[] perm n n2 r .
+func[] getperm r .
    digs[] = elements[]
    fa = nperm
-   for i = n downto 1 + n2
+   for i = perma downto 1 + permb
       fa /= i
       d = r div fa + 1
       r = r mod fa
@@ -28,9 +30,9 @@ func[] perm n n2 r .
    return r[]
 .
 proc sendmore . .
-   init 10 2
+   perminit 10 2
    for p range0 nperm
-      r[] = perm 10 2 p
+      r[] = getperm p
       if r[1] <> 0 and r[5] <> 0
          send = 0
          for i to 4

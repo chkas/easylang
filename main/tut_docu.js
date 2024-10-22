@@ -444,14 +444,13 @@ timer 0
 + Bouncing ball
 
 rad = 12 ; x = 50 ; y = 50
-vx = randomf * 4 - 2
-vy = randomf * 4 - 2
+vx = 1.5 ; vy = 2
 #
 on animate
    if systime > timeout
       # every 4 seconds
       timeout = systime + 4
-      color random 999
+      color random 999 - 1
    .
    clear
    move x y

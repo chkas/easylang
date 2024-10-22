@@ -10,21 +10,50 @@ idir=$odir/../ide
 v=$(cat $wdir/wvers)
 cp $idir/easyw$v.wasm $idir/easyw$v.js $odir
 
-cp ../run/icon.png $odir/
+cp ../run/icon.* $odir/
 
 cat >$odir/mfst.json <<EOF
 {
-	"name": "CodeRunner",
-	"icons": [{
-		"src": "/run/icon.png",
-		"type": "image/png",
-		"sizes": "256x256",
-		"purpose": "any maskable"
-	}],
+	"name": "Easylang Code Runner",
+	"icons": [
+		{
+			"src": "/run/icon.png",
+			"type": "image/png",
+			"sizes": "256x256",
+			"purpose": "maskable"
+		},
+		{
+			"src": "/run/icon.png",
+			"type": "image/png",
+			"sizes": "256x256",
+			"purpose": "any"
+		},
+		{
+			"src": "/run/icon.svg",
+			"type": "image/svg+xml",
+			"sizes": "512x512",
+			"purpose": "any"
+		}
+	],
 	"start_url": "/run/",
-	"display": "standalone",
-	"background_color": "#bdb",
-	"theme_color": "#bdb"
+	"display": "fullscreen",
+	"background_color": "#000",
+	"theme_color": "#000",
+	"short_name": "EasylangRun",
+	"id": "easylang.online/run",
+	"description": "Code runner for Easylang apps",
+	"dir": "ltr",
+	"lang": "en",
+	"orientation": "any",
+	"display_override": [
+		"standalone",
+		"window-controls-overlay"
+	],
+	"categories": [
+		"education",
+		"games",
+		"kids"
+	]
 }
 EOF
 date=$(date +%y%m%d-%H%M)
@@ -36,6 +65,7 @@ var urls = [
 	"/run/easyw" + VERS + ".wasm",
 	"/run/easyw" + VERS + ".js",
 	"/run/icon.png",
+	"/run/icon.svg",
 	"/run/mfst.json",
 ]
 
@@ -93,7 +123,7 @@ exec > $odir/index.html
 
 cat <<xxx
 
-<!doctype html> 
+<!doctype html>
 <meta charset=utf-8>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="code runner">
@@ -139,8 +169,8 @@ a { color: #ddd }
 	background-color:#444;
 }
 select {
-	color:#fff; 
-	background-color:#444; 
+	color:#fff;
+	background-color:#444;
 	font-size:120%;
 	height:32px;
 	width:150px;
@@ -186,8 +216,8 @@ pre u{font-weight:bold;text-decoration:none;color:#fff;background:#666}
 span.high {background-color:#666}
 
 #dropbtn {
-	color:#fff; 
-	background-color:#444; 
+	color:#fff;
+	background-color:#444;
 	border-radius:4px;
 	padding:2px;
 	border:1px solid #666;
@@ -207,13 +237,13 @@ span.high {background-color:#666}
 	margin:4px;
 }
 
-#dropd { 
+#dropd {
 	margin:16px 8px 8px 8px;
 	float:right;
 }
-#keepd { 
+#keepd {
 	margin:2px 8px;
-	float:left; 
+	float:left;
 }
 </style>
 
@@ -243,7 +273,7 @@ span.high {background-color:#666}
 		<div class=hamb></div>
 	</div>
 	<div id=dropd style="display:none">
-		<div id=edit class=lnk>Code</div> 
+		<div id=edit class=lnk>Code</div>
 		<div id=remove class=lnk>Delete</div>
 		<div id=inst class=lnk>Install</div>
 	</div>
@@ -278,7 +308,7 @@ window.onmousedown = function(evt) {
 	if (evt.target != remove && evt.target != edit && evt.target != inst) {
 		hide(dropd)
 	}
-} 
+}
 
 function show(e) { e.style.display = "" }
 function hide(e) { e.style.display = "none" }
