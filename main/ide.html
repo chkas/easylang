@@ -243,16 +243,16 @@ a:hover{background:#9df}
 var theme
 function setTheme(th) {
 	var thcolor = document.querySelector('meta[name="theme-color"]')
+	var col = "#cef"
 	if (theme != null) {
 		document.head.removeChild(theme)
 		theme = null
 		window.localStorage.removeItem("xtheme")
-		if (thcolor) thcolor.setAttribute('content', '#cef')
 	}
 	if (th != null) {
 		theme = document.createElement('style');
 		if (th == "dark") {
-			if (thcolor) thcolor.setAttribute('content', '#444')
+			col = "#444"
 			theme.innerHTML = `
 .close:before,.close:after{background:#fff}
 #hambtn:hover{ background:#999; }
@@ -298,7 +298,7 @@ select:hover:enabled{background:#999}
 `
 		}
 		else {
-			if (thcolor) thcolor.setAttribute('content', '#ddd')
+			col = "#ddd"
 			theme.innerHTML = `
 .close:before,.close:after{background: #333}
 #hambtn:hover{ background:#bbb; }
@@ -348,6 +348,7 @@ a:visited {color:#000}
 		document.head.appendChild(theme)
 		window.localStorage.setItem("xtheme", th)
 	}
+	if (thcolor) thcolor.setAttribute('content', col)
 }
 setTheme(window.localStorage["xtheme"])
 

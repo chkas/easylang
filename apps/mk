@@ -703,14 +703,6 @@ cat <<xxx
 If you like it, recommend it to others.
 <p>
 
-
-<hr>
-The default origin of the coordinate system is now bottom left (March 2023). With the config command <tt>sysconf topleft</tt> you can reset the origin to top left.
-<p>
-The name of some built-in commands has changed (February 2022). Old code can be adapted to the new syntax with <a href=conv.html>this tool</a>
-<p>
-
-
 <hr>
 <small><small>christof.kaser@gmail.com</small></small>
 xxx
