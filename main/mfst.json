@@ -21,10 +21,10 @@
 		}
 	],
 	"start_url": "/ide/",
-	"display": "standalone",
+	"display": "fullscreen",
 	"background_color": "#bef",
 	"theme_color": "#bef",
-	"short_name": "Easy IDE",
+	"short_name": "EasylangIDE",
 	"id": "easylang.online/ide",
 	"description": "Easylang programming IDE",
 	"dir": "ltr",

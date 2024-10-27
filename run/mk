@@ -14,7 +14,7 @@ cp ../run/icon.* $odir/
 
 cat >$odir/mfst.json <<EOF
 {
-	"name": "Easylang Code Runner",
+	"name": "Easylang Run",
 	"icons": [
 		{
 			"src": "/run/icon.png",
@@ -36,19 +36,15 @@ cat >$odir/mfst.json <<EOF
 		}
 	],
 	"start_url": "/run/",
-	"display": "fullscreen",
+	"display": "standalone",
 	"background_color": "#000",
 	"theme_color": "#000",
 	"short_name": "EasylangRun",
 	"id": "easylang.online/run",
-	"description": "Code runner for Easylang apps",
+	"description": "Code runner for Easylang",
 	"dir": "ltr",
 	"lang": "en",
 	"orientation": "any",
-	"display_override": [
-		"standalone",
-		"window-controls-overlay"
-	],
 	"categories": [
 		"education",
 		"games",

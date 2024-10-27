@@ -1,8 +1,8 @@
 ./tasks.py | while read n; do
-	test "$n" = "" && break
+	# test "$n" = "" && break
 	echo "$n" >&2
-	expr "$n" : '.$' >/dev/null && continue
-	expr "$n" : '#' >/dev/null && continue
+	# expr "$n" : '.$' >/dev/null && continue
+	# expr "$n" : '#' >/dev/null && continue
 	test "$n" = "Hello world/Newbie" && continue
 	test "$n" = "Here document" && continue
 	x=$(echo $n|tr " " _)
