@@ -42,6 +42,8 @@ apps1="1st-math-trainer 1x1-trainer math-trainer roman-numbers learning-clock pi
 apps2="ice-cream letter-memory paint"
 apps3="mastermind mine-sweeper 15-puzzle monster-maze snake tictactoe reaction-test catch-the-ball"
 
+test -e /run && alias ghead=head
+
 wrcode() {
 	printf "<a href=\"../run/#cod="
 	#ghead cat $1.kab  | gzip | tail -c +11 | ghead -c -8 | base64 | ghead -c -1
