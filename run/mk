@@ -178,6 +178,7 @@ select {
 	margin:2px 8px;
 	border:1px solid #666;
 	cursor: pointer;
+	float:left;
 }
 select:hover {background-color:#666}
 
@@ -186,7 +187,7 @@ select:hover {background-color:#666}
 	width:100%;
 }
 #canv {
-	margin:2px;
+	margin:1px;
 	outline:none;
 }
 #codew {
@@ -211,18 +212,17 @@ pre u{font-weight:bold;text-decoration:none;color:#fff;background:#666}
 
 span.high {background-color:#666}
 
-#dropbtn {
+#hambtn {
 	color:#fff;
 	background-color:#444;
 	border-radius:4px;
 	padding:2px;
 	border:1px solid #666;
 	cursor: pointer;
-	float:right;
-	margin-bottom:8px;
+	float:left;
 }
 
-#dropbtn:hover,#dropbtn:focus {
+#hambtn:hover,#hambtn:focus {
 	background-color:#666;
 }
 .hamb {
@@ -233,9 +233,9 @@ span.high {background-color:#666}
 	margin:4px;
 }
 
-#dropd {
+#menud {
 	margin:16px 8px 8px 8px;
-	float:right;
+	float:left;
 }
 #keepd {
 	margin:2px 8px;
@@ -254,21 +254,19 @@ span.high {background-color:#666}
 
 	<div id=noti style=display:none>Click here to update to new version<br></div>
 	<p>
+	<select id=sel size></select>
+	<div id=hambtn>
+		<div class=hamb></div>
+		<div class=hamb></div>
+		<div class=hamb></div>
+	</div>
 	<div id=keepd style=display:none>
 		<big><b id=namef></b></big>
 		<p>
 		<div id=keep class=lnk>Keep</div>
 		<div id=disc class=lnk>Discard</div>
 	</div>
-	<select id=sel></select>
-
-
-	<div id=dropbtn>
-		<div class=hamb></div>
-		<div class=hamb></div>
-		<div class=hamb></div>
-	</div>
-	<div id=dropd style="display:none">
+	<div id=menud style="display:none">
 		<div id=edit class=lnk>Code</div>
 		<div id=remove class=lnk>Delete</div>
 		<div id=inst class=lnk>Install</div>
@@ -294,21 +292,17 @@ function show(e) { e.style.display = "" }
 function hide(e) { e.style.display = "none" }
 function isVisible(e) { return e.style.display == "" }
 
-dropbtn.onmousedown = function(evt) {
+hambtn.onmousedown = function(evt) {
 	event.stopPropagation()
-	if (isVisible(dropd)) hide(dropd)
-	else show(dropd)
+	if (isVisible(menud)) hide(menud)
+	else show(menud)
 }
 
 window.onmousedown = function(evt) {
 	if (evt.target != remove && evt.target != edit && evt.target != inst) {
-		hide(dropd)
+		hide(menud)
 	}
 }
-
-function show(e) { e.style.display = "" }
-function hide(e) { e.style.display = "none" }
-function isVisible(e) { return e.style.display == "" }
 
 if ("serviceWorker" in navigator) {
 	window.addEventListener("load", function() {
@@ -398,7 +392,7 @@ window.onresize = function() {
 	var vw = window.innerWidth
 
 	var lw
-	if (vw - 200 < vh) {
+	if (vw - 240 < vh) {
 		vh -= 80
 		lw = "100%"
 	}
@@ -406,26 +400,24 @@ window.onresize = function() {
 		vw -= 220
 		lw = "220px"
 	}
-	var w = vw - 4
+	var w = vw - 2
 	var h = Math.floor(w * aspr)
 
 	if (h > vh) {
-		h = vh
+		h = vh - 6
 		w = Math.floor(h / aspr)
 	}
 	canv.style.width = w + "px"
 	canv.style.height = h + "px"
-	canv.style.marginTop = ""
+	canv.style.marginTop = "1px"
 	if (lw == "100%") {
 		left.style.float = ""
-		dropbtn.style.margin = "2px 8px"
-		dropbtn.style.float = "right"
+		hambtn.style.margin = "2px 8px"
 		if (vh - 40 > h) canv.style.marginTop = "36px"
 	}
 	else {
 		left.style.float = "left"
-		dropbtn.style.margin = "20px"
-		dropbtn.style.float = "left"
+		hambtn.style.margin = "20px"
 	}
 	left.style.width = lw
 }
@@ -470,7 +462,7 @@ function newCode() {
 	appn = null
 	getCodeInfo()
 	hide(sel)
-	hide(dropbtn)
+	hide(hambtn)
 	namef.textContent = appn
 	show(keepd)
 }
@@ -550,14 +542,14 @@ function updsel() {
 	hide(keepd)
 	if (!sel.options.length) {
 		show(info)
-		hide(dropbtn)
+		hide(hambtn)
 		hide(sel)
 		aspr = 1
 		runr(code0)
 	}
 	else {
 		hide(info)
-		show(dropbtn)
+		show(hambtn)
 		show(sel)
 		change()
 	}
@@ -582,7 +574,7 @@ remove.onclick = function() {
 		rmt = setTimeout(rmreset, 3000)
 	}
 	else {
-		hide(dropd)
+		hide(menud)
 		clearTimeout(rmt)
 		rmreset();
 		window.localStorage.removeItem("a" + appn)

@@ -1,5 +1,7 @@
 sysconf topleft
 #
+# qlmanage -t -s 256 -o . icon.svg ; mv icon.svg.png icon.png
+#
 global x0 y0 width col$ .
 func$ hdig d .
    d += 48
@@ -94,6 +96,6 @@ proc draw . .
    xcircle 2
 .
 pr "<svg xmlns=\"http://www.w3.org/2000/svg\""
-pr "width=\"500\" height=\"500\" viewBox=\"0 0 100 100\">"
+pr "width=\"512\" height=\"512\" viewBox=\"0 0 100 100\">"
 draw
 pr "</svg>"

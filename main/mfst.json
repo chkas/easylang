@@ -21,7 +21,7 @@
 		}
 	],
 	"start_url": "/ide/",
-	"display": "fullscreen",
+	"display": "standalone",
 	"background_color": "#bef",
 	"theme_color": "#bef",
 	"short_name": "EasylangIDE",
