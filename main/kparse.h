@@ -1791,7 +1791,7 @@ S void parse_repeat_stat(ND* nd) {
 	csb_tok_spc_nt();
 
 	nd->le = parse_log_ex();
-	opln_add(nd, fmtline);
+	opln_add(nd->le, fmtline);
 
 	if (tok == t_dot || tok == t_end) {
 		ndx->ex = NULL;

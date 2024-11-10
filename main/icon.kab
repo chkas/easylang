@@ -74,24 +74,15 @@ proc draw . .
    #
    xlinewidth 2
    y = 30
-   xmove 30 y
-   xline 45 y
-   y += 5
-   xmove 30 y
-   xline 45 y
-   y += 5
-   xmove 40 y
-   xline 55 y
-   y += 5
-   xmove 40 y
-   xline 55 y
-   y += 5
-   xmove 30 y
-   xline 45 y
-   y += 5
-   xmove 30 y
-   xline 45 y
-   #
+   for y = 30 step 5 to 55
+      if y div 10 = 4
+         xmove 40 y
+         xline 55 y
+      else
+         xmove 30 y
+         xline 45 y
+      .
+   .
    xcolor c
    xmove 75 64
    xcircle 2

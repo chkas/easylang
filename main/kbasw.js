@@ -174,7 +174,7 @@ function sleep(sec) {
 			var s = String.fromCharCode.apply(null, vw.slice(6, vw[5] + 5))
 			Module.ccall("evt_func", "null", ["int", "string"], [vw[4] - 1, s])
 		}
-		else { // animate
+		else if (vw[4] == 5) { // animate
 			Module.ccall("evt_func", "null", ["int", "string"], [0, null])
 		}
 	}
