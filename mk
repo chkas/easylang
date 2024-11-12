@@ -13,7 +13,7 @@ if test "$1" = new; then
 fi
 if test $# = 0; then
 	set main apps games sky
-	emcc --version >misc/emcc_vers.txt
+	emcc --version >$HOME/out/easylang/emcc_vers.txt
 fi
 while test $# != 0; do
 	if test $1 = main; then

@@ -2435,7 +2435,7 @@ S void op_callsubr_slow(ND* nd) {
 }
 
 // ---------------------------------------------------
-S void xop_for_slow(ND* nd, char inc) {
+S void xop_for_slow(ND* nd, double inc) {
 	ND* ndx = nd + 1;
 	double to = numf(nd->ri);
 	double* pfro = gnum(nd->v1);
