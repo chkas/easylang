@@ -89,7 +89,7 @@ static char do_animate;
 
 void gr_init(const char* progname, int mask) {
 
-	if (mask == 512) {
+	if (mask == 1024) {
 		// only print
 		return;
 	}
@@ -99,7 +99,7 @@ void gr_init(const char* progname, int mask) {
 	bcol.a = 255;
 	fcol.a = 255;
 	SDL_Init(0);
-	if (mask & 64) {
+	if (mask & 128) {
 		SDL_InitSubSystem(SDL_INIT_VIDEO);
 		SDL_DisplayMode dm;
 		SDL_GetCurrentDisplayMode(0, &dm);
@@ -125,7 +125,7 @@ void gr_init(const char* progname, int mask) {
 		gr_color(0, 0, 0);
 		gr_linewidth(1);
 	}
-	if (mask & 128) {
+	if (mask & 256) {
 		SDL_InitSubSystem(SDL_INIT_AUDIO);
 		SDL_AudioSpec want, have;
 		want.freq = FREQ;
@@ -144,7 +144,7 @@ void gr_init(const char* progname, int mask) {
 		}
 		SDL_PauseAudioDevice(dev, 1);
 	}
-	if (mask & 256) {
+	if (mask & 512) {
 
 // #ifdef __linux__
 

@@ -1,0 +1,38 @@
+{
+	"name": "Easylang Run",
+	"icons": [
+		{
+			"src": "/run/icon.png",
+			"type": "image/png",
+			"sizes": "256x256",
+			"purpose": "maskable"
+		},
+		{
+			"src": "/run/icon.png",
+			"type": "image/png",
+			"sizes": "256x256",
+			"purpose": "any"
+		},
+		{
+			"src": "/run/icon.svg",
+			"type": "image/svg+xml",
+			"sizes": "512x512",
+			"purpose": "any"
+		}
+	],
+	"start_url": "/run/",
+	"display": "standalone",
+	"background_color": "#000",
+	"theme_color": "#000",
+	"short_name": "EasylangRun",
+	"id": "easylang.online/run",
+	"description": "Code runner for Easylang",
+	"dir": "ltr",
+	"lang": "en",
+	"orientation": "any",
+	"categories": [
+		"education",
+		"games",
+		"kids"
+	]
+}

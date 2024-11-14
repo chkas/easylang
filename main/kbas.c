@@ -324,7 +324,7 @@ extern int exec(int opt, const char* args) {
 	freecodestr();
 	rt.args = args;
 	init_rt();
-	gr_init(progname, onstats | (prog_props << 6));
+	gr_init(progname, onstats | (prog_props << 7));
 	rt.slow = 0;
 
 	int dbg = opt >> 1;

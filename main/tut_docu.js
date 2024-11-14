@@ -26,7 +26,7 @@ for i = 1 to 10000
 .
 print "Your cash: " & cash
 
-+ *random 37* returns a random integer between 0 and 36 inclusive.
++ *random 37* returns a random integer between 1 and 37 inclusive.
 
 * Arrays
 

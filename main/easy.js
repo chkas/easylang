@@ -569,7 +569,7 @@ function workerMessage(event) {
 		tryrun()
 		break
 	case "events":
-		for (msg of evts) worker.postMessage(msg)
+		if (evts) for (msg of evts) worker.postMessage(msg)
 		evts = null
 		break
 	case "stop_pong":
@@ -584,7 +584,7 @@ function workerMessage(event) {
 		break
 	case "init":
 		nlsaved = false
-		if ((d[1] & 64) == 0) break
+		if ((d[1] & 128) == 0) break
 		if (!eCan) {
 			console.log("error: no canvas")
 			worker.terminate()
@@ -592,11 +592,11 @@ function workerMessage(event) {
 			startWorker()
 			return
 		}
-		if (d[1] & 63) {
+		if (d[1] & 127) {
+			eCan.on = true
 			msgFunc("canvon")
 			evts = []
 			waitEvent = false
-			eCan.on = true
 			eCan.focus()
 			if (d[1] & 1) {
 				eCan.addEventListener("mousedown", canvMouseDown)
@@ -629,7 +629,7 @@ function workerMessage(event) {
 				}
 			}
 		}
-		if (d[1] & 128) {
+		if (d[1] & 256) {
 			eCan.addEventListener("mousedown", actAudio)
 			eCan.addEventListener("touchstart", actAudio)
 			eCan.addEventListener("touchend", actAudio)

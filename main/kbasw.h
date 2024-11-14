@@ -81,7 +81,8 @@ static char grbotleft;
 static double grtxty;
 
 static void gr_init(const char* s, int mask) {
-	if (mask & 64) {
+//	if (mask & 64) {
+	if (mask & 128) {
 		EM_ASM_({ push([7, $0])}, 1);
 	}
 	EM_ASM_({ postMessage(['init', $0]) }, mask);

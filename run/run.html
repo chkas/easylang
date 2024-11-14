@@ -1,0 +1,184 @@
+<!doctype html>
+<meta charset=utf-8>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="code runner">
+<title>Code Runner</title>
+<link rel="icon" href="icon.png" type="image/x-png">
+<link rel="manifest" href="mfst.json">
+
+<style>
+body {
+	background-color:#000;
+	color:#ddd;
+	font-family:sans-serif;
+	margin:0px;
+	user-select:none;
+	-webkit-user-select:none;
+}
+a { color: #ddd }
+
+#noti {
+	cursor:pointer;
+	text-decoration:underline;
+}
+.lnk2 {
+	padding:5px;
+	cursor: pointer;
+	text-decoration: underline;
+	display:inline;
+	user-select:none;
+	-webkit-user-select:none;
+}
+.lnk2:hover {
+	background-color:#888;
+}
+.lnk {
+	padding:5px;
+	cursor: pointer;
+	text-decoration: underline;
+	display:inline;
+	user-select:none;
+	-webkit-user-select:none;
+}
+.lnk:hover {
+	background-color:#444;
+}
+select {
+	color:#fff;
+	background-color:#444;
+	font-size:120%;
+	height:32px;
+	width:150px;
+	border-radius:4px;
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	appearance: none;
+	padding:3px 3px;
+	margin:2px 8px;
+	border:1px solid #666;
+	cursor: pointer;
+	float:left;
+}
+select:hover {background-color:#666}
+
+#left {
+	margin:8px;
+	width:100%;
+}
+#canv {
+	margin:1px;
+	outline:none;
+}
+#codew {
+	width:calc(100vw - 4px);
+	height:calc(100vh - 30px);
+	margin:2px;
+	margin-left:4px;
+	font-size:15px;
+	overflow-y:auto;
+	outline:none;
+	user-select:text;
+	-webkit-user-select:text;
+}
+.menu {
+	height:24px;
+	background-color:#444;
+}
+pre i{font-weight:400;color:#9d9}
+pre b{font-weight:500;color:#fc9}
+pre s{text-decoration:none;font-weight:500;color:#9cf}
+pre u{font-weight:bold;text-decoration:none;color:#fff;background:#666}
+
+span.high {background-color:#666}
+
+#hambtn {
+	color:#fff;
+	background-color:#444;
+	border-radius:4px;
+	padding:2px;
+	border:1px solid #666;
+	cursor: pointer;
+	float:left;
+}
+
+#hambtn:hover,#hambtn:focus {
+	background-color:#666;
+}
+.hamb {
+	border-radius:2px;
+	width:18px;
+	height:2px;
+	background-color:#fff;
+	margin:4px;
+}
+
+#menud {
+	margin:16px 8px 8px 8px;
+	float:left;
+}
+#keepd {
+	margin:2px 8px;
+	float:left;
+}
+</style>
+
+<div id=runner>
+	<div id=left>
+
+	<div id=info style="display:none">
+		<h3>Code Runner</h3>
+		<p>There are no apps installed.
+		<p><a href=../games/index.html?$date>Install apps and games</a>
+	</div>
+
+	<div id=noti style=display:none>Click here to update to new version<br></div>
+	<p>
+	<select id=sel size></select>
+	<div id=hambtn>
+		<div class=hamb></div>
+		<div class=hamb></div>
+		<div class=hamb></div>
+	</div>
+	<div id=keepd style=display:none>
+		<big><b id=namef></b></big>
+		<p>
+		<div id=keep class=lnk>Keep</div>
+		<div id=disc class=lnk>Discard</div>
+	</div>
+	<div id=menud style="display:none">
+		<div id=edit class=lnk>Code</div>
+		<div id=remove class=lnk>Delete</div>
+		<div id=inst class=lnk>Install</div>
+	</div>
+	<p>
+	</div>
+	<canvas id=canv></canvas>
+</div>
+
+<div id=editor style="display:none">
+	<div class=menu>
+		<div id=savelnk class=lnk2>Run</div>
+		<div id=canclnk class=lnk2>Cancel</div>
+		<div id=idelnk class=lnk2>IDE</div>
+	</div>
+	<pre id=codew></pre>
+</div>
+
+
+<script>
+
+function show(e) { e.style.display = "" }
+function hide(e) { e.style.display = "none" }
+function isVisible(e) { return e.style.display == "" }
+
+hambtn.onmousedown = function(evt) {
+	event.stopPropagation()
+	if (isVisible(menud)) hide(menud)
+	else show(menud)
+}
+
+window.onmousedown = function(evt) {
+	if (evt.target != remove && evt.target != edit && evt.target != inst) {
+		hide(menud)
+	}
+}
