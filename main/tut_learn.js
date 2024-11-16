@@ -379,16 +379,16 @@ cod "\"a is large\"" -1 ""
 
 +de Der Block nach *else* wird ausgeführt, wenn die Bedingung nicht erfüllt ist.
 
-write "How old are you? "
-age = number input
-print age
-if age < 20
-   x = 20 - age
-   print "In " & x & " years you are 20 years old"
+x = number input
+if x mod 2 = 0
+   print x & " is even"
 else
-   x = 100 - age
-   print "In " & x & " years you are 100 years old"
+   print x & " is odd"
 end
+
++ With *mod* you get the remainder of a division.
+
++de Mit *mod* erhält man den Rest einer Division.
 
 * Loop
 
