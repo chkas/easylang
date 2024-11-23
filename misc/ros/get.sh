@@ -4,7 +4,7 @@
 	# expr "$n" : '.$' >/dev/null && continue
 	# expr "$n" : '#' >/dev/null && continue
 	test "$n" = "Hello world/Newbie" && continue
-	test "$n" = "Here document" && continue
+	test "$n" = "xHere document" && continue
 	x=$(echo $n|tr " " _)
 	dest=$(echo $n|tr " /" _+)
 	dest=~/easylang/misc/ros/"$dest.el"

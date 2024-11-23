@@ -123,6 +123,7 @@ xcp ../apps/easy_code.js $wdir/easy_code.js
 echo "</script><script src=easy.js></script>" >> $wdir/run.html
 echo "<script src=easy_code.js></script><script>" >> $wdir/run.html
 
-cat run.js >> $odir/index.html
-cat run.js >> $wdir/run.html
+
+cat run.js | sed -e "s/\$date/$date/g" >> $odir/index.html
+cat run.js | sed -e "s/\$date/$date/g" >> $wdir/run.html
 

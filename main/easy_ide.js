@@ -124,18 +124,24 @@ dbgBtn.onclick = function() {
 dbgcls.onclick = function() {
 	moreShow(false)
 }
+function showurl(t) {
+	out.value = t
+	hide(hamcnt)
+	kaStop()
+	show(canv)
+	show_qr(t)
+}
 urlBtn.onclick = async function() {
 	var h = await compr(inp.innerText)
-	//dbg.value = location.origin + "/ide/#cod=" + h
+	var t = location.origin + "/ide/#cod=" + h
 	outp("\n\n  You can open this website with the current program using the following URL:\n\n")
-	outp(location.origin + "/ide/#cod=" + h)
-	hide(hamcnt)
+	showurl(t)
 }
 url2Btn.onclick = async function() {
 	var h = await compr(inp.innerText)
+	var t = location.origin + "/run/#cod=" + h
 	outp("\n\n  You can open the current program in the code runner web app using the following URL:\n\n")
-	outp(location.origin + "/run/#cod=" + h)
-	hide(hamcnt)
+	showurl(t)
 }
 
 var strictMode
@@ -256,6 +262,11 @@ function runCode(code, caret) {
 	showRun(false)
 	var opt = 256 + 2
 	if (strictMode) opt += 16
+	if (canv.width != 800) {
+		canv.width = 800
+		canv.height = 800
+		canvInit();
+	}
 	kaRun(code, opt, caret)
 }
 

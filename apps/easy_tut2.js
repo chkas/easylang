@@ -6,7 +6,7 @@ style.innerHTML = `
 body{
 	background-color:#f8f8f8;
 	font:normal normal normal 16px/1.5 Arial,sans-serif;
-	margin-left:10px;margin-right:10px;max-width:1110px;
+	margin-left:10px;margin-right:10px;
 }
 
 pre{
@@ -16,12 +16,11 @@ pre{
 	padding:5px;
 	font:normal normal normal 14px/1.3 monospace;
 	width:calc(100vw - 48px);
-	max-width:1080px;
 	overflow-y:auto;
 }
 
 pre.code {
-	width:calc(100vw - 480px);
+	width:50vw;
 	max-width:680px;
 	max-height:85vh;
 	min-height:80px;
@@ -33,7 +32,7 @@ textarea {
 	border:1px solid gray;
 	padding:5px;
 	font:normal normal normal 14px/1.3 monospace;
-	width:390px;
+	width:calc(50vw - 72px);
 	resize:none;
 	transition:height 0.2s;
 }
@@ -42,7 +41,7 @@ canvas.run { outline-style:solid;outline-color:#a00;outline-width:1px }
 canvas {
 	margin-left:12px;
 	border:1px solid gray;
-	width:400px;
+	width:calc(50vw - 63px);
 	transition:height 0.4s;
 }
 @media only screen and (max-width: 600px) {
@@ -57,7 +56,6 @@ canvas {
 	canvas {
 		margin-left:0px;
 		width:calc(100vw - 24px);
-		height:calc(100vw - 24px);
 	}
 	body{
 		margin-left:8px;margin-right:8px
@@ -203,8 +201,7 @@ function tutMsgFunc(msg, d) {
 
 				actBtn.canv.style.height = "0px"
 				actBtn.canv.offsetHeight
-				if (phone) actBtn.canv.style.height = "calc(100vw - 24px)"
-				else actBtn.canv.style.height = "400px"
+				actBtn.canv.style.height = actBtn.canv.style.width
 			}
 		}
 		else {
@@ -233,8 +230,8 @@ function tutMsgFunc(msg, d) {
 		}
 
 		if (!phone) {
-			if ((h & 6) == 6) actBtn.pre.style.height = "488px"
-			else if (h & 4) actBtn.pre.style.height = "413px"
+			if ((h & 6) == 6) actBtn.pre.style.height = (actBtn.canv.offsetHeight + 86) + "px"
+			else if (h & 4) actBtn.pre.style.height = (actBtn.canv.offsetHeight + 11) + "px"
 			else if (h & 2) actBtn.out.style.height = (actBtn.pre.offsetHeight - 36) + "px"
 		}
 

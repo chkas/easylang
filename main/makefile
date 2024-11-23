@@ -41,7 +41,7 @@ csrc: $(csrcf)
 $(wrk):
 	mkdir -p $(wrk)
 
-main: $(wrk)/easy_ide.js $(wrk)/easyw.js $(wrk)/easy.js $(wrk)/ide.html
+main: $(wrk)/easy_ide.js $(wrk)/easyw.js $(wrk)/easy.js $(wrk)/ide.html $(wrk)/qrcode.js
 tut: $(wrk)/tut_id.js $(wrk)/tut_docu.js $(wrk)/tut_learn.js $(wrk)/tut_game.js $(wrk)/tut_func.js
 
 $(wrk)/kbas.o: $(csrcf)
@@ -112,9 +112,10 @@ $(wrk)/wvers: ../vers.txt
 	echo $v > $(wrk)/wvers
 
 #$(or)/tmp_ide.js: easy_ide.js easy.js
-$(wrk)/tmp_ide.js: easy_ide.js easy.js ../vers.txt
+$(wrk)/tmp_ide.js: easy_ide.js easy.js qrcode.js ../vers.txt
 	echo "const WORKER = 'easyw$v.js'" >$(wrk)/tmp.js
 	tail +2 easy.js >>$(wrk)/tmp.js
+	cat qrcode.js >>$(wrk)/tmp.js
 	cat easy_ide.js >>$(wrk)/tmp.js
 	$(CLOSURE) $(CLOSOPT) --js $(wrk)/tmp.js --js_output_file $@
 
