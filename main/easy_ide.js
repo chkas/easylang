@@ -54,6 +54,7 @@ var step2Btn = eid("step2Btn")
 var step3Btn = eid("step3Btn")
 var urlBtn = eid("urlBtn")
 var url2Btn = eid("url2Btn")
+var url3Btn = eid("url3Btn")
 var strictBtn = eid("strictBtn")
 var themeBtn = eid("themeBtn")
 var chngTheme = window["chngTheme"]
@@ -134,13 +135,16 @@ function showurl(t) {
 urlBtn.onclick = async function() {
 	var h = await compr(inp.innerText)
 	var t = location.origin + "/ide/#cod=" + h
-	outp("\n\n  You can open this website with the current program using the following URL:\n\n")
 	showurl(t)
 }
 url2Btn.onclick = async function() {
 	var h = await compr(inp.innerText)
 	var t = location.origin + "/run/#cod=" + h
-	outp("\n\n  You can open the current program in the code runner web app using the following URL:\n\n")
+	showurl(t)
+}
+url3Btn.onclick = async function() {
+	var h = await compr(inp.innerText)
+	var t = "mailto:your@mailaddr?subject=Your%20code&body=" + location.origin + "/ide/#cod=" + h
 	showurl(t)
 }
 

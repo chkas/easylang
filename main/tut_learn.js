@@ -581,26 +581,18 @@ while x < 120
    # wait half a second
    sleep 0.5
    # change drawing position
-   x = x + 5
+   x += 5
 end
 
 + 🤔 Try to make the animation smoother by increasing the x-position of the circle only by 1 or 0.5 each time and shortening the pause to the next frame.
 
-+ 🤔 Stop the ball when it touches the right edge.
-
-+ 🤔🤔 Let the ball roll back again.
-
 +de 🤔 Versuche, die Animation flüssiger zu machen, indem du die x-Position des Kreises jedes Mal nur um 1 oder 0.5 erhöhst und die Pause zum nächsten Bild verkürzt.
-
-+de 🤔 Halte den Ball an, wenn er die rechte Kante berührt.
-
-+de 🤔🤔 Lass den Ball wieder zurückrollen.
 
 -
 
-+ A moving car.
++ Now we draw a car instead of the ball.
 
-+de Ein fahrendes Auto.
++de Jetzt zeichnen wir statt dem Ball ein Auto.
 
 subr drawcar
    linewidth 8
@@ -617,22 +609,27 @@ subr drawcar
    circle 3.5
 end
 #
-clear
-x = 10
-drawcar
-sleep 0.5
-#
-clear
-x = 20
-drawcar
+color 900
+x = -25
+while x < 120
+   clear
+   move x 10
+   drawcar
+   sleep 0.02
+   x += 0.5
+end
 
 + With *subr* you can combine actions that can be called from different places. This is called a *subroutine*.
 
 +de Mit *subr* können Aktionen zusammengefasst werden, die von verschiedenen Stellen aus aufgerufen werden können. Das nennt man *Unterprogramm* oder *Subroutine*.
 
-+ 🤔 You can make the car drive using a loop.
++ 🤔 Stop the car when it touches the right edge.
 
-+de 🤔 Mit einer Schleife kannst du das Auto fahren lassen.
++ 🤔🤔 Let the car move back again.
+
++de 🤔 Halte das Auto an, wenn es die rechte Kante berührt.
+
++de 🤔🤔 Lass das Auto wieder zurückfahren.
 
 + 🤔🤔 Let the car move back and forth three times.
 
