@@ -681,7 +681,7 @@ function show_qr(data) {
 	var qr = new JSQR();
 	var matrix = new qr.Matrix(data, 4, 1);  // mode:BYTE, ecLevel:L (M:0)
 	matrix.scale = 4;
-	matrix.margin = 0;
+	matrix.margin = 2;
 
 	var pw = matrix.pixelWidth();
 	canv.width = pw;
