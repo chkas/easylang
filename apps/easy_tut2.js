@@ -42,6 +42,7 @@ canvas {
 	margin-left:12px;
 	border:1px solid gray;
 	width:calc(50vw - 63px);
+	height:calc(50vw - 63px);
 	transition:height 0.4s;
 }
 @media only screen and (max-width: 600px) {
@@ -56,6 +57,7 @@ canvas {
 	canvas {
 		margin-left:0px;
 		width:calc(100vw - 24px);
+		height:calc(100vw - 24px);
 	}
 	body{
 		margin-left:8px;margin-right:8px
@@ -230,8 +232,8 @@ function tutMsgFunc(msg, d) {
 		}
 
 		if (!phone) {
-			if ((h & 6) == 6) actBtn.pre.style.height = (actBtn.canv.offsetHeight + 86) + "px"
-			else if (h & 4) actBtn.pre.style.height = (actBtn.canv.offsetHeight + 11) + "px"
+			if ((h & 6) == 6) actBtn.pre.style.height = (actBtn.canv.offsetWidth + 86) + "px"
+			else if (h & 4) actBtn.pre.style.height = (actBtn.canv.offsetWidth + 11) + "px"
 			else if (h & 2) actBtn.out.style.height = (actBtn.pre.offsetHeight - 36) + "px"
 		}
 
