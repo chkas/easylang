@@ -34,8 +34,6 @@ var dragb2 = eid("dragb2")
 var canv = eid("canv")
 var out = eid("out")
 var col1 = eid("col1")
-// old service worker reference to doc
-// var doc = eid("col1")
 var docx = eid("docx")
 var labinp = eid("labinp")
 var input = eid("input")
@@ -315,10 +313,9 @@ function loadClick(btn, istut) {
 		var code
 		if (istut) code = btn.pre.innerText
 		else code = window.localStorage[btn.ref]
-
+		undoAdd(code)
 		if (doco) onTab(4)
 		else if (!istut && doce) onTab(3)
-
 		if (runBtn.run) runCode(code, 0)
 		else {
 			codeToRun = code
@@ -833,6 +830,12 @@ function tmove(e) {
 	e.pageX = e.touches[0].pageX
 	dragmove(e)
 }
+function undoAdd(t, c = 0) {
+	while (undoStack.length - 1 > undoPos) undoStack.pop()
+	if (undoStack.length > 9) undoStack.shift()
+	undoStack.push([t, c])
+	undoPos = undoStack.length
+}
 
 function store() {
 	removeCnd()
@@ -854,7 +857,9 @@ function enter() {
 	}
 	enterTime = Date.now()
 	var inps = inp.innerText
+
 	var p = getCaret()
+	undoAdd(inps, p)
 	if (p != 0 && inps[p - 1] != "\n") {
 		while (p < inps.length && inps[p] != "\n") p++
 	}
@@ -914,6 +919,32 @@ inp.onkeydown = function(e) {
 			e.preventDefault()
 			search()
 		}
+
+		else if (k == 90) {		// Z undo
+			e.preventDefault()
+			if (e.shiftKey) {
+				undoPos += 1
+				if (undoPos >= undoStack.length) undoPos = undoStack.length
+				else {
+					inp.innerText = undoStack[undoPos][0]
+					setCaret(undoStack[undoPos][1], false)
+				}
+			}
+			else {
+				if (undoPos == undoStack.length) {
+					undoAdd(inp.innerText)
+					undoPos -= 1
+				}
+				undoPos -= 1
+				if (undoPos < 0) undoPos = 0
+				else {
+					inp.innerText = undoStack[undoPos][0]
+					setCaret(undoStack[undoPos][1], false)
+				}
+			}
+		}
+
+
 /*
 //kc Ctrl-M
 		else if (k == 76) {
@@ -1026,7 +1057,7 @@ function getCaret() {
 			pos += sel.anchorOffset
 			break
 		}
-		if (nd.length != null) pos += nd.length		// chrome
+		if (nd.length) pos += nd.length
 	}
 	return pos
 }
@@ -1037,11 +1068,14 @@ function setCaret(pos, showCnd = true) {
 	for (i = 0; i < inp.childNodes.length; i++) {
 		nd = inp.childNodes[i]
 		while (nd.nodeType == Node.ELEMENT_NODE && nd.childNodes.length > 0) nd = nd.childNodes[0]
-		if (nd.length > pos) break
-		pos -= nd.length
+		if (nd.length) {
+			if (nd.length >= pos) break
+			pos -= nd.length
+		}
+		else if (nd.tagName == "BR") pos -= 1
 	}
+	if (pos < 0) pos = 0
 	if (i == inp.childNodes.length) pos = nd.length
-
 	if (showCnd) {
 		var p = nd.parentNode
 		var n = document.createTextNode(nd.nodeValue.substring(0, pos))
@@ -1055,7 +1089,6 @@ function setCaret(pos, showCnd = true) {
 	}
 	else caret(nd, pos)
 }
-
 function scrollToLine(lc, nln) {
 	var lpp = nln * inp.clientHeight / inp.scrollHeight
 	var ltop = nln * inp.scrollTop / inp.scrollHeight
@@ -1082,6 +1115,9 @@ function showError(err, pos) {
 	scrollToPos(pos)
 	inp.focus()
 }
+
+var undoStack = []
+var undoPos = 0
 
 function gotSrcNl(src, res, pos, err) {
 	inp.innerHTML = src.substring(0, res)
@@ -1487,7 +1523,9 @@ async function main() {
 		var t = window.localStorage["xcode"]
 		if (!t || t == "\n") stBtn.disabled = true
 		if (t == null) t = 'print "Hello world"'
-		appendTxt(inp, t)
+		// appendTxt(inp, t)
+		inp.innerText = t
+		undoAdd(t)
 	}
 	console.log("loading ...")
 	inp.focus()

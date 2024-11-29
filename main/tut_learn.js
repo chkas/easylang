@@ -525,6 +525,7 @@ while y < 100
    while x < 100
       move x y
       circle 3
+      sleep 0.02
       x += 10
    end
    y += 10
