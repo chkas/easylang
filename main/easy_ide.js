@@ -114,7 +114,7 @@ document.addEventListener("click", function(event) {
   if (event.target !== hambtn && !hambtn.contains(event.target)) {
     hide(hamcnt)
   }
-});
+})
 
 dbgBtn.onclick = function() {
 	moreShow(!isVisible(moreSpn))
@@ -1064,7 +1064,7 @@ function getCaret() {
 
 function setCaret(pos, showCnd = true) {
 	if (pos < 0) return
-	var nd, i
+	var nd = null, i
 	for (i = 0; i < inp.childNodes.length; i++) {
 		nd = inp.childNodes[i]
 		while (nd.nodeType == Node.ELEMENT_NODE && nd.childNodes.length > 0) nd = nd.childNodes[0]
@@ -1075,7 +1075,10 @@ function setCaret(pos, showCnd = true) {
 		else if (nd.tagName == "BR") pos -= 1
 	}
 	if (pos < 0) pos = 0
-	if (i == inp.childNodes.length) pos = nd.length
+	if (i == inp.childNodes.length) {
+		if (!nd || !nd.length) return
+		pos = nd.length
+	}
 	if (showCnd) {
 		var p = nd.parentNode
 		var n = document.createTextNode(nd.nodeValue.substring(0, pos))
