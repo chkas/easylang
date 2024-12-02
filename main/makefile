@@ -115,7 +115,7 @@ $(wrk)/wvers: ../vers.txt
 $(wrk)/tmp_ide.js: easy_ide.js easy.js qrcode.js ../vers.txt
 	echo "const WORKER = 'easyw$v.js'" >$(wrk)/tmp.js
 	tail +2 easy.js >>$(wrk)/tmp.js
-	cat qrcode.js >>$(wrk)/tmp.js
+	tail +15 qrcode.js >>$(wrk)/tmp.js
 	cat easy_ide.js >>$(wrk)/tmp.js
 	$(CLOSURE) $(CLOSOPT) --js $(wrk)/tmp.js --js_output_file $@
 

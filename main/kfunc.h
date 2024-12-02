@@ -1198,7 +1198,7 @@ S void op_if_else(ND* nd) {
 
 S void op_callsubr(ND* nd) {
 	exec_sequ(nd->le->ex);
-	if (stop_flag) stop_flag -= 1;
+	stop_flag = 0;
 }
 
 S void op_print(ND* nd);
@@ -2431,7 +2431,7 @@ S void op_callsubr_slow(ND* nd) {
 	if (rt.slow >= 32) rt.slow += 1;
 	exec_sequ_slow(nd->le->ex);
 	if (rt.slow > 32) rt.slow -= 1;
-	if (stop_flag) stop_flag -= 1;
+	stop_flag = 0;
 }
 
 // ---------------------------------------------------

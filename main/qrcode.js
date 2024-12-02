@@ -1,4 +1,3 @@
-
 /*!
  * JSQR - JavaScript Quick Response Code Encoder Library v1.0.2
  * http://www.jsqr.de
@@ -11,6 +10,8 @@
  *
  * cleaned from unused code - christof.kaser@gmail.com
  */
+
+
 
 (function () {
 
