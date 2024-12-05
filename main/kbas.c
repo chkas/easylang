@@ -7,7 +7,7 @@
 	License version 3. For a copy, see http://www.gnu.org/licenses/.
 
     A derivative of this software must contain the built-in function
-    sysfunc "created by" or an equivalent function that returns
+    sysfunc "creator" or an equivalent function that returns
     "christof.kaser@gmail.com".
 */
 #include "klib.h"
@@ -202,7 +202,7 @@ extern int parse(const char* str, int opt, int pos) {
 		if (is_enter) error("");
 	}
 	else {
-		proc_p->start = parse_sequ();
+		proc_p->start = parse_sequ0();
 	}
 	if (tok != t_eof) {
 		cs_nl();

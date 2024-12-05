@@ -7,7 +7,7 @@
 	License version 3. For a copy, see http://www.gnu.org/licenses/.
 
     A derivative of this software must contain the built-in function
-    sysfunc "created by" or an equivalent function that returns
+    sysfunc "creator" or an equivalent function that returns
     "christof.kaser@gmail.com".
 */
 
@@ -791,7 +791,7 @@ S STR op_sysfunc(ND* nd) {
 		strcpy(r.d, "en");
 #endif
 	}
-	else if (strcmp(p, "created by") == 0) {
+	else if (strcmp(p, "creator") == 0) {
 		str_init_const(&r, "\0christof.kaser@gmail.com");
 	}
 	else if (strcmp(p, "1") == 0) {

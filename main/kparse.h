@@ -7,7 +7,7 @@
 	License version 3. For a copy, see http://www.gnu.org/licenses/.
 
     A derivative of this software must contain the built-in function
-    sysfunc "created by" or an equivalent function that returns
+    sysfunc "creator" or an equivalent function that returns
     "christof.kaser@gmail.com".
 */
 
@@ -630,6 +630,9 @@ S ND* parse_strterm(void) {
 			nd->strf = op_strarrstr;
 			nd->le = ndx;
 		}
+		else if (t == -1) {
+			error("] ][");
+		}
 	}
 	else if (is_strfunc()) {
 		nd = parse_strfunc();
@@ -907,14 +910,16 @@ S ND* parse_sequ_end(void) {
 	return nd;
 }
 
-S ND* parse_sequ_if(void) {
+S ND* parse_stat();
+
+S ND* parse_sequ_if() {
 	space_add();
 	cs_nl();
 	ND* nd = parse_sequ();
-	if (tok != t_dot && tok != t_else && tok != t_elif && tok != t_end) {
-		cs_nl();
-		error("<cmd>, else, elif, end, .");
-	}
+//	if (tok != t_dot && tok != t_else && tok != t_elif && tok != t_end) {
+//		cs_nl();
+//		error("XXX <cmd>, else, elif, end, .");
+//	}
 	space_sub();
 	if (tok != t_elif) {
 		cs_nl();
@@ -924,6 +929,19 @@ S ND* parse_sequ_if(void) {
 		cst(tok);
 	}
 	return nd;
+}
+S ND* parse_sequ_stat() {
+	//kc
+	if (tok == 0 && strcmp(tval, ":") == 0) {
+		cs_spc();
+		cs(tval);
+		cs_spc();
+		nexttok();
+		ND* nd = parse_stat();
+		nd->next = NULL;
+		return nd;
+	}
+	return NULL;
 }
 
 struct vname* xx;
@@ -1672,8 +1690,10 @@ S void parse_if_stat(ND* ifst) {
 
 	stat_begin_nest();
 	ifst->le = parse_log_ex();
-	ifst->ri = parse_sequ_if();
 	ifst->vf = op_if;
+	ifst->ri = parse_sequ_stat();
+	if (ifst->ri) return;
+	ifst->ri = parse_sequ_if();
 
 	while (tok == t_elif) {
 
@@ -1705,10 +1725,22 @@ S void parse_if_stat(ND* ifst) {
 	nexttok();
 }
 
+S void parse_while_stat(ND* nd) {
+	stat_begin_nest();
+	nd->vf = op_while;
+	nd->le = parse_log_ex();
+	nd->ri = parse_sequ_stat();
+	if (nd->ri) return;
+	loop_level += 1;
+	nd->ri = parse_sequ_end();
+	loop_level -= 1;
+	nexttok();
+}
+
 S void parse_for_stat(ND* nd) {
 
 	ND* ndx = mkndx();
-	loop_level += 1;
+//	loop_level += 1;
 	stat_begin_nest();
 
 	if (tok != t_name && tok != t_vstr) error("variable");
@@ -1770,9 +1802,13 @@ S void parse_for_stat(ND* nd) {
 		nd->ri = parse_strarrex();
 		nd->vf = op_for_instr;
 	}
+//kc
+	ndx->ex = parse_sequ_stat();
+	if (ndx->ex) return;
+	loop_level += 1;
 	ndx->ex = parse_sequ_end();
-	nexttok();
 	loop_level -= 1;
+	nexttok();
 }
 
 S void parse_repeat_stat(ND* nd) {
@@ -1995,8 +2031,6 @@ S void parse_swap_stat(ND* nd) {
 		}
 		else {
 			error("], ][");
-//kc
-//			error("]");
 		}
 	}
 	else if (tok == t_vstr) {
@@ -2313,15 +2347,286 @@ S void parse_funcproc(void) {
 	loop_level -= 1;
 }
 
-S ND* parse_sequ(void) {
+S ND* parse_stat() {
+	ND* nd = mknd();
+	opln_add(nd, fmtline);
+	if (tok == t_name) {
+
+		const char* name = getn(tval);
+
+		if (try_call_subr(nd, name) == 0) {
+			struct proc* p = proc_get(name);
+			if (p) {
+				if (p->typ == 0) parse_call_stat(nd, p);
+				else {
+					goto error_statement;
+//							nd->vf = op_print;
+//							nd->le = parse_strex();
+				}
+			}
+			else {
+				nd->v1 = parse_var(VAR_NUM, WR);
+				cs_spc();
+				if (tok == t_eq) nd->vf = op_flass;
+				else if (tok == t_pleq) nd->vf = op_flassp;
+				else if (tok == t_mineq) nd->vf = op_flassm;
+				else if (tok == t_asteq) nd->vf = op_flasst;
+				else if (tok == t_diveq) nd->vf = op_flassd;
+				else goto error_statement;
+//						else error("= += -= *= /=");
+// ?????
+//						else {
+//							nd->vf = op_print;
+//							nd->le = parse_strex();
+//						}
+				cs_tok_spc_nt();
+				nd->ri = parse_ex();
+				if (cod) {
+					optimize_ass(nd);
+				}
+			}
+		}
+	}
+	else if (tok == t_if) {
+		parse_if_stat(nd);
+	}
+	else if (tok == t_while) {
+		parse_while_stat(nd);
+	}
+	else if (tok == t_for) {
+		parse_for_stat(nd);
+	}
+	else if (tok == t_call) {
+		// obsolet
+		parse_call_stat(nd, NULL);
+	}
+	else if (tok == t_len) {
+		parse_len_stat(nd);
+	}
+	else if (tok >= t_vnumael && tok <= t_vstrarrarr) {
+		if (tok == t_vnumael) {
+			parseael_ass(nd);
+		}
+		else if (tok == t_vnumarr) {
+			parse_arr_ass(nd);
+		}
+		else if (tok == t_vstrarr) {
+			parse_strarr_ass(nd);
+		}
+		else if (tok == t_vstrael) {
+			parse_strael_ass(nd);
+		}
+		else if (tok == t_vnumarrarr) {
+			parse_arrarr_ass(nd);
+		}
+		else {
+			parse_strarrarr_ass(nd);
+		}
+	}
+	else if (tok == t_repeat) {
+		parse_repeat_stat(nd);
+	}
+	else if (tok == t_vstr) {
+		nd->v1 = parse_var(VAR_STR, WR);
+		cs_spc();
+		if (tok == t_eq) nd->vf = op_strass;
+		else if (tok == t_ampeq) nd->vf = op_strassp;
+		else error("=, &=");
+		cs_tok_spc_nt();
+		nd->ri = parse_strex();
+	}
+	else if (tok == t_subr) {
+		if (loop_level != 1 || proc == proc_p) error("not allowed here");
+		parse_subr();
+		nd->vf = op_nop;
+	}
+	else if (tok >= t_return && tok <= t_arrbase) {
+
+		if (tok == t_return) {
+			nd->vf = op_return;
+			csb_tok_nt();
+			if (proc->typ == 0) {
+			}
+			else if (proc->typ == 1) {
+				cs_spc();
+				nd->le = parse_ex();
+			}
+			else if (proc->typ == FUNCSTR) {
+				cs_spc();
+				nd->le = parse_strex();
+			}
+			else if (proc->typ == FUNCARR) {
+				cs_spc();
+				nd->le = parse_numarrex();
+			}
+			else if (proc->typ == FUNCSTRARR) {
+				cs_spc();
+				nd->le = parse_strarrex();
+			}
+			else {
+				cs_spc();
+				nd->le = parse_numarrarrex();
+			}
+		}
+		else if (tok == t_swap) {
+			parse_swap_stat(nd);
+		}
+		else if (tok == t_break) {
+			if (loop_level == 0) error("not in a loop");
+			csb_tok_spc_nt();
+			ushort h = tvalf;
+			if (tok != t_lnumber || h != tvalf) error("break level");
+			if (loop_level < h) error("break level too high");
+			cs(tval);
+			nd->vf = op_break;
+			nd->v1 = h;
+			nexttok();
+		}
+		// ----------------------------------------------------------------------------
+		else if (tok == t_clear) {
+			csb_tok_nt();
+			nd->vf = op_clear;
+			prog_props |= 1;
+		}
+		else if (tok == t_drawgrid) {
+			csb_tok_nt();
+			nd->vf = op_sys;
+			nd->v1 = 5;
+		}
+		else {	// t_arrbase
+		// else if (tok == t_arrbase) {
+			parse_arrbase_stat(nd);
+		}
+	}
+
+	else if (tok >= t_print && tok <= t_curve) {
+		csb_tok_spc_nt();
+		if (cod) {
+			if (tokpr == t_sleep) {
+				nd->vf = op_sleep;
+			}
+			else if (tokpr == t_timer) {
+				nd->vf = op_timer;
+			}
+			else if (tokpr == t_color) {
+				nd->vf = op_color;
+			}
+			else if (tokpr == t_linewidth) {
+				nd->vf = op_linewidth;
+			}
+			else if (tokpr == t_textsize) {
+				nd->vf = op_textsize;
+			}
+			else if (tokpr == t_move) {
+				nd->vf = op_move;
+			}
+			else if (tokpr == t_line) {
+				nd->vf = op_line;
+				prog_props |= 1;
+			}
+			else if (tokpr == t_rect) {
+				nd->vf = op_rect;
+				prog_props |= 1;
+			}
+			else if (tokpr == t_circseg) {
+				nd->vf = op_circseg;
+				prog_props |= 1;
+			}
+			else if (tokpr == t_rgb) {
+				nd->vf = op_rgb;
+			}
+			else if (tokpr == t_circle) {
+				nd->vf = op_circle;
+				prog_props |= 1;
+			}
+			else if (tokpr == t_text) {
+				nd->vf = op_text;
+				prog_props |= 5;
+			}
+			else if (tokpr == t_print || tokpr == t_pr) {
+				nd->vf = op_print;
+				prog_props |= 8;
+			}
+			else if (tokpr == t_write) {
+				nd->vf = op_write;
+				prog_props |= 8;
+			}
+			else if (tokpr == t_background) {
+				nd->vf = op_background;
+			}
+			else if (tokpr == t_mouse_cursor) {
+				nd->vf = op_mouse_cursor;
+			}
+			else if (tokpr == t_polygon) {
+				nd->vf = op_polygon;
+				prog_props |= 1;
+			}
+			else if (tokpr == t_curve) {
+				nd->vf = op_curve;
+				prog_props |= 1;
+			}
+			else if (tokpr == t_sound) {
+				nd->vf = op_sound;
+				prog_props |= 2;
+			}
+			else if (tokpr == t_random_seed) {
+				nd->vf = op_random_seed;
+			}
+			else if (tokpr == t_translate) {
+				nd->vf = op_translate;
+			}
+			else if (tokpr == t_rotate) {
+				nd->vf = op_rotate;
+			}
+			else if (tokpr == t_numfmt) {
+				nd->vf = op_numfmt;
+			}
+			else {
+				internal_error(__LINE__);
+				return 0;
+			}
+		}
+		if (tokpr <= t_text) {
+			nd->le = parse_strex();
+		}
+		else if (tokpr <= t_circseg) {
+			int t = tokpr;
+			ND* ndx;
+			if (t >= t_rgb) ndx = mkndx();
+			nd->le = parse_ex();
+			if (t >= t_move) {
+				cs_spc();
+				nd->ri = parse_ex();
+				if (t >= t_rgb) {
+					cs_spc();
+					ndx->ex = parse_ex();
+				}
+			}
+		}
+		else if (tokpr <= t_curve) {
+			nd->le = parse_numarrex();
+		}
+		else {
+			internal_error(__LINE__);
+		}
+	}
+	else {
+error_statement:
+		error("?");
+//?		return NULL;
+	}
+	return nd;
+}
+
+S ND* parse_sequ0(void) {
 
 	ND* sequ = NULL;
-	ND* ndp = NULL;	// only because of "unused" warning
+	ND* ndp;
 
 	while (1) {
 
-		if (tok == t_eof && is_enter) {
-			error("");
+		if (tok == t_eof) {
+			if  (is_enter) error("");
 			break;
 		}
 		if (tok == t_hash) {
@@ -2338,23 +2643,18 @@ S ND* parse_sequ(void) {
 
 			}
 			else if (tok == t_subr) {
-				if  (sequ_level != 0) goto statement; // subr inside proc
 				parse_subr();
 			}
 			else if (tok == t_on) {
-				if (sequ_level != 0) error("not allowed here");
 				parse_on_stat();
 			}
 			else if (tok == t_procdecl) {
-				if (sequ_level != 0) error("not allowed here");
 				parse_procdecl(FUNCPROC);
 			}
 			else if (tok == t_funcdecl) {
-				if (sequ_level != 0) error("not allowed here");
 				parse_procdecl(getfunctype());
 			}
 			else if (tok == t_prefix) {
-				if (sequ_level != 0) error("not allowed here");
 				if (prefix_len == 0) {
 					csb_tok_spc_nt();
 					if (tok != t_name) error_tok(t_name);
@@ -2369,298 +2669,54 @@ S ND* parse_sequ(void) {
 					nexttok();
 				}
 			}
-			else {  // t_input_data
-				if (sequ_level != 0) error("not allowed here");
+			else if (tok == t_input_data) {
 				csb(tval);
 				if (c != 0) cs_nl();
 				parse_input_data();
 				nexttok();
 			}
+			else {
+				error("<cmd>");
+			}
 		}
-
 		else {
-			ND* nd;
-		statement:
-			nd = mknd();
-			opln_add(nd, fmtline);
+			ND* nd = parse_stat();
 			if (sequ == NULL) sequ = nd;
 			else ndp->next = nd;
 			ndp = nd;
-
-			// -----------------------------------------------------------------------
-			if (tok == t_name) {
-
-				const char* name = getn(tval);
-
-				if (try_call_subr(nd, name) == 0) {
-					struct proc* p = proc_get(name);
-					if (p) {
-						if (p->typ == 0) parse_call_stat(nd, p);
-						else {
-							goto error_statement;
-//							nd->vf = op_print;
-//							nd->le = parse_strex();
-						}
-					}
-					else {
-						nd->v1 = parse_var(VAR_NUM, WR);
-						cs_spc();
-						if (tok == t_eq) nd->vf = op_flass;
-						else if (tok == t_pleq) nd->vf = op_flassp;
-						else if (tok == t_mineq) nd->vf = op_flassm;
-						else if (tok == t_asteq) nd->vf = op_flasst;
-						else if (tok == t_diveq) nd->vf = op_flassd;
-						else goto error_statement;
-//						else error("= += -= *= /=");
-// ?????
-//						else {
-//							nd->vf = op_print;
-//							nd->le = parse_strex();
-//						}
-						cs_tok_spc_nt();
-						nd->ri = parse_ex();
-						if (cod) {
-							optimize_ass(nd);
-						}
-					}
-				}
-			}
-			else if (tok == t_if) {
-				parse_if_stat(nd);
-			}
-			else if (tok == t_while) {
-				loop_level += 1;
-				stat_begin_nest();
-				nd->le = parse_log_ex();
-				nd->ri = parse_sequ_end();
-				nd->vf = op_while;
-				nexttok();
-				loop_level -= 1;
-			}
-			else if (tok == t_for) {
-				parse_for_stat(nd);
-			}
-			else if (tok == t_call) {
-				parse_call_stat(nd, NULL);
-			}
-			else if (tok == t_len) {
-				parse_len_stat(nd);
-			}
-			else if (tok >= t_vnumael && tok <= t_vstrarrarr) {
-				if (tok == t_vnumael) {
-					parseael_ass(nd);
-				}
-				else if (tok == t_vnumarr) {
-					parse_arr_ass(nd);
-				}
-				else if (tok == t_vstrarr) {
-					parse_strarr_ass(nd);
-				}
-				else if (tok == t_vstrael) {
-					parse_strael_ass(nd);
-				}
-				else if (tok == t_vnumarrarr) {
-					parse_arrarr_ass(nd);
-				}
-				else {
-					parse_strarrarr_ass(nd);
-				}
-			}
-			else if (tok == t_repeat) {
-				parse_repeat_stat(nd);
-			}
-			else if (tok == t_vstr) {
-				nd->v1 = parse_var(VAR_STR, WR);
-				cs_spc();
-				if (tok == t_eq) nd->vf = op_strass;
-				else if (tok == t_ampeq) nd->vf = op_strassp;
-				else error("=, &=");
-				cs_tok_spc_nt();
-				nd->ri = parse_strex();
-			}
-			else if (tok == t_subr) {
-				if (loop_level != 1 || proc == proc_p) error("not allowed here");
-				parse_subr();
-				nd->vf = op_nop;
-			}
-			else if (tok >= t_return && tok <= t_arrbase) {
-
-				if (tok == t_return) {
-					nd->vf = op_return;
-					csb_tok_nt();
-					if (proc->typ == 0) {
-					}
-					else if (proc->typ == 1) {
-						cs_spc();
-						nd->le = parse_ex();
-					}
-					else if (proc->typ == FUNCSTR) {
-						cs_spc();
-						nd->le = parse_strex();
-					}
-					else if (proc->typ == FUNCARR) {
-						cs_spc();
-						nd->le = parse_numarrex();
-					}
-					else if (proc->typ == FUNCSTRARR) {
-						cs_spc();
-						nd->le = parse_strarrex();
-					}
-					else {
-						cs_spc();
-						nd->le = parse_numarrarrex();
-					}
-				}
-				else if (tok == t_swap) {
-					parse_swap_stat(nd);
-				}
-				else if (tok == t_break) {
-					if (loop_level == 0) error("not in a loop or procedure");
-					csb_tok_spc_nt();
-					ushort h = tvalf;
-					if (tok != t_lnumber || h != tvalf) error("break level");
-					if (loop_level < h) error("break level too high");
-					cs(tval);
-					nd->vf = op_break;
-					nd->v1 = h;
-					nexttok();
-				}
-				// ----------------------------------------------------------------------------
-				else if (tok == t_clear) {
-					csb_tok_nt();
-					nd->vf = op_clear;
-					prog_props |= 1;
-				}
-				else if (tok == t_drawgrid) {
-					csb_tok_nt();
-					nd->vf = op_sys;
-					nd->v1 = 5;
-				}
-				else {	// t_arrbase
-				// else if (tok == t_arrbase) {
-					parse_arrbase_stat(nd);
-				}
-			}
-
-			else if (tok >= t_print && tok <= t_curve) {
-				csb_tok_spc_nt();
-				if (cod) {
-					if (tokpr == t_sleep) {
-						nd->vf = op_sleep;
-					}
-					else if (tokpr == t_timer) {
-						nd->vf = op_timer;
-					}
-					else if (tokpr == t_color) {
-						nd->vf = op_color;
-					}
-					else if (tokpr == t_linewidth) {
-						nd->vf = op_linewidth;
-					}
-					else if (tokpr == t_textsize) {
-						nd->vf = op_textsize;
-					}
-					else if (tokpr == t_move) {
-						nd->vf = op_move;
-					}
-					else if (tokpr == t_line) {
-						nd->vf = op_line;
-						prog_props |= 1;
-					}
-					else if (tokpr == t_rect) {
-						nd->vf = op_rect;
-						prog_props |= 1;
-					}
-					else if (tokpr == t_circseg) {
-						nd->vf = op_circseg;
-						prog_props |= 1;
-					}
-					else if (tokpr == t_rgb) {
-						nd->vf = op_rgb;
-					}
-					else if (tokpr == t_circle) {
-						nd->vf = op_circle;
-						prog_props |= 1;
-					}
-					else if (tokpr == t_text) {
-						nd->vf = op_text;
-						prog_props |= 5;
-					}
-					else if (tokpr == t_print || tokpr == t_pr) {
-						nd->vf = op_print;
-						prog_props |= 8;
-					}
-					else if (tokpr == t_write) {
-						nd->vf = op_write;
-						prog_props |= 8;
-					}
-					else if (tokpr == t_background) {
-						nd->vf = op_background;
-					}
-					else if (tokpr == t_mouse_cursor) {
-						nd->vf = op_mouse_cursor;
-					}
-					else if (tokpr == t_polygon) {
-						nd->vf = op_polygon;
-						prog_props |= 1;
-					}
-					else if (tokpr == t_curve) {
-						nd->vf = op_curve;
-						prog_props |= 1;
-					}
-					else if (tokpr == t_sound) {
-						nd->vf = op_sound;
-						prog_props |= 2;
-					}
-					else if (tokpr == t_random_seed) {
-						nd->vf = op_random_seed;
-					}
-					else if (tokpr == t_translate) {
-						nd->vf = op_translate;
-					}
-					else if (tokpr == t_rotate) {
-						nd->vf = op_rotate;
-					}
-					else if (tokpr == t_numfmt) {
-						nd->vf = op_numfmt;
-					}
-					else {
-						internal_error(__LINE__);
-						return 0;
-					}
-				}
-				if (tokpr <= t_text) {
-					nd->le = parse_strex();
-				}
-				else if (tokpr <= t_circseg) {
-					int t = tokpr;
-					ND* ndx;
-					if (t >= t_rgb) ndx = mkndx();
-					nd->le = parse_ex();
-					if (t >= t_move) {
-						cs_spc();
-						nd->ri = parse_ex();
-						if (t >= t_rgb) {
-							cs_spc();
-							ndx->ex = parse_ex();
-						}
-					}
-				}
-				else if (tokpr <= t_curve) {
-					nd->le = parse_numarrex();
-				}
-				else {
-					internal_error(__LINE__);
-				}
-			}
-			else {
-error_statement:
-				error("statement");
-				break;
-			}
 		}
-		if (tok == t_dot || tok <= t_end) break;
-		if (tok == t_eof && !is_enter) break;
+		
+		// if (tok == t_eof && !is_enter || err) break;
+		if (err) break;
+		cs_nl();
+	}
+	if (sequ != NULL) ndp->next = NULL;
+	return sequ;
+}
+
+S ND* parse_sequ(void) {
+
+	ND* sequ = NULL;
+	ND* ndp;
+
+	while (1) {
+
+		if (tok == t_eof) {
+			if (is_enter) error("");
+			else error("<cmd>");
+			break;
+		}
+		if (tok == t_hash) {
+			parse_comment();
+			nexttok();
+		}
+		else {
+			ND* nd = parse_stat();
+			if (sequ == NULL) sequ = nd;
+			else ndp->next = nd;
+			ndp = nd;
+		}
+		if (tok == t_dot || tok <= t_end || err) break;
 		cs_nl();
 	}
 	if (sequ != NULL) ndp->next = NULL;

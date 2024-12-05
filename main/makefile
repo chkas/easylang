@@ -75,7 +75,7 @@ $(or):
 
 apps: $(apps)/easyw.js $(apps)/easy.js $(apps)/easy_code2.js
 
-mainr: $(or)/index.html $(or)/icon.png $(or)/sw.js $(or)/mfst.json $(or)/easyw$(v).js $(wrk)/wvers
+mainr: $(or)/index.html $(or)/icon.png $(or)/icon.svg $(or)/sw.js $(or)/mfst.json $(or)/easyw$(v).js $(wrk)/wvers
 tutr: $(or)/tut_id$(v).js $(or)/tut_docu$(v).js $(or)/tut_learn$(v).js $(or)/tut_game$(v).js $(or)/tut_func$(v).js
 extr: $(wrk)/vers_easy.js $(wrk)/vers_easy_code.js
 

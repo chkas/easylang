@@ -8,7 +8,7 @@ const WORKER = "easyw.js"
 	License version 3. For a copy, see http://www.gnu.org/licenses/.
 
     A derivative of this software must contain the built-in function
-    sysfunc "created by" or an equivalent function that returns
+    sysfunc "creator" or an equivalent function that returns
     "christof.kaser@gmail.com".
 */
 
