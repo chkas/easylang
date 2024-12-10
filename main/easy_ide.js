@@ -905,6 +905,7 @@ inp.onkeydown = function(e) {
 //	if (e.ctrlKey) {
 	if (e.ctrlKey || e.metaKey) {
 		if (k == 86 || k == 88) {	// v x
+			undoAdd(inp.innerText, getCaret())
 			stBtn.disabled = false
 		}
 		else if (k == 82 || k == 13) {	// r enter
@@ -1058,6 +1059,7 @@ function getCaret() {
 			break
 		}
 		if (nd.length) pos += nd.length
+		else if (nd.tagName == "BR") pos += 1
 	}
 	return pos
 }

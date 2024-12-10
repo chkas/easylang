@@ -1,24 +1,18 @@
 # AoC-23 - Day 25: Snowverload
-# 
-global name$[] r[][] rx[][] n .
-# 
+#
+global name$[] r[][] con[][] n .
+#
 proc mkcons . .
-   for i to n
-      rx[i][] = [ ]
-      len rx[i][] n
-   .
-   for i to n
-      for e in r[i][]
-         rx[i][e] = 1
-         rx[e][i] = 1
-      .
+   len con[][] n
+   for i to n : len con[i][] n
+   for i to n : for e in r[i][]
+      con[i][e] = 1
+      con[e][i] = 1
    .
 .
 func n2id n$ .
    for id to len name$[]
-      if name$[id] = n$
-         return id
-      .
+      if name$[id] = n$ : return id
    .
    name$[] &= n$
    r[][] &= [ ]
@@ -37,13 +31,12 @@ proc read . .
       .
       n = len r[][]
    .
-   len rx[][] n
 .
 read
-# 
+#
 proc discon a b . .
-   rx[a][b] = 0
-   rx[b][a] = 0
+   con[a][b] = 0
+   con[b][a] = 0
 .
 func gcon src dest .
    len seen[] n
@@ -52,7 +45,7 @@ func gcon src dest .
    while len todo[] > 0
       for nd in todo[]
          for e in r[nd][]
-            if seen[e] = 0 and rx[nd][e] = 1
+            if seen[e] = 0 and con[nd][e] = 1
                seen[e] = 1
                prev[e] = nd
                if e = dest
@@ -72,7 +65,7 @@ func gcon src dest .
    .
    return 0
 .
-# 
+#
 proc go . .
    s = 1
    sum = 1
@@ -87,7 +80,7 @@ proc go . .
    print sum * (n - sum)
 .
 go
-# 
+#
 input_data
 jqt: rhn xhk nvd
 rsh: frs pzl lsr
@@ -102,4 +95,5 @@ nvd: lhk
 lsr: lhk
 rzs: qnr cmg lsr rsh
 frs: qnr lhk lsr
+
 
