@@ -597,33 +597,34 @@ S double op_divi1(ND* nd) {	// as in Julia fld1
 
 // ------------------------------------
 
-// only 32 bit as in JS
 
+#define ulong unsigned long long
 S double op_bitand(ND* nd) {
-	uint a = (long long)numf(nd->le);
-	uint b = (long long)numf(nd->ri);
+	ulong a = (ulong)numf(nd->le);
+	ulong b = (ulong)numf(nd->ri);
 	return a & b;
 }
 S double op_bitor(ND* nd) {
-	uint a = (long long)numf(nd->le);
-	uint b = (long long)numf(nd->ri);
+	ulong a = (ulong)numf(nd->le);
+	ulong b = (ulong)numf(nd->ri);
 	return a | b;
 }
 S double op_bitxor(ND* nd) {
-	uint a = (long long)numf(nd->le);
-	uint b = (long long)numf(nd->ri);
+	ulong a = (ulong)numf(nd->le);
+	ulong b = (ulong)numf(nd->ri);
 	return a ^ b;
 }
 S double op_bitnot(ND* nd) {
-	uint a = (long long)numf(nd->le);
+	ulong a = (ulong)numf(nd->le);
 	return ~a;
 }
 S double op_bitshift(ND* nd) {
-	uint a = (long long)numf(nd->le);
+	ulong a = (ulong)numf(nd->le);
 	int b = numf(nd->ri);
 	if (b >= 0) return a << b;
 	else return a >> (-b);
 }
+
 // ------------------------------------
 
 S double time_start;
