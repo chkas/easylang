@@ -1,5 +1,5 @@
 # AoC-23 - Day 15: Lens Library
-# 
+#
 func hash s$[] .
    for c$ in s$[]
       h = (h + strcode c$) * 17 mod 256
@@ -10,9 +10,9 @@ len b$[][] 256
 len bv[][] 256
 for s$ in strsplit input ","
    s$[] = strchars s$
-   # 
+   #
    part1 += hash s$[]
-   # 
+   #
    if s$[len s$[]] = "-"
       v = 0
       len s$[] -1
@@ -21,7 +21,7 @@ for s$ in strsplit input ","
       len s$[] -2
    .
    b = hash s$[] + 1
-   id$ = strjoin s$[]
+   id$ = strjoin s$[] ""
    for i to len b$[b][]
       if b$[b][i] = id$ and bv[b][i] > 0
          bv[b][i] = v
@@ -44,6 +44,6 @@ for b to 256
 .
 print part1
 print part2
-# 
+#
 input_data
 rn=1,cm-,qp=3,cm=2,qp-,pc=4,ot=9,ab=5,pc-,pc=6,ot=7

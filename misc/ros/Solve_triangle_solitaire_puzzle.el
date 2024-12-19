@@ -21,16 +21,14 @@ proc solve . solution$ .
                brd$[pos + dir] = "●"
                brd$[pos + 2 * dir] = "·"
                if solution$ <> ""
-                  solution$ = strjoin brd$[] & solution$
+                  solution$ = strjoin brd$[] "" & solution$
                   return
                .
             .
          .
       .
    .
-   if npegs = 1
-      solution$ = strjoin brd$[]
-   .
+   if npegs = 1 : solution$ = strjoin brd$[] ""
 .
 solve solution$
 print solution$

@@ -1,9 +1,9 @@
 # AoC-21 - Day 22: Reactor Reboot
-# 
+#
 # The volumes are added, intersections
 # with cubes are subtracted, intersections
-# with intersections are added, .. 
-# 
+# with intersections are added, ..
+#
 proc inter p0 q0 p1 q1 . r0 r1 r .
    r = 0
    if p0 > q0
@@ -27,7 +27,7 @@ proc intersect p[] q[] . r[] r .
    .
 .
 global pts[][] pts_sign[] .
-# 
+#
 proc add pt[] ison . .
    len r[] 6
    for i to len pts[][]
@@ -55,13 +55,13 @@ proc volume_all . sum .
       sum += vol * pts_sign[i]
    .
 .
-# 
+#
 len p[] 6
 repeat
    s$ = input
    until s$ = ""
    ison = if substr s$ 1 2 = "on"
-   p[] = number strsplit s$ "=."
+   p[] = number strtok s$ "=."
    if abs p[1] > 50 and sum = 0
       volume_all sum
       print sum
@@ -70,7 +70,7 @@ repeat
 .
 volume_all sum
 print sum
-# 
+#
 input_data
 on x=-5..47,y=-31..22,z=-19..33
 on x=-44..5,y=-27..21,z=-14..35

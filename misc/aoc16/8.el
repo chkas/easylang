@@ -45,7 +45,7 @@ repeat
    s$ = input
    until s$ = ""
    if substr s$ 1 4 = "rect"
-      v[] = number strsplit s$ "x "
+      v[] = number strtok s$ "x "
       for r range0 v[2]
          for c range0 v[1]
             m[c + nc * r] = 1

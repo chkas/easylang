@@ -1,11 +1,11 @@
 # AoC-18 - Day 2: Inventory Management System
-# 
+#
 repeat
    s$ = input
    until s$ = ""
    s$[] &= s$
 .
-# 
+#
 len let[] 26
 for s$ in s$[]
    a$[] = strchars s$
@@ -26,7 +26,7 @@ for s$ in s$[]
    s3 = 0
 .
 print s2all * s3all
-# 
+#
 for ii to len s$[]
    a$[] = strchars s$[ii]
    for ij = ii + 1 to len s$[]
@@ -43,12 +43,12 @@ for ii to len s$[]
       .
       if cnt = 1
          a$[pos] = ""
-         print strjoin a$[]
+         print strjoin a$[] ""
          break 2
       .
    .
 .
-# 
+#
 input_data
 abcdef
 bababc

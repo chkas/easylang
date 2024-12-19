@@ -1,17 +1,17 @@
 # AoC-23 - Day 22: Sand Slabs
-# 
+#
 global br[][] .
-# 
+#
 proc read . .
    repeat
       s$ = input
       until s$ = ""
-      w[] = number strsplit s$ ",~"
+      w[] = number strtok s$ ",~"
       br[][] &= w[]
    .
 .
 read
-# 
+#
 proc sort . d[][] .
    for i = 1 to len d[][] - 1
       for j = i + 1 to len d[][]
@@ -22,9 +22,9 @@ proc sort . d[][] .
    .
 .
 sort br[][]
-# 
+#
 len supby[][] len br[][]
-# 
+#
 proc fall . .
    for i to len br[][]
       swap b[] br[i][]
@@ -49,7 +49,7 @@ proc fall . .
    .
 .
 fall
-# 
+#
 func safe x .
    for i to len supby[][]
       ln = len supby[i][]
@@ -70,8 +70,8 @@ proc part1 . .
    print sum
 .
 part1
-# 
-# 
+#
+#
 func remove x .
    supb[][] = supby[][]
    torm[] &= x

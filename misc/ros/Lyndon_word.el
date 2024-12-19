@@ -15,7 +15,7 @@ func$ nextword n w$ alpha$ .
       .
       x$[lx] = alpha$[i + 1]
    .
-   return strjoin x$[]
+   return strjoin x$[] ""
 .
 proc lyndon n alpha$ . .
    w$ = substr alpha$ 1 1

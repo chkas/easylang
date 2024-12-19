@@ -24,7 +24,7 @@ proc read . .
    repeat
       s$ = input
       until s$ = ""
-      s$[] = strsplit s$ "{}:,"
+      s$[] = strtok s$ "{}:,"
       id = n2id s$[1]
       #
       for i = 2 step 2 to len s$[] - 3

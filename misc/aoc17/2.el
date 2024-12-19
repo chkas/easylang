@@ -1,9 +1,9 @@
 # AoC-17 - Day 2: Corruption Checksum
-# 
+#
 repeat
    s$ = input
    until s$ = ""
-   a$[] = strsplit s$ "\t "
+   a$[] = strtok s$ "\t "
    min = 1 / 0
    max = 0
    for i to len a$[]
@@ -21,7 +21,7 @@ repeat
 .
 print cs1
 print cs2
-# 
+#
 input_data
 5 1 9 5
 7 5 3

@@ -21,7 +21,7 @@ proc read . .
    repeat
       s$ = input
       until s$ = ""
-      s$[] = strsplit s$ ">, "
+      s$[] = strtok s$ ">, "
       #
       id = n2id substr s$[1] 2 99
       if substr s$[1] 1 1 = "%"

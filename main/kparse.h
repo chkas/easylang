@@ -82,7 +82,7 @@ S ND* parse_numarrex(void);
 S ND* parse_strarrex(void);
 
 struct str (*strf[])(ND*) = {
-	op_input, op_sysfunc, op_keyb_key, op_strchar, op_time_str, op_join, op_substr
+	op_input, op_sysfunc, op_keyb_key, op_strchar, op_time_str, op_strjoin, op_substr
 };
 
 S ND* parse_strfunc(void) {
@@ -111,6 +111,8 @@ S ND* parse_strfunc(void) {
 	else if (tokpr == t_strjoin) {
 		cs_spc();
 		nd->le = parse_strarrex();
+		cs_spc();
+		nd->ri = parse_strterm();
 	}
 	else if (tokpr == t_keyb_key) {
 		// kc
@@ -1394,8 +1396,9 @@ S ND* parse_strarrex(void) {
 			csb_tok_spc_nt();
 			ex->le = parse_strex();
 		}
-		else if (strcmp(tval, "strsplit") == 0 ) {
+		else if (strcmp(tval, "strsplit") == 0 || strcmp(tval, "strtok") == 0 ) {
 			ex->arrf = op_strsplit;
+			if (strcmp(tval, "strtok") == 0) ex->arrf = op_strtok;
 			csb_tok_spc_nt();
 			ex->le = parse_strex();
 			cs_spc();

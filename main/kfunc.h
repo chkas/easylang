@@ -676,17 +676,23 @@ S STR op_strarrstr(ND* nd) {
 	return str;
 }
 
-S STR op_join(ND* nd) {
+S STR op_strjoin(ND* nd) {
 	STR str;
 	str_init(&str);
 
 	ARR arr = arrf(nd->le);
-	for (int i = 0; i < arr.len; i++) {
+	STR s = strf(nd->ri);
+	int i;
+	for (i = 0; i < arr.len - 1; i++) {
 		str_append(&str, str_ptr(arr.pstr + i));
 		str_free(arr.pstr + i);
+		str_append(&str, str_ptr(&s));
 	}
+	str_append(&str, str_ptr(arr.pstr + i));
+	str_free(arr.pstr + i);
 	free(arr.pstr);
 
+	str_free(&s);
 	return str;
 }
 S void xnumarrarrstr(STR* str, ARR* a) {
@@ -1465,7 +1471,16 @@ S ARR op_strchars(ND* nd) {
 	return res;
 }
 
-S ARR op_strsplit(ND* nd) {
+S int arrstrapp(ARR* parr, char* str) {
+	parr->len += 1;
+	parr->p = realloc(parr->p, parr->len * sizeof(STR));
+	if (parr->p == NULL) return 1;
+	str_init(parr->pstr + parr->len - 1);
+	str_append(parr->pstr + parr->len - 1, str);
+	return 0;
+}
+
+S ARR op_strtok(ND* nd) {
 	STR s1 = strf(nd->le);
 	STR s2 = strf(nd->ri);
 	const char* s2p = str_ptr(&s2);
@@ -1483,23 +1498,77 @@ S ARR op_strsplit(ND* nd) {
 
 	char* str = dup;
 	while (1) {
-
 		char* tk = strsep(&str, s2p);
-
 		if (tk == NULL) break;
-		res.len += 1;
-		res.p = realloc(res.p, res.len * sizeof(STR));
+		if (arrstrapp(&res, tk) != 0) {
+			res.len = 0;
+			return res;
+		}
+	}
+	str_free(&s1);
+	str_free(&s2);
+	free(dup);
+	return res;
+}
+
+S ARR op_strsplit(ND* nd) {
+	STR s1 = strf(nd->le);
+	STR s2 = strf(nd->ri);
+	const char* s2p = str_ptr(&s2);
+
+	ARR res;
+	res.typ = ARR_STR;
+	res.base = rt.arrbase;
+	res.p = NULL;
+	if (*s2p == 0) {
+		const char* p = str_ptr(&s1);
+		res.len = str_ulen(p);
+		res.p = realloc(NULL, res.len * sizeof(STR));
 		if (res.p == NULL) {
 			out_of_mem(nd);
 			res.len = 0;
 			return res;
 		}
-		str_init(res.pstr + res.len - 1);
-		str_append(res.pstr + res.len - 1, tk);
+
+		int ind = 0;
+		int i = 0;
+		int l;
+		while (ind < res.len) {
+			l = uchlen(p[i]);
+			str_init(res.pstr + ind);
+	
+			int h = 0;
+			while (h < l) {
+				res.pstr[ind].d[h] = p[i + h];
+				h++;
+			}
+			res.pstr[ind].d[h] = 0;
+			i += l;
+			ind++;
+		}
+	}
+	else {
+		res.len = 0;
+		char* dup = strdup(str_ptr(&s1));
+		if (dup == NULL) {
+			out_of_mem(nd);
+			return res;
+		}
+		char* str = dup;
+		while (1) {
+			char* tk = strstr(str, s2p);
+			if (tk != NULL) *tk = 0;
+			if (arrstrapp(&res, str) != 0) {
+				res.len = 0;
+				return res;
+			}
+			if (tk == NULL) break;
+			str = tk + strlen(s2p);
+		}
+		free(dup);
 	}
 	str_free(&s1);
 	str_free(&s2);
-	free(dup);
 	return res;
 }
 
@@ -2657,7 +2726,25 @@ S void exec_slow(ND* nd) {
 	(*(vf))(nd);
 }
 
+
+S void free_rt(void) {
+	free(rt_nums);
+	int i;
+	for (i = 0; i < proc_p->varcnt[1]; i++) {
+		str_free(rt_strs + i);
+	}
+	free(rt_strs);
+	for (int ia = 0; ia < proc_p->varcnt[2]; ia++) {
+		free_arr(rt_arrs + ia);
+	}
+	free(rt_arrs);
+	out_of_memf = NULL;
+	parse_clean();
+}
+
 // ------------ exceptions ----------------
+
+
 
 S void except(ND* nd, const char* s) {
 	char b[36];
@@ -2676,6 +2763,7 @@ S void except(ND* nd, const char* s) {
 	}
 	dbg_outvars();
 
+	free_rt();
 	gr_exit();
 }
 
@@ -2728,19 +2816,3 @@ S void init_rt(void) {
 	if (sysconfig & 4) rt.arrbase = 0;
 	arrs_init(rt_arrs, proc_p->varcnt[2]);
 }
-
-S void free_rt(void) {
-	free(rt_nums);
-	int i;
-	for (i = 0; i < proc_p->varcnt[1]; i++) {
-		str_free(rt_strs + i);
-	}
-	free(rt_strs);
-	for (int ia = 0; ia < proc_p->varcnt[2]; ia++) {
-		free_arr(rt_arrs + ia);
-	}
-	free(rt_arrs);
-	out_of_memf = NULL;
-	parse_clean();
-}
-

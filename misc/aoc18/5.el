@@ -18,7 +18,7 @@ proc reduce . a$ .
             i += 1
          .
       .
-      a$ = strjoin a$[]
+      a$ = strjoin a$[] ""
       until done = 1
    .
 .
@@ -36,7 +36,7 @@ for k to 26
          a$[i] = ""
       .
    .
-   a$ = strjoin a$[]
+   a$ = strjoin a$[] ""
    reduce a$
    if len a$ < min
       min = len a$

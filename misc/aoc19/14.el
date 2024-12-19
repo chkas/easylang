@@ -1,7 +1,7 @@
 # AoC-19 - Day 14: Space Stoichiometry
-# 
+#
 global name$[] recpt0[][] .
-# 
+#
 proc nid n$ . i .
    for i to len name$[]
       if name$[i] = n$
@@ -18,7 +18,7 @@ proc parse . .
       until s$ = ""
       len recpt[] 2
       i = 1
-      a$[] = strsplit s$ ", "
+      a$[] = strtok s$ ", "
       repeat
          nid a$[i + 1] id
          recpt[] &= id
@@ -33,7 +33,7 @@ proc parse . .
    .
 .
 parse
-# 
+#
 proc produce_fuel need . n_ore .
    recpt[][] = recpt0[][]
    len need[] len name$[]
@@ -67,7 +67,7 @@ proc produce_fuel need . n_ore .
 .
 produce_fuel 1 n_ore
 print n_ore
-# 
+#
 proc part2 . .
    min = 1
    max = 9999999999
@@ -83,7 +83,7 @@ proc part2 . .
    print min
 .
 part2
-# 
+#
 input_data
 171 ORE => 8 CNZTR
 7 ZLQW, 3 BMBT, 9 XCVML, 26 XMNCP, 1 WPTQ, 2 MZWV, 1 RJRHP => 4 PLWSL

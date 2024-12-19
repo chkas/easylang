@@ -1,10 +1,10 @@
 # AoC-18 - Day 10: The Stars Align
 #
-sysconf topleft 
+sysconf topleft
 repeat
    s$ = input
    until s$ = ""
-   s$[] = strsplit s$ "<>,"
+   s$[] = strtok s$ "<>,"
    x[] &= number s$[2]
    y[] &= number s$[3]
    vx[] &= number s$[5]
@@ -12,7 +12,7 @@ repeat
 .
 background 000
 color 999
-# 
+#
 global xl yl .
 proc show . .
    clear
@@ -43,7 +43,7 @@ repeat
    until s > 5
 .
 print sec
-# 
+#
 input_data
 position=< 9,  1> velocity=< 0,  2>
 position=< 7,  0> velocity=<-1,  0>

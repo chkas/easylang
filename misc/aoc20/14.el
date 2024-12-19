@@ -82,7 +82,7 @@ proc mem_wr ind$ val . .
                   m$[pos[j]] = v mod 2
                   v = v div 2
                .
-               memi$[] &= strjoin m$[]
+               memi$[] &= strjoin m$[] ""
                mem[] &= mem[k]
             .
          .

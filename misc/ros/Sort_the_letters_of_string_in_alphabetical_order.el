@@ -7,6 +7,6 @@ func$ sort s$ .
          .
       .
    .
-   return strjoin d$[]
+   return strjoin d$[] ""
 .
 print sort "The quick brown fox jumps over the lazy dog, apparently"

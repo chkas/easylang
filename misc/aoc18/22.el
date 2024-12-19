@@ -1,16 +1,16 @@
 # AoC-18 - Day 22: Mode Maze
-# 
+#
 s$[] = strsplit input " "
 depth = number s$[2]
-s$[] = strsplit input " ,"
+s$[] = strtok input " ,"
 targx = number s$[2]
 targy = number s$[3]
-# 
+#
 nx = 100
 ny = 1000
 len f[] nx * ny
 arrbase f[] 0
-# 
+#
 proc part1 . .
    len ero[] nx
    arrbase ero[] 0
@@ -37,22 +37,22 @@ proc part1 . .
    print risk
 .
 part1
-# 
+#
 nx2 = 2 * nx
 len w[] nx2 * ny
 arrbase w[] 0
 for i range0 len w[]
    w[i] = 99999
 .
-# 
+#
 # 0 rocky   torch gear
 # 1 wet      -    gear
 # 2 narrow   -    torch
-# 
+#
 # 0 1  -+   straight
 # 0 2  +-   cross
 # 1 2  +-   straight
-# 
+#
 todon[] = [ 0 ]
 mintarg = 99999
 targpos = targy * nx2 + 2 * targx
@@ -67,7 +67,7 @@ proc add_todo pos w . .
       .
    .
 .
-# 
+#
 w[0] = 0
 while len todon[] > 0
    swap todo[] todon[]
@@ -77,7 +77,7 @@ while len todon[] > 0
       w = w[pos]
       chng = 1 - pos mod 2 * 2
       add_todo pos + chng w + 7
-      # 
+      #
       for j range0 4
          posx = -1
          if j = 0 and pos mod nx2 > 1
@@ -116,7 +116,7 @@ while len todon[] > 0
    .
 .
 print mintarg
-# 
+#
 input_data
 depth: 510
 target: 10,10.

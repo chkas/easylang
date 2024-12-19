@@ -1,12 +1,12 @@
 # AoC-22 - Day 14: Regolith Reservoir
-# 
+#
 sysconf topleft
 visual = 1
-# 
+#
 nc = 400
 len m[] nc * nc / 2
 global maxy .
-# 
+#
 proc show p . .
    ra = maxy + 5
    sc = 100 / ra / 2
@@ -32,7 +32,7 @@ proc init . .
    repeat
       s$ = input
       until s$ = ""
-      a[] = number strsplit s$ " ,"
+      a[] = number strtok s$ " ,"
       for i = 1 step 2 to len a[] - 3
 #      for i = 4 step 3 to len a[]
          xp = a[i] - (500 - nc / 2)
@@ -63,7 +63,7 @@ if visual = 1
    .
    sleep 1
 .
-# 
+#
 s = nc / 2 + 1
 while 1 = 1
    if part2 = 0 and s >= maxy * nc
@@ -96,7 +96,7 @@ while 1 = 1
    show s
 .
 print cnt
-# 
+#
 input_data
 498,4 -> 498,6 -> 496,6
 503,4 -> 502,4 -> 502,9 -> 494,9

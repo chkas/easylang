@@ -1,11 +1,11 @@
 # AoC-18 - Day 23: Experimental Emergency Teleportation
-# 
+#
 # not generally correct
-# 
+#
 minr = 1 / 0
-# 
+#
 repeat
-   s$[] = strsplit input "<,> ="
+   s$[] = strtok input "<,> ="
    until len s$[] < 9
    x = number s$[3]
    y = number s$[4]
@@ -44,9 +44,9 @@ for i to bn
    .
 .
 print cnt
-# 
+#
 step = minr div 2
-# 
+#
 repeat
    max_cnt = 0
    x = xmin
@@ -87,8 +87,8 @@ repeat
 .
 # print max_cnt
 print my_dist
-# 
-# 
+#
+#
 input_data
 pos=<10,12,12>, r=2
 pos=<12,14,12>, r=2

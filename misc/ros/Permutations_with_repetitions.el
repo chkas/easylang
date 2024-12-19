@@ -12,7 +12,7 @@ repeat
    for i to len pn[]
       pc$[i] = values$[pn[i]]
    .
-   print strjoin pc$[]
+   print strjoin pc$[] ""
    until decide pc$[] = 1
    i = 1
    repeat

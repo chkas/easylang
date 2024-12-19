@@ -1,14 +1,14 @@
 # AoC-22 - Day 15: Beacon Exclusion Zone
-# 
+#
 # for test data
 max_coord = 20
-# 
+#
 global sx[] sy[] dist[] bline .
 proc init . .
    repeat
       s$ = input
       until s$ = ""
-      a[] = number strsplit s$ "=,:"
+      a[] = number strtok s$ "=,:"
       #sx[] &= a[2]
       #sy[] &= a[4]
       #d = abs (a[2] - a[6]) + abs (a[4] - a[8])
@@ -47,7 +47,7 @@ proc init . .
 .
 init
 n = len sx[]
-# 
+#
 proc get_ranges y . xa[] xb[] .
    xs = 1
    xa[] = [ ]
@@ -80,7 +80,7 @@ for i = 1 to len xa[]
    sum += xb[1] - xa[1] + 1
 .
 print sum
-# 
+#
 for y = 1 to max_coord
    get_ranges y xa[] xb[]
    if len xa[] = 2 and xb[1] + 2 = xa[2]
@@ -88,7 +88,7 @@ for y = 1 to max_coord
       break 1
    .
 .
-# 
+#
 input_data
 Sensor at x=2, y=18: closest beacon is at x=-2, y=15
 Sensor at x=9, y=16: closest beacon is at x=10, y=16

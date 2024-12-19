@@ -634,7 +634,7 @@ print substr "Hello world" 7 3
 print ""
 a$[] = strchars "abc"
 print a$[]
-print strjoin a$[]
+print strjoin a$[] " "
 a$[] = strsplit "10,15,22" ","
 print a$[]
 

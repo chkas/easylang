@@ -1,5 +1,5 @@
 # AoC-15 - Day 13: Knights of the Dinner Table
-# 
+#
 global name$[] .
 proc getid n$ . id .
    for id to len name$[]
@@ -17,7 +17,7 @@ repeat
 n = floor sqrt len inp$[] + 2
 len h[] n * n + n
 for s$ in inp$[]
-   s$[] = strsplit s$ " ."
+   s$[] = strtok s$ " ."
    getid s$[1] a
    getid s$[11] b
    h = number s$[4]
@@ -37,7 +37,7 @@ proc mk_permlist k . .
       permlist[][] &= perm[]
    .
 .
-# 
+#
 for part to 2
    perm[] = [ ]
    for i = 2 to n - 2 + part
@@ -45,7 +45,7 @@ for part to 2
    .
    len permlist[][] 0
    mk_permlist 1
-   # 
+   #
    max = 0
    for p to len permlist[][]
       swap perm[] permlist[p][]
@@ -60,7 +60,7 @@ for part to 2
    .
    print max
 .
-# 
+#
 input_data
 Alice would gain 54 happiness units by sitting next to Bob.
 Alice would lose 79 happiness units by sitting next to Carol.

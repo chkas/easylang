@@ -1,8 +1,8 @@
 # AoC-23 - Day 8: Haunted Wasteland
-# 
+#
 name$[] = [ ]
 global l[] r[] pos[] stop[] dir$[] aaa zzz .
-# 
+#
 func n2id n$ .
    for id to len name$[]
       if name$[id] = n$
@@ -23,7 +23,7 @@ proc read . .
    repeat
       s$ = input
       until s$ = ""
-      s$[] = strsplit s$ ", ()"
+      s$[] = strtok s$ ", ()"
       id = n2id s$[1]
       if substr s$[1] 3 1 = "A"
          pos[] &= id
@@ -35,7 +35,7 @@ proc read . .
    .
 .
 read
-# 
+#
 proc part1 . .
    pos = aaa
    repeat
@@ -52,7 +52,7 @@ proc part1 . .
    print cnt
 .
 part1
-# 
+#
 func gcd a b .
    while b <> 0
       h = b
@@ -88,7 +88,7 @@ proc gperiod pos . period stopcnt .
    .
    period = cnt - seen[h]
 .
-# 
+#
 func getstop cnt1 per1 cnt2 per2 .
    repeat
       if cnt1 < cnt2
@@ -112,7 +112,7 @@ proc part2 . .
    print stopcnt
 .
 part2
-#  
+#
 input_data
 LR
 

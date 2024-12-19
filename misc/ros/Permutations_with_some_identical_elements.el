@@ -1,6 +1,6 @@
 proc permlist k . l$[] .
    if k = len l$[]
-      write strjoin l$[] & " "
+      write (strjoin l$[] "") & " "
       return
    .
    for i = k to len l$[]

@@ -1,15 +1,15 @@
 # AoC-15 - Day 23: Opening the Turing Lock
-# 
+#
 repeat
    s$ = input
    until s$ = ""
    p$[] &= s$
 .
-# 
+#
 proc run r[] . .
    pc = 1
    while pc <= len p$[]
-      s$[] = strsplit p$[pc] ", "
+      s$[] = strtok p$[pc] ", "
       c$ = s$[1]
       if c$ = "jmp"
          pc = pc + number s$[2] - 1
@@ -37,7 +37,7 @@ proc run r[] . .
 .
 run [ 0 0 ]
 run [ 1 0 ]
-# 
+#
 input_data
 inc b
 jio b, +2

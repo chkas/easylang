@@ -1,12 +1,12 @@
 # AoC-23 - Day 4: Scratchcards
-# 
+#
 ncard[] = [ 1 1 1 1 1 1 1 1 1 1 ]
 repeat
    s$ = input
    until s$ = ""
    ncard[] &= 1
    card += 1
-   s$[] = strsplit s$ ":|"
+   s$[] = strtok s$ ":|"
    w[] = number strsplit s$[2] " "
    n[] = number strsplit s$[3] " "
    m = 0
@@ -23,7 +23,7 @@ repeat
 .
 print sum1
 print sum2
-# 
+#
 input_data
 Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53
 Card 2: 13 32 20 16 61 | 61 30 68 82 17 32 24 19

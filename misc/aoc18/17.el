@@ -13,7 +13,7 @@ proc read . .
    repeat
       s$ = input
       until s$ = ""
-      n[] = number strsplit s$ "=."
+      n[] = number strtok s$ "=."
       a = n[1] ; b = n[2] ; c = n[3]
       if substr s$ 1 1 = "x"
          for y = b to c

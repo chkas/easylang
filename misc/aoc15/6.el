@@ -1,5 +1,5 @@
 # AoC-15 - Day 6: Probably a Fire Hazard
-# 
+#
 repeat
    s$ = input
    until s$ = ""
@@ -10,7 +10,7 @@ for part to 2
    len m[] 1000 * 1000
    arrbase m[] 0
    for s$ in inp$[]
-      s$[] = strsplit s$ " ,"
+      s$[] = strtok s$ " ,"
       inc = 2
       if s$[2] = "on"
          inc = 1
@@ -45,7 +45,7 @@ for part to 2
    .
    print sum
 .
-# 
+#
 input_data
 turn on 0,0 through 999,999
 toggle 0,0 through 999,0

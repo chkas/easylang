@@ -24,7 +24,7 @@ proc hash ind[] val . ret .
 .
 #
 in$ = input
-m[] = number strsplit in$ "\t "
+m[] = number strtok in$ "\t "
 n = len m[]
 repeat
    cnt += 1

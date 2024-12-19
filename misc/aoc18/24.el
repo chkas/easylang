@@ -1,7 +1,7 @@
 # AoC-18 - Day 24: Immune System Simulator 20XX
-# 
+#
 global type$[] .
-# 
+#
 proc type_id s$ . id .
    for id to len type$[]
       if type$[id] = s$
@@ -11,14 +11,14 @@ proc type_id s$ . id .
    type$[] &= s$
 .
 global team[] units0[] hitp[] imm[][] weak[][] dam0[] dam_type[] init[] attac[] .
-# 
+#
 proc read . .
    for team to 2
       s$ = input
       repeat
          s$ = input
          until s$ = ""
-         s$[] = strsplit s$ " (),;"
+         s$[] = strtok s$ " (),;"
          team[] &= team
          units0[] &= number s$[1]
          ind = len units0[]
@@ -59,8 +59,8 @@ proc read . .
    .
 .
 read
-# 
-# 
+#
+#
 proc combat boost . winner res .
    units[] = units0[]
    dam[] = dam0[]
@@ -78,7 +78,7 @@ proc combat boost . winner res .
          .
       .
       n = len o[]
-      # 
+      #
       for i to n - 1
          for j = i + 1 to n
             if units[o[j]] * dam[o[j]] * 100 + init[o[j]] > units[o[i]] * dam[o[i]] * 100 + init[o[i]]
@@ -177,7 +177,7 @@ while low + 1 < high
 .
 combat high winner res
 print res
-# 
+#
 input_data
 Immune System:
 17 units each with 5390 hit points (weak to radiation, bludgeoning) with an attack that does 4507 fire damage at initiative 2

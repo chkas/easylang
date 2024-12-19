@@ -1,5 +1,5 @@
 # AoC-17 - Day 4: High-Entropy Passphrases
-# 
+#
 name$[] = [ ]
 proc name n$ . ret .
    ret = 0
@@ -11,7 +11,7 @@ proc name n$ . ret .
    .
    name$[] &= n$
 .
-# 
+#
 proc sort . s$ .
    d$[] = strchars s$
    for i to len d$[] - 1
@@ -21,9 +21,9 @@ proc sort . s$ .
          .
       .
    .
-   s$ = strjoin d$[]
+   s$ = strjoin d$[] ""
 .
-# 
+#
 repeat
    in$ = input
    until in$ = ""
@@ -48,7 +48,7 @@ repeat
 .
 print n - ndbl1
 print n - ndbl2
-# 
+#
 input_data
 abcde fghij
 abcde xyz ecdab

@@ -1,5 +1,5 @@
 # AoC-16 - Day 5: How About a Nice Game of Chess?
-# 
+#
 len k[] 64
 arrbase k[] 0
 s[] = [ 7 12 17 22 7 12 17 22 7 12 17 22 7 12 17 22 5 9 14 20 5 9 14 20 5 9 14 20 5 9 14 20 4 11 16 23 4 11 16 23 4 11 16 23 4 11 16 23 6 10 15 21 6 10 15 21 6 10 15 21 6 10 15 21 ]
@@ -10,7 +10,7 @@ proc init_hash . .
    .
 .
 init_hash
-# 
+#
 proc out h[] . s$ .
    s$ = ""
    for a in h[]
@@ -54,7 +54,7 @@ proc hash inp$ . hash[] .
       h = h div 0x100
    .
    inp[] &= 0
-   # 
+   #
    a0 = 0x67452301
    b0 = 0xefcdab89
    c0 = 0x98badcfe
@@ -95,7 +95,7 @@ proc hash inp$ . hash[] .
 .
 # hash "abc5017308" h[]
 # out h[] s$ ; print s$
-# 
+#
 proc run . .
    print "That takes some time ..."
    inp$ = input
@@ -110,7 +110,7 @@ proc run . .
             h$ = substr s$ 6 1
             if pw1 <= 8
                pw1$[pw1] = h$
-               print "PW1: " & strjoin pw1$[]
+               print "PW1: " & strjoin pw1$[] ""
                pw1 += 1
             .
             h = strcode h$ - 47
@@ -118,11 +118,11 @@ proc run . .
                if pw2$[h] = "."
                   pw2 += 1
                   pw2$[h] = substr s$ 7 1
-                  print "PW2: " & strjoin pw2$[]
+                  print "PW2: " & strjoin pw2$[] ""
                   if pw2 = 8
                      print ""
-                     print strjoin pw1$[]
-                     print strjoin pw2$[]
+                     print strjoin pw1$[] ""
+                     print strjoin pw2$[] ""
                      break 1
                   .
                .
@@ -132,7 +132,7 @@ proc run . .
    .
 .
 run
-# 
+#
 input_data
 abc
 

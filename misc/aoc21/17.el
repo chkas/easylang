@@ -1,16 +1,16 @@
 # AoC-21 - Day 17: Trick Shot
-# 
+#
 # For each trial, simulate the firing probe
 # with vx and vy until the probe hits or
 # passes the target. vx can be at most x2,
 # vy from -y2 to y2.
-# 
-in[] = number strsplit input "=."
+#
+in[] = number strtok input "=."
 x1 = in[1]
 x2 = in[2]
 y2 = in[3]
 y1 = in[4]
-# 
+#
 for vx0 = 1 to x2
    for vy0 = y2 to -y2
       x = 0 ; y = 0
@@ -32,7 +32,7 @@ for vx0 = 1 to x2
 .
 print maxy
 print npos
-# 
+#
 input_data
 target area: x=20..30, y=-10..-5
 

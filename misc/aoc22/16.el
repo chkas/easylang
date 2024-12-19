@@ -1,5 +1,5 @@
 # AoC-22 - Day 16: Proboscidea Volcanium
-# 
+#
 len hash[] 32768 * 16
 proc hashinit . .
    for i to len hash[]
@@ -31,7 +31,7 @@ proc read . .
    .
    npos = len name$[]
    for s$ in s$[]
-      a$[] = strsplit s$ "= ,"
+      a$[] = strtok s$ "= ,"
       name2id a$[2] id
       valv[id] = number a$[6]
       for i = 11 step 2 to len a$[]
@@ -39,8 +39,8 @@ proc read . .
          conn[id][] &= h
       .
    .
-   # 
-   # Floyd-Warshall 
+   #
+   # Floyd-Warshall
    n = len conn[][]
    for i to n
       con[][] &= [ ]
@@ -60,7 +60,7 @@ proc read . .
    .
 .
 read
-# 
+#
 subr init
    hashinit
    len todo[][] 0
@@ -108,7 +108,7 @@ proc run nwrks time0 . .
       .
       nwrks -= 1
       until nwrks = 0
-      # 
+      #
       len todo[][] 0
       len todo[][] 20
       for i to len hash[]
@@ -126,7 +126,7 @@ proc run nwrks time0 . .
 .
 run 1 29
 run 2 25
-# 
+#
 input_data
 Valve AA has flow rate=0; tunnels lead to valves DD, II, BB
 Valve BB has flow rate=13; tunnels lead to valves CC, AA
