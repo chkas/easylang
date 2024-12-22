@@ -412,18 +412,17 @@ on timer
       t = floor systime
       clear
       h$ = timestr t
-      move 10 30
+      move 10 58
       text substr h$ 1 10
-      move 15 15
+      move 15 38
       text substr h$ 12 8
    .
    timer 0.1
 .
-while i <= 100
-   color3 0 i / 100 0
+for i = 0 to 100
+   color3 0 (100 - i) / 100 0
    move 0 i
    line 100 i
-   i += 1
 .
 background -1
 textsize 12
@@ -456,15 +455,13 @@ on animate
    move x y
    circle rad
    x += vx ; y += vy
-   if x > 100 - rad or x < rad
-      vx = -vx
-   .
-   if y > 100 - rad or y < rad
-      vy = -vy
-   .
+   if x > 100 - rad or x < rad : vx = -vx
+   if y > 100 - rad or y < rad : vy = -vy
 .
 
 + The *animate* event is triggered after each screen update (usually 60 times per second). *systime* returns the time in seconds since program start.
+
++ A colon *:* can be used to indicate that the following sequence consists of only one instruction. This instruction is then written in the same line and the sequence is implicitly ended.
 
 * More about arrays
 
@@ -476,9 +473,7 @@ print a[]
 # and shrink
 len a[] 3
 print a[]
-for i = 1 to len a[]
-   print a[i]
-.
+for i = 1 to len a[] : print a[i]
 # with strings
 a$[] = [ "zero" "one" "two" "three" ]
 print a$[]
@@ -488,9 +483,8 @@ print a[]
 # 2-dimensional arrays are arrays of arrays
 # this defines 3 arrays with length 4
 len a[][] 3
-for i = 1 to len a[][]
-   len a[i][] 4
-.
+for i = 1 to len a[][] : len a[i][] 4
+
 a[1][2] = 99
 print a[][]
 a[1][] &= 12
@@ -503,9 +497,7 @@ print a[][]
 proc sort . d[] .
    for i = 1 to len d[] - 1
       for j = i + 1 to len d[]
-         if d[j] < d[i]
-            swap d[j] d[i]
-         .
+         if d[j] < d[i] : swap d[j] d[i]
       .
    .
 .
@@ -518,9 +510,7 @@ print d[]
 name$[] = [ ]
 func name2id n$ .
    for id = 1 to len name$[]
-      if name$[id] = n$
-         return id
-      .
+      if name$[id] = n$ : return id
    .
    name$[] &= n$
    return id
@@ -578,18 +568,17 @@ proc push v . .
       stack[pos] = v
    .
 .
-proc pop . v .
+func pop .
    v = stack[pos]
-   if pos >= 1
-      pos -= 1
-   .
+   if pos >= 1 : pos -= 1
+   return v
 .
 prefix
 #
 st_push 200
 st_push 100
-st_pop v ; print v
-st_pop v ; print v
+print st_pop
+print st_pop
 print pos
 
 * Builtin functions
@@ -647,9 +636,7 @@ arrbase a[] 0
 print a[0]
 print ""
 #
-for i range0 len a[]
-    print a[i]
-.
+for i range0 len a[] : print a[i]
 
 -
 

@@ -1229,31 +1229,6 @@ S void parse_on_stat(void) {
 	onstats |= 1 << id;
 	nexttok();
 }
-/*
-S void parse_sys_stat(ND* nd) {
-	csb_tok_spc_nt();
-
-	nd->vf = op_sys;
-	if (strcmp(tval, "topleft") == 0 || strcmp(tval, "origin_topleft") == 0) {
-		nd->v1 = 12;
-	}
-	else if (strcmp(tval, "radians") == 0) {
-		nd->v1 = 21;
-	}
-	else if (strcmp(tval, "zero_based") == 0) {
-		nd->v1 = 22;
-	}
-	// undocumented
-	else if (strcmp(tval, "time") == 0) {
-		nd->v1 = 31;
-	}
-	else {
-		error("topleft, radians");
-		return;
-	}
-	csb_tok_nt();
-}
-*/
 
 S ND* parse_numarrex(void) {
 
@@ -1263,9 +1238,10 @@ S ND* parse_numarrex(void) {
 		ex->arrf = op_numarr_init;
 
 		ND* nd = ex;
-		while (tok != t_brr && tok != t_brrl) {
+		while (tok != t_brr &&  tok != t_brrl && tok != t_eof && !err) {
+		//while (tok != t_brr && tok != t_brrl) {
 			nd->next = parse_ex();
-			if (err || tok == t_eof) return ex;
+			//if (err || tok == t_eof) return ex;
 			nd = nd->next;
 			cs_spc();
 		}

@@ -16,8 +16,7 @@ proc hclear . .
    hashw[] = [ ]
 .
 #
-h$[] = strsplit input ", "
-for w$ in h$[] : if w$ <> "" : tw$[] &= w$
+tw$[] = strsplit input ", "
 s$ = input
 #
 func reduce s$ .
