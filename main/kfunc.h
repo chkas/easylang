@@ -688,10 +688,11 @@ S STR op_strjoin(ND* nd) {
 		str_free(arr.pstr + i);
 		str_append(&str, str_ptr(&s));
 	}
-	str_append(&str, str_ptr(arr.pstr + i));
-	str_free(arr.pstr + i);
+	if (arr.len > 0) {
+		str_append(&str, str_ptr(arr.pstr + i));
+		str_free(arr.pstr + i);
+	}
 	free(arr.pstr);
-
 	str_free(&s);
 	return str;
 }
