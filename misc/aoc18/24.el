@@ -4,9 +4,7 @@ global type$[] .
 #
 proc type_id s$ . id .
    for id to len type$[]
-      if type$[id] = s$
-         break 2
-      .
+      if type$[id] = s$ : return
    .
    type$[] &= s$
 .
@@ -25,29 +23,19 @@ proc read . .
          hitp[] &= number s$[5]
          imm[][] &= [ ]
          weak[][] &= [ ]
-         i = 9
-         if s$[i] = "an"
-            i -= 1
-         .
-         while s$[i] = "weak" or s$[i] = "immune"
-            if s$[i] = "weak"
-               i += 2
-               while s$[i] <> "immune" and s$[i] <> "with"
-                  if s$[i] <> ""
-                     type_id s$[i] h
-                     weak[ind][] &= h
-                  .
-                  i += 1
+         i = 8
+         repeat
+            h$ = s$[i]
+            until h$ = "with"
+            i += 1
+            while s$[i] <> "immune" and s$[i] <> "weak" and s$[i] <> "with"
+               type_id s$[i] h
+               if h$ = "weak"
+                  weak[ind][] &= h
+               else
+                  imm[ind][] &= h
                .
-            else
-               i += 2
-               while s$[i] <> "weak" and s$[i] <> "with"
-                  if s$[i] <> ""
-                     type_id s$[i] h
-                     imm[ind][] &= h
-                  .
-                  i += 1
-               .
+               i += 1
             .
          .
          dam0[] &= number s$[i + 5]
@@ -65,9 +53,7 @@ proc combat boost . winner res .
    units[] = units0[]
    dam[] = dam0[]
    for i to len units[]
-      if team[i] = 1
-         dam[i] += boost
-      .
+      if team[i] = 1 : dam[i] += boost
    .
    repeat
       len o[] 0
@@ -94,21 +80,15 @@ proc combat boost . winner res .
             j = o[o2]
             if team[j] <> team[i]
                for k to n
-                  if attac[o[k]] = j
-                     j = -1
-                  .
+                  if attac[o[k]] = j : j = -1
                .
                if j <> -1
                   dam = dam[i] * units[i]
                   for k to len imm[j][]
-                     if dam_type[i] = imm[j][k]
-                        dam = 0
-                     .
+                     if dam_type[i] = imm[j][k] : dam = 0
                   .
                   for k to len weak[j][]
-                     if dam_type[i] = weak[j][k]
-                        dam *= 2
-                     .
+                     if dam_type[i] = weak[j][k] : dam *= 2
                   .
                   if dam > max_dam
                      max_dam = dam
@@ -121,9 +101,7 @@ proc combat boost . winner res .
       .
       for i to n - 1
          for j = i + 1 to n
-            if init[o[j]] > init[o[i]]
-               swap o[j] o[i]
-            .
+            if init[o[j]] > init[o[i]] : swap o[j] o[i]
          .
       .
       changed = 0
@@ -133,33 +111,23 @@ proc combat boost . winner res .
          if j <> -1
             dam = dam[i] * units[i]
             for k to len weak[j][]
-               if dam_type[i] = weak[j][k]
-                  dam *= 2
-               .
+               if dam_type[i] = weak[j][k] : dam *= 2
             .
             nkill = dam div hitp[j]
             units[j] -= nkill
-            if units[j] < 0
-               units[j] = 0
-            .
-            if nkill > 0
-               changed = 1
-            .
+            if units[j] < 0 : units[j] = 0
+            if nkill > 0 : changed = 1
          .
       .
       tst[] = [ 1 1 ]
       for o to n
          i = o[o]
-         if units[i] > 0
-            tst[team[i]] = 2
-         .
+         if units[i] > 0 : tst[team[i]] = 2
       .
       until tst[1] = 1 or tst[2] = 1 or changed = 0
    .
    res = 0
-   for i to len units[]
-      res += units[i]
-   .
+   for u in units[] : res += u
    winner = tst[2]
 .
 combat 0 winner res

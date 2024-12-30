@@ -30,8 +30,8 @@ proc read . .
       elif substr s$[1] 3 1 = "Z"
          stop[id] = 1
       .
-      l[id] = n2id s$[4]
-      r[id] = n2id s$[6]
+      l[id] = n2id s$[3]
+      r[id] = n2id s$[4]
    .
 .
 read

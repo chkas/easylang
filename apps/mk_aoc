@@ -58,7 +58,7 @@ make_big() {
 It can be useful as a teaching and learning language due to its reduced feature set, simple syntax,
 <a href=../ide/>browser IDE</a>, and built-in graphics.
 <p>
-However, since <i>Easylang</i> has no built-in functions for special things like sorting or hashmaps, you have to program them yourself, which makes the programs longer, but in a way more informative.
+However, since <i>Easylang</i> has no built-in functions for special things like sorting or hashmaps, you have to program them yourself, which makes the programs longer, but somehow also more complete and enlightening.
 
 <div id=tut><b>Loading ...</b></div>
 <script src=easy_code2.js></script>

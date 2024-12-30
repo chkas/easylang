@@ -2,17 +2,15 @@
 #
 global name$[] recpt0[][] .
 #
-proc nid n$ . i .
-   for i to len name$[]
-      if name$[i] = n$
-         break 2
-      .
-   .
+func nid n$ .
+   for i to len name$[] : if name$[i] = n$ : return i
    name$[] &= n$
+   return i
 .
 proc parse . .
-   nid "ORE" h
-   nid "FUEL" h
+   h = nid "ORE"
+   h = nid "FUEL"
+   h = h
    repeat
       s$ = input
       until s$ = ""
@@ -20,14 +18,12 @@ proc parse . .
       i = 1
       a$[] = strtok s$ ", "
       repeat
-         nid a$[i + 1] id
-         recpt[] &= id
+         recpt[] &= nid a$[i + 1]
          recpt[] &= number a$[i]
          until a$[i + 2] = "=>"
-         i += 3
+         i += 2
       .
-      nid a$[i + 4] id
-      recpt[1] = id
+      recpt[1] = nid a$[i + 4]
       recpt[2] = number a$[i + 3]
       recpt0[][] &= recpt[]
    .
@@ -50,9 +46,7 @@ proc produce_fuel need . n_ore .
                .
             .
          .
-         if is_top = 1
-            break 1
-         .
+         if is_top = 1 : break 1
       .
       n = floor ((need[chem] - 1) / recpt[recpt][2] + 1)
       for j = 3 step 2 to len recpt[recpt][]

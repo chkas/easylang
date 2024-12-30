@@ -1,18 +1,12 @@
-# AoC-23 - Day 19: Aplenty
+ # AoC-23 - Day 19: Aplenty
 #
 global name$[] rule[][] set[] start .
 #
 func n2id n$ .
-   if n$ = "A"
-      return 0
-   .
-   if n$ = "R"
-      return -1
-   .
+   if n$ = "A" : return 0
+   if n$ = "R" : return -1
    for id to len name$[]
-      if name$[id] = n$
-         return id
-      .
+      if name$[id] = n$ : return id
    .
    name$[] &= n$
    rule[][] &= [ ]
@@ -27,7 +21,7 @@ proc read . .
       s$[] = strtok s$ "{}:,"
       id = n2id s$[1]
       #
-      for i = 2 step 2 to len s$[] - 3
+      for i = 2 step 2 to len s$[] - 2
          if substr s$[i] 1 1 = "x"
             cat = 1
          elif substr s$[i] 1 1 = "m"
@@ -46,28 +40,20 @@ proc read . .
          rule[id][] &= n
          rule[id][] &= dest
       .
-      rule[id][] &= n2id s$[len s$[] - 1]
+      rule[id][] &= n2id s$[len s$[]]
    .
 .
 read
 #
 func solve1 r .
-   if r = 0
-      return 1
-   .
-   if r = -1
-      return 0
-   .
+   if r = 0 : return 1
+   if r = -1 : return 0
    ln = len rule[r][]
    for i = 1 step 3 to ln - 3
       catv = set[rule[r][i]]
       n = rule[r][i + 1]
-      if n < 0
-         catv = -catv
-      .
-      if catv > n
-         return solve1 rule[r][i + 2]
-      .
+      if n < 0 : catv = -catv
+      if catv > n : return solve1 rule[r][i + 2]
    .
    return solve1 rule[r][ln]
 .
@@ -77,9 +63,7 @@ proc part1 . .
       until s$ = ""
       set[] = number strsplit s$ "="
       if solve1 start = 1
-         for s in set[]
-            sum += s
-         .
+         for s in set[] : sum += s
       .
    .
    print sum
@@ -147,3 +131,4 @@ hdj{m>838:A,pv}
 {x=2036,m=264,a=79,s=2244}
 {x=2461,m=1339,a=466,s=291}
 {x=2127,m=1623,a=2188,s=1013}
+

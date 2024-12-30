@@ -3,16 +3,12 @@
 repeat
    s$ = input
    until s$ = ""
-   a[] = number strsplit s$ "=,"
+   a[] = number strtok s$ "=,"
    px[] &= a[1]
    py[] &= a[2]
    vx[] &= a[3]
    vy[] &= a[4]
    n = len px[]
-.
-if n = 0
-   print "no input"
-   return
 .
 nx = 101
 ny = 103
@@ -60,7 +56,7 @@ proc part2 . .
          if m = 1 and mp = 1 : cnt += 1
          mp = m
       .
-      until cnt > 100
+      until cnt > n / 5
    .
    print nsec
    show nsec
@@ -68,3 +64,15 @@ proc part2 . .
 part2
 #
 input_data
+p=0,4 v=3,-3
+p=6,3 v=-1,-3
+p=10,3 v=-1,2
+p=2,0 v=2,-1
+p=0,0 v=1,3
+p=3,0 v=-2,-2
+p=7,6 v=-1,-3
+p=3,0 v=-1,-2
+p=9,3 v=2,3
+p=7,3 v=-1,2
+p=2,4 v=2,-3
+p=9,5 v=-3,-3

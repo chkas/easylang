@@ -6,11 +6,11 @@ minr = 1 / 0
 #
 repeat
    s$[] = strtok input "<,> ="
-   until len s$[] < 9
-   x = number s$[3]
-   y = number s$[4]
-   z = number s$[5]
-   r = number s$[9]
+   until len s$[] = 0
+   x = number s$[2]
+   y = number s$[3]
+   z = number s$[4]
+   r = number s$[6]
    bx[] &= x
    by[] &= y
    bz[] &= z

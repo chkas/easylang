@@ -2,51 +2,38 @@
 #
 len hash[] 32768 * 16
 proc hashinit . .
-   for i to len hash[]
-      hash[i] = -1
-   .
+   for i to len hash[] : hash[i] = -1
 .
-global name$[] .
+global name$[] valv[] con[][] npos .
 proc name2id n$ . id .
    for id to len name$[]
-      if name$[id] = n$
-         break 2
-      .
+      if name$[id] = n$ : return
    .
    name$[] &= n$
+   valv[] &= 0
+   con[][] &= [ ]
 .
-global valv[] con[][] npos .
 proc read . .
    name2id "AA" aa
    repeat
       s$ = input
       until s$ = ""
-      n$ = substr s$ 7 2
-      if substr s$ 24 1 <> "0"
-         name2id n$ id
-      .
-      s$[] &= s$
-      conn[][] &= [ ]
-      valv[] &= 0
-   .
-   npos = len name$[]
-   for s$ in s$[]
       a$[] = strtok s$ "= ,"
       name2id a$[2] id
       valv[id] = number a$[6]
-      for i = 11 step 2 to len a$[]
+      for i = 11 to len a$[]
          name2id a$[i] h
-         conn[id][] &= h
+         con[id][] &= h
       .
    .
+   npos = len name$[]
    #
    # Floyd-Warshall
+   swap con[][] conn[][]
    n = len conn[][]
    for i to n
       con[][] &= [ ]
-      for j to n
-         con[i][] &= 1 / 0
-      .
+      for j to n : con[i][] &= 1 / 0
       for j to len conn[i][]
          con[i][conn[i][j]] = 1
       .
@@ -119,9 +106,7 @@ proc run nwrks time0 . .
       .
       hashinit
    .
-   for p in hash[]
-      max = higher max p
-   .
+   for p in hash[] : max = higher max p
    print max
 .
 run 1 29

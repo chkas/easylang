@@ -469,6 +469,7 @@ S ARR* arrael_append(ND* nd, int arrtyp, int sz) {
 	arr->len += 1;
 	void* p = realloc(arr->p, arr->len * sz);
 	if (p == NULL) {
+		arr->len -= 1;
 		out_of_mem(nd);
 		return NULL;
 	}
@@ -498,6 +499,7 @@ S ARR* arr_append(ND* nd, int arrtyp, int sz) {
 	arr->len += 1;
 	void* p = realloc(arr->p, arr->len * sz);
 	if (p == NULL) {
+		arr->len -= 1;
 		out_of_mem(nd);
 		return NULL;
 	}
@@ -508,13 +510,13 @@ S ARR* arr_append(ND* nd, int arrtyp, int sz) {
 S void op_numarr_append(ND* nd) {
 	double h = numf(nd->ri);
 	ARR* arr = arr_append(nd, ARR_NUM, sizeof(double));
-	*(arr->pnum + arr->len - 1) = h;
+	if (arr) *(arr->pnum + arr->len - 1) = h;
 }
 
 S void op_strarr_append(ND* nd) {
 	STR s = strf(nd->ri);
 	ARR* arr = arr_append(nd, ARR_STR, sizeof(STR));
-	*(arr->pstr + arr->len - 1) = s;
+	if (arr) *(arr->pstr + arr->len - 1) = s;
 }
 
 S void op_arrarr_append(ND* nd) {
@@ -530,7 +532,7 @@ S void op_arrarr_ass(ND* nd) {
 	*arr = a;
 }
 
-// ------------ double factor --------------------------
+// ------------ num factor --------------------------
 
 S double op_const_fl(ND* nd) {
 	return nd->cfl;
@@ -1386,10 +1388,10 @@ S ARR o_arr_init(ND* nd0, int typ, int sz) {
 		nd = nd->next;
 	}
 	res.p = realloc(NULL, res.len * sz);
-//	res.p = calloc(sz, res.len);
 	if (res.p == NULL) {
 		out_of_mem(nd);
 		res.len = 0;
+		goto exit;
 	}
 	int i = 0;
 	nd = nd0->le;
@@ -1400,6 +1402,7 @@ S ARR o_arr_init(ND* nd0, int typ, int sz) {
 		i += 1;
 		nd = nd->next;
 	}
+	exit:
 	return res;
 }
 
@@ -1448,7 +1451,7 @@ S ARR op_strchars(ND* nd) {
 	if (res.p == NULL) {
 		out_of_mem(nd);
 		res.len = 0;
-		return res;
+		goto exit;
 	}
 
 	int ind = 0;
@@ -1467,18 +1470,24 @@ S ARR op_strchars(ND* nd) {
 		i += l;
 		ind++;
 	}
-
+	exit:
 	str_free(&s);
 	return res;
 }
 
 S int arrstrapp(ARR* parr, char* str) {
 	parr->len += 1;
-	parr->p = realloc(parr->p, parr->len * sizeof(STR));
+	ARR* p = realloc(parr->p, parr->len * sizeof(STR));
+	if (p == NULL) {
+		parr->len = 0;
+		free(parr->p);
+		return 0;
+	}
+	parr->p = p;
 	if (parr->p == NULL) return 1;
 	str_init(parr->pstr + parr->len - 1);
 	str_append(parr->pstr + parr->len - 1, str);
-	return 0;
+	return 1;
 }
 
 S ARR op_strtok(ND* nd) {
@@ -1491,88 +1500,55 @@ S ARR op_strtok(ND* nd) {
 	res.typ = ARR_STR;
 	res.base = rt.arrbase;
 	res.p = NULL;
-	char* dup = strdup(str_ptr(&s1));
-	if (dup == NULL) {
+	char* tok = strdup(str_ptr(&s1));
+	if (tok == NULL) {
 		out_of_mem(nd);
-		return res;
+		goto exit;
 	}
-
-	char* str = dup;
-	while (1) {
-		char* tk = strsep(&str, s2p);
-		if (tk == NULL) break;
-		if (arrstrapp(&res, tk) != 0) {
-			res.len = 0;
-			return res;
-		}
+	tok = strtok(tok, s2p);
+	while (tok) {
+		if (arrstrapp(&res, tok) == 0) goto exit;
+		tok = strtok(NULL, s2p);
 	}
+	exit:
+	free(tok);
 	str_free(&s1);
 	str_free(&s2);
-	free(dup);
 	return res;
 }
 
 S ARR op_strsplit(ND* nd) {
-	STR s1 = strf(nd->le);
 	STR s2 = strf(nd->ri);
 	const char* s2p = str_ptr(&s2);
-
+	if (*s2p == 0) {
+		str_free(&s2);
+		return op_strchars(nd);
+	}
+	STR s1 = strf(nd->le);
 	ARR res;
 	res.typ = ARR_STR;
 	res.base = rt.arrbase;
 	res.p = NULL;
-	if (*s2p == 0) {
-		const char* p = str_ptr(&s1);
-		res.len = str_ulen(p);
-		res.p = realloc(NULL, res.len * sizeof(STR));
-		if (res.p == NULL) {
-			out_of_mem(nd);
-			res.len = 0;
-			return res;
-		}
-
-		int ind = 0;
-		int i = 0;
-		int l;
-		while (ind < res.len) {
-			l = uchlen(p[i]);
-			str_init(res.pstr + ind);
-	
-			int h = 0;
-			while (h < l) {
-				res.pstr[ind].d[h] = p[i + h];
-				h++;
-			}
-			res.pstr[ind].d[h] = 0;
-			i += l;
-			ind++;
-		}
+	res.len = 0;
+	char* dup = strdup(str_ptr(&s1));
+	if (dup == NULL) {
+		out_of_mem(nd);
+		goto exit;
 	}
-	else {
-		res.len = 0;
-		char* dup = strdup(str_ptr(&s1));
-		if (dup == NULL) {
-			out_of_mem(nd);
-			return res;
-		}
-		char* str = dup;
-		while (1) {
-			char* tk = strstr(str, s2p);
-			if (tk != NULL) *tk = 0;
-			if (arrstrapp(&res, str) != 0) {
-				res.len = 0;
-				return res;
-			}
-			if (tk == NULL) break;
-			str = tk + strlen(s2p);
-		}
-		free(dup);
+	char* str = dup;
+	while (1) {
+		char* tk = strstr(str, s2p);
+		if (tk != NULL) *tk = 0;
+		if (arrstrapp(&res, str) == 0) goto exit;
+		if (tk == NULL) break;
+		str = tk + strlen(s2p);
 	}
+	free(dup);
+	exit:
 	str_free(&s1);
 	str_free(&s2);
 	return res;
 }
-
 
 S void op_strarr_ass(ND* nd) {
 	ARR* arr = garr(nd->v1);
@@ -2657,7 +2633,7 @@ S ARR op_map_number(ND* nd) {
 	if (res.p == NULL) {
 		out_of_mem(nd);
 		res.len = 0;
-		return res;
+		goto exit;
 	}
 	rt.sys_error = 0;
 	for (int i = 0; i < arr.len; i++) {
@@ -2671,6 +2647,7 @@ S ARR op_map_number(ND* nd) {
 		str_free(&s);
 		res.pnum[i] = d;
 	}
+	exit:
 	free(arr.pstr);
 	return res;
 }
@@ -2700,12 +2677,13 @@ S ARR op_map_number(ND* nd) {
 			if (res.p == NULL) {
 				out_of_mem(nd);
 				res.len = 0;
-				return res;
+				goto exit;
 			}
 			res.pnum[res.len - 1] = d;
 		}
 		str_free(&s);
 	}
+	exit:
 	free(arr.pstr);
 	return res;
 }

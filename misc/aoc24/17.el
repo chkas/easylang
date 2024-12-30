@@ -1,10 +1,6 @@
 # AoC-24 - Day 17: Chronospatial Computer
 #
 s$ = input
-if s$ = ""
-   print "no input"
-   return
-.
 a0 = number substr s$ 13 99
 s$ = input
 s$ = input
@@ -41,7 +37,7 @@ proc run a . out[] .
       elif in = 4
          b = bitxor b c
       elif in = 5
-         out[] &= bitand b 7
+         out[] &= bitand com 7
       elif in = 6
          b = bitshift a -com
       elif in = 7
@@ -72,6 +68,7 @@ proc test ndig . r[] .
 .
 #
 proc part2 . .
+   if len prog[] < 16 : return
    r[] = [ 0 ]
    for ndig = 1 to 16 : test ndig r[]
    print r[1]
@@ -79,3 +76,8 @@ proc part2 . .
 part2
 #
 input_data
+Register A: 729
+Register B: 0
+Register C: 0
+
+Program: 0,1,5,4,3,0

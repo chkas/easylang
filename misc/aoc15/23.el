@@ -23,11 +23,11 @@ proc run r[] . .
             r[r] *= 3
          elif c$ = "jie"
             if r[r] mod 2 = 0
-               pc = pc + number s$[4] - 1
+               pc = pc + number s$[3] - 1
             .
          elif c$ = "jio"
             if r[r] = 1
-               pc = pc + number s$[4] - 1
+               pc = pc + number s$[3] - 1
             .
          .
       .

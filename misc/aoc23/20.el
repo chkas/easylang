@@ -4,9 +4,7 @@ global name$[] con[][] confr[][] typ[] broadc exitnd[] .
 #
 func n2id n$ .
    for id to len name$[]
-      if name$[id] = n$
-         return id
-      .
+      if name$[id] = n$ : return id
    .
    name$[] &= n$
    typ[] &= 0
@@ -28,7 +26,7 @@ proc read . .
          # flipflop
          typ[id] = -1
       .
-      for i = 4 step 2 to len s$[]
+      for i = 3 to len s$[]
          h = n2id s$[i]
          con[id][] &= h
          confr[h][] &= id
