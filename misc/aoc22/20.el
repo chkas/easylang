@@ -1,5 +1,5 @@
 # AoC-22 - Day 20: Grove Positioning System
-# 
+#
 global v[] nxt[] n .
 proc out . .
    ind = 1
@@ -27,15 +27,13 @@ proc init_part2 . .
    nxt[n] = 1
 .
 read
-# 
+#
 proc mix . .
    for k = 1 to n
       ind = k
       v = v[ind]
       for i = 1 to n
-         if nxt[i] = ind
-            prv = i
-         .
+         if nxt[i] = ind : prv = i
       .
       nxt[prv] = nxt[ind]
       for i = 1 to v mod1 (n - 1)
@@ -47,20 +45,14 @@ proc mix . .
    .
 .
 proc nmix h . .
-   for i = 1 to h
-      mix
-   .
+   for i = 1 to h : mix
 .
 proc find sk . r .
    sk = sk mod n
    for ind = 1 to n
-      if v[ind] = 0
-         break 1
-      .
+      if v[ind] = 0 : break 1
    .
-   for i = 1 to sk
-      ind = nxt[ind]
-   .
+   for i = 1 to sk : ind = nxt[ind]
    r = v[ind]
 .
 proc run nm . .
@@ -74,7 +66,7 @@ proc run nm . .
 run 1
 init_part2
 run 10
-# 
+#
 input_data
 1
 2
@@ -83,5 +75,4 @@ input_data
 -2
 0
 4
-
 

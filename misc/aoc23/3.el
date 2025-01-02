@@ -1,41 +1,30 @@
 # AoC-23 - Day 3: Gear Ratios
-# 
+#
 func val c$ .
    c = strcode c$
-   if c >= 48 and c <= 57
-      return c - 48
-   .
-   if c$ = "."
-      return -1
-   .
+   if c >= 48 and c <= 57 : return c - 48
+   if c$ = "." : return -1
    return -2
 .
 global m$[][] ln .
 proc init . .
    s$ = input
    ln = len s$ + 2
-   for i to ln
-      m$[] &= "."
-   .
-   m$[][] &= m$[]
+   m$[][] = [ [ ] ]
+   for i to ln : m$[$][] &= "."
    while s$ <> ""
-      m$[] = [ "." ]
-      for c$ in strchars s$
-         m$[] &= c$
-      .
-      m$[] &= "."
-      m$[][] &= m$[]
+      m$[][] &= [ "." ]
+      for c$ in strchars s$ : m$[$][] &= c$
+      m$[$][] &= "."
       s$ = input
    .
    m$[][] &= m$[1][]
 .
 init
-# 
+#
 func symupdown r0 c .
    for r = r0 - 1 to r0 + 1
-      if val m$[r][c] = -2
-         return 1
-      .
+      if val m$[r][c] = -2 : return 1
    .
 .
 proc part1 . .
@@ -46,23 +35,15 @@ proc part1 . .
          if val c$ >= 0
             ok = 0
             v = 0
-            if symupdown r (c - 1) = 1
-               ok = 1
-            .
+            ok = symupdown r (c - 1)
             while val c$ >= 0
                v = v * 10 + val c$
-               if symupdown r c = 1
-                  ok = 1
-               .
+               ok += symupdown r c
                c += 1
                c$ = m$[r][c]
             .
-            if symupdown r c = 1
-               ok = 1
-            .
-            if ok = 1
-               sum += v
-            .
+            ok += symupdown r c
+            if ok > 0 : sum += v
          .
          c += 1
       .
@@ -70,11 +51,9 @@ proc part1 . .
    print sum
 .
 part1
-# 
+#
 func num r c .
-   if val m$[r][c] < 0
-      return -1
-   .
+   if val m$[r][c] < 0 : return -1
    repeat
       c -= 1
       until val m$[r][c] < 0
@@ -86,7 +65,7 @@ func num r c .
    .
    return res
 .
-# 
+#
 proc part2 . .
    for r0 = 2 to len m$[][] - 1
       for c0 = 2 to ln - 1
@@ -118,7 +97,7 @@ proc part2 . .
    print sum
 .
 part2
-# 
+#
 input_data
 467..114..
 ...*......

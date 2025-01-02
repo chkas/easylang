@@ -54,23 +54,18 @@ func safe x .
    for i to len supby[][]
       ln = len supby[i][]
       for j to ln
-         if supby[i][j] = x
-            if len supby[i][] = 1
-               return 0
-            .
+         if supby[i][j] = x and len supby[i][] = 1
+            return 0
          .
       .
    .
    return 1
 .
 proc part1 . .
-   for i to len supby[][]
-      sum += safe i
-   .
+   for i to len supby[][] : sum += safe i
    print sum
 .
 part1
-#
 #
 func remove x .
    supb[][] = supby[][]
@@ -85,9 +80,7 @@ func remove x .
             if supb[i][j] = x
                supb[i][j] = supb[i][ln]
                len supb[i][] -1
-               if ln = 1
-                  torm[] &= i
-               .
+               if ln = 1 : torm[] &= i
                break 1
             .
          .
@@ -96,9 +89,7 @@ func remove x .
    return sum - 1
 .
 proc part2 . .
-   for i to len supby[][]
-      sum += remove i
-   .
+   for i to len supby[][] : sum += remove i
    print sum
 .
 part2

@@ -40,6 +40,7 @@ proc show nsec . .
       move ex 100 - ey
       circle 0.5
    .
+   sleep 0.001
 .
 proc part2 . .
    repeat
@@ -57,6 +58,7 @@ proc part2 . .
          mp = m
       .
       until cnt > n / 5
+      # show nsec
    .
    print nsec
    show nsec

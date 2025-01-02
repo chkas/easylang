@@ -1,23 +1,21 @@
 # AoC-21 - Day 3: Binary Diagnostic
-# 
+#
 # The only tricky part is the "find"
 # function, which works for both oxygen
 # and CO2 by passing 0 or 1.
-# 
+#
 repeat
    s$ = input
    until s$ = ""
    inp$[] &= s$
 .
 nbits = len inp$[1]
-# 
-proc binval s$ . v .
-   v = 0
-   for b$ in strchars s$
-      v = v * 2 + number b$
-   .
+#
+func binv s$ .
+   for b$ in strchars s$ : v = v * 2 + number b$
+   return v
 .
-# 
+#
 proc part_1 . .
    len cnt[] nbits
    for ln$ in inp$[]
@@ -30,12 +28,10 @@ proc part_1 . .
       gam$ &= h
       eps$ &= 1 - h
    .
-   binval gam$ gam
-   binval eps$ eps
-   print gam * eps
+   print binv gam$ * binv eps$
 .
 part_1
-# 
+#
 proc find bit ln$[] . val .
    for i = 1 to nbits
       cnt = 0
@@ -52,8 +48,8 @@ proc find bit ln$[] . val .
          .
       .
       if len ln_nxt$[] = 1
-         binval ln_nxt$[1] val
-         break 2
+         val = binv ln_nxt$[1]
+         return
       .
       swap ln_nxt$[] ln$[]
       len ln_nxt$[] 0
@@ -63,8 +59,8 @@ proc find bit ln$[] . val .
 find 1 inp$[] oxy
 find 0 inp$[] co2
 print oxy * co2
-# 
-# 
+#
+#
 input_data
 00100
 11110
@@ -78,4 +74,3 @@ input_data
 11001
 00010
 01010
-

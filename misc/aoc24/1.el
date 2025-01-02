@@ -10,7 +10,7 @@ proc sort . d[] .
 repeat
    s$ = input
    until s$ = ""
-   in[] = number strsplit s$ " "
+   in[] = number strtok s$ " "
    a[] &= in[1]
    b[] &= in[2]
 .

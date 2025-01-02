@@ -31,7 +31,7 @@ proc turn d . ni .
    for i to 4
       if inc[i] = ni
          ni = inc[(i + d) mod1 4]
-         break 2
+         return
       .
    .
 .
@@ -56,9 +56,7 @@ proc takedir . nxt ni .
          # right
          swap cur[] prev[]
          i = 1
-         while i = plane or i = dif
-            i += 1
-         .
+         while i = plane or i = dif : i += 1
          plane = i
       else
          # straight
@@ -80,9 +78,7 @@ proc findedge . nxt ni .
       h = h mod nc - 1
    .
    off = h mod sz
-   if ni > 0
-      off = sz - 1 - off
-   .
+   if ni > 0 : off = sz - 1 - off
    plane = 3
    dif = 1
    prev[] = [ 0 0 0 ]
@@ -128,9 +124,7 @@ proc step part . ind inc .
 proc go part inp$ . .
    inc = 1
    ind = nc
-   while m[ind] <> 1
-      ind += 1
-   .
+   while m[ind] <> 1 : ind += 1
    sz = 4
    if ind > nc + 20 or m[ind + 20] <> 0
       sz = 50
@@ -158,9 +152,7 @@ proc go part inp$ . .
       .
    .
    for h to 4
-      if inc[h] = inc
-         break 1
-      .
+      if inc[h] = inc : break 1
    .
    print 1000 * (ind div nc) + 4 * (ind mod nc) + h - 1
 .
@@ -184,6 +176,5 @@ input_data
         ......#.
 
 10R5L5R10L4R5L5
-
 
 

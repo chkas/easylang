@@ -1,23 +1,21 @@
 # AoC-23 - Day 16: The Floor Will Be Lava
-# 
+#
 global nc nr m$[] .
 proc init . .
    s$ = input
    nc = len s$ + 1
-   for i to nc ; m$[] &= " " ; .
+   for i to nc : m$[] &= " "
    repeat
-      for c$ in strchars s$
-         m$[] &= c$
-      .
+      for c$ in strchars s$ : m$[] &= c$
       m$[] &= " "
       nr += 1
       s$ = input
       until s$ = ""
    .
-   for i to nc ; m$[] &= " " ; .
+   for i to nc : m$[] &= " "
 .
 init
-# 
+#
 dir[] = [ 1 nc (-1) (-nc) ]
 proc beam p d . seen[] .
    repeat
@@ -49,9 +47,7 @@ proc beam p d . seen[] .
 func go p d .
    len seen[] len m$[]
    beam p d seen[]
-   for m in seen[]
-      sum += if m > 0
-   .
+   for m in seen[] : sum += if m > 0
    return sum
 .
 print go (nc + 1) 1
@@ -64,7 +60,7 @@ for r = 1 to nr
    max = higher max go (nc * r + nc - 1) 3
 .
 print max
-# 
+#
 input_data
 .|...\....
 |.-.\.....

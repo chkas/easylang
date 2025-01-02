@@ -1,30 +1,34 @@
 # AoC-22 - Day 8: Treetop Tree House
-# 
+#
 sysconf topleft
 visual = 1
-# 
+#
 global m[] nc .
 proc read . .
    s$ = input
-   nc = len s$
-   if nc = 0
-      nc = 80
+   nc = len s$ + 2
+   if nc = 2
+      nc = 42
       random_seed 0
    .
-   for i to nc
+   for i to nc : m[] &= 10
+   for i to nc - 2
+      m[] &= 10
       if s$ = ""
-         for j to nc
+         for j to nc - 2
             s$ &= strchar (random 10 + 47)
          .
       .
       for h in number strchars s$
          m[] &= h
       .
+      m[] &= 10
       s$ = input
    .
+   for i to nc : m[] &= 10
 .
 read
-# 
+#
 sc = 95 / nc
 sc2 = sc / 2
 proc showall . .
@@ -43,17 +47,20 @@ if visual = 1
    showall
    background -1
 .
-#  
+#
 textsize 3
-proc showt s$ . .
+proc showtxt s$ w . .
+   if visual = 0 : return
    move 0 95
    color 000
    rect 50 5
    move 5 96
    color 777
    text s$
+   sleep w
 .
 proc show p high . .
+   if visual = 0 : return
    y = (p - 1) div nc * sc
    x = (p - 1) mod nc * sc
    move x y
@@ -66,94 +73,67 @@ proc show p high . .
       color3 h + 0.5 h + 0.5 h - 0.2
       rect sc sc
    .
-   sleep 0.005
+   sleep 0.001
 .
 len seen[] len m[]
 proc look p inc . .
    mx = -1
-   for i = 1 to nc
+   for i = 1 to nc - 2
       if m[p] > mx
          mx = m[p]
-         if visual = 1
-            show p 0
-         .
+         show p 0
          seen[p] = 1
       .
       p += inc
    .
 .
 proc part1 . .
-   for i = 1 to nc
-      look (i - 1) * nc + 1 1
-      look i * nc (-1)
-      look i nc
-      look i + nc * (nc - 1) (-nc)
+   for i = 1 to nc - 2
+      look i * nc + 2 1
+      look i * nc + nc - 1 (-1)
+      look i + nc + 1 nc
+      look i + nc * (nc - 2) + 1 (-nc)
    .
-   for h in seen[]
-      cnt += h
-   .
+   for h in seen[] : cnt += h
    print cnt
-   if visual = 1
-      showt cnt
-      sleep 1
-   .
+   showtxt cnt 2
 .
 part1
-# 
-# 
+#
 proc count p inc . cnt .
    cnt = 0
    high = m[p]
    repeat
       p += inc
-      if p < 1 or p > nc * nc
-         break 1
-      .
-      h = p mod nc
-      if inc = -1 and h = 0 or inc = 1 and h = 1
-         break 1
-      .
+      if m[p] = 10 : break 1
       cnt += 1
-      if visual = 1
-         show p 0
-      .
+      show p 0
       until m[p] >= high
    .
 .
+proc count4 max p . c .
+   clear
+   showtxt max 0
+   count p 1 c1
+   count p (-1) c2
+   count p nc c3
+   count p (-nc) c4
+   show p 1
+   c = c1 * c2 * c3 * c4
+.
 proc part2 . .
-   for p = 1 to nc * nc
-      if visual = 1
-         clear
-         showt max & " " & h
-      .
-      count p 1 c1
-      count p (-1) c2
-      count p nc c3
-      count p (-nc) c4
-      if visual = 1
+   for p = 1 to len m[] : if m[p] < 10
+      count4 max p c
+      if c > max
          show p 1
-      .
-      h = c1 * c2 * c3 * c4
-      if h > max
-         max = h
+         max = c
          maxp = p
-         if visual = 1
-            showt max
-            sleep 1.5
-         .
+         showtxt max 0.2
       .
-   .
-   if visual = 1
-      clear
-      show maxp 1
-      sleep 1
    .
    print max
+   count4 max maxp c
 .
 part2
-# 
+#
 input_data
-
-
-
-

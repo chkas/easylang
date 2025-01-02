@@ -1,10 +1,5 @@
 # AoC-24 - Day 13: Claw Contraption
 #
-proc read inp$ . a b .
-   s$[] = strsplit inp$ " "
-   a = number substr s$[3] 3 99
-   b = number substr s$[4] 3 99
-.
 func fine ca cb ax ay bx by prx pry .
    sgn = sign (ax / ay - bx / by)
    repeat
@@ -21,22 +16,22 @@ func fine ca cb ax ay bx by prx pry .
    return 0
 .
 func cost1 a$ b$ p$ .
-   read a$ ax ay
-   read b$ bx by
-   read "x " & p$ prx pry
-   return fine 0 0 ax ay bx by prx pry
+   a[] = number strtok a$ " +"
+   b[] = number strtok b$ " +"
+   p[] = number strtok p$ " ="
+   return fine 0 0 a[1] a[2] b[1] b[2] p[1] p[2]
 .
 func cost2 a$ b$ p$ .
-   read a$ ax ay
-   read b$ bx by
-   read "x " & p$ prx pry
+   a[] = number strtok a$ " +"
+   b[] = number strtok b$ " +"
+   p[] = number strtok p$ " ="
    #
-   f = (by - bx) / (ax - ay)
-   prx += 10000000000000
-   pry += 10000000000000
-   cb = floor (prx / (f * ax + bx)) - 1500
+   f = (b[2] - b[1]) / (a[1] - a[2])
+   p[1] += 10000000000000
+   p[2] += 10000000000000
+   cb = floor (p[1] / (f * a[1] + b[1])) - 1500
    ca = floor (f * cb)
-   return fine ca cb ax ay bx by prx pry
+   return fine ca cb a[1] a[2] b[1] b[2] p[1] p[2]
 .
 repeat
    a$ = input

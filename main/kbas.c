@@ -202,7 +202,8 @@ extern int parse(const char* str, int opt, int pos) {
 		if (is_enter) error("");
 	}
 	else {
-		proc_p->start = parse_sequ0();
+		ND* h = parse_sequ0();
+		proc_p->start = h;
 	}
 	if (tok != t_eof) {
 		cs_nl();

@@ -1,17 +1,15 @@
 # AoC-22 - Day 17: Pyroclastic Flow
-#  
+#
 hashsz = 199999
 len hashind0[] hashsz
 global hashind[] .
-# 
+#
 func hashset ind .
    hi = ind mod hashsz + 1
    while hashind[hi] <> ind and hashind[hi] <> 0
       hi = hi mod hashsz + 1
    .
-   if hashind[hi] = ind
-      return 1
-   .
+   if hashind[hi] = ind : return 1
    hashind[hi] = ind
    return 0
 .
@@ -19,9 +17,9 @@ proc hashclear . .
    hashind[] = hashind0[]
 .
 hashclear
-#  
+#
 len m[] 10000 * 9
-# 
+#
 global rock[][] inp$ .
 proc init . .
    for i = 0 to len m[] div 9 - 1
@@ -40,9 +38,9 @@ proc init . .
    inp$ = input
 .
 init
-# 
+#
 global high rock[] irock .
-# 
+#
 proc show . .
    rrock = irock div 9
    crock = irock mod 9
@@ -72,7 +70,7 @@ proc show . .
    .
    print ""
 .
-# 
+#
 proc mov dir . block .
    for r = 0 to 3
       for c = 0 to 3
@@ -116,13 +114,11 @@ func testhash .
          mi += 2
       .
       fnd = hashset h
-      if fnd = 1
-         return h
-      .
+      if fnd = 1 : return h
    .
    return 0
 .
-# 
+#
 while 1 = 1
    irock = (high + 4) * 9 + 4
    swap rock[] rock[rock][]
@@ -140,7 +136,7 @@ while 1 = 1
       # show
    .
    mkstone
-   # 
+   #
    if nrock > 2022
       ind = testhash
       if ind > 0
@@ -169,6 +165,6 @@ while 1 = 1
    swap rock[] rock[rock][]
    rock = rock mod len rock[][] + 1
 .
-# 
+#
 input_data
 >>><<><>><<<>><>>><<<>>><<<><<<>><>><<>>

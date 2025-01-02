@@ -6,10 +6,10 @@ func n2id n$ .
    na$[] &= n$
    return id
 .
-proc sort . d$[] .
-   for i = len d$[] - 1 downto 1
-      for j = 1 to i
-         if strcmp d$[j] d$[j + 1] > 0 : swap d$[j] d$[j + 1]
+proc sorta . d$[] .
+   for i = 1 to len d$[] - 1
+      for j = i + 1 to len d$[]
+         if strcmp d$[j] d$[i] < 0 : swap d$[j] d$[i]
       .
    .
 .
@@ -24,20 +24,18 @@ proc init . .
    repeat
       s$ = input
       until s$ = ""
-      h$ = substr s$ 5 3
-      h = 1
-      if h$ = "AND"
+      h$[] = strsplit s$ " "
+      if h$[2] = "AND"
          op = 1
-      elif h$ = "OR "
+      elif h$[2] = "OR"
          op = 2
-         h = 0
       else
          op = 3
       .
       op[][] &= [ ]
-      op[$][] &= n2id substr s$ 1 3
-      op[$][] &= n2id substr s$ (8 + h) 3
-      op[$][] &= n2id substr s$ (15 + h) 3
+      op[$][] &= n2id h$[1]
+      op[$][] &= n2id h$[3]
+      op[$][] &= n2id h$[5]
       if op[$][1] > op[$][2] : swap op[$][1] op[$][2]
       op[$][] &= op
    .
@@ -133,7 +131,7 @@ proc part2 . .
    and1 = conop 1 (1 + nin) 1
    carry = op[and1][3]
    for in = 2 to nin : checkit in carry
-   sort fixlist$[]
+   sorta fixlist$[]
    print strjoin fixlist$[] ","
    testfix
 .

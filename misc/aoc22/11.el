@@ -3,7 +3,7 @@
 repeat
    s$ = input
    until s$ = ""
-   a[] = number strsplit substr input 19 999 ","
+   a[] = number strtok input ", "
    item0[][] &= a[]
    a$[] = strsplit substr input 24 9 " "
    h = 1

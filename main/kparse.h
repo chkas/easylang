@@ -669,7 +669,14 @@ S ND* parse_strterm(void) {
 				nd->le = parse_numarrarrex();
 			}
 		}
-		else nd = parse_numstr();
+		else {
+			if (strcmp(tval, "strtok") == 0 || strcmp(tval, "strsplit") == 0) {
+				nd = mknd();
+				nd->strf = op_strarrstr;
+				nd->le = parse_strarrex();
+			}
+			else nd = parse_numstr();
+		}
 	}
 	else if (tok == t_vnumael) {
 		nd = mknd();

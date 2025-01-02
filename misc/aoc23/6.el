@@ -1,7 +1,7 @@
 # AoC-23 - Day 6: Wait For It
-# 
+#
 proc ginp . t[] t2 .
-   t[] = number strsplit input " "
+   t[] = number strtok input " "
    for t in t[]
       h$ &= t
    .
@@ -9,7 +9,7 @@ proc ginp . t[] t2 .
 .
 ginp t[] t2
 ginp d[] d2
-# 
+#
 func f t0 d0 .
    for t = 0 to t0
       d = t * (t0 - t)
@@ -23,7 +23,7 @@ for i to len t[]
 .
 print prod
 print f t2 d2
-# 
+#
 input_data
 Time:      7  15   30
 Distance:  9  40  200

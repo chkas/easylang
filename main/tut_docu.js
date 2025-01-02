@@ -626,6 +626,8 @@ print a$[]
 print strjoin a$[] " "
 a$[] = strsplit "10,15,22" ","
 print a$[]
+a[] = number strtok "10, 15, 22" ", "
+print a[]
 
 * What else is there
 

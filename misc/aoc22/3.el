@@ -1,59 +1,60 @@
 # AoC-22 - Day 3: Rucksack Reorganization
 #
-proc code c$ . c .
+func code c$ .
    c = strcode c$ - strcode "a" + 1
-   if c < 1
-      c += strcode "a" - strcode "A" + 26
+   if c < 1 : c += strcode "a" - strcode "A" + 26
+   return c
+.
+#
+global inp$[] .
+proc read . .
+   repeat
+      s$ = input
+      until s$ = ""
+      inp$[] &= s$
    .
 .
-len a[] 52
-len b[] 52
+read
 #
-repeat
-   s$ = input
-   until s$ = ""
-   inp$[] &= s$
-   l = len s$ div 2
-   for c$ in strchars substr s$ 1 l
-      code c$ c
-      a[c] = 1
-   .
-   for c$ in strchars substr s$ (l + 1) 99
-      code c$ c
-      if a[c] = 1
-         a[c] = 0
-         sum += c
+proc part1 . .
+   len a[] 52
+   for s$ in inp$[]
+      for i = 1 to 52 : a[i] = 0
+      l = len s$ div 2
+      for c$ in strchars substr s$ 1 l : a[code c$] = 1
+      for c$ in strchars substr s$ (l + 1) 99
+         c = code c$
+         if a[c] = 1
+            a[c] = 0
+            sum += c
+         .
       .
    .
-   for i = 1 to 52
-      a[i] = 0
-   .
+   print sum
 .
-print sum
+part1
 #
-sum = 0
-for ii = 1 step 3 to len inp$[] - 2
-   for c$ in strchars inp$[ii]
-      code c$ c
-      a[c] = 1
-   .
-   for c$ in strchars inp$[ii + 1]
-      code c$ c
-      b[c] = 1
-   .
-   for c$ in strchars inp$[ii + 2]
-      code c$ c
-      if a[c] = 1 and b[c] = 1
-         a[c] = 0
-         sum += c
+proc part2 . .
+   len a[] 52
+   len b[] 52
+   for ii = 1 step 3 to len inp$[] - 2
+      for i = 1 to 52
+         a[i] = 0
+         b[i] = 0
+      .
+      for c$ in strchars inp$[ii] : a[code c$] = 1
+      for c$ in strchars inp$[ii + 1] : b[code c$] = 1
+      for c$ in strchars inp$[ii + 2]
+         c = code c$
+         if a[c] = 1 and b[c] = 1
+            a[c] = 0
+            sum += c
+         .
       .
    .
-   for i = 1 to 52
-      a[i] = 0
-      b[i] = 0
-   .
+   print sum
 .
-print sum
+part2
 #
 input_data
 vJrwpWtwJgWrhcsFMMfFFhFp
@@ -62,4 +63,3 @@ PmmdzqPrVvPwwTWBwg
 wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
 ttgJtRGJQctTZtZT
 CrZsJsPPZsGzwwsLwLmpwMDw
-

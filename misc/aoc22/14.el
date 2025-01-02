@@ -34,7 +34,7 @@ proc init . .
       until s$ = ""
       a[] = number strtok s$ " ,"
       for i = 1 step 2 to len a[] - 3
-#      for i = 4 step 3 to len a[]
+         #      for i = 4 step 3 to len a[]
          xp = a[i] - (500 - nc / 2)
          yp = a[i + 1]
          x = a[i + 2] - (500 - nc / 2)
@@ -53,49 +53,44 @@ proc init . .
    for x = 0 to nc - 1
       m[(maxy + 2) * nc + x + 1] = 1
    .
+   if visual = 1
+      for p = 1 to len m[]
+         if m[p] = 1 : show p
+      .
+      sleep 1
+   .
 .
 init
-if visual = 1
-   for p = 1 to len m[]
-      if m[p] = 1
-         show p
-      .
-   .
-   sleep 1
-.
 #
-s = nc / 2 + 1
-while 1 = 1
-   if part2 = 0 and s >= maxy * nc
-      part2 = 1
-      print cnt
-      if visual = 1
-         sleep 1
+proc run . .
+   s = nc / 2 + 1
+   while 1 = 1
+      if part2 = 0 and s >= maxy * nc
+         part2 = 1
+         print cnt
+         if visual = 1 : sleep 1
       .
-   .
-   m[s] = 0
-   show s
-   if m[s + nc] = 0
-      s += nc
-   elif m[s + nc - 1] = 0
-      s += nc - 1
-   elif m[s + nc + 1] = 0
-      s += nc + 1
-   else
+      m[s] = 0
+      show s
+      if m[s + nc] = 0
+         s += nc
+      elif m[s + nc - 1] = 0
+         s += nc - 1
+      elif m[s + nc + 1] = 0
+         s += nc + 1
+      else
+         m[s] = 2
+         cnt += 1
+         if visual = 1 : show s
+         if s = nc / 2 + 1 : break 1
+         s = nc / 2 + 1
+      .
       m[s] = 2
-      cnt += 1
-      if visual = 1
-         show s
-      .
-      if s = nc / 2 + 1
-         break 1
-      .
-      s = nc / 2 + 1
+      show s
    .
-   m[s] = 2
-   show s
+   print cnt
 .
-print cnt
+run
 #
 input_data
 498,4 -> 498,6 -> 496,6
@@ -105,7 +100,3 @@ input_data
 492,18 -> 503,18
 482,22 -> 492,22
 494,25 -> 507,25 -> 507,20
-
-
-
-

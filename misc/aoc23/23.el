@@ -77,9 +77,7 @@ global pseen[] w[][] nddest ndpos[] .
 proc gond p d0 v . ndx .
    p = p + d[d0]
    repeat
-      if v = 1
-         vis[p] = 1
-      .
+      if v = 1 : vis[p] = 1
       for d = 1 to 4
          if d <> (d0 + 2) mod1 4 and m[p + d[d]] >= 0
             break 1
@@ -105,9 +103,7 @@ proc gosteps nd ndn . .
    gond p d0 1 ndx
 .
 proc showmway . .
-   if visual = 0
-      return
-   .
+   if visual = 0 : return
    showm 0
    ndp = maxway[1]
    for i = 2 to len maxway[]
@@ -173,9 +169,7 @@ proc makegraph node p d0 . .
       nd = len w[][]
    .
    maxavail += cnt
-   if deny = 1
-      return
-   .
+   if deny = 1 : return
    w[node][] &= nd
    w[node][] &= cnt
    seen = pseen[p]
@@ -209,9 +203,7 @@ proc leavecon nd ndn . .
 #
 proc solve nd dist avail way[] . .
    way[] &= nd
-   if dist + avail <= max
-      return
-   .
+   if dist + avail <= max : return
    if nd = nddest
       if dist > max
          maxway[] = way[]

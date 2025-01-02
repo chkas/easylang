@@ -1,5 +1,5 @@
 # AoC-23 - Day 18: Lavaduct Lagoon
-# 
+#
 global d[] n[] inp2$[] .
 proc read . .
    repeat
@@ -20,7 +20,7 @@ proc read . .
    .
 .
 read
-# 
+#
 proc read2 . .
    d[] = [ ]
    n[] = [ ]
@@ -31,9 +31,7 @@ proc read2 . .
       for i = 3 to 7
          n *= 16
          c = strcode s$[i] - 48
-         if c > 10
-            c -= 39
-         .
+         if c > 10 : c -= 39
          n += c
       .
       n[] &= n
@@ -63,9 +61,7 @@ proc run . .
          y += (3 - d) * n[i]
          if d = 4
             # up
-            if dx = 3
-               yp -= 1
-            .
+            if dx = 3 : yp -= 1
             ux[] &= x
             uy1[] &= y
             uy2[] &= yp
@@ -87,6 +83,7 @@ proc run . .
    sort dx[] dy1[] dy2[]
    while len ux[] > 0
       ln = len ux[]
+      
       x = ux[ln]
       y1 = uy1[ln]
       y2 = uy2[ln]
@@ -102,7 +99,7 @@ proc run . .
                iy2 = lower y2 dy2
                h = (dx[j] - x - 1) * (iy2 - iy1 + 1)
                sum += h
-               # 
+               #
                if y1 < dy1
                   ux[] &= x
                   uy1[] &= y1
@@ -124,7 +121,7 @@ read
 run
 read2
 run
-# 
+#
 input_data
 R 6 (#70c710)
 D 5 (#0dc571)
@@ -140,4 +137,3 @@ R 2 (#7807d2)
 U 3 (#a77fa3)
 L 2 (#015232)
 U 2 (#7a21e3)
-

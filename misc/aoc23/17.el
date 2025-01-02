@@ -1,32 +1,26 @@
 # AoC-23 - Day 17: Clumsy Crucible
-#  
+#
 global nc m[] .
 proc init . .
    s$ = input
    nc = len s$ + 1
-   for i to nc
-      m[] &= 0
-   .
+   for i to nc : m[] &= 0
    repeat
-      for c$ in strchars s$
-         m[] &= number c$
-      .
+      for c$ in strchars s$ : m[] &= number c$
       m[] &= 0
       s$ = input
       until s$ = ""
    .
-   for i to nc
-      m[] &= 0
-   .
+   for i to nc : m[] &= 0
 .
 init
-# 
+#
 dir[] = [ 1 nc (-1) (-nc) ]
-# 
+#
 global cost[] max .
 len todo[][] 100
 arrbase todo[][] 0
-# 
+#
 proc add p c d cnt . .
    skip = 1
    if cnt = 7
@@ -36,9 +30,7 @@ proc add p c d cnt . .
    for i to skip
       p += dir[d]
       c += m[p]
-      if m[p] = 0
-         return
-      .
+      if m[p] = 0 : return
    .
    it = p * 28 + (cnt - 1) * 4 + (d - 1)
    if c < cost[it]
@@ -57,16 +49,13 @@ proc add p c d cnt . .
       .
    .
 .
-# 
+#
 proc go maxcnt . .
    cost[] = [ ]
-   for i to len m[] * 28
-      cost[] &= 1 / 0
-   .
+   for i to len m[] * 28 : cost[] &= 1 / 0
    add (nc + 1) 0 1 maxcnt
    add (nc + 1) 0 2 maxcnt
-   # 
-   itodo = 0
+   #
    while itodo <= max
       for it in todo[itodo][]
          pos = it div 28
@@ -89,14 +78,12 @@ proc go maxcnt . .
    .
    last = (len m[] - nc - 1) * 28
    min = 1 / 0
-   for i = 0 to 27
-      min = lower min cost[last + i]
-   .
+   for i = 0 to 27 : min = lower min cost[last + i]
    print min
 .
 go 3
 go 7
-# 
+#
 input_data
 2413432311323
 3215453535623

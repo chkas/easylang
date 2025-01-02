@@ -3,9 +3,7 @@
 global name$[] o[] a[] b[] .
 proc name2id n$ . id .
    for id = 1 to len name$[]
-      if name$[id] = n$
-         break 2
-      .
+      if name$[id] = n$ : return
    .
    name$[] &= n$
    o[] &= 0
@@ -69,9 +67,7 @@ low = -10000000000000
 high = 10000000000000
 a[humn] = low
 solv root v
-if v > 0
-   swap low high
-.
+if v > 0 : swap low high
 repeat
    in = low + (high - low) div 2
    a[humn] = in
@@ -101,5 +97,4 @@ pppw: cczh / lfqf
 lgvd: ljgn * ptdq
 drzm: hmdt - zczc
 hmdt: 32
-
 
