@@ -1,19 +1,17 @@
 # AoC-21 - Day 25: Sea Cucumber
-# 
+#
 # Updating happens in-place. Therefore you
 # have to notice if a cucumber has moved
 # in order not to move it again.
-# 
+#
 sysconf topleft
-visualization = 1
-# 
+visual = 1
+#
 global m[] nc .
 background 001
 col[] = [ 0 030 060 ]
 proc show . .
-   if visualization = 0
-      break 1
-   .
+   if visual = 0 : return
    clear
    sc = 100 / nc
    sc1 = sc * 1.1
@@ -80,7 +78,7 @@ proc step . done .
       .
    .
 .
-# 
+#
 repeat
    s$ = input
    until s$ = ""
@@ -103,7 +101,7 @@ for st to 9999
       break 1
    .
 .
-# 
+#
 input_data
 v...>>.vv>
 .vv>>.vv..
@@ -114,5 +112,4 @@ v>v.vv.v..
 .vv..>.>v.
 v.v..>>v.v
 ....v..v.>
-
 

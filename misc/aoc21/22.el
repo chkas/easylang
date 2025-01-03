@@ -19,9 +19,7 @@ proc inter p0 q0 p1 q1 . r0 r1 r .
 proc intersect p[] q[] . r[] r .
    for d = 1 step 2 to 5
       inter p[d] q[d] p[d + 1] q[d + 1] r0 r1 r
-      if r = 0
-         break 1
-      .
+      if r = 0 : break 1
       r[d] = r0
       r[d + 1] = r1
    .
@@ -42,18 +40,18 @@ proc add pt[] ison . .
       pts_sign[] &= 1
    .
 .
-proc volume pt[] . vol .
+func volume pt[] .
    vol = 1
    for d = 1 step 2 to 5
       vol *= abs (pt[d] - pt[d + 1]) + 1
    .
+   return vol
 .
-proc volume_all . sum .
-   sum = 0
+func volume_all .
    for i to len pts[][]
-      volume pts[i][] vol
-      sum += vol * pts_sign[i]
+      sum += volume pts[i][] * pts_sign[i]
    .
+   return sum
 .
 #
 len p[] 6
@@ -62,14 +60,13 @@ repeat
    until s$ = ""
    ison = if substr s$ 1 2 = "on"
    p[] = number strtok s$ "=."
-   if abs p[1] > 50 and sum = 0
-      volume_all sum
-      print sum
+   if abs p[1] > 50 and printed = 0
+      printed = 1
+      print volume_all
    .
    add p[] ison
 .
-volume_all sum
-print sum
+print volume_all
 #
 input_data
 on x=-5..47,y=-31..22,z=-19..33
@@ -132,7 +129,4 @@ off x=-27365..46395,y=31009..98017,z=15428..76570
 off x=-70369..-16548,y=22648..78696,z=-1892..86821
 on x=-53470..21291,y=-120233..-33476,z=-44150..38147
 off x=-93533..-4276,y=-16170..68771,z=-104985..-24507
-
-
-
 

@@ -1026,35 +1026,40 @@ S void op_flael_ass(ND* nd) {
 	ARR* arr = garr(nd->v1);
 	int h = arrind(arr, numf(nd->ri), nd);
 	ND* ndx = nd + 1;
-	*(arr->pnum + h) = numf(ndx->ex);
+	double n = numf(ndx->ex);
+	*(arr->pnum + h) = n;
 }
 
 S void op_flael_assp(ND* nd) {
 	ARR* arr = garr(nd->v1);
 	int h = arrind(arr, numf(nd->ri), nd);
 	ND* ndx = nd + 1;
-	*(arr->pnum + h) += numf(ndx->ex);
+	double n = numf(ndx->ex);
+	*(arr->pnum + h) += n;
 }
 
 S void op_flael_assm(ND* nd) {
 	ARR* arr = garr(nd->v1);
 	int h = arrind(arr, numf(nd->ri), nd);
 	ND* ndx = nd + 1;
-	*(arr->pnum + h) -= numf(ndx->ex);
+	double n = numf(ndx->ex);
+	*(arr->pnum + h) -= n;
 }
 
 S void op_flael_asst(ND* nd) {
 	ARR* arr = garr(nd->v1);
 	int h = arrind(arr, numf(nd->ri), nd);
 	ND* ndx = nd + 1;
-	*(arr->pnum + h) *= numf(ndx->ex);
+	double n = numf(ndx->ex);
+	*(arr->pnum + h) *= n;
 }
 
 S void op_flael_assd(ND* nd) {
 	ARR* arr = garr(nd->v1);
 	int h = arrind(arr, numf(nd->ri), nd);
 	ND* ndx = nd + 1;
-	*(arr->pnum + h) /= numf(ndx->ex);
+	double n = numf(ndx->ex);
+	*(arr->pnum + h) /= n;
 }
 
 //kc?
@@ -1500,18 +1505,18 @@ S ARR op_strtok(ND* nd) {
 	res.typ = ARR_STR;
 	res.base = rt.arrbase;
 	res.p = NULL;
-	char* tok = strdup(str_ptr(&s1));
-	if (tok == NULL) {
+	char* dup = strdup(str_ptr(&s1));
+	if (dup == NULL) {
 		out_of_mem(nd);
 		goto exit;
 	}
-	tok = strtok(tok, s2p);
+	char* tok = strtok(dup, s2p);
 	while (tok) {
 		if (arrstrapp(&res, tok) == 0) goto exit;
 		tok = strtok(NULL, s2p);
 	}
 	exit:
-	free(tok);
+	free(dup);
 	str_free(&s1);
 	str_free(&s2);
 	return res;

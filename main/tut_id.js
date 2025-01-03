@@ -57,7 +57,7 @@ on animate
    if y < rad
       vy = -vy
    else
-      vy -= 0.1
+      vy -= 0.08
    end
 end
 

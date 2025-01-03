@@ -7,14 +7,12 @@
 # starting from the low points.
 #
 sysconf topleft
-visualization = 1
+visual = 1
 # don't look good with test data
 #
 global m[] nc nr lowpt[] .
 proc show upd . .
-   if visualization = 0
-      break 1
-   .
+   if visual = 0 : return
    sc = 100 / nc
    for y range0 nr
       for x range0 nc
@@ -33,29 +31,21 @@ proc show upd . .
          .
       .
    .
-   if upd = 0
-      sleep 1
-   .
+   if upd = 0 : sleep 1
    sleep 0.01
 .
 proc part1 . .
    inp$ = input
    nc = len inp$ + 2
-   for i to nc
-      m[] &= 9
-   .
+   for i to nc : m[] &= 9
    repeat
       m[] &= 9
-      for i to nc - 2
-         m[] &= number substr inp$ i 1
-      .
+      for i to nc - 2 : m[] &= number substr inp$ i 1
       m[] &= 9
       inp$ = input
       until inp$ = ""
    .
-   for i to nc
-      m[] &= 9
-   .
+   for i to nc : m[] &= 9
    nr = len m[] div nc
    for i to len m[]
       m = m[i]
@@ -72,9 +62,7 @@ show 0
 proc sort . d[] .
    for i to len d[] - 1
       for j = i + 1 to len d[]
-         if d[j] > d[i]
-            swap d[j] d[i]
-         .
+         if d[j] > d[i] : swap d[j] d[i]
       .
    .
 .
@@ -82,9 +70,7 @@ proc expand pos . sz .
    m[pos] += 10
    sz += 1
    for i in [ pos - 1 pos + 1 pos - nc pos + nc ]
-      if m[i] < 9
-         expand i sz
-      .
+      if m[i] < 9 : expand i sz
    .
 .
 proc part2 . .
@@ -105,5 +91,4 @@ input_data
 9856789892
 8767896789
 9899965678
-
 

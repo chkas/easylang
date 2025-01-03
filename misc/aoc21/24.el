@@ -1,14 +1,14 @@
 # AoC-21 - Day 24: Arithmetic Logic Unit
-# 
-# Add digits one by one. Then test if at 
-# a certain digit value "z" becomes smaller 
-# (like at a bad bicycle lock, if it 
-# clicks). If not, then try the previous 
-# digits again.  
-# 
+#
+# Add digits one by one. Then test if at
+# a certain digit value "z" becomes smaller
+# (like at a bad bicycle lock, if it
+# clicks). If not, then try the previous
+# digits again.
+#
 sysconf topleft
-visualization = 1
-# 
+visual = 1
+#
 global cod$[] a1[] a2[] a3[] v[] in[] is_part2 .
 proc run . .
    inpos = 1
@@ -19,9 +19,7 @@ proc run . .
          v2 = v[a2[i]]
       .
       if cod$[i] = "inp"
-         if inpos > len in[]
-            break 1
-         .
+         if inpos > len in[] : break 1
          v[a1[i]] = in[inpos]
          inpos += 1
       elif cod$[i] = "add"
@@ -39,14 +37,10 @@ proc run . .
 .
 background 000
 clear
-# 
+#
 proc show . .
-   if visualization = 0
-      break 1
-   .
-   for d in in[]
-      s$ &= d
-   .
+   if visual = 0 : return
+   for d in in[] : s$ &= d
    move 8 is_part2 * 35 + 15
    color 000
    rect 100 25
@@ -68,14 +62,10 @@ proc find . .
          in[i] = d
          run
          show
-         if v[4] < min / 10
-            break 1
-         .
+         if v[4] < min / 10 : break 1
       .
       if d = 10
-         if is_part2 = 1
-            in[i] = 1
-         .
+         if is_part2 = 1 : in[i] = 1
          for j = 1 to i
             ds = in[j]
             for d = 1 to 9
@@ -90,12 +80,8 @@ proc find . .
          .
       .
    .
-   if v[4] <> 0
-      print "error: z not 0"
-   .
-   for d in in[]
-      write d
-   .
+   if v[4] <> 0 : print "error: z not 0"
+   for d in in[] : write d
    print ""
 .
 proc read . .
@@ -126,9 +112,5 @@ else
    is_part2 = 1
    find
 .
-# 
+#
 input_data
-
-
-
-

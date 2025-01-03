@@ -7,7 +7,7 @@
 # downwards.
 #
 sysconf topleft
-visualization = 1
+visual = 1
 #
 nc = 1500
 len m[] nc * nc
@@ -15,21 +15,17 @@ len mn[] len m[]
 len dim[] 2
 #
 proc draw . .
-   if visualization = 0
-      break 1
-   .
+   if visual = 0 : return
    m = 100
    clear
    color 543
    move 4 4
    rect dim[1] / m * 90 + 1 dim[2] / m * 90 + 1
    color -2
-   for x range0 m
-      for y range0 m
-         if m[x + y * nc + 1] = 1
-            move 5 + x / m * 90 5 + y / m * 90
-            circle 50 / m
-         .
+   for x range0 m : for y range0 m
+      if m[x + y * nc + 1] = 1
+         move 5 + x / m * 90 5 + y / m * 90
+         circle 50 / m
       .
    .
    sleep 0.4
@@ -48,29 +44,24 @@ draw
 repeat
    s$ = input
    until s$ = ""
-   a$[] = strsplit s$ " "
-   a$[] = strsplit a$[3] "="
-   fold = number a$[2]
-   d = 1 + if a$[1] = "y"
-   for x = 0 to dim[1]
-      for y = 0 to dim[2]
-         if m[x + y * nc + 1] = 1
-            v[] = [ x y ]
-            if v[d] > fold
-               v[d] = 2 * fold - v[d]
-            .
-            mn[v[1] + v[2] * nc + 1] = 1
-            m[x + y * nc + 1] = 0
+   a$[] = strtok s$ " ="
+   fold = number a$[4]
+   d = 1 + if a$[3] = "y"
+   for x = 0 to dim[1] : for y = 0 to dim[2]
+      if m[x + y * nc + 1] = 1
+         v[] = [ x y ]
+         if v[d] > fold
+            v[d] = 2 * fold - v[d]
          .
+         mn[v[1] + v[2] * nc + 1] = 1
+         m[x + y * nc + 1] = 0
       .
    .
    dim[d] = fold
    swap m[] mn[]
    draw
    if cnt = 0
-      for i = 1 to len m[]
-         cnt += m[i]
-      .
+      for i = 1 to len m[] : cnt += m[i]
       print cnt
    .
 .
@@ -101,6 +92,3 @@ fold along y=15
 fold along x=11
 fold along y=7
 fold along x=5
-
-
-

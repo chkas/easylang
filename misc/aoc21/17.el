@@ -13,11 +13,14 @@ y1 = in[4]
 #
 for vx0 = 1 to x2
    for vy0 = y2 to -y2
-      x = 0 ; y = 0
-      vy = vy0 ; vx = vx0
+      x = 0
+      y = 0
+      vy = vy0
+      vx = vx0
       my = 0
       repeat
-         x += vx ; y += vy
+         x += vx
+         y += vy
          until x > x2 or y < y2
          my = higher my y
          if x >= x1 and y <= y1
@@ -35,5 +38,4 @@ print npos
 #
 input_data
 target area: x=20..30, y=-10..-5
-
 

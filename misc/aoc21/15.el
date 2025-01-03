@@ -7,29 +7,22 @@
 # path, we also need a predecessor list.
 #
 sysconf topleft
-visualization = 1
-#
-expnd = 4
-# for part one:
-# expnd = 0
+visual = 1
 #
 global m[] nc cost todo[][] endpos prev[] .
 background 000
 clear
 textsize 4
 proc show . .
-   if visualization = 0
-      break 1
-   .
+   if visual = 0 : return
    sc = 94 / nc
    if cost = 0
-      for y range0 nc - 1
-         for x range0 nc - 1
-            pos = nc + y * nc + x + 1
-            color 111 * (m[pos] - 1)
-            move sc * x sc * y
-            rect sc sc
-         .
+      clear
+      for y range0 nc - 1 : for x range0 nc - 1
+         pos = nc + y * nc + x + 1
+         color 111 * (m[pos] - 1)
+         move sc * x sc * y
+         rect sc sc
       .
    else
       color 321
@@ -49,9 +42,7 @@ proc show . .
    sleep 0.01
 .
 proc show_route . .
-   if visualization = 0
-      break 1
-   .
+   if visual = 0 : return
    sc = 94 / nc
    color 900
    pos = endpos
@@ -65,6 +56,7 @@ proc show_route . .
    .
 .
 #
+global sz inp$[] .
 proc read . .
    inp$ = input
    sz = len inp$
@@ -72,24 +64,23 @@ proc read . .
       sz = 80
       random_seed 0
    .
-   nc = sz + expnd * sz + 1
-   for i to nc
-      m[] &= 0
-   .
    for ii to sz
       if inp$ = ""
-         for i to sz
-            inp$ &= strchar (random 10 + 47)
-         .
+         for i to sz : inp$ &= strchar (random 10 + 47)
       .
-      for i to sz
-         m[] &= number substr inp$ i 1
-      .
-      for i to expnd * sz
-         m[] &= m[len m[] - sz + 1] mod 9 + 1
-      .
-      m[] &= 0
+      inp$[] &= inp$
       inp$ = input
+   .
+.
+read
+proc init expnd . .
+   m[] = [ ]
+   nc = sz + expnd * sz + 1
+   for i to nc : m[] &= 0
+   for inp$ in inp$[]
+      for i to sz : m[] &= number substr inp$ i 1
+      for i to expnd * sz : m[] &= m[len m[] - sz + 1] mod 9 + 1
+      m[] &= 0
    .
    for i to expnd * sz
       for j to sz * (expnd + 1)
@@ -97,34 +88,38 @@ proc read . .
       .
       m[] &= 0
    .
-   for i to nc
-      m[] &= 0
-   .
+   for i to nc : m[] &= 0
 .
-read
 #
-len prev[] len m[]
-endpos = len m[] - nc - 1
-pos = nc + 1
-prev[pos] = -1
-len todo[][] 10
-todo[1][] &= pos
-for cost = 0 to 99999
-   show
-   for pos in todo[cost mod 10 + 1][]
-      if pos = endpos
-         print cost
-         show_route
-         break 2
-      .
-      for posn in [ pos - nc pos + 1 pos + nc pos - 1 ]
-         if prev[posn] = 0 and m[posn] > 0
-            todo[(cost + m[posn]) mod 10 + 1][] &= posn
-            prev[posn] = pos
+proc run . .
+   prev[] = [ ]
+   len prev[] len m[]
+   endpos = len m[] - nc - 1
+   pos = nc + 1
+   prev[pos] = -1
+   todo[][] = [ ]
+   len todo[][] 10
+   todo[1][] &= pos
+   for cost = 0 to 99999
+      show
+      for pos in todo[cost mod 10 + 1][]
+         if pos = endpos : break 2
+         for posn in [ pos - nc pos + 1 pos + nc pos - 1 ]
+            if prev[posn] = 0 and m[posn] > 0
+               todo[(cost + m[posn]) mod 10 + 1][] &= posn
+               prev[posn] = pos
+            .
          .
       .
+      todo[cost mod 10 + 1][] = [ ]
    .
-   todo[cost mod 10 + 1][] = [ ]
+   print cost
+   show_route
 .
+init 0
+run
+if visual = 1 : sleep 1
+init 4
+run
 #
 input_data

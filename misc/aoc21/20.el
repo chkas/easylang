@@ -56,7 +56,7 @@ proc update . .
    v = alg[1] - m[i - 1]
    #
    # create border
-   for _ to 2
+   for ii to 2
       i = i - nc - 1
       l += 2
       for h = 0 to l - 2
@@ -72,9 +72,7 @@ for r to 50
    update
    if r = 2 or r = 50
       sum = 0
-      for m in m[]
-         sum += m
-      .
+      for m in m[] : sum += m
       print sum
    .
 .
@@ -87,5 +85,4 @@ input_data
 ##..#
 ..#..
 ..###
-
 

@@ -6,14 +6,12 @@
 # a digit.
 #
 sysconf topleft
-visualization = 1
+visual = 1
 #
 background 000
 clear
 proc draw x y cod . .
-   if visualization = 0
-      break 1
-   .
+   if visual = 0 : return
    d = 2.8
    s = 0.5
    linewidth s * 6 / 5
@@ -48,46 +46,44 @@ proc permutate_list k . .
 .
 permutate_list 1
 #
-proc codeperm perm s$ . cod .
-   cod = 0
+func codeperm perm s$ .
    for c$ in strchars s$
       cod += bitshift 1 permlist[perm][strcode c$ - 97 + 1]
    .
+   return cod
 .
 len digit[] 128
+arrbase digit[] 0
+#
 proc init . .
-   for i = 1 to 128
-      digit[i] = -1
-   .
+   for i range0 128 : digit[i] = -1
    s$[] = strsplit "abcdef bc abdeg abcdg bcfg acdfg acdefg abc abcdefg abcdfg" " "
    for i = 0 to 9
-      codeperm 1 s$[i + 1] cod
-      digit[cod + 1] = i
+      cod = codeperm 1 s$[i + 1]
+      digit[cod] = i
    .
 .
 init
 #
 global inp$ part1 part2 linenr .
 proc procline . .
-   inp$[] = strsplit inp$ " "
+   inp$[] = strtok inp$ " "
    for perm = 1 to len permlist[][]
       for nr = 1 to 10
-         codeperm perm inp$[nr] cod
+         cod = codeperm perm inp$[nr]
          if linenr < 10
             draw nr * 6 - 4 linenr * 10 + 2 cod
          .
-         if digit[cod + 1] = -1
-            break 1
-         .
+         if digit[cod] = -1 : break 1
       .
       if nr = 11
          val = 0
          for nr = 12 to 15
-            codeperm perm inp$[nr] cod
+            cod = codeperm perm inp$[nr]
             if linenr < 10
                draw nr * 6 - 4 linenr * 10 + 2 cod
             .
-            dig = digit[cod + 1]
+            dig = digit[cod]
             val = val * 10 + dig
             if dig = 1 or dig = 4 or dig = 7 or dig = 8
                part1 += 1
@@ -95,7 +91,7 @@ proc procline . .
          .
          part2 += val
          linenr += 1
-         break 2
+         return
       .
    .
    print "no match"
@@ -119,5 +115,4 @@ dbcfg fgd bdegcaf fgec aegbdf ecdfab fbedc dacgb gdcebf gf | cefg dcbef fcge gbc
 bdfegc cbegaf gecbf dfcage bdacg ed bedf ced adcbefg gebcd | ed bcgafe cdgba cbgef
 egadfb cdbfeg cegd fecab cgb gbdefca cg fgcdab egfdb bfceg | gbdfcae bgc cg cgb
 gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce
-
 

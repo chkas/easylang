@@ -1,24 +1,22 @@
 # AoC-21 - Day 19: Beacon Scanner
-# 
+#
 # For each scanner position, convert the
 # relative beacon positions to scalars and
 # store them in a hash map that also stores
 # the beacon. Then all scanners are tested.
 # If there are enough matches in one of the
 # 24 rotation positions (using the hashmap)
-# then the beacons without matches are 
-# added to scanner 0. 
-# 
+# then the beacons without matches are
+# added to scanner 0.
+#
 hashsz = 199999
 len hashind[] hashsz
 len hashv[] hashsz
-# 
+#
 func hashget ind .
    hi = ind mod hashsz + 1
    repeat
-      if hashind[hi] = ind
-         return hashv[hi]
-      .
+      if hashind[hi] = ind : return hashv[hi]
       until hashind[hi] = 0
       hi = hi mod hashsz + 1
    .
@@ -32,7 +30,7 @@ proc hashset ind val . .
    hashind[hi] = ind
    hashv[hi] = val
 .
-# 
+#
 global c0[][] .
 repeat
    s$ = input
@@ -46,7 +44,7 @@ repeat
 .
 len scan[][] len scan$[][]
 scan[1][] = [ 0 0 0 ]
-# 
+#
 global c[][] .
 proc load id . .
    len c[][] 0
@@ -102,16 +100,14 @@ proc test . found .
    .
 .
 global todo[] .
-# 
+#
 proc hashset_relpos . .
    hashind[] = [ ]
    len hashind[] hashsz
-   for i to len c0[][]
-      for j to len c0[][]
-         if i <> j
-            hind = 100000000 * (c0[i][1] - c0[j][1]) + 10000 * (c0[i][2] - c0[j][2]) + c0[i][3] - c0[j][3]
-            hashset hind i
-         .
+   for i to len c0[][] : for j to len c0[][]
+      if i <> j
+         hind = 100000000 * (c0[i][1] - c0[j][1]) + 10000 * (c0[i][2] - c0[j][2]) + c0[i][3] - c0[j][3]
+         hashset hind i
       .
    .
 .
@@ -137,11 +133,10 @@ proc all_rotations . .
    .
    todo[] &= sca
 .
-# 
+#
 proc part1 . .
    load 1
    swap c0[][] c[][]
-   # 
    for sca = 2 to len scan$[][]
       todo[] &= sca
    .
@@ -157,23 +152,19 @@ proc part1 . .
    print len c0[][]
 .
 part1
-# 
-# part two 
-# 
+#
+# part two
+#
 proc part2 . .
-   for i to len scan[][]
-      for j = i + 1 to len scan[][]
-         dist = 0
-         for d to 3
-            dist += abs (scan[i][d] - scan[j][d])
-         .
-         max = higher dist max
-      .
+   for i to len scan[][] : for j = i + 1 to len scan[][]
+      dist = 0
+      for d to 3 : dist += abs (scan[i][d] - scan[j][d])
+      max = higher dist max
    .
    print max
 .
 part2
-# 
+#
 input_data
 --- scanner 0 ---
 404,-588,-901
@@ -311,4 +302,3 @@ input_data
 891,-625,532
 -652,-548,-490
 30,-46,-14
-

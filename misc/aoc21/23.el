@@ -1,17 +1,17 @@
 # AoC-21 - Day 23: Amphipod
-# 
+#
 # Dijkstra's algorithm. For each field there
 # are 5 possibilities (empty, A-D), so you
 # can store each state (7 + 16) fields in a
-# number up to 5^23 and then create a "seen" 
+# number up to 5^23 and then create a "seen"
 # hash map.
-# 
+#
 sysconf topleft
-visualization = 1
-# 
+visual = 0
+#
 hashsz = 1999993
 len hashind[] hashsz
-# 
+#
 proc hash ind . ret .
    hi = ind mod hashsz + 1
    while hashind[hi] <> 0 and hashind[hi] <> ind
@@ -25,7 +25,7 @@ proc hash ind . ret .
 .
 m[] = [ 0 0 -1 0 -1 0 -1 0 -1 0 0 ]
 global m0[] destid dim .
-# 
+#
 proc tonum . n .
    n = 0
    for i to len m0[]
@@ -49,15 +49,13 @@ proc toarr n . .
       n = n div 5
    .
 .
-# 
+#
 sz = 8.5
 sz2 = sz / 2
 background 000
 acol[] = [ 373 773 751 733 ]
 proc show cost t . .
-   if visualization = 0
-      break 1
-   .
+   if visual = 0 : break 1
    clear
    x = 3
    y = 10 + sz
@@ -103,7 +101,7 @@ proc show cost t . .
    text "Energy: " & cost
    sleep t
 .
-# 
+#
 proc read . .
    s$ = input
    s$ = input
@@ -125,7 +123,7 @@ proc init . .
    read
    m0saved[] = m0[]
 .
-# 
+#
 proc prepare_part2 . .
    dim = 4
    m0[] = [ ]
@@ -143,7 +141,7 @@ proc prepare_part2 . .
    .
    m[] = [ 0 0 -1 0 -1 0 -1 0 -1 0 0 ]
 .
-# 
+#
 amp[] = [ 1 10 100 1000 ]
 proc init_cost . cost .
    cost = 0
@@ -164,7 +162,7 @@ proc init_cost . cost .
    .
 .
 global todo[] cost[] prev[] .
-# 
+#
 proc show_way . .
    list[] &= destid
    cur = destid
@@ -181,7 +179,7 @@ proc show_way . .
    mp[] = m[]
    m0p[] = m0[]
    toarr list[len list[]]
-   if visualization = 1
+   if visual = 1
       clear
       sleep 0.1
    .
@@ -208,7 +206,7 @@ proc show_way . .
       show cost 1
    .
 .
-# 
+#
 proc take_min . cur cost .
    n = len todo[]
    if n = 0
@@ -230,35 +228,31 @@ proc go_home . cur .
    toarr cur
    while done = 0
       done = 1
-      for i to 11
-         if m[i] > 0
-            dpos = m[i]
-            j = (dpos - 1) * 2 + 3
-            dir = sign (i - j)
-            while 1 = 1
-               if j = i
-                  h = (dim - 1) * 4
-                  while m0[dpos + h] = dpos
-                     h -= 4
-                  .
-                  if m0[dpos + h] = 0
-                     done = 0
-                     m0[dpos + h] = m[i]
-                     m[i] = 0
-                     cur0 = cur
-                     tonum cur
-                     prev[] &= cur
-                     prev[] &= cur0
-                     break 2
-                  else
-                     break 1
-                  .
+      for i to 11 : if m[i] > 0
+         dpos = m[i]
+         j = (dpos - 1) * 2 + 3
+         dir = sign (i - j)
+         while 1 = 1
+            if j = i
+               h = (dim - 1) * 4
+               while m0[dpos + h] = dpos
+                  h -= 4
                .
-               if m[j] > 0
+               if m0[dpos + h] = 0
+                  done = 0
+                  m0[dpos + h] = m[i]
+                  m[i] = 0
+                  cur0 = cur
+                  tonum cur
+                  prev[] &= cur
+                  prev[] &= cur0
+                  break 2
+               else
                   break 1
                .
-               j += dir
             .
+            if m[j] > 0 : break 1
+            j += dir
          .
       .
    .
@@ -289,9 +283,7 @@ proc add_ways cur cost . .
          for endpos in [ 1 11 ]
             dir = sign (endpos - 5)
             for i = pos step dir to endpos
-               if m[i] > 0
-                  break 1
-               .
+               if m[i] > 0 : break 1
                if m[i] = 0
                   m[i] = m
                   tonum new
@@ -325,9 +317,7 @@ proc run . .
          break 2
       .
       go_home cur
-      if cnt mod 100 = 0
-         show cost 0.01
-      .
+      if cnt mod 100 = 0 : show cost 0.01
       cnt += 1
       until cur = destid
       add_ways cur cost
@@ -338,16 +328,15 @@ proc run . .
 init
 run
 show_way
-# 
+#
 prepare_part2
 run
 show_way
-# 
+#
 input_data
 #############
 #...........#
 ###B#C#B#D###
   #A#D#C#A#
   #########
-
 
