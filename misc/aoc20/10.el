@@ -1,5 +1,5 @@
 # AoC-20 - Day 10: Adapter Array
-# 
+#
 d[] &= 0
 repeat
    s$ = input
@@ -9,51 +9,37 @@ repeat
 # sort
 for i to len d[] - 1
    for j = i to len d[]
-      if d[j] < d[i]
-         swap d[i] d[j]
-      .
+      if d[j] < d[i] : swap d[i] d[j]
    .
 .
-# 
+#
 proc part1 . .
-   d = d[2]
-   for i = 3 to len d[]
-      if d[i] - d = 1
+   for i = 2 to len d[]
+      if d[i] - d[i - 1] = 1
          s1 += 1
-      elif d[i] - d = 3
+      elif d[i] - d[i - 1] = 3
          s3 += 1
       .
-      d = d[i]
    .
-   s1 += 1
-   s3 += 1
-   print s1 * s3
+   print s1 * (s3 + 1)
 .
 part1
-# 
-len cache[] d[len d[] - 1]
-# 
-proc find_ways ind0 . n0 .
-   if ind0 = len d[]
-      n0 = 1
-      break 1
-   .
-   if cache[ind0] > 0
-      n0 = cache[ind0]
-      break 1
-   .
-   n0 = 0
+#
+len cache[] d[$]
+#
+func find_ways ind0 .
+   if ind0 = len d[] : return 1
+   if cache[ind0] > 0 : return cache[ind0]
    ind = ind0 + 1
    while ind <= len d[] and d[ind] - d[ind0] <= 3
-      find_ways ind n
-      n0 += n
+      n += find_ways ind
       ind += 1
    .
-   cache[ind0] = n0
+   cache[ind0] = n
+   return n
 .
-find_ways 1 n
-print n
-# 
+print find_ways 1
+#
 input_data
 28
 33
@@ -86,4 +72,3 @@ input_data
 34
 10
 3
-

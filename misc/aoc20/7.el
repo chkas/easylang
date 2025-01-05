@@ -1,12 +1,10 @@
 # AoC-20 - Day 7: Handy Haversacks
-# 
+#
 global col$[] cont_col[][] cont_cnt[][] .
-# 
+#
 proc col_id s$ . col .
    for col to len col$[]
-      if col$[col] = s$
-         break 2
-      .
+      if col$[col] = s$ : return
    .
    col$[] &= s$
    cont_col[][] &= [ ]
@@ -32,28 +30,29 @@ proc read_inp . .
 .
 read_inp
 col_id "shiny gold" gold
-# 
-proc search i . fnd .
-   for j to len cont_col[i][]
-      col = cont_col[i][j]
-      if col = gold
-         fnd = 1
-         break 1
-      else
-         search col fnd
-      .
+#
+proc search col . fnd .
+   if col = gold
+      fnd = 1
+      return
+   .
+   fnd = 0
+   for c in cont_col[col][]
+      search c h
+      if h = 1 : fnd = 1
    .
 .
 proc part1 . .
    for i to len cont_col[][]
-      fnd = 0
-      search i fnd
-      sum += fnd
+      if i <> gold
+         search i fnd
+         sum += fnd
+      .
    .
    print sum
 .
 part1
-# 
+#
 proc get_sum col . sum .
    sum = 0
    for i to len cont_col[col][]
@@ -67,7 +66,7 @@ proc part2 . .
    print sum
 .
 part2
-# 
+#
 input_data
 light red bags contain 1 bright white bag, 2 muted yellow bags.
 dark orange bags contain 3 bright white bags, 4 muted yellow bags.
@@ -78,4 +77,3 @@ dark olive bags contain 3 faded blue bags, 4 dotted black bags.
 vibrant plum bags contain 5 faded blue bags, 6 dotted black bags.
 faded blue bags contain no other bags.
 dotted black bags contain no other bags.
-

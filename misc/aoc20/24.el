@@ -44,15 +44,11 @@ dirs_odd[] = [ -1 (-nc) (-nc + 1) 1 (nc + 1) nc ]
 #
 proc sum_black . s .
    s = 0
-   for i to len m[]
-      s += m[i]
-   .
+   for i to len m[] : s += m[i]
 .
 background 000
 proc show . .
-   if visual = 0
-      break 1
-   .
+   if visual = 0 : return
    #
    srow = 30
    offs = (nc - srow) div 2
@@ -96,9 +92,7 @@ proc show . .
    sleep 0.03
 .
 proc show2 . .
-   if visual = 0
-      break 1
-   .
+   if visual = 0 : return
    f = 100 / nc
    f2 = f / 2
    f34 = f2 + f / 4
@@ -150,7 +144,6 @@ proc part1 . .
 .
 part1
 #
-#
 len p[] len m[]
 proc update . .
    swap m[] p[]
@@ -194,9 +187,7 @@ proc part2 . .
    sum_black sum
    print sum
 .
-if visual = 1
-   sleep 1
-.
+if visual = 1 : sleep 1
 part2
 #
 #
@@ -221,4 +212,3 @@ nenewswnwewswnenesenwnesewesw
 eneswnwswnwsenenwnwnwwseeswneewsenese
 neswnwewnwnwseenwseesewsenwsweewe
 wseweeenwnesenwwwswnew
-

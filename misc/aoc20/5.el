@@ -1,5 +1,5 @@
 # AoC-20 - Day 5: Binary Boarding
-# 
+#
 len ids[] 1024
 repeat
    s$ = input
@@ -8,13 +8,9 @@ repeat
    id = 0
    for i to 10
       id *= 2
-      if s$[i] = "B" or s$[i] = "R"
-         id += 1
-      .
+      if s$[i] = "B" or s$[i] = "R" : id += 1
    .
-   if id > max_id
-      max_id = id
-   .
+   if id > max_id : max_id = id
    ids[id + 1] = 1
 .
 id = 2
@@ -28,11 +24,10 @@ repeat
    id += 1
 .
 print id - 1
-# 
+#
 input_data
 BFFFBBFRRR
 FFFBBBFRRR
 BBFFBBFRLL
 FFFBBBFRLR
-
 

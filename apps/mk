@@ -300,13 +300,12 @@ set -- $(ls -l $k)
 if test $5 -lt 50000; then
 
 cat <<xxx
-	<div id=edit class=lnk>Code</div> - <div id=install class=lnk>Install</div>
+	<div id=edit class=lnk>Code</div>
 xxx
 else
 cat <<xxx
 	<a href=../ide/>Easylang</a>
 	<div id=edit></div>
-	<div id=install></div>
 xxx
 fi
 
@@ -332,11 +331,6 @@ edit.onclick = async function() {
 	var h = await compr(easyscript)
 	window.open('../ide/#cod=' + h)
 //	window.open('../ide/#code=' + encodeURIComponent(easyscript))
-}
-install.onclick = async function() {
-	var h = await compr(easyscript)
-	window.open('../run/#cod=' + h)
-//	window.open('../run/#code=' + encodeURIComponent(easyscript))
 }
 
 xxx

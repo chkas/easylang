@@ -10,9 +10,7 @@ proc init . .
    s$ = input
    w = len s$
    while s$ <> ""
-      for c$ in strchars s$
-         m[] &= if c$ = "#"
-      .
+      for c$ in strchars s$ : m[] &= if c$ = "#"
       s$ = input
    .
 .
@@ -21,9 +19,7 @@ init
 sc = 100 / w
 background 000
 proc show . .
-   if visual = 0
-      break 1
-   .
+   if visual = 0 : return
    clear
    color 777
    for i range0 len m[]
@@ -36,9 +32,7 @@ proc show . .
    .
 .
 proc mark i . .
-   if visual = 0
-      break 1
-   .
+   if visual = 0 : return
    color 900
    x = i mod w
    y = i div w
@@ -47,9 +41,7 @@ proc mark i . .
    sleep 0.04
 .
 proc show_ray x y . .
-   if visual = 0
-      break 1
-   .
+   if visual = 0 : return
    color 944
    x0 = monitor_stat mod w
    y0 = monitor_stat div w
@@ -85,9 +77,7 @@ proc get_rays stat . .
          dx = dx div r
          dy = dy div r
          for k range0 len dx[]
-            if dx = dx[k] and dy = dy[k]
-               break 1
-            .
+            if dx = dx[k] and dy = dy[k] : break 1
          .
          if k = len dx[]
             dx[] &= dx
@@ -142,15 +132,13 @@ proc fire ind . .
          dy[ind] = dy[len dy[] - 1]
          len dx[] len dx[] - 1
          len dy[] len dy[] - 1
-         break 2
+         return
       .
       until m[x + y * w] = 1
    .
    show_ray x y
    n_shot += 1
-   if n_shot = 200
-      print x * 100 + y
-   .
+   if n_shot = 200 : print x * 100 + y
    m[x + y * w] = 0
    show
    mark monitor_stat
@@ -193,6 +181,5 @@ input_data
 .#.#.###########.###
 #.#.#.#####.####.###
 ###.##.####.##.#..##
-
 
 

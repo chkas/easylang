@@ -1,141 +1,119 @@
 # AoC-20 - Day 14: Docking Data
 #
 repeat
-   s$ = input
-   inp$[] &= s$
-   until s$ = ""
+   inp$ = input
+   until inp$ = ""
+   inp$[] &= inp$
 .
+inp$[] &= "end"
 #
-global memi$[] mem[] .
-proc mem_wr1 ind$ val . .
-   for i to len mem[]
-      if memi$[i] = ind$
-         mem[i] = val
-         break 2
+proc mkmask s$ . mbin mmsk .
+   mbin = 0
+   mmsk = 0
+   for c$ in strchars s$
+      mbin *= 2
+      mmsk *= 2
+      if c$ = "X"
+         mmsk += 1
+      elif c$ = "1"
+         mbin += 1
       .
    .
-   memi$[] &= ind$
+.
+proc wrmem addr val . mema[] mem[] .
+   for i to len mem[] : if mema[i] = addr
+      mem[i] = val
+      return
+   .
+   mema[] &= addr
    mem[] &= val
 .
 proc part1 . .
    ii = 1
    while substr inp$[ii] 1 4 = "mask"
-      s$[] = strsplit inp$[ii] " "
+      mkmask substr inp$[ii] 8 99 mbin mmsk
       ii += 1
-      msk$[] = strchars s$[3]
       while substr inp$[ii] 1 3 = "mem"
-         s$[] = strsplit inp$[ii] " "
+         s$[] = strtok inp$[ii] " []="
          ii += 1
-         ind$ = substr s$[1] 5 (len s$[1] - 5)
+         addr = number s$[2]
          val = number s$[3]
-         v = val
-         bitv = 1
-         for i = 0 to 35
-            if v mod 2 = 1 and msk$[36 - i] = "0"
-               val -= bitv
-            elif v mod 2 = 0 and msk$[36 - i] = "1"
-               val += bitv
-            .
-            v = v div 2
-            bitv *= 2
-         .
-         mem_wr1 ind$ val
+         val = bitand val mmsk
+         val = bitor val mbin
+         #
+         wrmem addr val mema[] mem[]
       .
    .
-   for i to len mem[]
-      sum += mem[i]
-   .
+   for i to len mem[] : sum += mem[i]
    print sum
 .
 part1
 #
-#
-proc mem_wr ind$ val . .
-   ind$[] = strchars ind$
-   for k to len mem[]
-      m$[] = strchars memi$[k]
-      match = 1
+proc wrmem2 addr$ val . mema$[] mem[] .
+   addr$[] = strchars addr$
+   nmem = len mem[]
+   for k to nmem : if mema$[k] <> ""
+      mem$[] = strchars mema$[k]
       comb = 0
       n_comb = 1
       len pos[] 0
-      for i to 36
-         if m$[i] <> ind$[i]
-            if m$[i] = "X"
-               pos[] &= i
-               comb *= 2
-               if ind$[i] = "1"
-                  comb += 1
-               .
-               n_comb *= 2
-            elif ind$[i] <> "X"
-               match = 0
-               break 1
-            .
+      for i to 36 : if mem$[i] <> addr$[i]
+         if mem$[i] = "X"
+            pos[] &= i
+            comb *= 2
+            if addr$[i] = "1" : comb += 1
+            n_comb *= 2
+         elif addr$[i] <> "X"
+            break 1
          .
       .
-      if match = 1
-         del[] &= k
-         for i = 0 to n_comb - 1
-            if i <> comb
-               v = i
-               for j to len pos[]
-                  m$[pos[j]] = v mod 2
-                  v = v div 2
-               .
-               memi$[] &= strjoin m$[] ""
-               mem[] &= mem[k]
+      if i > 36
+         for co = 0 to n_comb - 1 : if co <> comb
+            v = co
+            for j = len pos[] downto 1
+               mem$[pos[j]] = v mod 2
+               v = v div 2
             .
+            mema$[] &= strjoin mem$[] ""
+            mem[] &= mem[k]
          .
+         mema$[k] = ""
       .
    .
-   memi$[] &= ind$
+   mema$[] &= addr$
    mem[] &= val
-   #
-   for i to len del[]
-      mem[del[i]] = mem[len mem[] - i + 1]
-      memi$[del[i]] = memi$[len mem[] - i + 1]
-   .
-   len mem[] len mem[] - len del[]
-   len memi$[] len memi$[] - len del[]
 .
+#
 proc part2 . .
    ii = 1
-   while substr inp$[ii] 1 4 = "mask"
-      s$[] = strsplit inp$[ii] " "
+   while ii <= len inp$[]
+      msk$[] = strchars substr inp$[ii] 8 99
       ii += 1
-      msk$[] = strchars s$[3]
-      while substr inp$[ii] 1 3 = "mem"
-         s$[] = strsplit inp$[ii] " "
+      while ii <= len inp$[] and substr inp$[ii] 1 3 = "mem"
+         s$[] = strtok inp$[ii] " []="
          ii += 1
-         ind = number substr s$[1] 5 len s$[1] - 5
-         val = number s$[3]
-         v = ind
-         ind$ = ""
+         addr = number s$[2]
+         addr$ = ""
          for i = 0 to 35
             if msk$[36 - i] = "0"
-               ind$ &= v mod 2
+               addr$ &= addr mod 2
             else
-               ind$ &= msk$[36 - i]
+               addr$ &= msk$[36 - i]
             .
-            v = v div 2
+            addr = addr div 2
          .
-         mem_wr ind$ val
+         wrmem2 addr$ number s$[3] mema$[] mem[]
       .
    .
-   for k to len mem[]
+   for k to len mem[] : if mema$[k] <> ""
       val = mem[k]
-      ind$[] = strchars memi$[k]
-      for i to 36
-         if ind$[i] = "X"
-            val *= 2
-         .
+      for c$ in strchars mema$[k]
+         if c$ = "X" : val *= 2
       .
       sum += val
    .
    print sum
 .
-len mem[] 0
-len memi$[] 0
 part2
 #
 input_data

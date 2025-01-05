@@ -4,17 +4,13 @@ global ingre$[] allerg$[] meal_ingre[][] meal_allerg[][] .
 #
 proc ingre_id s$ . i .
    for i to len ingre$[]
-      if ingre$[i] = s$
-         break 2
-      .
+      if ingre$[i] = s$ : return
    .
    ingre$[] &= s$
 .
 proc allerg_id s$ . i .
    for i to len allerg$[]
-      if allerg$[i] = s$
-         break 2
-      .
+      if allerg$[i] = s$ : return
    .
    allerg$[] &= s$
 .
@@ -72,9 +68,7 @@ global allerg_ingre[][] .
 #
 proc search allerg . .
    len ingre_allerg[] n_ingre
-   for i to n_ingre
-      ingre_allerg[i] = 1
-   .
+   for i to n_ingre : ingre_allerg[i] = 1
    for meal to n_meal
       allerg_in_meal allerg meal is_in
       if is_in = 1
@@ -132,24 +126,18 @@ proc part2 . .
       .
    .
    # sort it by allergen
-   for i to n_allerg
-      ord[] &= i
-   .
+   for i to n_allerg : ord[] &= i
    for i to n_allerg - 1
       for j = i + 1 to n_allerg
          h = strcmp allerg$[ord[j]] allerg$[ord[i]]
-         if h < 0
-            swap ord[i] ord[j]
-         .
+         if h < 0 : swap ord[i] ord[j]
       .
    .
    for i to n_allerg
       a = ord[i]
       ingr = allerg_ingre[a]
       write ingre$[ingr]
-      if i < n_allerg
-         write ","
-      .
+      if i < n_allerg : write ","
    .
    print ""
 .

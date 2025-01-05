@@ -22,6 +22,11 @@
 #define swap(a, b) { int _h = a; a = b; b = _h; }
 #define min(a, b) ((a) < (b) ? (a) : (b))
 
+#ifdef RUN
+unsigned short sysconfig;
+#define M_PI 3.1415926
+#endif
+
 extern int sys_error;
 
 static int gx, gy;
@@ -409,7 +414,7 @@ void gr_text(const char* str) {
 
 SDL_Surface* backgr = NULL;
 
-void gr_sys(ushort h) {
+void gr_sys(unsigned short h) {
 
 	if (h == 1) {	// clear
 		grline = 0;
@@ -476,12 +481,12 @@ static void handle_event(SDL_Event* evt) {
 				else if (strcmp(s, "Down") == 0) kn = "ArrowDown";
 				else if (strcmp(s, "Space") == 0) kn = " ";
 			}
-			if (evt->type == SDL_KEYDOWN) evt_func(0, kn);
-			else  evt_func(8, kn);
+			if (evt->type == SDL_KEYDOWN) evt_func(2, kn);
+			else  evt_func(3, kn);
 			break;
 		}
 		case SDL_USEREVENT:
-			evt_func(2, 0);
+			evt_func(1, 0);
 			break;
 		case SDL_QUIT:
 			exit(0);
@@ -539,7 +544,7 @@ void gr_event_loop(void) {
 			while (SDL_PollEvent(&evt)) {
 				handle_event(&evt);
 			}
-			evt_func(1, 0);
+			evt_func(0, 0);
 		}
 	}
 	else {
@@ -670,7 +675,7 @@ void gr_key_sync(char* buf) {
 	buf[0] = 0;
 }
 
-#ifdef TEST
+#ifdef RUN
 
 void evt_mouse(int id, double x, double y) {}
 void evt_func(int id, const char* s) {}

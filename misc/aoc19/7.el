@@ -1,11 +1,11 @@
 # AoC-19 - Day 7: Amplification Circuit
-# 
+#
 code[] = number strsplit input ","
-# 
+#
 prefix ic_
 global out pc fin mem[] .
 in = -1
-# 
+#
 proc run . .
    arrbase mem[] 0
    fin = 0
@@ -15,14 +15,10 @@ proc run . .
       mb = mem[pc] div 1000 mod 10
       until oc = 99 or oc = 3 and in = -1
       a = mem[pc + 1]
-      if ma = 0
-         a = mem[a]
-      .
+      if ma = 0 : a = mem[a]
       if oc <= 2 or oc >= 5
          b = mem[pc + 2]
-         if mb = 0
-            b = mem[b]
-         .
+         if mb = 0 : b = mem[b]
       .
       if oc <= 2 or oc >= 7 and oc <= 8
          h = 0
@@ -50,12 +46,10 @@ proc run . .
          pc += 2
       .
    .
-   if oc = 99
-      fin = 1
-   .
+   if oc = 99 : fin = 1
 .
 prefix
-# 
+#
 proc run0 inp . .
    ic_mem[] = code[]
    ic_in = inp
@@ -73,7 +67,7 @@ proc runall . .
       .
    .
 .
-# 
+#
 max = 0
 proc permute k . .
    for i = k to len arr[]
@@ -93,9 +87,8 @@ proc part1 . .
    print max
 .
 part1
-# 
-# ---------------------------------------
-# 
+#
+#
 len mem[][] 5
 len pc[] 5
 proc init . .
@@ -111,7 +104,7 @@ proc runid id . .
    swap mem[id][] ic_mem[]
    pc[id] = ic_pc
 .
-# 
+#
 arr[] = [ 5 6 7 8 9 ]
 proc runall2 . .
    init
@@ -137,9 +130,7 @@ proc permute2 k . .
    .
    if k = len arr[]
       runall2
-      if ic_out > max
-         max = ic_out
-      .
+      if ic_out > max : max = ic_out
    .
 .
 proc part2 . .
@@ -147,8 +138,7 @@ proc part2 . .
    print max
 .
 part2
-# 
+#
 input_data
 3,31,3,32,1002,32,10,32,1001,31,-2,31,1007,31,0,33,1002,33,7,33,1,33,31,31,1,32,31,31,4,31,99,0,0,0
-
 

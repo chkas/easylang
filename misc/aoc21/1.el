@@ -7,7 +7,9 @@
 repeat
   s$ = input
   until s$ = ""
-  v4 = v3 ; v3 = v2 ; v2 = v1
+  v4 = v3
+  v3 = v2
+  v2 = v1
   v1 = number s$
   inc1 += if v2 > 0 and v1 > v2
   inc2 += if v4 > 0 and v1 > v4

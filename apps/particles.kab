@@ -1,48 +1,44 @@
 # Particles
-# 
+#
 n_part = 40
 thres = 15
 #
+background 000
+color 999
+#
 subr connect
-  h = dx * dx + dy * dy
-  dist = sqrt h
-  if dist < thres
-    lw = (thres - dist) / 30
-    linewidth lw
-    move x y
-    line x[j] y[j]
-  .
+   h = dx * dx + dy * dy
+   dist = sqrt h
+   if dist < thres
+      lw = (thres - dist) / 30
+      linewidth lw
+      move x y
+      line x[j] y[j]
+   .
 .
 on animate
-  clear
-  for i = 1 to n_part
-    x = x[i]
-    y = y[i]
-    move x y
-    circle 0.3125
-    for j = 1 to i
-      dx = abs (x[j] - x)
-      if dx < thres
-        dy = abs (y[j] - y)
-        if dy < thres
-          connect
-        .
+   clear
+   for i = 1 to n_part
+      x = x[i]
+      y = y[i]
+      move x y
+      circle 0.3125
+      for j = 1 to i
+         dx = abs (x[j] - x)
+         if dx < thres
+            dy = abs (y[j] - y)
+            if dy < thres : connect
+         .
       .
-    .
-    if x > 100 or x < 0
-      vx[i] = -vx[i]
-    .
-    if y > 100 or y < 0
-      vy[i] = -vy[i]
-    .
-    x[i] += vx[i]
-    y[i] += vy[i]
-  .
+      if x > 100 or x < 0 : vx[i] = -vx[i]
+      if y > 100 or y < 0 : vy[i] = -vy[i]
+      x[i] += vx[i]
+      y[i] += vy[i]
+   .
 .
 for i = 1 to n_part
-  x[] &= randomf * 100
-  y[] &= randomf * 100
-  vx[] &= (0.5 - randomf) / 3
-  vy[] &= (0.5 - randomf) / 3
+   x[] &= randomf * 100
+   y[] &= randomf * 100
+   vx[] &= (0.5 - randomf) / 3
+   vy[] &= (0.5 - randomf) / 3
 .
-

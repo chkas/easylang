@@ -1,17 +1,18 @@
 # AoC-19 - Day 11: Space Police
-# 
+#
 sysconf topleft
-code[] = number strsplit input ","
-# 
+#
+ic_mem[] = number strsplit input ","
+#
 nc = 100
 len painted[] nc * nc
 len hull[] len painted[]
 arrbase painted[] 0
 arrbase hull[] 0
-# 
+#
 pos = nc * nc div 2 + nc div 2
 global n_painted out_ind .
-# 
+#
 proc init_part2 . .
    for i range0 len hull[]
       hull[i] = 0
@@ -54,11 +55,9 @@ proc make_pic . .
       .
    .
 .
-# 
-swap code[] ic_mem[]
-# 
+#
 prefix ic_
-# -------- intcode -------- 
+# -------- intcode --------
 arrbase mem[] 0
 base = 0
 proc mem_ind mo ind . rind .
@@ -116,23 +115,17 @@ proc run . .
       .
    .
 .
-# --------  -------- 
+# --------  --------
 prefix
-# 
-if len code[] > 1
+#
+if len ic_mem[] > 1
    ic_run
    print n_painted
-   # 
    init_part2
    ic_run
    make_pic
 else
    print "No input"
 .
-# 
+#
 input_data
-
-
-
-
-

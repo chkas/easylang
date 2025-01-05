@@ -1,89 +1,79 @@
 # AoC-20 - Day 11: Seating System
-# 
+#
 global seat[] nc .
 proc read . .
    s$ = input
    nc = len s$ + 2
-   for i to nc
-      seat[] &= 2
-   .
+   for i to nc : seat[] &= 2
    while s$ <> ""
       s$[] = strchars s$
       seat[] &= 2
-      for i to len s$[]
-         seat[] &= if s$[i] <> "."
-      .
+      for i to len s$[] : seat[] &= if s$[i] <> "."
       seat[] &= 2
       s$ = input
    .
-   for i to nc
-      seat[] &= 2
-   .
+   for i to nc : seat[] &= 2
 .
 read
-len f[] len seat[]
-len p[] len seat[]
-# 
-global is_part1 .
-proc look i dir . s .
-   if is_part1 = 1
-      i += dir
-   else
-      repeat
-         i += dir
-         until seat[i] <> 0
-      .
-   .
-   s += p[i]
-.
-len stable[] len f[]
-# 
-proc run . .
-   nrow = len seat[] / nc
-   for i to len f[]
-      f[i] = 0
-      p[i] = 0
-      stable[i] = 0
-   .
+dirs[] = [ (-nc - 1) (-nc) (-nc + 1) (-1) 1 nc - 1 nc nc + 1 ]
+#
+proc part1 . .
+   len pn[] len seat[]
+   len p[] len seat[]
    repeat
-      swap f[] p[]
+      swap pn[] p[]
       stable = 1
-      for r = 0 to nrow - 2
-         h = r * nc + nc + 1
-         for i = h + 1 to h + nc - 1
-            if seat[i] = 1 and stable[i] <> 1
-               s = 0
-               for dir in [ (-nc - 1) (-nc) (-nc + 1) (-1) 1 nc - 1 nc nc + 1 ]
-                  look i dir s
-               .
-               if is_part1 = 1 and s >= 4 or s >= 5
-                  f[i] = 0
-               elif s = 0
-                  f[i] = 1
-               else
-                  f[i] = p[i]
-               .
-               if f[i] <> p[i]
-                  stable = 0
-               else
-                  stable[i] = 1
-               .
-            .
+      for i to len seat[] : if seat[i] = 1
+         s = 0
+         for dir in dirs[] : s += p[i + dir]
+         if s >= 4
+            pn[i] = 0
+         elif s = 0
+            pn[i] = 1
+         else
+            pn[i] = p[i]
          .
+         if pn[i] <> p[i] : stable = 0
       .
       until stable = 1
    .
-   for i to len f[]
-      sum += f[i]
-   .
+   for i to len pn[] : sum += pn[i]
    print sum
 .
-is_part1 = 1
-run
-is_part1 = 0
-run
-# 
-# 
+part1
+#
+proc part2 . .
+   len f[] len seat[]
+   len p[] len seat[]
+   repeat
+      swap f[] p[]
+      stable = 1
+      for i to len seat[] : if seat[i] = 1
+         s = 0
+         for dir in dirs[]
+            k = i
+            repeat
+               k += dir
+               until seat[k] <> 0
+            .
+            s += p[k]
+         .
+         if s >= 5
+            f[i] = 0
+         elif s = 0
+            f[i] = 1
+         else
+            f[i] = p[i]
+         .
+         if f[i] <> p[i] : stable = 0
+      .
+      until stable = 1
+   .
+   for i to len f[] : sum += f[i]
+   print sum
+.
+part2
+#
 input_data
 L.LL.LL.LL
 LLLLLLL.LL
@@ -95,6 +85,3 @@ L.LLLLL.LL
 LLLLLLLLLL
 L.LLLLLL.L
 L.LLLLL.LL
-
-
-

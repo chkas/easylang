@@ -17,7 +17,7 @@ global a b .
 proc init . .
    for i to len in$[]
       l$[] = strsplit in$[i] " "
-      ind = 1 + number substr l$[1] 1 9
+      ind = 1 + number l$[1]
       if l$[2] = "\"a\""
          a = ind
       elif l$[2] = "\"b\""
@@ -38,27 +38,23 @@ proc init . .
 init
 #
 proc match s$ . nr[] res .
-   #  pr s$
-   #  pr nr[]
    res = 1
    i = 1
    while i <= len nr[] and (nr[i] = a or nr[i] = b)
       c$ = substr s$ 1 1
       if nr[i] = a and c$ <> "a"
          res = 0
-         break 2
+         return
       elif nr[i] = b and c$ <> "b"
          res = 0
-         break 2
+         return
       .
       s$ = substr s$ 2 99
       i += 1
    .
    if i > len nr[]
-      if s$ <> ""
-         res = 0
-      .
-      break 1
+      if s$ <> "" : res = 0
+      return
    .
    double = 0
    ind = nr[i]

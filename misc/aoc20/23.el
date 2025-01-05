@@ -1,13 +1,11 @@
 # AoC-20 - Day 23: Crab Cups
-# 
+#
 global n next[] cur .
 inp[] = number strchars input
-# 
+#
 proc init n0 . .
    n = n0
-   if n0 = 0
-      n = len inp[]
-   .
+   if n0 = 0 : n = len inp[]
    len next[] n
    cur = inp[1]
    h = cur
@@ -37,7 +35,7 @@ proc mov . .
 .
 proc part1 . .
    init 0
-   for _ to 100
+   for i to 100
       mov
    .
    h = next[1]
@@ -48,17 +46,16 @@ proc part1 . .
    print s$
 .
 part1
-# 
+#
 proc part2 . .
    init 1000000
-   for _ to 10000000
+   for i to 10000000
       mov
    .
    print next[1] * next[next[1]]
 .
 part2
-# 
+#
 input_data
 389125467
-
 
