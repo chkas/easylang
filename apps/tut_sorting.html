@@ -21,27 +21,19 @@ txt_tutor=`* Sorting algorithms
 print "Selection sort"
 print ""
 proc sort . d[] .
-  for i = 1 to len d[] - 1
-    for j = i + 1 to len d[]
-      if d[j] < d[i]
-        swap d[j] d[i]
+   for i = 1 to len d[] - 1
+      min = i
+      for j = i + 1 to len d[]
+         if d[j] < d[min] : min = j
       .
-    .
-  .
-.
-proc test . .
-  d[] = [ 29 4 72 44 55 26 27 77 92 5 ]
-  sort d[]
-  print d[]
-  print ""
+      swap d[i] d[min]
+   .
 .
 proc time_test . .
   len d[] 500
   write "Length" & strchar 9 & "Time"
-  for _ = 1 to 3
-    for i = 1 to len d[]
-      d[i] = random 1000000 - 1
-    .
+  for test = 1 to 3
+    for i = 1 to len d[] : d[i] = random 1000000
     write strchar 10 & len d[]
     t = systime
     sort d[]
@@ -49,8 +41,9 @@ proc time_test . .
     len d[] 10 * len d[]
   .
 .
-test
 time_test
+
++ Sorting becomes really slow with many elements. If the array size is increased by ten times, it takes a hundred times as long. The algorithm has a time complexity of O(N²).
 
 * Insertion sort - fast for small arrays
 
@@ -73,9 +66,7 @@ proc time_test . .
   len d[] 500
   write "Length" & strchar 9 & "Time"
   for test = 1 to 3
-    for i = 1 to len d[]
-      d[i] = random 1000000
-    .
+    for i = 1 to len d[] : d[i] = random 1000000
     write strchar 10 & len d[]
     t = systime
     sort d[]
@@ -84,6 +75,8 @@ proc time_test . .
   .
 .
 time_test
+
++ Also slow with large arrays.
 
 * Heapsort - fast for larger arrays
 
@@ -112,12 +105,8 @@ proc sort . d[] .
     j = 1
     ind = 2
     while ind < i
-      if ind + 1 < i and d[ind + 1] > d[ind]
-        ind += 1
-      .
-      if d[j] < d[ind]
-        swap d[j] d[ind]
-      .
+      if ind + 1 < i and d[ind + 1] > d[ind] : ind += 1
+      if d[j] < d[ind] : swap d[j] d[ind]
       j = ind
       ind = 2 * j
     .
@@ -127,9 +116,7 @@ proc time_test . .
   len d[] 500
   write "Length" & strchar 9 & "Time"
   for test = 1 to 4
-    for i = 1 to len d[]
-      d[i] = random 1000000
-    .
+    for i = 1 to len d[] : d[i] = random 1000000
     write strchar 10 & len d[]
     t = systime
     sort d[]
@@ -158,13 +145,9 @@ proc sort . d[] .
     while left < len d[]
       # merge
       mid = left + sz - 1
-      if mid > len d[]
-        mid = len d[]
-      .
+      if mid > len d[] : mid = len d[]
       right = mid + sz
-      if right > len d[]
-        right = len d[]
-      .
+      if right > len d[] : right = len d[]
       l = left
       r = mid + 1
       for i = left to right
@@ -185,9 +168,7 @@ proc time_test . .
   len d[] 500
   write "Length" & strchar 9 & "Time"
   for test = 1 to 4
-    for i = 1 to len d[]
-      d[i] = random 1000000
-    .
+    for i = 1 to len d[] : d[i] = random 1000000
     write strchar 10 & len d[]
     t = systime
     sort d[]
@@ -251,9 +232,7 @@ proc time_test . .
   len d[] 500
   write "Length" & strchar 9 & "Time"
   for test = 1 to 4
-    for i = 1 to len d[]
-      d[i] = random 1000000
-    .
+    for i = 1 to len d[] : d[i] = random 1000000
     write strchar 10 & len d[]
     t = systime
     sort d[]
@@ -280,16 +259,12 @@ proc sort . d[] .
   radix = 256
   max = 0
   for di = 1 to len d[]
-    if d[di] > max
-      max = d[di]
-    .
+    if d[di] > max : max = d[di]
   .
   len buck[][] radix
   pos = 1
   while pos <= max
-    for i = 1 to radix
-      len buck[i][] 0
-    .
+    for i = 1 to radix : len buck[i][] 0
     for di = 1 to len d[]
       h = d[di] div pos mod radix + 1
       buck[h][] &= d[di]
@@ -308,9 +283,7 @@ proc time_test . .
   len d[] 500
   write "Length" & strchar 9 & "Time"
   for test = 1 to 4
-    for i = 1 to len d[]
-      d[i] = random 1000000
-    .
+    for i = 1 to len d[] : d[i] = random 1000000
     write strchar 10 & len d[]
     t = systime
     sort d[]

@@ -52,9 +52,7 @@ first_show = 1
 global tick crash_pos[] crash_tick[] .
 #
 proc show crash_pos . .
-   if visual = 0
-      break 1
-   .
+   if visual = 0 : return
    w = 98 / nc
    if first_show = 1
       first_show = 0
@@ -123,9 +121,7 @@ proc show crash_pos . .
    .
    tick += 1
    sleep 0.005
-   if len f[] < 1000
-      sleep 0.3
-   .
+   if len f[] < 1000 : sleep 0.3
 .
 dir[] = [ 1 nc -1 (-nc) ]
 len car_turn[] len car_dir[]
@@ -185,7 +181,7 @@ proc run . .
 run
 #
 input_data
-/->-\        
+/->-\
 |   |  /----\
 | /-+--+-\  |
 | | |  | v  |
@@ -194,5 +190,4 @@ input_data
 | | |  | |  |
 | | |  | |  |
 \-+-/  \-+--/
-  \------/   
-
+  \------/

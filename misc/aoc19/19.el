@@ -56,9 +56,7 @@ proc run . .
          .
       else
          if oc = 3
-            if in = -1
-               print "error in"
-            .
+            if in = -1 : print "error in"
             mem[ind] = in
             in = -1
          elif oc = 4
@@ -86,9 +84,7 @@ proc in_beam in1 in2 . out .
 background 222
 clear
 proc draw_light x y h . .
-   if visual = 0
-      break 1
-   .
+   if visual = 0 : return
    if h = 1
       color 884
    else
@@ -138,5 +134,3 @@ else
 .
 #
 input_data
-
-

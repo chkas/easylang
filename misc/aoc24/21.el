@@ -32,6 +32,16 @@ proc keypad dir src dst . r[] .
    .
    r[] &= 2
 .
+# +---+---+---+
+# | 7 | 8 | 9 |   0 1 2
+# +---+---+---+
+# | 4 | 5 | 6 |   3 4 5
+# +---+---+---+
+# | 1 | 2 | 3 |   6 7 8
+# +---+---+---+
+#     | 0 | A |   9 10 11
+#     +---+---+
+#
 proc numkeypad keys$ . sq[] .
    a = 11
    for k$ in strchars keys$
@@ -45,6 +55,7 @@ proc numkeypad keys$ . sq[] .
          keypad 2 a b sq[]
       elif dy = 3 and sx = 0
          keypad 1 a b sq[]
+         #
       elif dx > sx
          keypad 2 a b sq[]
       else
@@ -53,6 +64,12 @@ proc numkeypad keys$ . sq[] .
       a = b
    .
 .
+#     +---+---+
+#     | ^ | A |  0 1 2
+# +---+---+---+
+# | < | v | > |  3 4 5
+# +---+---+---+
+#
 proc dirkeypad . sq[] .
    swap sqin[] sq[]
    a = 2
@@ -61,6 +78,7 @@ proc dirkeypad . sq[] .
          keypad 1 a b sq[]
       elif b = 3
          keypad 2 a b sq[]
+         #
       elif a = 1
          keypad 2 a b sq[]
       elif a = 4
@@ -178,4 +196,3 @@ input_data
 179A
 456A
 379A
-

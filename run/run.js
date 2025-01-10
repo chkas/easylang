@@ -237,9 +237,9 @@ remove.onclick = function() {
 		updsel()
 	}
 }
-disc.onclick = function() {
-	updsel()
-}
+//disc.onclick = function() {
+//	updsel()
+//}
 window.onbeforeunload = function(e) {
 	if (!keepd.style.display) {
 		window.localStorage.removeItem("xrunsel")
@@ -259,6 +259,8 @@ edit.onclick = function() {
 	codew.innerText = code
 	kaFormat(code)
 }
+edit2.onclick = edit.onclick
+
 idelnk.onclick = function() {
 	window.open("../ide/#code=" + encodeURIComponent(codew.innerText))
 }

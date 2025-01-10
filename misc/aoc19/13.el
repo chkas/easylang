@@ -1,7 +1,7 @@
 # AoC-19 - Day 13: Care Package
 #
 sysconf topleft
-visual = 0
+visual = 1
 #
 ic_mem[] = number strsplit input ","
 #
@@ -15,18 +15,14 @@ proc ic_inpf . in .
    else
       in = 0
    .
-   if visual = 1
-      sleep 0.01
-   .
+   if visual = 1 : sleep 0.01
 .
 textsize 4
 background 000
 clear
 #
 proc draw_score v . .
-   if visual = 0
-      break 1
-   .
+   if visual = 0 : return
    move 4 15
    color 000
    rect 30 4
@@ -34,9 +30,7 @@ proc draw_score v . .
    text "Score: " & v
 .
 proc draw x y v . .
-   if visual = 0
-      break 1
-   .
+   if visual = 0 : return
    col[] = [ 000 444 753 777 933 ]
    color col[v + 1]
    move 2.5 * x + 3 2.5 * y + 20

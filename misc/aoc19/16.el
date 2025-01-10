@@ -1,7 +1,7 @@
 # AoC-19 - Day 16: Flawed Frequency Transmission
-# 
+#
 inp$ = input
-# 
+#
 proc part1 . .
    d[] = number strchars inp$
    n = len d[]
@@ -23,7 +23,7 @@ proc part1 . .
       .
    .
    len dn[] n
-   for _ = 1 to 100
+   for k = 1 to 100
       for i = 1 to n
          v = 0
          for j = 1 to n
@@ -33,13 +33,11 @@ proc part1 . .
       .
       swap d[] dn[]
    .
-   for i = 1 to 8
-      write d[i]
-   .
+   for i = 1 to 8 : write d[i]
    print ""
 .
 part1
-# 
+#
 proc part2 . .
    n_in = len inp$
    offs = number substr inp$ 1 7
@@ -50,9 +48,8 @@ proc part2 . .
       d[i] = number substr inp$ j 1
       j = j mod n_in + 1
    .
-   #   
    len dn[] n
-   for _ = 1 to 100
+   for k = 1 to 100
       s = 0
       for i = n downto 1
          s += d[i]
@@ -60,15 +57,13 @@ proc part2 . .
       .
       swap d[] dn[]
    .
-   for i = 1 to 8
-      write d[i]
-   .
+   for i = 1 to 8 : write d[i]
    print ""
 .
 if len inp$ >= 10
    part2
 .
-# 
+#
 input_data
 12345678
 

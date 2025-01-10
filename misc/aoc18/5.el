@@ -38,13 +38,10 @@ for k to 26
    .
    a$ = strjoin a$[] ""
    reduce a$
-   if len a$ < min
-      min = len a$
-   .
+   min = lower len a$ min
 .
 print min
 #
 input_data
 dabAcCaCBAcCcaDA
-
 

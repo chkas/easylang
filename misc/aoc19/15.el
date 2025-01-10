@@ -80,9 +80,7 @@ background 000
 clear
 ox_pos = 1
 proc draw pos col . .
-   if visual = 0
-      break 1
-   .
+   if visual = 0 : return
    pos -= 1
    x = pos mod 100
    y = pos div 100
@@ -135,9 +133,7 @@ proc oxygen . .
          .
       .
       until len todon[] = 0
-      if visual = 1
-         sleep 0.02
-      .
+      if visual = 1 : sleep 0.02
       minutes += 1
    .
    print minutes

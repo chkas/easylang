@@ -1,7 +1,7 @@
 # AoC-19 - Day 22: Slam Shuffle
-# 
+#
 global instr[] param[] .
-# 
+#
 proc parse . .
    repeat
       s$ = input
@@ -20,7 +20,7 @@ proc parse . .
    .
 .
 parse
-# 
+#
 proc part1 . .
    m = 10007
    pos = 2019
@@ -38,8 +38,8 @@ proc part1 . .
    print pos
 .
 part1
-# 
-# 
+#
+#
 proc multm a b m . r .
    r = 0
    while b > 0
@@ -50,7 +50,7 @@ proc multm a b m . r .
       a = (a + a) mod m
    .
 .
-# 
+#
 proc powm a e m . r .
    r = 1
    while e > 0
@@ -61,7 +61,7 @@ proc powm a e m . r .
       multm a a m a
    .
 .
-# 
+#
 proc part2 . .
    m = 119315717514047
    a = 1
@@ -84,13 +84,13 @@ proc part2 . .
    times = 101741582076661
    powm a times m powa
    multm powa 2020 m h1
-   multm b powa + m - 1 m h
-   powm a - 1 m - 2 m h2
+   multm b (powa + m - 1) m h
+   powm (a - 1) (m - 2) m h2
    multm h h2 m h
    print (h1 + h) mod m
 .
 part2
-# 
+#
 input_data
 deal into new stack
 cut -2
@@ -102,4 +102,3 @@ cut 3
 deal with increment 9
 deal with increment 3
 cut -1
-

@@ -22,7 +22,7 @@ on animate
       x = x[i]
       y = y[i]
       move x y
-      circle 0.3125
+      circle 0.3
       for j = 1 to i
          dx = abs (x[j] - x)
          if dx < thres

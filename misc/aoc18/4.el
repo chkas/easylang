@@ -1,5 +1,5 @@
 # AoC-18 - Day 4: Repose Record
-# 
+#
 repeat
    s$ = input
    until s$ = ""
@@ -8,18 +8,14 @@ repeat
 for i = 1 to len s$[] - 1
    for j = i + 1 to len s$[]
       h = strcmp s$[j] s$[i]
-      if h < 0
-         swap s$[j] s$[i]
-      .
+      if h < 0 : swap s$[j] s$[i]
    .
 .
 global gids[] .
 global tm[][] gid .
 proc findgid g . .
    for gid = 1 to len gids[]
-      if g = gids[gid]
-         break 2
-      .
+      if g = gids[gid] : return
    .
    gids[] &= g
    tm[][] &= [ ]
@@ -43,12 +39,10 @@ for s$ in s$[]
       findgid g
    .
 .
-# 
+#
 for g = 1 to len gids[]
    m = 0
-   for j to 60
-      m += tm[g][j]
-   .
+   for j to 60 : m += tm[g][j]
    if m > max
       max = m
       gid = g
@@ -62,7 +56,7 @@ for m to 60
    .
 .
 print gids[gid] * mmin
-# 
+#
 max = 0
 for gid to len gids[]
    for m to 60
@@ -74,8 +68,8 @@ for gid to len gids[]
    .
 .
 print gids[mgid] * mmin
-# 
-# 
+#
+#
 input_data
 [1518-11-01 00:00] Guard #10 begins shift
 [1518-11-01 00:05] falls asleep
@@ -94,4 +88,3 @@ input_data
 [1518-11-05 00:03] Guard #99 begins shift
 [1518-11-05 00:45] falls asleep
 [1518-11-05 00:55] wakes up
-

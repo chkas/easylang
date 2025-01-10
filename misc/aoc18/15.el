@@ -37,9 +37,7 @@ dir[] = [ -nc (-1) 1 nc ]
 global f[] un[] hp[] .
 background 343
 proc show . .
-   if visual = 0
-      break 1
-   .
+   if visual = 0 : return
    clear
    sz = 100 / nc
    textsize sz / 2
@@ -59,7 +57,10 @@ proc show . .
             circle sz / 2
             color 000
             move x * sz + sz / 16 y * sz + sz / 4
-            text hp[h]
+            s$ = hp[h]
+            if hp[h] < 100 : s$ = " " & s$
+            if hp[h] < 10 : s$ = " " & s$
+            text s$
          .
       .
    .
@@ -100,7 +101,7 @@ proc battle . res .
                   .
                .
                res = hp * round
-               break 2
+               return
                #
             .
             for i to 4
@@ -178,7 +179,7 @@ proc battle . res .
                      if att_p[1] > 3
                         res = -1
                         show
-                        break 3
+                        return
                      .
                   .
                .
@@ -198,9 +199,7 @@ proc part2 . .
       att_p[1] += 1
       battle res
       until res <> -1
-      if visual = 1
-         sleep delay * 10
-      .
+      if visual = 1 : sleep delay * 10
    .
    print res
 .
@@ -217,5 +216,4 @@ input_data
 #.G...G.#
 #.....G.#
 #########
-
 

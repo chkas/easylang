@@ -1,55 +1,43 @@
 # AoC-19 - Day 20: Donut Maze
-#
+# 
 sysconf topleft
 visual = 1
-#
+# 
 global port[] port$[] aa zz m[] nc nc2 .
-#
+# 
 proc mark pos col . .
+   if visual = 0 : return
    f = 100 / nc2
-   if visual = 0
-      break 1
-   .
    x = pos mod nc - 1
    y = pos div nc - 1
    color col
    move x * f y * f
    rect f f
-   if col <> 0
-      sleep 0.001
-   .
+   if col <> 0 : sleep 0.001
 .
 proc show . .
-   if visual = 0
-      break 1
-   .
+   if visual = 0 : return
    background 555
    clear
    for i range0 len m[]
-      if m[i] = -2
-         mark i 000
-      .
+      if m[i] = -2 : mark i 000
    .
    mark zz 900
 .
-#
+# 
 proc parse . .
    a1$[] = strchars input
    nc = len a1$[] - 2
    nc2 = (nc - 2)
    len m[] nc * nc
    arrbase m[] 0
-   for i range0 len m[]
-      m[i] = -3
-   .
+   for i range0 len m[] : m[i] = -3
    a2$[] = strchars input
    a3$[] = strchars input
    a4$[] = strchars input
    a5$[] = strchars input
    for y range0 nc2
-      if len a5$[] = 0
-         break 1
-      .
+      if len a5$[] = 0 : break 1
       for x range0 nc2
          pos = y * nc + x + nc + 1
          if a3$[x + 3] = "#"
@@ -100,9 +88,9 @@ proc connect . .
    .
 .
 connect
-#
+# 
 offs[] = [ -nc 1 nc -1 ]
-#
+# 
 proc part1 . .
    show
    len seen[] len port[]
@@ -114,7 +102,7 @@ proc part1 . .
          dir0 = cur_d[i]
          if pos = zz
             print n_steps
-            break 2
+            return
          .
          if m[pos] >= 0 and dir0 <> -1
             p = m[pos]
@@ -142,7 +130,7 @@ proc part1 . .
    .
 .
 part1
-#
+# 
 proc is_inner pos . r .
    x = pos mod nc
    y = pos div nc
@@ -152,9 +140,7 @@ proc is_inner pos . r .
    .
 .
 proc mark2 pos col lev . .
-   if visual = 0 or lev >= 6
-      break 1
-   .
+   if visual = 0 or lev >= 6 : return
    f = 100 / nc2
    l = 1
    offs = 0
@@ -169,9 +155,7 @@ proc mark2 pos col lev . .
    color col
    move x * f / l + offs y * f / l + offs
    rect f / l f / l
-   if lev < 3 and col <> 0
-      sleep 0.001
-   .
+   if lev < 3 and col <> 0 : sleep 0.001
 .
 proc show2 . .
    if visual = 0
@@ -242,7 +226,7 @@ proc part2 . .
    .
 .
 part2
-#
+# 
 input_data
              Z L X W       C                 
              Z P Q B       K                 

@@ -1,12 +1,12 @@
 # AoC-19 - Day 18: Many-Worlds Interpretation
-#  
+#
 sysconf topleft
 inp$ = input
 a$[] = strchars inp$
 sz = len a$[]
 fsz = 100 / sz
 n_keys = 0
-# 
+#
 proc mark p col . .
    x = p mod sz
    y = p div sz
@@ -19,7 +19,7 @@ arrbase map[] 0
 len door_pos[] 26
 len key_pos[] 26 + 1
 robot = 0
-# 
+#
 proc parse . .
    repeat
       a$[] = strchars inp$
@@ -30,7 +30,7 @@ proc parse . .
             map[p] = 1
          elif a$[x] = "@"
             robot = p
-         elif a$[x] <> "." 
+         elif a$[x] <> "."
             h = strcode a$[x]
             if h >= 97 and h <= 122
                map[p] = h
@@ -52,7 +52,7 @@ proc parse . .
    .
 .
 parse
-# 
+#
 proc show . .
    move 0 0
    color 888
@@ -84,7 +84,7 @@ proc show . .
             move x * fsz + fsz / 2 y * fsz + fsz / 2
             circle fsz * sc * 0.6
             color 000
-            move x * fsz y * fsz
+            move x * fsz y * fsz - fsz / 2
             text strchar map[p]
          .
       .
@@ -97,9 +97,9 @@ proc show . .
    sleep 0.01
 .
 offs[] = [ -sz 1 sz -1 ]
-# 
+#
 global kk_dist[] kk_doors[][] kk_keys[][] .
-# 
+#
 proc add_kk key k dist . coll[] .
    k -= 96
    key -= 1
@@ -150,7 +150,7 @@ proc spread key . .
    .
 .
 len open[] n_keys + 1
-# 
+#
 proc calc_distances . .
    len kk_dist[] 0
    len kk_doors[][] 0
@@ -170,27 +170,23 @@ proc is_path_open key k . open .
    ind = key * n_keys + k
    open = 0
    for d = 1 to len kk_keys[ind][]
-      if open[kk_keys[ind][d]] = 0
-         break 2
-      .
+      if open[kk_keys[ind][d]] = 0 : return
    .
    for d = 1 to len kk_doors[ind][]
-      if open[kk_doors[ind][d]] = 0
-         break 2
-      .
+      if open[kk_doors[ind][d]] = 0 : return
    .
    open = 1
 .
 hashsz = 199999
 len hashind[] hashsz
 len hashv[] hashsz
-# 
+#
 proc hashget ind . val .
    hi = ind mod hashsz + 1
    repeat
       if hashind[hi] = ind
          val = hashv[hi]
-         break 2
+         return
       .
       until hashind[hi] = 0
       hi = hi mod hashsz + 1
@@ -205,7 +201,7 @@ proc hashset ind val . .
    hashind[hi] = ind
    hashv[hi] = val
 .
-# 
+#
 proc state_id key . id .
    id = 0
    for k = 1 to n_keys
@@ -215,21 +211,19 @@ proc state_id key . id .
    id *= n_keys
    id += key
 .
-# 
+#
 proc solve key . dist .
    for k = 1 to n_keys
       remain += if open[k] = 0
    .
    if remain = 0
       dist = 0
-      break 1
+      return
    .
    if key <= n_keys
       state_id key id
       hashget id dist
-      if dist >= 0
-         break 1
-      .
+      if dist >= 0 : return
    .
    min = 1 / 0
    for k = 1 to n_keys
@@ -255,7 +249,7 @@ show
 calc_distances
 solve n_keys + 1 dist0
 print dist0
-# 
+#
 proc part2 . .
    for i = 1 to 4
       map[robot + offs[i]] = 1
@@ -282,7 +276,7 @@ proc part2 . .
    print sum
 .
 part2
-# 
+#
 input_data
 #################
 #i.G..c...e..H.p#

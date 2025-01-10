@@ -1,12 +1,11 @@
 # AoC-19 - Day 17: Set and Forget
-# 
+#
 ic_code[] = number strsplit input ","
-# 
+#
 len scaf[] 100
 arrbase scaf[] 0
-global width height out$ .
-global start_pos .
-# 
+global width height out$ start_pos .
+#
 proc ic_outpf out . .
    c$ = strchar out
    out$ &= c$
@@ -24,9 +23,7 @@ proc ic_outpf out . .
    .
    if out = 10
       scaf[] &= 0
-      if width = 0
-         width = len scaf[] - 100
-      .
+      if width = 0 : width = len scaf[] - 100
       height += 1
    .
 .
@@ -47,9 +44,7 @@ proc mem_ind mo ind . rind .
    elif mo = 2
       rind = base + mem[ind]
    .
-   if rind >= len mem[]
-      len mem[] rind + 8
-   .
+   if rind >= len mem[] : len mem[] rind + 8
 .
 proc run . .
    repeat
@@ -100,7 +95,7 @@ proc run . .
 .
 # --------  --------
 prefix
-# 
+#
 proc part1 . .
    ic_init
    ic_run
@@ -113,32 +108,27 @@ proc part1 . .
          for i = 1 to 4
             s += scaf[ind + offs[i]]
          .
-         if s = 5
-            al += x * y
-         .
+         if s = 5 : al += x * y
       .
    .
    print al
 .
-# 
+#
 global s$[] sf$[] .
-# 
+#
 proc search si lng . matches[] .
    matches[] = [ ]
    for i = si + lng to len s$[] - lng + 1
-      found = 1
       for j range0 lng
          if s$[si + j] <> s$[i + j] or strcode s$[si + j] <= 67
-            found = 0
+            break 1
          .
       .
-      if found = 1
-         matches[] &= i
-      .
+      if j = lng : matches[] &= i
    .
 .
 len fu$[][] 3
-# 
+#
 proc apply lev start lng . matches[] .
    sn$[] = [ ]
    fu$[lev][] = [ ]
@@ -162,24 +152,19 @@ proc apply lev start lng . matches[] .
    swap sn$[] s$[]
 .
 len fuf$[][] 3
-# 
+#
 proc test_found . .
-   found = 1
    for i = 1 to len s$[]
-      if strcode s$[i] > 67
-         found = 0
-      .
+      if strcode s$[i] > 67 : break 1
    .
-   if found = 1
+   if i > len s$[]
       swap fuf$[][] fu$[][]
       swap sf$[] s$[]
    .
 .
 proc search_pat lev . .
    si = 1
-   while strcode s$[si] <= 67
-      si += 1
-   .
+   while strcode s$[si] <= 67 : si += 1
    s0$[] = s$[]
    for lng = 2 to 6
       search si lng matches[]
@@ -262,7 +247,7 @@ proc part2 . .
    ic_mem[0] = 2
    ic_run
    make_pat
-   # 
+   #
    search_pat 1
    prog_rob
 .
@@ -272,9 +257,5 @@ if len ic_code[] > 1
 else
    print "No input"
 .
-# 
+#
 input_data
-
-
-
-
