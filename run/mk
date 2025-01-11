@@ -11,7 +11,10 @@ cp $idir/easyw$v.wasm $idir/easyw$v.js $odir
 xcp() {
 	d=$2
 	test -d $d && d=$d/$1
-	test $1 -nt $d -o ! -e $d && cp -p $1 $d
+	if test $1 -nt $d -o ! -e $d; then
+		echo cp -p $1 $d
+		cp -p $1 $d
+	fi
 }
 
 xcp icon.svg $odir

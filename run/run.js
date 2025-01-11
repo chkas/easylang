@@ -19,9 +19,7 @@ on animate
    text "Code"
    move x - 13 y - 5
    text "Runner"
-   if x > 100 - rad or x < rad
-      vx = -vx
-   .
+   if x > 100 - rad or x < rad : vx = -vx
    x += vx
    if y < rad
       vy = -vy

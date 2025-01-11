@@ -51,44 +51,58 @@ function removeCnd() {
 		cnd.err = false
 	}
 }
-function care(nd, r) {
-	while (nd) {
-		if (r.done) return;
-		if (r.sel && nd == r.sel.anchorNode) {
-			r.pos += r.sel.anchorOffset
-			r.done = true
-		}
-		else if (nd.firstChild) care(nd.firstChild, r)
-		else if (nd.tagName == "BR") r.pos += 1
-		else {
-			if (r.dest && r.pos + nd.length > r.dest) {
-				r.nd = nd
-				r.done = true
-			}
-			else r.pos += nd.length
-		}
-		nd = nd.nextSibling
-	}
-}
+
 function codeCaret() {
 	var sel = window.getSelection()
 	if (!sel || sel.anchorNode == inp) return 0
-	var r = {sel: sel, pos: 0}
-	care(inp.firstChild, r)
-	return r.pos
+	var pos = 0
+	var nd = inp.firstChild
+	while (true) {
+		if (nd == sel.anchorNode) {
+			pos += sel.anchorOffset
+			return pos
+		}
+		if (nd.firstChild) nd = nd.firstChild
+		else {
+			if (nd.tagName == "BR") pos += 1
+			else pos += nd.length
+			while (!nd.nextSibling) {
+				nd = nd.parentNode
+				if (nd == inp) return 0
+			}
+			nd = nd.nextSibling
+		}
+	}
 }
 
-function setCaret(pos, showCnd = true) {
-	if (pos < 0) return
-
-	var r = {dest: pos, pos: 0}
-	care(inp.firstChild, r)
-	var nd = r.nd
-	if (nd != null) pos = r.dest - r.pos
-	else {
-		nd = inp.lastChild
-		pos = nd.length
+function setCaret(dest, showCnd = true) {
+	if (dest < 0) return
+	var pos = 0
+	var nd = inp.firstChild
+	outer:
+	while (true) {
+		if (nd.firstChild) nd = nd.firstChild
+		else {
+			if (nd.tagName == "BR") pos += 1
+			else {
+				if (pos + nd.length >= dest) {
+					pos = dest - pos
+					break
+				}
+				pos += nd.length
+			}
+			while (!nd.nextSibling) {
+				nd = nd.parentNode
+				if (nd == inp) {
+					nd = inp.firstChild
+					pos = 0
+					break outer
+				}
+			}
+			nd = nd.nextSibling
+		}
 	}
+
 	if (showCnd) {
 		var p = nd.parentNode
 		var n = document.createTextNode(nd.nodeValue.substr(0, pos))
