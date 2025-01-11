@@ -2402,7 +2402,7 @@ S void dbg_line(ND* nd) {
 			internal_error(__LINE__);
 			return;
 		}
-		gr_debline(opln_p[i].line);
+		gr_debline(opln_p[i].line, 0);
 		dbg_outvars();
 		if (rt.slow == 32 || rt.slow == 31) {
 			gr_step();
@@ -2740,7 +2740,7 @@ S void except(ND* nd, const char* s) {
 	int i = 0;
 	while (i < opln_len) {
 		if (opln_p[i].nd == nd) {
-			gr_debline(opln_p[i].line);
+			gr_debline(opln_p[i].line, 1);
 			break;
 		}
 		i++;

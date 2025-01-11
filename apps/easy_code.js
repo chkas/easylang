@@ -51,33 +51,44 @@ function removeCnd() {
 		cnd.err = false
 	}
 }
+function care(nd, r) {
+	while (nd) {
+		if (r.done) return;
+		if (r.sel && nd == r.sel.anchorNode) {
+			r.pos += r.sel.anchorOffset
+			r.done = true
+		}
+		else if (nd.firstChild) care(nd.firstChild, r)
+		else if (nd.tagName == "BR") r.pos += 1
+		else {
+			if (r.dest && r.pos + nd.length > r.dest) {
+				r.nd = nd
+				r.done = true
+			}
+			else r.pos += nd.length
+		}
+		nd = nd.nextSibling
+	}
+}
 function codeCaret() {
 	var sel = window.getSelection()
 	if (!sel || sel.anchorNode == inp) return 0
-	var pos = 0
-	for (var i = 0; i < inp.childNodes.length; i++) {
-		var nd = inp.childNodes[i]
-		while (nd.nodeType == Node.ELEMENT_NODE && nd.childNodes.length > 0) nd = nd.childNodes[0]
-		if (nd == sel.anchorNode) {
-			pos += sel.anchorOffset
-			break
-		}
-		if (nd.length != null) pos += nd.length  // chrome
-	}
-	return pos
+	var r = {sel: sel, pos: 0}
+	care(inp.firstChild, r)
+	return r.pos
 }
 
 function setCaret(pos, showCnd = true) {
 	if (pos < 0) return
-	var nd, i
-	for (i = 0; i < inp.childNodes.length; i++) {
-		nd = inp.childNodes[i]
-		while (nd.nodeType == Node.ELEMENT_NODE && nd.childNodes.length > 0) nd = nd.childNodes[0]
-		if (nd.length > pos) break
-		pos -= nd.length
-	}
-	if (i == inp.childNodes.length) pos = nd.length
 
+	var r = {dest: pos, pos: 0}
+	care(inp.firstChild, r)
+	var nd = r.nd
+	if (nd != null) pos = r.dest - r.pos
+	else {
+		nd = inp.lastChild
+		pos = nd.length
+	}
 	if (showCnd) {
 		var p = nd.parentNode
 		var n = document.createTextNode(nd.nodeValue.substr(0, pos))
@@ -206,13 +217,7 @@ function codeRun(pre, canv, out = null) {
 function selectLine(sel) {
 	var ln = 1
 	var nd, uNd, nNd, n
-	for (nd = inp.firstChild; nd; nd = nd.nextSibling) {
-		if (nd.nodeName == "U") {
-			while (nd.firstChild) inp.insertBefore(nd.firstChild, nd) 
-			inp.removeChild(nd)
-			break
-		}
-	}
+	// deselectLine()
 	for (nd = inp.firstChild; nd; nd = nNd) {
 		nNd = nd.nextSibling
 		var s = nd.nodeValue
@@ -273,7 +278,10 @@ function selectLine(sel) {
 		if (s) for (i = 0; i < s.length; i++) if (s[i] == "\n") ln++
 	}
 	scrollToLine(sel - 1, ln)
+
+	caret(uNd.lastChild, uNd.lastChild.length)
 }
+
 
 function codeMsgF(msg, d) {
 	if (msg == "src_nl") {

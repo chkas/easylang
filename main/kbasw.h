@@ -20,8 +20,8 @@ static void gr_timer(double sec) {
 static void gr_info(int id) {
 	EM_ASM_({ postMessage(['ide', 'info', $0]) }, id);
 }
-static void gr_debline(int l) {
-	EM_ASM_({ postMessage(['ide', 'selline', $0]) }, l);
+static void gr_debline(int l, int caret) {
+	EM_ASM_({ postMessage(['ide', 'selline', $0, $1]) }, l, caret);
 }
 static void gr_debout(const char* s) {
 	EM_ASM_({ postMessage(['ide', 'output', UTF8ToString($0)])}, s);

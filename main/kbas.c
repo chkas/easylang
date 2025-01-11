@@ -332,7 +332,7 @@ extern int exec(int opt, const char* args) {
 	if (dbg) {
 		rt.slow = 1 << (dbg - 1);
 		exec_sequ_slow(proc_p->start);
-		gr_debline(0);
+		gr_debline(0, 0);
 	}
 	else {
 		exec_sequ(proc_p->start);

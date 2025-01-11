@@ -31,7 +31,7 @@ on animate
    y += vy
 .`
 
-err = `
+errapp = `
 clear
 textsize 5
 move 5 60
@@ -164,10 +164,14 @@ async function ready() {
 
 ready()
 
+var editing
+
 function change() {
+	editing = false
 	var ind = sel.selectedIndex >= 0 ? sel.selectedIndex : 0
 	appn = sel.options[ind].value
 	code = window.localStorage.getItem("a" + appn)
+	codew.innerText = null
 	window.localStorage.setItem("xrunsel", ind)
 	getCodeInfo()
 	runr(code)
@@ -237,9 +241,6 @@ remove.onclick = function() {
 		updsel()
 	}
 }
-//disc.onclick = function() {
-//	updsel()
-//}
 window.onbeforeunload = function(e) {
 	if (!keepd.style.display) {
 		window.localStorage.removeItem("xrunsel")
@@ -251,19 +252,26 @@ window.onbeforeunload = function(e) {
 window.addEventListener("online", () => { if (!sel.style.display) show(inst)} );
 window.addEventListener("offline", () => hide(inst));
 
-edit.onclick = function() {
-	easystop()
+function showedit() {
+	editing = true
 	hide(canv)
 	hide(runner)
 	show(editor)
-	codew.innerText = code
-	kaFormat(code)
+	if (!codew.innerText) {
+		codew.innerText = code
+		kaFormat(code)
+	}
+}
+edit.onclick = function() {
+	easystop()
+	showedit()
 }
 edit2.onclick = edit.onclick
 
 idelnk.onclick = function() {
 	window.open("../ide/#code=" + encodeURIComponent(codew.innerText))
 }
+
 savelnk.onclick = function() {
 	codeRun(codew, canv)
 }
@@ -277,12 +285,13 @@ canclnk.onclick = function() {
 	updsel()
 }
 
-function msgf(m, a) {
+selline = 0
+
+function msgf(m, d) {
 	if (isVisible(editor)) {
-		codeMsgF(m, a)
+		codeMsgF(m, d)
 		if (m == "src") {
 			code = codew.innerText
-			codew.innerText = null
 			hide(editor)
 			show(canv)
 			show(runner)
@@ -290,7 +299,15 @@ function msgf(m, a) {
 			newCode()
 		}
 	}
-	else if (m == "error" || m == "selline") easyrun(err, canv)
+	else if (m == "error" || m == "selline") {
+		if (editing) {
+			showedit()
+			codeMsgF(m, d)
+		}
+		else {
+			easyrun(errapp, canv)
+		}
+	}
 }
 
 </script>
