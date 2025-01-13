@@ -81,9 +81,7 @@ proc draw_notes . .
          .
          if t = 3 or t = 5
             h = y
-            if n mod 2 = 0
-               h -= 0.75
-            .
+            if n mod 2 = 0 : h -= 0.75
             move x + 2.5 h
             circle 0.35
          .
@@ -242,7 +240,6 @@ on mouse_up
       stat = 0
    .
 .
-#
 initvars
 color 321
 move 0 55
@@ -253,9 +250,7 @@ rect 30 12
 move 40 75
 rect 40 12
 textsize 6
-for ind = 1 to 8
-   draw_key 0
-.
+for ind = 1 to 8 : draw_key 0
 color 654
 draw_btn_play
 color 654
@@ -263,3 +258,4 @@ draw_btn_song
 color 654
 draw_btn_slow
 draw_notes
+

@@ -29,9 +29,7 @@ proc showpen . .
    .
    for i = 1 to len thick[]
       color 555
-      if i = sel_thick
-         color col[sel_col]
-      .
+      if i = sel_thick : color col[sel_col]
       move 64 + i * 8 4
       circle i
    .
@@ -111,3 +109,4 @@ move 0 0
 color 888
 rect 100 100
 showpen
+

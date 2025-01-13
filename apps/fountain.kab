@@ -3,8 +3,10 @@
 rad = 0.125
 n = 6000
 #
-len x[] n ; len y[] n
-len vx[] n ; len vy[] n
+len x[] n
+len y[] n
+len vx[] n
+len vy[] n
 background 479
 color 999
 on animate
@@ -19,7 +21,9 @@ on animate
    for i = 1 to n
       move x[i] y[i]
       circle rad
-      x[i] += vx[i] ; y[i] += vy[i]
+      x[i] += vx[i]
+      y[i] += vy[i]
       vy[i] -= 0.025
    .
 .
+

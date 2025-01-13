@@ -11,9 +11,7 @@ else
 len sel[] len alpha$[]
 #
 subr init
-   for i to len sel[]
-      sel[i] = 0
-   .
+   for i to len sel[] : sel[i] = 0
    w$[] = strchars words$[random len words$[]]
    game_stat = 0
 .
@@ -27,39 +25,17 @@ proc ice x y col . .
 ice 30 60 900
 proc draw_ice try . .
    color 990
-   if try < 11
-      ice 72 57 900
-   .
-   if try < 10
-      ice 92 57 449
-   .
-   if try < 9
-      ice 82 52 990
-   .
-   if try < 8
-      ice 72 42 733
-   .
-   if try < 7
-      ice 92 42 950
-   .
-   if try < 6
-      ice 82 37 765
-   .
-   if try < 5
-      ice 72 27 096
-   .
-   if try < 4
-      ice 92 27 888
-   .
-   if try < 3
-      ice 82 22 080
-   .
-   if try < 2
-      ice 72 12 900
-   .
-   if try < 1
-      ice 92 12 990
-   .
+   if try < 11 : ice 72 57 900
+   if try < 10 : ice 92 57 449
+   if try < 9 : ice 82 52 990
+   if try < 8 : ice 72 42 733
+   if try < 7 : ice 92 42 950
+   if try < 6 : ice 82 37 765
+   if try < 5 : ice 72 27 096
+   if try < 4 : ice 92 27 888
+   if try < 3 : ice 82 22 080
+   if try < 2 : ice 72 12 900
+   if try < 1 : ice 92 12 990
 .
 background 000
 global gind .
@@ -82,8 +58,6 @@ proc draw . .
       move i * 8 - 6 98
       line i * 8 98
    .
-   try = 0
-   found = 0
    for ind to len sel[]
       k$ = alpha$[ind]
       if sel[ind] = 0
@@ -99,9 +73,7 @@ proc draw . .
                found += 1
             .
          .
-         if in = 0
-            try += 1
-         .
+         if in = 0 : try += 1
       .
    .
    draw_ice try
@@ -151,9 +123,7 @@ on timer
    .
 .
 on mouse_up
-   if gind <> -1
-      drawkey gind 040 ""
-   .
+   if gind <> -1 : drawkey gind 040 ""
 .
 proc search_letter . .
    c = mouse_x div 13
@@ -171,9 +141,7 @@ proc search_letter . .
 on mouse_down
    gind = -1
    if game_stat = 0
-      if mouse_x < 65 and mouse_y < 84
-         search_letter
-      .
+      if mouse_x < 65 and mouse_y < 84 : search_letter
    elif game_stat = 4
       init
       draw
@@ -181,3 +149,4 @@ on mouse_down
 .
 init
 draw
+

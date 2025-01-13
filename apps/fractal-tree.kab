@@ -1,3 +1,5 @@
+# Fractal tree
+#
 proc tree x y l w ang dp . .
    if dp <= 2
       color3 0 0.2 + randomf / 4 0
@@ -9,9 +11,7 @@ proc tree x y l w ang dp . .
    x += l * cos ang
    y += l * sin ang
    line x y
-   if dp = 1
-      break 1
-   .
+   if dp = 1 : break 1
    nb = 2 + if dp < 9
    for i = 1 to nb
       an = ang + (i - nb / 2 - 0.5) * 20
@@ -33,3 +33,4 @@ on mouse_down
    new
 .
 new
+

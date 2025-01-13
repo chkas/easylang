@@ -47,18 +47,11 @@ on animate
          right = 1
       .
    .
-   if right = 1 and px < 88
-      px += pv
-   .
-   if left = 1 and px > 12
-      px -= pv
-   .
-   if x > 100 - rad or x < rad
-      vx = -vx
-   .
-   if y > 100 - rad
-      vy = -vy
-   .
+   if right = 1 and px < 88 : px += pv
+   if left = 1 and px > 12 : px -= pv
+   if x > 100 - rad or x < rad : vx = -vx
+   if y > 100 - rad : vy = -vy
+   #
    if y < rad + 3
       if abs (x - px) < 16 and out = 0
          vy = -vy
@@ -70,9 +63,7 @@ on animate
       else
          out = 1
       .
-      if y < -100
-         init
-      .
+      if y < -100 : init
    .
 .
 on key_down
@@ -93,3 +84,4 @@ on key_up
 on mouse_move
    mx = mouse_x
 .
+

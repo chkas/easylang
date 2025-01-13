@@ -122,12 +122,16 @@ for i = 1 to n
    vy[] &= 0
 .
 subr collide
-   dx /= d ; dy /= d
+   dx /= d
+   dy /= d
    v = (vx[i] - vx[j]) * dx + (vy[i] - vy[j]) * dy
    if v < 0
-      dx *= v ; dy *= v
-      vx[i] -= dx ; vy[i] -= dy
-      vx[j] += dx ; vy[j] += dy
+      dx *= v
+      dy *= v
+      vx[i] -= dx
+      vy[i] -= dy
+      vx[j] += dx
+      vy[j] += dy
    .
 .
 background 111
@@ -137,16 +141,15 @@ on animate
       color 700 + i * 30
       move x[i] y[i]
       circle rad
-      x[i] += vx[i] ; y[i] += vy[i]
+      x[i] += vx[i]
+      y[i] += vy[i]
    .
    for i = 1 to n
       for j = i + 1 to n
          dx = x[i] - x[j]
          dy = y[i] - y[j]
          d = sqrt (dx * dx + dy * dy)
-         if d < rad2
-            collide
-         .
+         if d < rad2 : collide
       .
       if x[i] > 100 - rad or x[i] < rad
          vx[i] = -vx[i]
@@ -171,9 +174,7 @@ src.push(`proc tree x y l w ang dp . .
    x += l * cos ang
    y += l * sin ang
    line x y
-   if dp = 1
-      break 1
-   .
+   if dp = 1 : break 1
    nb = 2 + if dp < 9
    for i = 1 to nb
       an = ang + (i - nb / 2 - 0.5) * 20
@@ -200,8 +201,10 @@ new
 src.push(`rad = 0.2
 n = 3000
 #
-len x[] n ; len y[] n
-len vx[] n ; len vy[] n
+len x[] n
+len y[] n
+len vx[] n
+len vy[] n
 background 479
 color 999
 on animate
@@ -216,7 +219,8 @@ on animate
    for i = 1 to n
       move x[i] y[i]
       circle rad
-      x[i] += vx[i] ; y[i] += vy[i]
+      x[i] += vx[i]
+      y[i] += vy[i]
       vy[i] -= 0.02
    .
 .

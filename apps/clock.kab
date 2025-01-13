@@ -1,5 +1,5 @@
 # Clock
-# 
+#
 proc draw hour min sec . .
    # dial
    color 333
@@ -29,7 +29,7 @@ proc draw hour min sec . .
    a = (sec + min * 60) / 10
    move 50 50
    line 50 + sin a * 40 50 + cos a * 40
-   # sec  
+   # sec
    linewidth 1
    color 700
    a = sec * 6
@@ -43,11 +43,10 @@ on timer
       sec = number substr h$ 18 2
       min = number substr h$ 15 2
       hour = number substr h$ 12 2
-      if hour > 12
-         hour -= 12
-      .
+      if hour > 12 : hour -= 12
       draw hour min sec
    .
-   timer 0.1
+   timer 0.05
 .
 timer 0
+

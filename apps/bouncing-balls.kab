@@ -5,66 +5,66 @@ n = 5
 speed = 1.5
 #
 rad2 = rad * 2
-radrad4 = rad2 * rad2
-#
 for i = 1 to n
-  x[] &= randomf * (100 - rad2) + rad
-  y[] &= randomf * (100 - rad2) + rad
-  vx[] &= randomf * speed * 2 - speed
-  vy[] &= randomf * speed * 2 - speed
-  c = 0
-  for j = 1 to 3
-    c = c * 10 + random 8 + 1
-  .
-  col[] &= c
+   x[] &= randomf * (100 - rad2) + rad
+   y[] &= randomf * (100 - rad2) + rad
+   vx[] &= randomf * speed * 2 - speed
+   vy[] &= randomf * speed * 2 - speed
+   c = 0
+   for j = 1 to 3 : c = c * 10 + random 8 + 1
+   col[] &= c
 .
 #
 subr collide
-  d = sqrt dxxyy
-  dx /= d ; dy /= d
-  v = (vx[i] - vx[j]) * dx + (vy[i] - vy[j]) * dy
-  if v < 0
-    dx *= v ; dy *= v
-    vx[i] -= dx ; vy[i] -= dy
-    vx[j] += dx ; vy[j] += dy
-  .
+   d = sqrt dist2
+   dx /= d
+   dy /= d
+   v = (vx[i] - vx[j]) * dx + (vy[i] - vy[j]) * dy
+   if v < 0
+      dx *= v
+      dy *= v
+      vx[i] -= dx
+      vy[i] -= dy
+      vx[j] += dx
+      vy[j] += dy
+   .
 .
 on animate
-  clear
-  color 222
-  move 0 0
-  line 100 0
-  line 100 100
-  line 0 100
-  line 0 0
-  for i = 1 to n
-    color col[i]
-    move x[i] y[i]
-    circle rad
-    x[i] += vx[i] ; y[i] += vy[i]
-  .
-  for i = 1 to n
-    x = x[i] ; y = y[i]
-    for j = i + 1 to n
-      if abs (x - x[j]) < rad2 and abs (y - y[j]) < rad2
-        dx = x - x[j]
-        dy = y - y[j]
-        dxxyy = dx * dx + dy * dy
-        if dxxyy < radrad4
-          collide
-        .
+   clear
+   color 222
+   move 0 0
+   line 100 0
+   line 100 100
+   line 0 100
+   line 0 0
+   for i = 1 to n
+      color col[i]
+      move x[i] y[i]
+      circle rad
+      x[i] += vx[i]
+      y[i] += vy[i]
+   .
+   for i = 1 to n
+      x = x[i]
+      y = y[i]
+      for j = i + 1 to n
+         if abs (x - x[j]) < rad2 and abs (y - y[j]) < rad2
+            dx = x - x[j]
+            dy = y - y[j]
+            dist2 = dx * dx + dy * dy
+            if dist2 < rad2 * rad2 : collide
+         .
       .
-    .
-    if x > 100 - rad
-      vx[i] = -abs vx[i]
-    elif x < rad
-      vx[i] = abs vx[i]
-    .
-    if y > 100 - rad
-      vy[i] = -abs vy[i]
-    elif y < rad
-      vy[i] = abs vy[i]
-    .
-  .
+      if x > 100 - rad
+         vx[i] = -abs vx[i]
+      elif x < rad
+         vx[i] = abs vx[i]
+      .
+      if y > 100 - rad
+         vy[i] = -abs vy[i]
+      elif y < rad
+         vy[i] = abs vy[i]
+      .
+   .
 .
 

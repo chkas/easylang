@@ -28,9 +28,7 @@ subr open_card
 background 000
 subr start
    clear
-   for ind to 16
-      close_card
-   .
+   for ind to 16 : close_card
    # shuffle
    for i = 16 downto 2
       r = random i
@@ -112,9 +110,7 @@ on timer
    .
 .
 len cards[] 16
-for i to 16
-   cards[i] = i
-.
+for i to 16 : cards[i] = i
 cards$[] = strchars "AABBDDEEFFGGHHII"
 len open[] 16
 start

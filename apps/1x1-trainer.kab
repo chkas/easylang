@@ -111,13 +111,9 @@ proc sel_inp . .
       if ind = 10
          res = res div 10
          h$ = res
-         if res = 0
-            h$ = "_"
-         .
+         if res = 0 : h$ = "_"
       else
-         if res >= 10
-            res = 0
-         .
+         if res >= 10 : res = 0
          res = res * 10 + ind
          h$ = res
       .
@@ -162,9 +158,7 @@ on key_down
       else
          ind = -1
       .
-      if ind >= 0
-         handle_key2
-      .
+      if ind >= 0 : handle_key2
    elif state = 3
       init
    .
@@ -216,9 +210,7 @@ proc done . .
    move 10 66
    text "Time: " & t
    s$ = "All"
-   if row < 10
-      s$ = row
-   .
+   if row < 10 : s$ = row
    move 10 10
    textsize 6
    text "Row: " & s$
@@ -238,3 +230,4 @@ on timer
    .
 .
 init
+
