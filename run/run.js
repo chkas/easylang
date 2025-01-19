@@ -86,7 +86,7 @@ window.name = "easylang_run"
 var appn = null
 var code = null
 
-function getCodeInfo() {
+function updCodeInfo() {
 	aspr = 1
 	var an = Math.floor(Date.now() / 1000) - 1577833200
 	if (code[0] == "#") {
@@ -100,13 +100,12 @@ function getCodeInfo() {
 			}
 		}
 	}
-	if (appn == null) appn = an
+	appn = an
 }
 
 function newCode() {
 	window.localStorage.removeItem("xruncode")
-	appn = null
-	getCodeInfo()
+	updCodeInfo()
 	hide(sel)
 	hide(hambtn)
 	namef.textContent = appn
@@ -131,6 +130,7 @@ async function ready() {
 	else code = window.localStorage.getItem("xruncode")
 
 	if (code) {
+		codew.innerText = code
 		newCode()
 		runr(code)
 	}
@@ -145,11 +145,12 @@ ready()
 
 function change() {
 	var ind = sel.selectedIndex >= 0 ? sel.selectedIndex : 0
-	appn = sel.options[ind].value
-	code = window.localStorage.getItem("a" + appn)
+	var seln = sel.options[ind].value
+	code = window.localStorage.getItem("a" + seln)
+	updCodeInfo()
+	appn = seln
 	codew.innerText = null
 	window.localStorage.setItem("xrunsel", ind)
-	getCodeInfo()
 	runr(code)
 }
 
@@ -193,6 +194,8 @@ inst.onclick = function() {
 	window.open("../games/index.html?$date", "_self")
 }
 save.onclick = function() {
+	code = codew.innerText
+	updCodeInfo()
 	window.localStorage.setItem("a" + appn, code)
 	fillsel(appn)
 	updsel()
@@ -213,7 +216,7 @@ remove.onclick = function() {
 		clearTimeout(rmt)
 		rmreset();
 		window.localStorage.removeItem("a" + appn)
-		window.localStorage.removeItem("i" + appn)
+		//window.localStorage.removeItem("i" + appn)
 		fillsel(null)
 		updsel()
 	}
@@ -276,7 +279,9 @@ dellnk.onclick = function() {
 }
 
 savelnk.onclick = function() {
+	code = codew.innerText
 	hide(editor2)
+	updCodeInfo()
 	window.localStorage.setItem("a" + appn, code)
 	fillsel(appn)
 	canvvp.appendChild(canv)
