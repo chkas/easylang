@@ -1,0 +1,68 @@
+# Inner planets
+#
+# you can set this to 0 or 1
+showtrace = 0
+nbody = 1
+#
+background 000
+color 999
+#
+subr interact
+   dx = x[j] - x[i]
+   dy = y[j] - y[i]
+   dist2 = dx * dx + dy * dy
+   dist = sqrt dist2
+   a = G * m[j] / dist2 / dist
+   vx[i] += dx * a
+   vy[i] += dy * a
+.
+subr draw_obj
+   move x[i] / 5.3 + 50 y[i] / 5.3 + 50
+   color col[i]
+   circle sz[i] / 15
+.
+clear
+textsize 2.5
+on animate
+   if showtrace = 0 : clear
+   for i to n
+      color col[i]
+      move 2 100 - i * 4
+      text n$[i]
+      draw_obj
+      h = 1
+      if nbody = 1 : h = n
+      for j = 1 to h : if j <> i
+         interact
+      .
+   .
+   for i = 1 to n
+      x[i] += vx[i]
+      y[i] += vy[i]
+   .
+.
+subr init
+   G = 3e-6
+   n$[] = [ "Sun" "Mercury" "Venus" "Earth" "Mars" ]
+   col[] = [ 990 777 975 559 933 ]
+   sz[] = [ 20 4.9 12.1 12.8 6.8 ]
+   x[] = [ 0 70 108 152 249 ]
+   el[] = [ 0 0.89 1 0.992 0.952 ]
+   y[] = [ 0 0 0 0 0 0 ]
+   m[] = [ 1.989e7 3.285 48.67 59.72 6.39 ]
+   vx[] = [ 0 ]
+   vy[] = [ 0 ]
+   n = len x[]
+   for i = 2 to n
+      r = sqrt (x[i] * x[i] + y[i] * y[i])
+      v = sqrt (G * m[1] / r)
+      v *= el[i]
+      vx[] &= -y[i] / r * v
+      vy[] &= x[i] / r * v
+   .
+.
+init
+on mouse_down
+   init
+.
+

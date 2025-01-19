@@ -1,0 +1,63 @@
+# Gravity objects
+#
+n = 40
+#
+background 000
+color 999
+#
+subr interact
+   dx = x[j] - x[i]
+   dy = y[j] - y[i]
+   dist2 = dx * dx + dy * dy
+   if dist2 < 0.5 : return
+   dist = sqrt dist2
+   h = G * m[j] / dist2 / dist
+   vx[i] += dx * h
+   vy[i] += dy * h
+.
+subr draw_object
+   if m[i] > 5000
+      color 900
+      circle sqrt (m[i] / 100000)
+      color 999
+   else
+      circle sqrt (m[i] / 1000)
+   .
+.
+on animate
+   clear
+   for i = 1 to n
+      move x[i] + 50 y[i] + 50
+      draw_object
+      for j = 1 to n : if j <> i
+         interact
+      .
+      x[i] += vx[i]
+      y[i] += vy[i]
+   .
+.
+subr init
+   G = 5e-6
+   x[] = [ 0 ]
+   y[] = [ 0 ]
+   m[] = [ 10000 ]
+   vx[] = [ 0 ]
+   vy[] = [ 0 ]
+   for i = len x[] + 1 to n
+      dx = randomf * 70 - 35
+      dy = randomf * 70 - 35
+      h = randomf * 6
+      m[] &= h * h + 20
+      x[] &= dx
+      y[] &= dy
+      r = sqrt (dx * dx + dy * dy)
+      v = sqrt (G * m[1] / r)
+      vx[] &= -dy / r * v
+      vy[] &= dx / r * v
+   .
+.
+init
+on mouse_down
+   init
+.
+

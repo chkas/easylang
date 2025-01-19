@@ -1,0 +1,39 @@
+var code0 = `
+rad = 25
+x = 50
+y = 75
+vx = 0.5
+linewidth 2
+on animate
+   clear
+   color 422
+   move 0 72
+   line 0 0
+   line 100 0
+   line 100 72
+   move x y
+   color 422
+   circle rad
+   color 888
+   move x - 12 y + 5
+   text "Code"
+   move x - 13 y - 5
+   text "Runner"
+   if x > 100 - rad or x < rad : vx = -vx
+   x += vx
+   if y < rad
+      vy = -vy
+   else
+      vy -= 0.03125
+   .
+   y += vy
+.`
+
+errapp = `
+clear
+textsize 5
+move 5 60
+text "This app is not compatible :-("
+move 5 50
+text "You should reinstall it."
+`
