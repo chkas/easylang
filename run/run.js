@@ -1,71 +1,65 @@
-var code0 = `
-rad = 25
-x = 50
-y = 75
-vx = 0.5
-linewidth 2
-on animate
-   clear
-   color 422
-   move 0 72
-   line 0 0
-   line 100 0
-   line 100 72
-   move x y
-   color 422
-   circle rad
-   color 888
-   move x - 12 y + 5
-   text "Code"
-   move x - 13 y - 5
-   text "Runner"
-   if x > 100 - rad or x < rad : vx = -vx
-   x += vx
-   if y < rad
-      vy = -vy
-   else
-      vy -= 0.03125
-   .
-   y += vy
-.`
-
-errapp = `
-clear
-textsize 5
-move 5 60
-text "This app is not compatible :-("
-move 5 50
-text "You should reinstall it."
-`
 var aspr = 1
 
+function isVertical() {
+	return left.style.width == "100%"
+}
+function isEdit() {
+	return isVisible(editor) || isVisible(editor2)
+}
+var codewst
 window.onresize = function() {
 	var vh = window.innerHeight
 	var vw = window.innerWidth
 
 	var lw
+	var w
 	if (vw - 240 < vh) {
 		vh -= 80
 		lw = "100%"
+		w = vw - 2
 	}
 	else {
-		vw -= 220
+		//vw -= 220
 		lw = "220px"
+		w = vw - 222
 	}
-	var w = vw - 2
 	var h = Math.floor(w * aspr)
+	if (!lw) lw = ""
 
 	if (h > vh) {
 		h = vh - 6
 		w = Math.floor(h / aspr)
 	}
-	canv.style.width = w + "px"
-	canv.style.height = h + "px"
-	canv.style.marginTop = "1px"
+
+	canvvp.style.width = w + "px"
+	canvvp.style.height = h + "px"
+	canvhp.style.width = w + "px"
+	canvhp.style.height = h + "px"
+	codewst = vw - w - 18 + "px"
+	if (isEdit()) {
+		if (isVisible(editor2)) {
+			if  (lw == "100%") {
+				hide(editor2)
+				editor.appendChild(codew)
+				canvvp.appendChild(canv)
+				codew.style.width = "calc(100vw - 4px)"
+				show(editor)
+			}
+			else codew.style.width = codewst
+		}
+		else if (isVisible(editor) &&  lw != "100%") {
+			hide(editor)
+			codew.style.width = codewst
+			codehp.appendChild(codew)
+			canvhp.appendChild(canv)
+			show(editor2)
+		}
+	}
+
 	if (lw == "100%") {
 		left.style.float = ""
 		hambtn.style.margin = "2px 8px"
-		if (vh - 40 > h) canv.style.marginTop = "36px"
+		if (vh - 40 > h) canvvp.style.marginTop = "36px"
 	}
 	else {
 		left.style.float = "left"
@@ -119,19 +113,6 @@ function newCode() {
 	show(keepd)
 }
 
-async function decompr(txt) {
-	var s = atob(txt)
-	var buf = new ArrayBuffer(s.length)
-	var bytes = new Uint8Array(buf)
-	for (var i = 0; i < s.length; i++) {
-		bytes[i] = s.charCodeAt(i)
-	}
-	var stream = new Response(buf).body.pipeThrough(new DecompressionStream('deflate-raw'))
-	var h = await new Response(stream).arrayBuffer()
-	var dec = new TextDecoder("utf8")
-	return dec.decode(h)
-}
-
 async function ready() {
 
 	fillsel(null)
@@ -144,7 +125,7 @@ async function ready() {
 		history.replaceState(null, "", location.protocol + "//" + location.host + location.pathname)
 	}
 	else if (q.startsWith("cod=")) {
-		code = await decompr(q.substring(4))
+		code = await decode(q.substring(4))
 		history.replaceState(null, "", location.protocol + "//" + location.host + location.pathname)
 	}
 	else code = window.localStorage.getItem("xruncode")
@@ -162,10 +143,7 @@ async function ready() {
 
 ready()
 
-var editing
-
 function change() {
-	editing = false
 	var ind = sel.selectedIndex >= 0 ? sel.selectedIndex : 0
 	appn = sel.options[ind].value
 	code = window.localStorage.getItem("a" + appn)
@@ -214,11 +192,12 @@ inst.onclick = function() {
 //	window.open("./list.html", "_self")
 	window.open("../games/index.html?$date", "_self")
 }
-keep.onclick = function() {
+save.onclick = function() {
 	window.localStorage.setItem("a" + appn, code)
 	fillsel(appn)
 	updsel()
 }
+
 var rmt
 function rmreset() {
 	remove.textContent = "Delete"
@@ -251,54 +230,92 @@ window.addEventListener("online", () => { if (!sel.style.display) show(inst)} );
 window.addEventListener("offline", () => hide(inst));
 
 function showedit() {
-	editing = true
-	hide(canv)
-	hide(runner)
-	show(editor)
 	if (!codew.innerText) {
 		codew.innerText = code
 		kaFormat(code)
 	}
+	hide(runner)
+
+	if (isVertical()) {
+		hide(canvvp)
+		editor.appendChild(codew)
+		codew.style.width = "calc(100vw - 4px)"
+		show(editor)
+	}
+	else {
+		codew.style.width = codewst
+		codehp.appendChild(codew)
+		canvhp.appendChild(canv)
+		show(editor2)
+	}
 }
-edit.onclick = function() {
+
+codebtn.onclick = function() {
 	easystop()
 	showedit()
 }
-edit2.onclick = edit.onclick
+codebtn2.onclick = codebtn.onclick
 
-idelnk.onclick = function() {
-	window.open("../ide/#code=" + encodeURIComponent(codew.innerText))
+idelnk.onclick = async function() {
+	var h = await encode(codew.innerText)
+	window.open("../ide/#cod=" + h)
+	//window.open("../ide/#code=" + encodeURIComponent(codew.innerText))
 }
 
-savelnk.onclick = function() {
+runlnk.onclick = function() {
 	codeRun(codew, canv)
 }
-codeInit(codew, savelnk.onclick)
+codeInit(codew, runlnk.onclick)
 
-canclnk.onclick = function() {
+dellnk.onclick = function() {
 	codew.innerText = null
 	hide(editor)
-	show(canv)
+	show(canvvp)
 	show(runner)
 	updsel()
 }
 
+savelnk.onclick = function() {
+	hide(editor2)
+	window.localStorage.setItem("a" + appn, code)
+	fillsel(appn)
+	canvvp.appendChild(canv)
+	show(canvvp)
+	show(runner)
+	updsel()
+}
+
+run2lnk.onclick = function() {
+	codeRun(codew, canv)
+}
+del2lnk.onclick = function() {
+	codew.innerText = null
+	hide(editor2)
+	canvvp.appendChild(canv)
+	show(canvvp)
+	show(runner)
+	updsel()
+}
+ide2lnk.onclick = idelnk.onclick
+
 selline = 0
 
 function msgf(m, d) {
-	if (isVisible(editor)) {
+	if (isEdit()) {
 		codeMsgF(m, d)
 		if (m == "src") {
 			code = codew.innerText
-			hide(editor)
-			show(canv)
-			show(runner)
-			show(namef)
-			newCode()
+			if (isVisible(editor)) {
+				hide(editor)
+				show(canvvp)
+				show(runner)
+				show(namef)
+				newCode()
+			}
 		}
 	}
 	else if (m == "error" || m == "selline") {
-		if (editing) {
+		if (isEdit()) {
 			showedit()
 			codeMsgF(m, d)
 		}
@@ -306,6 +323,29 @@ function msgf(m, d) {
 			easyrun(errapp, canv)
 		}
 	}
+}
+
+async function encode(txt) {
+	var enc = new TextEncoder()
+	var buffer = await new Response(new Response(enc.encode(txt)).body.pipeThrough(new CompressionStream('deflate-raw'))).arrayBuffer()
+	var s = ""
+	var bytes = new Uint8Array(buffer)
+	for (var i = 0; i < bytes.byteLength; i++) {
+		s += String.fromCharCode(bytes[i])
+	}
+	return btoa(s)
+}
+async function decode(txt) {
+	var s = atob(txt)
+	var buf = new ArrayBuffer(s.length)
+	var bytes = new Uint8Array(buf)
+	for (var i = 0; i < s.length; i++) {
+		bytes[i] = s.charCodeAt(i)
+	}
+	var stream = new Response(buf).body.pipeThrough(new DecompressionStream('deflate-raw'))
+	var h = await new Response(stream).arrayBuffer()
+	var dec = new TextDecoder("utf8")
+	return dec.decode(h)
 }
 
 </script>

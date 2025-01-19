@@ -7,6 +7,13 @@
 <link rel="manifest" href="mfst.json">
 
 <style>
+
+*{scrollbar-width:auto}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:#222}
+::-webkit-scrollbar-thumb{background:#666}
+::-webkit-scrollbar-corner{background:rgba(0,0,0,0)}
+
 body {
 	background-color:#000;
 	color:#ddd;
@@ -68,9 +75,23 @@ select:hover {background-color:#666}
 #canv {
 	margin:1px;
 	outline:none;
+	width:100%;
+	height:100%;
+}
+#editleft {
+	float:left;
+}
+#codehp {
+	height:calc(100vh - 30px);
+}
+#canvvp {
+	float:left;
+}
+#canvhp {
+	margin-left:2px;
+	float:left;
 }
 #codew {
-	width:calc(100vw - 4px);
 	height:calc(100vh - 30px);
 	margin:2px;
 	margin-left:4px;
@@ -139,34 +160,47 @@ span.high {background-color:#666}
 		<div class=hamb></div>
 		<div class=hamb></div>
 	</div>
+	<div id=menud style="display:none">
+		<div id=codebtn class=lnk>Code</div>
+		<div id=remove class=lnk>Delete</div>
+		<div id=inst class=lnk>Get</div>
+	</div>
 	<div id=keepd style=display:none>
 		<big><b id=namef></b></big>
 		<p>
-		<div id=keep class=lnk>Save</div>
-		<div id=edit2 class=lnk>Code</div>
-	</div>
-	<div id=menud style="display:none">
-		<div id=edit class=lnk>Code</div>
-		<div id=remove class=lnk>Delete</div>
-		<div id=inst class=lnk>Install</div>
+		<div id=save class=lnk>Save</div>
+		<div id=codebtn2 class=lnk>Code</div>
 	</div>
 	<p>
 	</div>
-	<canvas id=canv></canvas>
+	<div id=canvvp>
+		<canvas id=canv></canvas>
+	</div>
 </div>
 
 <div id=editor style="display:none">
 	<div class=menu>
-		<div id=savelnk class=lnk2>Run</div>
-		<div id=canclnk class=lnk2>Cancel</div>
+		<div id=runlnk class=lnk2>Run</div>
+		<div id=dellnk class=lnk2>Delete</div>
 		<div id=idelnk class=lnk2>IDE</div>
 	</div>
 	<pre id=codew></pre>
 </div>
+<div id=editor2 style="display:none">
+	<div id=editleft>
+		<div class=menu>
+			<div id=run2lnk class=lnk2>Run</div>
+			<div id=savelnk class=lnk2>Save</div>
+			<div id=del2lnk class=lnk2>Delete</div>
+			<div id=ide2lnk class=lnk2>IDE</div>
+		</div>
+		<div id=codehp></div>
+	</div>
+	<div id=canvhp></div>
+</div>
 
 
 <script>
-
 function show(e) { e.style.display = "" }
 function hide(e) { e.style.display = "none" }
 function isVisible(e) { return e.style.display == "" }
@@ -178,7 +212,7 @@ hambtn.onmousedown = function(evt) {
 }
 
 window.onmousedown = function(evt) {
-	if (evt.target != remove && evt.target != edit && evt.target != inst) {
+	if (evt.target != remove && evt.target != codebtn && evt.target != inst) {
 		hide(menud)
 	}
 }

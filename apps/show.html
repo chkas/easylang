@@ -147,9 +147,8 @@ runlnk.onclick = function() {
 	}
 }
 edit.onclick = async function() {
-	var h = await compr(code.innerText)
+	var h = await encode(code.innerText)
 	window.open(location.origin + "/ide/#cod=" + h)
-
 //	window.open("../ide/#code=" + encodeURIComponent(code.innerText))
 }
 
@@ -185,6 +184,7 @@ nextlnk.onclick = function() {
 	}
 }
 
+/*
 async function compr(txt) {
 	var enc = new TextEncoder()
 	var buffer = await new Response(new Response(enc.encode(txt)).body.pipeThrough(new CompressionStream('deflate-raw'))).arrayBuffer()
@@ -207,6 +207,7 @@ async function decompr(txt) {
 	var dec = new TextDecoder("utf8")
 	return dec.decode(h)
 }
+*/
 
 var sadSmiley = `
 #
@@ -232,7 +233,7 @@ async function ready() {
 		if (q.startsWith("#cod=")) {
 			if ("DecompressionStream" in window) {
 				try {
-					code.innerText = await decompr(q.substring(5))
+					code.innerText = await decode(q.substring(5))
 				}
 				catch(e) {
 					code.innerText = "# Decompression error\n" + sadSmiley;
@@ -250,6 +251,30 @@ async function ready() {
 	}
 }
 ready()
+
+async function encode(txt) {
+	var enc = new TextEncoder()
+	var buffer = await new Response(new Response(enc.encode(txt)).body.pipeThrough(new CompressionStream('deflate-raw'))).arrayBuffer()
+	var s = ""
+	var bytes = new Uint8Array(buffer)
+	for (var i = 0; i < bytes.byteLength; i++) {
+		s += String.fromCharCode(bytes[i])
+	}
+	return btoa(s)
+}
+async function decode(txt) {
+	var s = atob(txt)
+	var buf = new ArrayBuffer(s.length)
+	var bytes = new Uint8Array(buf)
+	for (var i = 0; i < s.length; i++) {
+		bytes[i] = s.charCodeAt(i)
+	}
+	var stream = new Response(buf).body.pipeThrough(new DecompressionStream('deflate-raw'))
+	var h = await new Response(stream).arrayBuffer()
+	var dec = new TextDecoder("utf8")
+	return dec.decode(h)
+}
+
 
 </script>
 
