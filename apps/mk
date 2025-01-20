@@ -113,9 +113,9 @@ async function compr(txt) {
 }
 var url
 async function createURL() {
-	var h = await compr(pres[pres.length - 1].innerText)
+	var h = await compr(pres[pres.length - 1].textContent)
 	url.href = location.origin + "/run/#cod=" + h
-//	var h = encodeURIComponent(pres[pres.length - 1].innerText)
+//	var h = encodeURIComponent(pres[pres.length - 1].textContent)
 //	url.href = location.origin + "/run/#code=" + h
 	url.target = '_blank'
 	url.innerHTML = "Run and install it on code runner"
@@ -131,7 +131,7 @@ The code runner is a PWA (Progressive Web App), which makes it look like a nativ
 
 	tut.appendChild(create("p"))
 	var h = create("button")
-	h.innerText = "Create a start URL"
+	h.textContent = "Create a start URL"
 	h.onclick = createURL
 	tut.appendChild(h)
 	tut.appendChild(create("p"))
@@ -519,7 +519,7 @@ var htxt = `<canvas style="width:95vh;height:95vh">
 easyscript = `
 htxt += "`\n\n" + src1 + '\n`\n<\/script><script src=easy.js><\/script>'
 
-pre1.innerText = htxt
+pre1.textContent = htxt
 
 if (typeof WebAssembly != 'object') {
 	err.innerHTML = "You need a browser with WebAssembly support for this website."

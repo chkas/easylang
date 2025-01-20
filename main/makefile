@@ -86,9 +86,9 @@ $(apps)/easyw.js: $(wrk)/easyw.js
 $(apps)/easy.js: easy.js
 	$(CLOSURE)  $(CLOSOPT) --js $< --js_output_file $@
 
-$(apps)/easy_code2.js: easy.js ../apps/easy_code.js
+$(apps)/easy_code2.js: easy.js ../run/easy_code.js
 	cat easy.js >$(wrk)/tmp.js
-	cat ../apps/easy_code.js >>$(wrk)/tmp.js
+	cat ../run/easy_code.js >>$(wrk)/tmp.js
 	$(CLOSURE)  $(CLOSOPT) --js $(wrk)/tmp.js --js_output_file $@
 
 $(or)/%: %
@@ -141,10 +141,10 @@ $(wrk)/vers_easy.js: easy.js ../vers.txt
 	tail +2 easy.js >>$(or)/tmp.js
 	$(CLOSURE) $(CLOSOPT) --js $(or)/tmp.js --js_output_file $@
 
-$(wrk)/vers_easy_code.js: easy.js ../apps/easy_code.js ../vers.txt
+$(wrk)/vers_easy_code.js: easy.js ../run/easy_code.js ../vers.txt
 	echo "const WORKER = 'easyw$v.js'" >$(or)/tmp.js
 	tail +2 easy.js >>$(or)/tmp.js
-	cat ../apps/easy_code.js >>$(or)/tmp.js
+	cat ../run/easy_code.js >>$(or)/tmp.js
 	$(CLOSURE) $(CLOSOPT) --js $(or)/tmp.js --js_output_file $@
 
 

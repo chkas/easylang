@@ -131,17 +131,17 @@ function showurl(t) {
 	show_qr(t)
 }
 urlBtn.onclick = async function() {
-	var h = await compr(inp.innerText)
+	var h = await compr(inp.textContent)
 	var t = location.origin + "/ide/#cod=" + h
 	showurl(t)
 }
 url2Btn.onclick = async function() {
-	var h = await compr(inp.innerText)
+	var h = await compr(inp.textContent)
 	var t = location.origin + "/run/#cod=" + h
 	showurl(t)
 }
 url3Btn.onclick = async function() {
-	var h = await compr(inp.innerText)
+	var h = await compr(inp.textContent)
 	var t = "mailto:your@mailaddr?subject=Your%20code&body=" + location.origin + "/ide/#cod=" + h
 	showurl(t)
 }
@@ -311,7 +311,7 @@ function loadClick(btn, istut) {
 		stBtn.disabled = true
 		loadBtn = null
 		var code
-		if (istut) code = btn.pre.innerText
+		if (istut) code = btn.pre.textContent
 		else code = window.localStorage[btn.ref]
 		undoAdd(code)
 		if (doco) onTab(4)
@@ -354,13 +354,13 @@ function delClick(btn) {
 
 function expandClick(btn) {
 	if (btn.textContent == "Expand") {
-		btn.preview = btn.pre.innerText
-		btn.pre.innerText = window.localStorage[btn.ref]
+		btn.preview = btn.pre.textContent
+		btn.pre.textContent = window.localStorage[btn.ref]
 		btn.textContent = "Collapse"
 		show(btn.nextSibling)
 	}
 	else {
-		btn.pre.innerText = btn.preview
+		btn.pre.textContent = btn.preview
 		btn.textContent = "Expand"
 		hide(btn.nextSibling)
 	}
@@ -840,7 +840,7 @@ function undoAdd(t, c = 0) {
 function store() {
 	removeCnd()
 	var sec = Math.floor(Date.now() / 1000)
-	window.localStorage["k" + sec] = inp.innerText
+	window.localStorage["k" + sec] = inp.textContent
 	stBtn.disabled = true
 	storeUpd()
 	inp.focus()
@@ -856,7 +856,7 @@ function enter() {
 		return
 	}
 	enterTime = Date.now()
-	var inps = inp.innerText
+	var inps = inp.textContent
 
 	var p = getCaret()
 	undoAdd(inps, p)
@@ -880,11 +880,11 @@ var searchS = ""
 function search() {
 	if (window.getSelection() != "") searchS = window.getSelection().toString()
 	var p = getCaret()
-	var s = inp.innerText.substring(p + 1)
+	var s = inp.textContent.substring(p + 1)
 	var m = s.search(searchS)
 	if (m != -1) m = p + m + 1
 	else {
-		s = inp.innerText.substring(0, p)
+		s = inp.textContent.substring(0, p)
 		m = s.search(searchS)
 	}
 	if (m != -1) {
@@ -905,7 +905,7 @@ inp.onkeydown = function(e) {
 //	if (e.ctrlKey) {
 	if (e.ctrlKey || e.metaKey) {
 		if (k == 86 || k == 88) {	// v x
-			undoAdd(inp.innerText, getCaret())
+			undoAdd(inp.textContent, getCaret())
 			stBtn.disabled = false
 		}
 		else if (k == 82 || k == 13) {	// r enter
@@ -927,19 +927,19 @@ inp.onkeydown = function(e) {
 				undoPos += 1
 				if (undoPos >= undoStack.length) undoPos = undoStack.length
 				else {
-					inp.innerText = undoStack[undoPos][0]
+					inp.textContent = undoStack[undoPos][0]
 					setCaret(undoStack[undoPos][1], false)
 				}
 			}
 			else {
 				if (undoPos == undoStack.length) {
-					undoAdd(inp.innerText)
+					undoAdd(inp.textContent)
 					undoPos -= 1
 				}
 				undoPos -= 1
 				if (undoPos < 0) undoPos = 0
 				else {
-					inp.innerText = undoStack[undoPos][0]
+					inp.textContent = undoStack[undoPos][0]
 					setCaret(undoStack[undoPos][1], false)
 				}
 			}
@@ -995,7 +995,7 @@ inp.addEventListener("drop", function(e) {
 	e.preventDefault();
 	var file = e.dataTransfer.files[0], reader = new FileReader()
 	reader.onload = function(event) {
-//		inp.innerText = event.target.result
+//		inp.textContent = event.target.result
 		var n = event.target.result.charCodeAt(0)
 		if (n == 35 || n >= 65 && n <= 90 || n >= 97 && n <= 122) {
 			document.execCommand('selectAll', false, null)
@@ -1117,7 +1117,7 @@ function scrollToLine(lc, nln) {
 }
 
 function scrollToPos(pos) {
-	var lines = inp.innerText.split("\n")
+	var lines = inp.textContent.split("\n")
 	var ln = lines.length
 	var a = 0
 	var lc
@@ -1348,7 +1348,7 @@ function runx() {
 	if (runBtn.run) {
 		if (doco) onTab(4)
 		removeCnd()
-		runCode(inp.innerText, getCaret())
+		runCode(inp.textContent, getCaret())
 	}
 	else doStop()
 }
@@ -1385,7 +1385,7 @@ function runDebug() {
 	inp.contentEditable = false
 	tailSrc = null
 	showRun(false)
-	kaRun(inp.innerText, h + 2, 0)
+	kaRun(inp.textContent, h + 2, 0)
 }
 function stepNoti(w) {
 	var vw = new Int32Array(window["sab"])
@@ -1454,7 +1454,7 @@ window.onbeforeunload = function(e) {
 	var t = ""
 	if (!stBtn.disabled) {
 		removeCnd()
-		t = inp.innerText
+		t = inp.textContent
 	}
 	window.localStorage["xcode"] = t
 	window.localStorage["x2col"] = isVisible(expnd)
@@ -1543,7 +1543,7 @@ async function main() {
 		if (!t || t == "\n") stBtn.disabled = true
 		if (t == null) t = 'print "Hello world"'
 		// appendTxt(inp, t)
-		inp.innerText = t
+		inp.textContent = t
 		undoAdd(t)
 	}
 	console.log("loading ...")

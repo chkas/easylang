@@ -122,7 +122,7 @@ xxx
 #cat $wdir/../apps/easy_code.js
 cat $wdir/vers_easy_code.js >> $odir/index.html
 
-xcp ../apps/easy_code.js $wdir/easy_code.js
+xcp easy_code.js $wdir/easy_code.js
 echo "</script><script src=easy.js></script>" >> $wdir/run.html
 echo "<script src=easy_code.js></script><script>" >> $wdir/run.html
 

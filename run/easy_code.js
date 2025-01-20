@@ -126,7 +126,7 @@ function scrollToLine(lc, nln) {
 }
 
 function scrollToPos(pos) {
-	var lines = inp.innerText.split("\n")
+	var lines = inp.textContent.split("\n")
 	var ln = lines.length
 	var a = 0
 	var lc
@@ -161,15 +161,16 @@ function gotSrcNl(src, res, pos, err) {
 function gotSrcErr(src, res, pos, err) {
 	inp.innerHTML = src.substr(0, res)
 	appendTxt(inp, src.substr(res))
-	stopped()
 	setCaret(pos)
 	showError(err, pos)
 }
 
-// ------------------
+var enterPending
+
 function doEnter() {
+	enterPending = false
 	var p = codeCaret()
-	var inps = inp.innerText
+	var inps = inp.textContent
 	if (p != 0 && inps[p - 1] != "\n") {
 		while (p < inps.length && inps[p] != "\n") p++
 	}
@@ -212,7 +213,7 @@ function preKey(pre, e) {
 		if (e.shiftKey) runx()
 		else if (kaRunning()) {
 			kaStop()
-			stopped()
+			enterPending = true
 		}
 		else doEnter()
 	}
@@ -225,7 +226,7 @@ function codeRun(pre, canv, out = null) {
 	inp = pre
 	removeCnd()
 	easystop()
-	easyrun(pre.innerText, canv, out, codeCaret())
+	easyrun(pre.textContent, canv, out, codeCaret())
 }
 
 function selectLine(sel) {
@@ -323,22 +324,19 @@ function codeMsgF(msg, d) {
 		removeCnd()
 		selectLine(d[0])
 	}
+	else if (msg == "stopped" && enterPending) {
+		doEnter()
+	}
 }
 
 var runCB
-var stoppedCB
 
 function runx() {
 	if (runCB) runCB(inp)
 }
 
-function stopped() {
-	if (stoppedCB) stoppedCB()
-}
-
-function codeInit(pre, f1, f2 = null) {
+function codeInit(pre, f1) {
 	runCB = f1
-	stoppedCB = f2
 	pre.className = "code"
 	pre.contentEditable = true
 	pre.autocorrect = "off"

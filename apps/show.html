@@ -62,6 +62,7 @@ a:hover{background:#666}
 ::-webkit-scrollbar{ width:10px;height:10px;cursor:pointer}
 ::-webkit-scrollbar-track {background: #222}
 ::-webkit-scrollbar-thumb {background: #666}
+::-webkit-scrollbar-corner{background:rgba(0,0,0,0)}
 
 </style>
 
@@ -147,9 +148,9 @@ runlnk.onclick = function() {
 	}
 }
 edit.onclick = async function() {
-	var h = await encode(code.innerText)
+	var h = await encode(code.textContent)
 	window.open(location.origin + "/ide/#cod=" + h)
-//	window.open("../ide/#code=" + encodeURIComponent(code.innerText))
+//	window.open("../ide/#code=" + encodeURIComponent(code.textContent))
 }
 
 easyinit(canv, out, codeMsgF)
@@ -233,16 +234,16 @@ async function ready() {
 		if (q.startsWith("#cod=")) {
 			if ("DecompressionStream" in window) {
 				try {
-					code.innerText = await decode(q.substring(5))
+					code.textContent = await decode(q.substring(5))
 				}
 				catch(e) {
-					code.innerText = "# Decompression error\n" + sadSmiley;
+					code.textContent = "# Decompression error\n" + sadSmiley;
 				}
 			}
-			else code.innerText = "# The browser doesn't support\n# Compression Streams API\n" + sadSmiley
+			else code.textContent = "# The browser doesn't support\n# Compression Streams API\n" + sadSmiley
 		}
 		else {
-			code.innerText = demo
+			code.textContent = demo
 		}
 		runlnk.onclick()
 	}

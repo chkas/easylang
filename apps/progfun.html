@@ -229,7 +229,7 @@ on animate
 
 nextlnk.onclick = function() {
 	src.push(src.shift());
-	code.innerText = src[0]
+	code.textContent = src[0]
 	codeRun(code, canv)
 }
 runlnk.onclick = function() {
@@ -239,7 +239,7 @@ runlnk.onclick = function() {
 easyinit(canv, null, codeMsgF)
 codeInit(code, runlnk.onclick)
 
-code.innerText = src[0]
+code.textContent = src[0]
 codeRun(code, canv)
 
 </script>

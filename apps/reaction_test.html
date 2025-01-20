@@ -13,7 +13,7 @@
 txt_tutor=`* Reaction tester
 
 # Reaction test
-# 
+#
 txt$ = ""
 proc show col s$ . .
    color col
@@ -42,14 +42,14 @@ on mouse_down
 textsize 20
 wait
 
-+ A URL can be created, that can start a *code runner* with the program encoded in a URL parameter. 
++ A URL can be created, that can start a *code runner* with the program encoded in a URL parameter.
 
 + Inside the *code runner* our program can be stored and run offline. The code runner is a *PWA* (Progressive Web App). Therefore it works like a native app on the mobile device.
-` 
+`
 var url
 
 function createURL() {
-	var h = encodeURIComponent(pres[0].innerText)
+	var h = encodeURIComponent(pres[0].textContent)
 	url.href = location.origin + "/run/#code=" + h
 	url.target = '_blank'
 	url.innerHTML = "Run and install it on code runner"
@@ -58,7 +58,7 @@ function createURL() {
 function hook() {
 	tut.appendChild(create("p"))
 	var h = create("button")
-	h.innerText = "Create a start URL"
+	h.textContent = "Create a start URL"
 	h.onclick = createURL
 	tut.appendChild(h)
 	tut.appendChild(create("p"))

@@ -70,29 +70,29 @@ window.onresize = function() {
 
 window.onresize()
 
-function runr(s) {
+function run() {
 	easystop()
 	canv.width = 800 / aspr
 	canv.height = 800
 	window.onresize()
 	var c = canv.getContext("2d")
 	c.clearRect(0, 0, canv.width, canv.height)
-	easyrun(s, canv)
+	easyrun(codew.textContent, canv)
 }
 
 easyinit(canv, null, msgf)
 
 window.name = "easylang_run"
 var appn = null
-var code = null
 
 function updCodeInfo() {
+	var cod = codew.textContent
 	aspr = 1
 	var an = Math.floor(Date.now() / 1000) - 1577833200
-	if (code[0] == "#") {
-		var i = code.indexOf("\n")
+	if (cod[0] == "#") {
+		var i = cod.indexOf("\n")
 		if (i != -1) {
-			an = code.substr(2, i - 2)
+			an = cod.substr(2, i - 2)
 			i = an.indexOf(":w")
 			if (i != -1) {
 				aspr = 100 / Number(an.substr(i + 2))
@@ -104,12 +104,15 @@ function updCodeInfo() {
 }
 
 function newCode() {
-	window.localStorage.removeItem("xruncode")
 	updCodeInfo()
 	hide(sel)
 	hide(hambtn)
 	namef.textContent = appn
+	hide(editor)
 	show(keepd)
+	show(canvvp)
+	show(runner)
+	show(namef)
 }
 
 async function ready() {
@@ -120,19 +123,19 @@ async function ready() {
 	if (q == "") q = location.search.substring(1)
 
 	if (q.startsWith("code=")) {
-		code = decodeURIComponent(q.substring(5))
+		codew.textContent = decodeURIComponent(q.substring(5))
 		history.replaceState(null, "", location.protocol + "//" + location.host + location.pathname)
 	}
 	else if (q.startsWith("cod=")) {
-		code = await decode(q.substring(4))
+		codew.textContent = await decode(q.substring(4))
 		history.replaceState(null, "", location.protocol + "//" + location.host + location.pathname)
 	}
-	else code = window.localStorage.getItem("xruncode")
+	else codew.textContent = window.localStorage.getItem("xruncode")
 
-	if (code) {
-		codew.innerText = code
+	if (codew.textContent) {
+		window.localStorage.removeItem("xruncode")
 		newCode()
-		runr(code)
+		run()
 	}
 	else {
 		sel.selectedIndex = window.localStorage.getItem("xrunsel")
@@ -146,12 +149,11 @@ ready()
 function change() {
 	var ind = sel.selectedIndex >= 0 ? sel.selectedIndex : 0
 	var seln = sel.options[ind].value
-	code = window.localStorage.getItem("a" + seln)
+	codew.textContent = window.localStorage.getItem("a" + seln)
 	updCodeInfo()
 	appn = seln
-	codew.innerText = null
 	window.localStorage.setItem("xrunsel", ind)
-	runr(code)
+	run()
 }
 
 sel.onchange = change
@@ -180,7 +182,8 @@ function updsel() {
 		hide(hambtn)
 		hide(sel)
 		aspr = 1
-		runr(code0)
+		codew.textContent = code0
+		run()
 	}
 	else {
 		hide(info)
@@ -194,9 +197,8 @@ inst.onclick = function() {
 	window.open("../games/index.html?$date", "_self")
 }
 save.onclick = function() {
-	code = codew.innerText
 	updCodeInfo()
-	window.localStorage.setItem("a" + appn, code)
+	window.localStorage.setItem("a" + appn, codew.textContent)
 	fillsel(appn)
 	updsel()
 }
@@ -222,9 +224,9 @@ remove.onclick = function() {
 	}
 }
 window.onbeforeunload = function(e) {
-	if (!keepd.style.display) {
+	if (isVisible(keed)) {
 		window.localStorage.removeItem("xrunsel")
-		window.localStorage.setItem("xruncode", code)
+		window.localStorage.setItem("xruncode", codew.textContent)
 	}
 	else window.localStorage.setItem("xrunsel", sel.selectedIndex)
 }
@@ -233,10 +235,6 @@ window.addEventListener("online", () => { if (!sel.style.display) show(inst)} );
 window.addEventListener("offline", () => hide(inst));
 
 function showedit() {
-	if (!codew.innerText) {
-		codew.innerText = code
-		kaFormat(code)
-	}
 	hide(runner)
 
 	if (isVertical()) {
@@ -253,25 +251,41 @@ function showedit() {
 	}
 }
 
+var editing
+
 codebtn.onclick = function() {
-	easystop()
+	editing = true
+	if (isVertical()) {
+		easystop()
+		kaFormat(codew.textContent)
+	}
+	else {
+		codeRun(codew, canv)
+	}
 	showedit()
 }
 codebtn2.onclick = codebtn.onclick
 
 idelnk.onclick = async function() {
-	var h = await encode(codew.innerText)
+	var h = await encode(codew.textContent)
 	window.open("../ide/#cod=" + h)
-	//window.open("../ide/#code=" + encodeURIComponent(codew.innerText))
+	//window.open("../ide/#code=" + encodeURIComponent(codew.textContent))
 }
 
 runlnk.onclick = function() {
+	newCode()
 	codeRun(codew, canv)
 }
+run2lnk.onclick = function() {
+	updCodeInfo()
+	codeRun(codew, canv)
+}
+
 codeInit(codew, runlnk.onclick)
 
 dellnk.onclick = function() {
-	codew.innerText = null
+	editing = false
+	//codew.textContent = null
 	hide(editor)
 	show(canvvp)
 	show(runner)
@@ -279,10 +293,10 @@ dellnk.onclick = function() {
 }
 
 savelnk.onclick = function() {
-	code = codew.innerText
+	editing = false
 	hide(editor2)
 	updCodeInfo()
-	window.localStorage.setItem("a" + appn, code)
+	window.localStorage.setItem("a" + appn, codew.textContent)
 	fillsel(appn)
 	canvvp.appendChild(canv)
 	show(canvvp)
@@ -290,11 +304,9 @@ savelnk.onclick = function() {
 	updsel()
 }
 
-run2lnk.onclick = function() {
-	codeRun(codew, canv)
-}
 del2lnk.onclick = function() {
-	codew.innerText = null
+	editing = false
+	//codew.textContent = null
 	hide(editor2)
 	canvvp.appendChild(canv)
 	show(canvvp)
@@ -306,10 +318,10 @@ ide2lnk.onclick = idelnk.onclick
 selline = 0
 
 function msgf(m, d) {
+/*
 	if (isEdit()) {
 		codeMsgF(m, d)
 		if (m == "src") {
-			code = codew.innerText
 			if (isVisible(editor)) {
 				hide(editor)
 				show(canvvp)
@@ -319,10 +331,13 @@ function msgf(m, d) {
 			}
 		}
 	}
-	else if (m == "error" || m == "selline") {
-		if (isEdit()) {
+*/
+	if (editing) {
+		codeMsgF(m, d)
+	}
+	if (m == "error" || m == "selline") {
+		if (editing) {
 			showedit()
-			codeMsgF(m, d)
 		}
 		else {
 			easyrun(errapp, canv)
