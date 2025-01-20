@@ -756,7 +756,7 @@ function easyinit(ca, out = null, msg_func = null) {
 }
 
 function easykey(s) {
-	worker.postMessage(["key", s])
+	worker.postMessage(["key", 2, s])
 }
 
 function sabNotify(a, b) {

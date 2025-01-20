@@ -27,7 +27,7 @@ cat >$odir/mfst.json <<EOF
 }
 EOF
 
-echo "var CACHE = 'sky_$(date +%m%d-%H%M%S)'" > $odir/sw.js
+echo "var CACHE = 'sky_$(date +%y%m%d-%H%M%S)'" > $odir/sw.js
 cat >>$odir/sw.js <<EOF
 var urls = [
 	"/sky/",
