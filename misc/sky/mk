@@ -107,7 +107,7 @@ body{
 	user-select:none;
 	-webkit-user-select:none;
 	margin:0px;
-	overflow: hidden; 
+	overflow: hidden;
 }
 canvas:focus{outline: none}
 
@@ -127,7 +127,7 @@ canvas:focus{outline: none}
 	touch-action:none;
 }
 .btn:hover {background:#666}
-.btn:active {background:#888} 
+.btn:active {background:#888}
 .lnk {
 	cursor: pointer;
 	text-decoration: underline;
@@ -208,9 +208,9 @@ window.onresize()
 
 function reg(btn, key) {
 	btn.key = key
-	btn.ontouchstart = function (e) { 
+	btn.ontouchstart = function (e) {
 		e.preventDefault()
-		mdown(this, this.key) 
+		mdown(this, this.key)
 	}
 	btn.ontouchend  = function (e) {
 		e.preventDefault()
@@ -279,9 +279,10 @@ cat sky.el >>$odir/index.html
 
 cat >>$odir/index.html <<'EOF'
 `
-
+var mark
 function msgf(m) {
-	if (m == "ready") {
+	if (!mark && m == "ready") {
+		mark = true
 		easyrun(s, canv)
 		var h = window.localStorage.getItem("x_starry_sky")
 		if (h != null) {

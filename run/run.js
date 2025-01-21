@@ -224,7 +224,7 @@ remove.onclick = function() {
 	}
 }
 window.onbeforeunload = function(e) {
-	if (isVisible(keed)) {
+	if (isVisible(keepd)) {
 		window.localStorage.removeItem("xrunsel")
 		window.localStorage.setItem("xruncode", codew.textContent)
 	}

@@ -31,6 +31,7 @@
 S struct {
 	double mouse_x;
 	double mouse_y;
+	const char* key0;
 	char key[16];
 	short num_scale;
 	short num_space;
@@ -892,6 +893,7 @@ S STR op_strchar(ND* nd) {
 }
 
 S STR op_keyb_key(ND* nd) {
+	if (rt.key0) return str(rt.key0);
 	return str(rt.key);
 }
 
@@ -1828,12 +1830,16 @@ void evt_func(int id, const char* v) {
 		exsq(seq.timer);
 	}
 	else if (id == 2) {
+		rt.key0 = v;
 		strncpy(rt.key, v, sizeof(rt.key) - 1);
 		exsq(seq.key_down);
+		rt.key0 = NULL;
 	}
 	else if (id == 3) {
+		rt.key0 = v;
 		strncpy(rt.key, v, sizeof(rt.key) - 1);
 		exsq(seq.key_up);
+		rt.key0 = NULL;
 	}
 #ifdef __EMSCRIPTEN__
 	else if (id == 5) {
@@ -2787,6 +2793,7 @@ S void init_rt(void) {
 	rt.num_scale = 2;
 	rt.num_space = 0;
 	rt.key[0] = 0;
+	rt.key0 = NULL;
 
 	rt.sys_error = 0;
 	rt.proc = NULL;
