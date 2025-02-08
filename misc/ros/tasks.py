@@ -1,3 +1,4 @@
+#!/opt/homebrew/bin/python3.13
 #!/usr/bin/python3
 import xml.dom.minidom
 import sys, urllib.parse, urllib.request

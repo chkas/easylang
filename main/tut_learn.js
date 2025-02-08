@@ -161,7 +161,7 @@ for i to len col[]
 
 +de Wir zeichnen ein Haus
 
-# facade
+# My house
 color 993
 move 20 0
 rect 60 45

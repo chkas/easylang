@@ -1,18 +1,16 @@
 #!/bin/sh
 
-echo $PWD $0 >&2
-
-
-#dom="easylang.online"
-#test $1 && dom=$1
-
 vers=$(cat ../vers.txt)
 src=$(pwd)
 
 o=$HOME/out/easylang/apps
 mkdir -p $o
 
-(cd ../misc/ros/ ; ./rosmk.sh $vers) > $o/tut_rosetta.html
+of=$o/tut_rosetta.html
+if test ! -e $of || test $of -ot ../misc/ros; then
+	echo "tut_rosetta.html .." >&2
+	(cd ../misc/ros/ ; ./rosmk.sh $vers) > $of
+fi
 
 xcp() {
 	if test  ! -e  $o/$1 -o $1 -nt $o/$1; then
@@ -23,7 +21,7 @@ xcp() {
 
 for i in *.html; do
 	if test  ! -e  $o/$i -o $i -nt $o/$i; then
-		echo "update $i $o"
+		echo "$i ..."
 		sed s/.js/.js?$vers/g $i > $o/$i
 	fi
 done
@@ -39,6 +37,8 @@ cd $src
 mk_tut() {
 #	n=$(echo $1 | tr "A-Z " a-z_)
 	n=$2
+	test $o/tut_$n.html -nt ../main/tut_$2.js && return
+	echo "tut_$n.html .." >&2
 	cat >$o/tut_$n.html <<xxx
 <!doctype html>
 <meta charset=utf-8><title>$1</title>
@@ -241,16 +241,19 @@ mv $o/tmp.html $o/tut_learn.html
 
 cd $src
 
-for k in *.kab; do
-	i=${k%.*}.html
+for k in progs/*.kab; do
+	kx=$(basename $k)
+	i=${kx%.*}.html
+	of=$o/$i
+	test -e $of && test $of -nt $k && continue
 	f=$(echo $i | cut -c1 | tr a-z A-Z)
 	n=$f$(echo ${i%.*} | cut -c2- | tr '-' ' ')
 
 	test $(echo $n|cut -c1-1) = '_' && n=$(echo $n|cut -c2-)
 
-#	echo $k:$i:$n >&2
+	echo "$i .." >&2
 
-	exec >$o/$i
+	exec >$of
 
 cat <<xxx
 <!doctype html><meta charset=utf-8>
@@ -264,10 +267,10 @@ xxx
 
 col="body{ background-color:#000; color:#ccc;}"
 for j in clock pendulum _r_maze0 _r_maze; do
-	test $j.kab = $k && col=''
+	test progs/$j.kab = $k && col=''
 done
-test _color_bars.kab = $k && col="body{ background-color:#444; color:#eee;}"
-test mandelbrot.kab = $k && col="body{ background-color:#444; color:#eee;}"
+test progs/_color_bars.kab = $k && col="body{ background-color:#444; color:#eee;}"
+test progs/mandelbrot.kab = $k && col="body{ background-color:#444; color:#eee;}"
 echo $col
 
 
@@ -539,7 +542,7 @@ function show(s) {
 
 s2 = `
 xxx
-cat clock.kab
+cat progs/clock.kab
 cat <<'xxx'
 `
 function runClock() {
@@ -583,7 +586,7 @@ vx = 1.5`)
 function runMandel() {
 	show(`
 xxx
-cat mandelbrot.kab
+cat progs/mandelbrot.kab
 cat <<'xxx'
 `)
 }
@@ -591,7 +594,7 @@ cat <<'xxx'
 function runPendel() {
 	show(`
 xxx
-cat pendulum.kab
+cat progs/pendulum.kab
 cat <<'xxx'
 `)
 }
@@ -599,7 +602,7 @@ cat <<'xxx'
 function runTic() {
 	show(`
 xxx
-cat tictactoe.kab
+cat progs/tictactoe.kab
 cat <<'xxx'
 `)
 }

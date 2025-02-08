@@ -1,0 +1,267 @@
+<!doctype html>
+<meta charset=utf-8>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="easy and fun programming">
+<title>easylang show</title>
+<link rel="icon" href="icon.png" type="image/x-png">
+
+<style>
+body {
+	background-color:#000;
+	color:#ddd;
+	font-family:sans-serif;
+	margin:0px;
+	user-select:none;
+}
+a { color: #ddd }
+
+pre i{font-weight:400;color:#9d9}
+pre b{font-weight:500;color:#fc9}
+pre s{text-decoration:none;font-weight:500;color:#9cf}
+pre u{font-weight:bold;text-decoration:none;color:#fff;background:#666}
+
+span.high {background-color:#666}
+
+#left {
+	margin:4px;
+	width:322px;
+	float:left
+}
+#canv {
+	margin:6px;
+	outline:none;
+}
+#out {
+	background-color:#000;
+	color:#ddd;
+	resize:none;
+	border:1px solid #333;
+	padding:2px;
+	margin:2px;
+	outline:none
+}
+
+#code {
+	margin:0px;
+	overflow-y:auto;
+	outline-style:solid;
+	outline-color:#444;
+	outline-width:1px
+}
+
+.lnk {
+	margin:6px;
+	float:left;
+	cursor:pointer;
+	text-decoration:underline;
+}
+.lnk:hover{background:#666}
+a:hover{background:#666}
+
+* {scrollbar-color:#666 #222}
+::-webkit-scrollbar{ width:10px;height:10px;cursor:pointer}
+::-webkit-scrollbar-track {background: #222}
+::-webkit-scrollbar-thumb {background: #666}
+::-webkit-scrollbar-corner{background:rgba(0,0,0,0)}
+
+</style>
+
+<div>
+	<div id=left>
+		<pre id=code></pre>
+		<textarea id=out readonly spellcheck=false></textarea>
+		<div id=lnk><small>
+			<span class=lnk id=runlnk>Run</span>
+			&nbsp;&nbsp;
+			<span class=lnk id=nextlnk>Next</span>
+			<span class=lnk id=edit style="float:right">IDE</span>
+			&nbsp;
+		</small></div>
+	</div>
+	<canvas id=canv></canvas>
+</div>
+
+<script src=easy_code2.js></script>
+<script>
+
+window.onresize = function() {
+	var vh = window.innerHeight
+	var vw = window.innerWidth
+
+	var oh = 20
+	if (out.style.display == "") {
+		oh = 47
+	}
+
+	var cw, pw, ph
+	if (vw > 3 / 4 * vh) {
+		cw = vw - 340 - 16
+		pw = 320
+		ph = vh - oh
+		if (cw > vh - 16) cw = vh - 16
+	}
+	else {
+		pw = vw - 20
+		ph = 200
+		cw = vw - 16
+	}
+	canv.style.width = cw + "px"
+	canv.style.height = cw + "px"
+	code.style.width = pw + "px"
+	code.style.height = ph - oh + "px"
+	out.style.width = pw - 6 + "px"
+	out.style.height = "42px"
+}
+
+window.onresize()
+
+var demo = `# Demo
+#
+ang = 45
+color 663
+on animate
+   clear
+   move 50 50
+   circle 1
+   x = 50 + 40 * sin ang
+   y = 50 + 40 * cos ang
+   line x y
+   circle 6
+   vel += sin ang / 5
+   ang += vel
+.
+`
+
+var disabled
+
+function disableShort() {
+	disabled = true
+	setTimeout(function() {
+		disabled = false
+	}, 500);
+}
+
+runlnk.onclick = function() {
+	if (!disabled) {
+		codeRun(code, canv, out)
+		disableShort()
+	}
+}
+edit.onclick = async function() {
+	var h = await encode(code.textContent)
+	window.open(location.origin + "/ide/#cod=" + h)
+//	window.open("../ide/#code=" + encodeURIComponent(code.textContent))
+}
+
+
+function msgFunc(msg, d) {
+	if (msg == "src") {
+		var h = out.style.display
+		if (-d[1] & 2) out.style.display = ""
+		else out.style.display = "none"
+		if (h != out.style.display) window.onresize()
+	}
+    codeMsgF(msg, d)
+}
+
+easyinit(canv, out, msgFunc)
+codeInit(code, runlnk.onclick)
+
+function load(file) {
+	easystop()
+	var req = new XMLHttpRequest()
+	setTimeout(function() {
+		if (req.status == 0) code.innerHTML = "Loading ..."
+	}, 500);
+
+	req.open("GET", file)
+	req.addEventListener("load", function(event) {
+		if (req.status >= 200 && req.status < 300) {
+			code.innerHTML = req.responseText
+			codeRun(code, canv, out)
+		} else {
+			code.innerHTML = "# error on loading"
+		}
+	})
+	req.send();
+}
+
+var files
+
+nextlnk.onclick = function() {
+	if (!disabled) {
+		files.push(files.shift());
+		load(files[0], canv)
+		disableShort()
+	}
+}
+
+var sadSmiley = `
+#
+move 20 83
+color 983
+circle 7
+color 000
+move 17 85
+circle 1
+move 23 85
+circle 1
+linewidth 1
+curve [ 17 80 20 83 23 80 ]
+`
+
+async function ready() {
+	if (location.search.startsWith("?f=")) {
+		files = location.search.substr(3).split(",")
+		load(files[0])
+	}
+	else {
+		var q = location.hash
+		if (q.startsWith("#cod=")) {
+			if ("DecompressionStream" in window) {
+				try {
+					code.textContent = await decode(q.substring(5))
+				}
+				catch(e) {
+					code.textContent = "# Decompression error\n" + sadSmiley;
+				}
+			}
+			else code.textContent = "# The browser doesn't support\n# Compression Streams API\n" + sadSmiley
+		}
+		else {
+			code.textContent = demo
+		}
+		runlnk.onclick()
+	}
+	if (!files || files.length == 1) {
+		nextlnk.style.display = "none"
+	}
+}
+ready()
+
+async function encode(txt) {
+	var enc = new TextEncoder()
+	var buffer = await new Response(new Response(enc.encode(txt)).body.pipeThrough(new CompressionStream('deflate-raw'))).arrayBuffer()
+	var s = ""
+	var bytes = new Uint8Array(buffer)
+	for (var i = 0; i < bytes.byteLength; i++) {
+		s += String.fromCharCode(bytes[i])
+	}
+	return btoa(s)
+}
+async function decode(txt) {
+	var s = atob(txt)
+	var buf = new ArrayBuffer(s.length)
+	var bytes = new Uint8Array(buf)
+	for (var i = 0; i < s.length; i++) {
+		bytes[i] = s.charCodeAt(i)
+	}
+	var stream = new Response(buf).body.pipeThrough(new DecompressionStream('deflate-raw'))
+	var h = await new Response(stream).arrayBuffer()
+	var dec = new TextDecoder("utf8")
+	return dec.decode(h)
+}
+
+
+</script>
+

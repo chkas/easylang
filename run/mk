@@ -118,8 +118,6 @@ if ("serviceWorker" in navigator) {
 }
 xxx
 
-#cat $wdir/vers_easy.js
-#cat $wdir/../apps/easy_code.js
 cat $wdir/vers_easy_code.js >> $odir/index.html
 
 xcp easy_code.js $wdir/easy_code.js

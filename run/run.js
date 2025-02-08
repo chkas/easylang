@@ -315,23 +315,7 @@ del2lnk.onclick = function() {
 }
 ide2lnk.onclick = idelnk.onclick
 
-selline = 0
-
 function msgf(m, d) {
-/*
-	if (isEdit()) {
-		codeMsgF(m, d)
-		if (m == "src") {
-			if (isVisible(editor)) {
-				hide(editor)
-				show(canvvp)
-				show(runner)
-				show(namef)
-				newCode()
-			}
-		}
-	}
-*/
 	if (editing) {
 		codeMsgF(m, d)
 	}

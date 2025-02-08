@@ -1726,7 +1726,6 @@ S void parse_while_stat(ND* nd) {
 S void parse_for_stat(ND* nd) {
 
 	ND* ndx = mkndx();
-//	loop_level += 1;
 	stat_begin_nest();
 
 	if (tok != t_name && tok != t_vstr) error("variable");
@@ -1788,7 +1787,6 @@ S void parse_for_stat(ND* nd) {
 		nd->ri = parse_strarrex();
 		nd->vf = op_for_instr;
 	}
-//kc
 	ndx->ex = parse_sequ_stat();
 	if (ndx->ex) return;
 	loop_level += 1;

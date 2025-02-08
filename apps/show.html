@@ -1,37 +1,75 @@
 <!doctype html>
 <meta charset=utf-8>
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="description" content="easy and fun programming">
-<title>easylang show</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="code runner">
+<title>Easylang go</title>
 <link rel="icon" href="icon.png" type="image/x-png">
+<link rel="manifest" href="mfst.json">
 
 <style>
+
+*{scrollbar-width:auto}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:#222}
+::-webkit-scrollbar-thumb{background:#666}
+::-webkit-scrollbar-corner{background:rgba(0,0,0,0)}
+
 body {
-	background-color:#000;
+	background-color:#222;
 	color:#ddd;
 	font-family:sans-serif;
 	margin:0px;
 	user-select:none;
+	-webkit-user-select:none;
 }
 a { color: #ddd }
 
-pre i{font-weight:400;color:#9d9}
-pre b{font-weight:500;color:#fc9}
-pre s{text-decoration:none;font-weight:500;color:#9cf}
-pre u{font-weight:bold;text-decoration:none;color:#fff;background:#666}
-
-span.high {background-color:#666}
-
+.lnk {
+	padding:5px;
+	cursor: pointer;
+	text-decoration: underline;
+	display:inline;
+	user-select:none;
+	-webkit-user-select:none;
+}
+.lnk:hover {
+	background-color:#888;
+}
 #left {
-	margin:4px;
-	width:322px;
-	float:left
+	background-color:#222;
+	margin:1px;
 }
 #canv {
-	margin:6px;
+	margin:0px;
 	outline:none;
+	width:100%;
+	display:block;
+}
+#canvcnt {
+	background-color:#000;
+	margin:0px;
+	float:left;
+}
+#editleft {
+	height:calc(100vh - 30px);
+	float:left;
+	margin-right:2px;
+	display:inline;
+}
+#codew {
+	background-color:#000;
+	height:calc(100vh - 30px);
+	margin:1px;
+	margin-left:4px;
+	font-size:15px;
+	overflow-y:auto;
+	outline:none;
+	user-select:text;
+	-webkit-user-select:text;
 }
 #out {
+	height:62px;
+	width:100%;
 	background-color:#000;
 	color:#ddd;
 	resize:none;
@@ -40,217 +78,224 @@ span.high {background-color:#666}
 	margin:2px;
 	outline:none
 }
-
-#code {
-	margin:0px;
-	overflow-y:auto;
-	outline-style:solid;
-	outline-color:#444;
-	outline-width:1px
+.menu {
+	height:24px;
+	background-color:#444;
 }
+pre i{font-weight:400;color:#9d9}
+pre b{font-weight:500;color:#fc9}
+pre s{text-decoration:none;font-weight:500;color:#9cf}
+pre u{font-weight:bold;text-decoration:none;color:#fff;background:#666}
 
-.lnk {
-	margin:6px;
-	float:left;
-	cursor:pointer;
-	text-decoration:underline;
-}
-.lnk:hover{background:#666}
-a:hover{background:#666}
-
-* {scrollbar-color:#666 #222}
-::-webkit-scrollbar{ width:10px;height:10px;cursor:pointer}
-::-webkit-scrollbar-track {background: #222}
-::-webkit-scrollbar-thumb {background: #666}
-::-webkit-scrollbar-corner{background:rgba(0,0,0,0)}
+span.high {background-color:#666}
 
 </style>
 
-<div>
+<div id=runner>
 	<div id=left>
-		<pre id=code></pre>
-		<textarea id=out readonly spellcheck=false></textarea>
-		<div id=lnk><small>
-			<span class=lnk id=runlnk>Run</span>
-			&nbsp;&nbsp;
-			<span class=lnk id=nextlnk>Next</span>
-			<span class=lnk id=edit style="float:right">IDE</span>
-			&nbsp;
-		</small></div>
+		<big><b id=namef></b></big>
+		<p>
+		<div id=codebtn class=lnk>Code</div>
 	</div>
-	<canvas id=canv></canvas>
+	<div id=canvcnt>
+		<canvas id=canv></canvas>
+		<textarea id=out readonly spellcheck=false style="display:none"></textarea>
+	</div>
 </div>
 
+<div id=editor style="display:none">
+	<div class=menu>
+		<div id=runlnk class=lnk>Run</div>
+	</div>
+	<pre id=codew></pre>
+</div>
+<div id=editor2 style="display:none">
+	<div id=editleft>
+		<div class=menu>
+			<div id=run2lnk class=lnk>Run</div>
+			<div id=urllnk class=lnk>URL</div>
+		</div>
+	</div>
+</div>
+
+
+<script src=easy.js></script>
 <script src=easy_code2.js></script>
 <script>
 
+function show(e) { e.style.display = "" }
+function hide(e) { e.style.display = "none" }
+function isVisible(e) { return e.style.display == "" }
+
+var aspr = 1
+
+function isVertical() {
+	return left.style.float == ""
+}
+var codewst
+
 window.onresize = function() {
-	var vh = window.innerHeight
-	var vw = window.innerWidth
-
-	var oh = 20
-	if (out.style.display == "inline") {
-		oh = 47
-	}
-
-	var cw, pw, ph
-	if (vw > 3 / 4 * vh) {
-		cw = vw - 340 - 16
-		pw = 320
-		ph = vh - oh
-		if (cw > vh - 16) cw = vh - 16
+	var winh = window.innerHeight
+	var winw = window.innerWidth
+	var isVertical = 0
+	var caw, cah, cach
+	if (winw - 160 < winh) {
+		isVertical = 1
+		caw = winw - 4
+		cah = Math.floor(caw * aspr)
 	}
 	else {
-		pw = vw - 20
-		ph = 200
-		cw = vw - 16
+		cah = winh - 4
+		if (isVisible(out)) cah -= 74
+		caw = Math.floor(cah / aspr)
 	}
-	canv.style.width = cw + "px"
-	canv.style.height = cw + "px"
-	code.style.width = pw + "px"
-	code.style.height = ph - oh + "px"
-	out.style.width = pw - 6 + "px"
-	out.style.height = "42px"
+	cach = cah
+	if (isVisible(out)) cach += 74
+
+	canvcnt.style.width = caw + "px"
+	canv.style.height = cah + "px"
+	canvcnt.style.height = cach + "px"
+
+	codewst = winw - caw - 18 + "px"
+	if (isVisible(editor) || isVisible(editor2)) {
+		if (isVisible(editor2)) {
+			if  (isVertical) {
+				hide(editor2)
+				editor.appendChild(codew)
+				runner.appendChild(canvcnt)
+				codew.style.width = "calc(100vw - 8px)"
+				show(editor)
+			}
+			else codew.style.width = codewst
+		}
+		else if (!isVertical) {
+			hide(editor)
+			codew.style.width = codewst
+			editleft.appendChild(codew)
+			editor2.appendChild(canvcnt)
+			show(editor2)
+		}
+	}
+
+	if (isVertical) {
+		left.style.width = "calc(100vw - 10px)"
+		left.style.float = ""
+		var m = winh - cach
+		if (m > 24) m = 24
+		else if (m < 8) m = 8
+		left.style.marginBottom = m + "px"
+	}
+	else {
+		left.style.width = "160px"
+		left.style.float = "left"
+	}
 }
 
 window.onresize()
 
-var demo = `# Demo
-#
-ang = 45
-color 663
-on animate
-   clear
-   move 50 50
-   circle 1
-   x = 50 + 40 * sin ang
-   y = 50 + 40 * cos ang
-   line x y
-   circle 6
-   vel += sin ang / 5
-   ang += vel
-.
-`
+function run() {
+	canv.width = 800 / aspr
+	canv.height = 800
+	window.onresize()
+	var c = canv.getContext("2d")
+	c.clearRect(0, 0, canv.width, canv.height)
+	codeRun(codew, canv, out)
+}
 
-var disabled
+function updCodeInfo() {
+	var cod = codew.textContent
+	aspr = 1
+	var an = ""
+	if (cod[0] == "#") {
+		var i = cod.indexOf("\n")
+		if (i != -1) {
+			an = cod.substr(2, i - 2)
+			i = an.indexOf(":w")
+			if (i != -1) {
+				aspr = 100 / Number(an.substr(i + 2))
+				an = an.substr(0, i)
+			}
+		}
+	}
+	namef.textContent =  an
+}
 
-function disableShort() {
-	disabled = true
-	setTimeout(function() {
-		disabled = false
-	}, 500);
+async function ready() {
+
+	var q = location.hash.substring(1)
+	if (q.startsWith("code=")) {
+		codew.textContent = decodeURIComponent(q.substring(5))
+	}
+	else if (q.startsWith("cod=")) {
+		codew.textContent = await decode(q.substring(4))
+	}
+	else {
+		codew.textContent =  await decode `
+RU7bCsIwDH3PV5x3WUnFMRDnv9StynCuULW0f2+SPZiXnFsuOcwY4Y9UpfVMTdrQU1HqXU9TWlPGwEy3MD0fOX23Gd57ShvCtrzCJxKAaY0hK3ilElHRTFyy6MhhVlZxGFGqwmbQMstdjCs8MzpNQq5VXAyeYW90+5Ak224okyrNTFsT13f8y90IdnxSwZEjoh8=
+`	}
+	if (codew.textContent) {
+		updCodeInfo()
+		run()
+	}
+}
+
+function showcode() {
+	hide(runner)
+
+	if (isVertical()) {
+		editor.appendChild(codew)
+		runner.appendChild(canvcnt)
+		codew.style.width = "calc(100vw - 4px)"
+		show(editor)
+	}
+	else {
+		codew.style.width = codewst
+		editleft.appendChild(codew)
+		editor2.appendChild(canvcnt)
+		show(editor2)
+	}
+}
+
+var editing
+
+codebtn.onclick = function() {
+	editing = true
+	if (isVertical()) easystop()
+	else run()
+	showcode()
 }
 
 runlnk.onclick = function() {
-	if (!disabled) {
-		codeRun(code, canv, out)
-		disableShort()
-	}
+	updCodeInfo()
+	hide(editor)
+	show(runner)
+	run()
 }
-edit.onclick = async function() {
-	var h = await encode(code.textContent)
-	window.open(location.origin + "/ide/#cod=" + h)
-//	window.open("../ide/#code=" + encodeURIComponent(code.textContent))
+run2lnk.onclick = function() {
+	updCodeInfo()
+	run()
 }
-
-easyinit(canv, out, codeMsgF)
-codeInit(code, runlnk.onclick)
-
-function load(file) {
-	easystop()
-	var req = new XMLHttpRequest()
-	setTimeout(function() {
-		if (req.status == 0) code.innerHTML = "Loading ..."
-	}, 500);
-
-	req.open("GET", file)
-	req.addEventListener("load", function(event) {
-		if (req.status >= 200 && req.status < 300) {
-			code.innerHTML = req.responseText
-			codeRun(code, canv, out)
-		} else {
-			code.innerHTML = "# error on loading"
-		}
-	})
-	req.send();
+function updout(on) {
+	var h = out.style.display
+	if (on) show(out)
+	else hide(out)
+	if (h != out.style.display) window.onresize()
+}
+urllnk.onclick = async function() {
+	updout(1)
+	var h = await encode(codew.textContent)
+	var t = location.origin + "/show/#cod=" + h
+	out.value = t
 }
 
-var files
-
-nextlnk.onclick = function() {
-	if (!disabled) {
-		files.push(files.shift());
-		load(files[0], canv)
-		disableShort()
-	}
+function msgf(msg, d) {
+	if (msg == "src") updout(-d[1] & 2)
+	codeMsgF(msg, d)
+	if (msg == "error" || msg == "selline") showcode()
 }
 
-/*
-async function compr(txt) {
-	var enc = new TextEncoder()
-	var buffer = await new Response(new Response(enc.encode(txt)).body.pipeThrough(new CompressionStream('deflate-raw'))).arrayBuffer()
-	var s = ""
-	var bytes = new Uint8Array(buffer)
-	for (var i = 0; i < bytes.byteLength; i++) {
-		s += String.fromCharCode(bytes[i])
-	}
-	return btoa(s)
-}
-async function decompr(txt) {
-	var s = atob(txt)
-	var buf = new ArrayBuffer(s.length)
-	var bytes = new Uint8Array(buf)
-	for (var i = 0; i < s.length; i++) {
-		bytes[i] = s.charCodeAt(i)
-	}
-	var stream = new Response(buf).body.pipeThrough(new DecompressionStream('deflate-raw'))
-	var h = await new Response(stream).arrayBuffer()
-	var dec = new TextDecoder("utf8")
-	return dec.decode(h)
-}
-*/
-
-var sadSmiley = `
-#
-move 20 83
-color 983
-circle 7
-color 000
-move 17 85
-circle 1
-move 23 85
-circle 1
-linewidth 1
-curve [ 17 80 20 83 23 80 ]
-`
-
-async function ready() {
-	if (location.search.startsWith("?f=")) {
-		files = location.search.substr(3).split(",")
-		load(files[0])
-	}
-	else {
-		var q = location.hash
-		if (q.startsWith("#cod=")) {
-			if ("DecompressionStream" in window) {
-				try {
-					code.textContent = await decode(q.substring(5))
-				}
-				catch(e) {
-					code.textContent = "# Decompression error\n" + sadSmiley;
-				}
-			}
-			else code.textContent = "# The browser doesn't support\n# Compression Streams API\n" + sadSmiley
-		}
-		else {
-			code.textContent = demo
-		}
-		runlnk.onclick()
-	}
-	if (!files || files.length == 1) {
-		nextlnk.style.display = "none"
-	}
-}
+easyinit(canv, out, msgf)
+codeInit(codew, run2lnk.onclick)
 ready()
 
 async function encode(txt) {
@@ -276,6 +321,4 @@ async function decode(txt) {
 	return dec.decode(h)
 }
 
-
 </script>
-

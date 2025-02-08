@@ -7,7 +7,7 @@
 # hash map.
 #
 sysconf topleft
-visual = 0
+visual = 1
 #
 hashsz = 1999993
 len hashind[] hashsz

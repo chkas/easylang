@@ -1,3 +1,5 @@
+rm -f _date??????
+touch "_date$(date +%y%m%d)"
 ./tasks.py | while read n; do
 	# test "$n" = "" && break
 	echo "$n" >&2

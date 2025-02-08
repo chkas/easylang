@@ -7,28 +7,19 @@ src=$(pwd)
 
 o=$HOME/out/easylang/aoc
 mkdir -p $o
-#rm -f $o/*
 
-for i in show.html; do
-	if test  ! -e  $o/$i -o $i -nt $o/$i; then
-		echo cp -p $i $o
-		cp -p $i $o
+xcp() {
+	test $2 || set $1 $1
+	if test  ! -e  $o/$2 -o $1 -nt $o/$2; then
+		echo cp -p $1 $o/$2
+		cp -p $1 $o/$2
 	fi
-done
+}
 
+xcp showaoc.html show.html
 cd $o/../apps
 for i in easy_code2.js easy_tut2.js; do
-	if test $i -nt $o/$i -o ! -e $o/$i; then
-		echo cp -p $i $o
-		cp -p $i $o
-	fi
-done
-cd $o/../wrk
-for i in easyw.js easyw.wasm; do
-	if test $i -nt $o/$i -o ! -e $o/$i; then
-		echo cp -p $i $o
-		cp -p $i $o
-	fi
+	xcp $i
 done
 
 cd ../aoc

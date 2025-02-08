@@ -303,12 +303,6 @@ function codeMsgF(msg, d) {
 		gotSrcNl(d[0], d[1], d[2], d[3])
 	}
 	else if (msg == "src") {
-		if (outcd) {
-			var h = outcd.style.display
-			if (-d[1] & 2) outcd.style.display = "inline"
-			else outcd.style.display = "none"
-			if (h != outcd.style.display) window.dispatchEvent(new Event('resize'))
-		}
 		inp.innerHTML = d[0]
 		setCaret(d[2], false)
 		easyrunxr()

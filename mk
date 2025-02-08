@@ -23,7 +23,7 @@ while test $# != 0; do
 		zip -r $HOME/out/easylang/src.zip ide run native misc/emcc_vers.txt >/dev/null
 	elif test $1 = apps; then
 		(cd main; make)
-		(cd apps; ./mk)
+		(cd apps; ./mk; ./mk_show)
 		rm -f $HOME/out/easylang/apps_src.zip
 		zip -r $HOME/out/easylang/apps_src.zip apps >/dev/null
 	elif test $1 = games; then
