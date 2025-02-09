@@ -403,7 +403,6 @@ button {
 	border-radius:8px;
 }
 button:enabled:hover {background-color:#07d}
-xbutton:enabled:active {background-color:#484}
 
 .flex {
 	display:inline-flex;
@@ -471,8 +470,9 @@ Some of these examples are solved tasks of
 <div class=col>
 xxx
 
-for k in [^_]*.kab; do
-	i=${k%.*}.html
+for k in progs/*.kab; do
+	h=$(basename $k)
+	i=${h%.*}.html
 	f=$(echo $i | cut -c1 | tr a-z A-Z)
 	n=$f$(echo ${i%.*} | cut -c2- | tr '-' ' ')
 	echo "<a href=$i?$vers>$n</a><p>"

@@ -36,9 +36,11 @@ a { color: #ddd }
 	background-color:#888;
 }
 #left {
+	padding:10px;
 	background-color:#222;
 	margin:1px;
 }
+#namef {font-weight:700;font-size:18px; margin-right:20px}
 #canv {
 	margin:0px;
 	outline:none;
@@ -92,9 +94,8 @@ span.high {background-color:#666}
 </style>
 
 <div id=runner>
-	<div id=left>
-		<big><b id=namef></b></big>
-		<p>
+	<div id=left style="float:right">
+		<div id=namef></div>
 		<div id=codebtn class=lnk>Code</div>
 	</div>
 	<div id=canvcnt>
@@ -130,17 +131,16 @@ function isVisible(e) { return e.style.display == "" }
 var aspr = 1
 
 function isVertical() {
-	return left.style.float == ""
+	return window.innerWidth - 160 < window.innerHeight
 }
 var codewst
 
 window.onresize = function() {
 	var winh = window.innerHeight
 	var winw = window.innerWidth
-	var isVertical = 0
+	var isvert = isVertical()
 	var caw, cah, cach
-	if (winw - 160 < winh) {
-		isVertical = 1
+	if (isvert) {
 		caw = winw - 4
 		cah = Math.floor(caw * aspr)
 	}
@@ -159,7 +159,7 @@ window.onresize = function() {
 	codewst = winw - caw - 18 + "px"
 	if (isVisible(editor) || isVisible(editor2)) {
 		if (isVisible(editor2)) {
-			if  (isVertical) {
+			if  (isvert) {
 				hide(editor2)
 				editor.appendChild(codew)
 				runner.appendChild(canvcnt)
@@ -168,7 +168,7 @@ window.onresize = function() {
 			}
 			else codew.style.width = codewst
 		}
-		else if (!isVertical) {
+		else if (!isvert) {
 			hide(editor)
 			codew.style.width = codewst
 			editleft.appendChild(codew)
@@ -177,17 +177,24 @@ window.onresize = function() {
 		}
 	}
 
-	if (isVertical) {
-		left.style.width = "calc(100vw - 10px)"
+console.log("i'm here " + isvert + " " + left.style.float)
+	if (isvert && left.style.float != "") {
 		left.style.float = ""
-		var m = winh - cach
-		if (m > 24) m = 24
-		else if (m < 8) m = 8
-		left.style.marginBottom = m + "px"
+		left.style.width = "calc(100vw - 10px)"
+		namef.style.float = "left"
+		namef.style.marginBottom = "0px"
 	}
-	else {
-		left.style.width = "160px"
+	else if (!isvert && left.style.float != "left") {
 		left.style.float = "left"
+		left.style.width = "160px"
+		namef.style.float = ""
+		namef.style.marginBottom = "20px"
+	}
+	if (isvert) {
+		var m = winh - cach - 56
+		if (m > 24) m = 24
+		else if (m < 0) m = 0
+		left.style.marginBottom = m + "px"
 	}
 }
 
@@ -231,7 +238,7 @@ async function ready() {
 	}
 	else {
 		codew.textContent =  await decode `
-RU7bCsIwDH3PV5x3WUnFMRDnv9StynCuULW0f2+SPZiXnFsuOcwY4Y9UpfVMTdrQU1HqXU9TWlPGwEy3MD0fOX23Gd57ShvCtrzCJxKAaY0hK3ilElHRTFyy6MhhVlZxGFGqwmbQMstdjCs8MzpNQq5VXAyeYW90+5Ak224okyrNTFsT13f8y90IdnxSwZEjoh8=
+RU/RCoMwDHzPVxzscVjqmAhj7mE/Mop2IFQ7qnbt3y+pA/uSu8sluZ7wNM5RMAM61BdKXBpNmUvbUBRaq4Z673xAqzX5GZPfFvsa/HcmAMvqP+JCVSApsZh5nMxqpT++D8sNwa5bKHO9syYImHy0SMhFHAPr4DjCEs4dYhKYC8z/hQkP1FrzSQnOyRLuBd5QIlf7EDvz3hDGL+bSLGusW+whVx200lcRFH+B6Ac=
 `	}
 	if (codew.textContent) {
 		updCodeInfo()

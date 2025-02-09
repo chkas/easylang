@@ -4,6 +4,7 @@ all: apps
 
 apps:
 	./mk
+	./mk_show
 
 clean:
 	rm -f $(o)/*

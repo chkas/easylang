@@ -6,7 +6,7 @@ mkdir -p $o
 xcp() {
 	test $2 || set $1 $1
 	if test  ! -e  $o/$2 -o $1 -nt $o/$2; then
-		echo cp -p $1 $o/$2
+		echo .. $1
 		cp -p $1 $o/$2
 	fi
 }
