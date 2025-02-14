@@ -176,8 +176,6 @@ window.onresize = function() {
 			show(editor2)
 		}
 	}
-
-console.log("i'm here " + isvert + " " + left.style.float)
 	if (isvert && left.style.float != "") {
 		left.style.float = ""
 		left.style.width = "calc(100vw - 10px)"
@@ -263,10 +261,7 @@ function showcode() {
 	}
 }
 
-var editing
-
 codebtn.onclick = function() {
-	editing = true
 	if (isVertical()) easystop()
 	else run()
 	showcode()

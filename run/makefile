@@ -1,4 +1,4 @@
 all:
 	./mk
-	./mk_list
+	#./mk_games
 

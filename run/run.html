@@ -27,6 +27,7 @@ a { color: #ddd }
 #noti {
 	cursor:pointer;
 	text-decoration:underline;
+	margin-bottom:8px;
 }
 .lnk2 {
 	padding:5px;
@@ -75,20 +76,9 @@ select:hover {background-color:#666}
 #canv {
 	margin:1px;
 	outline:none;
-	width:100%;
-	height:100%;
+	float:left;
 }
 #editleft {
-	float:left;
-}
-#codehp {
-	height:calc(100vh - 30px);
-}
-#canvvp {
-	float:left;
-}
-#canvhp {
-	margin-left:2px;
 	float:left;
 }
 #codew {
@@ -141,41 +131,38 @@ span.high {background-color:#666}
 	margin:2px 8px;
 	float:left;
 }
+#namef {
+	margin-right:16px;
+}
 </style>
 
 <div id=runner>
-	<div id=left>
+	<div id=left style="float:right">
+		<div id=noti style=display:none>Click here to update to new version<br></div>
 
-	<div id=info style="display:none">
-		<h3>Code Runner</h3>
-		<p>There are no apps installed.
-		<p><a href=../games/index.html?$date>Install apps and games</a>
+		<div id=info style="display:none">
+			<h3>Code Runner</h3>
+			<p>There are no apps installed.
+			<p><a href=../games/index.html?$date>Install apps and games</a>
+		</div>
+		<select id=sel size></select>
+		<div id=hambtn>
+			<div class=hamb></div>
+			<div class=hamb></div>
+			<div class=hamb></div>
+		</div>
+		<div id=menud style="display:none">
+			<div id=codebtn class=lnk>Code</div>
+			<div id=remove class=lnk>Delete</div>
+			<div id=inst class=lnk>Get</div>
+		</div>
+		<div id=keepd style=display:none>
+			<big><b id=namef></b></big>
+			<div id=save class=lnk>Save</div>
+			<div id=codebtn2 class=lnk>Code</div>
+		</div>
 	</div>
-
-	<div id=noti style=display:none>Click here to update to new version<br></div>
-	<p>
-	<select id=sel size></select>
-	<div id=hambtn>
-		<div class=hamb></div>
-		<div class=hamb></div>
-		<div class=hamb></div>
-	</div>
-	<div id=menud style="display:none">
-		<div id=codebtn class=lnk>Code</div>
-		<div id=remove class=lnk>Delete</div>
-		<div id=inst class=lnk>Get</div>
-	</div>
-	<div id=keepd style=display:none>
-		<big><b id=namef></b></big>
-		<p>
-		<div id=save class=lnk>Save</div>
-		<div id=codebtn2 class=lnk>Code</div>
-	</div>
-	<p>
-	</div>
-	<div id=canvvp>
-		<canvas id=canv></canvas>
-	</div>
+	<canvas id=canv></canvas>
 </div>
 
 <div id=editor style="display:none">
@@ -194,9 +181,8 @@ span.high {background-color:#666}
 			<div id=del2lnk class=lnk2>Delete</div>
 			<div id=ide2lnk class=lnk2>IDE</div>
 		</div>
-		<div id=codehp></div>
 	</div>
-	<div id=canvhp></div>
+
 </div>
 
 

@@ -1,86 +1,82 @@
 var aspr = 1
 
 function isVertical() {
-	return left.style.width == "100%"
+	return window.innerWidth - 240 < window.innerHeight
 }
-function isEdit() {
-	return isVisible(editor) || isVisible(editor2)
-}
+
 var codewst
 window.onresize = function() {
-	var vh = window.innerHeight
-	var vw = window.innerWidth
+	var winh = window.innerHeight
+	var winw = window.innerWidth
+	var isvert = isVertical()
 
-	var lw
-	var w
-	if (vw - 240 < vh) {
-		vh -= 80
-		lw = "100%"
-		w = vw - 2
+	var caw, cah
+	if (isvert) {
+		caw = winw - 2
+		cah = Math.floor(caw * aspr)
 	}
 	else {
-		//vw -= 220
-		lw = "220px"
-		w = vw - 222
+		cah = winh - 4
+		caw = Math.floor(cah / aspr)
 	}
-	var h = Math.floor(w * aspr)
-	if (!lw) lw = ""
-
-	if (h > vh) {
-		h = vh - 6
-		w = Math.floor(h / aspr)
-	}
-
-	canvvp.style.width = w + "px"
-	canvvp.style.height = h + "px"
-	canvhp.style.width = w + "px"
-	canvhp.style.height = h + "px"
-	codewst = vw - w - 18 + "px"
-	if (isEdit()) {
+	canv.style.width = caw + "px"
+	canv.style.height = cah + "px"
+	codewst = winw - caw - 18 + "px"
+	if (isVisible(editor) || isVisible(editor2)) {
 		if (isVisible(editor2)) {
-			if  (lw == "100%") {
+			if  (isvert) {
 				hide(editor2)
 				editor.appendChild(codew)
-				canvvp.appendChild(canv)
-				codew.style.width = "calc(100vw - 4px)"
+				runner.appendChild(canv)
+				codew.style.width = "calc(100vw - 8px)"
 				show(editor)
 			}
 			else codew.style.width = codewst
 		}
-		else if (isVisible(editor) &&  lw != "100%") {
+		else if (!isvert) {
 			hide(editor)
 			codew.style.width = codewst
-			codehp.appendChild(codew)
-			canvhp.appendChild(canv)
+			editleft.appendChild(codew)
+			editor2.appendChild(canv)
 			show(editor2)
 		}
 	}
-
-	if (lw == "100%") {
+	if (isvert && left.style.float != "") {
 		left.style.float = ""
-		hambtn.style.margin = "2px 8px"
-		if (vh - 40 > h) canvvp.style.marginTop = "36px"
+		left.style.width = "100%"
+		hambtn.style.margin = "4px 8px"
 	}
-	else {
+	else if (!isvert && left.style.float != "left") {
 		left.style.float = "left"
+		left.style.width = "220px"
 		hambtn.style.margin = "20px"
 	}
-	left.style.width = lw
+	if (isvert) {
+		var m = winh - cah - 64
+		if (m > 76) m = 76
+		else if (m < 4) m = 4
+		canv.style.marginTop = Math.floor(m * 2 / 3) + "px"
+		left.style.marginTop = Math.floor(m / 3) + "px"
+	}
+	else {
+		canv.style.marginTop = "0px"
+		left.style.marginTop = "20px"
+	}
 }
 
 window.onresize()
 
 function run() {
-	easystop()
 	canv.width = 800 / aspr
 	canv.height = 800
 	window.onresize()
 	var c = canv.getContext("2d")
 	c.clearRect(0, 0, canv.width, canv.height)
-	easyrun(codew.textContent, canv)
+	codeRun(codew, canv)
 }
 
 easyinit(canv, null, msgf)
+codeInit(codew, run2lnk.onclick)
 
 window.name = "easylang_run"
 var appn = null
@@ -110,7 +106,6 @@ function newCode() {
 	namef.textContent = appn
 	hide(editor)
 	show(keepd)
-	show(canvvp)
 	show(runner)
 	show(namef)
 }
@@ -176,6 +171,7 @@ function fillsel(nm) {
 	}
 }
 function updsel() {
+	editing = false
 	hide(keepd)
 	if (!sel.options.length) {
 		show(info)
@@ -193,7 +189,6 @@ function updsel() {
 	}
 }
 inst.onclick = function() {
-//	window.open("./list.html", "_self")
 	window.open("../games/index.html?$date", "_self")
 }
 save.onclick = function() {
@@ -218,7 +213,6 @@ remove.onclick = function() {
 		clearTimeout(rmt)
 		rmreset();
 		window.localStorage.removeItem("a" + appn)
-		//window.localStorage.removeItem("i" + appn)
 		fillsel(null)
 		updsel()
 	}
@@ -234,19 +228,19 @@ window.onbeforeunload = function(e) {
 window.addEventListener("online", () => { if (!sel.style.display) show(inst)} );
 window.addEventListener("offline", () => hide(inst));
 
-function showedit() {
+function showcode() {
 	hide(runner)
 
 	if (isVertical()) {
-		hide(canvvp)
 		editor.appendChild(codew)
+		runner.appendChild(canv)
 		codew.style.width = "calc(100vw - 4px)"
 		show(editor)
 	}
 	else {
 		codew.style.width = codewst
-		codehp.appendChild(codew)
-		canvhp.appendChild(canv)
+		editleft.appendChild(codew)
+		editor2.appendChild(canv)
 		show(editor2)
 	}
 }
@@ -255,21 +249,15 @@ var editing
 
 codebtn.onclick = function() {
 	editing = true
-	if (isVertical()) {
-		easystop()
-		kaFormat(codew.textContent)
-	}
-	else {
-		codeRun(codew, canv)
-	}
-	showedit()
+	if (isVertical()) easystop()
+	else codeRun(codew, canv)
+	showcode()
 }
 codebtn2.onclick = codebtn.onclick
 
 idelnk.onclick = async function() {
 	var h = await encode(codew.textContent)
 	window.open("../ide/#cod=" + h)
-	//window.open("../ide/#code=" + encodeURIComponent(codew.textContent))
 }
 
 runlnk.onclick = function() {
@@ -281,51 +269,36 @@ run2lnk.onclick = function() {
 	codeRun(codew, canv)
 }
 
-codeInit(codew, runlnk.onclick)
-
 dellnk.onclick = function() {
-	editing = false
-	//codew.textContent = null
 	hide(editor)
-	show(canvvp)
 	show(runner)
 	updsel()
 }
 
 savelnk.onclick = function() {
-	editing = false
 	hide(editor2)
 	updCodeInfo()
 	window.localStorage.setItem("a" + appn, codew.textContent)
 	fillsel(appn)
-	canvvp.appendChild(canv)
-	show(canvvp)
+	runner.appendChild(canv)
 	show(runner)
 	updsel()
 }
 
 del2lnk.onclick = function() {
-	editing = false
-	//codew.textContent = null
 	hide(editor2)
-	canvvp.appendChild(canv)
-	show(canvvp)
+	runner.appendChild(canv)
 	show(runner)
 	updsel()
 }
 ide2lnk.onclick = idelnk.onclick
 
 function msgf(m, d) {
-	if (editing) {
-		codeMsgF(m, d)
-	}
+	codeMsgF(m, d)
+	//if (editing) codeMsgF(m, d)
 	if (m == "error" || m == "selline") {
-		if (editing) {
-			showedit()
-		}
-		else {
-			easyrun(errapp, canv)
-		}
+		if (editing) showcode()
+		else easyrun(errapp, canv)
 	}
 }
 
