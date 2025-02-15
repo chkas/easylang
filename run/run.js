@@ -57,10 +57,12 @@ window.onresize = function() {
 		else if (m < 4) m = 4
 		canv.style.marginTop = Math.floor(m * 2 / 3) + "px"
 		left.style.marginTop = Math.floor(m / 3) + "px"
+		namef.style.display = ""
 	}
 	else {
 		canv.style.marginTop = "0px"
 		left.style.marginTop = "20px"
+		namef.style.display = "block"
 	}
 }
 
