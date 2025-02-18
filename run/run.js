@@ -1,7 +1,7 @@
 var aspr = 1
 
 function isVertical() {
-	return window.innerWidth - 240 < window.innerHeight
+	return window.innerWidth - 180 < window.innerHeight
 }
 
 var codewst
@@ -48,7 +48,7 @@ window.onresize = function() {
 	}
 	else if (!isvert && left.style.float != "left") {
 		left.style.float = "left"
-		left.style.width = "220px"
+		left.style.width = "140px"
 		hambtn.style.margin = "20px"
 	}
 	if (isvert) {

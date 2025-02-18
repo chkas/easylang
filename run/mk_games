@@ -30,13 +30,11 @@ img {float:left;padding-right:10px;padding-bottom:30px}
 p {clear:left}
 </style>
 
-<h2>Games, Learning Games and Learning Apps</h2>
+<h2>Learning Apps and Games</h2>
 
 For fun and learning
 
 xxx
-
-#<h2>Learning Apps, Learning Games and Games</h2>
 
 apps1="1st-math-trainer 1x1-trainer math-trainer roman-numbers learning-clock piano"
 apps2="ice-cream letter-memory paint"
@@ -61,8 +59,8 @@ wrcode() {
 	echo "<p>"
 }
 
-echo "<h3>Games</h3>"
-for k in $apps3; do
+echo "<h3>Learning apps</h3>"
+for k in $apps1; do
 	wrcode $k
 done
 
@@ -71,10 +69,12 @@ for k in $apps2; do
 	wrcode $k
 done
 
-echo "<h3>Learning apps</h3>"
-for k in $apps1; do
+echo "<h3>Games</h3>"
+for k in $apps3; do
 	wrcode $k
 done
+
+
 
 cp png/*.png $odir
 #cp png/easyide.png $odir
