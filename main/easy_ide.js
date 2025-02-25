@@ -313,7 +313,6 @@ function loadClick(btn, istut) {
 		var code
 		if (istut) code = btn.pre.textContent
 		else code = window.localStorage[btn.ref]
-		//undoAdd(code)
 		if (doco) onTab(4)
 		else if (!istut && doce) onTab(3)
 		if (runBtn.run) runCode(code, 0)
@@ -977,8 +976,10 @@ inp.onkeydown = function(e) {
 	}
 	// delete space tab
 	if (stBtn.disabled) {
-		if (k >= 46 || k == 32 || k <= 9 ) stBtn.disabled = false
-		undoAdd(inp.textContent)
+		if (k >= 46 || k == 32 || k <= 9 ) {
+			stBtn.disabled = false
+			undoAdd(inp.textContent)
+		}
 	}
 }
 
@@ -1546,7 +1547,6 @@ async function main() {
 		if (t == null) t = 'print "Hello world"'
 		// appendTxt(inp, t)
 		inp.textContent = t
-		//undoAdd(t)
 	}
 	console.log("loading ...")
 	inp.focus()

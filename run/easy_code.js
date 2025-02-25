@@ -273,6 +273,9 @@ function preKey(pre, e) {
 		}
 		else doEnter()
 	}
+	if (pre != undoPre) {
+		if (k >= 46 || k == 32 || k <= 9) undoAdd(inp)
+	}
 }
 
 var outcd

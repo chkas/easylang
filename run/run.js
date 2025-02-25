@@ -139,6 +139,7 @@ async function ready() {
 }
 
 function change() {
+	undoPre = null
 	var ind = sel.selectedIndex >= 0 ? sel.selectedIndex : 0
 	var seln = sel.options[ind].value
 	codew.textContent = window.localStorage.getItem("a" + seln)
