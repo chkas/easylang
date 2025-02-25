@@ -77,9 +77,6 @@ function run() {
 	codeRun(codew, canv)
 }
 
-easyinit(canv, null, msgf)
-codeInit(codew, run2lnk.onclick)
-
 window.name = "easylang_run"
 var appn = null
 
@@ -140,8 +137,6 @@ async function ready() {
 		updsel()
 	}
 }
-
-ready()
 
 function change() {
 	var ind = sel.selectedIndex >= 0 ? sel.selectedIndex : 0
@@ -303,6 +298,10 @@ function msgf(m, d) {
 		else easyrun(errapp, canv)
 	}
 }
+
+easyinit(canv, null, msgf)
+codeInit(codew, run2lnk.onclick)
+ready()
 
 async function encode(txt) {
 	var enc = new TextEncoder()

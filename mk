@@ -18,12 +18,12 @@ if test $# = 0; then
 fi
 while test $# != 0; do
 	if test $1 = main; then
-		(cd main; make)
+		(cd main; make rel)
 		(cd run; ./mk)
 		rm -f $HOME/out/easylang/src.zip
 		zip -r $HOME/out/easylang/src.zip ide run native misc/emcc_vers.txt >/dev/null
 	elif test $1 = apps; then
-		(cd main; make)
+		(cd main; make rel)
 		(cd apps; ./mk; ./mk_show)
 		rm -f $HOME/out/easylang/apps_src.zip
 		zip -r $HOME/out/easylang/apps_src.zip apps >/dev/null

@@ -84,6 +84,7 @@ EOF
 
 #--------------------------------------------------
 
+echo ".. run.html"
 
 cat run.html > $odir/index.html
 cat run.html > $wdir/run.html

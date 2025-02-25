@@ -313,7 +313,7 @@ function loadClick(btn, istut) {
 		var code
 		if (istut) code = btn.pre.textContent
 		else code = window.localStorage[btn.ref]
-		undoAdd(code)
+		//undoAdd(code)
 		if (doco) onTab(4)
 		else if (!istut && doce) onTab(3)
 		if (runBtn.run) runCode(code, 0)
@@ -830,13 +830,6 @@ function tmove(e) {
 	e.pageX = e.touches[0].pageX
 	dragmove(e)
 }
-function undoAdd(t, c = 0) {
-	while (undoStack.length - 1 > undoPos) undoStack.pop()
-	if (undoStack.length > 9) undoStack.shift()
-	undoStack.push([t, c])
-	undoPos = undoStack.length
-}
-
 function store() {
 	removeCnd()
 	var sec = Math.floor(Date.now() / 1000)
@@ -849,6 +842,14 @@ function store() {
 inp.onmousedown = function() {
 	removeCnd()
 }
+var undoStack = []
+var undoPos = 0
+function undoAdd(t, c = 0) {
+	while (undoStack.length - 1 > undoPos) undoStack.pop()
+	if (undoStack.length > 9) undoStack.shift()
+	undoStack.push([t, c])
+	undoPos = undoStack.length
+}
 var enterTime = 0
 function enter() {
 	if (Date.now() - enterTime < 300) {
@@ -857,7 +858,6 @@ function enter() {
 	}
 	enterTime = Date.now()
 	var inps = inp.textContent
-
 	var p = getCaret()
 	undoAdd(inps, p)
 	if (p != 0 && inps[p - 1] != "\n") {
@@ -902,7 +902,6 @@ inp.onkeydown = function(e) {
 			return
 		}
 	}
-//	if (e.ctrlKey) {
 	if (e.ctrlKey || e.metaKey) {
 		if (k == 86 || k == 88) {	// v x
 			undoAdd(inp.textContent, getCaret())
@@ -979,6 +978,7 @@ inp.onkeydown = function(e) {
 	// delete space tab
 	if (stBtn.disabled) {
 		if (k >= 46 || k == 32 || k <= 9 ) stBtn.disabled = false
+		undoAdd(inp.textContent)
 	}
 }
 
@@ -1029,14 +1029,21 @@ function removeCnd() {
 		if (document.contains(cnd)) {
 			var n1 = cnd.previousSibling
 			var n2 = cnd.nextSibling
-			var s = n1.nodeValue + n2.nodeValue
-			var p = cnd.parentNode
-			p.removeChild(n1)
-			p.removeChild(n2)
-			var nd = document.createTextNode(s)
-			p.insertBefore(nd, cnd)
-			caret(nd, n1.nodeValue.length)
-			cnd.parentNode.removeChild(cnd)
+			if (n1.nodeValue && n2.nodeValue) {
+				var s = n1.nodeValue + n2.nodeValue
+				var p = cnd.parentNode
+				p.removeChild(n1)
+				p.removeChild(n2)
+				var nd = document.createTextNode(s)
+				p.insertBefore(nd, cnd)
+				cnd.parentNode.removeChild(cnd)
+				caret(nd, n1.nodeValue.length)
+			}
+			else {
+				cnd.parentNode.removeChild(cnd)
+				if (n1.nodeValue) caret(n1, n1.nodeValue.length)
+				else if (n2.nodeValue) caret(n2, 0)
+			}
 		}
 		if (cnd.err) {
 			cnd.firstChild.nodeValue = " "
@@ -1060,9 +1067,7 @@ function getCaret() {
 			else pos += nd.length
 			while (!nd.nextSibling) {
 				nd = nd.parentNode
-				if (nd == inp) {
-					return 0
-				}
+				if (nd == inp) return 0
 			}
 			nd = nd.nextSibling
 		}
@@ -1097,14 +1102,14 @@ function setCaret(dest, showCnd = true) {
 	}
 	if (showCnd) {
 		var p = nd.parentNode
-		var n = document.createTextNode(nd.nodeValue.substring(0, pos))
-		p.insertBefore(n, nd)
+		var n1 = document.createTextNode(nd.nodeValue.substring(0, pos))
+		p.insertBefore(n1, nd)
 		cnd.act = true
 		p.insertBefore(cnd, nd)
-		n = document.createTextNode(nd.nodeValue.substring(pos))
-		p.insertBefore(n, nd)
+		var n2 = document.createTextNode(nd.nodeValue.substring(pos))
+		p.insertBefore(n2, nd)
 		p.removeChild(nd)
-		caret(n, 0)
+		caret(n1, pos)
 	}
 	else caret(nd, pos)
 }
@@ -1134,9 +1139,6 @@ function showError(err, pos) {
 	scrollToPos(pos)
 	inp.focus()
 }
-
-var undoStack = []
-var undoPos = 0
 
 function gotSrcNl(src, res, pos, err) {
 	inp.innerHTML = src.substring(0, res)
@@ -1544,7 +1546,7 @@ async function main() {
 		if (t == null) t = 'print "Hello world"'
 		// appendTxt(inp, t)
 		inp.textContent = t
-		undoAdd(t)
+		//undoAdd(t)
 	}
 	console.log("loading ...")
 	inp.focus()

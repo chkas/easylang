@@ -32,7 +32,7 @@ out := $(HOME)/out/easylang
 wrk := $(out)/wrk
 csrcf := $(wrk)/kbas.c $(wrk)/kfunc.h $(wrk)/klex.h $(wrk)/klib.h $(wrk)/kbasw.h $(wrk)/kparse.h $(wrk)/kwasm.h
 
-all: ide
+all: basic
 
 basic: $(wrk) main tut csrc
 

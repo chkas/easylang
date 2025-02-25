@@ -27,6 +27,7 @@ for i in *.html; do
 done
 
 xcp easy_tut2.js
+xcp easy_tut2x.js
 cd $o/../ide
 for i in easy.js easy_code2.js; do
 	xcp $i

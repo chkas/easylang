@@ -34,21 +34,27 @@ function caret(nd, n) {
 function removeCnd() {
 	if (!cnd.act) return
 	cnd.act = false
-	if (document.contains(cnd)) {
-		var n1 = cnd.previousSibling
-		var n2 = cnd.nextSibling
+	if (cnd.err) {
+		cnd.firstChild.nodeValue = " "
+		cnd.err = false
+	}
+	if (!document.contains(cnd)) return
+	var n1 = cnd.previousSibling
+	var n2 = cnd.nextSibling
+	if (n1.nodeValue && n2.nodeValue) {
 		var s = n1.nodeValue + n2.nodeValue
 		var p = cnd.parentNode
 		p.removeChild(n1)
 		p.removeChild(n2)
 		var nd = document.createTextNode(s)
 		p.insertBefore(nd, cnd)
-		caret(nd, n1.nodeValue.length)
 		cnd.parentNode.removeChild(cnd)
+		caret(nd, n1.nodeValue.length)
 	}
-	if (cnd.err) {
-		cnd.firstChild.nodeValue = " "
-		cnd.err = false
+	else {
+		cnd.parentNode.removeChild(cnd)
+		if (n1.nodeValue) caret(n1, n1.nodeValue.length)
+		else if (n2.nodeValue) caret(n2, 0)
 	}
 }
 
@@ -143,7 +149,6 @@ function showError(err, pos) {
 	scrollToPos(pos)
 	inp.focus()
 }
-
 function gotSrcNl(src, res, pos, err) {
 	if (tailSrc == null) inp.innerHTML = src
 	else {
@@ -165,11 +170,55 @@ function gotSrcErr(src, res, pos, err) {
 	showError(err, pos)
 }
 
+var undoStack
+var undoPos
+var undoPre
+
+function undoInit(pre) {
+	if (pre != undoPre) {
+		undoPre = pre
+		undoPos = 0
+		undoStack = []
+	}
+}
+
+function undoAdd(pre, c = 0) {
+	undoInit(pre)
+	while (undoStack.length - 1 > undoPos) undoStack.pop()
+	if (undoStack.length > 9) undoStack.shift()
+	undoStack.push([pre.textContent, c])
+	undoPos = undoStack.length
+}
+function undoDo(pre, rev) {
+	undoInit(pre)
+	if (rev) {
+		undoPos += 1
+		if (undoPos >= undoStack.length) undoPos = undoStack.length
+		else {
+			pre.textContent = undoStack[undoPos][0]
+			setCaret(undoStack[undoPos][1], false)
+		}
+	}
+	else {
+		if (undoPos == undoStack.length) {
+			undoAdd(pre)
+			undoPos -= 1
+		}
+		undoPos -= 1
+		if (undoPos < 0) undoPos = 0
+		else {
+			pre.textContent = undoStack[undoPos][0]
+			setCaret(undoStack[undoPos][1], false)
+		}
+	}
+}
+
 var enterPending
 
 function doEnter() {
 	enterPending = false
 	var p = codeCaret()
+	undoAdd(inp, p)
 	var inps = inp.textContent
 	if (p != 0 && inps[p - 1] != "\n") {
 		while (p < inps.length && inps[p] != "\n") p++
@@ -199,9 +248,16 @@ function preKey(pre, e) {
 		}
 	}
 	if (e.ctrlKey || e.metaKey) {
+		if (k == 86 || k == 88) {	// v x
+			undoAdd(pre, codeCaret())
+		}
 		if (k == 82 || k == 13) {
 			runx()
 			e.preventDefault()
+		}
+		else if (k == 90) {		// Z undo
+			e.preventDefault()
+			undoDo(pre, e.shiftKey)
 		}
 	}
 	else if (k == 9) {
