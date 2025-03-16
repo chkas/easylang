@@ -1,21 +1,19 @@
 # Mandelbrot
-#  
+#
 res = 4
 maxiter = 200
-# 
+#
 # better but slower:
-# res = 8
-# maxiter = 300
-# 
-#  
+# res = 8 maxiter = 300
+#
 mid = res * 50
 center_x = 3 * mid / 2
 center_y = mid
 scale = mid
-# 
+#
 background 000
 textsize 2
-# 
+#
 fastfunc iter cx cy max .
    while xx + yy < 4 and it < max
       y = 2 * x * y + cy

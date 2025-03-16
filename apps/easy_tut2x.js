@@ -28,29 +28,24 @@ pre.code {
 	outline:none;
 	user-select:text;
 	-webkit-user-select:text;
-	xtransition:height 0.4s;
 }
 textarea {
 	background:#000;
 	color:#ccc;
 	margin-left:12px;
 	border:none;
-	xborder:1px solid gray;
 	padding:5px;
 	font:normal normal normal 14px/1.3 monospace;
 	width:calc(50vw - 72px);
 	resize:none;
-	xtransition:height 0.2s;
 }
 
 canvas {
 	color:#fff;
 	background:#000;
 	margin-left:12px;
-	xborder:1px solid gray;
 	width:calc(50vw - 63px);
 	height:calc(50vw - 63px);
-	xtransition:height 0.4s;
 }
 @media only screen and (max-width: 600px) {
 	textarea {
@@ -82,7 +77,6 @@ button {
 	margin:0px 0px 4px 12px;
 	padding:4px;
 	border:none;
-	xborder:1px solid gray;
 	border-radius:5px;
 }
 button:hover:enabled{background:#666}
@@ -216,7 +210,7 @@ function tutMsgFunc(msg, d) {
 		var delay = 0
 		if (h & 4) {
 			if (!actBtn.canv.parentNode) {
-				delay = 500
+				delay = 100
 				if (actBtn.out.parentNode) actBtn.pre.div.insertBefore(actBtn.canv, actBtn.out)
 				else actBtn.pre.div.appendChild(actBtn.canv)
 
@@ -234,7 +228,7 @@ function tutMsgFunc(msg, d) {
 
 		if (h & 2) {
 			if (!actBtn.out.parentNode) {
-				delay += 300
+				delay += 60
 				actBtn.pre.div.appendChild(actBtn.out)
 				actBtn.out.style.height = "0px"
 				actBtn.out.offsetHeight

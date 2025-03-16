@@ -16,7 +16,7 @@ proc ngram s$ n . .
       add substr s$ i n
    .
    for i to len gram$[]
-      write "(&#39;" & gram$[i] & "&#39;:" & cnt[i] & ") "
+      write "('" & gram$[i] & "':" & cnt[i] & ") "
    .
    print ""
 .

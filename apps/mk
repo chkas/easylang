@@ -271,7 +271,7 @@ for j in clock pendulum _r_maze0 _r_maze; do
 	test progs/$j.kab = $k && col=''
 done
 test progs/_color_bars.kab = $k && col="body{ background-color:#444; color:#eee;}"
-test progs/mandelbrot.kab = $k && col="body{ background-color:#444; color:#eee;}"
+test progs/mandelbrot.kab = $k && col="body{ background-color:#111; color:#ccc;}"
 echo $col
 
 

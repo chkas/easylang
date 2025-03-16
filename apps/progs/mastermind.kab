@@ -3,10 +3,8 @@
 col[] = [ 802 990 171 229 950 808 ]
 len code[] 4
 len guess[] 4
+row = 0
 #
-subr init_vars
-   row = 0
-.
 proc draw_rate r black white . .
    for j range0 2 : for c range0 2
       move c * 3.5 + 71.5 r * 11.5 + 9.4 - j * 3.5
@@ -66,10 +64,12 @@ proc rate . .
       c[i] = -1
       g[i] = -2
    .
-   for i to 4 : for j to 4 : if c[i] = g[j]
-      white += 1
-      c[i] = -1
-      g[j] = -2
+   for i to 4 : for j to 4
+      if c[i] = g[j]
+         white += 1
+         c[i] = -1
+         g[j] = -2
+      .
    .
    draw_rate row black white
    color 531
@@ -87,10 +87,10 @@ proc rate . .
    .
 .
 on timer
-   row = -2
+   row = -1
 .
 proc new . .
-   init_vars
+   row = 0
    for i to 4 : code[i] = random 6
    color 531
    move 10 10
@@ -136,7 +136,7 @@ proc do_move . .
    draw_guess
 .
 on mouse_down
-   if row = -2
+   if row = -1
       new
    elif mouse_y > row * 11.5 + 0.5 and mouse_y < row * 11.5 + 10.5 and row < 8
       if mouse_x > 15 and mouse_x < 61

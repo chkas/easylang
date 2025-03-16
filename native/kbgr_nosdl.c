@@ -54,7 +54,7 @@ void gr_write(const char* s) {
 	printf("%s", s);
 	fflush(stdout);
 }
-void gr_debline(int line) {
+void gr_debline(int line, int x) {
 	printf("** LINE: %d **\n", line);
 }
 void gr_debout(const char* s) {}

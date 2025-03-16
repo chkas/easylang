@@ -1,7 +1,4 @@
 fastfunc isprim num .
-   if num mod 2 = 0 and num > 2
-      return 0
-   .
    i = 3
    while i <= sqrt num
       if num mod i = 0
@@ -11,12 +8,13 @@ fastfunc isprim num .
    .
    return 1
 .
-i = 2
+nprim = 1
+i = 3
 repeat
    if isprim i = 1
       nprim += 1
    .
    until nprim = 10001
-   i += 1
+   i += 2
 .
 print i

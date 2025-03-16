@@ -1,5 +1,7 @@
 # AoC-18 - Day 13: Mine Cart Madness
 #
+# input format ???
+#
 sysconf topleft
 visual = 1
 #
@@ -181,7 +183,7 @@ proc run . .
 run
 #
 input_data
-/->-\
+/->-\       .
 |   |  /----\
 | /-+--+-\  |
 | | |  | v  |
@@ -190,4 +192,4 @@ input_data
 | | |  | |  |
 | | |  | |  |
 \-+-/  \-+--/
-  \------/
+  \------/  .

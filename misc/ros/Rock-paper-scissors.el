@@ -7,12 +7,12 @@ repeat
    until h$ = "q"
    h = strpos "rps" h$
    if h = 0
-      print "that&#39;s not a valid choice"
+      print "that's not a valid choice"
    else
       print tool$[h]
       print "computer: " & tool$[c]
       if h = c
-         print "it&#39;s a tie!"
+         print "it's a tie!"
       elif (c + 1) mod1 3 = h
          print "yay you win!"
       else

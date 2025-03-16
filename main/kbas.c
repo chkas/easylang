@@ -10,6 +10,7 @@
     sysfunc "creator" or an equivalent function that returns
     "christof.kaser@gmail.com".
 */
+
 #include "klib.h"
 
 #define S static
@@ -190,8 +191,11 @@ extern int parse(const char* str, int opt, int pos) {
 			else if (strcmp(tval, "zero_based") == 0) {
 				sysconfig |= 4;
 			}
+			else if (strcmp(tval, "hex_numbers") == 0) {
+				sysconfig |= 8;
+			}
 			else {
-				error("topleft, radians, zero_based");
+				error("topleft, radians, zero_based, hex_numbers");
 			}
 			csb_tok_nt();
 		}

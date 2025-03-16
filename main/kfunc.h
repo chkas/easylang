@@ -640,7 +640,7 @@ S STR op_lstr(ND* nd) {
 }
 
 S STR op_numstr(ND* nd) {
-	return str_numfx(numf(nd->le), rt.num_scale, rt.num_space);
+	return str_numfx(numf(nd->le), rt.num_scale, rt.num_space, sysconfig & 8);
 }
 
 S STR op_numarrstr(ND* nd) {
@@ -650,7 +650,7 @@ S STR op_numarrstr(ND* nd) {
 	ARR arr = arrf(nd->le);
 	for (int i = 0; i < arr.len; i++) {
 		double f = arr.pnum[i];
-		STR s = str_numfx(f, rt.num_scale, rt.num_space);
+		STR s = str_numfx(f, rt.num_scale, rt.num_space, sysconfig & 8);
 		str_append(&str, str_ptr(&s));
 		str_free(&s);
 		str_append(&str, " ");
@@ -706,7 +706,7 @@ S void xnumarrarrstr(STR* str, ARR* a) {
 		double* pf = (a->parr + i)->pnum;
 		int len = (a->parr + i)->len;
 		for (int j = 0; j < len; j++) {
-			STR s = str_numfx(pf[j], rt.num_scale, rt.num_space);
+			STR s = str_numfx(pf[j], rt.num_scale, rt.num_space, sysconfig & 8);
 			str_append(str, " ");
 			str_append(str, str_ptr(&s));
 			str_free(&s);
@@ -2296,13 +2296,15 @@ S double op_fastcall(ND* nd0) {
 
 #define sl_as(ps, s) str_append(ps, s)
 
+/*
 S void sl_an(STR* ps, int h) {
-	STR s = str_num(h);
+	STR s = str_num(h, sysconfig & 8);
 	str_append(ps, str_ptr(&s));
 	str_free(&s);
 }
+*/
 S void sl_anf(STR* ps, double h) {
-	STR s = str_numf(h);
+	STR s = str_numf(h, sysconfig & 8);
 	str_append(ps, str_ptr(&s));
 	str_free(&s);
 }
@@ -2337,7 +2339,7 @@ S void dbg_debv(STR* ps, struct proc* fu, double* nums, STR* strs, ARR* arrs) {
 			ARR* a = arrs + p->id;
 			if (a->len > 1000) {
 				sl_as(ps, "[ ");
-				sl_an(ps, a->len);
+				sl_anf(ps, a->len);
 				sl_as(ps, " items ");
 				sl_as(ps, " ]");
 			}
