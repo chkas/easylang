@@ -157,11 +157,11 @@ function input() {
 }
 function sleep(sec) {
 	update()
-	if (sab == null) {
-		errmsg("Error: 'sleep' needs 'SharedArrayBuffer' in browser\n")
-		return
-	}
 	if (sec != 0) {
+		if (sab == null) {
+			//errmsg("Error: 'sleep' needs 'SharedArrayBuffer' in browser\n")
+			return -1
+		}
 		postMessage(["sleep", sec])
 		var vw = new Int32Array(sab)
 		Atomics.wait(vw, 1, 0)
@@ -178,6 +178,7 @@ function sleep(sec) {
 			Module.ccall("evt_func", "null", ["int", "string"], [0, null])
 		}
 	}
+	return 0
 }
 
 function step() {

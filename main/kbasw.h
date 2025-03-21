@@ -11,8 +11,11 @@
     "christof.kaser@gmail.com".
 */
 
+#include<unistd.h>
 static void gr_sleep(double sec) {
-	EM_ASM_({ sleep($0)}, sec);
+	int h = EM_ASM_INT({ return sleep($0)}, sec);
+	if (h == -1) usleep((uint)(sec * 1000000));
+//	EM_ASM_({ sleep($0)}, sec);
 }
 static void gr_timer(double sec) {
 	EM_ASM_({ setTimer($0)}, sec);

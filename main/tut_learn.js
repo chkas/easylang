@@ -60,20 +60,14 @@ text "100/100"
 move 6 91.5
 text "0/100"
 linewidth 0.5
-x = 18
-while x < 90
-  move x 10
-  line x 90
-  move 10 x
-  line 90 x
-  x += 8
+x = 10
+while x <= 90
+   move x 10
+   line x 90
+   move 10 x
+   line 90 x
+   x += 8
 .
-linewidth 0.8
-move 10 10
-line 90 10
-line 90 90
-line 10 90
-line 10 10
 move 12 28
 text "10/30"
 move 44 52
@@ -128,16 +122,16 @@ rect 50 30
 
 +de Es gibt 1000 mögliche Farben - und zwar von 000 bis 999. Die Farben werden dabei aus den Grundfarben Rot, Grün und Blau gemischt. Die linke Ziffer gibt den Rotanteil, die mittlere den Grünanteil und die rechte den Blauanteil an. Dies sind einige mögliche Farben.
 
-##
+##60
 col[] = [ 900 700 966 990 995 960 090 070 696 099 599 690 009 007 669 909 959 609 777 444 000 999 432 765 ]
 textsize 6
 for i to len col[]
-   y = 100 - i mod1 6 * 16.5
-   x = (i - 1) div 6 * 25
+   y = 100 - (i - 1) div 6 * 15 - 15
+   x = (i - 1) mod 6 * 16.5
    move x y
    color col[i]
-   rect 25 16.5
-   move x + 7 y + 5
+   rect 15.5 14
+   move x + 3 y + 5
    s$ = col[i]
    if col[i] <= 9
       s$ = "00" & s$
