@@ -19,7 +19,6 @@ pre{
 	width:calc(100vw - 48px);
 	overflow-y:auto;
 }
-
 pre.code {
 	width:50vw;
 	max-width:680px;
@@ -39,10 +38,8 @@ textarea {
 	width:calc(50vw - 72px);
 	resize:none;
 }
-
 canvas {
 	color:#fff;
-	background:#000;
 	margin-left:12px;
 	width:calc(50vw - 63px);
 	height:calc(50vw - 63px);
@@ -153,8 +150,13 @@ function stopped() {
 }
 
 function tutMsgFunc(msg, d) {
+	//console.log("msg: " + msg)
 	if (msg == "stopped") {
 		stopped()
+	}
+	else if (msg == "src_err") {
+		actBtn.disabled = false
+		actBtn = prevBtn
 	}
 	else if (msg == "ready") {
 		if (!isInit) {
@@ -188,8 +190,7 @@ function tutMsgFunc(msg, d) {
 		pres[d[1]].style.height = pres[d[1]].offsetHeight + 8 + "px"
 		pres[d[1]].height = pres[d[1]].style.height
 	}
-
-	if (msg == "src") {
+	else if (msg == "src") {
 		msg = "src_tut"
 		actBtn.pre.offsetHeight
 		actBtn.pre.style.height = ""
@@ -241,14 +242,19 @@ function tutMsgFunc(msg, d) {
 			actBtn.out.remove()
 			out0 = actBtn.out
 			actBtn.out = null
- 
 		}
-
 		if (!phone) {
 			if ((h & 6) == 6) actBtn.pre.style.height = (actBtn.canv.offsetWidth + 86) + "px"
 			else if (h & 4) actBtn.pre.style.height = (actBtn.canv.offsetWidth + 11) + "px"
 			else if (h & 2) actBtn.out.style.height = (actBtn.pre.offsetHeight - 36) + "px"
 		}
+
+		setTimeout(function() {
+			if (actBtn != null) {
+				actBtn.stop.style.display = "inline"
+			}
+		}, 2000);
+		if (actBtn.canv) actBtn.canv.className = "run"
 
 		if (delay) setTimeout(function() {
 				easyrunxr()
@@ -267,7 +273,6 @@ function makeCanv() {
 	canv0 = null
 	if (!canv) {
 		canv = create("canvas")
-		//canv.style.background = "#fff"
 		canv.width = 800
 		canv.height = 800
 	}
@@ -425,21 +430,12 @@ function stop() {
 
 function runClick(btn) {
 	if (btn.disabled) return
+	btn.disabled = true
+	tailSrc = null
 	prevBtn = actBtn
 	actBtn = btn
-	setTimeout(function() {
-		if (actBtn != null) {
-			actBtn.stop.style.display = "inline"
-		}
-	}, 2000);
-	btn.disabled = true
-
-	tailSrc = null
-
 	if (!btn.canv) btn.canv = makeCanv()
 	if (!btn.out) btn.out = makeOut()
-	btn.canv.className = "run"
-
 	codeRun(btn.pre, btn.canv, btn.out)
 }
 

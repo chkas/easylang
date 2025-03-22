@@ -604,7 +604,6 @@ subr drawcar
    circle 3.5
 end
 #
-color 900
 x = -25
 while x < 120
    clear

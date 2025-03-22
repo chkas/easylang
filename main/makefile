@@ -41,7 +41,7 @@ csrc: $(csrcf)
 $(wrk):
 	mkdir -p $(wrk)
 
-main: $(wrk)/easy_ide.js $(wrk)/easyw.js $(wrk)/easy.js $(wrk)/ide.html $(wrk)/qrcode.js
+main: $(wrk)/easy_ide.js $(wrk)/easyw.js $(wrk)/easy.js $(wrk)/ide.html $(wrk)/qrcode.js $(wrk)/tut_test.html
 tut: $(wrk)/tut_id.js $(wrk)/tut_docu.js $(wrk)/tut_learn.js $(wrk)/tut_game.js $(wrk)/tut_func.js
 
 $(wrk)/kbas.o: $(csrcf)

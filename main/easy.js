@@ -81,8 +81,6 @@ function canvInit() {
 	c = eCan.getContext("2d")
 	textsize(8)
 	linewidth(1)
-	// set color
-	sys(3)
 	c.backImg = null
 	c.backColor = null
 	c.setTransform(1,0,0,1,0,0)
@@ -592,6 +590,8 @@ function workerMessage(event) {
 			startWorker()
 			return
 		}
+		// set default color
+		sys(3)
 		if (d[1] & 127) {
 			eCan.on = true
 			msgFunc("canvon")
