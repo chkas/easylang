@@ -352,11 +352,21 @@ function tutUpd() {
 			ca.tabindex = 0
 			ca.style.marginBottom = "0px"
 			ca.style.border = "0px"
+
+			ca.style.width = "360px"
+			ca.style.height = "360px"
 			if (s[2] != "\n") {
 				var h = Number(s.substring(2, 4))
 				ca.width = 800
 				ca.height = 8 * h
-				ca.style.height = h * 4 + "px"
+				ca.style.height = Math.floor(h * 3.6)  + "px"
+				if (s[4] == " ") {
+					var m = Number(s.substring(5, 8))
+					ca.style.width = m  + "vw"
+					ca.style.height = Math.floor(m * h / 100)  + "vw"
+					ca.style.maxWidth = "600px"
+					ca.style.maxHeight = Math.floor(h * 6)  + "px"
+				}
 			}
 			var c = ca.getContext("2d")
 			c.clearRect(0, 0, 800, 800)

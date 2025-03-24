@@ -7,26 +7,32 @@
 <div id=tut><b>Loading ...</b></div>
 <script src=easy.js></script>
 <script src=easy_code.js></script>
-<script src=../apps/easy_tut2x.js></script>
+<script src=../apps/easy_tut2.js></script>
 
 <script>
 
-txt_tutor=`* Tutorial test
+txt_locale = "de"
+txt_tutor = String.raw`+ Programming basics
 
-+ Test1
++de Programmier-Grundlagen
 
-background 555
-clear
-move 10 50
-text "Hello world"
-
-+ Test2
-
-color -1
-background 555
-clear
-move 10 50
-text "Hello world"
+##30 80
+color 445
+proc tree x y angle depth . .
+   linewidth depth * 0.18
+   move x y
+   x += cos angle * depth * 0.55 * (randomf + 0.5)
+   y += sin angle * depth * 0.55 * (randomf + 0.5)
+   line x y
+   if depth > 1
+      tree x y angle - 20 depth - 1
+      tree x y angle + 20 depth - 1
+   .
+.
+tree 14 70 90 9
+tree 38 70 90 9
+tree 62 70 90 9
+tree 86 70 90 9
 `
 
 function hook() {

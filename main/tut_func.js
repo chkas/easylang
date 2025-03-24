@@ -364,22 +364,20 @@ subr nextch
 subr nexttok
    if ch = 0
       tok$ = "eof"
+      return
+   .
+   while ch$ = " " : nextch
+   if ch >= 48 and ch <= 58
+      tok$ = "numb"
+      s$ = ""
+      while ch >= 48 and ch <= 58 or ch$ = "."
+         s$ &= ch$
+         nextch
+      .
+      tokv = number s$
    else
-      while ch$ = " "
-         nextch
-      .
-      if ch >= 48 and ch <= 58
-         tok$ = "numb"
-         s$ = ""
-         while ch >= 48 and ch <= 58 or ch$ = "."
-            s$ &= ch$
-            nextch
-         .
-         tokv = number s$
-      else
-         tok$ = ch$
-         nextch
-      .
+      tok$ = ch$
+      nextch
    .
 .
 funcdecl eval_expr .
@@ -393,9 +391,7 @@ func eval_factor .
       write tok$
       nexttok
       res = eval_expr
-      if tok$ <> ")"
-         print "error"
-      .
+      if tok$ <> ")" : print "error"
       write tok$
       nexttok
    .
@@ -446,5 +442,5 @@ repeat
 input_data
 4 * 6
 4.2 * ((5.3+8)*3 + 4)
-2.5 + 2 * 3.14`
-
+2.5 + 2 * 3.14
+`

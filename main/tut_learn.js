@@ -9,7 +9,7 @@ txt_tutor = String.raw`+ Programming basics
 
 +de Beim Programmieren sagst du dem Computer mit einer Folge von speziellen Befehlen, was er machen soll.
 
-##21
+##19
 #
 x = 20
 linewidth 8
