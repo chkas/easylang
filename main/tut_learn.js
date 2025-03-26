@@ -122,16 +122,16 @@ rect 50 30
 
 +de Es gibt 1000 mögliche Farben - und zwar von 000 bis 999. Die Farben werden dabei aus den Grundfarben Rot, Grün und Blau gemischt. Die linke Ziffer gibt den Rotanteil, die mittlere den Grünanteil und die rechte den Blauanteil an. Dies sind einige mögliche Farben.
 
-##60
+##84
 col[] = [ 900 700 966 990 995 960 090 070 696 099 599 690 009 007 669 909 959 609 777 444 000 999 432 765 ]
-textsize 6
+textsize 7
 for i to len col[]
-   y = 100 - (i - 1) div 6 * 15 - 15
-   x = (i - 1) mod 6 * 16.5
+   y = 100 - (i - 1) mod 6 * 14 - 14
+   x = (i - 1) div 6 * 22
    move x y
    color col[i]
-   rect 15.5 14
-   move x + 3 y + 5
+   rect 21 13
+   move x + 4 y + 4
    s$ = col[i]
    if col[i] <= 9
       s$ = "00" & s$
@@ -139,9 +139,7 @@ for i to len col[]
       s$ = "0" & s$
    .
    color 000
-   if col[i] = 0 or col[i] = 432
-      color 888
-   .
+   if col[i] = 0 or col[i] = 432 : color 888
    text s$
 .
 

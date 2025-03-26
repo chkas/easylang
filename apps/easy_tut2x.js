@@ -348,18 +348,23 @@ function tutUpd() {
 			}
 		}
 		else if (s.startsWith("##")) {
+			tut.appendChild(create("p"))
 			var ca = create("canvas")
 			ca.tabindex = 0
 			ca.style.marginBottom = "0px"
 			ca.style.border = "0px"
 
-			ca.style.width = "360px"
-			ca.style.height = "360px"
+			ca.style.width = "320px"
+			ca.style.height = "320px"
+			ca.style.maxWidth = "100vw"
+			ca.style.maxHeight = "100vw"
 			if (s[2] != "\n") {
 				var h = Number(s.substring(2, 4))
 				ca.width = 800
 				ca.height = 8 * h
-				ca.style.height = Math.floor(h * 3.6)  + "px"
+				ca.style.height = Math.floor(h * 3.2)  + "px"
+				ca.style.maxHeight = Math.floor(h)  + "vw"
+
 				if (s[4] == " ") {
 					var m = Number(s.substring(5, 8))
 					ca.style.width = m  + "vw"

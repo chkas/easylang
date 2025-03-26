@@ -686,14 +686,18 @@ cat <<xxx
 
 <i>Easylang</i> is statically typed and has as data types only strings and numbers (floating point), arrays of strings and numbers, and arrays of arrays. Arrays are 1-based and can grow. Programs compiled into an AST tree run in the browser or in the browser IDE. There are built-in functions for canvas graphics.
 
+<h3>Software acknowledgements</h3>
+
+<a href=https://emscripten.org>emscripten</a>
+<p>
+<a href=https://www.jsqr.de>JSQR</a>
+
 <h3>Free</h3>
 
 <i>Easylang</i> is free of charge: free to use, free to copy and requires no registration or login. It is also Open Source.
 
 <p>
 <a href=https://github.com/chkas/easylang>Source on GitHub</a>
-
-
 <p>
 <a href=https://www.reddit.com/r/easylang/>Discussion, questions, etc. on Reddit</a>
 
