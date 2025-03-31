@@ -277,8 +277,7 @@ static void esc_html(const char* s) {
 	}
 }
 
-#if 0
-static void csx(const char* s) {
+static void cs_esc(const char* s) {
 	if (err) return;
 	if (*s == 0) return;
 	code_utf8len += utf8len(s);
@@ -287,7 +286,6 @@ static void csx(const char* s) {
 	}
 	else co(s);
 }
-#endif
 
 static void csi(const char* s) {
 	if (err) return;
@@ -420,6 +418,7 @@ static void parse_comment() {
 	csi(buf);
 }
 #else
+// multiline comment ## -> # #
 static void parse_comment() {
 	char buf[1024];
 	if (c != '#') {
@@ -456,8 +455,8 @@ static void parse_input_data() {
 	char buf[65536];
 	while (1) {
 		read_line(buf, 65536);
-//		csx(buf);
-		csi(buf);
+		cs_esc(buf);
+		//csi(buf);
 		if (cod) {
 			uint h = input_data_size + strlen(buf) + 1;
 			input_data = realloc(input_data, h);
