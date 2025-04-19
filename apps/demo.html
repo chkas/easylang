@@ -1,0 +1,101 @@
+<style>
+pre{
+	background-color:#ededed;
+	border:1px solid gray;
+	border-radius:5px;
+	padding:5px;
+	overflow-y:auto;
+	width:calc(55vw - 60px);
+	height:calc(45vw - 20px);
+	float:left;
+	margin-right:10px;
+	outline:none;
+}
+pre b{font-weight:500;color:#920}
+pre i{color:#088}
+pre s{text-decoration:none;font-weight:500;color:#080}
+pre u{text-decoration:none;color:#000;background:#fdd}
+span.high {background-color:#999}
+
+canvas {
+	width:45vw;
+	height:45vw;
+	border:1px solid gray;
+}
+</style>
+
+<script src=easy_code2.js></script>
+
+<h3>Easylang demo</h3>
+A tree is a piece of wood with smaller trees attached to it.
+<p>
+
+<button id=btn>Run</button>
+<br>
+<pre id=pre>
+proc tree x y a d . .
+   linewidth d * 0.4
+   move x y
+   x += cos a * d * 1.4 * (randomf + 0.5)
+   y += sin a * d * 1.4 * (randomf + 0.5)
+   line x y
+   if d > 1
+      tree x y a - 20 d - 1
+      tree x y a + 20 d - 1
+   .
+.
+tree 50 5 90 10
+
+</pre>
+
+<canvas id=canv></canvas>
+
+<p>&nbsp;<p><hr>
+
+Reaction Tester
+<p>
+
+<button id=btn2>Run</button>
+<br>
+<pre id=pre2>
+subr wait
+   color 733
+   text "WAIT"
+   timer 1.5 + 2 * randomf
+.
+on timer
+   clear
+   color 373
+   text "PRESS"
+   time0 = systime
+.
+on mouse_down
+   clear
+   if time0 >= 0.15
+      color 555
+      text systime - time0
+      time0 = 0
+   else
+      wait
+   .
+.
+textsize 20
+move 20 50
+wait
+</pre>
+
+<canvas id=canv2></canvas>
+
+<script>
+easyinit(canv, null, codeMsgF)
+
+btn.onclick = function() {
+	codeRun(pre, canv)
+}
+codeInit(pre, btn.onclick)
+
+btn2.onclick = function() {
+	codeRun(pre2, canv2)
+}
+codeInit(pre2, btn2.onclick)
+</script>
