@@ -701,12 +701,12 @@ end
 
 + The *animate* event occurs after each screen refresh - usually 60 times per second. Perfect for animating a bouncing ball. Oops... the ball disappears!
 
-+de Das *animate*-Ereignis tritt nach jeder Bildschirmaktualisierung - normalerweise 60 mal pro Sekunde. Perfekt, um einen abprallenden Ball zu animieren. Ups... der Ball verschwindet!
++de Das *animate*-Ereignis tritt nach jeder Bildschirmaktualisierung auf - normalerweise 60 mal pro Sekunde. Perfekt, um einen abprallenden Ball zu animieren. Ups... der Ball verschwindet!
 
 x = 50
 y = 50
 vx = 1
-vy = 0.5
+vy = 0.8
 color 700
 #
 on animate
@@ -724,13 +724,13 @@ end
 
 + 🤔 Let the car drive back and forth! The car should be able to be stopped and restarted with a mouse click.
 
-+ 🤔🤔 Try to control the speed with the keyboard keys!
++ 🤔🤔 Try to control the speed of the car with the keyboard keys!
 
 +de 🤔 Lass den Ball an allen Wänden abprallen.
 
 +de 🤔 Lass das Auto hin und her fahren! Das Auto sollte mit einem Mausklick angehalten und neu gestartet werden können.
 
-+de 🤔🤔 Versuche mit den Keyboard-Tasten die Geschwindigkeit zu steuern!
++de 🤔🤔 Versuche mit den Keyboard-Tasten die Geschwindigkeit des Autos zu steuern!
 
 * Array
 
@@ -970,5 +970,189 @@ for i = 1 to 100
    y = randomf * 100
    move x y
    circle randomf * 0.5
+end
+
+*de Prozeduren, lokale Variablen, Parameter
+
+* Procedures, local variables, parameters
+
++de Bauen wir eine Straße für unser Auto
+
++ Let's build a road for our car.
+
+background 070
+subr street
+   move 0 10
+   color 777
+   rect 100 10
+end
+subr car
+   linewidth 8
+   color 333
+   move x + 9 25
+   line x + 13 25
+   color 900
+   move x + 4 20
+   line x + 18 20
+   color 333
+   move x + 5 14
+   circle 3.5
+   move x + 16 14
+   circle 3.5
+end
+#
+x = -10
+while x <= 100
+   clear
+   street
+   car
+   sleep 0.05
+   x += 1
+end
+
++de Funktioniert wunderbar. Jetzt malen wir noch eine unterbrochene Mittellinie auf die Strasse. Das macht man am besten mit einer Schleife.
+
++ Works perfectly. Now let's paint a dashed center line on the road. This is best done with a loop.
+
+background 070
+subr street
+   move 0 10
+   color 777
+   rect 100 10
+   # dashed centerline
+   color 999
+   linewidth 1
+   x = 2
+   while x < 110
+      move x 15
+      line x + 7 15
+      x += 12
+   end
+end
+subr car
+   linewidth 8
+   color 333
+   move x + 9 25
+   line x + 13 25
+   color 900
+   move x + 4 20
+   line x + 18 20
+   color 333
+   move x + 5 14
+   circle 3.5
+   move x + 16 14
+   circle 3.5
+end
+#
+x = -10
+while x <= 100
+   clear
+   street
+   car
+   sleep 0.05
+   x += 1
+end
+
++de Schön sieht sie aus, die neue Straße. Aber warum fährt das Auto nicht mehr?
+
++ Looks nice, the new road. But why is the car no longer driving?
+
++de Das Problem liegt bei der Variablen *x*. Die aktuelle Autoposition wird in dieser Variablen gespeichert. Beim Zeichnen der Mittellinie wird sie jedoch überschrieben.
+
++ The problem lies with the variable *x*. The current car position is stored in this variable. However, it is overwritten when the center line is drawn.
+
++de Mit *proc street ..* kann man nun eine Prozedur definieren, in der die Variablen nur innerhalb der Prozedur gültig sind. Das bedeutet, dass die Variable *x* innerhalb von *proc* eine andere Variable ist als die Variable *x* für die Position des Autos.
+
++ With *proc street ..* you can define a procedure in which the variables are only valid within the procedure. This means that the variable *x* within *proc* is a different variable than the variable *x* for the position of the car.
+
++de Wie kann man dann der Prozedur Werte liefern, wenn die Variablen nur *lokal* (innerhalb der Prozedur) gültig sind?
+
++ How can you then supply values to the procedure if the variables are only valid *locally* (within the procedure)?
+
++de Man kann dies mit Parametern tun. Die Parameter folgen auf den Namen der Prozedur. Die Variablen bis zum ersten Punkt sind die Eingabeparameter. Die bis zum zweiten Punkt sind die Eingabe-Ausgabe-Parameter, mit denen auch Werte zurückgegeben werden können.
+
++ You can do this with parameters. The parameters follow the name of the procedure. The variables up to the first point are the input parameters. Those up to the second point are the input-output parameters, with these you can also return values.
+
+background 070
+proc street . .
+   move 0 10
+   color 777
+   rect 100 10
+   # dashed centerline
+   color 999
+   linewidth 1
+   x = 2
+   while x < 110
+      move x 15
+      line x + 7 15
+      x += 12
+   end
+end
+proc car x . .
+   linewidth 8
+   color 333
+   move x + 9 25
+   line x + 13 25
+   color 900
+   move x + 4 20
+   line x + 18 20
+   color 333
+   move x + 5 14
+   circle 3.5
+   move x + 16 14
+   circle 3.5
+end
+#
+x = -10
+while x <= 100
+   clear
+   street
+   car x
+   sleep 0.05
+   x += 1
+end
+
++de Wir können auch einen Parameter für die y-Position der Straße und des Autos und einen für die Farbe des Autos angeben. Jetzt können wir zwei Autos mit unterschiedlichen Farben auf zwei Straßen fahren lassen.
+
++ We can also specify one parameter for the y-position of the road and the car and one for the color of the car. Now we can have two cars with different colors driving on two roads.
+
+background 070
+proc street y . .
+   move 0 y
+   color 777
+   rect 100 10
+   color 999
+   linewidth 1
+   x = 2
+   while x < 110
+      move x y + 5
+      line x + 7 y + 5
+      x += 12
+   end
+end
+proc car x y col . .
+   linewidth 8
+   color 333
+   move x + 9 y + 15
+   line x + 13 y + 15
+   color col
+   move x + 4 y + 10
+   line x + 18 y + 10
+   color 333
+   move x + 5 y + 4
+   circle 3.5
+   move x + 16 y + 4
+   circle 3.5
+end
+#
+x = -10
+while x <= 125
+   clear
+   street 10
+   street 25
+   car (100 - x) 25 990
+   car x 10 900
+   sleep 0.05
+   x += 1
 end
 `

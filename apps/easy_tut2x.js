@@ -22,7 +22,7 @@ pre{
 pre.code {
 	width:50vw;
 	max-width:680px;
-	max-height:55vh;
+	max-height:50vh;
 	min-height:80px;
 	outline:none;
 	user-select:text;
@@ -188,7 +188,7 @@ function tutMsgFunc(msg, d) {
 	else if (msg == "src2") {
 		pres[d[1]].innerHTML = d[0]
 		pres[d[1]].style.height = pres[d[1]].offsetHeight + 8 + "px"
-		pres[d[1]].height = pres[d[1]].style.height
+		//pres[d[1]].height = pres[d[1]].style.height
 	}
 	else if (msg == "src") {
 		msg = "src_tut"
@@ -244,9 +244,10 @@ function tutMsgFunc(msg, d) {
 			actBtn.out = null
 		}
 		if (!phone) {
-			if ((h & 6) == 6) actBtn.pre.style.height = (actBtn.canv.offsetWidth + 86) + "px"
-			else if (h & 4) actBtn.pre.style.height = (actBtn.canv.offsetWidth + 11) + "px"
+			if ((h & 6) == 6) actBtn.pre.style.height = (actBtn.canv.offsetWidth + 80) + "px"
+			else if (h & 4) actBtn.pre.style.height = (actBtn.canv.offsetWidth + 4) + "px"
 			else if (h & 2) actBtn.out.style.height = (actBtn.pre.offsetHeight - 36) + "px"
+			actBtn.pre.style.maxHeight = actBtn.pre.style.height
 		}
 
 		setTimeout(function() {
