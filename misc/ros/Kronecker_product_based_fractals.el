@@ -18,7 +18,7 @@ func[][] krpow a[][] n .
    .
    return r[][]
 .
-proc show p[][] . .
+proc show p[][] .
    clear
    n = len p[][]
    sc = 100 / n

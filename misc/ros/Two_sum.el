@@ -1,4 +1,4 @@
-proc twoSum sum . array[] pair[] .
+proc twoSum sum &array[] &pair[] .
    i = 1
    j = len array[]
    pair[] = [ ]

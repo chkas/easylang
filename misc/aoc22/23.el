@@ -1,9 +1,9 @@
-# AoC-22 - Day 23: Unstable Diffusion 
-# 
+# AoC-22 - Day 23: Unstable Diffusion
+#
 nc = 200
 len m[] nc * nc
 global elf[] .
-proc read . .
+proc read .
    s$ = input
    offs = nc div 2 - len s$ div 2
    r = offs
@@ -21,18 +21,18 @@ proc read . .
    .
 .
 read
-#  
+#
 dirs[] = [ (-nc - 1) (-nc) (-nc + 1) 1 (nc + 1) nc (nc - 1) -1 ]
 dir[][] &= [ -nc (-nc - 1) (-nc + 1) ]
 dir[][] &= [ nc (nc - 1) nc + 1 ]
 dir[][] &= [ -1 (-1 - nc) (-1 + nc) ]
 dir[][] &= [ 1 (1 - nc) (1 + nc) ]
 dir0 = 1
-# 
+#
 nelf = len elf[]
 len elfn[] nelf
-# 
-proc do . moved .
+#
+proc do &moved .
    for i to nelf
       m[elf[i]] = -1
    .
@@ -94,8 +94,8 @@ repeat
    .
 .
 print round
-# 
-# 
+#
+#
 input_data
 ....#..
 ..###.#

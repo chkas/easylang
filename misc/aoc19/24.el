@@ -133,14 +133,14 @@ proc show2 . .
    .
    sleep 0.02
 .
-proc sum5 b inc . s .
+proc sum5 b inc &s .
    i = b
    for j range0 5
       s += p[i]
       i += inc
    .
 .
-proc updatel lev . dirty .
+proc updatel lev &dirty .
    dirty = 0
    b = lev * 25
    for r range0 5 : for c range0 5

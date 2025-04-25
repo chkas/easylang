@@ -1,8 +1,8 @@
 # AoC-23 - Day 10: Pipe Maze
-# 
+#
 global nc start m1[] m2[] .
-# 
-proc read . .
+#
+proc read .
    s$ = input
    nc = len s$ + 1
    for i to nc
@@ -39,9 +39,9 @@ proc read . .
    .
 .
 read
-# 
+#
 offs[] = [ -nc 1 nc (-1) ]
-proc step . pos dir .
+proc step &pos &dir .
    pos = pos + offs[dir]
    if m1[pos] = (dir + 2) mod1 4
       dir = m2[pos]
@@ -51,7 +51,7 @@ proc step . pos dir .
       dir = 0
    .
 .
-proc try dir . cnt .
+proc try dir &cnt .
    pos = start
    cnt = 0
    repeat
@@ -70,9 +70,9 @@ repeat
    until cnt > 0
 .
 print cnt div 2
-# 
+#
 len seen[] len m1[]
-proc flood pos . .
+proc flood pos .
    for i to 4
       p = pos + offs[i]
       if seen[p] = 0
@@ -81,7 +81,7 @@ proc flood pos . .
       .
    .
 .
-proc part2 . .
+proc part2 .
    pos = start
    dir = startdir
    repeat
@@ -118,7 +118,7 @@ proc part2 . .
    print sum
 .
 part2
-# 
+#
 input_data
 FF7FSF7F7F7F7F7F---7
 L|LJ||||||||||||F--J

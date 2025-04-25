@@ -3,7 +3,7 @@
 for c$ in strchars input
    in[] &= strcode c$ - strcode "a" + 1
 .
-proc tune n . .
+proc tune n .
    len a[] 26
    for i = 1 to len in[]
       if i > n

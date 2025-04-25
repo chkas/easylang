@@ -1,7 +1,7 @@
 # AoC-22 - Day 24: Blizzard Basin
-# 
+#
 global bl[] bld[] m[] nc .
-proc read . .
+proc read .
    repeat
       s$ = input
       until s$ = ""
@@ -33,7 +33,7 @@ npos = len m[]
 nr = npos div nc
 nc2 = nc - 2
 nr2 = nr - 2
-proc lcm a b . res .
+proc lcm a b &res .
    a0 = a
    b0 = b
    while b <> 0
@@ -44,8 +44,8 @@ proc lcm a b . res .
    res = (a0 div a) * (b0 div a)
 .
 lcm nc2 nr2 nstat
-# 
-proc blizn . .
+#
+proc blizn .
    for i = 1 to len m[]
       if m[i] <> -1
          m[i] = 0
@@ -65,9 +65,9 @@ proc blizn . .
       bl[i] = bl
    .
 .
-# 
+#
 global todon[] seen[] .
-proc run start dest . cnt .
+proc run start dest &cnt .
    seen[] = [ ]
    len seen[] nstat * npos
    todo[] = [ stat * npos + start ]
@@ -98,7 +98,7 @@ print cnt
 run npos - 1 2 cnt
 run 2 npos - 1 cnt
 print cnt
-# 
+#
 input_data
 #.######
 #>>.<^<#

@@ -1,7 +1,7 @@
 # AoC-24 - Day 12: Garden Groups
 #
 global nc m[] .
-proc init . .
+proc init .
    s$ = input
    nc = len s$ + 2
    len m[] nc
@@ -23,7 +23,7 @@ dir[] = [ 1 nc -1 (-nc) ]
 dirdg[] = [ (nc + 1) (nc - 1) (-nc - 1) (-nc + 1) ]
 #
 part = 1
-proc find i . cnt peri .
+proc find i &cnt &peri .
    if seen[i] = 1 : return
    seen[i] = 1
    cnt += 1
@@ -46,7 +46,7 @@ proc find i . cnt peri .
       .
    .
 .
-proc run . .
+proc run .
    initseen
    for ind to len m[]
       if m[ind] <> 0 and seen[ind] = 0

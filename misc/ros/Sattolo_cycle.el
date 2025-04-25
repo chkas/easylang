@@ -1,4 +1,4 @@
-proc sattolo_cycle . a[] .
+proc sattolo_cycle &a[] .
    for i = len a[] downto 2
       r = random (i - 1)
       swap a[r] a[i]

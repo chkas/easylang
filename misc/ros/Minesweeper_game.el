@@ -15,7 +15,7 @@ func getind r c .
    .
    return ind
 .
-proc draw_cell ind h . .
+proc draw_cell ind h .
    ind -= 1
    r = ind div 8
    c = ind mod 8
@@ -50,7 +50,7 @@ proc draw_cell ind h . .
       line x + 8 y + 9
    .
 .
-proc open ind . .
+proc open ind .
    if ind <> -1 and cell[ind] = 0
       cell[ind] = 2
       flag[ind] = 0
@@ -70,7 +70,7 @@ proc open ind . .
       .
    .
 .
-proc show_mines m . .
+proc show_mines m .
    for ind to 56
       if cell[ind] = 1
          color 686
@@ -81,7 +81,7 @@ proc show_mines m . .
       .
    .
 .
-proc outp col s$ . .
+proc outp col s$ .
    move 2.5 87
    color col
    rect 59 11
@@ -89,7 +89,7 @@ proc outp col s$ . .
    move 5 90
    text s$
 .
-proc upd_info . .
+proc upd_info .
    for i to 56
       nm += flag[i]
       if cell[i] < 2
@@ -104,7 +104,7 @@ proc upd_info . .
       outp 464 8 - nm & " mines left"
    .
 .
-proc test ind . .
+proc test ind .
    if cell[ind] < 2 and flag[ind] = 0
       if cell[ind] = 1
          show_mines -1
@@ -119,7 +119,7 @@ proc test ind . .
    .
 .
 background 676
-proc start . .
+proc start .
    clear
    color 353
    for ind to 56

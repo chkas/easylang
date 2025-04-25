@@ -4,7 +4,7 @@ sysconf topleft
 visual = 1
 #
 global m[] nc .
-proc read . .
+proc read .
    s$ = input
    nc = len s$ + 2
    if nc = 2
@@ -31,7 +31,7 @@ read
 #
 sc = 95 / nc
 sc2 = sc / 2
-proc showall . .
+proc showall .
    color 000
    rect 100 100
    for p = 1 to len m[]
@@ -49,7 +49,7 @@ if visual = 1
 .
 #
 textsize 3
-proc showtxt s$ w . .
+proc showtxt s$ w .
    if visual = 0 : return
    move 0 95
    color 000
@@ -59,7 +59,7 @@ proc showtxt s$ w . .
    text s$
    sleep w
 .
-proc show p high . .
+proc show p high .
    if visual = 0 : return
    y = (p - 1) div nc * sc
    x = (p - 1) mod nc * sc
@@ -76,7 +76,7 @@ proc show p high . .
    sleep 0.001
 .
 len seen[] len m[]
-proc look p inc . .
+proc look p inc .
    mx = -1
    for i = 1 to nc - 2
       if m[p] > mx
@@ -87,7 +87,7 @@ proc look p inc . .
       p += inc
    .
 .
-proc part1 . .
+proc part1 .
    for i = 1 to nc - 2
       look i * nc + 2 1
       look i * nc + nc - 1 (-1)
@@ -100,7 +100,7 @@ proc part1 . .
 .
 part1
 #
-proc count p inc . cnt .
+proc count p inc &cnt .
    cnt = 0
    high = m[p]
    repeat
@@ -111,7 +111,7 @@ proc count p inc . cnt .
       until m[p] >= high
    .
 .
-proc count4 max p . c .
+proc count4 max p &c .
    clear
    showtxt max 0
    count p 1 c1
@@ -121,7 +121,7 @@ proc count4 max p . c .
    show p 1
    c = c1 * c2 * c3 * c4
 .
-proc part2 . .
+proc part2 .
    for p = 1 to len m[] : if m[p] < 10
       count4 max p c
       if c > max

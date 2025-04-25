@@ -1,4 +1,4 @@
-proc roundrobin n . .
+proc roundrobin n .
    numfmt 0 2
    print n & " players"
    for i to n

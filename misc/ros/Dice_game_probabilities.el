@@ -1,4 +1,4 @@
-proc throw_die n_sides n_dice s . counts[] .
+proc throw_die n_sides n_dice s &counts[] .
    if n_dice = 0
       counts[s] += 1
       return

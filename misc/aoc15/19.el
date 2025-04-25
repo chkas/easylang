@@ -1,7 +1,7 @@
 # AoC-15 - Day 19: Medicine for Rudolph
 #
 global name$[] .
-proc add_name n$ . .
+proc add_name n$ .
    for id to len name$[]
       if name$[id] = n$
          break 2
@@ -10,7 +10,7 @@ proc add_name n$ . .
    name$[] &= n$
 .
 global na$[] r$[][] .
-proc getid n$ . id .
+proc getid n$ &id .
    for id to len na$[]
       if na$[id] = n$
          break 2
@@ -20,7 +20,7 @@ proc getid n$ . id .
    r$[][] &= [ ]
 .
 global na2$[] id2[] .
-proc add n$ s$ . id .
+proc add n$ s$ &id .
    getid n$ id
    r$[id][] &= s$
    na2$[] &= s$

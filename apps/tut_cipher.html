@@ -19,7 +19,7 @@ to encrypt and decrypt the data. This key must be kept secret.
 
 + XOR encryption with a repeating key is simple, but not secure.
 
-proc str2arr s$ . ar[] .
+proc str2arr s$ &ar[] .
    # array 32 bit - even length padding
    ar[] = [ ]
    i = 0x100000000
@@ -31,75 +31,19 @@ proc str2arr s$ . ar[] .
       ar[len ar[]] += strcode c$ * i
       i *= 256
    .
-   if len ar[] mod 2 = 1
-      ar[] &= 0
-   .
+   if len ar[] mod 2 = 1 : ar[] &= 0
 .
-proc arr2str ar[] . s$ .
+proc arr2str ar[] &s$ .
    s$ = ""
-   for n in ar[]
-      for i = 1 to 4
-         s$ &= strchar (n mod 256)
-         n = n div 256
-      .
+   for n in ar[] : for i = 1 to 4
+      s$ &= strchar (n mod 256)
+      n = n div 256
    .
 .
-#
-proc rot k . x y .
-   x = bitor bitshift x -8 bitshift x 24
-   x += y
-   x = bitxor x k
-   y = bitor bitshift y 3 bitshift y -29
-   y = bitxor y x
-.
-global spkb[] .
-proc sp_prepkey key . .
-   a = key div 0x100000000
-   b = key mod 0x100000000
-   spkb[] = [ b ]
-   for i = 0 to 24
-      rot i a b
-      spkb[] &= b
-   .
-.
-proc sp_block . x y .
-   for i = 1 to 26
-      rot spkb[i] x y
-   .
-.
-proc rotrev k . x y .
-   y = bitxor y x
-   y = bitor bitshift y -3 bitshift y 29
-   x = bitxor x k
-   x = (x - y) mod 0x100000000
-   x = bitor bitshift x 8 bitshift x -24
-.
-proc sp_blockrev . x y .
-   for i = 26 downto 1
-      rotrev spkb[i] x y
-   .
-.
-#
-proc sp_encr key . in[] out[] .
-   sp_prepkey key
+proc xorcrypt key &in[] &out[] .
    out[] = [ ]
-   for i = 1 step 2 to len in[]
-      x = in[i]
-      y = in[i + 1]
-      sp_block x y
-      out[] &= x
-      out[] &= y
-   .
-.
-proc sp_decr key . in[] out[] .
-   sp_prepkey key
-   out[] = [ ]
-   for i = 1 step 2 to len in[]
-      x = in[i]
-      y = in[i + 1]
-      sp_blockrev x y
-      out[] &= x
-      out[] &= y
+   for i = 1 to len in[]
+      out[] &= bitxor in[i] key
    .
 .
 msg$ = "Hi Alice. We have a surprise birthday party for Trudy. Bob"
@@ -107,20 +51,12 @@ str2arr msg$ msg[]
 #
 secrkey = 18238004
 #
-sp_encr secrkey msg[] encr[]
+xorcrypt secrkey msg[] encr[]
 print encr[]
 print ""
-sp_decr secrkey encr[] r[]
+xorcrypt secrkey encr[] r[]
 arr2str r[] s$
 print s$
-#
-#
-print ""
-print "ECB demo:"
-msg$ = "Hi Bob! Hi Joe! Hi Bob! "
-str2arr msg$ msg[]
-sp_encr 1234567890 msg[] encr[]
-print encr[]
 
 * Cracking XOR
 
@@ -131,53 +67,47 @@ a character are varied independently until they
 "fit" the data they decrypt - a text, for example,
 contains many letters and spaces.
 
-proc arr2str ar[] . s$ .
+proc arr2str ar[] &s$ .
    s$ = ""
-   for n in ar[]
-      for i = 1 to 4
-         s$ &= strchar (n mod 256)
-         n = n div 256
-      .
+   for n in ar[] : for i = 1 to 4
+      s$ &= strchar (n mod 256)
+      n = n div 256
    .
 .
-proc xorcrypt key in[] . out[] .
+proc xorcrypt key &in[] &out[] ..
    out[] = [ ]
    for i = 1 to len in[]
       out[] &= bitxor in[i] key
    .
 .
-#
-proc crack_xor in[] . .
+proc crack_xor in[] .
    len k[] 4
-   for ki = 1 to 4
-      for b = 0 to 255
-         k[ki] = b
-         key = k[1] + 0x100 * k[2] + 0x10000 * k[3] + 0x1000000 * k[4]
+   for ki = 1 to 4 : for b = 0 to 255
+      k[ki] = b
+      key = k[1] + 0x100 * k[2] + 0x10000 * k[3] + 0x1000000 * k[4]
+      xorcrypt key in[] out[]
+      m = 0
+      for i = 1 to len out[] - 1
+         h = (bitshift out[i] ((ki - 1) * -8)) mod 256
+         if h >= 97 and h <= 122 or h >= 65 and h <= 90 or h = 32 or h = 46
+            m += 1
+         elif h > 127 or h < 31
+            m -= 20
+         .
+      .
+      if m >= len out[] * 4 div 5
+         print "Partial key " & ki & " : " & b
          xorcrypt key in[] out[]
-         m = 0
-         for i = 1 to len out[] - 1
-            h = (bitshift out[i] ((ki - 1) * -8)) mod 256
-            if h >= 97 and h <= 122 or h >= 65 and h <= 90 or h = 32 or h = 46
-               m += 1
-            elif h > 127 or h < 31
-               m -= 20
-            .
-         .
-         if m >= len out[] * 4 div 5
-            print "Partial key " & ki & " : " & b
-            xorcrypt key in[] out[]
-            arr2str out[] s$
-            print s$
-            print ""
-            break 1
-         .
+         arr2str out[] s$
+         print s$
+         print ""
+         break 1
       .
    .
    print "Key: " & key
 .
 encr[] = [ 3493208956 4101317464 4097927706 3883344404 4251347537 4101514325 2977393232 3781443399 4100268870 3816761364 4034011712 4033243725 2976857670 2976130386 4116920416 4183976525 4063639901 4286523227 4031081043 4116987712 4097192789 4168625986 3208129882 4084795412 ]
 crack_xor encr[]
-#
 
 * Block Cipher
 
@@ -189,7 +119,7 @@ crack_xor encr[]
 
 + Encryption is done by the basic operations rotation, XOR and addition with the key as parameter in several rounds. For decryption, these steps must be performed in reverse order.
 
-proc str2arr s$ . ar[] .
+proc str2arr s$ &ar[] .
    # array 32 bit - even length padding
    ar[] = [ ]
    i = 0x100000000
@@ -201,59 +131,51 @@ proc str2arr s$ . ar[] .
       ar[len ar[]] += strcode c$ * i
       i *= 256
    .
-   if len ar[] mod 2 = 1
-      ar[] &= 0
-   .
+   if len ar[] mod 2 = 1 : ar[] &= 0
 .
-proc arr2str ar[] . s$ .
+proc arr2str ar[] &s$ .
    s$ = ""
-   for n in ar[]
-      for i = 1 to 4
-         s$ &= strchar (n mod 256)
-         n = n div 256
-      .
+   for n in ar[] : for i = 1 to 4
+      s$ &= strchar (n mod 256)
+      n = n div 256
    .
 .
 #
-proc rot k . x y .
+proc rot k &x &y .
    x = bitor bitshift x -8 bitshift x 24
    x += y
-   x = bitxor x k
+   x = bitand bitxor x k 0xffffffff
    y = bitor bitshift y 3 bitshift y -29
-   y = bitxor y x
+   y = bitand bitxor y x 0xffffffff
 .
 global spkb[] .
-proc sp_prepkey0 a b . .
+proc sp_prepkey0 a b .
    spkb[] = [ b ]
    for i = 0 to 24
       rot i a b
       spkb[] &= b
    .
 .
-proc sp_prepkey key . .
+proc sp_prepkey key .
    a = key div 0x100000000
    b = key mod 0x100000000
    sp_prepkey0 a b
 .
-proc sp_block . x y .
-   for i = 1 to 26
-      rot spkb[i] x y
-   .
+proc sp_block &x &y .
+   for i = 1 to 26 : rot spkb[i] x y
 .
-proc rotrev k . x y .
+proc rotrev k &x &y .
    y = bitxor y x
-   y = bitor bitshift y -3 bitshift y 29
+   y = bitand bitor bitshift y -3 bitshift y 29 0xffffffff
    x = bitxor x k
    x = (x - y) mod 0x100000000
-   x = bitor bitshift x 8 bitshift x -24
+   x = bitand bitor bitshift x 8 bitshift x -24 0xffffffff
 .
-proc sp_blockrev . x y .
-   for i = 26 downto 1
-      rotrev spkb[i] x y
-   .
+proc sp_blockrev &x &y .
+   for i = 26 downto 1 : rotrev spkb[i] x y
 .
 #
-proc sp_encr key . in[] out[] .
+proc sp_encr key &in[] &out[] ..
    sp_prepkey key
    out[] = [ ]
    for i = 1 step 2 to len in[]
@@ -264,7 +186,7 @@ proc sp_encr key . in[] out[] .
       out[] &= y
    .
 .
-proc sp_decr key . in[] out[] .
+proc sp_decr key &in[] &out[] ..
    sp_prepkey key
    out[] = [ ]
    for i = 1 step 2 to len in[]
@@ -307,7 +229,7 @@ This can be avoided by using a random IV to which the first block is
 XORed. This IV must be transmitted (or stored) together with the ciphertext.
 Conveniently, it is added as the first block.
 
-proc str2arr s$ . ar[] .
+proc str2arr s$ &ar[] .
    # array 32 bit - even length padding
    ar[] = [ ]
    i = 0x100000000
@@ -319,59 +241,51 @@ proc str2arr s$ . ar[] .
       ar[len ar[]] += strcode c$ * i
       i *= 256
    .
-   if len ar[] mod 2 = 1
-      ar[] &= 0
-   .
+   if len ar[] mod 2 = 1 : ar[] &= 0
 .
-proc arr2str ar[] . s$ .
+proc arr2str ar[] &s$ .
    s$ = ""
-   for n in ar[]
-      for i = 1 to 4
-         s$ &= strchar (n mod 256)
-         n = n div 256
-      .
+   for n in ar[] : for i = 1 to 4
+      s$ &= strchar (n mod 256)
+      n = n div 256
    .
 .
 #
-proc rot k . x y .
+proc rot k &x &y .
    x = bitor bitshift x -8 bitshift x 24
    x += y
-   x = bitxor x k
+   x = bitand bitxor x k 0xffffffff
    y = bitor bitshift y 3 bitshift y -29
-   y = bitxor y x
+   y = bitand bitxor y x 0xffffffff
 .
 global spkb[] .
-proc sp_prepkey0 a b . .
+proc sp_prepkey0 a b .
    spkb[] = [ b ]
    for i = 0 to 24
       rot i a b
       spkb[] &= b
    .
 .
-proc sp_prepkey key . .
+proc sp_prepkey key .
    a = key div 0x100000000
    b = key mod 0x100000000
    sp_prepkey0 a b
 .
-proc sp_block . x y .
-   for i = 1 to 26
-      rot spkb[i] x y
-   .
+proc sp_block &x &y .
+   for i = 1 to 26 : rot spkb[i] x y
 .
-proc rotrev k . x y .
+proc rotrev k &x &y .
    y = bitxor y x
-   y = bitor bitshift y -3 bitshift y 29
+   y = bitand bitor bitshift y -3 bitshift y 29 0xffffffff
    x = bitxor x k
    x = (x - y) mod 0x100000000
-   x = bitor bitshift x 8 bitshift x -24
+   x = bitand bitor bitshift x 8 bitshift x -24 0xffffffff
 .
-proc sp_blockrev . x y .
-   for i = 26 downto 1
-      rotrev spkb[i] x y
-   .
+proc sp_blockrev &x &y .
+   for i = 26 downto 1 : rotrev spkb[i] x y
 .
 #
-proc sp_encr key . in[] out[] .
+proc sp_encr key &in[] &out[] ..
    sp_prepkey key
    x = random 0x100000000
    y = random 0x100000000
@@ -384,7 +298,7 @@ proc sp_encr key . in[] out[] .
       out[] &= y
    .
 .
-proc sp_decr key . in[] out[] .
+proc sp_decr key &in[] &out[] ..
    sp_prepkey key
    out[] = [ ]
    for i = 3 step 2 to len in[]
@@ -407,7 +321,6 @@ sp_decr secrkey encr[] r[]
 arr2str r[] s$
 print s$
 #
-#
 print ""
 print "CBC demo:"
 msg$ = "Hi Bob! Hi Joe! Hi Bob! "
@@ -423,50 +336,48 @@ print encr[]
 
 + To shorten the search time in this example, we start the key search near the key.
 
-proc arr2str ar[] . s$ .
+proc arr2str ar[] &s$ .
    s$ = ""
-   for n in ar[]
-      for i = 1 to 4
-         s$ &= strchar (n mod 256)
-         n = n div 256
-      .
+   for n in ar[] : for i = 1 to 4
+      s$ &= strchar (n mod 256)
+      n = n div 256
    .
 .
 #
-proc rot k . x y .
+proc rot k &x &y .
    x = bitor bitshift x -8 bitshift x 24
    x += y
-   x = bitxor x k
+   x = bitand bitxor x k 0xffffffff
    y = bitor bitshift y 3 bitshift y -29
-   y = bitxor y x
+   y = bitand bitxor y x 0xffffffff
 .
 global spkb[] .
-#
-proc sp_prepkey0 a b . .
+proc sp_prepkey0 a b .
    spkb[] = [ b ]
    for i = 0 to 24
       rot i a b
       spkb[] &= b
    .
 .
-proc sp_prepkey key . .
+proc sp_prepkey key .
    a = key div 0x100000000
    b = key mod 0x100000000
    sp_prepkey0 a b
 .
-proc rotrev k . x y .
+proc sp_block &x &y .
+   for i = 1 to 26 : rot spkb[i] x y
+.
+proc rotrev k &x &y .
    y = bitxor y x
-   y = bitor bitshift y -3 bitshift y 29
+   y = bitand bitor bitshift y -3 bitshift y 29 0xffffffff
    x = bitxor x k
    x = (x - y) mod 0x100000000
-   x = bitor bitshift x 8 bitshift x -24
+   x = bitand bitor bitshift x 8 bitshift x -24 0xffffffff
 .
-proc sp_blockrev . x y .
-   for i = 26 downto 1
-      rotrev spkb[i] x y
-   .
+proc sp_blockrev &x &y .
+   for i = 26 downto 1 : rotrev spkb[i] x y
 .
-proc sp_decr key . in[] out[] .
+proc sp_decr key &in[] &out[] ..
    sp_prepkey key
    out[] = [ ]
    for i = 3 step 2 to len in[]
@@ -477,22 +388,15 @@ proc sp_decr key . in[] out[] .
       out[] &= bitxor y in[i - 1]
    .
 .
-#
-proc istext out[] . ok .
-   ok = 0
-   for n in out[]
-      for j = 1 to 4
-         b = n mod 256
-         n = n div 256
-         if b > 1 and b < 32 or b > 126
-            return
-         .
-      .
+func istext out[] .
+   for n in out[] : for j = 1 to 4
+      b = n mod 256
+      n = n div 256
+      if b > 1 and b < 32 or b > 126: return 0
    .
-   ok = 1
-   return
+   return 1
 .
-proc brute_force start in[] . key .
+proc brute_force start in[] &key ..
    print "Brute forcing"
    in0[] = [ in[1] in[2] in[3] in[4] ]
    for key = start to 9007199254740991
@@ -504,11 +408,9 @@ proc brute_force start in[] . key .
          write "."
       .
       sp_decr key in0[] out[]
-      istext out[] ok
-      if ok = 1
+      if istext out[] = 1
          sp_decr key in[] out[]
-         istext out[] ok
-         if ok = 1
+         if istext out[] = 1
             print ""
             return
          .
@@ -533,7 +435,7 @@ print s$
 
 + We use this to generate a 53-bit key from a variable-length text key. The data is then encrypted with our easy-to-use block cipher in CBC mode - which doesn't go wrong as easily as stream ciphers.
 
-proc str2arr s$ . ar[] .
+proc str2arr s$ &ar[] .
    # array 32 bit - even length padding
    ar[] = [ ]
    i = 0x100000000
@@ -545,57 +447,49 @@ proc str2arr s$ . ar[] .
       ar[len ar[]] += strcode c$ * i
       i *= 256
    .
-   if len ar[] mod 2 = 1
-      ar[] &= 0
-   .
+   if len ar[] mod 2 = 1 : ar[] &= 0
 .
-proc arr2str ar[] . s$ .
+proc arr2str ar[] &s$ .
    s$ = ""
-   for n in ar[]
-      for i = 1 to 4
-         s$ &= strchar (n mod 256)
-         n = n div 256
-      .
+   for n in ar[] : for i = 1 to 4
+      s$ &= strchar (n mod 256)
+      n = n div 256
    .
 .
-proc rot k . x y .
+proc rot k &x &y .
    x = bitor bitshift x -8 bitshift x 24
    x += y
-   x = bitxor x k
+   x = bitand bitxor x k 0xffffffff
    y = bitor bitshift y 3 bitshift y -29
-   y = bitxor y x
+   y = bitand bitxor y x 0xffffffff
 .
 global spkb[] .
-proc sp_prepkey0 a b . .
+proc sp_prepkey0 a b .
    spkb[] = [ b ]
    for i = 0 to 24
       rot i a b
       spkb[] &= b
    .
 .
-proc sp_prepkey key . .
+proc sp_prepkey key .
    a = key div 0x100000000
    b = key mod 0x100000000
    sp_prepkey0 a b
 .
-proc sp_block . x y .
-   for i = 1 to 26
-      rot spkb[i] x y
-   .
+proc sp_block &x &y .
+   for i = 1 to 26 : rot spkb[i] x y
 .
-proc rotrev k . x y .
+proc rotrev k &x &y .
    y = bitxor y x
-   y = bitor bitshift y -3 bitshift y 29
+   y = bitand bitor bitshift y -3 bitshift y 29 0xffffffff
    x = bitxor x k
    x = (x - y) mod 0x100000000
-   x = bitor bitshift x 8 bitshift x -24
+   x = bitand bitor bitshift x 8 bitshift x -24 0xffffffff
 .
-proc sp_blockrev . x y .
-   for i = 26 downto 1
-      rotrev spkb[i] x y
-   .
+proc sp_blockrev &x &y .
+   for i = 26 downto 1 : rotrev spkb[i] x y
 .
-proc sp_encr key . in[] out[] .
+proc sp_encr key &in[] &out[] ..
    sp_prepkey key
    x = random 0x100000000
    y = random 0x100000000
@@ -608,7 +502,7 @@ proc sp_encr key . in[] out[] .
       out[] &= y
    .
 .
-proc sp_decr key . in[] out[] .
+proc sp_decr key &in[] &out[] ..
    sp_prepkey key
    out[] = [ ]
    for i = 3 step 2 to len in[]
@@ -658,44 +552,38 @@ the encrypted data.
 actual counter can also be combined with a start value in a
 different way (XOR, concatenate).
 
-proc bytes2str ar[] . s$ .
+proc bytes2str ar[] &s$ ..
    s$ = ""
-   for b in ar[]
-      s$ &= strchar b
-   .
+   for b in ar[] : s$ &= strchar b
 .
-proc str2bytes s$ . b[] .
+proc str2bytes s$ &b[] ..
    b[] = [ ]
-   for c$ in strchars s$
-      b[] &= strcode c$
-   .
+   for c$ in strchars s$ : b[] &= strcode c$
 .
-proc rot k . x y .
+proc rot k &x &y .
    x = bitor bitshift x -8 bitshift x 24
    x += y
-   x = bitxor x k
+   x = bitand bitxor x k 0xffffffff
    y = bitor bitshift y 3 bitshift y -29
-   y = bitxor y x
+   y = bitand bitxor y x 0xffffffff
 .
 global spkb[] .
-proc sp_prepkey0 a b . .
+proc sp_prepkey0 a b .
    spkb[] = [ b ]
    for i = 0 to 24
       rot i a b
       spkb[] &= b
    .
 .
-proc sp_prepkey key . .
+proc sp_prepkey key .
    a = key div 0x100000000
    b = key mod 0x100000000
    sp_prepkey0 a b
 .
-proc sp_block . x y .
-   for i = 1 to 26
-      rot spkb[i] x y
-   .
+proc sp_block &x &y .
+   for i = 1 to 26 : rot spkb[i] x y
 .
-proc sp_ctrmode key ctr . in[] out[] .
+proc sp_ctrmode key ctr &in[] &out[] ..
    sp_prepkey key
    out[] = [ ]
    for i = 1 to len in[]
@@ -733,38 +621,34 @@ print s$
 + Bob and Alice exchange secret messages. A fatal mistake
 happens to them doing so.
 
-proc str2bytes s$ . b[] .
+proc str2bytes s$ &b[] ..
    b[] = [ ]
-   for c$ in strchars s$
-      b[] &= strcode c$
-   .
+   for c$ in strchars s$ : b[] &= strcode c$
 .
-proc rot k . x y .
+proc rot k &x &y .
    x = bitor bitshift x -8 bitshift x 24
    x += y
-   x = bitxor x k
+   x = bitand bitxor x k 0xffffffff
    y = bitor bitshift y 3 bitshift y -29
-   y = bitxor y x
+   y = bitand bitxor y x 0xffffffff
 .
 global spkb[] .
-proc sp_prepkey0 a b . .
+proc sp_prepkey0 a b .
    spkb[] = [ b ]
    for i = 0 to 24
       rot i a b
       spkb[] &= b
    .
 .
-proc sp_prepkey key . .
+proc sp_prepkey key .
    a = key div 0x100000000
    b = key mod 0x100000000
    sp_prepkey0 a b
 .
-proc sp_block . x y .
-   for i = 1 to 26
-      rot spkb[i] x y
-   .
+proc sp_block &x &y .
+   for i = 1 to 26 : rot spkb[i] x y
 .
-proc sp_ctrmode key ctr . in[] out[] .
+proc sp_ctrmode key ctr &in[] &out[] ..
    sp_prepkey key
    out[] = [ ]
    for i = 1 to len in[]
@@ -807,21 +691,19 @@ for i = 1 to len msg$[]
 find a common bit sequence for the different messages that decrypt
 the messages. She uses a letter frequency analysis for this.
 
-c[][] &= [ 248 72 148 136 246 28 65 115 127 19 80 10 201 190 92 35 237 230 202 117 93 185 166 189 125 216 11 173 94 139 131 159 85 107 132 101 175 22 104 25 234 52 30 40 158 56 133 149 62 87 230 7 201 202 233 129 252 30 211 255 38 20 167 34 77 6 217 172 216 8 50 ]
-c[][] &= [ 248 72 148 139 245 23 3 54 22 65 98 14 157 241 14 14 162 241 192 122 70 178 234 176 50 139 11 169 8 153 204 144 82 108 209 117 186 68 96 8 227 113 92 53 131 108 137 148 60 65 162 18 136 204 245 157 252 21 217 254 117 33 178 50 7 95 182 224 243 4 53 ]
-c[][] &= [ 248 72 148 136 246 28 65 115 112 19 80 10 201 170 93 35 237 228 203 127 65 167 246 189 123 151 13 226 8 167 215 222 1 121 154 114 172 68 108 3 227 120 21 46 130 63 205 158 57 14 191 18 201 202 238 216 168 23 156 238 116 33 182 60 9 22 131 162 186 37 63 93 ]
-c[][] &= [ 248 72 148 139 245 23 3 54 8 86 116 67 201 189 91 50 237 248 202 105 19 181 232 166 101 216 55 190 93 138 218 222 28 107 209 97 186 22 120 74 252 121 29 51 152 108 140 147 48 91 178 87 220 208 248 139 185 88 200 229 111 46 178 36 7 95 182 224 243 4 53 ]
-c[][] &= [ 248 72 148 136 246 28 65 115 112 19 94 10 154 255 103 102 166 239 202 107 29 254 196 188 102 216 23 190 93 157 215 222 24 125 223 55 139 12 104 25 175 96 21 44 137 108 131 158 43 70 175 25 207 152 234 145 176 20 156 234 105 96 162 37 70 17 144 162 186 37 63 93 ]
-c[][] &= [ 248 72 148 139 245 23 12 54 6 86 107 3 197 255 89 46 172 245 133 120 92 254 255 166 103 216 16 173 81 206 212 155 85 117 148 114 171 68 96 30 175 96 20 36 204 33 140 157 51 14 178 24 197 215 239 138 179 15 156 224 111 36 177 54 80 64 215 205 246 14 51 90 ]
-c[][] &= [ 248 72 148 136 246 28 65 115 127 19 64 0 134 187 14 47 169 228 196 50 19 137 227 165 126 216 23 164 77 128 131 141 16 125 209 110 176 17 33 30 224 121 19 51 158 35 154 223 127 102 167 1 205 152 252 216 178 17 223 232 38 37 163 50 71 22 153 235 180 71 18 80 150 ]
+c[][] &= [ 234 165 225 65 201 168 255 208 125 54 231 57 115 199 197 116 154 223 200 223 17 16 99 33 57 157 212 100 173 51 235 233 12 85 227 143 192 17 130 37 17 184 207 172 40 195 65 213 169 106 215 76 126 219 74 192 39 201 28 242 251 242 199 214 44 160 47 29 201 71 80 ]
+c[][] &= [ 234 165 225 66 202 163 189 149 20 100 213 61 39 136 151 89 213 200 194 208 10 27 47 44 118 206 212 96 251 33 164 230 11 82 182 159 213 67 138 52 24 253 141 177 53 151 77 212 171 124 147 89 63 221 86 220 39 194 22 243 168 199 210 198 102 249 64 81 226 75 87 ]
+c[][] &= [ 234 165 225 65 201 168 255 208 114 54 231 57 115 211 196 116 154 221 201 213 13 14 51 33 63 210 210 43 251 31 191 168 88 71 253 152 195 67 134 63 24 244 196 170 52 196 9 222 174 51 142 89 126 219 77 153 115 192 83 227 169 199 214 200 104 176 117 19 171 106 93 244 ]
+c[][] &= [ 234 165 225 66 202 163 189 149 10 115 195 112 115 196 194 101 154 193 200 195 95 28 45 58 33 157 232 119 174 50 178 168 69 85 182 139 213 17 146 118 7 245 204 183 46 151 72 211 167 102 131 28 107 193 91 202 98 143 7 232 178 200 210 208 102 249 64 81 226 75 87 ]
+c[][] &= [ 234 165 225 65 201 168 255 208 114 54 233 57 32 134 254 49 209 214 200 193 81 87 1 32 34 157 200 119 174 37 191 168 65 67 184 221 228 11 130 37 84 236 196 168 63 151 71 222 188 123 158 82 120 137 73 208 107 195 83 231 180 134 194 209 39 183 102 19 171 106 93 244 ]
+c[][] &= [ 234 165 225 66 202 163 178 149 4 115 220 48 127 134 192 121 219 204 135 210 16 87 58 58 35 157 207 100 162 118 188 237 12 75 243 152 196 67 138 34 84 236 197 160 122 218 72 221 164 51 131 83 114 198 76 203 104 216 83 237 178 194 209 194 49 230 33 124 231 65 81 243 ]
+c[][] &= [ 234 165 225 65 201 168 255 208 125 54 247 51 60 194 151 120 222 221 198 152 95 32 38 57 58 157 200 109 190 56 235 251 73 67 182 132 223 22 203 34 27 245 194 183 40 216 94 159 232 91 150 74 122 137 95 153 105 198 16 229 251 195 195 198 38 176 111 90 165 8 112 249 131 ]
 #
-proc bytes2str ar[] . s$ .
+proc bytes2str ar[] &s$ ..
    s$ = ""
-   for b in ar[]
-      s$ &= strchar b
-   .
+   for b in ar[] : s$ &= strchar b
 .
-proc crack_xor . key[] .
+proc crack_xor &key[] ..
    key[] = [ ]
    for pos = 1 to 66
       max = 1
@@ -888,9 +770,7 @@ proc decrypt encr[] key[] . .
    print s$
    print ""
 .
-for i = 1 to len c[][]
-   decrypt c[i][] key[]
-.
+for i = 1 to len c[][] : decrypt c[i][] key[]
 
 + That worked. Alice and Bob obviously messed up and generated the
 same XOR bit sequence in a stream cipher for all messages - they
@@ -903,25 +783,23 @@ decoded, because they differed too little between the messages.
 computer and thus also determine the XOR key sequence and thus
 also decode the further messages almost completely.
 
-c[][] &= [ 248 72 148 136 246 28 65 115 127 19 80 10 201 190 92 35 237 230 202 117 93 185 166 189 125 216 11 173 94 139 131 159 85 107 132 101 175 22 104 25 234 52 30 40 158 56 133 149 62 87 230 7 201 202 233 129 252 30 211 255 38 20 167 34 77 6 217 172 216 8 50 ]
-c[][] &= [ 248 72 148 139 245 23 3 54 22 65 98 14 157 241 14 14 162 241 192 122 70 178 234 176 50 139 11 169 8 153 204 144 82 108 209 117 186 68 96 8 227 113 92 53 131 108 137 148 60 65 162 18 136 204 245 157 252 21 217 254 117 33 178 50 7 95 182 224 243 4 53 ]
-c[][] &= [ 248 72 148 136 246 28 65 115 112 19 80 10 201 170 93 35 237 228 203 127 65 167 246 189 123 151 13 226 8 167 215 222 1 121 154 114 172 68 108 3 227 120 21 46 130 63 205 158 57 14 191 18 201 202 238 216 168 23 156 238 116 33 182 60 9 22 131 162 186 37 63 93 ]
-c[][] &= [ 248 72 148 139 245 23 3 54 8 86 116 67 201 189 91 50 237 248 202 105 19 181 232 166 101 216 55 190 93 138 218 222 28 107 209 97 186 22 120 74 252 121 29 51 152 108 140 147 48 91 178 87 220 208 248 139 185 88 200 229 111 46 178 36 7 95 182 224 243 4 53 ]
-c[][] &= [ 248 72 148 136 246 28 65 115 112 19 94 10 154 255 103 102 166 239 202 107 29 254 196 188 102 216 23 190 93 157 215 222 24 125 223 55 139 12 104 25 175 96 21 44 137 108 131 158 43 70 175 25 207 152 234 145 176 20 156 234 105 96 162 37 70 17 144 162 186 37 63 93 ]
-c[][] &= [ 248 72 148 139 245 23 12 54 6 86 107 3 197 255 89 46 172 245 133 120 92 254 255 166 103 216 16 173 81 206 212 155 85 117 148 114 171 68 96 30 175 96 20 36 204 33 140 157 51 14 178 24 197 215 239 138 179 15 156 224 111 36 177 54 80 64 215 205 246 14 51 90 ]
-c[][] &= [ 248 72 148 136 246 28 65 115 127 19 64 0 134 187 14 47 169 228 196 50 19 137 227 165 126 216 23 164 77 128 131 141 16 125 209 110 176 17 33 30 224 121 19 51 158 35 154 223 127 102 167 1 205 152 252 216 178 17 223 232 38 37 163 50 71 22 153 235 180 71 18 80 150 ]
+c[][] &= [ 234 165 225 65 201 168 255 208 125 54 231 57 115 199 197 116 154 223 200 223 17 16 99 33 57 157 212 100 173 51 235 233 12 85 227 143 192 17 130 37 17 184 207 172 40 195 65 213 169 106 215 76 126 219 74 192 39 201 28 242 251 242 199 214 44 160 47 29 201 71 80 ]
+c[][] &= [ 234 165 225 66 202 163 189 149 20 100 213 61 39 136 151 89 213 200 194 208 10 27 47 44 118 206 212 96 251 33 164 230 11 82 182 159 213 67 138 52 24 253 141 177 53 151 77 212 171 124 147 89 63 221 86 220 39 194 22 243 168 199 210 198 102 249 64 81 226 75 87 ]
+c[][] &= [ 234 165 225 65 201 168 255 208 114 54 231 57 115 211 196 116 154 221 201 213 13 14 51 33 63 210 210 43 251 31 191 168 88 71 253 152 195 67 134 63 24 244 196 170 52 196 9 222 174 51 142 89 126 219 77 153 115 192 83 227 169 199 214 200 104 176 117 19 171 106 93 244 ]
+c[][] &= [ 234 165 225 66 202 163 189 149 10 115 195 112 115 196 194 101 154 193 200 195 95 28 45 58 33 157 232 119 174 50 178 168 69 85 182 139 213 17 146 118 7 245 204 183 46 151 72 211 167 102 131 28 107 193 91 202 98 143 7 232 178 200 210 208 102 249 64 81 226 75 87 ]
+c[][] &= [ 234 165 225 65 201 168 255 208 114 54 233 57 32 134 254 49 209 214 200 193 81 87 1 32 34 157 200 119 174 37 191 168 65 67 184 221 228 11 130 37 84 236 196 168 63 151 71 222 188 123 158 82 120 137 73 208 107 195 83 231 180 134 194 209 39 183 102 19 171 106 93 244 ]
+c[][] &= [ 234 165 225 66 202 163 178 149 4 115 220 48 127 134 192 121 219 204 135 210 16 87 58 58 35 157 207 100 162 118 188 237 12 75 243 152 196 67 138 34 84 236 197 160 122 218 72 221 164 51 131 83 114 198 76 203 104 216 83 237 178 194 209 194 49 230 33 124 231 65 81 243 ]
+c[][] &= [ 234 165 225 65 201 168 255 208 125 54 247 51 60 194 151 120 222 221 198 152 95 32 38 57 58 157 200 109 190 56 235 251 73 67 182 132 223 22 203 34 27 245 194 183 40 216 94 159 232 91 150 74 122 137 95 153 105 198 16 229 251 195 195 198 38 176 111 90 165 8 112 249 131 ]
 #
-proc str2bytes s$ . ar[] .
+proc str2bytes s$ &ar[] ..
    ar[] = [ ]
    for c$ in strchars s$
       ar[] &= strcode c$
    .
 .
-proc bytes2str ar[] . s$ .
+proc bytes2str ar[] &s$ ..
    s$ = ""
-   for b in ar[]
-      s$ &= strchar b
-   .
+   for b in ar[] : s$ &= strchar b
 .
 proc decrypt encr[] key[] . .
    out[] = [ ]
@@ -947,9 +825,7 @@ for i = 1 to len b[]
       key[] &= bitxor b[i] c[1][i]
    .
 .
-for i = 1 to len c[][]
-   decrypt c[i][] key[]
-.
+for i = 1 to len c[][] : decrypt c[i][] key[]
 
 + Trudy did not crack the key, but only found the bit sequence that was used multiple times to XOR the data. This reuse compromised the security completely.
 

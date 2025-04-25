@@ -1,14 +1,14 @@
 node[][] = [ [ -1 -2 -2 ] [ -1 -2 1 ] [ -1 2 -2 ] [ -1 2 1 ] [ 1 -2 -2 ] [ 1 -2 1 ] [ 1 2 -2 ] [ 1 2 1 ] ]
 edge[][] = [ [ 1 2 ] [ 2 4 ] [ 4 3 ] [ 3 1 ] [ 5 6 ] [ 6 8 ] [ 8 7 ] [ 7 5 ] [ 1 5 ] [ 2 6 ] [ 3 7 ] [ 4 8 ] ]
 # 
-proc scale f . .
+proc scale f .
    for i = 1 to len node[][]
       for d = 1 to 3
          node[i][d] *= f
       .
    .
 .
-proc rotate angx angy . .
+proc rotate angx angy .
    sinx = sin angx
    cosx = cos angx
    siny = sin angy
@@ -24,7 +24,7 @@ proc rotate angx angy . .
    .
 .
 len nd[] 3
-proc draw . .
+proc draw .
    clear
    move 2 2
    text "Arrow keys to rotate"

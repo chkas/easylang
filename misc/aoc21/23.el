@@ -12,7 +12,7 @@ visual = 1
 hashsz = 1999993
 len hashind[] hashsz
 #
-proc hash ind . ret .
+proc hash ind &ret .
    hi = ind mod hashsz + 1
    while hashind[hi] <> 0 and hashind[hi] <> ind
       hi = hi mod hashsz + 1
@@ -26,7 +26,7 @@ proc hash ind . ret .
 m[] = [ 0 0 -1 0 -1 0 -1 0 -1 0 0 ]
 global m0[] destid dim .
 #
-proc tonum . n .
+proc tonum &n .
    n = 0
    for i to len m0[]
       n = n * 5 + m0[i]
@@ -37,7 +37,7 @@ proc tonum . n .
       .
    .
 .
-proc toarr n . .
+proc toarr n .
    for i = 11 downto 1
       if m[i] <> -1
          m[i] = n mod 5
@@ -54,7 +54,7 @@ sz = 8.5
 sz2 = sz / 2
 background 000
 acol[] = [ 373 773 751 733 ]
-proc show cost t . .
+proc show cost t .
    if visual = 0 : break 1
    clear
    x = 3
@@ -102,7 +102,7 @@ proc show cost t . .
    sleep t
 .
 #
-proc read . .
+proc read .
    s$ = input
    s$ = input
    ind = 1
@@ -116,7 +116,7 @@ proc read . .
    .
 .
 global m0saved[] .
-proc init . .
+proc init .
    dim = 2
    m0[] = [ 1 2 3 4 1 2 3 4 ]
    tonum destid
@@ -124,7 +124,7 @@ proc init . .
    m0saved[] = m0[]
 .
 #
-proc prepare_part2 . .
+proc prepare_part2 .
    dim = 4
    m0[] = [ ]
    for i = 0 to 15
@@ -143,7 +143,7 @@ proc prepare_part2 . .
 .
 #
 amp[] = [ 1 10 100 1000 ]
-proc init_cost . cost .
+proc init_cost &cost .
    cost = 0
    for i to 4
       for j to dim
@@ -163,7 +163,7 @@ proc init_cost . cost .
 .
 global todo[] cost[] prev[] .
 #
-proc show_way . .
+proc show_way .
    list[] &= destid
    cur = destid
    repeat
@@ -207,7 +207,7 @@ proc show_way . .
    .
 .
 #
-proc take_min . cur cost .
+proc take_min &cur &cost .
    n = len todo[]
    if n = 0
       cur = -1
@@ -224,7 +224,7 @@ proc take_min . cur cost .
    len todo[] -1
    len cost[] -1
 .
-proc go_home . cur .
+proc go_home &cur .
    toarr cur
    while done = 0
       done = 1
@@ -257,7 +257,7 @@ proc go_home . cur .
       .
    .
 .
-proc add_ways cur cost . .
+proc add_ways cur cost .
    for box to 4
       m0i = -1
       i = 0
@@ -303,7 +303,7 @@ proc add_ways cur cost . .
       .
    .
 .
-proc run . .
+proc run .
    init_cost cost
    tonum h
    todo[] = [ h ]

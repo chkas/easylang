@@ -1,15 +1,15 @@
 # AoC-15 - 4: The Ideal Stocking Stuffer
-# 
+#
 len md5k[] 64
 arrbase md5k[] 0
-proc md5init . .
+proc md5init .
    for i range0 64
       md5k[i] = floor (0x100000000 * abs sin ((i + 1) * 180 / pi))
    .
 .
 md5init
-# 
-proc md5 inp$ . s$ .
+#
+proc md5 inp$ &s$ .
    subr addinp
       if inp4 = 1
          inp[] &= 0
@@ -42,7 +42,7 @@ proc md5 inp$ . s$ .
       h = h div 0x100
    .
    inp[] &= 0
-   # 
+   #
    a0 = 0x67452301
    b0 = 0xefcdab89
    c0 = 0x98badcfe
@@ -109,7 +109,7 @@ for i range0 9999999
       .
    .
 .
-# 
+#
 input_data
 abcdef
 

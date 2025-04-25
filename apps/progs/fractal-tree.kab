@@ -1,6 +1,6 @@
 # Fractal tree
 #
-proc tree x y l w ang dp . .
+proc tree x y l w ang dp .
    if dp <= 2
       color3 0 0.2 + randomf / 4 0
    else

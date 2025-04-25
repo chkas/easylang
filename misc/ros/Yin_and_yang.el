@@ -1,8 +1,8 @@
-proc circ r c . .
+proc circ r c .
    color c
    circle r
 .
-proc yinyang x y r . .
+proc yinyang x y r .
    move x y
    circ 2 * r 000
    color 999

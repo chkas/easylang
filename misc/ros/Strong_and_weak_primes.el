@@ -15,7 +15,7 @@ func nextprim n .
    .
    return n
 .
-proc strwkprimes ncnt sgn . .
+proc strwkprimes ncnt sgn .
    write "First " & ncnt & ": "
    pr2 = 2
    pr3 = 3

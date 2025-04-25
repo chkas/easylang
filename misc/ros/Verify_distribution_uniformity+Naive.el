@@ -16,7 +16,7 @@ func dice7b .
 .
 numfmt 3 0
 # 
-proc checkdist dicefunc n delta . .
+proc checkdist dicefunc n delta .
    len dist[] 7
    for i to n
       # no function pointers

@@ -1,59 +1,41 @@
 fastfunc isprim num .
    if num mod 2 = 0
-      if num = 2
-         return 1
-      .
+      if num = 2 : return 1
       return 0
    .
    if num mod 3 = 0
-      if num = 3
-         return 1
-      .
+      if num = 3 : return 1
       return 0
    .
    i = 5
    while i <= sqrt num
-      if num mod i = 0
-         return 0
-      .
+      if num mod i = 0 : return 0
       i += 2
-      if num mod i = 0
-         return 0
-      .
+      if num mod i = 0 : return 0
       i += 4
    .
    return 1
 .
-proc digits n . d[] .
+proc digits n &d[] .
    while n > 0
       d[] &= n mod 10
       n = n div 10
    .
 .
-proc fromdigits b . d[] n .
-   n = 0
-   for i = len d[] downto 1
-      n = n * b + d[i]
-   .
+func fromdigits &d[] b .
+   for i = len d[] downto 1 : n = n * b + d[i]
+   return n
 .
 func panbasenpr n .
-   if n < 10
-      return 1 - isprim n
-   .
-   if n > 10 and n mod 10 = 0
-      return 1
-   .
+   if n < 10 : return 1 - isprim n
+   if n > 10 and n mod 10 = 0 : return 1
    digits n d[]
    for i to len d[]
-      if maxdig < d[i]
-         maxdig = d[i]
-      .
+      maxdig = higher maxdig d[i]
    .
    for base = maxdig + 1 to n
-      fromdigits base d[] n
-      if isprim n = 1
-         return 0
-      .
+      n = fromdigits d[] base
+      if isprim n = 1 : return 0
    .
    return 1
 .
@@ -83,9 +65,7 @@ cnt = 0
 for n = 2 to limit
    if panbasenpr n = 1
       cnt += 1
-      if n mod 2 = 1
-         odd += 1
-      .
+      if n mod 2 = 1 : odd += 1
    .
 .
 print "\nCount of pan-base composites up to and including " & limit & ": " & cnt

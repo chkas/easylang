@@ -1,11 +1,11 @@
 # AoC-19 - Day 9: Sensor Boost
-# 
+#
 code[] = number strsplit input ","
 arrbase code[] 0
-# 
+#
 global base mem[] .
-# 
-proc mem_ind mo ind . rind .
+#
+proc mem_ind mo ind &rind ..
    if mo = 1
       rind = ind
    elif mo = 0
@@ -64,7 +64,7 @@ proc run inp . .
 .
 run 1
 run 2
-# 
+#
 input_data
 1102,34915192,34915192,7,4,7,99,0
 

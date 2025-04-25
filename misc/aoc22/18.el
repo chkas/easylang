@@ -5,7 +5,7 @@ ncc = nc * nc
 len m[] ncc * nc
 arrbase m[] 0
 #
-proc init . .
+proc init .
    repeat
       s$ = input
       until s$ = ""
@@ -25,7 +25,7 @@ proc init . .
    .
 .
 init
-proc cntfaces id . res .
+proc cntfaces id &res .
    for i range0 len m[]
       if m[i] = id
          s += 6
@@ -39,7 +39,7 @@ proc cntfaces id . res .
 cntfaces 1 nfaces
 print nfaces
 #
-proc flood . .
+proc flood .
    h = 1 + nc + nc * nc
    todo[] &= h
    m[h] = 2

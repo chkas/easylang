@@ -8,7 +8,7 @@ len m[] n * n
 global xc yc rx[] ry[] cnt s$[] .
 textsize 2.5
 #
-proc show . .
+proc show .
    clear
    if rx[1] >= xc + 50
       xc += 1
@@ -39,7 +39,7 @@ proc show . .
    text cnt
    sleep 0.005
 .
-proc read . .
+proc read .
    repeat
       s$ = input
       until s$ = ""
@@ -48,7 +48,7 @@ proc read . .
 .
 read
 #
-proc go rl . .
+proc go rl .
    rx[] = [ ]
    ry[] = [ ]
    for h to rl

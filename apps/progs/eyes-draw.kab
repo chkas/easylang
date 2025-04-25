@@ -3,7 +3,7 @@
 background 777
 clear
 col = 0
-proc eye x y . .
+proc eye x y .
    color 999
    move x y
    circle 6.5

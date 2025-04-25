@@ -15,33 +15,23 @@ func[] divisors n .
    return divs[]
 .
 func sum divs[] .
-   for e in divs[]
-      s += e
-   .
+   for e in divs[] : s += e
    return s
 .
 func semiperf n divs[] .
-   if len divs[] = 0
-      return 0
-   .
+   if len divs[] = 0 : return 0
    h = divs[$]
    len divs[] -1
-   if n = h
-      return 1
-   .
+   if n = h : return 1
    if n > h
-      if semiperf (n - h) divs[] = 1
-         return 1
-      .
+      if semiperf (n - h) divs[] = 1 : return 1
    .
    return semiperf n divs[]
 .
-proc sieve limit . wierd[] .
+proc sieve limit &wierd[] .
    len wierd[] limit
    for j = 1 to limit
-      if j mod 6 <> 0
-         wierd[j] = 1
-      .
+      if j mod 6 <> 0 : wierd[j] = 1
    .
    for i = 2 step 2 to limit
       if wierd[i] = 1

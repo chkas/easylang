@@ -294,7 +294,7 @@ ide2lnk.onclick = idelnk.onclick
 function msgf(m, d) {
 	codeMsgF(m, d)
 	//if (editing) codeMsgF(m, d)
-	if (m == "error" || m == "selline") {
+	if (m == "src_err" || m == "error" || m == "selline") {
 		if (editing) showcode()
 		else easyrun(errapp, canv)
 	}

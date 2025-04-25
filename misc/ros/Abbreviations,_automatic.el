@@ -1,4 +1,4 @@
-proc abbrev s$ . .
+proc abbrev s$ .
    d$[] = strtok s$ " "
    repeat
       lng += 1

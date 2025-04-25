@@ -2,7 +2,7 @@
 #
 global b[][] o[][] a[][] .
 #
-proc read . .
+proc read .
    len b[] 4
    len o[] 4
    len a[] 4
@@ -22,7 +22,7 @@ read
 #
 len r[] 4
 #
-proc opf op a b c . .
+proc opf op a b c .
    if op = 0
       r[c] = r[a] + r[b]
    elif op = 1
@@ -89,7 +89,7 @@ proc opf op a b c . .
       .
    .
 .
-proc part1 . .
+proc part1 .
    for tst = 1 to len b[][]
       ok = 0
       for op range0 16
@@ -108,7 +108,7 @@ proc part1 . .
 .
 part1
 #
-proc part2 . .
+proc part2 .
    len op[] 16
    len op_match[] 16
    arrbase op[] 0

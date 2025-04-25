@@ -1,4 +1,4 @@
-proc dostuff s$ . .
+proc dostuff s$ .
    print s$
 .
 n = number input

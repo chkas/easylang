@@ -1,7 +1,7 @@
 # AoC-24 - Day 20: Race Condition
 #
 global nc m$[] start ende .
-proc init . .
+proc init .
    s$ = input
    nc = len s$ + 2
    for i to nc : m$[] &= "*"
@@ -27,7 +27,7 @@ init
 thre = 50
 if nc > 20 : thre = 100
 #
-proc fill s0 . seen[] .
+proc fill s0 &seen[] .
    todo[] = [ s0 ]
    while len todo[] > 0
       cnt += 1
@@ -49,7 +49,7 @@ fill start cntfwd[]
 fill ende cntback[]
 fullcnt = cntfwd[ende] + 1
 #
-proc cheat p0 . ncheat1 ncheat2 .
+proc cheat p0 &ncheat1 &ncheat2 .
    len seen[] len m$[]
    len out[] len m$[]
    todo[] = [ p0 ]
@@ -75,7 +75,7 @@ proc cheat p0 . ncheat1 ncheat2 .
    .
    return
 .
-proc run . .
+proc run .
    for i to len m$[]
       if m$[i] = "." : cheat i sum1 sum2
    .

@@ -6,7 +6,7 @@ brd$[] = strchars "
 ┃ ● ● ● ● ┃
 ┃● ● ● ● ●┃
 ┗━━━━━━━━━┛"
-proc solve . solution$ .
+proc solve &solution$ .
    solution$ = ""
    for pos = 1 to len brd$[]
       if brd$[pos] = "●"

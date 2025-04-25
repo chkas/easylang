@@ -1,7 +1,7 @@
 # AoC-24 - Day 5: Print Queue
 #
 global m[][] .
-proc init . .
+proc init .
    len m[][] 100
    for i to 100 : len m[i][] 100
    repeat
@@ -12,7 +12,7 @@ proc init . .
    .
 .
 init
-proc gmid s$ . sum1 sum2 .
+proc gmid s$ &sum1 &sum2 .
    n[] = number strsplit s$ ","
    for n in n[]
       seen[] &= 0

@@ -15,7 +15,7 @@ subr reset
    mem[] = code[]
    arrbase mem[] 0
 .
-proc mem_ind mo ind . rind .
+proc mem_ind mo ind &rind ..
    rind = ind
    if mo = 0
       rind = mem[ind]
@@ -73,7 +73,7 @@ proc run . .
 prefix
 # --------  --------
 #
-proc in_beam in1 in2 . out .
+proc in_beam in1 in2 &out ..
    ic_reset
    ic_in = in1
    ic_run
@@ -107,7 +107,7 @@ proc part1 . .
    print cnt
 .
 #
-proc test x . y res .
+proc test x &y &res ..
    x += 99
    repeat
       in_beam x y h

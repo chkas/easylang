@@ -39,7 +39,7 @@ proc part_1 . .
 .
 part_1
 #
-proc gcd a b . res .
+proc gcd a b &res ..
    while b <> 0
       h = b
       b = a mod b
@@ -47,7 +47,7 @@ proc gcd a b . res .
    .
    res = a
 .
-proc lcm3 a b c . r .
+proc lcm3 a b c &r ..
    gcd a b h
    r1 = a div h * b
    gcd r1 c h

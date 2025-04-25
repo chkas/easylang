@@ -1,11 +1,11 @@
 # AoC-23 - Day 12: Hot Springs
 #
 global cache[] cache0[] .
-proc init . .
+proc init .
    for i to 18 * 36 * 120 : cache0[] &= -1
 .
 init
-proc cache_init . .
+proc cache_init .
    cache[] = cache0[]
 .
 func cache_ind idx gid cnt .

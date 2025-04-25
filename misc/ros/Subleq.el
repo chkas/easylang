@@ -2,9 +2,7 @@ global inpos inp$ .
 func inp .
    if inpos = 0
       inp$ = input
-      if error = 1
-         return 255
-      .
+      if error = 1 : return 255
       inpos = 1
    .
    if inpos <= len inp$
@@ -15,7 +13,7 @@ func inp .
    inpos = 0
    return 10
 .
-proc subleq . mem[] .
+proc subleq &mem[] .
    repeat
       a = mem[p]
       b = mem[p + 1]
@@ -36,8 +34,8 @@ proc subleq . mem[] .
 .
 prog[] = [ 15 17 -1 17 -1 -1 16 1 -1 16 3 -1 15 15 0 0 -1 72 101 108 108 111 44 32 119 111 114 108 100 33 10 0 ]
 arrbase prog[] 0
-# 
+#
 subleq prog[]
-# 
+#
 input_data
 dummy data

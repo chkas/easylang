@@ -7,7 +7,7 @@ func$ hex h .
    .
    return h$
 .
-proc samechar s$ . .
+proc samechar s$ .
    s$[] = strchars s$
    for i = 2 to len s$[]
       if s$[i] <> s$[i - 1]

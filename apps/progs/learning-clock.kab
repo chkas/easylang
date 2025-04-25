@@ -1,6 +1,6 @@
 # Learning clock
 #
-proc draw hour min sec . .
+proc draw hour min sec .
    move 69 3
    clear
    if hour < 10 : s$ = "0"

@@ -6,7 +6,7 @@ func gcd a b .
    .
    return a
 .
-proc test p[] . .
+proc test p[] .
    if gcd p[1] p[2] = 1
       print p[]
    .

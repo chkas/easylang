@@ -1,13 +1,11 @@
-proc permlist k . l$[] .
+proc permlist k &l$[] .
    if k = len l$[]
       write (strjoin l$[] "") & " "
       return
    .
    for i = k to len l$[]
       for j = k to i - 1
-         if l$[j] = l$[i]
-            break 1
-         .
+         if l$[j] = l$[i] : break 1
       .
       if j = i
          swap l$[i] l$[k]
@@ -17,11 +15,9 @@ proc permlist k . l$[] .
    .
 .
 func$[] list l[] .
-   for i to len l[]
-      for j to l[i]
-         h$ = strchar (64 + i)
-         r$[] &= h$
-      .
+   for i to len l[] : for j to l[i]
+      h$ = strchar (64 + i)
+      r$[] &= h$
    .
    return r$[]
 .

@@ -4,7 +4,7 @@
 max_coord = 20
 #
 global sx[] sy[] dist[] bline .
-proc init . .
+proc init .
    repeat
       s$ = input
       until s$ = ""
@@ -38,7 +38,7 @@ proc init . .
 init
 n = len sx[]
 #
-proc get_ranges y . xa[] xb[] .
+proc get_ranges y &xa[] &xb[] .
    xs = 1
    xa[] = [ ]
    xb[] = [ ]

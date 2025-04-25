@@ -1,7 +1,7 @@
 # AoC-23 - Day 18: Lavaduct Lagoon
 #
 global d[] n[] inp2$[] .
-proc read . .
+proc read .
    repeat
       s$ = input
       until s$ = ""
@@ -21,7 +21,7 @@ proc read . .
 .
 read
 #
-proc read2 . .
+proc read2 .
    d[] = [ ]
    n[] = [ ]
    for s$ in inp2$[]
@@ -37,7 +37,7 @@ proc read2 . .
       n[] &= n
    .
 .
-proc sort . d1[] d2[] d3[] .
+proc sort &d1[] &d2[] &d3[] .
    for i = 1 to len d1[] - 1
       for j = i + 1 to len d1[]
          if d1[j] < d1[i]
@@ -48,7 +48,7 @@ proc sort . d1[] d2[] d3[] .
       .
    .
 .
-proc run . .
+proc run .
    for i to len d[]
       d = d[i]
       sum += n[i]

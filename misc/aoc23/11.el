@@ -20,7 +20,7 @@ for i to n
    hasrow[row0[i]] = 1
    hascol[col0[i]] = 1
 .
-proc calc row[] col[] expans . .
+proc calc row[] col[] expans .
    for i to len hasrow[]
       addr += if hasrow[i] = 0
       addrow[] &= addr * expans

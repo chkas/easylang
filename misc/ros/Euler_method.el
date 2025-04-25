@@ -4,7 +4,7 @@ func analytic T0 t .
    return TR + (T0 - TR) * pow 2.71828 (K * t)
 .
 ytxt = 95
-proc draw_analytic a b . .
+proc draw_analytic a b .
    color 009
    move 80 ytxt
    ytxt -= 5
@@ -21,7 +21,7 @@ draw_analytic 0 100
 func newton_cooling temp .
    return K * (temp - TR)
 .
-proc draw_euler y0 a b step col . .
+proc draw_euler y0 a b step col .
    color col
    move 80 ytxt
    ytxt -= 5

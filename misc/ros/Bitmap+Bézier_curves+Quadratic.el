@@ -1,4 +1,4 @@
-proc quadraticbezier x1 y1 x2 y2 x3 y3 nseg . .
+proc quadraticbezier x1 y1 x2 y2 x3 y3 nseg .
    for i = 0 to nseg
       t = i / nseg
       t1 = 1 - t

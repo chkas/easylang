@@ -1,4 +1,4 @@
-proc tree x1 y1 x2 y2 depth . .
+proc tree x1 y1 x2 y2 depth .
    if depth < 8
       dx = x2 - x1
       dy = y1 - y2

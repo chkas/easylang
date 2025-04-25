@@ -7,7 +7,7 @@ nc = 400
 len m[] nc * nc / 2
 global maxy .
 #
-proc show p . .
+proc show p .
    ra = maxy + 5
    sc = 100 / ra / 2
    sx = nc / 2 - ra
@@ -28,7 +28,7 @@ proc show p . .
       rect sc sc
    .
 .
-proc init . .
+proc init .
    repeat
       s$ = input
       until s$ = ""
@@ -62,7 +62,7 @@ proc init . .
 .
 init
 #
-proc run . .
+proc run .
    s = nc / 2 + 1
    while 1 = 1
       if part2 = 0 and s >= maxy * nc

@@ -1,4 +1,4 @@
-proc norm s$ . name$[] cnt[] id .
+proc norm s$ &name$[] &cnt[] &id .
    d$[] = strchars s$
    for i = 1 to len d$[] - 1
       for j = i + 1 to len d$[]
@@ -20,7 +20,7 @@ func deranged a$ b$ .
    return 1
 .
 global maxlng w$[] .
-proc read . .
+proc read .
    repeat
       s$ = input
       until s$ = ""
@@ -29,10 +29,10 @@ proc read . .
    .
 .
 read
-# 
+#
 len wid[] len w$[]
 done = 0
-proc search a b . .
+proc search a b .
    for i = a to b
       norm w$[i] name$[] cnt[] id
       wid[i] = id
@@ -58,8 +58,8 @@ while done = 0 and maxlng >= 2
    search a + 1 b
    maxlng -= 1
 .
-# 
-# a few lines of unixdict.txt, also works with all   
+#
+# a few lines of unixdict.txt, also works with all
 input_data
 ancestor
 ancestral

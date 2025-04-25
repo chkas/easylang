@@ -1,7 +1,7 @@
 # AoC-24 - Day 10: Hoof It
 #
 global nc m[] seen[] .
-proc init . .
+proc init .
    s$ = input
    nc = len s$ + 1
    len m[] nc
@@ -28,7 +28,7 @@ func find i .
 #
 len seen0[] len m[]
 #
-proc run . .
+proc run .
    for i to len m[] : if m[i] = 1
       seen[] = seen0[]
       sum += find i

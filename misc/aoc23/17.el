@@ -1,7 +1,7 @@
 # AoC-23 - Day 17: Clumsy Crucible
 #
 global nc m[] .
-proc init . .
+proc init .
    s$ = input
    nc = len s$ + 1
    for i to nc : m[] &= 0
@@ -21,7 +21,7 @@ global cost[] max .
 len todo[][] 100
 arrbase todo[][] 0
 #
-proc add p c d cnt . .
+proc add p c d cnt .
    skip = 1
    if cnt = 7
       # part2
@@ -50,7 +50,7 @@ proc add p c d cnt . .
    .
 .
 #
-proc go maxcnt . .
+proc go maxcnt .
    cost[] = [ ]
    for i to len m[] * 28 : cost[] &= 1 / 0
    add (nc + 1) 0 1 maxcnt

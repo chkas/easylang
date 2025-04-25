@@ -1,5 +1,5 @@
 numfmt 10 0
-proc task1 . .
+proc task1 .
    print "--- Task 1 pathologic ---"
    vpp = 2
    vp = -4
@@ -14,8 +14,8 @@ proc task1 . .
 .
 task1
 print ""
-# 
-proc task2 . .
+#
+proc task2 .
    print "--- Task 2 pathologic ---"
    e = 2.718281828459045
    bal = e - 1
@@ -26,8 +26,8 @@ proc task2 . .
 .
 task2
 print ""
-# 
-proc mul f . bal bal$[] .
+#
+proc mul f &bal &bal$[] .
    for i = len bal$[] downto 1
       dig = number bal$[i]
       h = dig * f + c
@@ -36,7 +36,7 @@ proc mul f . bal bal$[] .
    .
    bal += c
 .
-proc task2ok . .
+proc task2ok .
    print "--- Task 2 OK ---"
    e$ = "2.7182818284590452353602874713526624977572470"
    bal = number substr e$ 1 1

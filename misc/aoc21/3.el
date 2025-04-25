@@ -16,7 +16,7 @@ func binv s$ .
    return v
 .
 #
-proc part_1 . .
+proc part_1 .
    len cnt[] nbits
    for ln$ in inp$[]
       for i = 1 to nbits
@@ -32,7 +32,7 @@ proc part_1 . .
 .
 part_1
 #
-proc find bit ln$[] . val .
+proc find bit ln$[] &val .
    for i = 1 to nbits
       cnt = 0
       for ln$ in ln$[]

@@ -10,7 +10,7 @@ visual = 1
 global m[] nc .
 background 001
 col[] = [ 0 030 060 ]
-proc show . .
+proc show .
    if visual = 0 : return
    clear
    sc = 100 / nc
@@ -26,7 +26,7 @@ proc show . .
    .
    sleep 0.01
 .
-proc step . done .
+proc step &done .
    nr = len m[] / nc
    done = 1
    for i to len m[]

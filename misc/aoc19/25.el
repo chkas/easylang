@@ -1,19 +1,19 @@
 # AoC-19 - Day 25: Cryostasis
-# 
+#
 verbose = 0
-# 
+#
 ic_mem[] = number strsplit input ","
-# 
+#
 # -------- intcode --------
-# 
+#
 prefix ic_
-# 
+#
 arrbase mem[] 0
 in = -1
 base = 0
 pc = 0
-# 
-proc mem_ind mo ind . rind .
+#
+proc mem_ind mo ind &rind ..
    rind = ind
    if mo = 0
       rind = mem[ind]
@@ -72,7 +72,7 @@ prefix
 # --------  --------
 len door[] 4
 global room$ item$ stat weight_fb out$ last_out$ .
-# 
+#
 proc ic_outf out . .
    c$ = strchar out
    if out = 10
@@ -127,7 +127,7 @@ proc ic_outf out . .
       out$ &= c$
    .
 .
-# 
+#
 proc put h . .
    ic_in = h
    ic_run
@@ -143,7 +143,7 @@ proc say s$ . .
    .
    put 10
 .
-# 
+#
 dir$[] = [ "north" "east" "south" "west" ]
 proc go d . .
    say dir$[d]
@@ -241,7 +241,7 @@ if len ic_mem[] > 1
 else
    print "No input"
 .
-# 
+#
 input_data
 
 

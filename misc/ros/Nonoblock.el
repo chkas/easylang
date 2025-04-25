@@ -20,7 +20,7 @@ func$[] genseq ones$[] nzeros .
    .
    return r$[]
 .
-proc block data$ le . .
+proc block data$ le .
    a[] = number strchars data$
    for b in a[]
       nbytes += b

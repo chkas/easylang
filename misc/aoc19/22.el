@@ -40,7 +40,7 @@ proc part1 . .
 part1
 #
 #
-proc multm a b m . r .
+proc multm a b m &r ..
    r = 0
    while b > 0
       if b mod 2 = 1
@@ -51,7 +51,7 @@ proc multm a b m . r .
    .
 .
 #
-proc powm a e m . r .
+proc powm a e m &r ..
    r = 1
    while e > 0
       if e mod 2 = 1

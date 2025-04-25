@@ -5,7 +5,7 @@ visual = 0
 #
 global f[] maxpos minpos .
 #
-proc read . .
+proc read .
    len f[] 300 * 2500
    arrbase f[] 0
    miny = 9999
@@ -37,7 +37,7 @@ read
 #
 background 765
 global pos0 skip .
-proc show p . .
+proc show p .
    if visual = 0
       break 1
    .
@@ -75,7 +75,7 @@ proc show p . .
    .
    sleep 0
 .
-proc run . .
+proc run .
    pos = 500 - 300
    while pos < minpos
       pos += 300

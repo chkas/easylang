@@ -7,7 +7,7 @@ func val c$ .
    return -2
 .
 global m$[][] ln .
-proc init . .
+proc init .
    s$ = input
    ln = len s$ + 2
    m$[][] = [ [ ] ]
@@ -27,7 +27,7 @@ func symupdown r0 c .
       if val m$[r][c] = -2 : return 1
    .
 .
-proc part1 . .
+proc part1 .
    for r = 2 to len m$[][] - 1
       c = 2
       while c <= ln - 1
@@ -66,7 +66,7 @@ func num r c .
    return res
 .
 #
-proc part2 . .
+proc part2 .
    for r0 = 2 to len m$[][] - 1
       for c0 = 2 to ln - 1
          if m$[r0][c0] = "*"

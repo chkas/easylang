@@ -6,7 +6,7 @@ func gapful n .
    .
    return if n mod (m * 10 + l) = 0
 .
-proc show n gaps . .
+proc show n gaps .
    print "First " & gaps & " gapful numbers >= " & n
    while inc < gaps
       if gapful n = 1

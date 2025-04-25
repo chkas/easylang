@@ -16,7 +16,7 @@ func digsum n .
    .
    return sum
 .
-proc show . .
+proc show .
    i = 1
    pri = 2
    while count < 50

@@ -17,7 +17,7 @@ if visual = 1
    sleep 3
 .
 color 321
-proc draw . .
+proc draw .
    if visual = 0 : return
    clear
    for y to 10

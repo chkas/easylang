@@ -1,5 +1,5 @@
 ch32$ = "0123456789bcdefghjkmnpqrstuvwxyz"
-proc bisect val . mn mx bits .
+proc bisect val &mn &mx &bits .
    mid = (mn + mx) / 2
    bits *= 2
    if val < mid

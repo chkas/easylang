@@ -7,7 +7,7 @@ subr home
 .
 home
 # 
-proc forward n . .
+proc forward n .
    x += cos deg * n
    y += sin deg * n
    if down = 1
@@ -17,11 +17,11 @@ proc forward n . .
    .
    sleep 0.1
 .
-proc turn a . .
+proc turn a .
    deg -= a
 .
 # 
-proc house . .
+proc house .
    turn 180
    forward 45
    turn 180
@@ -43,7 +43,7 @@ proc house . .
 .
 house
 # 
-proc bar a[] . .
+proc bar a[] .
    turn 90
    forward 30
    turn -90

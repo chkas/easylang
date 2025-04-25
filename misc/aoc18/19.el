@@ -3,7 +3,7 @@
 global ipr cd[] .
 # 
 memn$[] = [ "addr" "addi" "mulr" "muli" "banr" "bani" "borr" "bori" "setr" "seti" "gtir" "gtri" "gtrr" "eqir" "eqri" "eqrr" ]
-proc read . .
+proc read .
    ipr = number substr input 5 1
    repeat
       s$ = input
@@ -25,7 +25,7 @@ read
 len r[] 6
 arrbase r[] 0
 # 
-proc opf op a b c . .
+proc opf op a b c .
    if op = 0
       r[c] = r[a] + r[b]
    elif op = 1
@@ -92,7 +92,7 @@ proc opf op a b c . .
       r[c] = h
    .
 .
-proc part1 . .
+proc part1 .
    ip = 0
    repeat
       ind = ip * 4 + 1
@@ -106,7 +106,7 @@ proc part1 . .
 .
 part1
 # 
-proc part2 . .
+proc part2 .
    r[] = [ 1 0 0 0 0 0 ]
    arrbase r[] 0
    ip = 0

@@ -17,7 +17,7 @@ y = 50
 dx = 1
 dy = 0
 # 
-proc turn . .
+proc turn .
    if dx = 1
       dx = 0
       dy = 1
@@ -32,7 +32,7 @@ proc turn . .
       dy = 0
    .
 .
-proc step . .
+proc step .
    n += 1
    x += dx * 1
    y += dy * 1

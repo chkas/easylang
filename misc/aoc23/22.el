@@ -2,7 +2,7 @@
 #
 global br[][] .
 #
-proc read . .
+proc read .
    repeat
       s$ = input
       until s$ = ""
@@ -12,7 +12,7 @@ proc read . .
 .
 read
 #
-proc sort . d[][] .
+proc sort &d[][] .
    for i = 1 to len d[][] - 1
       for j = i + 1 to len d[][]
          if d[j][6] < d[i][6]
@@ -25,7 +25,7 @@ sort br[][]
 #
 len supby[][] len br[][]
 #
-proc fall . .
+proc fall .
    for i to len br[][]
       swap b[] br[i][]
       while b[3] > 1
@@ -39,9 +39,7 @@ proc fall . .
                .
             .
          .
-         if len supby[i][] > 0
-            break 1
-         .
+         if len supby[i][] > 0: break 1
          b[3] -= 1
          b[6] -= 1
       .
@@ -61,7 +59,7 @@ func safe x .
    .
    return 1
 .
-proc part1 . .
+proc part1 .
    for i to len supby[][] : sum += safe i
    print sum
 .
@@ -88,7 +86,7 @@ func remove x .
    .
    return sum - 1
 .
-proc part2 . .
+proc part2 .
    for i to len supby[][] : sum += remove i
    print sum
 .

@@ -1,5 +1,5 @@
 color 555
-proc cantor x y sz . .
+proc cantor x y sz .
    if sz > 0.1
       sz3 = sz / 3
       move x y - sz3

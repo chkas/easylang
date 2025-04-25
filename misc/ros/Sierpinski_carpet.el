@@ -1,4 +1,4 @@
-proc carp x y sz . .
+proc carp x y sz .
    move x - sz / 2 y - sz / 2
    rect sz sz
    if sz > 0.5

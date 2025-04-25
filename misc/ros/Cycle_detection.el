@@ -1,7 +1,7 @@
 func f x .
    return (x * x + 1) mod 255
 .
-proc brent x0 . lam mu tab[] .
+proc brent x0 &lam &mu &tab[] .
    power = 1
    lam = 1
    tort = x0
@@ -19,9 +19,7 @@ proc brent x0 . lam mu tab[] .
    .
    tort = x0
    hare = x0
-   for i = 1 to lam
-      hare = f hare
-   .
+   for i = 1 to lam : hare = f hare
    # one based
    mu = 1
    while tort <> hare

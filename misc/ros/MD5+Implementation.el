@@ -1,21 +1,17 @@
 len md5k[] 64
-proc md5init . .
+proc md5init .
    for i = 1 to 64
       md5k[i] = floor (0x100000000 * abs sin (i * 180 / pi))
    .
 .
 md5init
-# 
-proc md5 inp$ . s$ .
+#
+proc md5 inp$ &s$ .
    subr addinp
-      if inp4 = 1
-         inp[] &= 0
-      .
+      if inp4 = 1 : inp[] &= 0
       inp[len inp[]] += b * inp4
       inp4 *= 0x100
-      if inp4 = 0x100000000
-         inp4 = 1
-      .
+      if inp4 = 0x100000000 : inp4 = 1
    .
    s[] = [ 7 12 17 22 7 12 17 22 7 12 17 22 7 12 17 22 5 9 14 20 5 9 14 20 5 9 14 20 5 9 14 20 4 11 16 23 4 11 16 23 4 11 16 23 4 11 16 23 6 10 15 21 6 10 15 21 6 10 15 21 6 10 15 21 ]
    inp[] = [ ]
@@ -37,7 +33,7 @@ proc md5 inp$ . s$ .
       h = h div 0x100
    .
    inp[] &= 0
-   # 
+   #
    a0 = 0x67452301
    b0 = 0xefcdab89
    c0 = 0x98badcfe
@@ -81,9 +77,7 @@ proc md5 inp$ . s$ .
          a = a div 256
          for h in [ b div 16 b mod 16 ]
             h += 48
-            if h > 57
-               h += 39
-            .
+            if h > 57 : h += 39
             s$ &= strchar h
          .
       .

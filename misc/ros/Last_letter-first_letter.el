@@ -7,7 +7,7 @@ repeat
 .
 # 
 chain$[] = [ ]
-proc search lng . .
+proc search lng .
    if lng > len chain$[]
       chain$[] = [ ]
       for j to lng

@@ -18,7 +18,7 @@ subr init_vars
       todo = 1
    .
 .
-proc disp col s$ . .
+proc disp col s$ .
    color col
    move 3 76
    rect 94 21
@@ -41,7 +41,7 @@ proc disp col s$ . .
       text s$
    .
 .
-proc show_quest . .
+proc show_quest .
    if res = resok
       if op = 1
          a = random 8 + 1
@@ -96,7 +96,7 @@ x = "
    disp 030 q$ & "_"
    res = 0
 .
-proc draw_key col ind . .
+proc draw_key col ind .
    s$ = strchar (ind + 48)
    h = ind
    if h < 10 and h > 0
@@ -125,7 +125,7 @@ proc draw_key col ind . .
    text s$
 .
 background 010
-proc start . .
+proc start .
    init_vars
    clear
    for ind = 0 to 11 : draw_key 020 ind
@@ -141,7 +141,7 @@ menu$[] = [ "7 · 8 = _
 🤔🤔🤔" "837 ÷ 31 = _
 🤔🤔🤔" ]
 #
-proc draw_menu_key col i . .
+proc draw_menu_key col i .
    c = (i - 1) mod 2
    r = (i - 1) div 2
    y = (3 - r) * 24 + 3
@@ -161,12 +161,12 @@ proc draw_menu_key col i . .
    move x + 2 y + 6
    text s$[2]
 .
-proc draw_menu . .
+proc draw_menu .
    clear
    for i = 1 to len menu$[] : draw_menu_key 020 i
    state = 0
 .
-proc handle_key2 . .
+proc handle_key2 .
    if ind = 11
       state = 2
       if res = resok
@@ -191,7 +191,7 @@ proc handle_key2 . .
       disp 030 q$ & h$
    .
 .
-proc handle_key . .
+proc handle_key .
    c = mouse_x div 25
    r = 2 - mouse_y div 25
    if c < 3
@@ -263,7 +263,7 @@ on mouse_up
       ind = -1
    .
 .
-proc smiley t . .
+proc smiley t .
    if t <= 60
       move 65 30
       color 983
@@ -281,7 +281,7 @@ proc smiley t . .
       .
    .
 .
-proc show_result . .
+proc show_result .
    state = 3
    timer 2
    t = floor (systime - t)

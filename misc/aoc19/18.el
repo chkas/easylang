@@ -100,7 +100,7 @@ offs[] = [ -sz 1 sz -1 ]
 #
 global kk_dist[] kk_doors[][] kk_keys[][] .
 #
-proc add_kk key k dist . coll[] .
+proc add_kk key k dist &coll[] ..
    k -= 96
    key -= 1
    ind = key * n_keys + k
@@ -165,7 +165,7 @@ proc calc_distances . .
       .
    .
 .
-proc is_path_open key k . open .
+proc is_path_open key k &open ..
    key -= 1
    ind = key * n_keys + k
    open = 0
@@ -181,7 +181,7 @@ hashsz = 199999
 len hashind[] hashsz
 len hashv[] hashsz
 #
-proc hashget ind . val .
+proc hashget ind &val ..
    hi = ind mod hashsz + 1
    repeat
       if hashind[hi] = ind
@@ -202,7 +202,7 @@ proc hashset ind val . .
    hashv[hi] = val
 .
 #
-proc state_id key . id .
+proc state_id key &id ..
    id = 0
    for k = 1 to n_keys
       id *= 2
@@ -212,7 +212,7 @@ proc state_id key . id .
    id += key
 .
 #
-proc solve key . dist .
+proc solve key &dist ..
    for k = 1 to n_keys
       remain += if open[k] = 0
    .

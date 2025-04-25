@@ -7,7 +7,7 @@ func$ squeeze s$ x$ .
    .
    return r$
 .
-proc do s$ x$ . .
+proc do s$ x$ .
    print "'" & x$ & "'"
    print "«««" & s$ & "»»» (" & len s$ & ")"
    r$ = squeeze s$ x$

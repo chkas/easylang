@@ -31,17 +31,17 @@ func rad num .
    .
    return r
 .
-proc show50 . .
+proc show50 .
    write "First 50 radicals:"
    for n = 1 to 50
       write " " & rad n
    .
    print ""
 .
-proc show n . .
+proc show n .
    print "radical(" & n & ") = " & rad n
 .
-proc dist . .
+proc dist .
    len dist[] 7
    for n = 2 to 1000000
       dist[radnf n] += 1

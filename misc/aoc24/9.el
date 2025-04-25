@@ -2,7 +2,7 @@
 #
 inp[] = number strchars input
 #
-proc part1 . .
+proc part1 .
    repeat
       for i to inp[id * 2 + 1] : dsk[] &= id
       until id = len inp[] div 2
@@ -23,7 +23,7 @@ proc part1 . .
 .
 part1
 #
-proc part2 . .
+proc part2 .
    id = 1
    repeat
       size[] &= inp[id * 2 - 1]

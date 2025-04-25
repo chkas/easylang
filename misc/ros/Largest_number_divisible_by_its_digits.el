@@ -1,5 +1,5 @@
 global found dig[] .
-proc test . .
+proc test .
    for i to len dig[]
       n = n * 10 + dig[i]
    .
@@ -12,7 +12,7 @@ proc test . .
    print n
 .
 len use[] 9
-proc perm pos . .
+proc perm pos .
    if found = 1
       return
    .

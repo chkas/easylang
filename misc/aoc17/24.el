@@ -1,5 +1,5 @@
 # AoC-17 - Day 24: Electromagnetic Moat
-# 
+#
 # base0
 s0$ = input
 repeat
@@ -14,12 +14,12 @@ a[] &= h[1]
 b[] &= h[2]
 n = len a[]
 len used[] n
-# 
+#
 arrbase a[] 0
 arrbase b[] 0
 arrbase used[] 0
-# 
-proc con pins used[] ln . str0 ln0 ln0str .
+#
+proc con pins used[] ln &str0 &ln0 &ln0str ..
    str0 = 0
    ln0 = 0
    for i range0 n
@@ -45,11 +45,11 @@ proc con pins used[] ln . str0 ln0 ln0str .
       .
    .
 .
-# 
+#
 con 0 used[] 0 str ln lnstr
 print str
 print lnstr
-# 
+#
 input_data
 0/2
 2/2

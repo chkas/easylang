@@ -1,7 +1,7 @@
 # AoC-17 - Day 8: I Heard You Like Registers
-# 
+#
 global name$[] v[] .
-proc getid n$ . id .
+proc getid n$ &id ..
    for id to len name$[]
       if name$[id] = n$
          break 2
@@ -45,7 +45,7 @@ for v in v[]
 .
 print max
 print max2
-# 
+#
 input_data
 b inc 5 if a > 1
 a inc 1 if b < 5

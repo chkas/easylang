@@ -2,7 +2,7 @@ len f[] 9
 state = 0
 textsize 14
 #
-proc init . .
+proc init .
    linewidth 2
    clear
    color 666
@@ -15,14 +15,10 @@ proc init . .
    move 10 44
    line 86 44
    linewidth 2.5
-   for i = 1 to 9
-      f[i] = 0
-   .
-   if state = 1
-      timer 0.2
-   .
+   for i = 1 to 9 : f[i] = 0
+   if state = 1 : timer 0.2
 .
-proc draw ind . .
+proc draw ind .
    c = (ind - 1) mod 3
    r = (ind - 1) div 3
    x = c * 28 + 20
@@ -41,7 +37,7 @@ proc draw ind . .
       circle 7.5
    .
 .
-proc sum3 a d . st .
+proc sum3 a d &st ..
    for i = 1 to 3
       s += f[a]
       a += d
@@ -52,34 +48,24 @@ proc sum3 a d . st .
       st = 1
    .
 .
-proc rate . res done .
+proc rate &res &done ..
    res = 0
-   for i = 1 step 3 to 7
-      sum3 i 1 res
-   .
-   for i = 1 to 3
-      sum3 i 3 res
-   .
+   for i = 1 step 3 to 7 : sum3 i 1 res
+   for i = 1 to 3 : sum3 i 3 res
    sum3 1 4 res
    sum3 3 2 res
    cnt = 1
    for i = 1 to 9
-      if f[i] = 0
-         cnt += 1
-      .
+      if f[i] = 0 : cnt += 1
    .
    res *= cnt
    done = 1
-   if res = 0 and cnt > 1
-      done = 0
-   .
+   if res = 0 and cnt > 1 : done = 0
 .
-proc minmax player alpha beta . rval rmov .
+proc minmax player alpha beta &rval &rmov ..
    rate rval done
    if done = 1
-      if player = 1
-         rval = -rval
-      .
+      if player = 1 : rval = -rval
    else
       rval = alpha
       start = random 9
@@ -100,7 +86,7 @@ proc minmax player alpha beta . rval rmov .
       .
    .
 .
-proc show_result val . .
+proc show_result val .
    color 555
    move 16 4
    if val < 0
@@ -113,17 +99,15 @@ proc show_result val . .
    .
    state += 2
 .
-proc computer . .
+proc computer .
    minmax 4 -11 11 val mov
    f[mov] = 4
    draw mov
    rate val done
    state = 0
-   if done = 1
-      show_result val
-   .
+   if done = 1 : show_result val
 .
-proc human . .
+proc human .
    mov = floor ((mouse_x - 6) / 28) + 3 * floor ((mouse_y - 16) / 28) + 1
    if f[mov] = 0
       f[mov] = 1

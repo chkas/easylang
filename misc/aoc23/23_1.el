@@ -2,7 +2,7 @@
 # 
 visualisation = 1
 global m[] nc .
-proc read . .
+proc read .
    s$ = input
    nc = len s$
    repeat
@@ -40,7 +40,7 @@ textsize 5
 sc = 100 / nc
 colind = 1
 col[] = [ 955 595 559 995 959 599 ]
-proc show m . .
+proc show m .
    if visualisation = 0
       return
    .
@@ -102,7 +102,7 @@ func is_border h .
 #  
 part = 1
 #  
-proc solv p cnt d0 turn . .
+proc solv p cnt d0 turn .
    seen_old[] = seen[]
    while p <> stop
       h0 = 0

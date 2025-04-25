@@ -1,4 +1,4 @@
-proc snusp dlen raw$ . .
+proc snusp dlen raw$ .
    len ds[] dlen
    is$[] = strsplit raw$ "\n"
    for s$ in is$[]

@@ -75,7 +75,7 @@ func value hand$ part .
    return hand * 1000000 + cardval
 .
 #
-proc run part . .
+proc run part .
    b[] = bid[]
    for c$ in cards$[]
       v[] &= value c$ part

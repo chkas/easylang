@@ -12,7 +12,7 @@ repeat
    y[] &= y
    n[] &= 0
 .
-proc part1 . .
+proc part1 .
    for y = 0 to maxy + 1 : for x = 0 to maxx + 1
       mind = 1 / 0
       for i to len x[]
@@ -35,7 +35,7 @@ proc part1 . .
 .
 part1
 #
-proc part2 . .
+proc part2 .
    thre = 32
    if maxx > 100 : thre = 10000
    for y to maxy : for x to maxx

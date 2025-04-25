@@ -2,7 +2,7 @@ sysconf topleft
 global m[] nc .
 background 777
 # 
-proc show . .
+proc show .
    clear
    scale = 100 / nc
    sz = scale * 0.95
@@ -22,7 +22,7 @@ proc show . .
       rect sz sz
    .
 .
-proc read . .
+proc read .
    s$ = input
    nc = len s$ + 2
    for i to nc
@@ -55,7 +55,7 @@ read
 # 
 len mn[] len m[]
 # 
-proc update . .
+proc update .
    for i to len m[]
       if m[i] = 2
          mn[i] = 3
@@ -91,4 +91,4 @@ tH.........
 .   .
    ...
 .   .
-Ht.. ......
+Ht.......

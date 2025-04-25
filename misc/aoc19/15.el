@@ -13,7 +13,7 @@ prefix ic_
 global base pc .
 arrbase mem[] 0
 #
-proc mem_ind mo ind . rind .
+proc mem_ind mo ind &rind ..
    rind = ind
    if mo = 0
       rind = mem[ind]
@@ -70,7 +70,7 @@ proc run . .
 # --------  --------
 prefix
 #
-proc go_dir d . out .
+proc go_dir d &out ..
    ic_in = d
    ic_run
    out = ic_out
@@ -92,7 +92,7 @@ proc draw pos col . .
 offs[] = [ -100 100 1 -1 ]
 rev[] = [ 2 1 4 3 ]
 #
-proc maze dir0 pos . min .
+proc maze dir0 pos &min ..
    map[pos] = 1
    draw pos 888
    min = 1 / 0

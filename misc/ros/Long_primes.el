@@ -12,7 +12,7 @@ fastfunc isprim num .
    return 1
 .
 prim = 2
-proc nextprim . .
+proc nextprim .
    repeat
       prim += 1
       until isprim prim = 1

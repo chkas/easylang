@@ -4,7 +4,7 @@ sysconf topleft
 visual = 1
 #
 global m[] nc .
-proc read . .
+proc read .
    s$ = input
    nc = len s$
    repeat
@@ -41,7 +41,7 @@ colind = 0
 col[] = [ 966 855 744 633 522 633 744 855 ]
 global vis[] max maxway[] .
 #
-proc showm m . .
+proc showm m .
    if m = 1
       colind = colind mod len col[] + 1
    elif m = 0
@@ -74,7 +74,7 @@ d[] = [ 1 nc -1 (-nc) ]
 #
 global pseen[] w[][] nddest ndpos[] .
 #
-proc gond p d0 v . ndx .
+proc gond p d0 v &ndx .
    p = p + d[d0]
    repeat
       if v = 1 : vis[p] = 1
@@ -89,7 +89,7 @@ proc gond p d0 v . ndx .
    .
    ndx = pseen[p]
 .
-proc gosteps nd ndn . .
+proc gosteps nd ndn .
    p = ndpos[nd]
    vis[p] = 1
    d0 = 1
@@ -102,7 +102,7 @@ proc gosteps nd ndn . .
    .
    gond p d0 1 ndx
 .
-proc showmway . .
+proc showmway .
    if visual = 0 : return
    showm 0
    ndp = maxway[1]
@@ -128,7 +128,7 @@ func is_border h .
       return 1
    .
 .
-proc makegraph node p d0 . .
+proc makegraph node p d0 .
    vis[] = [ ]
    len vis[] len m[]
    p = p + d[d0]
@@ -195,13 +195,13 @@ func entercon nd ndn .
       return 1
    .
 .
-proc leavecon nd ndn . .
+proc leavecon nd ndn .
    seen[ndn] = 0
    seen[nd + nseen * ndn] = 0
    seen[ndn + nseen * nd] = 0
 .
 #
-proc solve nd dist avail way[] . .
+proc solve nd dist avail way[] .
    way[] &= nd
    if dist + avail <= max : return
    if nd = nddest
@@ -225,7 +225,7 @@ proc solve nd dist avail way[] . .
       .
    .
 .
-proc run . .
+proc run .
    pseen[] = [ ]
    len pseen[] len m[]
    w[][] = [ [ ] ]
@@ -242,7 +242,7 @@ proc run . .
    showmway
 .
 #
-proc main . .
+proc main .
    #
    run
    part = 2

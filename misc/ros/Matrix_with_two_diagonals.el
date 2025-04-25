@@ -1,4 +1,4 @@
-proc matrix side . .
+proc matrix side .
    for i to side
       for j to side
          if i = j or i = side - j + 1

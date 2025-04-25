@@ -1,7 +1,7 @@
 # AoC-19 - Day 23: Category Six
-# 
+#
 code[] = number strsplit input ","
-# 
+#
 n = 50
 len ic_pc[] n
 len ic_base[] n
@@ -16,7 +16,7 @@ proc init . .
       ic_in[i][] = [ i - 1 ]
    .
 .
-# 
+#
 oind = 1
 oid = 0
 len nat[] 2
@@ -35,7 +35,7 @@ proc ic_outf h . .
 # -------- intcode --------
 prefix ic_
 global pc base in[] mem[] .
-proc mem_ind mo ind . rind .
+proc mem_ind mo ind &rind ..
    rind = ind
    if mo = 0
       rind = mem[ind]
@@ -102,7 +102,7 @@ proc run id . .
 .
 # --------  --------
 prefix
-# 
+#
 proc part1 . .
    init
    repeat
@@ -114,7 +114,7 @@ proc part1 . .
    .
    print nat[2]
 .
-# 
+#
 proc part2 . .
    init
    repeat
@@ -142,7 +142,7 @@ if len code[] > 1
 else
    print "No input"
 .
-# 
+#
 input_data
 
 

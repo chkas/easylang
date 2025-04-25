@@ -34,7 +34,7 @@ func comp a$ b$ .
    .
    return if digroot dec a$ < digroot dec b$
 .
-proc sort . .
+proc sort .
    for i = len w$[] - 1 downto 1
       for j = 1 to i
          if comp w$[j] w$[j + 1] = 1
@@ -43,7 +43,7 @@ proc sort . .
       .
    .
 .
-proc init . .
+proc init .
    repeat
       s$ = input
       until s$ = ""
@@ -54,7 +54,7 @@ proc init . .
 .
 init
 sort
-proc show . .
+proc show .
    for w$ in w$[]
       w = dec w$
       print digroot w & " " & w$ & " " & w

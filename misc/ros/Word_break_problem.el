@@ -1,5 +1,5 @@
 dict$[] = [ "a" "bc" "abc" "cd" "b" ]
-proc wbreak s$ . w$[] .
+proc wbreak s$ &w$[] .
    if s$ = ""
       print "  " & w$[]
       return

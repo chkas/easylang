@@ -1,4 +1,4 @@
-proc calc TrueVal test[] . .
+proc calc TrueVal test[] .
    for test in test[]
       h = (test - TrueVal)
       Vari += h * h

@@ -1,7 +1,7 @@
 # AoC-24 - Day 15: : Warehouse Woes
 #
 global nc m$[] pos0 pos dir steps[] .
-proc init . .
+proc init .
    s$ = input
    nc = len s$
    while s$ <> ""
@@ -26,7 +26,7 @@ proc init . .
 .
 init
 global m2$[] .
-proc prep2 . .
+proc prep2 .
    for c$ in m$[]
       if c$ = "O"
          m2$[] &= "["
@@ -42,7 +42,7 @@ prep2
 offs[] = [ 1 nc -1 (-nc) ]
 #
 #
-proc calc . .
+proc calc .
    for i to len m$[]
       if m$[i] = "O" or m$[i] = "["
          r = (i - 1) div nc
@@ -52,7 +52,7 @@ proc calc . .
    .
    print sum
 .
-proc show . .
+proc show .
    for i to len m$[]
       if i = pos
          s$ &= "@"
@@ -65,7 +65,7 @@ proc show . .
       .
    .
 .
-proc step1 . .
+proc step1 .
    npos = pos + offs[dir]
    if m$[npos] = "#" : return
    if m$[npos] = "."
@@ -86,7 +86,7 @@ proc step1 . .
    m$[npos] = "."
    pos = npos
 .
-proc part1 . .
+proc part1 .
    for dir in steps[] : step1
    calc
 .
@@ -105,7 +105,7 @@ func isok p .
    .
    return 0
 .
-proc shift p . .
+proc shift p .
    np = p + offs[dir]
    if m$[np] = "]" : shift (np - 1)
    if m$[np] = "[" : shift np
@@ -115,7 +115,7 @@ proc shift p . .
    m$[p] = "."
    m$[p + 1] = "."
 .
-proc step2 . .
+proc step2 .
    npos = pos + offs[dir]
    if m$[npos] = "#" : return
    if m$[npos] = "."
@@ -147,7 +147,7 @@ proc step2 . .
       pos = npos
    .
 .
-proc part2 . .
+proc part2 .
    swap m$[] m2$[]
    pos = (pos0 - 1) * 2 + 1
    nc *= 2

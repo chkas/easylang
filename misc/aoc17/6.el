@@ -4,7 +4,7 @@ hasz = 199999
 len haind$[] hasz
 len haval[] hasz
 #
-proc hash ind[] val . ret .
+proc hash ind[] val &ret ..
    for i to len ind[]
       ind$ &= strchar (ind[i] + 65)
    .

@@ -1,7 +1,5 @@
-proc _mdr n . md mp .
-   if n > 0
-      r = 1
-   .
+proc _mdr n &md &mp .
+   if n > 0 : r = 1
    while n > 0
       r *= n mod 10
       n = n div 10
@@ -13,7 +11,7 @@ proc _mdr n . md mp .
       md = r
    .
 .
-proc mdr n . md mp .
+proc mdr n &md &mp .
    mp = 0
    _mdr n md mp
 .
@@ -43,9 +41,7 @@ for i = 0 to 9
    write i & ": ["
    for j = 0 to width - 1
       write table[i * width + j]
-      if j < width - 1
-         write ","
-      .
+      if j < width - 1 : write ","
    .
    print "]"
 .

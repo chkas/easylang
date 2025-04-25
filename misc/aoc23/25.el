@@ -2,7 +2,7 @@
 #
 global name$[] r[][] con[][] n .
 #
-proc mkcons . .
+proc mkcons .
    len con[][] n
    for i to n : len con[i][] n
    for i to n : for e in r[i][]
@@ -18,7 +18,7 @@ func n2id n$ .
    r[][] &= [ ]
    return id
 .
-proc read . .
+proc read .
    repeat
       s$ = input
       until s$ = ""
@@ -34,7 +34,7 @@ proc read . .
 .
 read
 #
-proc discon a b . .
+proc discon a b .
    con[a][b] = 0
    con[b][a] = 0
 .
@@ -66,7 +66,7 @@ func gcon src dest .
    return 0
 .
 #
-proc go . .
+proc go .
    s = 1
    sum = 1
    for d = 2 to n

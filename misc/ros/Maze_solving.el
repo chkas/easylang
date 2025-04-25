@@ -4,7 +4,7 @@ f = 100 / (n - 0.5)
 len m[] n * n
 #
 background 000
-proc show_maze . .
+proc show_maze .
    clear
    for i = 1 to len m[]
       if m[i] = 0
@@ -18,7 +18,7 @@ proc show_maze . .
    sleep 0.01
 .
 offs[] = [ 1 n -1 (-n) ]
-proc m_maze pos . .
+proc m_maze pos .
    m[pos] = 0
    show_maze
    d[] = [ 1 2 3 4 ]
@@ -33,7 +33,7 @@ proc m_maze pos . .
    .
 .
 endpos = n * n - 1
-proc make_maze . .
+proc make_maze .
    for i = 1 to len m[]
       m[i] = 1
    .
@@ -50,7 +50,7 @@ proc make_maze . .
 make_maze
 show_maze
 #
-proc mark pos col . .
+proc mark pos col .
    x = (pos - 1) mod n
    y = (pos - 1) div n
    color col
@@ -58,7 +58,7 @@ proc mark pos col . .
    circle f / 3.5
 .
 global found .
-proc solve dir0 pos . .
+proc solve dir0 pos .
    if found = 1
       return
    .

@@ -1,7 +1,7 @@
 # AoC-15 - Day 7: Some Assembly Required
-# 
+#
 global name$[] r[] .
-proc getid n$ . id .
+proc getid n$ &id .
    for id to len name$[]
       if name$[id] = n$
          break 2
@@ -10,7 +10,7 @@ proc getid n$ . id .
    name$[] &= n$
    r[] &= -1
 .
-proc gval s$ . r .
+proc gval s$ &r .
    r = number s$
    if error = 1
       getid s$ h
@@ -73,7 +73,7 @@ for part to 2
    print r[h]
    av = r[h]
 .
-# 
+#
 input_data
 123 -> x
 456 -> y

@@ -1,24 +1,24 @@
 len cyl[] 6
-proc rshift . .
+proc rshift .
    h = cyl[6]
    for i = 6 downto 2
       cyl[i] = cyl[i - 1]
    .
    cyl[1] = h
 .
-proc unload . .
+proc unload .
    for i = 1 to 6
       cyl[i] = 0
    .
 .
-proc load . .
+proc load .
    while cyl[1] = 1
       rshift
    .
    cyl[1] = 1
    rshift
 .
-proc spin . .
+proc spin .
    lim = random 6
    for i = 1 to lim - 1
       rshift
@@ -45,7 +45,7 @@ func method m[] .
    return 0
 .
 method$[] = [ "load" "spin" "fire" ]
-proc test m[] . .
+proc test m[] .
    n = 100000
    for i = 1 to n
       sum += method m[]

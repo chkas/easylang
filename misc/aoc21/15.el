@@ -13,7 +13,7 @@ global m[] nc cost todo[][] endpos prev[] .
 background 000
 clear
 textsize 4
-proc show . .
+proc show .
    if visual = 0 : return
    sc = 94 / nc
    if cost = 0
@@ -41,7 +41,7 @@ proc show . .
    text "Total risk: " & cost
    sleep 0.01
 .
-proc show_route . .
+proc show_route .
    if visual = 0 : return
    sc = 94 / nc
    color 900
@@ -57,7 +57,7 @@ proc show_route . .
 .
 #
 global sz inp$[] .
-proc read . .
+proc read .
    inp$ = input
    sz = len inp$
    if sz = 0
@@ -73,7 +73,7 @@ proc read . .
    .
 .
 read
-proc init expnd . .
+proc init expnd .
    m[] = [ ]
    nc = sz + expnd * sz + 1
    for i to nc : m[] &= 0
@@ -91,7 +91,7 @@ proc init expnd . .
    for i to nc : m[] &= 0
 .
 #
-proc run . .
+proc run .
    prev[] = [ ]
    len prev[] len m[]
    endpos = len m[] - nc - 1

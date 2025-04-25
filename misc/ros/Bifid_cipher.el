@@ -1,4 +1,4 @@
-proc prepare . s$ .
+proc prepare &s$ .
    for e$ in strchars s$
       h = strcode e$
       if h >= 97
@@ -47,7 +47,7 @@ h$ = encr "ATTACKATDAWN" key$
 print h$
 print decr h$ key$
 print ""
-# 
+#
 key$ = "BGWKZQPNDSIOAXEFCLUMTHYVR"
 h$ = encr "FLEEATONCE" key$
 print h$

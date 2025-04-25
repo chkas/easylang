@@ -8,7 +8,7 @@ visual = 1
 global nc f[] car_dir[] car_pos[] .
 arrbase f[] 0
 #
-proc init . .
+proc init .
    repeat
       s$ = input
       until s$ = ""
@@ -53,7 +53,7 @@ init
 first_show = 1
 global tick crash_pos[] crash_tick[] .
 #
-proc show crash_pos . .
+proc show crash_pos .
    if visual = 0 : return
    w = 98 / nc
    if first_show = 1
@@ -128,7 +128,7 @@ proc show crash_pos . .
 dir[] = [ 1 nc -1 (-nc) ]
 len car_turn[] len car_dir[]
 #
-proc run . .
+proc run .
    ncars = len car_pos[]
    repeat
       # sort car pos

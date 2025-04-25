@@ -10,27 +10,27 @@ func scaleX v s .
 func scaleY v s .
    return 100 - (v * 100 / s)
 .
-proc scaledMove x y . .
+proc scaledMove x y .
    move scaleX x cWidth scaleY y cHeight
 .
-proc scaledLine x y . .
+proc scaledLine x y .
    line scaleX x cWidth scaleY y cHeight
 .
 # 
 # the following implements equivalents for some Processing functions and Boolean literals
 # false = 0
 true = 1
-proc size w h . .
+proc size w h .
    cWidth = w
    cHeight = h
 .
-proc strokeWidth w . .
+proc strokeWidth w .
    linewidth w / 18
 .
-proc stroke rb gb bb . .
+proc stroke rb gb bb .
    color3 rb / 255 gb / 255 bb / 255
 .
-proc arc xCenter yCenter eWidth eHeight p1Angle p2Angle . .
+proc arc xCenter yCenter eWidth eHeight p1Angle p2Angle .
    rx = eWidth / 2
    ry = (eHeight / eWidth) * eHeight / 2
    arcAngle = p2Angle - p1Angle
@@ -56,7 +56,7 @@ HR = 1.325 ; # Harriss Ratio
 _wndW = 1000
 _wndH = 1000
 showLines = true ; # was false in the Processing sample
-proc drawHarriss x y dAngle lngth iteration lineW . .
+proc drawHarriss x y dAngle lngth iteration lineW .
    if iteration > 0
       startAngle = dAngle + 45
       endAngle = startAngle + 90
@@ -110,7 +110,7 @@ proc drawHarriss x y dAngle lngth iteration lineW . .
       drawHarriss xEnd yEnd dAngle - 90 lngth / HR iteration - 1 lineW
    .
 .
-proc setup . .
+proc setup .
    size _wndW _wndH
    background 555
    clear

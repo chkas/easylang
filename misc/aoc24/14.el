@@ -13,7 +13,7 @@ repeat
 nx = 101
 ny = 103
 #
-proc part1 . .
+proc part1 .
    len q[] 4
    for i to n
       ex = (px[i] + vx[i] * 100) mod nx
@@ -32,7 +32,7 @@ proc part1 . .
 .
 part1
 #
-proc show nsec . .
+proc show nsec .
    clear
    for i to n
       ex = (px[i] + vx[i] * nsec) mod nx
@@ -42,7 +42,7 @@ proc show nsec . .
    .
    sleep 0.001
 .
-proc part2 . .
+proc part2 .
    repeat
       nsec += 1
       m[] = [ ]

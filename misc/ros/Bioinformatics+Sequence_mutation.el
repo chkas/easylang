@@ -1,6 +1,6 @@
 base$[] = [ "A" "C" "T" "G" ]
 global seq[] seqnx[] seqpr[] .
-proc prseq . .
+proc prseq .
    len cnt[] 4
    numfmt 0 3
    ind = 1
@@ -29,7 +29,7 @@ proc prseq . .
    print "  " & sum
    print ""
 .
-proc init . .
+proc init .
    seq[] = [ 0 ]
    seqnx[] = [ 2 ]
    seqpr[] = [ 0 ]
@@ -41,7 +41,7 @@ proc init . .
    seqpr[1] = len seq[]
    seqnx[$] = 1
 .
-proc delete pos . .
+proc delete pos .
    nx = seqnx[pos]
    pre = seqpr[pos]
    seqnx[pre] = nx
@@ -56,7 +56,7 @@ proc delete pos . .
    len seqnx[] -1
    len seqpr[] -1
 .
-proc insert pos . .
+proc insert pos .
    seq[] &= random 4
    last = len seq[]
    seqnx[] &= pos
@@ -64,7 +64,7 @@ proc insert pos . .
    seqnx[seqpr[pos]] = last
    seqpr[pos] = last
 .
-proc mutate . .
+proc mutate .
    op = random 3
    pos = random (len seq[] - 1) + 1
    if op = 1

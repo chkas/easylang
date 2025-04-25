@@ -1,4 +1,4 @@
-proc exec code$ . .
+proc exec code$ .
    len mem[] 100
    dp = 1
    code$[] = strchars code$

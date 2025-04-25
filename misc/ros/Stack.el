@@ -1,5 +1,5 @@
 stack[] = [ ]
-proc push v . .
+proc push v .
    stack[] &= v
 .
 func pop .

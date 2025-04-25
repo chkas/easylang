@@ -1,4 +1,4 @@
-proc triang lev x y size . .
+proc triang lev x y size .
    if lev = 0
       move x y
       circle 0.15

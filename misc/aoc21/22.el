@@ -4,7 +4,7 @@
 # with cubes are subtracted, intersections
 # with intersections are added, ..
 #
-proc inter p0 q0 p1 q1 . r0 r1 r .
+proc inter p0 q0 p1 q1 &r0 &r1 &r .
    r = 0
    if p0 > q0
       swap p0 q0
@@ -16,7 +16,7 @@ proc inter p0 q0 p1 q1 . r0 r1 r .
       r = 1
    .
 .
-proc intersect p[] q[] . r[] r .
+proc intersect p[] q[] &r[] &r .
    for d = 1 step 2 to 5
       inter p[d] q[d] p[d + 1] q[d + 1] r0 r1 r
       if r = 0 : break 1
@@ -26,7 +26,7 @@ proc intersect p[] q[] . r[] r .
 .
 global pts[][] pts_sign[] .
 #
-proc add pt[] ison . .
+proc add pt[] ison .
    len r[] 6
    for i to len pts[][]
       intersect pt[] pts[i][] r[] r

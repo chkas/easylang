@@ -5,7 +5,7 @@ y = 60
 move x y
 angle = 0
 # 
-proc dragon size lev d . .
+proc dragon size lev d .
    if lev = 0
       x -= cos angle * size
       y += sin angle * size

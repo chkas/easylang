@@ -3,7 +3,7 @@ func x n .
       return 1
    .
 .
-proc go start stop printable . .
+proc go start stop printable .
    write start & " - " & stop & ":"
    for i = start step 2 to stop
       b = i div 1000000000

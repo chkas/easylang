@@ -38,7 +38,7 @@ func$ ddate y m d .
    .
    return r$
 .
-proc show d$ . .
+proc show d$ .
    a[] = number strsplit d$ "-"
    write d$ & " --> "
    print ddate a[1] a[2] a[3]

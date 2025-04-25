@@ -4,7 +4,7 @@ func xrnd .
    return seed div 0x10000
 .
 len cards[] 52
-proc deal game_num . .
+proc deal game_num .
    print "hand " & game_num
    seed = game_num
    for i = 1 to 52
@@ -18,7 +18,7 @@ proc deal game_num . .
 suits$[] = strchars "CDHS"
 ranks$[] = strchars "A23456789TJQK"
 # 
-proc show . .
+proc show .
    for idx = 1 to 52
       rank = cards[idx] div 4 + 1
       suit = cards[idx] mod 4 + 1

@@ -1,7 +1,7 @@
 # AoC-20 - Day 11: Seating System
 #
 global seat[] nc .
-proc read . .
+proc read .
    s$ = input
    nc = len s$ + 2
    for i to nc : seat[] &= 2
@@ -17,7 +17,7 @@ proc read . .
 read
 dirs[] = [ (-nc - 1) (-nc) (-nc + 1) (-1) 1 nc - 1 nc nc + 1 ]
 #
-proc part1 . .
+proc part1 .
    len pn[] len seat[]
    len p[] len seat[]
    repeat
@@ -42,7 +42,7 @@ proc part1 . .
 .
 part1
 #
-proc part2 . .
+proc part2 .
    len f[] len seat[]
    len p[] len seat[]
    repeat

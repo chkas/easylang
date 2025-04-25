@@ -1,5 +1,5 @@
 len nfac[] 1000000
-proc sieve . .
+proc sieve .
    nfac[1] = 1
    for i = 2 to len nfac[]
       if nfac[i] = 0
@@ -13,7 +13,7 @@ proc sieve . .
    .
 .
 sieve
-# 
+#
 fastfunc isprim num .
    i = 3
    while i <= sqrt num
@@ -30,14 +30,12 @@ fastfunc nextprim prim .
    .
    return prim
 .
-proc sort . d[] .
-   for i = 1 to len d[] - 1
-      for j = i + 1 to len d[]
-         if d[j] < d[i] : swap d[j] d[i]
-      .
+proc sort &d[] .
+   for i = 1 to len d[] - 1 : for j = i + 1 to len d[]
+      if d[j] < d[i] : swap d[j] d[i]
    .
 .
-proc calc max dir . .
+proc calc max dir .
    h$ = " preceeded"
    if dir = 1 : h$ = " followed"
    print "Primes below " & max & h$ & " by a tetraprime pair:"

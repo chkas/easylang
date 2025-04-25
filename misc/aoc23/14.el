@@ -8,7 +8,7 @@ repeat
 nc = len m$[1][]
 nr = len m$[][]
 # 
-proc north . .
+proc north .
    for c to nc
       for r to nr - 1
          if m$[r][c] = "."
@@ -24,7 +24,7 @@ proc north . .
       .
    .
 .
-proc south . .
+proc south .
    for c to nc
       for r = nr downto 2
          if m$[r][c] = "."
@@ -40,7 +40,7 @@ proc south . .
       .
    .
 .
-proc east . .
+proc east .
    for r to nr
       for c to nc - 1
          if m$[r][c] = "."
@@ -56,7 +56,7 @@ proc east . .
       .
    .
 .
-proc west . .
+proc west .
    for r to nr
       for c = nc downto 2
          if m$[r][c] = "."
@@ -86,14 +86,14 @@ func load .
 north
 print load
 # 
-proc cycle . .
+proc cycle .
    north
    east
    south
    west
 .
 len hist[] 1000
-proc part2 . .
+proc part2 .
    for cy to 50
       cycle
       hist[cy] = load

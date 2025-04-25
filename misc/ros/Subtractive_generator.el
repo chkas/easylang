@@ -3,7 +3,7 @@ len state[] 55
 arrbase state[] 0
 global si sj .
 funcdecl subrand .
-proc subrand_seed p1 . .
+proc subrand_seed p1 .
    p2 = 1
    state[0] = p1 mod MOD
    j = 21

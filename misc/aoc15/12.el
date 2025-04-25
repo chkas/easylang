@@ -1,15 +1,15 @@
 # AoC-15 - Day 12: JSAbacusFramework.io
-# 
+#
 inp$ = input
 ipos = 1
 c$ = ""
-proc nextc . .
+proc nextc .
    c$ = substr inp$ ipos 1
    ipos += 1
 .
-procdecl parse . sum red .
+procdecl parse &sum &red .
 tokv$ = ""
-proc parse_numb . .
+proc parse_numb .
    tokv$ = ""
    if c$ = "-"
       tokv$ &= c$
@@ -20,7 +20,7 @@ proc parse_numb . .
       nextc
    .
 .
-proc parse_str . .
+proc parse_str .
    tokv$ = ""
    while c$ <> "\""
       tokv$ &= c$
@@ -29,7 +29,7 @@ proc parse_str . .
    nextc
 .
 part2 = 0
-proc parse_obj . sum .
+proc parse_obj &sum .
    sum = 0
    repeat
       if c$ <> "\""
@@ -55,7 +55,7 @@ proc parse_obj . sum .
       sum = 0
    .
 .
-proc parse_arr . sum .
+proc parse_arr &sum .
    sum = 0
    repeat
       parse s red
@@ -68,7 +68,7 @@ proc parse_arr . sum .
    .
    nextc
 .
-proc parse . sum red .
+proc parse &sum &red .
    red = 0
    if c$ = "{"
       nextc
@@ -93,13 +93,13 @@ proc parse . sum red .
 nextc
 parse sum red
 print sum
-# 
+#
 part2 = 1
 ipos = 1
 nextc
 parse sum red
 print sum
-# 
+#
 input_data
 {"a":{"b":4},"c":-1,"d":[1,{"c":"red","b":2},3]}
 

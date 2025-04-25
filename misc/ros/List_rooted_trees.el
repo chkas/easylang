@@ -3,11 +3,11 @@ sysconf zero_based
 trees[] = [ ]
 len offs[] 32
 offs[1] = 1
-proc append t . .
+proc append t .
    v = bitor 1 bitshift t 1
    trees[] &= v
 .
-proc show t l . .
+proc show t l .
    while l > 0
       l -= 1
       if t mod 2 = 1
@@ -18,13 +18,13 @@ proc show t l . .
       t = t div 2
    .
 .
-proc list n . .
+proc list n .
    for i = offs[n] to offs[n + 1] - 1
       show trees[i] n * 2
       print ""
    .
 .
-proc assemble n t sl pos rem . .
+proc assemble n t sl pos rem .
    if rem = 0
       append t
       return
@@ -43,7 +43,7 @@ proc assemble n t sl pos rem . .
    assemble n h sl pos rem - sl
    assemble n t sl pos + 1 rem
 .
-proc make n . .
+proc make n .
    if offs[n + 1] <> 0
       return
    .
@@ -53,7 +53,7 @@ proc make n . .
    assemble n 0 n - 1 offs[n - 1] n - 1
    offs[n + 1] = len trees[]
 .
-proc test n . .
+proc test n .
    append 0
    make n
    print "Number of " & n & "-trees: " & offs[n + 1] - offs[n]

@@ -1,0 +1,16 @@
+cat <<xxx
+
+=={{header|EasyLang}}==
+<syntaxhighlight lang="easylang">
+xxx
+cat $1
+cat <<xxx
+</syntaxhighlight>
+{{out}}
+<pre>
+xxx
+r $1
+cat <<xxx
+</pre>
+
+xxx

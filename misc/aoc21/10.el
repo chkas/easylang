@@ -1,8 +1,8 @@
 # AoC-21 - Day 10: Syntax Scoring
-# 
-# Recursive syntax tree parsing. 
-# 
-proc sort . d[] .
+#
+# Recursive syntax tree parsing.
+#
+proc sort &d[] .
    for i = 1 to len d[] - 1
       for j = i + 1 to len d[]
          if d[j] > d[i]
@@ -12,13 +12,13 @@ proc sort . d[] .
    .
 .
 global inp$ c$ inpi .
-proc nextc . .
+proc nextc .
    c$ = substr inp$ inpi 1
    inpi += 1
 .
-procdecl parse . .
+procdecl parse .
 global score err .
-proc parse_expect b$ . .
+proc parse_expect b$ .
    nextc
    parse
    if c$ = "" and err = 0
@@ -43,7 +43,7 @@ proc parse_expect b$ . .
    .
    nextc
 .
-proc parse . .
+proc parse .
    while 1 = 1
       if c$ = "("
          parse_expect ")"
@@ -74,7 +74,7 @@ repeat
 print part1
 sort score[]
 print score[len score[] div 2 + 1]
-# 
+#
 input_data
 [({(<(())[]>[[{[]{<()<>>
 [(()[<>])]({[<{<<[]>>(

@@ -1,7 +1,7 @@
 # AoC-24 - Day 16: Reindeer Maze
 #
 global nc m$[] seen[] start ende n .
-proc init . .
+proc init .
    s$ = input
    nc = len s$
    while s$ <> ""
@@ -22,7 +22,7 @@ proc init . .
    for i to n * 5 : seen[] &= 1 / 0
 .
 init
-proc show . .
+proc show .
    for i to len m$[]
       s$ &= m$[i]
       if i mod nc = 0
@@ -35,7 +35,7 @@ offs[] = [ 1 nc -1 (-nc) ]
 len prev[][] len seen[]
 todo[] = [ start + n ]
 #
-proc check pind np d cost . .
+proc check pind np d cost .
    inds = d * n + np
    if m$[np] = "#" or cost > seen[inds] : return
    if cost < seen[inds] : prev[inds][] = [ ]
@@ -44,7 +44,7 @@ proc check pind np d cost . .
    seen[inds] = cost
    todo[] &= inds
 .
-proc findmin . .
+proc findmin .
    mincost = 1 / 0
    seen[start + n] = 0
    while len todo[] > 0
@@ -66,12 +66,12 @@ proc findmin . .
 .
 findmin
 #
-proc markpath sind . .
+proc markpath sind .
    if sind = 0 : return
    m$[sind mod n] = "O"
    for ind in prev[sind][] : markpath ind
 .
-proc countany . .
+proc countany .
    for d to 4 : markpath ende + d * n
    for c$ in m$[] : sum += if c$ = "O"
    print sum

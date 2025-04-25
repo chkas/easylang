@@ -1,8 +1,8 @@
 # AoC-17 - Day 14: Disk Defragmentation
-# 
+#
 inp$ = input
-# 
-proc hash s$ . hash[] .
+#
+proc hash s$ &hash[] ..
    inp[] = [ ]
    for i to len s$
       inp[] &= strcode substr s$ i 1
@@ -39,7 +39,7 @@ proc hash s$ . hash[] .
       hash[] &= h
    .
 .
-proc outp . hash[] .
+proc outp &hash[] ..
    for i range0 len hash[]
       h = hash[i]
       for h in [ h div 16 h mod 16 ]
@@ -53,8 +53,8 @@ proc outp . hash[] .
    print ""
 .
 m[] = []
-# 
-proc bits b[] . .
+#
+proc bits b[] .
    for b in b[]
       h = 0x80
       while h > 0
@@ -63,7 +63,7 @@ proc bits b[] . .
       .
    .
 .
-proc make_grid . .
+proc make_grid .
    for i range0 128
       hash inp$ & "-" & i hash[]
       bits hash[]
@@ -74,8 +74,8 @@ proc make_grid . .
    print sum
 .
 make_grid
-# 
-proc expand ind . .
+#
+proc expand ind .
    m[ind] = 0
    if ind mod 128 <> 1 and m[ind - 1] = 1
       expand ind - 1
@@ -98,7 +98,7 @@ for i to len m[]
 .
 
 print nreg
-# 
+#
 input_data
 flqrgnkx
 

@@ -20,7 +20,7 @@ fastfunc isself start i .
    .
    return 1
 .
-proc main . .
+proc main .
    i = 1
    po = 10
    digits = 1

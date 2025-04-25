@@ -3,7 +3,7 @@
 # Recursive parsing
 #
 global b[] bi .
-proc init . .
+proc init .
    hex$[] = strchars input
    for h$ in hex$[]
       v = strcode h$ - 48
@@ -30,7 +30,7 @@ func getnum cnt .
    return v
 .
 global vers_sum .
-proc parse_pack . val .
+proc parse_pack &val .
    vers_sum += getnum 3
    id = getnum 3
    if id = 4

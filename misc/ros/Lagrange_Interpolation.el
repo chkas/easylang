@@ -36,7 +36,7 @@ func eval_poly p[] x .
    .
    return res
 .
-proc show_poly p[] . .
+proc show_poly p[] .
    l = len p[]
    for i = l downto 1
       p = p[i]

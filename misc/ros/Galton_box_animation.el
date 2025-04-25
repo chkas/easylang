@@ -1,6 +1,6 @@
 sysconf topleft
 # 
-proc drawpins . .
+proc drawpins .
    for i to 9
       for j to i
          move (15 - i) * 3 + j * 6 i * 6 + 2
@@ -16,7 +16,7 @@ len box[] 10
 len x[] 10
 len y[] 10
 # 
-proc showbox . .
+proc showbox .
    for i to 10
       x = i * 6 + 15
       for j to box[i]
@@ -25,7 +25,7 @@ proc showbox . .
       .
    .
 .
-proc init . .
+proc init .
    for i to 10
       box[i] = 0
       x[i] = 0

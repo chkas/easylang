@@ -24,7 +24,7 @@ len deck2[] nc
 deck1_copy[] = deck1[]
 deck2_copy[] = deck2[]
 #
-proc take . d[] c .
+proc take &d[] &c ..
    s = d[2]
    c = d[s]
    d[s] = 0
@@ -33,14 +33,14 @@ proc take . d[] c .
    d[2] = s
    d[1] -= 1
 .
-proc put c . d[] .
+proc put c &d[] ..
    s = d[2]
    e = s + d[1]
    if e > nc : e = e - nc + 2
    d[e] = c
    d[1] += 1
 .
-proc score . d[] res .
+proc score &d[] &res ..
    res = 0
    s = d[2]
    i = d[1]
@@ -52,7 +52,7 @@ proc score . d[] res .
    .
 .
 #
-proc part1 . deck1[] deck2[] .
+proc part1 &deck1[] &deck2[] ..
    while deck1[1] > 0 and deck2[1] > 0
       take deck1[] card1
       take deck2[] card2
@@ -73,7 +73,7 @@ proc part1 . deck1[] deck2[] .
 .
 part1 deck1_copy[] deck2_copy[]
 #
-proc deck2str . d[] res$ .
+proc deck2str &d[] &res$ ..
    res$ = ""
    s = d[2]
    for i to d[1]
@@ -82,7 +82,7 @@ proc deck2str . d[] res$ .
       if s > nc : s = 3
    .
 .
-proc add_seen h$ . h$[] res .
+proc add_seen h$ &h$[] &res ..
    res = 0
    for i to len h$[]
       if h$[i] = h$
@@ -92,7 +92,7 @@ proc add_seen h$ . h$[] res .
    .
    h$[] &= h$
 .
-proc play . deck1[] deck2[] winner .
+proc play &deck1[] &deck2[] &winner ..
    seen1$[] = [ ]
    seen2$[] = [ ]
    while 1 = 1

@@ -1,4 +1,4 @@
-proc lyndonfact s$ . .
+proc lyndonfact s$ .
    n = len s$
    s$[] = strchars s$
    i = 1

@@ -24,7 +24,7 @@ fastfunc iter cx cy maxiter .
    .
    return it
 .
-proc draw . .
+proc draw .
    clear
    for scr_y = 0 to 2 * mid - 1
       cy = (scr_y - center_y) / scale

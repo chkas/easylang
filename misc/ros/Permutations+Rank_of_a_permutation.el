@@ -42,7 +42,7 @@ func rank n p[] .
    .
    return r
 .
-proc show . .
+proc show .
    for i = 0 to 5
       h[] = perm 3 i
       print i & " -> " & h[] & " -> " & rank 3 h[]

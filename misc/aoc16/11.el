@@ -1,9 +1,9 @@
 # AoC-16 - Day 11: Radioisotope Thermoelectric Generators
-# 
+#
 hashsz = 1999993
 len hashind[] hashsz
-# 
-proc hash ind . ret .
+#
+proc hash ind &ret ..
    hi = ind mod hashsz + 1
    while hashind[hi] <> 0 and hashind[hi] <> ind
       hi = hi mod hashsz + 1
@@ -15,9 +15,9 @@ proc hash ind . ret .
       ret = 1
    .
 .
-# 
+#
 na$[] = [ ]
-proc getid n$ . id .
+proc getid n$ &id ..
    for id to len na$[]
       if na$[id] = n$
          break 2
@@ -29,8 +29,8 @@ global todo[] todon[] .
 global el el0 cod destcod .
 len ar[] 16
 arrbase ar[] 0
-# 
-proc init . .
+#
+proc init .
    len ob[] 5
    len obx[] 5
    for fl = 0 to 3
@@ -58,8 +58,8 @@ proc init . .
    destcod = nob * 4 + 3
 .
 init
-# 
-proc tocod . .
+#
+proc tocod .
    cod = 0
    for v in ar[]
       cod = cod * 8 + v
@@ -68,8 +68,8 @@ proc tocod . .
 .
 tocod
 cod0 = cod
-# 
-proc toarr . .
+#
+proc toarr .
    h = cod
    el = h mod 4
    h = h div 4
@@ -78,8 +78,8 @@ proc toarr . .
       h = h div 8
    .
 .
-# 
-proc add_check i1 i2 . .
+#
+proc add_check i1 i2 .
    ar[i1] -= 1
    ar[i2] += 1
    gen = 0
@@ -105,7 +105,7 @@ proc add_check i1 i2 . .
    ar[i1] += 1
    ar[i2] -= 1
 .
-proc add_todo . .
+proc add_todo .
    # one object
    l1[] = [ ]
    l2[] = [ ]
@@ -131,7 +131,7 @@ proc add_todo . .
    if ar[i] > 0
       add_check i el * 4 + el
    .
-   # 
+   #
    # two objects
    for li to len l1[]
       i = l1[li]
@@ -155,11 +155,11 @@ proc add_todo . .
       ar[i] += 1
    .
 .
-proc run . .
+proc run .
    tocod
    todon[] = [ cod ]
    todo[] = [ ]
-   # 
+   #
    while len todon[] <> 0
       swap todon[] todo[]
       todon[] = [ ]
@@ -183,15 +183,15 @@ proc run . .
    .
 .
 run
-# 
+#
 cod = cod0
 toarr
 el = 0
 destcod += 8
 ar[0] += 2
 run
-# 
-# 
+#
+#
 input_data
 The first floor contains a hydrogen-compatible microchip and a lithium-compatible microchip.
 The second floor contains a hydrogen generator.

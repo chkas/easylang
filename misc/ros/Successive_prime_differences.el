@@ -27,7 +27,7 @@ func spd n d[] .
    .
    return 1
 .
-proc print_set n d[] . .
+proc print_set n d[] .
    write "( " & n & " "
    for i = 1 to len d[]
       write n + d[i] & " "
@@ -35,7 +35,7 @@ proc print_set n d[] . .
    .
    print ")"
 .
-proc show max d[] . .
+proc show max d[] .
    write "Differences of "
    for d in d[]
       write d & " "

@@ -1,4 +1,4 @@
-proc rref . m[][] .
+proc rref &m[][] .
    nrow = len m[][]
    ncol = len m[1][]
    lead = 1
@@ -33,7 +33,7 @@ proc rref . m[][] .
       lead += 1
    .
 .
-proc inverse . mat[][] inv[][] .
+proc inverse &mat[][] &inv[][] .
    inv[][] = [ ]
    ln = len mat[][]
    for i to ln
@@ -43,9 +43,7 @@ proc inverse . mat[][] inv[][] .
       .
       aug[][] &= [ ]
       len aug[i][] 2 * ln
-      for j to ln
-         aug[i][j] = mat[i][j]
-      .
+      for j to ln : aug[i][j] = mat[i][j]
       aug[i][ln + i] = 1
    .
    rref aug[][]

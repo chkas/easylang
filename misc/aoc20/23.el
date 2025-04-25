@@ -3,7 +3,7 @@
 global n next[] cur .
 inp[] = number strchars input
 #
-proc init n0 . .
+proc init n0 .
    n = n0
    if n0 = 0 : n = len inp[]
    len next[] n
@@ -19,7 +19,7 @@ proc init n0 . .
    .
    next[h] = cur
 .
-proc mov . .
+proc mov .
    tak1 = next[cur]
    tak2 = next[tak1]
    tak3 = next[tak2]
@@ -33,7 +33,7 @@ proc mov . .
    next[dest] = tak1
    cur = next[cur]
 .
-proc part1 . .
+proc part1 .
    init 0
    for i to 100
       mov
@@ -47,7 +47,7 @@ proc part1 . .
 .
 part1
 #
-proc part2 . .
+proc part2 .
    init 1000000
    for i to 10000000
       mov

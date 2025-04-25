@@ -11,7 +11,7 @@ func isprim num .
    .
    return 1
 .
-proc nextdesc n . .
+proc nextdesc n .
    if isprim n = 1
       write n & " "
    .

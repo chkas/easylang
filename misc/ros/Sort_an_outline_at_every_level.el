@@ -1,9 +1,7 @@
 sortdir = 1
-proc sort . d$[][] .
-   for i = 1 to len d$[][] - 1
-      for j = i + 1 to len d$[][]
-         if sortdir * strcmp d$[j][1] d$[i][1] < 0 : swap d$[j][] d$[i][]
-      .
+proc sort &d$[][] .
+   for i = 1 to len d$[][] - 1 : for j = i + 1 to len d$[][]
+      if sortdir * strcmp d$[j][1] d$[i][1] < 0 : swap d$[j][] d$[i][]
    .
 .
 repeat
@@ -18,8 +16,8 @@ subr init
    linind = 0
 .
 istab = -1
-# 
-proc nextline . .
+#
+proc nextline .
    if linpos = -1 : return
    linpos += 1
    if linpos > len inp$[]
@@ -53,7 +51,7 @@ proc nextline . .
 func$[] outline .
    curind = linind
    repeat
-      # 
+      #
       until linpos = -1 or linind < curind
       if linind = curind
          r$[][] &= [ lin$ ]
@@ -73,7 +71,7 @@ func$[] outline .
    if linpos <> -1 : linpos -= 1
    return r$[]
 .
-proc run dir . .
+proc run dir .
    sortdir = dir
    call init
    nextline
@@ -82,7 +80,7 @@ proc run dir . .
 .
 run 1
 run -1
-# 
+#
 input_data
 zeta
     beta

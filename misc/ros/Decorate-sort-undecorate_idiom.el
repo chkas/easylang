@@ -1,7 +1,5 @@
-proc sort . ar$[] .
-   for a$ in ar$[]
-      k[] &= len a$
-   .
+proc sort &ar$[] .
+   for a$ in ar$[] : k[] &= len a$
    for i = 1 to len k[] - 1
       for j = i + 1 to len k[]
          if k[j] < k[i]

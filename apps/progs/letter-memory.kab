@@ -70,7 +70,7 @@ on mouse_down
       search_card
    .
 .
-proc smiley t . .
+proc smiley t .
    if t <= 60
       move 65 30
       color 983

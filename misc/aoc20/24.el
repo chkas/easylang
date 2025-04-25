@@ -4,7 +4,7 @@ sysconf topleft
 visual = 1
 #
 global go[][] nc .
-proc read . .
+proc read .
    l = 1
    repeat
       s$ = input
@@ -42,12 +42,12 @@ len m[] nc * nc
 dirs_even[] = [ -1 (-nc - 1) (-nc) 1 nc (nc - 1) ]
 dirs_odd[] = [ -1 (-nc) (-nc + 1) 1 (nc + 1) nc ]
 #
-proc sum_black . s .
+proc sum_black &s ..
    s = 0
    for i to len m[] : s += m[i]
 .
 background 000
-proc show . .
+proc show .
    if visual = 0 : return
    #
    srow = 30
@@ -91,7 +91,7 @@ proc show . .
    text sum & " black tiles"
    sleep 0.03
 .
-proc show2 . .
+proc show2 .
    if visual = 0 : return
    f = 100 / nc
    f2 = f / 2
@@ -124,7 +124,7 @@ proc show2 . .
    text sum & " black tiles"
    sleep 0.1
 .
-proc part1 . .
+proc part1 .
    start = nc * (nc div 2) + nc div 2
    for l to len go[][]
       pos = start
@@ -145,7 +145,7 @@ proc part1 . .
 part1
 #
 len p[] len m[]
-proc update . .
+proc update .
    swap m[] p[]
    for r to nc - 2
       for c to nc - 2
@@ -172,7 +172,7 @@ proc update . .
       .
    .
 .
-proc part2 . .
+proc part2 .
    for i to 100
       update
       if i <= 10

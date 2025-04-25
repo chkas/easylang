@@ -5,7 +5,7 @@ func ceil h .
    .
    return f
 .
-proc triangle n . .
+proc triangle n .
    print n & " rows:"
    row = 1
    while row <= n

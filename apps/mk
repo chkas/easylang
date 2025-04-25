@@ -504,7 +504,7 @@ and <a href=easy.js><i>easy.js</i></a> to your web directory, you can embed a sc
 </div>
 
 <script>
-src1 = `proc tree x y a d . .
+src1 = `proc tree x y a d .
    linewidth d * 0.4
    move x y
    x += cos a * d * 1.4 * (randomf + 0.5)

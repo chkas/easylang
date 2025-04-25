@@ -14,7 +14,7 @@ subr initvars
    note = 1
    stat = 0
 .
-proc draw_notes . .
+proc draw_notes .
    move 0 0
    color 987
    rect 100 55
@@ -99,7 +99,7 @@ proc draw_notes . .
       .
    .
 .
-proc btn x y s$ . .
+proc btn x y s$ .
    linewidth 8
    move x y
    line x + 13 y
@@ -117,7 +117,7 @@ subr draw_btn_slow
 subr draw_btn_play
    btn 36 61 "Play"
 .
-proc draw_key down . .
+proc draw_key down .
    if down = 1
       color 765
    else

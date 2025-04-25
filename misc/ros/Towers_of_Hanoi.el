@@ -1,4 +1,4 @@
-proc hanoi n src dst aux . .
+proc hanoi n src dst aux .
    if n >= 1
       hanoi n - 1 src aux dst
       print "Move " & src & " to " & dst

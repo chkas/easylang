@@ -6,16 +6,16 @@ visual = 1
 inp$[] = strchars input
 ind = 2
 global c$ .
-proc nextc . .
+proc nextc .
    c$ = inp$[ind]
    ind += 1
 .
 len f[] 1000 * 1000
 arrbase f[] 0
 #
-procdecl parse . pos[] .
+procdecl parse &pos[] ..
 #
-proc parse_opt . pos[] .
+proc parse_opt &pos[] ..
    while 1 = 1
       d = 0
       if c$ = "W"
@@ -46,7 +46,7 @@ proc parse_opt . pos[] .
    .
 .
 #
-proc parse . pos0[] .
+proc parse &pos0[] ..
    pos[] = pos0[]
    parse_opt pos[]
    pos_res[] = pos[]
@@ -70,7 +70,7 @@ proc parse . pos0[] .
 #
 min = 0
 max = 0
-proc show solve . .
+proc show solve .
    if visual = 0
       break 1
    .
@@ -107,7 +107,7 @@ proc show solve . .
    .
    sleep 0
 .
-proc build . .
+proc build .
    nextc
    pos[] &= 500500
    f[pos[1]] = 1

@@ -34,7 +34,7 @@ txt_tutor=`* Blackjack - Probabilities, Strategy, Card Counting
 
 len p_card[] 11
 #
-proc prepare . .
+proc prepare .
   # probabilities to get a card from 1 to 11
   for i = 1 to 11
     p_card[i] = 1 / 13
@@ -44,7 +44,7 @@ proc prepare . .
 #
 prepare
 #
-proc dealer_draw p card cardsum n_ace . p_dealer[] .
+proc dealer_draw p card cardsum n_ace &p_dealer[] .
   if card = 11
     n_ace += 1
   .
@@ -62,7 +62,7 @@ proc dealer_draw p card cardsum n_ace . p_dealer[] .
     .
   .
 .
-proc p_dealer . .
+proc p_dealer .
   len p_dealer[] 22
   numfmt 0 5
   write "  "
@@ -110,7 +110,7 @@ len ev_stand[][] 11
 len ev_hard[][] 11
 len strat_hard$[][] 11
 #
-proc prepare . .
+proc prepare .
   for i = 1 to 11
     p_card[i] = 1 / 13
   .
@@ -124,7 +124,7 @@ proc prepare . .
 .
 prepare
 #
-proc dealer_draw p card cardsum n_ace . p_dealer[] .
+proc dealer_draw p card cardsum n_ace &p_dealer[] .
   if card = 11
     n_ace += 1
   .
@@ -142,7 +142,7 @@ proc dealer_draw p card cardsum n_ace . p_dealer[] .
     .
   .
 .
-proc calc_ev_stand . .
+proc calc_ev_stand .
   len p_dealer[] 22
   for dealer_card = 2 to 11
     len ev_stand[dealer_card][] 21
@@ -183,7 +183,7 @@ for dealer_card = 2 to 11
   .
 .
 #
-proc out_strat . .
+proc out_strat .
   numfmt 2 2
   print "Strategy Hard Hand:"
   print ""
@@ -235,7 +235,7 @@ len ev_stand[][] 11
 len ev_soft[][] 11
 len strat_soft$[][] 11
 #
-proc prepare . .
+proc prepare .
   for i = 1 to 11
     p_card[i] = 1 / 13
   .
@@ -250,7 +250,7 @@ proc prepare . .
 .
 prepare
 #
-proc dealer_draw p card cardsum n_ace . p_dealer[] .
+proc dealer_draw p card cardsum n_ace &p_dealer[] .
   if card = 11
     n_ace += 1
   .
@@ -268,7 +268,7 @@ proc dealer_draw p card cardsum n_ace . p_dealer[] .
     .
   .
 .
-proc calc_ev_stand . .
+proc calc_ev_stand .
   len p_dealer[] 22
   for dealer_card = 2 to 11
     len ev_stand[dealer_card][] 22
@@ -290,7 +290,7 @@ proc calc_ev_stand . .
 .
 calc_ev_stand
 #
-proc calc_ev . .
+proc calc_ev .
   for dealer_card = 2 to 11
     #
     # hard hand
@@ -339,7 +339,7 @@ proc calc_ev . .
 .
 calc_ev
 #
-proc out_strat . .
+proc out_strat .
   numfmt 2 2
   print "Strategy Soft Hand:"
   print ""
@@ -378,7 +378,7 @@ len ev_soft[][] 11
 len ev_dbl[][] 11
 len strat_dbl$[][] 11
 #
-proc prepare . .
+proc prepare .
   for i = 1 to 11
     p_card[i] = 1 / 13
   .
@@ -393,7 +393,7 @@ proc prepare . .
 .
 prepare
 #
-proc dealer_draw p card cardsum n_ace . p_dealer[] .
+proc dealer_draw p card cardsum n_ace &p_dealer[] .
   if card = 11
     n_ace += 1
   .
@@ -411,7 +411,7 @@ proc dealer_draw p card cardsum n_ace . p_dealer[] .
     .
   .
 .
-proc calc_ev_stand . .
+proc calc_ev_stand .
   len p_dealer[] 22
   for dealer_card = 2 to 11
     len ev_stand[dealer_card][] 22
@@ -433,7 +433,7 @@ proc calc_ev_stand . .
 .
 calc_ev_stand
 #
-proc calc_ev . .
+proc calc_ev .
   for dealer_card = 2 to 11
     #
     # hard hand
@@ -515,7 +515,7 @@ proc calc_ev . .
 .
 calc_ev
 #
-proc out_strat . .
+proc out_strat .
   numfmt 2 2
   print "Strategy Double Down"
   print ""
@@ -553,7 +553,7 @@ len ev_hard[][] 11
 len ev_soft[][] 11
 len strat_split$[][] 11
 #
-proc prepare . .
+proc prepare .
   for i = 1 to 11
     p_card[i] = 1 / 13
   .
@@ -567,7 +567,7 @@ proc prepare . .
 .
 prepare
 #
-proc dealer_draw p card cardsum n_ace . p_dealer[] .
+proc dealer_draw p card cardsum n_ace &p_dealer[] .
   if card = 11
     n_ace += 1
   .
@@ -585,7 +585,7 @@ proc dealer_draw p card cardsum n_ace . p_dealer[] .
     .
   .
 .
-proc calc_ev_stand . .
+proc calc_ev_stand .
   len p_dealer[] 22
   for dealer_card = 2 to 11
     len ev_stand[dealer_card][] 22
@@ -607,7 +607,7 @@ proc calc_ev_stand . .
 .
 calc_ev_stand
 #
-proc calc_ev . .
+proc calc_ev .
   for dealer_card = 2 to 11
     #
     # hard hand
@@ -690,7 +690,7 @@ proc calc_ev . .
 .
 calc_ev
 #
-proc out_strat . .
+proc out_strat .
   numfmt 2 2
   print "Strategy Split:"
   print ""
@@ -731,7 +731,7 @@ len ev_soft[][] 11
 len ev_dbl[][] 11
 len ev_split[][] 11
 #
-proc prepare . .
+proc prepare .
   for i = 1 to 11
     p_card[i] = 1 / 13
   .
@@ -747,7 +747,7 @@ proc prepare . .
 prepare
 #
 #
-proc dealer_draw p card cardsum n_ace . p_dealer[] .
+proc dealer_draw p card cardsum n_ace &p_dealer[] .
   if card = 11
     n_ace += 1
   .
@@ -774,7 +774,7 @@ proc dealer_draw p card cardsum n_ace . p_dealer[] .
     .
   .
 .
-proc calc_ev_stand . .
+proc calc_ev_stand .
   len p_dealer[] 22
   for dealer_card = 2 to 11
     for i = 17 to 22
@@ -794,7 +794,7 @@ proc calc_ev_stand . .
   .
 .
 #
-proc calc_ev . .
+proc calc_ev .
   calc_ev_stand
   #
   for dealer_card = 2 to 11
@@ -936,7 +936,7 @@ len strat_soft$[][] 11
 len strat_dbl$[][] 11
 len strat_split$[][] 11
 #
-proc init . .
+proc init .
   for dealer_card = 2 to 11
     len strat_hard$[dealer_card][] 21
     len strat_soft$[dealer_card][] 21
@@ -983,7 +983,7 @@ init
 #
 global n_cards .
 #
-proc shuffle . .
+proc shuffle .
   while n_cards < n_deck * 52
     n_cards += 1
     j = random n_cards
@@ -1001,12 +1001,12 @@ subr game_init
   player_blackj = 0
 .
 #
-proc take . card .
+proc take &card .
   card = cards[n_cards]
   n_cards -= 1
 .
 #
-proc dealer_take . .
+proc dealer_take .
   take card
   if card = 11
     dealer_ace += 1
@@ -1017,7 +1017,7 @@ proc dealer_take . .
     dealer_sum -= 10
   .
 .
-proc dealer_turn . .
+proc dealer_turn .
   dealer_take
   if dealer_sum = 21
     dealer_blackj = 1
@@ -1026,7 +1026,7 @@ proc dealer_turn . .
     dealer_take
   .
 .
-proc player_take . .
+proc player_take .
   take card
   if card = 11
     player_ace += 1
@@ -1037,7 +1037,7 @@ proc player_take . .
     player_sum -= 10
   .
 .
-proc player_turn . .
+proc player_turn .
   while 1 = 1
     if player_ace = 0
       h$ = strat_hard$[dealer_sum][player_sum]
@@ -1053,7 +1053,7 @@ proc player_turn . .
     .
   .
 .
-proc play n_games . .
+proc play n_games .
   money = 0
   for games = 1 to n_games
     shuffle
@@ -1190,7 +1190,7 @@ len ev_soft[][] 11
 len ev_dbl[][] 11
 len ev_split[][] 11
 #
-proc prepare . .
+proc prepare .
   for i = 1 to 11
     p_card[i] = 1 / 13
   .
@@ -1206,7 +1206,7 @@ proc prepare . .
 prepare
 #
 #
-proc dealer_draw p card cardsum n_ace . p_dealer[] .
+proc dealer_draw p card cardsum n_ace &p_dealer[] .
   if card = 11
     n_ace += 1
   .
@@ -1233,7 +1233,7 @@ proc dealer_draw p card cardsum n_ace . p_dealer[] .
     .
   .
 .
-proc calc_ev_stand . .
+proc calc_ev_stand .
   len p_dealer[] 22
   for dealer_card = 2 to 11
     for i = 17 to 22
@@ -1253,7 +1253,7 @@ proc calc_ev_stand . .
   .
 .
 #
-proc calc_ev . .
+proc calc_ev .
   calc_ev_stand
   #
   for dealer_card = 2 to 11
@@ -1375,7 +1375,7 @@ proc calc_ev . .
   print "EV: " & ev_total
 .
 #
-proc change_stack . removed_cards[] .
+proc change_stack &removed_cards[] .
   n_deck = 6
   n_cards = n_deck * 52
   for i = 2 to 11
@@ -1426,7 +1426,7 @@ len strat_soft$[][] 11
 len strat_dbl$[][] 11
 len strat_split$[][] 11
 #
-proc init . .
+proc init .
   for dealer_card = 2 to 11
     len strat_hard$[dealer_card][] 21
     len strat_soft$[dealer_card][] 21
@@ -1473,7 +1473,7 @@ init
 #
 global count n_cards .
 #
-proc shuffle . .
+proc shuffle .
   while n_cards < n_deck * 52
     n_cards += 1
     j = random n_cards
@@ -1492,7 +1492,7 @@ subr game_init
   player_blackj = 0
 .
 #
-proc take . card .
+proc take &card .
   card = cards[n_cards]
   n_cards -= 1
   #
@@ -1503,7 +1503,7 @@ proc take . card .
   .
 .
 #
-proc dealer_take . .
+proc dealer_take .
   take card
   if card = 11
     dealer_ace += 1
@@ -1514,7 +1514,7 @@ proc dealer_take . .
     dealer_sum -= 10
   .
 .
-proc dealer_turn . .
+proc dealer_turn .
   dealer_take
   if dealer_sum = 21
     dealer_blackj = 1
@@ -1523,7 +1523,7 @@ proc dealer_turn . .
     dealer_take
   .
 .
-proc player_take . .
+proc player_take .
   take card
   if card = 11
     player_ace += 1
@@ -1534,7 +1534,7 @@ proc player_take . .
     player_sum -= 10
   .
 .
-proc player_turn . .
+proc player_turn .
   while 1 = 1
     if player_ace = 0
       h$ = strat_hard$[dealer_sum][player_sum]
@@ -1550,7 +1550,7 @@ proc player_turn . .
     .
   .
 .
-proc play . .
+proc play .
   money = 0
   for games = 1 to 500000
     if n_cards < n_deck * 52 / 4

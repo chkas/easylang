@@ -1,4 +1,4 @@
-proc mosaic side . .
+proc mosaic side .
    start = 1
    for i to side
       c = start

@@ -1,5 +1,5 @@
 # AoC-19 - Day 6: Universal Orbit Map
-# 
+#
 repeat
    s$ = input
    until s$ = ""
@@ -18,8 +18,8 @@ proc go a$ orb . .
 .
 go "COM" 0
 print orbsum
-# 
-proc find a$ orb . you san .
+#
+proc find a$ orb &you &san ..
    if a$ = "YOU"
       you = orb
       san = -1
@@ -45,7 +45,7 @@ proc find a$ orb . you san .
    .
 .
 find "COM" 0 you san
-# 
+#
 input_data
 COM)B
 B)C

@@ -27,7 +27,7 @@ n = len op[]
 for i = 1 to n
    prod *= divs[i]
 .
-proc run maxcnt . .
+proc run maxcnt .
    item[][] = item0[][]
    len cnt[] n
    for r = 1 to maxcnt

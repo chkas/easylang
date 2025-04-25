@@ -7,7 +7,7 @@ func$ hex h .
    .
    return h$
 .
-proc unichar s$ . .
+proc unichar s$ .
    len d[] 65536
    s$[] = strchars s$
    for i to len s$[]

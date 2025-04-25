@@ -9,7 +9,7 @@ subr initvars
    res = 0
    resok = 0
 .
-proc disp col s$ . .
+proc disp col s$ .
    color col
    move 3 76
    rect 94 21
@@ -18,7 +18,7 @@ proc disp col s$ . .
    textsize 12
    text s$
 .
-proc showquest . .
+proc showquest .
    if res = resok
       if todo mod 2 = 1
          a = random 14 + 2
@@ -35,7 +35,7 @@ proc showquest . .
    disp 030 q$ & "_"
    res = 0
 .
-proc drawkey . .
+proc drawkey .
    s$ = strchar (ind + 48)
    h = ind
    if h < 10 and h > 0
@@ -63,7 +63,7 @@ proc drawkey . .
    text s$
 .
 background 010
-proc start . .
+proc start .
    clear
    for ind = 0 to 11
       color 020
@@ -72,7 +72,7 @@ proc start . .
    initvars
    showquest
 .
-proc init . .
+proc init .
    ind = -1
    state = 0
    textsize 9
@@ -83,7 +83,7 @@ proc init . .
    move 10 46
    text "Math Trainer"
 .
-proc check . .
+proc check .
    if ind = 11
       state = 2
       if res = resok
@@ -108,7 +108,7 @@ proc check . .
       disp 030 q$ & h$
    .
 .
-proc handle_key . .
+proc handle_key .
    c = mouse_x div 25
    r = 2 - mouse_y div 25
    if c < 3
@@ -126,7 +126,7 @@ proc handle_key . .
    drawkey
    check
 .
-proc smiley t . .
+proc smiley t .
    if t <= 60
       move 65 35
       color 983
@@ -144,7 +144,7 @@ proc smiley t . .
       .
    .
 .
-proc showresult . .
+proc showresult .
    t = floor (systime - time0)
    move 0 0
    color 030

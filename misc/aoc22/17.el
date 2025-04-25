@@ -13,7 +13,7 @@ func hashset ind .
    hashind[hi] = ind
    return 0
 .
-proc hashclear . .
+proc hashclear .
    hashind[] = hashind0[]
 .
 hashclear
@@ -21,7 +21,7 @@ hashclear
 len m[] 10000 * 9
 #
 global rock[][] inp$ .
-proc init . .
+proc init .
    for i = 0 to len m[] div 9 - 1
       h = i * 9 + 1
       m[h] = 1
@@ -41,7 +41,7 @@ init
 #
 global high rock[] irock .
 #
-proc show . .
+proc show .
    rrock = irock div 9
    crock = irock mod 9
    for row = high + 7 downto 0
@@ -71,7 +71,7 @@ proc show . .
    print ""
 .
 #
-proc mov dir . block .
+proc mov dir &block .
    for r = 0 to 3
       for c = 0 to 3
          ind = irock + r * 9 + c
@@ -85,7 +85,7 @@ proc mov dir . block .
    irock += dir
 .
 high = 0
-proc mkstone . .
+proc mkstone .
    for r = 0 to 3
       for c = 0 to 3
          ind = irock + r * 9 + c

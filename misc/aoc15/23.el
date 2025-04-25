@@ -6,7 +6,7 @@ repeat
    p$[] &= s$
 .
 #
-proc run r[] . .
+proc run r[] .
    pc = 1
    while pc <= len p$[]
       s$[] = strtok p$[pc] ", "

@@ -1,6 +1,6 @@
 # Clock
 #
-proc draw hour min sec . .
+proc draw hour min sec .
    # dial
    color 333
    move 50 50

@@ -14,7 +14,7 @@ repeat
 len rule[][] len in$[] + 20
 global a b .
 #
-proc init . .
+proc init .
    for i to len in$[]
       l$[] = strsplit in$[i] " "
       ind = 1 + number l$[1]
@@ -37,7 +37,7 @@ proc init . .
 .
 init
 #
-proc match s$ . nr[] res .
+proc match s$ &nr[] &res ..
    res = 1
    i = 1
    while i <= len nr[] and (nr[i] = a or nr[i] = b)

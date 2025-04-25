@@ -1,4 +1,4 @@
-proc test s$[] . .
+proc test s$[] .
    ident = 1
    ascend = 1
    for i = 2 to len s$[]

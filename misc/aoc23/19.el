@@ -13,7 +13,7 @@ func n2id n$ .
    return id
 .
 #
-proc read . .
+proc read .
    start = n2id "in"
    repeat
       s$ = input
@@ -57,7 +57,7 @@ func solve1 r .
    .
    return solve1 rule[r][ln]
 .
-proc part1 . .
+proc part1 .
    repeat
       s$ = input
       until s$ = ""

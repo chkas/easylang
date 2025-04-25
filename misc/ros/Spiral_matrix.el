@@ -1,4 +1,4 @@
-proc mkspiral n . t[] .
+proc mkspiral n &t[] .
    subr side
       for i to l
          ind += d
@@ -26,7 +26,5 @@ mkspiral n t[]
 numfmt 0 3
 for i to n * n
    write t[i]
-   if i mod n = 0
-      print ""
-   .
+   if i mod n = 0 : print ""
 .

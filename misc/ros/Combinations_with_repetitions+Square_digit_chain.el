@@ -24,7 +24,7 @@ fastfunc ends89 n .
 items[] = [ 0 1 2 3 4 5 6 7 8 9 ]
 global comb[] sum .
 # 
-proc docomb . .
+proc docomb .
    ncomb = fac len comb[]
    for i = 1 to len comb[]
       h = items[comb[i]]
@@ -39,7 +39,7 @@ proc docomb . .
       sum += ncomb
    .
 .
-proc combine pos val . .
+proc combine pos val .
    if pos > len comb[]
       docomb
       return

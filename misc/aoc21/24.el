@@ -10,7 +10,7 @@ sysconf topleft
 visual = 1
 #
 global cod$[] a1[] a2[] a3[] v[] in[] is_part2 .
-proc run . .
+proc run .
    inpos = 1
    v[] = [ 0 0 0 0 ]
    for i = 1 to len cod$[]
@@ -38,7 +38,7 @@ proc run . .
 background 000
 clear
 #
-proc show . .
+proc show .
    if visual = 0 : return
    for d in in[] : s$ &= d
    move 8 is_part2 * 35 + 15
@@ -52,7 +52,7 @@ proc show . .
    text "z:" & v[4]
    sleep 0.02
 .
-proc find . .
+proc find .
    in[] = [ ]
    for i = 1 to 14
       run
@@ -84,7 +84,7 @@ proc find . .
    for d in in[] : write d
    print ""
 .
-proc read . .
+proc read .
    repeat
       in$ = input
       until in$ = ""

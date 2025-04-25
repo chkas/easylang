@@ -1,6 +1,6 @@
 tree[] = [ 1 2 3 4 5 6 -1 7 -1 -1 -1 8 9 ]
 # 
-proc preorder ind . .
+proc preorder ind .
    if ind > len tree[] or tree[ind] = -1
       return
    .
@@ -12,7 +12,7 @@ write "preorder:"
 preorder 1
 print ""
 # 
-proc inorder ind . .
+proc inorder ind .
    if ind > len tree[] or tree[ind] = -1
       return
    .
@@ -24,7 +24,7 @@ write "inorder:"
 inorder 1
 print ""
 # 
-proc postorder ind . .
+proc postorder ind .
    if ind > len tree[] or tree[ind] = -1
       return
    .
@@ -37,12 +37,12 @@ postorder 1
 print ""
 # 
 global tail head queue[] .
-proc initqu n . .
+proc initqu n .
    len queue[] n
    tail = 1
    head = 1
 .
-proc enqu v . .
+proc enqu v .
    queue[tail] = v
    tail = (tail + 1) mod1 len queue[]
 .
@@ -55,7 +55,7 @@ func dequ .
    return queue[h]
 .
 initqu len tree[]
-proc levelorder n . .
+proc levelorder n .
    enqu n
    repeat
       ind = dequ

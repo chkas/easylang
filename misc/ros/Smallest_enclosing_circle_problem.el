@@ -69,7 +69,7 @@ func[] welzl ps[][] rs[][] .
 .
 print welzl [ [ 5 -2 ] [ -3 -2 ] [ -2 5 ] [ 1 6 ] [ 0 2 ] ] [ ]
 # 
-proc circ x y r . .
+proc circ x y r .
    linewidth 0.2
    text ""
    for a = 0 to 360

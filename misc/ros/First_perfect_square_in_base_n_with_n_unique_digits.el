@@ -15,7 +15,7 @@ func unique s$ .
    .
    return cnt
 .
-proc find b . .
+proc find b .
    n = floor pow b ((b - 1) div 2)
    repeat
       sq = n * n

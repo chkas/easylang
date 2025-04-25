@@ -36,7 +36,7 @@ subr init
    mem[] = code[]
    arrbase mem[] 0
 .
-proc mem_ind mo ind . rind .
+proc mem_ind mo ind &rind ..
    if mo = 1
       rind = ind
    elif mo = 0
@@ -116,7 +116,7 @@ proc part1 . .
 #
 global s$[] sf$[] .
 #
-proc search si lng . matches[] .
+proc search si lng &matches[] ..
    matches[] = [ ]
    for i = si + lng to len s$[] - lng + 1
       for j range0 lng
@@ -129,7 +129,7 @@ proc search si lng . matches[] .
 .
 len fu$[][] 3
 #
-proc apply lev start lng . matches[] .
+proc apply lev start lng &matches[] ..
    sn$[] = [ ]
    fu$[lev][] = [ ]
    match = 1

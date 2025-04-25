@@ -1,7 +1,7 @@
 # AoC-24 - Day 18: RAM Run
 #
 global data[][] size m[] offs[] nc size .
-proc read . .
+proc read .
    size = 7
    repeat
       s$ = input
@@ -12,7 +12,7 @@ proc read . .
 .
 read
 #
-proc corrupt n . .
+proc corrupt n .
    m[] = [ ]
    nc = size + 2
    offs[] = [ 1 nc -1 (-nc) ]
@@ -50,7 +50,7 @@ func find .
       cnt += 1
    .
 .
-proc part1 . .
+proc part1 .
    cnt = 12
    if size > 7 : cnt = 1024
    corrupt cnt
@@ -58,7 +58,7 @@ proc part1 . .
 .
 part1
 #
-proc part2 . .
+proc part2 .
    min = 1
    max = len data[][]
    repeat

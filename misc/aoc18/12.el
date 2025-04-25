@@ -2,7 +2,7 @@
 #
 n_rounds = 200
 global f[] rul[] .
-proc read . .
+proc read .
    a$[] = strchars substr input 16 999
    len f[] 4 + 2 * n_rounds + len a$[]
    arrbase f[] 0
@@ -30,7 +30,7 @@ proc read . .
 .
 read
 #
-proc run . .
+proc run .
    len p[] len f[]
    arrbase p[] 0
    for ro = 1 to n_rounds

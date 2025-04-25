@@ -47,7 +47,7 @@ func calcpass passw$ nonce$ .
    .
    return num1
 .
-proc test_passwd passwd$ nonce$ expected$ . .
+proc test_passwd passwd$ nonce$ expected$ .
    res = calcpass passwd$ nonce$
    m$ = passwd$ & " " & nonce$ & " " & res & " " & expected$
    if res = number expected$

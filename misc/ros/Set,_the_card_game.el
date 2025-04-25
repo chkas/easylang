@@ -3,22 +3,18 @@ attr$[][] &= [ "solid  " "striped" "open   " ]
 attr$[][] &= [ "red   " "green " "purple" ]
 attr$[][] &= [ "diamond " "oval    " "squiggle" ]
 #
-for card = 0 to 80
-   pack[] &= card
-.
-proc card2attr card . attr[] .
+for card = 0 to 80 : pack[] &= card
+proc card2attr card &attr[] .
    attr[] = [ ]
    for i to 4
       attr[] &= card mod 3 + 1
       card = card div 3
    .
 .
-proc prcards cards[] . .
+proc prcards cards[] .
    for card in cards[]
       card2attr card attr[]
-      for i to 4
-         write attr$[i][attr[i]] & " "
-      .
+      for i to 4 : write attr$[i][attr[i]] & " "
       print ""
    .
    print ""

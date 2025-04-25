@@ -7,7 +7,7 @@ ic_mem[] = number strsplit input ","
 #
 global ball_x pad_x .
 #
-proc ic_inpf . in .
+proc ic_inpf &in ..
    if ball_x > pad_x
       in = 1
    elif ball_x < pad_x
@@ -69,7 +69,7 @@ prefix ic_
 # -------- intcode --------
 base = 0
 arrbase mem[] 0
-proc mem_ind mo ind . rind .
+proc mem_ind mo ind &rind ..
    if mo = 1
       rind = ind
    elif mo = 0

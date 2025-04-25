@@ -30,7 +30,7 @@ proc parse . .
 .
 parse
 #
-proc produce_fuel need . n_ore .
+proc produce_fuel need &n_ore ..
    recpt[][] = recpt0[][]
    len need[] len name$[]
    need[2] = need

@@ -1,7 +1,7 @@
 # AoC-23 - Day 16: The Floor Will Be Lava
 #
 global nc nr m$[] .
-proc init . .
+proc init .
    s$ = input
    nc = len s$ + 1
    for i to nc : m$[] &= " "
@@ -17,7 +17,7 @@ proc init . .
 init
 #
 dir[] = [ 1 nc (-1) (-nc) ]
-proc beam p d . seen[] .
+proc beam p d &seen[] .
    repeat
       m$ = m$[p]
       until m$ = " " or bitand seen[p] bitshift 1 d > 0

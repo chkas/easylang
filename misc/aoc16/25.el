@@ -1,12 +1,12 @@
 # AoC-16 - Day 25: Clock Signal
-# 
+#
 repeat
    s$ = input
    until s$ = ""
    prog$[] &= s$
 .
-# 
-proc run inp . ok .
+#
+proc run inp &ok ..
    n1o = 1
    for s$ in prog$[]
       s$[] = strsplit s$ " "
@@ -86,7 +86,7 @@ for i range0 1000
       break 1
    .
 .
-# 
+#
 input_data
 cpy a d
 cpy 19 c

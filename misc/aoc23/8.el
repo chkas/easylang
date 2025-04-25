@@ -15,7 +15,7 @@ func n2id n$ .
    stop[] &= 0
    return id
 .
-proc read . .
+proc read .
    dir$[] = strchars input
    s$ = input
    aaa = n2id "AAA"
@@ -36,7 +36,7 @@ proc read . .
 .
 read
 #
-proc part1 . .
+proc part1 .
    pos = aaa
    repeat
       cnt += 1
@@ -64,7 +64,7 @@ func gcd a b .
 func lcm a b .
    return a / gcd a b * b
 .
-proc gperiod pos . period stopcnt .
+proc gperiod pos &period &stopcnt .
    len seen[] len dir$[] * len l[]
    stopcnt = 0
    repeat
@@ -102,7 +102,7 @@ func getstop cnt1 per1 cnt2 per2 .
    .
    return cnt1
 .
-proc part2 . .
+proc part2 .
    gperiod pos[1] period stopcnt
    for k = 2 to len pos[]
       gperiod pos[k] per stop

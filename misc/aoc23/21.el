@@ -1,7 +1,7 @@
 # AoC-23 - Day 21: Step Counter
 #
 global m0[] nc start0 .
-proc read . .
+proc read .
    s$ = input
    nc = len s$ + 1
    for i to nc : m0[] &= -2
@@ -24,7 +24,7 @@ proc read . .
 .
 read
 #
-proc run p nsteps . sum .
+proc run p nsteps &sum .
    dir[] = [ 1 nc -1 (-nc) ]
    m[] = m0[]
    m[p] = 0
@@ -48,13 +48,13 @@ proc run p nsteps . sum .
    .
 .
 #
-proc part1 . .
+proc part1 .
    run start0 64 h
    print h
 .
 part1
 #
-proc calc nsteps . .
+proc calc nsteps .
    nst = nc - 1
    nc2 = nc / 2
    qu[] = [ nc + 1 2 * nc - 1 nc * (nc + 1) - nc - 1 nc * (nc + 1) - 2 * nc + 1 ]

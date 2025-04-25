@@ -5,7 +5,7 @@ repeat
    until s$ = ""
    inp$[] &= s$
 .
-proc part1 . .
+proc part1 .
    i = 1
    for l to len inp$[]
       s$[] = strchars inp$[l]
@@ -16,7 +16,7 @@ proc part1 . .
 .
 part1
 #
-proc part2 . .
+proc part2 .
    r[] = [ 1 3 5 7 1 ]
    d[] = [ 1 1 1 1 2 ]
    prod = 1

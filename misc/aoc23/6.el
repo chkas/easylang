@@ -1,6 +1,6 @@
 # AoC-23 - Day 6: Wait For It
 #
-proc ginp . t[] t2 .
+proc ginp &t[] &t2 .
    t[] = number strtok input " "
    for t in t[]
       h$ &= t

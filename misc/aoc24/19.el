@@ -1,7 +1,7 @@
 # AoC-24 - Day 19: Linen Layout
 #
 global hashw$[] hashw[] .
-proc hset s$ v . .
+proc hset s$ v .
    hashw$[] &= s$
    hashw[] &= v
 .
@@ -11,7 +11,7 @@ func hget s$ .
    .
    return -1
 .
-proc hclear . .
+proc hclear .
    hashw$[] = [ ]
    hashw[] = [ ]
 .

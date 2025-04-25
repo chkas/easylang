@@ -1,7 +1,7 @@
 t = 15
 len p[] t
 # 
-proc padovan n . .
+proc padovan n .
    if n < 2 or t < 3
       for i = 1 to t
          p[i] = 1

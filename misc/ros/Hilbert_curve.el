@@ -1,7 +1,7 @@
 order = 64
 linewidth 32 / order
 scale = 100 / order - 100 / (order * order)
-proc hilbert x y lg i1 i2 . .
+proc hilbert x y lg i1 i2 .
    if lg = 1
       line (order - x) * scale (order - y) * scale
       return

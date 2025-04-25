@@ -1,5 +1,5 @@
 global list[] .
-proc mklist n . .
+proc mklist n .
    list[] = [ ]
    for i = 1 to n
       list[] &= randomf
@@ -18,7 +18,7 @@ func stddev .
    .
    return sqrt (squares / len list[])
 .
-proc histo . .
+proc histo .
    len hist[] 10
    for v in list[]
       ind = floor (v * 10) + 1
@@ -31,7 +31,7 @@ proc histo . .
    .
 .
 numfmt 4 5
-proc stats size . .
+proc stats size .
    mklist size
    print "Size:   " & size
    print "Mean:   " & mean

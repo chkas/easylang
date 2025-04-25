@@ -5,6 +5,7 @@ cd ~/daten
 #d=$(expr $h - 1672531200)
 d=$(date +%y%m%d)
 f=~/archiv/easylang$d.zip
+test -f $f && f=~/archiv/easylang${d}x.zip
 echo $f
 if test -f $f; then
 	echo "File exists - exit"

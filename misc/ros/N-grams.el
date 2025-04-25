@@ -1,5 +1,5 @@
 global gram$[] cnt[] .
-proc add g$ . .
+proc add g$ .
    for i to len gram$[]
       if gram$[i] = g$
          cnt[i] += 1
@@ -9,7 +9,7 @@ proc add g$ . .
    gram$[] &= g$
    cnt[] &= 1
 .
-proc ngram s$ n . .
+proc ngram s$ n .
    gram$[] = [ ]
    cnt[] = [ ]
    for i = 1 to len s$ - n + 1

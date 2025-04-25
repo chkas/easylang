@@ -2,7 +2,7 @@
 # 
 inp[] = number strsplit input ","
 # 
-proc run n_turn . .
+proc run n_turn .
    len a[] n_turn
    for turn to len inp[]
       n = inp[turn]

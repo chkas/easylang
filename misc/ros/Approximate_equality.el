@@ -1,7 +1,7 @@
 func aeq a b .
    return if abs (a - b) <= abs a * 1e-14
 .
-proc test a b . .
+proc test a b .
    write a & " " & b & " -> "
    if aeq a b = 1
       print "true"

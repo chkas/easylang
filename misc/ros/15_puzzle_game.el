@@ -2,7 +2,7 @@ sysconf topleft
 background 432
 textsize 13
 len f[] 16
-proc draw . .
+proc draw .
    clear
    for i = 1 to 16
       h = f[i]
@@ -22,7 +22,7 @@ proc draw . .
    .
 .
 global done .
-proc smiley . .
+proc smiley .
    s = 3.5
    x = 86
    y = 86
@@ -37,7 +37,7 @@ proc smiley . .
    linewidth s / 3
    curve [ x - s y + s x y + 2 * s x + s y + s ]
 .
-proc init . .
+proc init .
    done = 0
    for i = 1 to 16
       f[i] = i
@@ -62,7 +62,7 @@ proc init . .
    textsize 12
    draw
 .
-proc move_tile . .
+proc move_tile .
    c = mouse_x div 25
    r = mouse_y div 25
    i = r * 4 + c + 1

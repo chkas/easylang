@@ -8,7 +8,7 @@ repeat
    pos0[] &= number s$[12]
 .
 # 
-proc run . .
+proc run .
    repeat
       m = 0
       for i to len npos[]

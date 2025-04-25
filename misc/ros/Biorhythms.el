@@ -29,7 +29,7 @@ func init b$ d$ .
    text days & " days"
    return days
 .
-proc cycle now cyc t$ col . .
+proc cycle now cyc t$ col .
    color col
    move 4 cyc * 1.2 - 20
    text t$

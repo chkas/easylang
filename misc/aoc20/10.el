@@ -13,7 +13,7 @@ for i to len d[] - 1
    .
 .
 #
-proc part1 . .
+proc part1 .
    for i = 2 to len d[]
       if d[i] - d[i - 1] = 1
          s1 += 1

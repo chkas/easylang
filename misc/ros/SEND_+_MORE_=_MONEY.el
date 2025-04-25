@@ -6,7 +6,7 @@ func fac n .
    return f
 .
 global elements[] nperm permb perma .
-proc perminit a b . .
+proc perminit a b .
    perma = a
    permb = b
    elements[] = [ ]
@@ -29,7 +29,7 @@ func[] getperm r .
    .
    return r[]
 .
-proc sendmore . .
+proc sendmore .
    perminit 10 2
    for p range0 nperm
       r[] = getperm p

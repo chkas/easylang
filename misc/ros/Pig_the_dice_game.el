@@ -5,7 +5,7 @@ subr initvars
    sum[] = [ 0 0 ]
    player = 1
 .
-proc btn x y txt$ . .
+proc btn x y txt$ .
    color 666
    linewidth 18
    move x y
@@ -15,7 +15,7 @@ proc btn x y txt$ . .
    textsize 10
    text txt$
 .
-proc show . .
+proc show .
    background col[player]
    clear
    move 8 78
@@ -41,7 +41,7 @@ proc show . .
    btn 20 20 "Roll"
    btn 70 20 "Hold"
 .
-proc nxtplayer . .
+proc nxtplayer .
    sum[player] += sum
    if sum > 0
       sum = 0
@@ -106,7 +106,7 @@ on timer
       stat = 4
    .
 .
-proc roll . .
+proc roll .
    stat = 1
    tmcnt = 10
    textsize 10

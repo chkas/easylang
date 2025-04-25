@@ -7,7 +7,7 @@ repeat
 .
 inp$[] &= "end"
 #
-proc mkmask s$ . mbin mmsk .
+proc mkmask s$ &mbin &mmsk ..
    mbin = 0
    mmsk = 0
    for c$ in strchars s$
@@ -20,7 +20,7 @@ proc mkmask s$ . mbin mmsk .
       .
    .
 .
-proc wrmem addr val . mema[] mem[] .
+proc wrmem addr val &mema[] &mem[] ..
    for i to len mem[] : if mema[i] = addr
       mem[i] = val
       return
@@ -28,7 +28,7 @@ proc wrmem addr val . mema[] mem[] .
    mema[] &= addr
    mem[] &= val
 .
-proc part1 . .
+proc part1 .
    ii = 1
    while substr inp$[ii] 1 4 = "mask"
       mkmask substr inp$[ii] 8 99 mbin mmsk
@@ -49,7 +49,7 @@ proc part1 . .
 .
 part1
 #
-proc wrmem2 addr$ val . mema$[] mem[] .
+proc wrmem2 addr$ val &mema$[] &mem[] ..
    addr$[] = strchars addr$
    nmem = len mem[]
    for k to nmem : if mema$[k] <> ""
@@ -84,7 +84,7 @@ proc wrmem2 addr$ val . mema$[] mem[] .
    mem[] &= val
 .
 #
-proc part2 . .
+proc part2 .
    ii = 1
    while ii <= len inp$[]
       msk$[] = strchars substr inp$[ii] 8 99

@@ -17,7 +17,7 @@ func$ nextword n w$ alpha$ .
    .
    return strjoin x$[] ""
 .
-proc lyndon n alpha$ . .
+proc lyndon n alpha$ .
    w$ = substr alpha$ 1 1
    while len w$ <= n and len w$ > 0
       print w$

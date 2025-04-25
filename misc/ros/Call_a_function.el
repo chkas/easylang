@@ -2,14 +2,14 @@ func sqr n .
    return n * n
 .
 print sqr 3
-# 
-proc divmod a b . q r .
+#
+proc divmod a b &q &r .
    q = a div b
    r = a mod b
 .
 divmod 11 3 q r
 print q & " " & r
-# 
+#
 subr sqr2
    a = a * a
 .

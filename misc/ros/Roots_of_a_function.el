@@ -2,7 +2,7 @@ func f x .
    return x * x * x - 3 * x * x + 2 * x
 .
 numfmt 6 0
-proc findroot start stop step . .
+proc findroot start stop step .
    x = start
    while x <= stop
       val = f x
@@ -15,7 +15,7 @@ proc findroot start stop step . .
       x += step
    .
 .
-proc drawfunc start stop . .
+proc drawfunc start stop .
    linewidth 0.3
    drawgrid
    x = start

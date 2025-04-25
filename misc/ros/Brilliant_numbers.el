@@ -28,7 +28,7 @@ func brilliant n .
    .
    return 0
 .
-proc main . .
+proc main .
    i = 2
    while cnt < 100
       if brilliant i = 1

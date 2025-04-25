@@ -1,7 +1,7 @@
 func eval a b c x .
    return a + (b + c * x) * x
 .
-proc regression xa[] ya[] . .
+proc regression xa[] ya[] .
    n = len xa[]
    for i = 1 to n
       xm = xm + xa[i]

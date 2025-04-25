@@ -33,14 +33,14 @@ subr init0
    astright[] = [ ]
    err = 0
 .
-proc init s$ . .
+proc init s$ .
    inp$[] = strchars s$
    inp_ind = 1
    nch
    ntok
    init0
 .
-proc ast_print nd . .
+proc ast_print nd .
    write "AST:"
    for i to len astop$[]
       write " ( "

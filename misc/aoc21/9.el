@@ -11,7 +11,7 @@ visual = 1
 # don't look good with test data
 #
 global m[] nc nr lowpt[] .
-proc show upd . .
+proc show upd .
    if visual = 0 : return
    sc = 100 / nc
    for y range0 nr
@@ -34,7 +34,7 @@ proc show upd . .
    if upd = 0 : sleep 1
    sleep 0.01
 .
-proc part1 . .
+proc part1 .
    inp$ = input
    nc = len inp$ + 2
    for i to nc : m[] &= 9
@@ -59,21 +59,21 @@ proc part1 . .
 part1
 show 0
 #
-proc sort . d[] .
+proc sort &d[] .
    for i to len d[] - 1
       for j = i + 1 to len d[]
          if d[j] > d[i] : swap d[j] d[i]
       .
    .
 .
-proc expand pos . sz .
+proc expand pos &sz .
    m[pos] += 10
    sz += 1
    for i in [ pos - 1 pos + 1 pos - nc pos + nc ]
       if m[i] < 9 : expand i sz
    .
 .
-proc part2 . .
+proc part2 .
    for i to len lowpt[]
       sz = 0
       expand lowpt[i] sz

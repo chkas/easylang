@@ -2,11 +2,13 @@ txt_tutor = String.raw`+ Functions and recursion
 
 -
 
-+ Procedures are defined with *proc*. The syntax of a procedure definition is: *proc <proc_name> <value parameters> . <reference parameters> .*
++ Procedures are defined with *proc*. The syntax of a procedure definition is: *proc <proc_name> <parameters> .*
+
++ Reference parameters are preceded by *&*
 
 + Variables that occur for the first time within a procedure are local to that procedure. Global variables declared above can be accessed.
 
-proc gcd a b . res .
+proc gcd a b &res .
    while b <> 0
       h = b
       b = a mod b
@@ -51,7 +53,7 @@ print tolower "Hello World"
 
 * Recursive functions and procedures
 
-+ The factorial of a number *n* is the product of numbers from *1* to *n*: *n! = n ** (n - 1) ** . . . ** 2 ** 1*
++ The factorial of a number *n* is the product of numbers from *1* to *n*: *n! = n ** (n - 1) ** . . ** 2 ** 1*
 
 + This can be easily calculated
 
@@ -85,7 +87,7 @@ print fact 6
 
 + Such a tree can be drawn relatively easily with a recursive program.
 
-proc tree x y angle depth . .
+proc tree x y angle depth .
    linewidth depth * 0.4
    move x y
    x += cos angle * depth * 1.4 * (randomf + 0.5)
@@ -100,7 +102,7 @@ tree 50 5 90 10
 
 * Quicksort
 
-proc qsort left right . d[] .
+proc qsort left right &d[] .
    if left >= right
       return
    .
@@ -130,12 +132,12 @@ print d[]
 ndisc = 5
 len tow[][] 3
 textsize 7
-proc init . .
+proc init .
    for i = ndisc downto 1
       tow[1][] &= i
    .
 .
-proc show . .
+proc show .
    clear
    color 444
    move 0 0
@@ -161,7 +163,7 @@ proc show . .
       .
    .
 .
-proc movedisc src dst . .
+proc movedisc src dst .
    print "move " & src & " to " & dst
    sleep 0.5
    last = len tow[src][]
@@ -170,7 +172,7 @@ proc movedisc src dst . .
    show
    sleep 0.5
 .
-proc hanoi n src dst aux . .
+proc hanoi n src dst aux .
    if n = 0
       return
    .
@@ -192,7 +194,7 @@ f = 100 / (n - 0.5)
 len m[] n * n
 #
 background 000
-proc show_maze . .
+proc show_maze .
    clear
    for i = 1 to len m[]
       if m[i] = 0
@@ -206,7 +208,7 @@ proc show_maze . .
    sleep 0.01
 .
 offs[] = [ 1 n -1 (-n) ]
-proc m_maze pos . .
+proc m_maze pos .
    m[pos] = 0
    show_maze
    d[] = [ 1 2 3 4 ]
@@ -221,7 +223,7 @@ proc m_maze pos . .
    .
 .
 endpos = n * n - 1
-proc make_maze . .
+proc make_maze .
    for i = 1 to len m[]
       m[i] = 1
    .
@@ -238,7 +240,7 @@ proc make_maze . .
 make_maze
 show_maze
 #
-proc mark pos col . .
+proc mark pos col .
    x = (pos - 1) mod n
    y = (pos - 1) div n
    color col
@@ -246,7 +248,7 @@ proc mark pos col . .
    circle f / 3.5
 .
 found = 0
-proc solve dir0 pos . .
+proc solve dir0 pos .
    if found = 1
       return
    .
@@ -283,7 +285,7 @@ n = 8
 # stores the position of the queen on row
 len col[] n
 #
-proc print_solution . .
+proc print_solution .
    h$ = "┏"
    for i = 1 to n - 1
       h$ &= "━━━┳"
@@ -329,7 +331,7 @@ func is_save col row .
 print "First 3 solutions: "
 print ""
 n_solutions = 0
-proc solve row . .
+proc solve row .
    if row > n
       n_solutions += 1
       if n_solutions <= 3

@@ -1,7 +1,7 @@
 # AoC-15 - Day 9: All in a Single Night
-# 
+#
 global name$[] perm[] .
-proc getid n$ . id .
+proc getid n$ &id .
    for id = 1 to len name$[]
       if name$[id] = n$
          break 2
@@ -19,9 +19,9 @@ repeat
    getid s$[3] b
 .
 n = len perm[]
-# 
+#
 len dist[] n * (n + 1)
-# 
+#
 for s$ in inp$[]
    s$[] = strsplit s$ " "
    getid s$[1] a
@@ -31,7 +31,7 @@ for s$ in inp$[]
    dist[b * n + a] = d
 .
 global permlist[][] .
-proc mk_permlist k . .
+proc mk_permlist k .
    for i = k to len perm[]
       swap perm[i] perm[k]
       mk_permlist k + 1
@@ -42,7 +42,7 @@ proc mk_permlist k . .
    .
 .
 mk_permlist 1
-# 
+#
 min = 1 / 0
 for p = 1 to len permlist[][]
    swap perm[] permlist[p][]
@@ -55,8 +55,8 @@ for p = 1 to len permlist[][]
 .
 print min
 print max
-#  
-# 
+#
+#
 input_data
 London to Dublin = 464
 London to Belfast = 518

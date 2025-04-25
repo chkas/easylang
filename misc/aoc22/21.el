@@ -1,7 +1,7 @@
 # AoC-22 - Day 21: Monkey Math
 #
 global name$[] o[] a[] b[] .
-proc name2id n$ . id .
+proc name2id n$ &id .
    for id = 1 to len name$[]
       if name$[id] = n$ : return
    .
@@ -42,7 +42,7 @@ repeat
       a[id] = number substr s$ 7 9
    .
 .
-proc solv id . v .
+proc solv id &v .
    if o[id] = 0
       v = a[id]
       break 1

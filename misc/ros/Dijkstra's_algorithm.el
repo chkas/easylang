@@ -1,5 +1,5 @@
 global con[][] n .
-proc read . .
+proc read .
    repeat
       s$ = input
       until s$ = ""
@@ -20,7 +20,7 @@ read
 len cost[] n
 len prev[] n
 #
-proc dijkstra . .
+proc dijkstra .
    for i = 2 to len cost[]
       cost[i] = 1 / 0
    .

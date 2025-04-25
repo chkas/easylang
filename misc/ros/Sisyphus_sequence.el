@@ -12,7 +12,7 @@ func isprim num .
    return 1
 .
 prim = 1
-proc nextprim . .
+proc nextprim .
    repeat
       prim += 1
       until isprim prim = 1

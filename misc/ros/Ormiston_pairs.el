@@ -1,6 +1,6 @@
 maxn = 1000000
 len sieve[] maxn
-proc mksieve . .
+proc mksieve .
    max = sqrt len sieve[]
    for d = 2 to max
       if sieve[d] = 0

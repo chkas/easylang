@@ -51,7 +51,7 @@ func is_palindr n .
    .
    return if n = k
 .
-proc show . .
+proc show .
    while cnt < 50
       if is_cyclops i = 1
          write i & " "

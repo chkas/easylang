@@ -4,7 +4,7 @@ clear
 linewidth 0.2
 scale = 1 / (2 + cos 72 * 2)
 # 
-proc pentagon x y side depth . .
+proc pentagon x y side depth .
    if depth = 0
       move x y
       for angle = 0 step 72 to 288

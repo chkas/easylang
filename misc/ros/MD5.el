@@ -1,5 +1,5 @@
 len md5k[] 64
-proc md5init . .
+proc md5init .
    for i = 1 to 64
       md5k[i] = floor (0x100000000 * abs sin (i * 180 / pi))
    .

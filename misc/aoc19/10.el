@@ -49,7 +49,7 @@ proc show_ray x y . .
    line x * sc + sc / 2 y * sc + sc / 2
    sleep 0.02
 .
-proc gcd a b . res .
+proc gcd a b &res ..
    a = abs a
    b = abs b
    while b <> 0
@@ -104,7 +104,7 @@ proc part1 . .
 #
 linewidth 0.5
 #
-proc find_next . dx dy ind .
+proc find_next &dx &dy &ind ..
    start_ang = atan2 dy dx
    ang = 1 / 0
    for i range0 len dx[]

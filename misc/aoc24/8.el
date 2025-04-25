@@ -11,7 +11,7 @@ nr = len m$[][]
 func inside r c .
    return if r <= nr and c <= nc and r > 0 and c > 0
 .
-proc run part . .
+proc run part .
    len a[][] nr
    for i to nr : len a[i][] nc
    #

@@ -1,5 +1,5 @@
 global seq[] .
-proc read . .
+proc read .
    repeat
       s$ = input
       until s$ = ""

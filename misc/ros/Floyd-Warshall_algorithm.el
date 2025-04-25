@@ -1,4 +1,4 @@
-proc floydwarshall w[][] n . .
+proc floydwarshall w[][] n .
    for i to n
       con[][] &= [ ]
       for j to n

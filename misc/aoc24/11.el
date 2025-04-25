@@ -3,7 +3,7 @@
 hashsz = 9973
 global hashind[] hashv[] .
 #
-proc hadd ind val . .
+proc hadd ind val .
    hi = ind mod hashsz + 1
    while hashind[hi] <> -1 and hashind[hi] <> ind
       hi = hi mod hashsz + 1
@@ -11,7 +11,7 @@ proc hadd ind val . .
    hashind[hi] = ind
    hashv[hi] += val
 .
-proc hinit . .
+proc hinit .
    hashind[] = [ ]
    hashv[] = [ ]
    len hashind[] hashsz
@@ -21,13 +21,13 @@ proc hinit . .
 func ndigs n .
    return floor log10 n + 1
 .
-proc split n . a b .
+proc split n &a &b .
    m = pow 10 (ndigs n div 2)
    a = n div m
    b = n mod m
 .
 inp[] = number strsplit input " "
-proc go nblinks . .
+proc go nblinks .
    hinit
    for v in inp[] : hadd v 1
    #

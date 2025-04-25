@@ -1,5 +1,5 @@
 # AoC-20 - Day 17: Conway Cubes
-# 
+#
 repeat
    s$ = input
    until s$ = ""
@@ -12,8 +12,8 @@ len f[] n * n * 8 * 8
 len p[] len f[]
 n2 = n * n
 n3 = n * n * 8
-# 
-proc init . .
+#
+proc init .
    y = 7
    for ii to len in$[]
       s$[] = strchars in$[ii]
@@ -28,7 +28,7 @@ proc init . .
       y += 1
    .
 .
-proc update part turn . sum .
+proc update part turn &sum ..
    swap f[] p[]
    wx = turn
    if part = 1
@@ -75,7 +75,7 @@ proc update part turn . sum .
       .
    .
 .
-proc run part . .
+proc run part .
    init
    for i to 6
       update part i sum
@@ -103,8 +103,8 @@ proc run part . .
 .
 run 1
 run 2
-# 
-# 
+#
+#
 input_data
 .#.
 ..#

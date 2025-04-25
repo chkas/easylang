@@ -37,7 +37,7 @@ func isduff n .
    .
    return 0
 .
-proc duffs . .
+proc duffs .
    print "First 50 Duffinian numbers:"
    n = 4
    repeat

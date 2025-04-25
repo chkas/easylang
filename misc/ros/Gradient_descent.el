@@ -17,7 +17,7 @@ func yd x y .
    b = myfun x (y * (1 - eps))
    return (a - b) / (2 * y * eps)
 .
-proc gd . .
+proc gd .
    x = 0.1
    y = -1
    for i to 31

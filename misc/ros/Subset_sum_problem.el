@@ -5,7 +5,7 @@ n = len w[]
 len set[] n
 done = 0
 # 
-proc subsum i w k . .
+proc subsum i w k .
    if done = 1
       return
    .

@@ -1,4 +1,4 @@
-proc hsb2rgb hue sat bri . r g b .
+proc hsb2rgb hue sat bri &r &g &b .
    h = (hue - floor hue) * 6
    f = h - floor h
    p = bri * (1 - sat)
@@ -19,7 +19,7 @@ proc hsb2rgb hue sat bri . r g b .
       r = bri ; g = p ; b = q
    .
 .
-proc cwheel . .
+proc cwheel .
    for y = 0 to 499
       dy = y - 250
       for x = 0 to 499

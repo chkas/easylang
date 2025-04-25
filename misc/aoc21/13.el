@@ -14,7 +14,7 @@ len m[] nc * nc
 len mn[] len m[]
 len dim[] 2
 #
-proc draw . .
+proc draw .
    if visual = 0 : return
    m = 100
    clear

@@ -10,7 +10,7 @@ visual = 1
 #
 background 000
 clear
-proc draw x y cod . .
+proc draw x y cod .
    if visual = 0 : return
    d = 2.8
    s = 0.5
@@ -34,7 +34,7 @@ proc draw x y cod . .
 #
 perm[] = [ 0 1 2 3 4 5 6 ]
 global permlist[][] .
-proc permutate_list k . .
+proc permutate_list k .
    for i = k to len perm[]
       swap perm[i] perm[k]
       permutate_list k + 1
@@ -55,7 +55,7 @@ func codeperm perm s$ .
 len digit[] 128
 arrbase digit[] 0
 #
-proc init . .
+proc init .
    for i range0 128 : digit[i] = -1
    s$[] = strsplit "abcdef bc abdeg abcdg bcfg acdfg acdefg abc abcdefg abcdfg" " "
    for i = 0 to 9
@@ -66,7 +66,7 @@ proc init . .
 init
 #
 global inp$ part1 part2 linenr .
-proc procline . .
+proc procline .
    inp$[] = strtok inp$ " "
    for perm = 1 to len permlist[][]
       for nr = 1 to 10

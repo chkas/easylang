@@ -6,14 +6,14 @@ func n2id n$ .
    na$[] &= n$
    return id
 .
-proc sorta . d$[] .
+proc sorta &d$[] .
    for i = 1 to len d$[] - 1
       for j = i + 1 to len d$[]
          if strcmp d$[j] d$[i] < 0 : swap d$[j] d$[i]
       .
    .
 .
-proc init . .
+proc init .
    repeat
       s$ = input
       until s$ = ""
@@ -70,13 +70,13 @@ func run .
    for i = len mapz[] downto 1 : r = r * 2 + v[mapz[i]]
    return r
 .
-proc part1 . .
+proc part1 .
    print run
 .
 part1
 #
 global fixlist$[] .
-proc fixit op out . .
+proc fixit op out .
    for i to nop : if op[i][3] = out : break 1
    fixlist$[] &= na$[op[op][3]]
    fixlist$[] &= na$[op[i][3]]
@@ -93,7 +93,7 @@ func conop1 a op .
       if (op[i][1] = a or op[i][2] = a) and op[i][4] = op : return i
    .
 .
-proc checkit in . carry .
+proc checkit in &carry .
    xor1 = conop in (in + nin) 3
    if xor1 = 0 : print "** error xor1 **"
    xor2 = conop op[xor1][3] carry 3
@@ -119,7 +119,7 @@ proc checkit in . carry .
    if or1 = 0 : print "** error or1 **"
    carry = op[or1][3]
 .
-proc testfix . .
+proc testfix .
    for i = nin downto 1
       a = a * 2 + v[i]
       b = b * 2 + v[i + nin]
@@ -127,7 +127,7 @@ proc testfix . .
    r = run
    if a + b <> r : print "fix failed"
 .
-proc part2 . .
+proc part2 .
    and1 = conop 1 (1 + nin) 1
    carry = op[and1][3]
    for in = 2 to nin : checkit in carry

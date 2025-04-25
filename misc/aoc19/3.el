@@ -4,7 +4,7 @@ sysconf topleft
 w1$[] = strsplit input ","
 w2$[] = strsplit input ","
 #
-proc split s$ . d$ l .
+proc split s$ &d$ &l ..
    d$ = substr s$ 1 1
    l = number substr s$ 2 99
 .

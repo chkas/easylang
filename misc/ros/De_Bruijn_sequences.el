@@ -1,5 +1,5 @@
 global a[] seq[] k n .
-proc db t p . .
+proc db t p .
    if t > n
       if n mod p = 0
          for i = 1 to p
@@ -38,7 +38,7 @@ func alldigits s$ .
    .
    return 1
 .
-proc validate db$ . .
+proc validate db$ .
    len found[] 10000
    for i = 1 to len db$ - 3
       s$ = substr db$ i 4
@@ -62,7 +62,7 @@ proc validate db$ . .
       .
    .
 .
-proc main . .
+proc main .
    db$ = debruijn 10 4
    print "The length of the de Bruijn sequence is " & len db$
    print ""

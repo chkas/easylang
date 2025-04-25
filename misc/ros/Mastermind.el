@@ -7,7 +7,7 @@ len guess[] 4
 subr init_vars
    row = 0
 .
-proc draw_rate r black white . .
+proc draw_rate r black white .
    for j range0 2
       for c range0 2
          move c * 3.5 + 71.5 r * 11.5 + 9.4 - j * 3.5
@@ -26,7 +26,7 @@ proc draw_rate r black white . .
       .
    .
 .
-proc show_code . .
+proc show_code .
    color 531
    move 22 92
    rect 46 8
@@ -36,14 +36,14 @@ proc show_code . .
       circle 2
    .
 .
-proc draw_guess . .
+proc draw_guess .
    for c to 4
       move c * 12 + 8 row * 11.5 + 7.5
       color col[guess[c]]
       circle 3.8
    .
 .
-proc next_row . .
+proc next_row .
    color 420
    linewidth 11
    move 17 row * 11.5 + 7.5
@@ -57,7 +57,7 @@ proc next_row . .
    textsize 7
    text "✓"
 .
-proc rate . .
+proc rate .
    move 73.5 row * 11.5 + 7.5
    color 531
    circle 5.2
@@ -99,7 +99,7 @@ proc rate . .
 on timer
    row = -2
 .
-proc new . .
+proc new .
    init_vars
    for i to 4
       code[i] = random 6
@@ -142,7 +142,7 @@ proc new . .
    guess[4] = 2
    next_row
 .
-proc do_move . .
+proc do_move .
    c = (mouse_x - 15) div 12
    guess[c + 1] = guess[c + 1] mod 6 + 1
    draw_guess

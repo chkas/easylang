@@ -15,7 +15,7 @@ func p l n .
    .
    return test
 .
-proc test l n . .
+proc test l n .
    print "p(" & l & ", " & n & ") = " & p l n
 .
 test 12 1

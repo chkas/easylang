@@ -1,4 +1,4 @@
-proc pset x y c . .
+proc pset x y c .
    color c
    move x / 3.2 y / 3.2
    rect 0.3 0.3

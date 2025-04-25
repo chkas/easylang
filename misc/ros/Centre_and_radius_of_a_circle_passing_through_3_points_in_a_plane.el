@@ -1,4 +1,4 @@
-proc circ x1 y1 x2 y2 x3 y3 . cx cy cr .
+proc circ x1 y1 x2 y2 x3 y3 &cx &cy &cr .
    x12 = x1 - x2
    x13 = x1 - x3
    y12 = y1 - y2

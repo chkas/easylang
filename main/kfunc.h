@@ -1883,6 +1883,110 @@ void evt_mouse(int id, double x, double y) {
 	stop_flag = 0;
 }
 
+
+S ND* init_params(double* nums, STR* strs, ARR* arrs, ND* nd, ND* ndp) {
+	int ind = 0;
+	ushort ifl = 0;
+	ushort istr = 0;
+	ushort iarr = 0;
+
+	while (nd) {
+		if (ind == 8) {
+			ndp = ndp->bxnd;
+			ind = 0;
+		}
+		int t = ndp->bx[ind];
+		if (t == PAR_NUM) {
+			nums[ifl] = numf(nd);
+			ifl += 1;
+		}
+		else if (t == PAR_STR) {
+			strs[istr] = strf(nd);
+			istr += 1;
+		}
+		else if (t == PAR_ARR) {
+			arrs[iarr] = arrf(nd);
+			iarr += 1;
+		}
+		else if (t == PAR_RNUM) {
+			nums[ifl] = *(gnum(nd->v1));
+			ifl += 1;
+		}
+		else if (t == PAR_RSTR) {
+			strs[istr] = *(gstr(nd->v1));
+			istr += 1;
+		}
+		else if (t == PAR_RARR) {
+			ARR* arr = garr(nd->v1);
+			if (nd->ri) {
+				int h = arrind(arr, numf(nd->ri), nd);
+				arr = arr->parr + h;
+			}
+			arrs[iarr] = *arr;
+			// otherwise problems with global arr variables
+			arr->p = 0;
+			arr->len = 0;
+			iarr += 1;
+		}
+		else {
+			// TODO delete
+			internal_error(__LINE__);
+		}
+		ind += 1;
+		nd = nd->next;
+	}
+	return ndp;
+}
+
+S void exit_params(double* nums, STR* strs, ARR* arrs, ND* nd, ND* ndp) {
+	ushort ind = 0;
+	ushort ifl = 0;
+	ushort istr = 0;
+	ushort iarr = 0;
+
+	while (nd) {
+		int t = ndp->bx[ind];
+
+		if (t == PAR_NUM) ifl += 1;
+		else if (t == PAR_STR) {
+			str_free(strs + istr);
+			istr += 1;
+		}
+		else if (t == PAR_ARR) {
+			ARR* a = arrs + iarr;
+			if (a->p) free_arr(a);
+			iarr += 1;
+		}
+		else if (t == PAR_RNUM) {
+			*(gnum(nd->v1)) = nums[ifl];
+			ifl += 1;
+		}
+		else if (t == PAR_RSTR) {
+			*(gstr(nd->v1)) = strs[istr];
+			// don't free reference strs
+			istr += 1;
+		}
+		else  {
+			// PAR_RARR
+			ARR* arr = garr(nd->v1);
+			if (nd->ri) {
+				int h = arrind(arr, numf(nd->ri), nd);
+				arr = arr->parr + h;
+			}
+			if (arr->p != NULL) free(arr->p);
+			*arr = arrs[iarr];
+			// don't free reference arrs
+			iarr += 1;
+		}
+		ind += 1;
+		if (ind == 8) {
+			ndp = ndp->bxnd;
+			ind = 0;
+		}
+		nd = nd->next;
+	}
+}
+
 S void op_callproc(ND* nd0) {
 
 	ND* ndp = nd0->le;
@@ -1905,69 +2009,8 @@ S void op_callproc(ND* nd0) {
 		arrs = alloca(n_arr * sizeof(ARR));
 		arrs_init(arrs, n_arr);
 	}
-	ushort ifl = 0;
-	ushort istr = 0;
-	ushort iarr = 0;
+	ndp = init_params(nums, strs, arrs, nd0->ri, ndp);
 
-	ND* nd = nd0->ri;
-
-	int ind = 0;
-	while (nd) {
-		if (ind == 8) {
-			ndp = ndp->bxnd;
-			ind = 0;
-		}
-		int t = ndp->bx[ind];
-		if (t == PAR_NUM) {
-			nums[ifl] = numf(nd);
-			ifl += 1;
-		}
-		else if (t >= PAR_RNUM) {
-			break;
-		}
-		else if (t == PAR_STR) {
-			strs[istr] = strf(nd);
-			istr += 1;
-		}
-		else { 				// PAR_ARR)
-			arrs[iarr] = arrf(nd);
-			iarr += 1;
-		}
-		ind += 1;
-		nd = nd->next;
-	}
-	while (nd) {
-		if (ind == 8) {
-			ndp = ndp->bxnd;
-			ind = 0;
-		}
-		int t = ndp->bx[ind];
-		if (t == PAR_RNUM) {
-			nums[ifl] = *(gnum(nd->v1));
-			ifl += 1;
-		}
-		else if (t == PAR_RSTR) {
-			strs[istr] = *(gstr(nd->v1));
-			istr += 1;
-		}
-		else if (t == PAR_RARR) {
-			ARR* arr = garr(nd->v1);
-			if (nd->ri) {
-				int h = arrind(arr, numf(nd->ri), nd);
-				arr = arr->parr + h;
-			}
-			arrs[iarr] = *arr;
-			// otherwise problems with global arr variables
-			arr->p = 0;
-			arr->len = 0;
-			iarr += 1;
-		}
-		else {
-			internal_error(__LINE__);
-		}
-		ind += 1;
-		nd = nd->next;
-	}
 	double* rtl_nums_caller = rtl_nums;
 	STR* rtl_strs_caller = rtl_strs;
 	ARR* rtl_arrs_caller = rtl_arrs;
@@ -1984,67 +2027,15 @@ S void op_callproc(ND* nd0) {
 		exec_sequ_slow(ndp->bxnd);
 		if (rt.slow > 32) rt.slow -= 1;
 	}
-//?	if (stop_flag) stop_flag -= 1;
 	stop_flag = 0;
 
 	rt.proc = proc_caller;
-
-	ifl = 0;
-	istr = 0;
-	iarr = 0;
 
 	rtl_nums = rtl_nums_caller;
 	rtl_strs = rtl_strs_caller;
 	rtl_arrs = rtl_arrs_caller;
 
-	ndp = nd0->le;
-	nd = nd0->ri;
-	ind = 0;
-	while (nd) {
-		int t = ndp->bx[ind];
-
-		if (t == PAR_NUM) ifl += 1;
-		else if (t == PAR_STR) istr += 1;
-		else if (t == PAR_ARR) iarr += 1;
-
-		else if (t == PAR_RNUM) {
-			*(gnum(nd->v1)) = nums[ifl];
-			ifl += 1;
-		}
-		else if (t == PAR_RSTR) {
-			*(gstr(nd->v1)) = strs[istr];
-			// don't free reference strs
-			str_init(&strs[istr]);
-			istr += 1;
-		}
-		else  {
-			// PAR_RARR
-			ARR* arr = garr(nd->v1);
-			if (nd->ri) {
-				int h = arrind(arr, numf(nd->ri), nd);
-				arr = arr->parr + h;
-			}
-			if (arr->p != NULL) free(arr->p);
-			*arr = arrs[iarr];
-			// don't free reference arrs
-			arrs[iarr].p = NULL;
-			iarr += 1;
-		}
-		ind += 1;
-		if (ind == 8) {
-			ndp = ndp->bxnd;
-			ind = 0;
-		}
-		nd = nd->next;
-	}
-
-	for (int is = 0; is < n_str; is++) {
-		str_free(strs + is);
-	}
-	for (int ia = 0; ia < n_arr; ia++) {
-		ARR* a = arrs + ia;
-		if (a->p) free_arr(a);
-	}
+	exit_params(nums, strs, arrs, nd0->ri, nd0->le);
 }
 
 S ND* funcnd;
@@ -2074,29 +2065,8 @@ S double op_callfunc(ND* nd0) {
 		arrs = alloca(n_arr * sizeof(ARR));
 		arrs_init(arrs, n_arr);
 	}
-	ushort ifl = 0;
-	ushort istr = 0;
-	ushort iarr = 0;
 
-	ND* nd = nd0->ri;
-	int ind = 0;
-	while (nd) {
-		int t = ndp->bx[ind];
-		if (t == PAR_NUM) {
-			nums[ifl] = numf(nd);
-			ifl += 1;
-		}
-		else if (t == PAR_STR) {
-			strs[istr] = strf(nd);
-			istr += 1;
-		}
-		else { 				// PAR_ARR)
-			arrs[iarr] = arrf(nd);
-			iarr += 1;
-		}
-		ind += 1;
-		nd = nd->next;
-	}
+	ndp = init_params(nums, strs, arrs, nd0->ri, ndp);
 
 	double* rtl_nums_caller = rtl_nums;
 	STR* rtl_strs_caller = rtl_strs;
@@ -2126,16 +2096,11 @@ S double op_callfunc(ND* nd0) {
 	rtl_nums = rtl_nums_caller;
 	rtl_strs = rtl_strs_caller;
 	rtl_arrs = rtl_arrs_caller;
-	for (int is = 0; is < n_str; is++) {
-		str_free(strs + is);
-	}
-	for (int ia = 0; ia < n_arr; ia++) {
-		ARR* a = arrs + ia;
-		if (a->p) free_arr(a);
-	}
+
+	exit_params(nums, strs, arrs, nd0->ri, nd0->le);
+
 	return retval;
 }
-
 S void callfunc(ND* nd0, double* ret, STR* retstr, ARR* retarr) {
 	ND* ndp = nd0->le;
 	double* nums = NULL;
@@ -2158,28 +2123,7 @@ S void callfunc(ND* nd0, double* ret, STR* retstr, ARR* retarr) {
 		arrs_init(arrs, n_arr);
 	}
 
-	int ifl = 0;
-	int istr = 0;
-	int iarr = 0;
-	int ind = 0;
-	ND* nd = nd0->ri;
-	while (nd) {
-		int t = ndp->bx[ind];
-		if (t == PAR_NUM) {
-			nums[ifl] = numf(nd);
-			ifl += 1;
-		}
-		else if (t == PAR_STR) {
-			strs[istr] = strf(nd);
-			istr += 1;
-		}
-		else { 				// PAR_ARR)
-			arrs[iarr] = arrf(nd);
-			iarr += 1;
-		}
-		ind += 1;
-		nd = nd->next;
-	}
+	ndp = init_params(nums, strs, arrs, nd0->ri, ndp);
 
 	double* rtl_nums_caller = rtl_nums;
 	STR* rtl_strs_caller = rtl_strs;
@@ -2213,13 +2157,7 @@ S void callfunc(ND* nd0, double* ret, STR* retstr, ARR* retarr) {
 	rtl_strs = rtl_strs_caller;
 	rtl_arrs = rtl_arrs_caller;
 
-	for (int is = 0; is < n_str; is++) {
-		str_free(strs + is);
-	}
-	for (int ia = 0; ia < n_arr; ia++) {
-		ARR* a = arrs + ia;
-		if (a->p) free_arr(a);
-	}
+	exit_params(nums, strs, arrs, nd0->ri, nd0->le);
 }
 
 /*
@@ -2296,13 +2234,6 @@ S double op_fastcall(ND* nd0) {
 
 #define sl_as(ps, s) str_append(ps, s)
 
-/*
-S void sl_an(STR* ps, int h) {
-	STR s = str_num(h, sysconfig & 8);
-	str_append(ps, str_ptr(&s));
-	str_free(&s);
-}
-*/
 S void sl_anf(STR* ps, double h) {
 	STR s = str_numf(h, sysconfig & 8);
 	str_append(ps, str_ptr(&s));

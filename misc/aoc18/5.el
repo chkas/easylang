@@ -2,7 +2,7 @@
 #
 a0$ = input
 #
-proc reduce . a$ .
+proc reduce &a$ ..
    repeat
       a$[] = strchars a$
       i = 1

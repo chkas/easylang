@@ -31,7 +31,7 @@ func[] gauss m[][] .
    .
    return r[]
 .
-proc network n k0 k1 s$ . .
+proc network n k0 k1 s$ .
    len m[][] n
    for i to n
       len m[i][] n + 1

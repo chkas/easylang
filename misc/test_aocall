@@ -1,5 +1,5 @@
 #!/bin/sh
-for i in 15 16 17 18 19 20 21 22 23; do
+for i in 15 16 17 18 19 20 21 22 23 24; do
 	if test -x aoc$i; then
 		echo "---- aoc $i ----"
 		cd aoc$i

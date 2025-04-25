@@ -4,7 +4,7 @@
 # 1 + 2 .. + n = n * (n + 1) / 2
 #
 inp[] = number strsplit input ","
-proc run part . .
+proc run part .
   min = 1 / 0
   for i = 0 to 1999
     fuel = 0

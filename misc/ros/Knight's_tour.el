@@ -11,23 +11,19 @@ func cntmoves m[] .
    .
    return n
 .
-proc sortmoves . m[][] .
+proc sortmoves &m[][] .
    for i = 1 to len m[][]
       cnt[] &= cntmoves m[i][]
    .
-   for i = 1 to len cnt[] - 1
-      for j = i + 1 to len cnt[]
-         if cnt[j] < cnt[i]
-            swap cnt[j] cnt[i]
-            swap m[j][] m[i][]
-         .
+   for i = 1 to len cnt[] - 1 : for j = i + 1 to len cnt[]
+      if cnt[j] < cnt[i]
+         swap cnt[j] cnt[i]
+         swap m[j][] m[i][]
       .
    .
 .
 func solve r c cnt .
-   if cnt > size * size
-      return 1
-   .
+   if cnt > size * size : return 1
    movs[][] = [ ]
    for d = 1 to len dirs[][]
       rn = r + dirs[d][1]
@@ -41,29 +37,21 @@ func solve r c cnt .
       rn = movs[i][1]
       cn = movs[i][2]
       brd[rn][cn] = cnt
-      if solve rn cn (cnt + 1) = 1
-         return 1
-      .
+      if solve rn cn (cnt + 1) = 1 : return 1
       brd[rn][cn] = 0
    .
    return 0
 .
-proc prepare . .
+proc prepare .
    brd[][] = [ ]
    len brd[][] size
-   for r to size
-      len brd[r][] size
-   .
+   for r to size : len brd[r][] size
 .
-proc printbrd . .
+proc printbrd .
    numfmt 0 3
-   if size > 10
-      numfmt 0 4
-   .
+   if size > 10 : numfmt 0 4
    for r to size
-      for c to size
-         write brd[r][c]
-      .
+      for c to size : write brd[r][c]
       print ""
    .
 .
@@ -79,8 +67,8 @@ if found = 1
 else
    print "no solutions found: (" & r0 & " " & c0 & ")"
 .
-# 
-proc showgraf . .
+#
+proc showgraf .
    sc = 100 / size
    linewidth sc / 15
    col[] = [ 777 333 ]
@@ -107,6 +95,4 @@ proc showgraf . .
       .
    .
 .
-if found = 1
-   showgraf
-.
+if found = 1 : showgraf

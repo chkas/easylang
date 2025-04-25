@@ -2,7 +2,7 @@ func ndig n .
    return log10 n div 1 + 1
 .
 len d[] 2000000
-proc sieve . .
+proc sieve .
    d[1] = 1
    for i = 2 to len d[]
       if d[i] = 0
@@ -33,7 +33,7 @@ proc sieve . .
    .
 .
 sieve
-proc show t . .
+proc show t .
    i = 1
    repeat
       if d[i] = t

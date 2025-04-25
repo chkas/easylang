@@ -1,5 +1,5 @@
 numfmt 0 4
-proc pascal n . .
+proc pascal n .
    r[] = [ 1 ]
    for i to n
       rn[] = [ ]

@@ -13,7 +13,7 @@ repeat
    ninp += 1
 .
 #
-proc work nwrk timeadd . ord$ time .
+proc work nwrk timeadd &ord$ &time ..
    time = 0
    todo[] = todo0[]
    len do[] 26

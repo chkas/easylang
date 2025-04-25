@@ -20,7 +20,7 @@ proc init_part2 . .
    pos = nc * nc div 2 + nc div 2
    hull[pos] = 1
 .
-proc ic_inpf . in .
+proc ic_inpf &in ..
    in = hull[pos]
 .
 mpos[] = [ 1 nc -1 (-nc) ]
@@ -60,7 +60,7 @@ prefix ic_
 # -------- intcode --------
 arrbase mem[] 0
 base = 0
-proc mem_ind mo ind . rind .
+proc mem_ind mo ind &rind ..
    if mo = 1
       rind = ind
    elif mo = 0

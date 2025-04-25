@@ -18,7 +18,7 @@ numfmt 3 0
 n = 1000000
 len dist[] 7
 #
-proc checkdist . .
+proc checkdist .
    for i to len dist[]
       h = dist[i] / n * 7
       if abs (h - 1) > 0.01

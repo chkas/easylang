@@ -1,4 +1,4 @@
-proc farey n . .
+proc farey n .
    b = 1 ; c = 1 ; d = n
    write n & ": "
    repeat

@@ -5,7 +5,7 @@ txt_tutor = String.raw`+ Programming a letter memory game
 + We program a simple letter memory game.
 
 ##50
-proc square ind col s$ . .
+proc square ind col s$ .
    ind -= 1
    x = ind mod 4 * 12 + 2
    y = ind div 4 * 12 + 52
@@ -27,7 +27,7 @@ square 9 575 "E"
 + We have 16 cards, which we arrange line by line from bottom to top. These cards and also the positions are numbered from 1 to 16.
 
 ##50
-proc square ind col n . .
+proc square ind col n .
   ind -= 1
   x = ind mod 4 * 12 + 2
   y = ind div 4 * 12 + 52

@@ -1,4 +1,4 @@
-proc nextperm . a[] k .
+proc nextperm &a[] &k .
    n = len a[]
    k = n - 1
    while k >= 1 and a[k + 1] < a[k] : k -= 1

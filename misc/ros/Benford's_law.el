@@ -13,7 +13,7 @@ func$ add a$ b$ .
 .
 # 
 len fibdist[] 9
-proc mkfibdist . .
+proc mkfibdist .
    # generate 1000 fibonacci numbers as
    # (reversed) strings, because 53 bit
    # integers are too small
@@ -36,7 +36,7 @@ proc mkfibdist . .
 mkfibdist
 # 
 len benfdist[] 9
-proc mkbenfdist . .
+proc mkbenfdist .
    for i to 9
       benfdist[i] = log10 (1 + 1.0 / i)
    .

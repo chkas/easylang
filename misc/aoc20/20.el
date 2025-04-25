@@ -1,9 +1,9 @@
 # AoC-20 - Day 20: Jurassic Jigsaw
-# 
+#
 sysconf topleft
 global id[] n[] ed[][] rev[] .
-# 
-proc build_rev . .
+#
+proc build_rev .
    for i range0 1024
       h = i
       v = 0
@@ -17,18 +17,18 @@ proc build_rev . .
    rev[] &= 1024
 .
 build_rev
-# 
-proc edge_val s$ . n .
+#
+proc edge_val s$ &n ..
    n = 0
    for i to 10
       n *= 2
       n += if substr s$ i 1 = "#"
    .
 .
-# 
+#
 global img[] .
-# 
-proc read . .
+#
+proc read .
    repeat
       s$ = input
       until s$ = ""
@@ -62,10 +62,10 @@ proc read . .
    .
 .
 read
-# 
+#
 n_tiles = len ed[][]
-# 
-proc part1 . .
+#
+proc part1 .
    prod = 1
    for c1 to n_tiles
       n = 0
@@ -103,11 +103,11 @@ proc part1 . .
    print prod
 .
 part1
-# 
-# 
+#
+#
 rows = sqrt n_tiles
-# 
-proc turn i . .
+#
+proc turn i .
    swap h[] ed[i][]
    h = h[4]
    h[4] = h[3]
@@ -116,8 +116,8 @@ proc turn i . .
    h[1] = h
    swap h[] ed[i][]
 .
-# 
-proc flip i . .
+#
+proc flip i .
    swap h[] ed[i][]
    x = h[1]
    h[1] = rev[h[3] + 1]
@@ -126,8 +126,8 @@ proc flip i . .
    h[4] = rev[h[4] + 1]
    swap h[] ed[i][]
 .
-# 
-proc turn_flip mode start r . .
+#
+proc turn_flip mode start r .
    len im[] r * r
    if mode = 1
       offs = 0
@@ -164,14 +164,14 @@ proc turn_flip mode start r . .
       img[start + i] = im[i]
    .
 .
-# 
+#
 # pr ed[][]
-# 
+#
 global imgids[] .
-proc build . .
-   # 
+proc build .
+   #
    len done[] n_tiles
-   # 
+   #
    for r range0 rows
       p1 = 1024
       for c range0 rows
@@ -206,8 +206,8 @@ proc build . .
    .
 .
 build
-# 
-proc expand_img . .
+#
+proc expand_img .
    len imgn[] len img[]
    for r range0 rows
       for c range0 rows
@@ -227,8 +227,8 @@ proc expand_img . .
 .
 irows = rows * 8
 expand_img
-# 
-proc show_grafic . .
+#
+proc show_grafic .
    f = 100 / irows
    color 003
    rect 100 100
@@ -249,8 +249,8 @@ proc show_grafic . .
 monster[][] &= [ 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 ]
 monster[][] &= [ 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 1 ]
 monster[][] &= [ 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 0 ]
-# 
-proc search_monster . n_monster .
+#
+proc search_monster &n_monster ..
    for r range0 irows - 3
       for c range0 irows - 20
          found = 1
@@ -296,8 +296,8 @@ for f range0 2
    .
    turn_flip 5 0 irows
 .
-# 
-# 
+#
+#
 input_data
 Tile 2311:
 ..##.#..#.

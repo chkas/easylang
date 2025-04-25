@@ -1,8 +1,8 @@
-proc pset x y . .
+proc pset x y .
    move x / 4 y / 4
    rect 0.25 0.25
 .
-proc drawline x0 y0 x1 y1 . .
+proc drawline x0 y0 x1 y1 .
    dx = abs (x1 - x0)
    sx = -1
    if x0 < x1

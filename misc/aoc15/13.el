@@ -1,7 +1,7 @@
 # AoC-15 - Day 13: Knights of the Dinner Table
 #
 global name$[] .
-proc getid n$ . id .
+proc getid n$ &id .
    for id to len name$[]
       if name$[id] = n$
          break 2
@@ -21,13 +21,11 @@ for s$ in inp$[]
    getid s$[1] a
    getid s$[11] b
    h = number s$[4]
-   if s$[3] = "lose"
-      h = -h
-   .
+   if s$[3] = "lose": h = -h
    h[a * n + b] = h
 .
 global permlist[][] perm[] .
-proc mk_permlist k . .
+proc mk_permlist k .
    for i = k to len perm[]
       swap perm[i] perm[k]
       mk_permlist k + 1

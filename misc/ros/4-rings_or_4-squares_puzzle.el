@@ -6,7 +6,7 @@ func ok v t[] .
    .
    return 1
 .
-proc four lo hi uni show . .
+proc four lo hi uni show .
    # 
    subr bf
       for f = lo to hi

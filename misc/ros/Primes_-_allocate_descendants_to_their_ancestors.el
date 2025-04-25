@@ -6,7 +6,7 @@ fastfunc isprim num .
    .
    return 1
 .
-proc qsort left right . d[] .
+proc qsort left right &d[] .
    if left < right
       piv = d[left]
       mid = left
@@ -19,13 +19,13 @@ proc qsort left right . d[] .
       qsort mid + 1 right d[]
    .
 .
-proc sort . d[] .
+proc sort &d[] .
    qsort 1 len d[] d[]
 .
 maxsum = 99
 len desc[][] maxsum
 len ances[][] maxsum
-# 
+#
 prim99[] = [ 2 ]
 for i = 3 step 2 to maxsum
    if isprim i = 1 : prim99[] &= i
@@ -40,7 +40,7 @@ for p in prim99[]
 .
 for p in prim99[] : len desc[p][] -1
 len desc[4][] -1
-# 
+#
 for s = 1 to maxsum
    sort desc[s][]
    total += len desc[s][]

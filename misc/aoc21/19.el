@@ -22,7 +22,7 @@ func hashget ind .
    .
    return -1
 .
-proc hashset ind val . .
+proc hashset ind val .
    hi = ind mod hashsz + 1
    while hashind[hi] <> 0
       hi = hi mod hashsz + 1
@@ -46,13 +46,13 @@ len scan[][] len scan$[][]
 scan[1][] = [ 0 0 0 ]
 #
 global c[][] .
-proc load id . .
+proc load id .
    len c[][] 0
    for i to len scan$[id][]
       c[][] &= number strsplit scan$[id][i] ","
    .
 .
-proc rotall p[] s[] . .
+proc rotall p[] s[] .
    len c[] 3
    for i to len c[][]
       swap c[] c[i][]
@@ -62,7 +62,7 @@ proc rotall p[] s[] . .
    .
 .
 global sca .
-proc test . found .
+proc test &found .
    len beacon[] 100
    found = 0
    cnt = 0
@@ -101,7 +101,7 @@ proc test . found .
 .
 global todo[] .
 #
-proc hashset_relpos . .
+proc hashset_relpos .
    hashind[] = [ ]
    len hashind[] hashsz
    for i to len c0[][] : for j to len c0[][]
@@ -111,7 +111,7 @@ proc hashset_relpos . .
       .
    .
 .
-proc all_rotations . .
+proc all_rotations .
    for ry to 2
       for rz to 3
          for rx to 4
@@ -134,7 +134,7 @@ proc all_rotations . .
    todo[] &= sca
 .
 #
-proc part1 . .
+proc part1 .
    load 1
    swap c0[][] c[][]
    for sca = 2 to len scan$[][]
@@ -155,7 +155,7 @@ part1
 #
 # part two
 #
-proc part2 . .
+proc part2 .
    for i to len scan[][] : for j = i + 1 to len scan[][]
       dist = 0
       for d to 3 : dist += abs (scan[i][d] - scan[j][d])

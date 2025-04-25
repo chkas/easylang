@@ -1,5 +1,5 @@
 global right$[] left$[] pos blank$ .
-proc show stat$ . .
+proc show stat$ .
    write stat$
    for i to 5 - len stat$
       write " "
@@ -27,26 +27,26 @@ func$ get .
    .
    return right$[pos]
 .
-proc put s$ . .
+proc put s$ .
    if pos <= 0
       left$[-pos + 1] = s$
    else
       right$[pos] = s$
    .
 .
-proc mleft . .
+proc mleft .
    pos -= 1
    if pos <= 0 and len left$[] < (-pos + 1)
       left$[] &= blank$
    .
 .
-proc mright . .
+proc mright .
    pos += 1
    if pos > 0 and len right$[] < pos
       right$[] &= blank$
    .
 .
-proc utm stat$ endstat$ bl$ init$ rules$[] trace . .
+proc utm stat$ endstat$ bl$ init$ rules$[] trace .
    blank$ = bl$
    pos = 1
    right$[] = strsplit init$ " "

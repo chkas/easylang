@@ -1,29 +1,21 @@
-proc cyclesort . a[] .
+proc cyclesort &a[] .
    for cs = 1 to len a[] - 1
       item = a[cs]
       pos = cs
       for i = cs + 1 to len a[]
-         if a[i] < item
-            pos += 1
-         .
+         if a[i] < item : pos += 1
       .
       if pos <> cs
-         while item = a[pos]
-            pos += 1
-         .
+         while item = a[pos] : pos += 1
          t = a[pos]
          a[pos] = item
          item = t
          while pos <> cs
             pos = cs
             for i = cs + 1 to len a[]
-               if a[i] < item
-                  pos += 1
-               .
+               if a[i] < item : pos += 1
             .
-            while item = a[pos]
-               pos += 1
-            .
+            while item = a[pos] : pos += 1
             t = a[pos]
             a[pos] = item
             item = t

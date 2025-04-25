@@ -132,7 +132,7 @@ print res
 
 + Procedures are defined with *proc*. Value and reference parameters are specified after the procedure name. Variables that occur for the first time within a procedure are local to that procedure.
 
-proc gcd a b . res .
+proc gcd a b &res .
    while b <> 0
       h = b
       b = a mod b
@@ -166,7 +166,7 @@ txt$ = "sos sos"
 chars$ = "abcdefghijklmnopqrstuvwxyz "
 code$[] = [ ".-" "-..." "-.-." "-.." "." "..-." "--." "...." ".." ".---" "-.-" ".-.." "--" "-." "---" ".--." "--.-" ".-." "..." "-" "..-" "...-" ".--" "-..-" "-.--" "--.." " " ]
 #
-proc morse ch$ . .
+proc morse ch$ .
    ind = strpos chars$ ch$
    if ind > 0
       write ch$ & " "
@@ -257,7 +257,7 @@ for x = 0 step 0.5 to 100
 deg = 0 ; x = 50 ; y = 50 ; down = 0
 #
 move x y
-proc forward n . .
+proc forward n .
    x += cos deg * n
    y += sin deg * n
    if down = 1
@@ -266,7 +266,7 @@ proc forward n . .
       move x y
    .
 .
-proc turn a . .
+proc turn a .
    deg -= a
 .
 #
@@ -314,7 +314,7 @@ text "PI: " & 4.0 * hit / n
 background 777
 clear
 col = 0
-proc eye x y . .
+proc eye x y .
    color 999
    move x y
    circle 6.5
@@ -367,7 +367,7 @@ eyes
 + Color picker
 
 c[] = [ 9 0 0 ]
-proc picker . .
+proc picker .
    for i = 0 to 9
       f = 1
       for j = 0 to 2
@@ -494,7 +494,7 @@ print a[][]
 
 + Selection sort
 
-proc sort . d[] .
+proc sort &d[] .
    for i = 1 to len d[] - 1
       for j = i + 1 to len d[]
          if d[j] < d[i] : swap d[j] d[i]
@@ -562,7 +562,7 @@ prefix st_
 #
 len stack[] 100
 pos = 1
-proc push v . .
+proc push v .
    if pos < len stack[] - 1
       pos += 1
       stack[pos] = v

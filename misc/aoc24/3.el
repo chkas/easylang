@@ -26,7 +26,7 @@ func isnum .
    .
    return 1
 .
-proc doline . .
+proc doline .
    repeat
       if is "mul(" = 1 and isnum = 1
          a = num

@@ -2,7 +2,7 @@ n = 77
 len m[] n * n
 m[n * n div 2 + 1] = 10000
 # 
-proc show . .
+proc show .
    sc = 100 / n
    for r range0 n
       for c range0 n
@@ -14,7 +14,7 @@ proc show . .
    .
    sleep 0
 .
-proc run . .
+proc run .
    repeat
       mp[] = m[]
       stable = 1

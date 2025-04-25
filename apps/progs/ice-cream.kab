@@ -15,7 +15,7 @@ subr init
    w$[] = strchars words$[random len words$[]]
    game_stat = 0
 .
-proc ice x y col . .
+proc ice x y col .
    color col
    move x y
    circle 3
@@ -23,7 +23,7 @@ proc ice x y col . .
    polygon [ x y + 8 x - 3.5 y + 1 x + 3.5 y + 1 ]
 .
 ice 30 60 900
-proc draw_ice try . .
+proc draw_ice try .
    color 990
    if try < 11 : ice 72 57 900
    if try < 10 : ice 92 57 449
@@ -39,7 +39,7 @@ proc draw_ice try . .
 .
 background 000
 global gind .
-proc drawkey ind col k$ . .
+proc drawkey ind col k$ .
    textsize 9
    r = (ind - 1) div 5
    c = (ind - 1) mod 5
@@ -50,7 +50,7 @@ proc drawkey ind col k$ . .
    move 2 + c * 13 1.8 + r * 14
    text k$
 .
-proc draw . .
+proc draw .
    clear
    linewidth 1
    color 997
@@ -86,7 +86,7 @@ proc draw . .
       timer 1
    .
 .
-proc smiley st . .
+proc smiley st .
    move 80 73
    color 983
    circle 7
@@ -102,7 +102,7 @@ proc smiley st . .
       curve [ 77 77 80 74 83 77 ]
    .
 .
-proc sel . .
+proc sel .
    draw
    if game_stat > 1
       for i to len w$[]
@@ -125,7 +125,7 @@ on timer
 on mouse_up
    if gind <> -1 : drawkey gind 040 ""
 .
-proc search_letter . .
+proc search_letter .
    c = mouse_x div 13
    r = mouse_y div 14
    gind = c + r * 5 + 1

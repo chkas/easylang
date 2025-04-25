@@ -1,4 +1,4 @@
-proc lsysexp level . axiom$ rules$[] .
+proc lsysexp level &axiom$ &rules$[] .
    for l to level
       an$ = ""
       for c$ in strchars axiom$
@@ -14,7 +14,7 @@ proc lsysexp level . axiom$ rules$[] .
    .
 .
 stack[] = [ ]
-proc lsysdraw axiom$ x y ang lng . .
+proc lsysdraw axiom$ x y ang lng .
    linewidth 0.3
    move x y
    for c$ in strchars axiom$

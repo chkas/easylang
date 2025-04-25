@@ -1,11 +1,11 @@
 # AoC-18 - Day 18: Settlers of The North Pole
-# 
+#
 visual = 1
-# 
+#
 global n .
 arrbase f[] 0
-# 
-proc read . .
+#
+proc read .
    s$ = input
    n = len s$ + 2
    len f[] n
@@ -28,13 +28,13 @@ proc read . .
 read
 len p[] len f[]
 arrbase p[] 0
-# 
+#
 if visual = 1
    move 10 60
    text "WARNING: Flashing"
    sleep 2
 .
-proc show . .
+proc show .
    if visual = 0
       break 1
    .
@@ -61,7 +61,7 @@ proc show . .
    .
    sleep 0.01
 .
-proc update . .
+proc update .
    swap f[] p[]
    for r range0 n - 2
       for c range0 n - 2
@@ -93,13 +93,13 @@ proc update . .
       .
    .
 .
-proc hash . res .
+proc hash &res ..
    res = 0
    for i range0 len f[]
       res = (res + f[i]) * 65521 mod 137438953447
    .
 .
-proc sum . r .
+proc sum &r ..
    for i range0 len f[]
       if f[i] = 1
          sumt += 1
@@ -109,7 +109,7 @@ proc sum . r .
    .
    r = sumt * suml
 .
-proc run . .
+proc run .
    arrbase hash[] 0
    for i to 10
       update
@@ -117,7 +117,7 @@ proc run . .
    .
    sum res
    print res
-   # 
+   #
    while 1 = 1
       hash r
       for i range0 len hash[]
@@ -139,7 +139,7 @@ proc run . .
    print res
 .
 run
-# 
+#
 input_data
 .#.#...|#.
 .....#|##|

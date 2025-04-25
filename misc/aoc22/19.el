@@ -2,12 +2,12 @@
 #
 global max res[] rob[] cost[][] .
 #
-proc robres sig . .
+proc robres sig .
    res[1] += sig * rob[1]
    res[2] += sig * rob[2]
    res[3] += sig * rob[3]
 .
-proc search time skip geodes . .
+proc search time skip geodes .
    if time = 0
       max = higher geodes max
       return
@@ -44,7 +44,7 @@ proc search time skip geodes . .
 .
 #
 global inp$[] .
-proc read . .
+proc read .
    repeat
       s$ = input
       until s$ = ""
@@ -53,7 +53,7 @@ proc read . .
 .
 read
 #
-proc run time cnt . r[] .
+proc run time cnt &r[] .
    r[] = [ ]
    for id = 1 to cnt
       s$ = inp$[id]

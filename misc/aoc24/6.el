@@ -1,7 +1,7 @@
 # AoC-24 - Day 6: Guard Gallivant
 #
 global m0$[] pos0 d0 nc .
-proc init . .
+proc init .
    s$ = input
    nc = len s$ + 1
    len m0$[] nc
@@ -22,7 +22,7 @@ proc init . .
 init
 #
 dir[] = [ 1 nc -1 (-nc) ]
-proc part1 pos d . .
+proc part1 pos d .
    while m0$[pos] <> ""
       while m0$[pos + dir[d]] = "#"
          d = (d + 1) mod1 4
@@ -48,7 +48,7 @@ func test mark pos d .
    .
    return 0
 .
-proc part2 . .
+proc part2 .
    for i to len m0$[]
       if m0$[i] = "x" and i <> pos0
          sum += test i pos0 d0

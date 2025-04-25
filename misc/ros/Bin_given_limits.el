@@ -1,6 +1,6 @@
 global limits[] data[] .
 # 
-proc count . .
+proc count .
    len cnt[] len limits[] + 1
    # 
    for e in data[]

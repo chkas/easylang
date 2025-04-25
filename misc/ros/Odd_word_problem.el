@@ -24,7 +24,7 @@ func$ handle odd .
       return r$
    .
 .
-proc go . .
+proc go .
    repeat
       c$ = handle odd
       write c$

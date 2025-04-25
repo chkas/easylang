@@ -1,4 +1,4 @@
-proc cart2 a[] b[] . p[][] .
+proc cart2 a[] b[] &p[][] .
    p[][] = [ ]
    for a in a[]
       for b in b[]

@@ -3,7 +3,7 @@
 a0 = number substr input 25 9
 b0 = number substr input 25 9
 # 
-proc part1 a b . .
+proc part1 a b .
    for i to 40000000
       a = (a * 16807) mod 2147483647
       b = (b * 48271) mod 2147483647
@@ -15,7 +15,7 @@ proc part1 a b . .
 .
 part1 a0 b0
 # 
-proc part2 a b . .
+proc part2 a b .
    for i to 5000000
       repeat
          a = (a * 16807) mod 2147483647

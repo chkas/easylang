@@ -1,5 +1,5 @@
 global deck[] top .
-proc new . .
+proc new .
    deck[] = [ ]
    for i to 52
       deck[] &= i
@@ -11,14 +11,14 @@ val$[] = [ 2 3 4 5 6 7 8 9 10 "J" "Q" "K" "A" ]
 func$ name card .
    return suit$[card mod1 4] & val$[card div1 4]
 .
-proc show . .
+proc show .
    for i to top
       write name deck[i] & " "
    .
    print ""
    print ""
 .
-proc shuffle . .
+proc shuffle .
    for i = 52 downto 2
       r = random i
       swap deck[i] deck[r]

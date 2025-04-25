@@ -1,7 +1,7 @@
 # AoC-15 - Day 10: Elves Look, Elves Say
 # 
 f[] = number strchars input
-proc run . .
+proc run .
    fn[] = [ ]
    n = 1
    for i = 2 to len f[]

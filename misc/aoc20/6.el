@@ -6,7 +6,7 @@ repeat
    inp$[] &= s$
    sp$ = s$
 .
-proc part1 . .
+proc part1 .
    len a[] 26
    inp = 1
    while inp <= len inp$[]
@@ -28,7 +28,7 @@ proc part1 . .
 .
 part1
 #
-proc part2 . .
+proc part2 .
    len b[] 26
    for i to 26 : a[] &= 1
    inp = 1

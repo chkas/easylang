@@ -337,7 +337,7 @@ color 543
 textsize 6
 linewidth 0.5
 y = 75
-proc cod n$ v v$ . .
+proc cod n$ v v$ .
    move 5 y + 2
    line 80 y + 2
    line 80 y + 22
@@ -786,7 +786,7 @@ line 60 80
 line 25 80
 line 25 5
 y = 10
-proc dr ind v . .
+proc dr ind v .
   move 31 y + 3
   text ind
   move 43 y + 3
@@ -976,7 +976,7 @@ end
 
 * Procedures, local variables, parameters
 
-+de Bauen wir eine Straße für unser Auto
++de Bauen wir eine Straße für unser Auto.
 
 + Let's build a road for our car.
 
@@ -1061,20 +1061,20 @@ end
 
 + The problem lies with the variable *x*. The current car position is stored in this variable. However, it is overwritten when the center line is drawn.
 
-+de Mit *proc street ..* kann man nun eine Prozedur definieren, in der die Variablen nur innerhalb der Prozedur gültig sind. Das bedeutet, dass die Variable *x* innerhalb von *proc* eine andere Variable ist als die Variable *x* für die Position des Autos.
++de Mit *proc street .* kann man nun eine Prozedur definieren, in der die Variablen nur innerhalb der Prozedur gültig sind. Das bedeutet, dass die Variable *x* innerhalb von *proc* eine andere Variable ist als die Variable *x* für die Position des Autos.
 
-+ With *proc street ..* you can define a procedure in which the variables are only valid within the procedure. This means that the variable *x* within *proc* is a different variable than the variable *x* for the position of the car.
++ With *proc street .* you can define a procedure in which the variables are only valid within the procedure. This means that the variable *x* within *proc* is a different variable than the variable *x* for the position of the car.
 
 +de Wie kann man dann der Prozedur Werte liefern, wenn die Variablen nur *lokal* (innerhalb der Prozedur) gültig sind?
 
 + How can you then supply values to the procedure if the variables are only valid *locally* (within the procedure)?
 
-+de Man kann dies mit Parametern tun. Die Parameter folgen auf den Namen der Prozedur. Die Variablen bis zum ersten Punkt sind die Eingabeparameter. Die bis zum zweiten Punkt sind die Eingabe-Ausgabe-Parameter, mit denen auch Werte zurückgegeben werden können.
++de Man kann dies mit Parametern tun. Die Parameter folgen auf den Namen der Prozedur. Die Variablen bis zum Punkt sind die Eingabeparameter.
 
-+ You can do this with parameters. The parameters follow the name of the procedure. The variables up to the first point are the input parameters. Those up to the second point are the input-output parameters, with these you can also return values.
++ You can do this with parameters. The parameters follow the name of the procedure. The variables up to the dot are the input parameters.
 
 background 070
-proc street . .
+proc street .
    move 0 10
    color 777
    rect 100 10
@@ -1088,7 +1088,7 @@ proc street . .
       x += 12
    end
 end
-proc car x . .
+proc car x .
    linewidth 8
    color 333
    move x + 9 25
@@ -1117,7 +1117,7 @@ end
 + We can also specify one parameter for the y-position of the road and the car and one for the color of the car. Now we can have two cars with different colors driving on two roads.
 
 background 070
-proc street y . .
+proc street y .
    move 0 y
    color 777
    rect 100 10
@@ -1130,7 +1130,7 @@ proc street y . .
       x += 12
    end
 end
-proc car x y col . .
+proc car x y col .
    linewidth 8
    color 333
    move x + 9 y + 15

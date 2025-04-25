@@ -398,7 +398,8 @@ int main(int argc, const char* argv[]) {
 	int form = 0;
 
 	int i = 1;
-	int opt = 0;
+	//int opt = 0;
+	int opt = 16;	// strict
 	if (argc > 1 && strcmp(argv[i], "-f") == 0) {
 		form = 1;
 		i++;

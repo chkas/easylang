@@ -30,7 +30,7 @@ func bnlen bn[] .
    return (len bn[] - 1) * 7 + floor log10 bn[$] + 1
 .
 global mn[][] .
-proc getmagnums . .
+proc getmagnums .
    i = 1
    n[] = [ 0 ]
    repeat
@@ -46,7 +46,7 @@ proc getmagnums . .
 .
 getmagnums
 # 
-proc show . .
+proc show .
    print len mn[][] & " magic numbers"
    print str mn[$][] & " is the largest"
    len ndigs[] 25

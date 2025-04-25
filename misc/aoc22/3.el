@@ -7,7 +7,7 @@ func code c$ .
 .
 #
 global inp$[] .
-proc read . .
+proc read .
    repeat
       s$ = input
       until s$ = ""
@@ -16,7 +16,7 @@ proc read . .
 .
 read
 #
-proc part1 . .
+proc part1 .
    len a[] 52
    for s$ in inp$[]
       for i = 1 to 52 : a[i] = 0
@@ -34,7 +34,7 @@ proc part1 . .
 .
 part1
 #
-proc part2 . .
+proc part2 .
    len a[] 52
    len b[] 52
    for ii = 1 step 3 to len inp$[] - 2

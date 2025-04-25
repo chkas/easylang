@@ -9,7 +9,7 @@ len m[] nc * nr
 arrbase m[] 0
 #
 f = 90 / nc
-proc show m . .
+proc show m .
    if visualization = 1
       clear
       for r range0 nr

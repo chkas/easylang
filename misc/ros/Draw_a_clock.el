@@ -1,4 +1,4 @@
-proc draw hour min sec . .
+proc draw hour min sec .
    color 333
    move 50 50
    circle 45

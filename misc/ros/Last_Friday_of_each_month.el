@@ -1,4 +1,4 @@
-proc show y . .
+proc show y .
    days[] = [ 31 28 31 30 31 30 31 31 30 31 30 31 ]
    days[2] += if y mod 4 = 0 and (y mod 100 <> 0 or y mod 400 = 0)
    w = y * 365 + (y - 1) div 4 - (y - 1) div 100 + (y - 1) div 400 + 6

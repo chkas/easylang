@@ -27,7 +27,7 @@ func ismagnan n .
    .
    return 1
 .
-proc magnan start stop . .
+proc magnan start stop .
    write start & "-" & stop & ":"
    while count < stop
       if ismagnan i = 1

@@ -1,5 +1,5 @@
 color 555
-proc tree x y deg n . .
+proc tree x y deg n .
    if n > 0
       linewidth n * 0.4
       move x y

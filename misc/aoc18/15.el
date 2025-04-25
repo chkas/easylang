@@ -5,7 +5,7 @@ visual = 1
 delay = 0.3
 #
 global f0[] nc un0[] hp0[] .
-proc read . .
+proc read .
    repeat
       s$ = input
       until s$ = ""
@@ -36,7 +36,7 @@ att_p[] = [ 3 3 ]
 dir[] = [ -nc (-1) 1 nc ]
 global f[] un[] hp[] .
 background 343
-proc show . .
+proc show .
    if visual = 0 : return
    clear
    sz = 100 / nc
@@ -67,7 +67,7 @@ proc show . .
    sleep delay
 .
 #
-proc battle . res .
+proc battle &res ..
    f[] = f0[]
    un[] = un0[]
    hp[] = hp0[]
@@ -193,7 +193,7 @@ proc battle . res .
 battle res
 print res
 #
-proc part2 . .
+proc part2 .
    delay /= 10
    repeat
       att_p[1] += 1

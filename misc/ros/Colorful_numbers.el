@@ -36,7 +36,7 @@ len cnt[] 8
 len used[] 10
 arrbase used[] 0
 largest = 0
-proc cnt_colorful taken n digits . .
+proc cnt_colorful taken n digits .
    if taken = 0
       for d = 0 to 9
          used[d] = 1

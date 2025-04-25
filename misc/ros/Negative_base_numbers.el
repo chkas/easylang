@@ -23,7 +23,7 @@ func decode n$ b .
    .
    return tot
 .
-proc test n b . .
+proc test n b .
    h$ = encode n b
    print n & " -> " & h$ & "_" & b & " -> " & decode h$ b
 .

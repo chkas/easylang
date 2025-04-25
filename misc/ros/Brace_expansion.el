@@ -1,5 +1,5 @@
-procdecl getgroup depth . out$[] s$ ok .
-proc getitem depth . s$ out$[] .
+procdecl getgroup depth &out$[] &s$ &ok .
+proc getitem depth &s$ &out$[] .
    out$[] = [ "" ]
    while s$ <> ""
       c$ = substr s$ 1 1
@@ -34,7 +34,7 @@ proc getitem depth . s$ out$[] .
       .
    .
 .
-proc getgroup depth . out$[] s$ ok .
+proc getgroup depth &out$[] &s$ &ok .
    out$[] = [ ]
    while s$ <> ""
       getitem depth s$ g$[]
@@ -69,7 +69,7 @@ repeat
    .
    print ""
 .
-# 
+#
 input_data
 ~/{Downloads,Pictures}/*.{jpg,gif,png}
 It{{em,alic}iz,erat}e{d,}, please.

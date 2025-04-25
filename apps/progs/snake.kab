@@ -61,7 +61,7 @@ on mouse_down
       .
    .
 .
-proc over . .
+proc over .
    color 997
    move 10 10
    text "Space or click for new game"

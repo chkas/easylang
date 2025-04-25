@@ -5,12 +5,10 @@ repeat
    pat$[][] &= strsplit s$ ","
    pat$[$][] &= ""
 .
-proc sort . d$[][] .
-   for i = len d$[][] - 1 downto 1
-      for j = 1 to i
-         if strcmp d$[j][1] d$[j + 1][1] > 0
-            swap d$[j][] d$[j + 1][]
-         .
+proc sort &d$[][] .
+   for i = len d$[][] - 1 downto 1 : for j = 1 to i
+      if strcmp d$[j][1] d$[j + 1][1] > 0
+         swap d$[j][] d$[j + 1][]
       .
    .
 .
@@ -18,7 +16,7 @@ sort pat$[][]
 n = len pat$[][]
 len sum[] n
 len cnt[] n
-# 
+#
 s$ = input
 repeat
    s$ = input
@@ -36,9 +34,7 @@ repeat
 .
 func$ f s$ n .
    s$ = " " & s$
-   while len s$ < n
-      s$ &= " "
-   .
+   while len s$ < n : s$ &= " "
    return s$
 .
 print "PATIENT_ID | LASTNAME | LAST_VISIT | SCORE_SUM | SCORE_AVG"
@@ -52,7 +48,7 @@ for i to n
    .
    print f pat$[i][1] 11 & "|" & f pat$[i][2] 10 & "|" & f pat$[i][3] 12 & "|" & sum$ & "|" & cnt$
 .
-# 
+#
 input_data
 PATIENT_ID,LASTNAME
 1001,Hopper

@@ -1,4 +1,4 @@
-proc cist x y n . .
+proc cist x y n .
    linewidth 0.5
    dx[] = [ 4 -4 4 -4 ]
    dy[] = [ 4 4 -4 -4 ]

@@ -1,6 +1,6 @@
 # AoC-24 - Day 21: Keypad Conundrum
 #
-proc movex . sx dx r[] .
+proc movex &sx &dx &r[] .
    dirx = sign (dx - sx)
    k = 3
    if dirx = 1 : k = 5
@@ -9,7 +9,7 @@ proc movex . sx dx r[] .
       sx += dirx
    .
 .
-proc movey . sy dy r[] .
+proc movey &sy &dy &r[] .
    diry = sign (dy - sy)
    k = 1
    if diry = 1 : k = 4
@@ -18,7 +18,7 @@ proc movey . sy dy r[] .
       sy += diry
    .
 .
-proc keypad dir src dst . r[] .
+proc keypad dir src dst &r[] .
    dx = dst mod 3
    sx = src mod 3
    dy = dst div 3
@@ -42,7 +42,7 @@ proc keypad dir src dst . r[] .
 #     | 0 | A |   9 10 11
 #     +---+---+
 #
-proc numkeypad keys$ . sq[] .
+proc numkeypad keys$ &sq[] .
    a = 11
    for k$ in strchars keys$
       b = strpos "789456123x0A" k$ - 1
@@ -70,7 +70,7 @@ proc numkeypad keys$ . sq[] .
 # | < | v | > |  3 4 5
 # +---+---+---+
 #
-proc dirkeypad . sq[] .
+proc dirkeypad &sq[] .
    swap sqin[] sq[]
    a = 2
    for b in sqin[]
@@ -106,7 +106,7 @@ func[] cod2sq ind .
 len tbnxt[][] 212
 len tblen[] 212
 #
-proc findchilds cod . .
+proc findchilds cod .
    if len tbnxt[cod][] > 0 : return
    sq[] = cod2sq cod
    sq[] &= 2
@@ -125,7 +125,7 @@ proc findchilds cod . .
    .
    for h in tbnxt[cod][] : findchilds h
 .
-proc seq2codes . sq[] codes[] .
+proc seq2codes &sq[] &codes[] .
    i = 1
    repeat
       s[] = [ ]
@@ -139,13 +139,13 @@ proc seq2codes . sq[] codes[] .
       until i > len sq[]
    .
 .
-proc inittbl sq[] . .
+proc inittbl sq[] .
    seq2codes sq[] codes[]
    for cod in codes[]
       findchilds cod
    .
 .
-proc nextrobot . cnt[] .
+proc nextrobot &cnt[] .
    len ncnt[] len cnt[]
    for i = 1 to len cnt[]
       if cnt[i] > 0
@@ -164,7 +164,7 @@ func cntsum sqcnt[] .
    return s
 .
 #
-proc dokeys keys$ . nbtn1 nbtn2 .
+proc dokeys keys$ &nbtn1 &nbtn2 .
    numkeypad keys$ sq[]
    dirkeypad sq[]
    inittbl sq[]
@@ -177,7 +177,7 @@ proc dokeys keys$ . nbtn1 nbtn2 .
    nbtn2 = cntsum sqcnt[]
 .
 #
-proc run . .
+proc run .
    repeat
       s$ = input
       until s$ = ""

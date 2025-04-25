@@ -1,5 +1,5 @@
 # AoC-19 - Day 21: Springdroid Adventure
-# 
+#
 ic_code[] = number strsplit input ","
 ic_in = -1
 proc ic_outpf out . .
@@ -9,7 +9,7 @@ proc ic_outpf out . .
       write strchar out
    .
 .
-# 
+#
 # -------- intcode --------
 prefix ic_
 subr reset
@@ -18,7 +18,7 @@ subr reset
    mem[] = code[]
    arrbase mem[] 0
 .
-proc mem_ind mo ind . rind .
+proc mem_ind mo ind &rind ..
    rind = ind
    if mo = 0
       rind = mem[ind]
@@ -74,7 +74,7 @@ proc run . .
 .
 prefix
 # --------  --------
-# 
+#
 proc ic_put h . .
    ic_in = h
    ic_run
@@ -102,7 +102,7 @@ if len ic_code[] > 1
 else
    print "No input"
 .
-# 
+#
 input_data
 
 

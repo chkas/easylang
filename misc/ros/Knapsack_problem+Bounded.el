@@ -3,10 +3,10 @@ weight[] = [ 9 13 153 50 15 68 27 39 23 52 11 32 24 48 73 42 43 22 7 18 4 30 ]
 value[] = [ 150 35 200 60 60 45 60 40 30 10 70 30 15 10 40 70 75 80 20 12 50 10 ]
 pieces[] = [ 1 1 2 2 2 3 3 3 1 3 1 1 2 2 1 1 1 1 1 2 1 2 ]
 maxweight = 400
-# 
+#
 global valuesum[] maxv .
-# 
-proc solve i maxw v . items[] wres vres .
+#
+proc solve i maxw v &items[] &wres &vres .
    if i = 0
       wres = 0
       vres = 0
@@ -31,18 +31,16 @@ proc solve i maxw v . items[] wres vres .
       .
    .
 .
-proc prepare . .
-   for i to len weight[]
-      for j to pieces[i]
-         n$[] &= name$[i]
-         w[] &= weight[i]
-         v[] &= value[i]
-      .
+proc prepare .
+   for i to len weight[] : for j to pieces[i]
+      n$[] &= name$[i]
+      w[] &= weight[i]
+      v[] &= value[i]
    .
    swap name$[] n$[]
    swap weight[] w[]
    swap value[] v[]
-   # 
+   #
    n = len weight[]
    for i = 1 to n - 1
       for j = i + 1 to n
@@ -59,10 +57,8 @@ proc prepare . .
    .
 .
 prepare
-# 
+#
 solve len weight[] maxweight 0 items[] wsum vsum
 print "weight: " & wsum & " value: " & vsum
 print "items:"
-for item in items[]
-   print "  " & name$[item]
-.
+for item in items[] : print "  " & name$[item]

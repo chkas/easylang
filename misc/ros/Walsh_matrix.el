@@ -1,4 +1,4 @@
-proc out w[][] . .
+proc out w[][] .
    numfmt 0 3
    for i to len w[][]
       for j to len w[i][]
@@ -9,7 +9,7 @@ proc out w[][] . .
    print ""
    numfmt 0 0
 .
-proc walshmatr ord . .
+proc walshmatr ord .
    n = pow 2 ord
    len walsh[][] n
    for i to n

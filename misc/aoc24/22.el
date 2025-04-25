@@ -1,6 +1,6 @@
 # AoC-24 - Day 22: Monkey Market
 #
-proc next . secr .
+proc next &secr .
    secr = (bitxor (secr * 64) secr) mod 16777216
    secr = bitxor (secr div 32) secr
    secr = (bitxor (secr * 2048) secr) mod 16777216
@@ -9,7 +9,7 @@ len bananas[] 104976
 arrbase bananas[] 0
 #
 sum1 = 0
-proc do2000 n . .
+proc do2000 n .
    len seen[] 104976
    arrbase seen[] 0
    dig = n mod 10
@@ -31,7 +31,7 @@ proc do2000 n . .
    .
    sum1 += n
 .
-proc run . .
+proc run .
    repeat
       s$ = input
       until s$ = ""

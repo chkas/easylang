@@ -1,4 +1,4 @@
-proc count s$ . .
+proc count s$ .
    for c$ in strchars s$
       c = strcode c$
       if c >= 97 and c <= 122

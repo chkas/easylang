@@ -1,4 +1,4 @@
-proc decompose num . primes[] .
+proc decompose num &primes[] .
    primes[] = [ ]
    t = 2
    while t * t <= num

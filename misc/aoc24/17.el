@@ -8,7 +8,7 @@ s$ = input
 s$ = s$
 prog[] = number strsplit substr input 10 9999 ","
 #
-proc run a . out[] .
+proc run a &out[] .
    out[] = [ ]
    pc = 1
    repeat
@@ -47,14 +47,14 @@ proc run a . out[] .
       until pc > len prog[]
    .
 .
-proc part1 . .
+proc part1 .
    run a0 out[]
    for i to len out[] - 1 : write out[i] & ","
    print out[i]
 .
 part1
 #
-proc test ndig . r[] .
+proc test ndig &r[] .
    swap r[] r0[]
    for r in r0[]
       for h = r * 8 to r * 8 + 7
@@ -67,7 +67,7 @@ proc test ndig . r[] .
    .
 .
 #
-proc part2 . .
+proc part2 .
    if len prog[] < 16 : return
    r[] = [ 0 ]
    for ndig = 1 to 16 : test ndig r[]

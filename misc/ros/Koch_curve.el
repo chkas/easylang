@@ -1,4 +1,4 @@
-proc koch x1 y1 x2 y2 iter . .
+proc koch x1 y1 x2 y2 iter .
    x3 = (x1 * 2 + x2) / 3
    y3 = (y1 * 2 + y2) / 3
    x4 = (x1 + x2 * 2) / 3

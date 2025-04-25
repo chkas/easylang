@@ -1,15 +1,15 @@
 # AoC-16 - Day 14: One-Time Pad
-# 
+#
 len md5k[] 64
 arrbase md5k[] 0
-proc md5init . .
+proc md5init .
    for i range0 64
       md5k[i] = floor (0x100000000 * abs sin ((i + 1) * 180 / pi))
    .
 .
 md5init
-# 
-proc md5 inp$ . s$ .
+#
+proc md5 inp$ &s$ ..
    subr addinp
       if inp4 = 1
          inp[] &= 0
@@ -42,7 +42,7 @@ proc md5 inp$ . s$ .
       h = h div 0x100
    .
    inp[] &= 0
-   # 
+   #
    a0 = 0x67452301
    b0 = 0xefcdab89
    c0 = 0x98badcfe
@@ -94,17 +94,17 @@ proc md5 inp$ . s$ .
       .
    .
 .
-proc md5x in$ . h$ .
+proc md5x in$ &h$ ..
    md5 in$ h$
    for i range0 2016
       md5 h$ h$
    .
 .
-# 
+#
 inp$ = input
-# 
+#
 part2 = 0
-proc run . .
+proc run .
    for i range0 25000
       if part2 = 1
          md5x inp$ & i md$
@@ -151,7 +151,7 @@ print "That takes some time ..."
 run
 part2 = 1
 run
-# 
+#
 input_data
 abc
 

@@ -1,23 +1,23 @@
-proc index c$ . a$[] ind .
+func index a$[] c$ .
    for ind = 1 to len a$[]
-      if a$[ind] = c$ : return
+      if a$[ind] = c$ : return ind
    .
-   ind = 0
+   return 0
 .
 left$ = "HXUCZVAMDSLKPEFJRIGTWOBNYQ"
 right$ = "PTLNBQDEOYSFAVZKGJRIHWXUMC"
-# 
+#
 func$ chao txt$ mode .
    left$[] = strchars left$
    right$[] = strchars right$
    len tmp$[] 26
    for c$ in strchars txt$
       if mode = 1
-         index c$ right$[] ind
+         ind = index right$[] c$
          if ind = 0 : return ""
          r$ &= left$[ind]
       else
-         index c$ left$[] ind
+         ind = index left$[] c$
          if ind = 0
             print c$
             return ""
@@ -37,7 +37,7 @@ func$ chao txt$ mode .
       .
       tmp$[14] = h$
       swap tmp$[] left$[]
-      # 
+      #
       # permute right
       for j = ind to 26
          tmp$[j - ind + 1] = right$[j]

@@ -2,7 +2,7 @@
 #
 global col$[] cont_col[][] cont_cnt[][] .
 #
-proc col_id s$ . col .
+proc col_id s$ &col ..
    for col to len col$[]
       if col$[col] = s$ : return
    .
@@ -10,7 +10,7 @@ proc col_id s$ . col .
    cont_col[][] &= [ ]
    cont_cnt[][] &= [ ]
 .
-proc read_inp . .
+proc read_inp .
    repeat
       inp$ = input
       until inp$ = ""
@@ -31,7 +31,7 @@ proc read_inp . .
 read_inp
 col_id "shiny gold" gold
 #
-proc search col . fnd .
+proc search col &fnd ..
    if col = gold
       fnd = 1
       return
@@ -42,7 +42,7 @@ proc search col . fnd .
       if h = 1 : fnd = 1
    .
 .
-proc part1 . .
+proc part1 .
    for i to len cont_col[][]
       if i <> gold
          search i fnd
@@ -53,7 +53,7 @@ proc part1 . .
 .
 part1
 #
-proc get_sum col . sum .
+proc get_sum col &sum ..
    sum = 0
    for i to len cont_col[col][]
       get_sum cont_col[col][i] s
@@ -61,7 +61,7 @@ proc get_sum col . sum .
       sum += h + h * s
    .
 .
-proc part2 . .
+proc part2 .
    get_sum gold sum
    print sum
 .

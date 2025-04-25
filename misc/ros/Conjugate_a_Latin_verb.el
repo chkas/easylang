@@ -1,4 +1,4 @@
-proc conj inf$ . .
+proc conj inf$ .
    if substr inf$ (len inf$ - 2) 3 <> "are"
       print "Not a first conjugation verb."
       return

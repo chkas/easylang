@@ -8,7 +8,7 @@ for x to 300 : for y to 300
    h = h div 100 mod 10 - 5
    po[y * 301 + x] = h
 .
-proc part1 . .
+proc part1 .
    for x to 297 : for y to 297
       s = 0
       for xd = x to x + 2 : for yd = y to y + 2
@@ -40,7 +40,7 @@ for y to 300
       pox[y * 301 + x] = s
    .
 .
-proc part2 . .
+proc part2 .
    for x to 300 : for y to 300
       msz = 300 - y
       if x > y : msz = 300 - x

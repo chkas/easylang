@@ -2,7 +2,7 @@
 #
 global l[] .
 #
-proc traverse . sum .
+proc traverse &sum .
    sum = 0
    s$ = input
    repeat

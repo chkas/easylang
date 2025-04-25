@@ -4,7 +4,7 @@ f = 100 / (n - 0.5)
 len m[] n * n
 #
 background 000
-proc show_maze . .
+proc show_maze .
    clear
    for i = 1 to len m[]
       if m[i] = 0
@@ -19,7 +19,7 @@ proc show_maze . .
 .
 offs[] = [ 1 n -1 (-n) ]
 #
-proc m_maze pos . .
+proc m_maze pos .
    m[pos] = 0
    show_maze
    d[] = [ 1 2 3 4 ]
@@ -34,7 +34,7 @@ proc m_maze pos . .
    .
 .
 endpos = n * n - 1
-proc make_maze . .
+proc make_maze .
    for i = 1 to len m[]
       m[i] = 1
    .

@@ -13,7 +13,7 @@ func n2id n$ .
    return id
 .
 #
-proc read . .
+proc read .
    broadc = n2id "roadcaster"
    rx = n2id "rx"
    repeat
@@ -46,7 +46,7 @@ read
 #
 len lowhigh[] 2
 #
-proc run ncnt . .
+proc run ncnt .
    len stat[] len typ[]
    len exitcnt[] len exitnd[]
    for cnt to ncnt

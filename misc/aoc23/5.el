@@ -5,7 +5,7 @@ len src[][] 7
 len lng[][] 7
 global idn[] .
 #
-proc init . .
+proc init .
    idn[] = number strsplit substr input 8 99 " "
    s$ = input
    s$ = input
@@ -23,7 +23,7 @@ proc init . .
 .
 init
 #
-proc part1 . .
+proc part1 .
    min = 1 / 0
    for id in idn[]
       for t to 7
@@ -40,7 +40,7 @@ proc part1 . .
 .
 part1
 #
-proc part2 . .
+proc part2 .
    for t to 7
       swap id[] idn[]
       idn[] = [ ]

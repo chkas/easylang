@@ -1,6 +1,6 @@
 # AoC-19 - Day 1: The Tyranny of the Rocket Equation
-# 
-proc fuel2 w . fs .
+#
+proc fuel2 w &fs .
    fs = 0
    repeat
       f = w div 3 - 2
@@ -19,7 +19,7 @@ repeat
 .
 print f1
 print f2
-# 
+#
 input_data
 12
 14

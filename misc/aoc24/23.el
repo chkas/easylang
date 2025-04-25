@@ -7,7 +7,7 @@ func n2id n$ .
    cons[][] &= [ ]
    return id
 .
-proc init . .
+proc init .
    repeat
       s$ = input
       until s$ = ""
@@ -30,7 +30,7 @@ init
 func isat a .
    return if substr na$[a] 1 1 = "t"
 .
-proc part1 . .
+proc part1 .
    for a to n
       for b = a + 1 to n : if co[a][b] = 1
          for c = b + 1 to n : if co[b][c] = 1 and co[c][a] = 1
@@ -42,7 +42,7 @@ proc part1 . .
 .
 part1
 #
-proc sort . d$[] .
+proc sort &d$[] .
    for i = len d$[] - 1 downto 1
       for j = 1 to i
          if strcmp d$[j] d$[j + 1] > 0 : swap d$[j] d$[j + 1]
@@ -53,7 +53,7 @@ global maxcol[] maxsize .
 len cluster[] n
 len col[] n
 #
-proc collect . .
+proc collect .
    mincons = n
    for i to n : if col[i] = 1
       mincons = lower mincons len cons[i][]

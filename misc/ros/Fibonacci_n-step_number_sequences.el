@@ -1,4 +1,4 @@
-proc sequ n$ val[] n . .
+proc sequ n$ val[] n .
    write n$ & ": "
    il = len val[]
    len val[] n

@@ -5,7 +5,7 @@
 # it is noted how often a cave was visited.
 #
 global m[][] name$[] small[] start ende .
-proc add n$ . id .
+proc add n$ &id .
    for id = 1 to len name$[]
       if name$[id] = n$ : return
    .
@@ -29,7 +29,7 @@ repeat
 .
 #
 global n_found .
-proc find pos seen[] twice . .
+proc find pos seen[] twice .
    if pos = ende
       n_found += 1
    else
