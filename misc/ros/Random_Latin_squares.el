@@ -7,9 +7,7 @@ proc shuffle &a[] .
 proc prsquare &lat[][] .
    n = len lat[][]
    for i to n
-      for j to n
-         write lat[i][j] & " "
-      .
+      for j to n : write lat[i][j] & " "
       print ""
    .
    print ""

@@ -21,9 +21,7 @@ len cost[] n
 len prev[] n
 #
 proc dijkstra .
-   for i = 2 to len cost[]
-      cost[i] = 1 / 0
-   .
+   for i = 2 to len cost[] : cost[i] = 1 / 0
    len todo[] n
    todo[1] = 1
    repeat

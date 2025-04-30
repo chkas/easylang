@@ -6,14 +6,17 @@ fastfunc isprim num .
    .
    return 1
 .
-proc sort &d[] .
-   for i = 1 to len d[] - 1 : for j = i + 1 to len d[]
-      if d[j] < d[i] : swap d[j] d[i]
+proc insert v &d[] .
+   i = len d[]
+   d[] &= 0
+   while i > 0 and d[i] > v
+      d[i + 1] = d[i]
+      i -= 1
    .
+   d[i + 1] = v
 .
 inp[] = [ 2 43 81 122 63 13 7 95 103 ]
 for v in inp[]
-   if isprim v = 1 : d[] &= v
+   if isprim v = 1 : insert v d[]
 .
-sort d[]
 print d[]

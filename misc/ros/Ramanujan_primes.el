@@ -29,9 +29,7 @@ func ramamax n .
    return floor (4 * n * log (4 * n))
 .
 func ramaprim n .
-   if n = 1
-      return 2
-   .
+   if n = 1 : return 2
    for i = ramamax n downto 2 * n
       if i mod 2 = 0
          if cnt[i] - cnt[i / 2] < n

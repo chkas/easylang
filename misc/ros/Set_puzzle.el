@@ -16,6 +16,7 @@ proc card2attr card &attr[] .
 proc printcards cards[] .
    for card in cards[]
       card2attr card attr[]
+      write "  "
       for i to 4 : write attr$[i][attr[i]] & " "
       print ""
    .
@@ -44,7 +45,6 @@ proc getsets &cards[] &set[] .
    .
 .
 proc run ncards nsets .
-   #
    repeat
       init
       cards[] = [ ]
@@ -65,5 +65,3 @@ proc run ncards nsets .
    .
 .
 run 9 4
-print " --------------------------"
-run 12 6

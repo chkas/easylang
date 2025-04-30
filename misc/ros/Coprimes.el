@@ -1,10 +1,6 @@
 func gcd a b .
-   while b <> 0
-      h = b
-      b = a mod b
-      a = h
-   .
-   return a
+   if b = 0 : return a
+   return gcd b (a mod b)
 .
 proc test p[] .
    if gcd p[1] p[2] = 1

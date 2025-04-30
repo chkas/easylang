@@ -157,6 +157,7 @@ S double randf(void) {
 	if (rt.randseed == -1) {
 		rt.randseed = time(0);
 		srand(rt.randseed);
+		rand();
 	}
 	f = ((double)rand() / 0x80000000);
 #endif
@@ -700,9 +701,11 @@ S STR op_strjoin(ND* nd) {
 	return str;
 }
 S void xnumarrarrstr(STR* str, ARR* a) {
-	str_append(str, "[\n");
+	//str_append(str, "[\n");
+	str_append(str, "[ ");
 	for (int i = 0; i < a->len; i++) {
-		str_append(str, " [");
+		//str_append(str, " [");
+		str_append(str, "[");
 		double* pf = (a->parr + i)->pnum;
 		int len = (a->parr + i)->len;
 		for (int j = 0; j < len; j++) {
@@ -711,7 +714,8 @@ S void xnumarrarrstr(STR* str, ARR* a) {
 			str_append(str, str_ptr(&s));
 			str_free(&s);
 		}
-		str_append(str, " ]\n");
+		//str_append(str, " ]\n");
+		str_append(str, " ] ");
 	}
 	str_append(str, "]");
 }
@@ -725,9 +729,11 @@ S STR op_numarrarrstr(ND* nd) {
 }
 
 S void xstrarrarrstr(STR* str, ARR* a) {
-	str_append(str, "[\n");
+	str_append(str, "[ ");
+	//str_append(str, "[\n");
 	for (int i = 0; i < a->len; i++) {
-		str_append(str, " [");
+		//str_append(str, " [");
+		str_append(str, "[");
 		STR* p = (a->parr + i)->pstr;
 		int len = (a->parr + i)->len;
 		for (int j = 0; j < len; j++) {
@@ -735,7 +741,8 @@ S void xstrarrarrstr(STR* str, ARR* a) {
 			str_append(str, str_ptr(&p[j]));
 			str_append(str, "\"");
 		}
-		str_append(str, " ]\n");
+		//str_append(str, " ]\n");
+		str_append(str, " ] ");
 	}
 	str_append(str, "]");
 }
@@ -1938,7 +1945,7 @@ S ND* init_params(double* nums, STR* strs, ARR* arrs, ND* nd, ND* ndp) {
 	return ndp;
 }
 
-S void exit_params(double* nums, STR* strs, ARR* arrs, ND* nd, ND* ndp) {
+S void exit_params(double* nums, STR* strs, ARR* arrs, ND* nd, ND* ndp, int n_str, int n_arr) {
 	ushort ind = 0;
 	ushort ifl = 0;
 	ushort istr = 0;
@@ -1964,6 +1971,7 @@ S void exit_params(double* nums, STR* strs, ARR* arrs, ND* nd, ND* ndp) {
 		else if (t == PAR_RSTR) {
 			*(gstr(nd->v1)) = strs[istr];
 			// don't free reference strs
+			str_init(&strs[istr]);
 			istr += 1;
 		}
 		else  {
@@ -1976,6 +1984,7 @@ S void exit_params(double* nums, STR* strs, ARR* arrs, ND* nd, ND* ndp) {
 			if (arr->p != NULL) free(arr->p);
 			*arr = arrs[iarr];
 			// don't free reference arrs
+			arrs[iarr].p = NULL;
 			iarr += 1;
 		}
 		ind += 1;
@@ -1984,6 +1993,13 @@ S void exit_params(double* nums, STR* strs, ARR* arrs, ND* nd, ND* ndp) {
 			ind = 0;
 		}
 		nd = nd->next;
+	}
+	for (int is = 0; is < n_str; is++) {
+		str_free(strs + is);
+	}
+	for (int ia = 0; ia < n_arr; ia++) {
+		ARR* a = arrs + ia;
+		if (a->p) free_arr(a);
 	}
 }
 
@@ -2035,7 +2051,7 @@ S void op_callproc(ND* nd0) {
 	rtl_strs = rtl_strs_caller;
 	rtl_arrs = rtl_arrs_caller;
 
-	exit_params(nums, strs, arrs, nd0->ri, nd0->le);
+	exit_params(nums, strs, arrs, nd0->ri, nd0->le, n_str, n_arr);
 }
 
 S ND* funcnd;
@@ -2097,7 +2113,7 @@ S double op_callfunc(ND* nd0) {
 	rtl_strs = rtl_strs_caller;
 	rtl_arrs = rtl_arrs_caller;
 
-	exit_params(nums, strs, arrs, nd0->ri, nd0->le);
+	exit_params(nums, strs, arrs, nd0->ri, nd0->le, n_str, n_arr);
 
 	return retval;
 }
@@ -2157,7 +2173,7 @@ S void callfunc(ND* nd0, double* ret, STR* retstr, ARR* retarr) {
 	rtl_strs = rtl_strs_caller;
 	rtl_arrs = rtl_arrs_caller;
 
-	exit_params(nums, strs, arrs, nd0->ri, nd0->le);
+	exit_params(nums, strs, arrs, nd0->ri, nd0->le, n_str, n_arr);
 }
 
 /*

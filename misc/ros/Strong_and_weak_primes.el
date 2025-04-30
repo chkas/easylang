@@ -1,14 +1,12 @@
 fastfunc isprim num .
    i = 3
    while i <= sqrt num
-      if num mod i = 0
-         return 0
-      .
+      if num mod i = 0 : return 0
       i += 2
    .
    return 1
 .
-func nextprim n .
+fastfunc nextprim n .
    repeat
       n += 2
       until isprim n = 1

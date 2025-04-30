@@ -13,9 +13,7 @@ proc evolve .
 .
 proc show .
    c$[] = [ "." "#" ]
-   for v in cell[]
-      write c$[v + 1]
-   .
+   for v in cell[] : write c$[v + 1]
    print ""
 .
 proc run map count inp[] .

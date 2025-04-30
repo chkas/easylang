@@ -2,12 +2,9 @@ global limits[] data[] .
 # 
 proc count .
    len cnt[] len limits[] + 1
-   # 
    for e in data[]
       for i to len limits[]
-         if e < limits[i]
-            break 1
-         .
+         if e < limits[i] : break 1
       .
       cnt[i] += 1
    .

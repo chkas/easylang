@@ -1,31 +1,21 @@
 fastfunc factor num .
    if num mod 2 = 0
-      if num = 2
-         return 1
-      .
+      if num = 2 : return 1
       return 2
    .
    i = 3
    while i <= sqrt num
-      if num mod i = 0
-         return i
-      .
+      if num mod i = 0 : return i
       i += 2
    .
    return 1
 .
 func brilliant n .
    f1 = factor n
-   if f1 = 1
-      return 0
-   .
+   if f1 = 1 : return 0
    f2 = n div f1
-   if floor log10 f1 <> floor log10 f2
-      return 0
-   .
-   if factor f1 = 1 and factor f2 = 1
-      return 1
-   .
+   if floor log10 f1 <> floor log10 f2 : return 0
+   if factor f1 = 1 and factor f2 = 1 : return 1
    return 0
 .
 proc main .

@@ -9,7 +9,7 @@ proc md5init .
 .
 md5init
 #
-proc md5 inp$ &s$ ..
+proc md5 inp$ &s$ .
    subr addinp
       if inp4 = 1
          inp[] &= 0
@@ -22,6 +22,7 @@ proc md5 inp$ &s$ ..
    .
    s[] = [ 7 12 17 22 7 12 17 22 7 12 17 22 7 12 17 22 5 9 14 20 5 9 14 20 5 9 14 20 5 9 14 20 4 11 16 23 4 11 16 23 4 11 16 23 4 11 16 23 6 10 15 21 6 10 15 21 6 10 15 21 6 10 15 21 ]
    arrbase s[] 0
+   #
    inp[] = [ ]
    inp4 = 1
    for i to len inp$
@@ -65,16 +66,16 @@ proc md5 inp$ &s$ ..
             g = (3 * i + 5) mod 16
          else
             h1 = bitor b bitnot d
-            f = bitxor c h1
+            f = bitand 0xffffffff bitxor c h1
             g = 7 * i mod 16
          .
-         f = (f + a + md5k[i] + inp[chunk + g])
+         f = bitand 0xffffffff (f + a + md5k[i] + inp[chunk + g])
          a = d
          d = c
          c = b
          h1 = bitshift f s[i]
          h2 = bitshift f (s[i] - 32)
-         b = (b + h1 + h2)
+         b = bitand 0xffffffff (b + h1 + h2)
       .
       a0 += a ; b0 += b ; c0 += c ; d0 += d
    .

@@ -1,9 +1,7 @@
 func gapful n .
    m = n
    l = n mod 10
-   while m >= 10
-      m = m div 10
-   .
+   while m >= 10 : m = m div 10
    return if n mod (m * 10 + l) = 0
 .
 proc show n gaps .

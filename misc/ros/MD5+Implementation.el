@@ -5,8 +5,8 @@ proc md5init .
    .
 .
 md5init
-#
-proc md5 inp$ &s$ .
+# 
+func$ md5 inp$ .
    subr addinp
       if inp4 = 1 : inp[] &= 0
       inp[len inp[]] += b * inp4
@@ -33,7 +33,7 @@ proc md5 inp$ &s$ .
       h = h div 0x100
    .
    inp[] &= 0
-   #
+   # 
    a0 = 0x67452301
    b0 = 0xefcdab89
    c0 = 0x98badcfe
@@ -57,20 +57,19 @@ proc md5 inp$ &s$ .
             g = (3 * i + 2) mod 16
          else
             h1 = bitor b bitnot d
-            f = bitxor c h1
+            f = bitand 0xffffffff bitxor c h1
             g = (7 * i - 7) mod 16
          .
-         f = (f + a + md5k[i] + inp[chunk + g])
+         f = bitand 0xffffffff (f + a + md5k[i] + inp[chunk + g])
          a = d
          d = c
          c = b
          h1 = bitshift f s[i]
          h2 = bitshift f (s[i] - 32)
-         b = (b + h1 + h2)
+         b = bitand 0xffffffff (b + h1 + h2)
       .
       a0 += a ; b0 += b ; c0 += c ; d0 += d
    .
-   s$ = ""
    for a in [ a0 b0 c0 d0 ]
       for i = 1 to 4
          b = a mod 256
@@ -82,12 +81,12 @@ proc md5 inp$ &s$ .
          .
       .
    .
+   return s$
 .
 repeat
    s$ = input
    until error = 1
-   md5 s$ h$
-   print h$
+   print md5 s$
 .
 input_data
 a

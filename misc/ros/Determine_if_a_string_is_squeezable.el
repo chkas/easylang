@@ -1,8 +1,6 @@
 func$ squeeze s$ x$ .
    for c$ in strchars s$
-      if c$ <> x$ or c$ <> cc$
-         r$ &= c$
-      .
+      if c$ <> x$ or c$ <> cc$ : r$ &= c$
       cc$ = c$
    .
    return r$

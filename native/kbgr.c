@@ -445,7 +445,7 @@ void gr_sys(unsigned short h) {
 //	else if (h == 11) botleft = true;
 //	else if (h == 12) botleft = false;
 	else {
-		fprintf(stderr, "** sys %d not handled", h);
+		fprintf(stderr, "** sys %d not handled\n", h);
 	}
 }
 

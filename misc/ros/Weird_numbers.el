@@ -4,9 +4,7 @@ func[] divisors n .
       if n mod i = 0
          j = n / i
          divs[] &= i
-         if i <> j
-            divs2[] &= j
-         .
+         if i <> j : divs2[] &= j
       .
    .
    for i = len divs2[] downto 1

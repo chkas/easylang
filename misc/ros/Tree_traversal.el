@@ -1,9 +1,7 @@
 tree[] = [ 1 2 3 4 5 6 -1 7 -1 -1 -1 8 9 ]
 # 
 proc preorder ind .
-   if ind > len tree[] or tree[ind] = -1
-      return
-   .
+   if ind > len tree[] or tree[ind] = -1 : return
    write " " & tree[ind]
    preorder ind * 2
    preorder ind * 2 + 1
@@ -13,9 +11,7 @@ preorder 1
 print ""
 # 
 proc inorder ind .
-   if ind > len tree[] or tree[ind] = -1
-      return
-   .
+   if ind > len tree[] or tree[ind] = -1 : return
    inorder ind * 2
    write " " & tree[ind]
    inorder ind * 2 + 1
@@ -25,9 +21,7 @@ inorder 1
 print ""
 # 
 proc postorder ind .
-   if ind > len tree[] or tree[ind] = -1
-      return
-   .
+   if ind > len tree[] or tree[ind] = -1 : return
    postorder ind * 2
    postorder ind * 2 + 1
    write " " & tree[ind]
@@ -47,9 +41,7 @@ proc enqu v .
    tail = (tail + 1) mod1 len queue[]
 .
 func dequ .
-   if head = tail
-      return -1
-   .
+   if head = tail : return -1
    h = head
    head = (head + 1) mod1 len queue[]
    return queue[h]

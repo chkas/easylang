@@ -9,9 +9,7 @@ subr nch
 .
 # 
 subr ntok
-   while ch$ = " "
-      nch
-   .
+   while ch$ = " " : nch
    if ch >= 48 and ch <= 58
       tok$ = "n"
       s$ = ""

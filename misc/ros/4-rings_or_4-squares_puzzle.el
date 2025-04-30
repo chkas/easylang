@@ -1,8 +1,6 @@
 func ok v t[] .
    for h in t[]
-      if v = h
-         return 0
-      .
+      if v = h : return 0
    .
    return 1
 .

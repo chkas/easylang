@@ -4,18 +4,14 @@ proc test .
       n = n * 10 + dig[i]
    .
    for i to len dig[]
-      if n mod dig[i] <> 0
-         return
-      .
+      if n mod dig[i] <> 0 : return
    .
    found = 1
    print n
 .
 len use[] 9
 proc perm pos .
-   if found = 1
-      return
-   .
+   if found = 1 : return
    for i = 9 downto 1
       dig[pos] = i
       if use[i] = 0

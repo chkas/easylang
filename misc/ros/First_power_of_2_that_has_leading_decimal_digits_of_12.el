@@ -9,9 +9,7 @@ func p l n .
    while n > 0
       test += 1
       val = floor (factor * pow 10 (test * log mod 1))
-      if val = l
-         n -= 1
-      .
+      if val = l : n -= 1
    .
    return test
 .

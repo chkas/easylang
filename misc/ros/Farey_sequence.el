@@ -1,5 +1,7 @@
 proc farey n .
-   b = 1 ; c = 1 ; d = n
+   b = 1
+   c = 1
+   d = n
    write n & ": "
    repeat
       if n <= 11

@@ -12,9 +12,7 @@ proc out w[][] .
 proc walshmatr ord .
    n = pow 2 ord
    len walsh[][] n
-   for i to n
-      len walsh[i][] n
-   .
+   for i to n : len walsh[i][] n
    walsh[1][1] = 1
    k = 1
    while k < n

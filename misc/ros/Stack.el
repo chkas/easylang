@@ -4,9 +4,7 @@ proc push v .
 .
 func pop .
    lng = len stack[]
-   if lng = 0
-      return 0
-   .
+   if lng = 0 : return 0 / 0
    r = stack[lng]
    len stack[] -1
    return r

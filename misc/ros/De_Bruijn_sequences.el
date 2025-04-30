@@ -24,17 +24,13 @@ func$ debruijn k0 n0 .
    len a[] k * n
    seq[] = [ ]
    db 1 1
-   for v in seq[]
-      buf$ &= v
-   .
+   for v in seq[] : buf$ &= v
    buf$ &= substr buf$ 1 (n - 1)
    return buf$
 .
 func alldigits s$ .
    for c$ in strchars s$
-      if strcode c$ < 48 or strcode c$ > 57
-         return 0
-      .
+      if strcode c$ < 48 or strcode c$ > 57 : return 0
    .
    return 1
 .
@@ -57,9 +53,7 @@ proc validate db$ .
    if len errs$[] = 0
       print "  No errors found"
    else
-      for s$ in errs$[]
-         print s$
-      .
+      for s$ in errs$[] : print s$
    .
 .
 proc main .

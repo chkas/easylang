@@ -5,4 +5,4 @@ proc hanoi n src dst aux .
       hanoi n - 1 aux dst src
    .
 .
-hanoi 5 1 2 3
+hanoi 4 1 2 3

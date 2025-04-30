@@ -1,12 +1,8 @@
 fastfunc isprim num .
-   if num mod 2 = 0 and num > 2
-      return 0
-   .
+   if num mod 2 = 0 and num > 2 : return 0
    i = 3
    while i <= sqrt num
-      if num mod i = 0
-         return 0
-      .
+      if num mod i = 0 : return 0
       i += 2
    .
    return 1
@@ -47,8 +43,6 @@ repeat
       limit *= 2
    .
    until limit > 32000
-   if period prim = prim - 1
-      cnt += 1
-   .
+   if period prim = prim - 1 : cnt += 1
    nextprim
 .

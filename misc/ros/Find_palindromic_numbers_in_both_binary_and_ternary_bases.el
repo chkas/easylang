@@ -4,9 +4,7 @@ fastfunc ispalin2 n .
       x = x * 2 + m mod 2
       m = m div 2
    .
-   if n = x
-      return 1
-   .
+   if n = x : return 1
 .
 fastfunc reverse3 n .
    while n > 0
@@ -16,9 +14,8 @@ fastfunc reverse3 n .
    return r
 .
 func$ itoa n b .
-   if n > 0
-      return itoa (n div b) b & n mod b
-   .
+   if n > 0 : return itoa (n div b) b & n mod b
+   return ""
 .
 proc main .
    print "0 0(2) 0(3)"
@@ -31,9 +28,7 @@ proc main .
          if ispalin2 n = 1
             print n & " " & itoa n 2 & "(2) " & itoa n 3 & "(3)"
             cnt += 1
-            if cnt = 6 - 2
-               return
-            .
+            if cnt = 6 - 2 : return
          .
       .
       pow3 *= 3

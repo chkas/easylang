@@ -6,9 +6,7 @@ func$ add a$ b$ .
       c = r div 10
       r$ &= r mod 10
    .
-   if c > 0
-      r$ &= c
-   .
+   if c > 0 : r$ &= c
    return r$
 .
 # 

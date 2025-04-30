@@ -34,9 +34,7 @@ proc assemble n t sl pos rem .
       pos = offs[sl]
    elif pos >= offs[sl + 1]
       sl -= 1
-      if sl = 0
-         return
-      .
+      if sl = 0 : return
       pos = offs[sl]
    .
    h = bitor bitshift t (2 * sl) trees[pos]
@@ -44,12 +42,8 @@ proc assemble n t sl pos rem .
    assemble n t sl pos + 1 rem
 .
 proc make n .
-   if offs[n + 1] <> 0
-      return
-   .
-   if n > 0
-      make n - 1
-   .
+   if offs[n + 1] <> 0 : return
+   if n > 0 : make n - 1
    assemble n 0 n - 1 offs[n - 1] n - 1
    offs[n + 1] = len trees[]
 .

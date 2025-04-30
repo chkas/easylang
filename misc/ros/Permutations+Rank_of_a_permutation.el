@@ -1,14 +1,10 @@
 func[] init n .
-   for i to n
-      r[] &= i - 1
-   .
+   for i to n : r[] &= i - 1
    return r[]
 .
 func fac n .
    f = 1
-   for i to n
-      f *= i
-   .
+   for i to n : f *= i
    return f
 .
 func[] perm n r .
@@ -32,9 +28,7 @@ func rank n p[] .
       fa /= i
       h = p[n - i + 1]
       d = 1
-      while perm[d] <> h
-         d += 1
-      .
+      while perm[d] <> h : d += 1
       r += fa * (d - 1)
       for j = d to i - 1
          perm[j] = perm[j + 1]

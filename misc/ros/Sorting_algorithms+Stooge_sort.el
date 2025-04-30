@@ -7,8 +7,6 @@ proc stsort left right &d[] .
       stsort left right - t d[]
    .
 .
-for i = 1 to 100
-   d[] &= random 1000
-.
+for i = 1 to 100 : d[] &= random 1000
 stsort 1 len d[] d[]
 print d[]

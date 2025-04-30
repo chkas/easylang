@@ -21,9 +21,7 @@ proc subrand_seed p1 .
    .
 .
 func subrand .
-   if si = sj
-      subrand_seed 0
-   .
+   if si = sj : subrand_seed 0
    si = (si - 1) mod 55
    sj = (sj - 1) mod 55
    x = (state[si] - state[sj]) mod MOD

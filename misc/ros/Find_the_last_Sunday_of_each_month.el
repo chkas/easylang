@@ -10,13 +10,9 @@ proc show y .
    days[2] += if y mod 4 = 0 and (y mod 100 <> 0 or y mod 400 = 0)
    for m = 1 to 12
       d = days[m]
-      while wkday y m d <> 1
-         d -= 1
-      .
+      while wkday y m d <> 1 : d -= 1
       m$ = m
-      if m < 10
-         m$ = 0 & m
-      .
+      if m < 10 : m$ = 0 & m
       print y & "-" & m$ & "-" & d
    .
 .

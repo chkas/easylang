@@ -1,8 +1,6 @@
 func fac n .
    f = 1
-   for i to n
-      f *= i
-   .
+   for i to n : f *= i
    return f
 .
 global elements[] nperm permb perma .
@@ -10,9 +8,7 @@ proc perminit a b .
    perma = a
    permb = b
    elements[] = [ ]
-   for i to a
-      elements[] &= i - 1
-   .
+   for i to a : elements[] &= i - 1
    nperm = fac a / fac b
 .
 func[] getperm r .

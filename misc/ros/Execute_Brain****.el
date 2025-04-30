@@ -54,9 +54,7 @@ func syntax code$ .
       elif h$ = "]"
          br -= 1
       .
-      if br < 0
-         return 0
-      .
+      if br < 0 : return 0
    .
    return if br = 0
 .

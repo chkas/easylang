@@ -1,12 +1,8 @@
 func isprim num .
-   if num mod 2 = 0 and num > 2
-      return 0
-   .
+   if num mod 2 = 0 and num > 2 : return 0
    i = 3
    while i <= sqrt num
-      if num mod i = 0
-         return 0
-      .
+      if num mod i = 0 : return 0
       i += 2
    .
    return 1
@@ -29,7 +25,5 @@ for i = 2 to 100
       n /= 2
    .
    write n
-   if i mod 10 = 0
-      print ""
-   .
+   if i mod 10 = 0 : print ""
 .

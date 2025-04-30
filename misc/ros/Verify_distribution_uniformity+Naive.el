@@ -29,9 +29,7 @@ proc checkdist dicefunc n delta .
    .
    for i to len dist[]
       h = dist[i] / n * 7
-      if abs (h - 1) > delta
-         bad = 1
-      .
+      if abs (h - 1) > delta : bad = 1
       dist[i] = 0
       print h
    .

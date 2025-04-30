@@ -10,8 +10,8 @@ proc calc TrueVal test[] .
    h = (TrueVal - RefAvg)
    CrowdErr = h * h
    print "Average error : " & AvgErr
-   print "  Crowd error : " & CrowdErr
-   print "    Diversity : " & AvgErr - CrowdErr
+   print "Crowd error   : " & CrowdErr
+   print "Diversity     : " & AvgErr - CrowdErr
    print ""
 .
 calc 49 [ 48 47 51 ]

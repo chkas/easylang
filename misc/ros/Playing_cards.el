@@ -1,9 +1,7 @@
 global deck[] top .
 proc new .
    deck[] = [ ]
-   for i to 52
-      deck[] &= i
-   .
+   for i to 52 : deck[] &= i
    top = 52
 .
 suit$[] = [ "♠" "♦" "♥" "♣" ]
@@ -12,9 +10,7 @@ func$ name card .
    return suit$[card mod1 4] & val$[card div1 4]
 .
 proc show .
-   for i to top
-      write name deck[i] & " "
-   .
+   for i to top : write name deck[i] & " "
    print ""
    print ""
 .

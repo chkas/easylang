@@ -13,15 +13,12 @@ proc draw .
          move x y
          rect 22 22
          move x + 4 y + 6
-         if h < 10
-            move x + 6 y + 6
-         .
+         if h < 10 : move x + 6 y + 6
          color 885
          text h
       .
    .
 .
-global done .
 proc smiley .
    s = 3.5
    x = 86
@@ -37,11 +34,10 @@ proc smiley .
    linewidth s / 3
    curve [ x - s y + s x y + 2 * s x + s y + s ]
 .
+global done .
 proc init .
    done = 0
-   for i = 1 to 16
-      f[i] = i
-   .
+   for i = 1 to 16 : f[i] = i
    # shuffle
    for i = 15 downto 2
       r = random i
@@ -49,16 +45,10 @@ proc init .
    .
    # make it solvable
    inv = 0
-   for i = 1 to 15
-      for j = 1 to i - 1
-         if f[j] > f[i]
-            inv += 1
-         .
-      .
+   for i = 1 to 15 : for j = 1 to i - 1
+      if f[j] > f[i] : inv += 1
    .
-   if inv mod 2 <> 0
-      swap f[1] f[2]
-   .
+   if inv mod 2 <> 0 : swap f[1] f[2]
    textsize 12
    draw
 .
@@ -77,9 +67,7 @@ proc move_tile .
    .
    draw
    for i = 1 to 15
-      if f[i] > f[i + 1]
-         return
-      .
+      if f[i] > f[i + 1] : return
    .
    done = 1
    timer 0.5
@@ -87,7 +75,7 @@ proc move_tile .
 on mouse_down
    if done = 0
       move_tile
-   elif done = 3
+   elif done = 3 and mouse_x > 75 and mouse_y > 75
       init
    .
 .

@@ -1,7 +1,5 @@
 func$ rep s$ n .
-   for i to n
-      r$ &= s$
-   .
+   for i to n : r$ &= s$
    return r$
 .
 func$[] genseq ones$[] nzeros .
@@ -22,9 +20,7 @@ func$[] genseq ones$[] nzeros .
 .
 proc block data$ le .
    a[] = number strchars data$
-   for b in a[]
-      nbytes += b
-   .
+   for b in a[] : nbytes += b
    print "blocks " & a[] & " cells " & le
    if le - nbytes <= 0
       print "No solution"

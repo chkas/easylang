@@ -1,7 +1,5 @@
 func is_cyclops n .
-   if n = 0
-      return 1
-   .
+   if n = 0 : return 1
    m = n mod 10
    while m <> 0
       count += 1
@@ -20,9 +18,7 @@ func is_cyclops n .
 fastfunc isprim num .
    i = 2
    while i <= sqrt num
-      if num mod i = 0
-         return 0
-      .
+      if num mod i = 0 : return 0
       i += 1
    .
    return 1

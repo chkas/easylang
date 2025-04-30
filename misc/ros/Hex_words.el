@@ -2,9 +2,7 @@ func ishex w$ .
    c$ = ""
    for c$ in strchars w$
       h = strcode c$
-      if h < 97 or h > 102
-         break 1
-      .
+      if h < 97 or h > 102 : break 1
    .
    return if c$ = ""
 .
@@ -17,9 +15,7 @@ func digsum num .
    return s
 .
 func digroot x .
-   while x > 9
-      x = digsum x
-   .
+   while x > 9 : x = digsum x
    return x
 .
 func dec w$ .
@@ -69,15 +65,11 @@ func dist w$ .
    for c$ in strchars w$
       d[strcode c$ - 96] = 1
    .
-   for e in d[]
-      s += e
-   .
+   for e in d[] : s += e
    return s
 .
 for w$ in w$[]
-   if dist w$ > 3
-      w2$[] &= w$
-   .
+   if dist w$ > 3 : w2$[] &= w$
 .
 swap w$[] w2$[]
 part2 = 1

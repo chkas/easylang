@@ -3,9 +3,7 @@ proc read .
    repeat
       s$ = input
       until s$ = ""
-      for e in number strsplit s$ ","
-         seq[] &= e
-      .
+      for e in number strsplit s$ "," : seq[] &= e
    .
 .
 read
@@ -14,9 +12,7 @@ func[] percdesc a[] .
    prev = init
    for i = 2 to len a[]
       if a[i] > prev
-         if prev <> init
-            percents[] &= 100 * (init - prev) / init
-         .
+         if prev <> init : percents[] &= 100 * (init - prev) / init
          prev = a[i]
          init = a[i]
       else
@@ -30,9 +26,7 @@ func[] countbins percents[] .
    len cnts[] len bin[]
    for p in percents[]
       i = 1
-      while p >= bin[i]
-         i += 1
-      .
+      while p >= bin[i] : i += 1
       cnts[i] += 1
    .
    return cnts[]

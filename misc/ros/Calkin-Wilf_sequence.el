@@ -1,5 +1,6 @@
 subr first
-   n = 1 ; d = 1
+   n = 1
+   d = 1
 .
 proc next .
    n = 2 * (n div d) * d + d - n

@@ -4,9 +4,7 @@ func[] bnmul a[] b .
       r[] &= h mod 10000000
       c = h div 10000000
    .
-   if c > 0
-      r[] &= c
-   .
+   if c > 0 : r[] &= c
    return r[]
 .
 func bnmod a[] b .
@@ -24,9 +22,7 @@ func$ str bn[] .
    return s$
 .
 func bnlen bn[] .
-   if bn[] = [ 0 ]
-      return 1
-   .
+   if bn[] = [ 0 ] : return 1
    return (len bn[] - 1) * 7 + floor log10 bn[$] + 1
 .
 global mn[][] .

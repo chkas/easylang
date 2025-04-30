@@ -1,8 +1,6 @@
 func fac n .
    r = 1
-   for i = 2 to n
-      r *= i
-   .
+   for i = 2 to n : r *= i
    return r
 .
 fastfunc ends89 n .
@@ -14,9 +12,7 @@ fastfunc ends89 n .
          n = n div 10
       .
       n = s
-      if n = 89
-         return 1
-      .
+      if n = 89 : return 1
       until n = 1
    .
    return 0

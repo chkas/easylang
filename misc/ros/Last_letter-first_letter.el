@@ -1,9 +1,7 @@
 repeat
    s$ = input
    until s$ = ""
-   for n$ in strsplit s$ " "
-      pok$[] &= n$
-   .
+   for n$ in strsplit s$ " " : pok$[] &= n$
 .
 # 
 chain$[] = [ ]

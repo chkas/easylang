@@ -7,9 +7,7 @@ proc sequ n$ val[] n .
          val[i] += val[i - j]
       .
    .
-   for v in val[]
-      write v & " "
-   .
+   for v in val[] : write v & " "
    print ""
 .
 sequ "Fibonacci" [ 1 1 ] 10

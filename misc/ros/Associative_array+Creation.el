@@ -1,3 +1,4 @@
+# use array of array for this
 func$ hget &arr$[][] ind$ .
    for i to len arr$[][]
       if arr$[i][1] = ind$ : return arr$[i][2]

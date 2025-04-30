@@ -9,4 +9,3 @@ func shoelace &p[][] .
 .
 data[][] = [ [ 3 4 ] [ 5 11 ] [ 12 8 ] [ 9 5 ] [ 5 6 ] ]
 print shoelace data[][]
-

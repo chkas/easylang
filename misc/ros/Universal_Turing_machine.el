@@ -1,9 +1,7 @@
 global right$[] left$[] pos blank$ .
 proc show stat$ .
    write stat$
-   for i to 5 - len stat$
-      write " "
-   .
+   for i to 5 - len stat$ : write " "
    write "| "
    h = -len left$[] + 1
    for i = h to len right$[]
@@ -22,9 +20,7 @@ proc show stat$ .
    print ""
 .
 func$ get .
-   if pos <= 0
-      return left$[-pos + 1]
-   .
+   if pos <= 0 : return left$[-pos + 1]
    return right$[pos]
 .
 proc put s$ .
@@ -57,10 +53,8 @@ proc utm stat$ endstat$ bl$ init$ rules$[] trace .
    repeat
       if trace = 1
          show stat$
-      else
-         if steps mod 1000000 = 0
-            write "."
-         .
+      elif steps mod 1000000 = 0
+         write "."
       .
       for i to len r$[][]
          if r$[i][1] = stat$ and r$[i][2] = get

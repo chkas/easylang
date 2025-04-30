@@ -7,9 +7,7 @@ len cards[] 52
 proc deal game_num .
    print "hand " & game_num
    seed = game_num
-   for i = 1 to 52
-      cards[i] = 52 - i
-   .
+   for i = 1 to 52 : cards[i] = 52 - i
    for i = 1 to 51
       j = 52 - xrnd mod (53 - i)
       swap cards[i] cards[j]
@@ -23,9 +21,7 @@ proc show .
       rank = cards[idx] div 4 + 1
       suit = cards[idx] mod 4 + 1
       write ranks$[rank] & suits$[suit] & " "
-      if idx mod1 13 = 13
-         print ""
-      .
+      if idx mod1 13 = 13 : print ""
    .
    print ""
 .

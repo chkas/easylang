@@ -1,8 +1,6 @@
 func$ hex h .
    for d in [ h div 16 h mod 16 ]
-      if d > 9
-         d += 7
-      .
+      if d > 9 : d += 7
       h$ &= strchar (d + 48)
    .
    return h$

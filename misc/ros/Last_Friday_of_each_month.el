@@ -5,13 +5,9 @@ proc show y .
    for m = 1 to 12
       w = (w + days[m]) mod 7
       m$ = m
-      if m < 10
-         m$ = 0 & m
-      .
+      if m < 10 : m$ = 0 & m
       h = 5
-      if w < 5
-         h = -2
-      .
+      if w < 5 : h = -2
       print y & "-" & m$ & "-" & days[m] + h - w
    .
 .

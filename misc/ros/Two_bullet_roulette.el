@@ -1,28 +1,20 @@
 len cyl[] 6
 proc rshift .
    h = cyl[6]
-   for i = 6 downto 2
-      cyl[i] = cyl[i - 1]
-   .
+   for i = 6 downto 2 : cyl[i] = cyl[i - 1]
    cyl[1] = h
 .
 proc unload .
-   for i = 1 to 6
-      cyl[i] = 0
-   .
+   for i = 1 to 6 : cyl[i] = 0
 .
 proc load .
-   while cyl[1] = 1
-      rshift
-   .
+   while cyl[1] = 1 : rshift
    cyl[1] = 1
    rshift
 .
 proc spin .
    lim = random 6
-   for i = 1 to lim - 1
-      rshift
-   .
+   for i = 1 to lim - 1 : rshift
 .
 func fire .
    shot = cyl[1]
@@ -37,9 +29,7 @@ func method m[] .
       elif m = 2
          spin
       elif m = 3
-         if fire = 1
-            return 1
-         .
+         if fire = 1 : return 1
       .
    .
    return 0

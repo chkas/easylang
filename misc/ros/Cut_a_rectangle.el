@@ -23,9 +23,7 @@ proc walk y x .
 proc solve hh ww recur .
    w = ww
    h = hh
-   if h mod 2 = 1
-      swap h w
-   .
+   if h mod 2 = 1 : swap h w
    if h mod 2 = 1
       cnt = 0
       return

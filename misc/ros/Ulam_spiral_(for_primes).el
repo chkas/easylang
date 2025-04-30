@@ -1,12 +1,8 @@
 func isprim num .
-   if num < 2
-      return 0
-   .
+   if num < 2 : return 0
    i = 2
    while i <= sqrt num
-      if num mod i = 0
-         return 0
-      .
+      if num mod i = 0 : return 0
       i += 1
    .
    return 1
@@ -37,9 +33,7 @@ proc step .
    x += dx * 1
    y += dy * 1
    move x y
-   if isprim n = 1
-      circle 0.5
-   .
+   if isprim n = 1 : circle 0.5
 .
 textsize 3
 move x y
@@ -49,13 +43,9 @@ for k to 49
    step
    lng += 2
    turn
-   for j to lng - 1
-      step
-   .
+   for j to lng - 1 : step
    for i to 3
       turn
-      for j to lng
-         step
-      .
+      for j to lng : step
    .
 .

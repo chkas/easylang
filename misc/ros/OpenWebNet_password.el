@@ -3,9 +3,7 @@ func calcpass passw$ nonce$ .
    passw = number passw$
    for c$ in strchars nonce$
       if c$ <> "0"
-         if start = 1
-            num2 = passw
-         .
+         if start = 1 : num2 = passw
          start = 0
       .
       if c$ = "1"
@@ -43,9 +41,9 @@ func calcpass passw$ nonce$ .
       if c$ <> "0" and c$ <> "9"
          num1 = bitor num1 num2
       .
-      num2 = num1
+      num2 = bitand 0xffffffff num1
    .
-   return num1
+   return bitand 0xffffffff num1
 .
 proc test_passwd passwd$ nonce$ expected$ .
    res = calcpass passwd$ nonce$

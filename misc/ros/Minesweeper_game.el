@@ -1,7 +1,7 @@
 len cell[] 56
 len cnt[] 56
 len flag[] 56
-#
+# 
 subr initvars
    state = 0
    ticks = 0
@@ -42,9 +42,7 @@ proc draw_cell ind h .
    elif h <> 0
       # mine
       color 333
-      if h = -2
-         color 800
-      .
+      if h = -2 : color 800
       move x + 5 y + 5
       circle 3
       line x + 8 y + 9
@@ -74,9 +72,7 @@ proc show_mines m .
    for ind to 56
       if cell[ind] = 1
          color 686
-         if m = -1
-            color 353
-         .
+         if m = -1 : color 353
          draw_cell ind m
       .
    .
@@ -92,9 +88,7 @@ proc outp col s$ .
 proc upd_info .
    for i to 56
       nm += flag[i]
-      if cell[i] < 2
-         nc += 1
-      .
+      if cell[i] < 2 : nc += 1
    .
    if nc = 8
       outp 484 "Well done"
@@ -171,9 +165,7 @@ on mouse_down
    .
 .
 on mouse_up
-   if state = 0 and indx <> -1
-      test indx
-   .
+   if state = 0 and indx <> -1 : test indx
    indx = -1
 .
 on timer

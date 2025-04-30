@@ -9,9 +9,7 @@ fastfunc radnf num .
       .
       d += 1
    .
-   if d <= num
-      nf += 1
-   .
+   if d <= num : nf += 1
    return nf
 .
 func rad num .
@@ -26,9 +24,7 @@ func rad num .
       .
       d += 1
    .
-   if d <= num
-      r *= num
-   .
+   if d <= num : r *= num
    return r
 .
 proc show50 .

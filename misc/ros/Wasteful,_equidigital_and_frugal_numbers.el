@@ -1,39 +1,35 @@
 func ndig n .
    return log10 n div 1 + 1
 .
+func getexp n f .
+   while n mod f = 0
+      n = n div f
+      e += 1
+   .
+   return e
+.
 len d[] 2000000
-proc sieve .
+proc sieve . .
+   # count factors and get digit count
    d[1] = 1
-   for i = 2 to len d[]
-      if d[i] = 0
-         d[i] = ndig i
-         j = i + i
-         while j <= len d[]
-            h = j
-            e = 0
-            while h mod i = 0
-               h = h div i
-               e += 1
-            .
-            h = 0
-            if e > 1 : h = ndig e
-            d[j] += ndig i + h
-            j += i
-         .
+   for i = 2 to len d[] : if d[i] = 0
+      j = i
+      while j <= len d[]
+         d[j] += ndig i
+         e = getexp j i
+         if e > 1 : d[j] += ndig e
+         j += i
       .
    .
+   # classify
    for i to len d[]
-      if d[i] > ndig i
-         d[i] = 1
-      elif d[i] = ndig i
-         d[i] = 2
-      else
-         d[i] = 3
-      .
+      d[i] = sign (ndig i - d[i]) + 2
    .
 .
 sieve
-proc show t .
+proc show t s$ . .
+   print "First 50 " & s$ & " numbers: "
+   print ""
    i = 1
    repeat
       if d[i] = t
@@ -45,12 +41,15 @@ proc show t .
    .
    print ""
    print ""
-   print i
+   print "10000th " & s$ & " number: " & i
    print ""
 .
-show 1
-show 2
-show 3
+show 1 "Wasteful"
+show 2 "Equidigital"
+show 3 "Frugal"
 len sum[] 3
 for i to 999999 : sum[d[i]] += 1
-for h in sum[] : print h
+print "For numbers less than 1000000 there are "
+print "Wasteful: " & sum[1]
+print "Equidigital: " & sum[2]
+print "Frugal: " & sum[3]

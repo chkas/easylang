@@ -10,9 +10,8 @@ proc tree x y deg n .
       tree x y deg + 20 n - 1
    .
 .
-timer 0
-on timer
+tree 50 10 90 10
+on mouse_down
    clear
    tree 50 10 90 10
-   timer 2
 .

@@ -25,9 +25,7 @@ proc show .
 proc read .
    s$ = input
    nc = len s$ + 2
-   for i to nc
-      m[] &= 0
-   .
+   for i to nc : m[] &= 0
    repeat
       m[] &= 0
       for c$ in strchars s$
@@ -41,15 +39,11 @@ proc read .
             m[] &= 0
          .
       .
-      for i to nc - len s$ - 1
-         m[] &= 0
-      .
+      for i to nc - len s$ - 1 : m[] &= 0
       s$ = input
       until s$ = ""
    .
-   for i to nc
-      m[] &= 0
-   .
+   for i to nc : m[] &= 0
 .
 read
 # 

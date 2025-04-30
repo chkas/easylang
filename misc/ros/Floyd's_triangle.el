@@ -1,8 +1,6 @@
 func ceil h .
    f = floor h
-   if h <> f
-      f += 1
-   .
+   if h <> f : f += 1
    return f
 .
 proc triangle n .

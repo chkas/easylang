@@ -1,3 +1,4 @@
+test $1 || exit 1
 cat <<xxx
 
 =={{header|EasyLang}}==

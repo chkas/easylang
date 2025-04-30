@@ -1,0 +1,25 @@
+#!/bin/sh
+
+for i in *.el; do
+	echo "-------  $i  -------"
+	echo "-------  $i  -------" >&2
+	test $i = Cuban_primes.el && continue
+	test $i = Find_limit_of_recursion.el && continue
+	test $i = Loops+Infinite.el && continue
+	test $i = Ormiston_triples.el && continue
+	test $i = Rare_numbers.el && continue
+	test $i = Self_numbers.el && continue
+
+	grep "move " $i >/dev/null && continue
+	grep "line " $i >/dev/null && continue
+	grep "on mouse" $i >/dev/null && continue
+	grep "on animation" $i >/dev/null && continue
+	grep "on timer" $i >/dev/null && continue
+	grep "circle " $i >/dev/null && continue
+	grep "rect " $i >/dev/null && continue
+	grep "polygon " $i >/dev/null && continue
+	if grep " input" $i >/dev/null; then
+ 		grep input_data $i >/dev/null || continue
+	fi
+	r $i
+done

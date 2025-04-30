@@ -1,9 +1,7 @@
 func[] add_poly p1[] p2[] .
    l1 = len p1[]
    l2 = len p2[]
-   if l2 > l1
-      len p1[] len p2[]
-   .
+   if l2 > l1 : len p1[] len p2[]
    for i = 1 to l2
       p1[i] += p2[i]
    .
@@ -21,9 +19,7 @@ func[] mul_poly p1[] p2[] .
    return res[]
 .
 func[] scal_mul p[] x .
-   for e in p[]
-      r[] &= e * x
-   .
+   for e in p[] : r[] &= e * x
    return r[]
 .
 func[] scal_div p[] x .
@@ -51,9 +47,7 @@ proc show_poly p[] .
       write p
       if i > 1
          write "x"
-         if i > 2
-            write "^" & i - 1
-         .
+         if i > 2 : write "^" & i - 1
       .
    .
    print ""

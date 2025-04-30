@@ -9,9 +9,7 @@ fastfunc isself start i .
    j = start
    sum = digsum start
    while j < i
-      if j + sum = i
-         return 0
-      .
+      if j + sum = i : return 0
       sum += 1
       j += 1
       if j mod 10 = 0
@@ -29,9 +27,7 @@ proc main .
       start = higher (i - offs) 0
       if isself start i = 1
          cnt += 1
-         if cnt <= 50
-            write i & " "
-         .
+         if cnt <= 50 : write i & " "
       .
       until cnt = 100000000
       i += 1

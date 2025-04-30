@@ -6,9 +6,7 @@ proc snusp dlen raw$ .
    .
    for ipr to len is$[][]
       for ipc to len is$[ipr][]
-         if is$[ipr][ipc] = "$"
-            break 2
-         .
+         if is$[ipr][ipc] = "$" : break 2
       .
    .
    dp = 1
@@ -42,9 +40,7 @@ proc snusp dlen raw$ .
       elif c$ = "!"
          step
       elif c$ = "?"
-         if ds[dp] = 0
-            step
-         .
+         if ds[dp] = 0 : step
       .
       step
    .

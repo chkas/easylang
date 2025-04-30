@@ -1,9 +1,7 @@
 func median t[] low high .
    l = high - low + 1
    m = low + l div 2
-   if l mod 2 = 1
-      return t[m]
-   .
+   if l mod 2 = 1 : return t[m]
    return (t[m - 1] + t[m]) / 2
 .
 proc sort &d[] .
