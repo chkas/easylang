@@ -1920,8 +1920,11 @@ S ND* init_params(double* nums, STR* strs, ARR* arrs, ND* nd, ND* ndp) {
 			ifl += 1;
 		}
 		else if (t == PAR_RSTR) {
-			strs[istr] = *(gstr(nd->v1));
+			STR* pstr = gstr(nd->v1);
+			strs[istr] = *pstr;
 			istr += 1;
+			// otherwise problems with global str variables
+			str_init(pstr);
 		}
 		else if (t == PAR_RARR) {
 			ARR* arr = garr(nd->v1);
@@ -1930,10 +1933,10 @@ S ND* init_params(double* nums, STR* strs, ARR* arrs, ND* nd, ND* ndp) {
 				arr = arr->parr + h;
 			}
 			arrs[iarr] = *arr;
+			iarr += 1;
 			// otherwise problems with global arr variables
 			arr->p = 0;
 			arr->len = 0;
-			iarr += 1;
 		}
 		else {
 			// TODO delete

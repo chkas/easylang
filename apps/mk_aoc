@@ -18,7 +18,7 @@ xcp() {
 
 xcp showaoc.html show.html
 cd $o/../apps
-for i in easy_code2.js easy_tut2.js; do
+for i in easy_code2.js easy_tut2.js easyw.js easyw.wasm; do
 	xcp $i
 done
 
