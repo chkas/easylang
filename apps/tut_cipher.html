@@ -161,18 +161,12 @@ proc sp_prepkey key .
    b = key mod 0x100000000
    sp_prepkey0 a b
 .
-proc sp_block &x &y .
-   for i = 1 to 26 : rot spkb[i] x y
-.
 proc rotrev k &x &y .
    y = bitxor y x
    y = bitand bitor bitshift y -3 bitshift y 29 0xffffffff
    x = bitxor x k
    x = (x - y) mod 0x100000000
    x = bitand bitor bitshift x 8 bitshift x -24 0xffffffff
-.
-proc sp_blockrev &x &y .
-   for i = 26 downto 1 : rotrev spkb[i] x y
 .
 #
 proc sp_encr key &in[] &out[] ..
@@ -181,7 +175,7 @@ proc sp_encr key &in[] &out[] ..
    for i = 1 step 2 to len in[]
       x = in[i]
       y = in[i + 1]
-      sp_block x y
+      for j = 1 to 26 : rot spkb[j] x y
       out[] &= x
       out[] &= y
    .
@@ -192,7 +186,7 @@ proc sp_decr key &in[] &out[] ..
    for i = 1 step 2 to len in[]
       x = in[i]
       y = in[i + 1]
-      sp_blockrev x y
+      for j = 26 downto 1 : rotrev spkb[j] x y
       out[] &= x
       out[] &= y
    .
@@ -217,7 +211,7 @@ str2arr msg$ msg[]
 sp_encr 1234567890 msg[] encr[]
 print encr[]
 
-* Cypher Block Chaining
+* Cipher Block Chaining
 
 + Before a block is encrypted, it is XORed with the last encrypted block. The
 initialization vector *IV* is used for the first block. After decrypting a
@@ -259,20 +253,14 @@ proc rot k &x &y .
    y = bitand bitxor y x 0xffffffff
 .
 global spkb[] .
-proc sp_prepkey0 a b .
+proc sp_prepkey key .
+   a = key div 0x100000000
+   b = key mod 0x100000000
    spkb[] = [ b ]
    for i = 0 to 24
       rot i a b
       spkb[] &= b
    .
-.
-proc sp_prepkey key .
-   a = key div 0x100000000
-   b = key mod 0x100000000
-   sp_prepkey0 a b
-.
-proc sp_block &x &y .
-   for i = 1 to 26 : rot spkb[i] x y
 .
 proc rotrev k &x &y .
    y = bitxor y x
@@ -280,9 +268,6 @@ proc rotrev k &x &y .
    x = bitxor x k
    x = (x - y) mod 0x100000000
    x = bitand bitor bitshift x 8 bitshift x -24 0xffffffff
-.
-proc sp_blockrev &x &y .
-   for i = 26 downto 1 : rotrev spkb[i] x y
 .
 #
 proc sp_encr key &in[] &out[] ..
@@ -293,7 +278,7 @@ proc sp_encr key &in[] &out[] ..
    for i = 1 step 2 to len in[]
       x = bitxor in[i] x
       y = bitxor in[i + 1] y
-      sp_block x y
+      for j = 1 to 26 : rot spkb[j] x y
       out[] &= x
       out[] &= y
    .
@@ -304,7 +289,7 @@ proc sp_decr key &in[] &out[] ..
    for i = 3 step 2 to len in[]
       x = in[i]
       y = in[i + 1]
-      sp_blockrev x y
+      for j = 26 downto 1 : rotrev spkb[j] x y
       out[] &= bitxor x in[i - 2]
       out[] &= bitxor y in[i - 1]
    .
@@ -352,20 +337,14 @@ proc rot k &x &y .
    y = bitand bitxor y x 0xffffffff
 .
 global spkb[] .
-proc sp_prepkey0 a b .
+proc sp_prepkey key .
+   a = key div 0x100000000
+   b = key mod 0x100000000
    spkb[] = [ b ]
    for i = 0 to 24
       rot i a b
       spkb[] &= b
    .
-.
-proc sp_prepkey key .
-   a = key div 0x100000000
-   b = key mod 0x100000000
-   sp_prepkey0 a b
-.
-proc sp_block &x &y .
-   for i = 1 to 26 : rot spkb[i] x y
 .
 proc rotrev k &x &y .
    y = bitxor y x
@@ -374,16 +353,13 @@ proc rotrev k &x &y .
    x = (x - y) mod 0x100000000
    x = bitand bitor bitshift x 8 bitshift x -24 0xffffffff
 .
-proc sp_blockrev &x &y .
-   for i = 26 downto 1 : rotrev spkb[i] x y
-.
 proc sp_decr key &in[] &out[] ..
    sp_prepkey key
    out[] = [ ]
    for i = 3 step 2 to len in[]
       x = in[i]
       y = in[i + 1]
-      sp_blockrev x y
+      for j = 26 downto 1 : rotrev spkb[j] x y
       out[] &= bitxor x in[i - 2]
       out[] &= bitxor y in[i - 1]
    .
@@ -476,18 +452,12 @@ proc sp_prepkey key .
    b = key mod 0x100000000
    sp_prepkey0 a b
 .
-proc sp_block &x &y .
-   for i = 1 to 26 : rot spkb[i] x y
-.
 proc rotrev k &x &y .
    y = bitxor y x
    y = bitand bitor bitshift y -3 bitshift y 29 0xffffffff
    x = bitxor x k
    x = (x - y) mod 0x100000000
    x = bitand bitor bitshift x 8 bitshift x -24 0xffffffff
-.
-proc sp_blockrev &x &y .
-   for i = 26 downto 1 : rotrev spkb[i] x y
 .
 proc sp_encr key &in[] &out[] ..
    sp_prepkey key
@@ -497,7 +467,7 @@ proc sp_encr key &in[] &out[] ..
    for i = 1 step 2 to len in[]
       x = bitxor in[i] x
       y = bitxor in[i + 1] y
-      sp_block x y
+      for j = 1 to 26 : rot spkb[j] x y
       out[] &= x
       out[] &= y
    .
@@ -508,7 +478,7 @@ proc sp_decr key &in[] &out[] ..
    for i = 3 step 2 to len in[]
       x = in[i]
       y = in[i + 1]
-      sp_blockrev x y
+      for j = 26 downto 1 : rotrev spkb[j] x y
       out[] &= bitxor x in[i - 2]
       out[] &= bitxor y in[i - 1]
    .
@@ -519,7 +489,7 @@ func genkey s$ .
       xp = x
       yp = y
       sp_prepkey0 b[i] b[i + 1]
-      sp_block x y
+      for j = 1 to 26 : rot spkb[j] x y
       x = bitxor x xp
       y = bitxor y yp
    .
@@ -568,20 +538,14 @@ proc rot k &x &y .
    y = bitand bitxor y x 0xffffffff
 .
 global spkb[] .
-proc sp_prepkey0 a b .
+proc sp_prepkey key .
+   a = key div 0x100000000
+   b = key mod 0x100000000
    spkb[] = [ b ]
    for i = 0 to 24
       rot i a b
       spkb[] &= b
    .
-.
-proc sp_prepkey key .
-   a = key div 0x100000000
-   b = key mod 0x100000000
-   sp_prepkey0 a b
-.
-proc sp_block &x &y .
-   for i = 1 to 26 : rot spkb[i] x y
 .
 proc sp_ctrmode key ctr &in[] &out[] ..
    sp_prepkey key
@@ -591,7 +555,7 @@ proc sp_ctrmode key ctr &in[] &out[] ..
       if m = 0
          dx = ctr mod 0x100000000
          dy = ctr div 0x100000000
-         sp_block dx dy
+         for j = 1 to 26 : rot spkb[j] dx dy
          ctr += 1
       .
       if m <= 3
@@ -633,20 +597,14 @@ proc rot k &x &y .
    y = bitand bitxor y x 0xffffffff
 .
 global spkb[] .
-proc sp_prepkey0 a b .
+proc sp_prepkey key .
+   a = key div 0x100000000
+   b = key mod 0x100000000
    spkb[] = [ b ]
    for i = 0 to 24
       rot i a b
       spkb[] &= b
    .
-.
-proc sp_prepkey key .
-   a = key div 0x100000000
-   b = key mod 0x100000000
-   sp_prepkey0 a b
-.
-proc sp_block &x &y .
-   for i = 1 to 26 : rot spkb[i] x y
 .
 proc sp_ctrmode key ctr &in[] &out[] ..
    sp_prepkey key
@@ -656,7 +614,7 @@ proc sp_ctrmode key ctr &in[] &out[] ..
       if m = 0
          dx = ctr mod 0x100000000
          dy = ctr div 0x100000000
-         sp_block dx dy
+         for j = 1 to 26 : rot spkb[j] dx dy
          ctr += 1
       .
       if m <= 3

@@ -1163,10 +1163,10 @@ S int parse_proc_header(int mode, byte proctyp) {
 
 		else {
 			if (is_enter && tok == t_eof) {
-				if (proctyp == 0) {
-					cst(t_dot);
-					cs_spc();
-				}
+				//if (proctyp == 0) {
+				//	cst(t_dot);
+				//	cs_spc();
+				//}
 				cst(t_dot);
 				space_add();
 				cs_nl();
