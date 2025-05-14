@@ -38,7 +38,7 @@ xxx
 
 apps1="1st-math-trainer 1x1-trainer math-trainer roman-numbers learning-clock piano"
 apps2="ice-cream letter-memory paint"
-apps3="mastermind mine-sweeper 15-puzzle monster-maze snake tictactoe reaction-test catch-the-ball"
+apps3="mastermind mine-sweeper 15-puzzle monster-maze snake tictactoe reaction-test 2048"
 
 test -e /run && alias ghead=head
 

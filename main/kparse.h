@@ -80,6 +80,7 @@ S ND* parse_numfunc(void) {
 
 S ND* parse_numarrex(void);
 S ND* parse_strarrex(void);
+S ND* parse_strarrarrex(void);
 
 struct str (*strf[])(ND*) = {
 	op_input, op_sysfunc, op_keyb_key, op_strchar, op_time_str, op_strjoin, op_substr
@@ -313,8 +314,12 @@ S void parse_call_param(ND* nd, struct proc* p, byte isfunc) {
 			nd->next = parse_numarrarrex();
 			nd = nd->next;
 		}
-		else if (b == 't') {
+		else if (b == 'i') {
 			nd->next = parse_strarrex();
+			nd = nd->next;
+		}
+		else if (b == 'j') {
+			nd->next = parse_strarrarrex();
 			nd = nd->next;
 		}
 		else {
@@ -1122,7 +1127,12 @@ S int parse_proc_header(int mode, byte proctyp) {
 		else if (tok == t_vstrarr) {
 			lvar(VAR_STRARR, 1, mode);
 			csbrr();
-			typ = 't';
+			typ = 'i';
+		}
+		else if (tok == t_vstrarrarr) {
+			lvar(VAR_STRARRARR, 1, mode);
+			expt_ntok(t_brr);
+			typ = 'j';
 		}
 		else if (tok == t_amp) {
 			cs(tval);
@@ -1238,7 +1248,7 @@ S void parse_proc(byte typ) {
 		char typ = proc->parms[i + offs];
 		if (typ == 'f') ptyp = PAR_NUM;
 		else if (typ == 's') ptyp = PAR_STR;
-		else if (typ == 'g' || typ == 'h' || typ == 't') ptyp = PAR_ARR;
+		else if (typ >= 'g' && typ <= 'j') ptyp = PAR_ARR;
 
 		else if (typ == 'F') ptyp = PAR_RNUM;
 		else if (typ == 'S') ptyp = PAR_RSTR;

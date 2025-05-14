@@ -1,13 +1,11 @@
 ---
-language: Easylang
+name: Easylang
 contributors:
     - ["chkas", "https://github.com/chkas"]
 filename: easylang.el
 ---
 
 **Easylang** is a simple programming language with built-in graphical functions and an easy-to-use and browser IDE. Its simplified syntax and semantics make it well suited as a teaching and learning programming language. You can also use it to write graphical applications that you can embed in a web page.
-
-*Easylang* is statically typed and has as data types only strings and numbers (floating point), resizeable arrays of strings and numbers and arrays of arrays.
 
 [The browser IDE](https://easylang.online/ide/) includes various tutorials, including one for beginners.
 
@@ -53,7 +51,7 @@ for i = 1 to len a[] : write a[i] & " "
 print ""
 #
 proc sort &data[] .
-   # a reference parameter
+   # data is a reference parameter
    for i = 1 to len data[] - 1
       for j = i + 1 to len data[]
          if data[j] < data[i] : swap data[j] data[i]
@@ -66,13 +64,14 @@ print "Sorted: " & a[]
 # arrays, strings and numbers are copied by value
 #
 b[] = a[]
-a[4] = 77
-print a[] & b[]
+a[1] = 111
+a[4] = 777
+print "a[]:" & a[] & "  b[]:" & b[]
 #
 # array swapping ist fast
 #
 swap a[] b[]
-print a[] & b[]
+print "a[]:" & a[] & "  b[]:" & b[]
 #
 # for-in iterates over the elements of an array
 #
@@ -89,8 +88,10 @@ print strjoin letters$[] ""
 # a 2-dimensional array is an array of arrays
 #
 len a[][] 3
-for i = 1 to len a[][] : len a[i][] 4
-a[1][2] = 99
+for i = 1 to len a[][]
+   len a[i][] 3
+   a[i][i] = 1
+.
 print a[][]
 #
 # some builtin functions
@@ -102,9 +103,7 @@ print "A kibibyte: " & pow 2 10
 print "Seconds since 1970: " & floor systime
 print "Random between 0 and 1: " & randomf
 print "A dice roll: " & random 6
-#
 print "Current time: " & substr timestr systime 12 5
-#
 print strcode "A" & " is " & strchar 65
 #
 # set number output format
@@ -118,7 +117,7 @@ a$[] = strsplit "10,15,22" ","
 print a$[]
 print 2 * number a$[1]
 print len a$[]
-print len "Hello"
+print len a$[1]
 #
 # "input" reads a string from the "input_data" section, if it exists,
 # otherwise via a prompt.
@@ -128,12 +127,12 @@ repeat
    until s$ = ""
    sum += number s$
 .
-print "sum: " & sum
+print "Sum of input data: " & sum
 #
 input_data
-10
--2
-6
+567
+1023
+69
 ```
 
 Built-in graphic primitives and event-driven programming
