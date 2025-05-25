@@ -18,5 +18,17 @@ proc circ x1 y1 x2 y2 x3 y3 &cx &cy &cr .
    cy = -f
    cr = sqrt (cx * cx + cy * cy - c)
 .
-circ 22.83 2.07 14.39 30.24 33.65 17.31 cx cy cr
+p[] = [ 22.83 2.07 14.39 30.24 33.65 17.31 ]
+circ p[1] p[2] p[3] p[4] p[5] p[6] cx cy cr
 print "Centre: (" & cx & ", " & cy & ")  Radius: " & cr
+#
+sc = 2
+color 966
+move sc * cx sc * cy
+circle sc * cr
+#
+color -1
+for i to 3
+   move sc * p[i * 2 - 1] sc * p[i * 2]
+   circle 1
+.

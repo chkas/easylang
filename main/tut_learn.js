@@ -633,9 +633,9 @@ end
 
 -
 
-+ With *proc* or *func* you can also create *procedures* or *functions* with parameters and local variables. But this is not covered in this beginner course.
++ With *proc* or *func* you can also create *procedures* or *functions* with parameters and local variables. This will be discussed in more detail later.
 
-+de Mit *proc* oder *func* kann man auch *Prozeduren* oder *Funktionen* mit Parametern und lokalen Variablen erstellen. Das wird aber in diesem Einsteiger-Kurs nicht behandelt.
++de Mit *proc* oder *func* kann man auch *Prozeduren* oder *Funktionen* mit Parametern und lokalen Variablen erstellen. Darauf wird später noch näher eingegangen.
 
 * Event-driven programming
 
@@ -978,9 +978,9 @@ end
 
 +de Bauen wir eine Straße für unser Auto.
 
-+ Let's build a road for our car.
++ Let's build a street for our car.
 
-background 070
+background 060
 subr street
    move 0 10
    color 777
@@ -1012,9 +1012,9 @@ end
 
 +de Funktioniert wunderbar. Jetzt malen wir noch eine unterbrochene Mittellinie auf die Strasse. Das macht man am besten mit einer Schleife.
 
-+ Works perfectly. Now let's paint a dashed center line on the road. This is best done with a loop.
++ Works perfectly. Now let's paint a dashed center line on the street. This is best done with a loop.
 
-background 070
+background 060
 subr street
    move 0 10
    color 777
@@ -1055,7 +1055,7 @@ end
 
 +de Schön sieht sie aus, die neue Straße. Aber warum fährt das Auto nicht mehr?
 
-+ Looks nice, the new road. But why is the car no longer driving?
++ Looks nice, the new street. But why is the car no longer driving?
 
 +de Das Problem liegt bei der Variablen *x*. Die aktuelle Autoposition wird in dieser Variablen gespeichert. Beim Zeichnen der Mittellinie wird sie jedoch überschrieben.
 
@@ -1069,11 +1069,11 @@ end
 
 + How can you then supply values to the procedure if the variables are only valid *locally* (within the procedure)?
 
-+de Man kann dies mit Parametern tun. Die Parameter folgen auf den Namen der Prozedur. Die Variablen bis zum Punkt sind die Eingabeparameter.
++de Man kann dies mit Parametern tun. Die Parameter folgen auf den Namen der Prozedur.
 
-+ You can do this with parameters. The parameters follow the name of the procedure. The variables up to the dot are the input parameters.
++ You can do this with parameters. The parameters follow the name of the procedure.
 
-background 070
+background 060
 proc street .
    move 0 10
    color 777
@@ -1114,9 +1114,9 @@ end
 
 +de Wir können auch einen Parameter für die y-Position der Straße und des Autos und einen für die Farbe des Autos angeben. Jetzt können wir zwei Autos mit unterschiedlichen Farben auf zwei Straßen fahren lassen.
 
-+ We can also specify one parameter for the y-position of the road and the car and one for the color of the car. Now we can have two cars with different colors driving on two roads.
++ We can also specify one parameter for the y-position of the street and the car and one for the color of the car. Now we can have two cars with different colors driving on two streets.
 
-background 070
+background 060
 proc street y .
    move 0 y
    color 777
@@ -1154,5 +1154,123 @@ while x <= 125
    car x 10 900
    sleep 0.05
    x += 1
+end
+
+*de Ein Array für die Positionen vieler Autos
+
+* An array for the positions of many cars
+
++de Wir wollen gleichzeitig mehrere Autos fahren lassen. Dazu wird die aktuelle Position jedes Autos in einem Array gespeichert. Außerdem werden die Fahrtrichtung und die Wagenfarbe gespeichert.
+
++de Autos werden mit einer bestimmten Wahrscheinlichkeit auf die Straße platziert. Es muss noch geprüft werden, ob ein anderes Auto zu nah ist.
+
++de Die Wagenfarbe wird zufällig aus einer Farbpalette ausgewählt. Wenn ein Auto die Straße verlässt, werden die dazugehörenden Array-Einträge als frei markiert.
+
++ Let's drive several cars at the same time. To do this, the current position of each car is stored in an array. The movement direction and the car color are also stored.
+
++ Cars are placed on the road with a certain probability. It is still necessary to check whether another car is too close.
+
++ The car color is randomly selected from a color palette. If a car leaves the road, the corresponding array entries are marked as free.
+
+proc draw_street y .
+   move 0 y
+   color 777
+   rect 100 10
+   color 999
+   linewidth 1
+   x = 2
+   while x < 110
+      move x y + 5
+      line x + 7 y + 5
+      x += 12
+   end
+end
+proc draw_backgr .
+   # meadow
+   color 050
+   move 0 0
+   rect 100 60
+   # sky
+   color 259
+   move 0 60
+   rect 100 40
+   # sun
+   color 995
+   move 75 85
+   circle 6
+   # streets
+   draw_street 10
+   draw_street 25
+end
+proc draw_car x y col .
+   linewidth 8
+   color 333
+   move x + 9 y + 15
+   line x + 13 y + 15
+   color col
+   move x + 4 y + 10
+   line x + 18 y + 10
+   color 333
+   move x + 5 y + 4
+   circle 3.5
+   move x + 16 y + 4
+   circle 3.5
+end
+#
+# color palette
+colors[] = [ 900 990 090 009 000 999 666 099 ]
+# maximum 12 cars on the streets
+n = 12
+# car
+len x[] n
+len y[] n
+len dir[] n
+len col[] n
+#
+# the two streets
+street_x[] = [ -20 100 ]
+street_y[] = [ 10 25 ]
+street_dir[] = [ 1 -1 ]
+#
+on animate
+   # create a new car from time to time
+   if random 1000 < 20
+      # choose street
+      street = random 2
+      y = street_y[street]
+      x = street_x[street]
+      # is street free
+      free = 1
+      for i = 1 to n
+         if y[i] = y and abs (x[i] - x) < 30
+            free = 0
+         .
+      .
+      if free = 1
+         # search free car
+         i = 1
+         while dir[i] <> 0
+            i += 1
+         end
+         x[i] = x
+         y[i] = y
+         dir[i] = street_dir[street]
+         col[i] = colors[random len colors[]]
+      end
+   end
+   #
+   draw_backgr
+   # draw all cars
+   for i = 1 to n
+      if dir[i] <> 0
+         # car is on the street
+         draw_car x[i] y[i] col[i]
+         x[i] += dir[i]
+         if x[i] > 100 or x[i] < -25
+            # car is outside and set to free
+            dir[i] = 0
+         end
+      end
+   end
 end
 `

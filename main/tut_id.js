@@ -6,25 +6,25 @@ if (lang == "de") {
 	txt_header = "<p>Programmieren leicht gemacht</p><h3>Tutorials</h3>"
 	tut_descr = [
 		"Programmieren lernen",
+		"Kleine Spiele programmieren",
 		"Dokumentation - Code-Beispiele",
 		"Funktionen and Rekursion",
-		"Ein Spiel programmieren",
 	]
 } else {
 	txt_header = "<p>Programming made easy</p><h3>Tutorials</h3>"
 	tut_descr = [
 		"Learn programming",
+		"Programming small games",
 		"Documentation - Code snippets",
 		"Functions and recursion",
-		"Making a game",
 	]
 }
 
 tut_file = [
 	"tut_learn" + VERS + ".js",
+	"tut_game" + VERS + ".js",
 	"tut_docu" + VERS + ".js",
 	"tut_func" + VERS + ".js",
-	"tut_game" + VERS + ".js",
 ]
 
 txt_locale_id = "de"

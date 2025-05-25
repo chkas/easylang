@@ -1,8 +1,190 @@
-txt_tutor = String.raw`+ Programming a letter memory game
+txt_tutor = String.raw`+ Programming small games
 
 -
 
-+ We program a simple letter memory game.
++ It's not that difficult to program simple games
+
+* A paddle game
+
++ Try to keep the ball in the field.
+
+##50
+background 789
+linewidth 2
+textsize 2.5
+color 789
+move 0 50
+rect 50 50
+color 700
+move 30 60
+circle 2.5
+color 444
+move 20 51
+line 30 51
+move 1 97
+text "Pts: 14"
+
++ We start with a bouncing ball.
+
+vy = 1.5
+vx = 1
+x = 50
+y = 80
+#
+on animate
+   clear
+   color 700
+   move x y
+   circle 5
+   color 444
+   x += vx
+   y += vy
+   if x > 95 or x < 5
+      vx = -vx
+   .
+   if y > 95 or y < 5
+      vy = -vy
+   .
+.
+
++ In this tutorial, a dot is used instead of the *end* as a block end delimeter. Both are equivalent and it is just a personal preference which you use.
+
++ The paddle is controlled with the left and right arrow keys. We can determine the current status of the keys with *on key_down* and *on key_up*.
+
+px = 50
+linewidth 4
+on animate
+   clear
+   color 444
+   move px - 10 2
+   line px + 10 2
+   move 2 95
+   if right = 1 and px < 88
+      px += 1
+   .
+   if left = 1 and px > 12
+      px -= 1
+   .
+.
+on key_down
+   if keybkey = "ArrowRight"
+      right = 1
+   elif keybkey = "ArrowLeft"
+      left = 1
+   .
+.
+on key_up
+   if keybkey = "ArrowRight"
+      right = 0
+   elif keybkey = "ArrowLeft"
+      left = 0
+   .
+.
+
++ We now combine the paddle and the ball. We also need to check whether the paddle is under the ball when it reaches the bottom.
+
+background 789
+subr init
+   linewidth 4
+   x = 50
+   y = 90
+   vx = 1
+   vy = -1.5
+   px = 50
+   out = 0
+.
+init
+on animate
+   clear
+   color 700
+   move x y
+   circle 5
+   color 444
+   move px - 10 2
+   line px + 10 2
+   #
+   x += vx
+   y += vy
+   if right = 1 and px < 88
+      px += 1
+   .
+   if left = 1 and px > 12
+      px -= 1
+   .
+   if x > 95 or x < 5
+      vx = -vx
+   .
+   if y > 95
+      vy = -vy
+   .
+   if y < 8
+      if abs (x - px) < 16 and out = 0
+         vy = -vy
+      else
+         out = 1
+      .
+      if y < -10
+         textsize 10
+         move 20 60
+         text "Game over"
+      .
+   .
+.
+on key_down
+   if keybkey = "ArrowRight"
+      right = 1
+   elif keybkey = "ArrowLeft"
+      left = 1
+   elif keybkey = " " and out = 1
+      init
+   .
+.
+on key_up
+   if keybkey = "ArrowRight"
+      right = 0
+   elif keybkey = "ArrowLeft"
+      left = 0
+   .
+.
+
++ You can add an extension so that the successful return shots are counted. To make the game more difficult, you can gradually increase the speed of the ball and the paddle.
+
+* Reaction tester
+
++ We are writing a program with which you can test your own reaction time. After a random time, the prompt to press a button is displayed and then the time until the button is pressed is measured.
+
+background 000
+subr wait
+   clear
+   color 733
+   text "WAIT"
+   timer 1 + 2 * randomf
+.
+on timer
+   clear
+   color 373
+   text "PRESS"
+   time0 = systime
+.
+on mouse_down
+   if time0 <> 0
+      clear
+      color 555
+      text systime - time0
+      time0 = 0
+   else
+      wait
+   .
+.
+textsize 20
+move 20 50
+wait
+
++ *systime* returns the seconds since 1.1.1970 00:00 as a floating point number. The timer event is triggered with a selectable delay by the *timer* command. *randomf* returns a random float value between 0 and 1.
+
+* Letter memory game
+
++ The aim is to find identical pairs of cards. After each attempt, the cards are covered up again.
 
 ##50
 proc square ind col s$ .
@@ -121,46 +303,7 @@ for ind = 1 to 16
    swap cards$[r] cards$[ind]
 .
 
--
-
-+ Now to another program - a reaction tester - to demonstrate *timer* and *systime*.
-
-# Reaction test
-#
-background 000
-subr wait
-  clear
-  color 733
-  text "WAIT"
-  timer 1 + 2 * randomf
-end
-on timer
-  clear
-  color 373
-  text "PRESS"
-  time0 = systime
-end
-on mouse_down
-  if time0 <> 0
-    clear
-    color 555
-    text systime - time0
-    time0 = 0
-  else
-    wait
-  end
-end
-textsize 20
-move 20 50
-wait
-
-+ *systime* returns the seconds since 1.1.1970 00:00 as a floating point number. The timer event is triggered with a selectable delay by the *timer* command. *randomf* returns a random float value between 0 and 1.
-
--
-
-+ Now we have everything we need to finish programming the game.
-
-+ We need the *timer* to automatically close the face-up cards. And *systime* to measure how much time it takes the player to find all matches.
++ We need a *timer* to automatically close the face-up cards. And *systime* to measure how much time it takes the player to find all matches.
 
 # Letter memory
 #

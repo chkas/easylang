@@ -2,17 +2,14 @@ fastfunc semiprim n .
    d = 3
    while d * d <= n
       while n mod d = 0
-         if c = 2
-            return 0
-         .
+         if c = 2 : return 0
          n /= d
          c += 1
       .
       d += 2
    .
-   if c = 1
-      return n
-   .
+   if c = 1 : return n
+   return 0
 .
 print "The first 50 Blum integers:"
 n = 3
@@ -26,7 +23,7 @@ repeat
             c += 1
             if c <= 50
                write n
-               if c mod 10 = 0 ; print "" ; .
+               if c mod 10 = 0 : print ""
             .
          .
       .

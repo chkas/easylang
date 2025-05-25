@@ -52,10 +52,8 @@ xxx
 	cat >>$o/tut_$n.html <<xxx
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <link rel="icon" href="../icon.png" type="image/x-png">
-
+<div style="float:right;padding:8px"><a style="color:#000" href=.>Easylang<a></div>
 <div id=tut><b>Loading ...</b></div>
-<script src=easy_code2.js?$vers></script>
-<script src=easy_tut2.js?$vers></script>
 <script>
 if (typeof WebAssembly != 'object') {
 	tut.innerHTML = "You need a browser with WebAssembly support for this website."
@@ -80,13 +78,13 @@ xxx
 		cat <<xxx >>$o/tut_$n.html
 -
 
-+ Congratulations on making it this far. If you could also solve the tasks, you are surely ready for something new. In the following tutorial you will learn how to program a simple board game that you can play on your smartphone.
++ Congratulations on making it this far. If you could also solve the tasks, you are surely ready for something new. In the following tutorial you will learn how to program small games.
 
-+de Glückwunsch, dass du es bis hierher geschafft hast. Wenn du auch die Aufgaben lösen konntest, bist du sicher bereit für etwas Neues. Im folgenden Tutorial lernst du, wie du ein einfaches Brettspiel programmierst, das du auf deinem Handy spielen kannst.
++de Glückwunsch, dass du es bis hierher geschafft hast. Wenn du auch die Aufgaben lösen konntest, bist du sicher bereit für etwas Neues. Im folgenden Tutorial lernst du, wie man kleine Spiele programmiert.
 
-@ ./tut_game.html?$vers@Programming a letter memory game
+@ ./tut_game.html?$vers@Programming small games
 
-@de ./tut_game.html?$vers@Ein Buchstaben-Memory-Spiel programmieren (in Englisch)
+@de ./tut_game.html?$vers@Kleine Spiele programmieren (in Englisch)
 xxx
 
 		printf "\`\n" >> $o/tut_$n.html
@@ -226,6 +224,8 @@ xxx
 	cat >>$o/tut_$n.html <<'xxx'
 }
 </script>
+<script src=easy_code2.js?$vers></script>
+<script src=easy_tut2.js?$vers></script>
 xxx
 
 
@@ -233,7 +233,7 @@ xxx
 
 mk_tut "Documentation and code snippets" docu "easylang documentation"
 mk_tut "Procedures and recursion" func "recursive procedures"
-mk_tut "Programming a letter memory game" game "canvas game, smartphone" "" "runner"
+mk_tut "Programming small games" game "canvas game, smartphone" "" "runner"
 mk_tut "Programming basics" learn "learn programming basics"
 sed s/555/222/g $o/tut_learn.html > $o/tmp.html
 mv $o/tmp.html $o/tut_learn.html
@@ -449,19 +449,15 @@ This simple programming language with built-in graphical functions and an easy t
 A language that doesn’t have everything is actually easier to program in than some that do. -- Dennis M. Ritchie
 </small>
 
-<h3>Interactive tutorials and blogs</h3>
+<h3>Interactive tutorials</h3>
 
 <p><a href="tut_learn.html?$vers">Learn Programming Basics</a>
+<p><a href="tut_game.html?$vers">Programming Small Games</a>
 <p><a href="tut_docu.html?$vers">Documentation and Code Snippets</a>
 <p><a href="tut_func.html?$vers">Functions and Recursion</a>
-<p><a href="tut_game.html?$vers">Programming a Letter Memory Game</a>
 <p><a href="tut_sorting.html?$vers">Sorting Algorithms</a>
-<p><a href="tut_mcarlo.html?$vers">The Law of Large Numbers or Why It Is a Bad Idea to Go to the Casino.</a>
-<p><a href="tut_blackj.html?$vers">Blackjack - Probabilties, Card Counting</a>
-<p><a href="tut_cipher.html?$vers">Symmetric Cipher - What can you do wrong with it</a>
+<p><a href="tut_mcarlo.html?$vers">The Law of Large Numbers ...</a>
 <p>
-<p><a href="tut_rosetta.html?$vers">Rosetta Code Examples</a>
-<br><br>
 
 <h3>Web demos</h3>
 
@@ -677,10 +673,14 @@ cat <<xxx
 <h3>More</h3>
 
 <a href=https://rosettacode.org/wiki/Category:EasyLang><i>Easylang</i> on <i>Rosetta Code</i></a>
+<p><a href="tut_rosetta.html?$vers">Rosetta Code Examples on one big page</a>
 <p>
 <a href=../aoc/><i>Advent Of Code</i> with <i>Easylang</i></a><br>
 <p>
 <a href=https://learnxinyminutes.com/docs/easylang/>Learn X in Y minutes Where X=Easylang</a>
+<p>
+<p><a href="tut_blackj.html?$vers">Blackjack - Probabilties, Card Counting</a>
+<p><a href="tut_cipher.html?$vers">Symmetric Cipher - What can you do wrong with it</a>
 
 <h3>Technical</h3>
 
@@ -696,17 +696,14 @@ cat <<xxx
 
 <i>Easylang</i> is free of charge: free to use, free to copy and requires no registration or login. It is also Open Source.
 
-<p>
-<a href=https://github.com/chkas/easylang>Source on GitHub</a>
-<p>
-<a href=https://www.reddit.com/r/easylang/>Discussion, questions, etc. on Reddit</a>
-
+<p><a href=https://github.com/chkas/easylang>Source on GitHub</a>
+<p><a href="mailto:christof.kaser@gmail.com">Say hello ✉</a>
 <p>
 If you like it, recommend it to others.
 <p>
 
 <hr>
-<small><small>christof.kaser@gmail.com</small></small>
+<small>christof.kaser@gmail.com</small>
 xxx
 
 

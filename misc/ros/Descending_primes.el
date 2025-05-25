@@ -1,3 +1,8 @@
+proc sort &d[] .
+   for i = 1 to len d[] - 1 : for j = i + 1 to len d[]
+      if d[j] < d[i] : swap d[j] d[i]
+   .
+.
 func isprim num .
    if num < 2 : return 0
    i = 2
@@ -7,8 +12,9 @@ func isprim num .
    .
    return 1
 .
+p[] = [ ]
 proc nextdesc n .
-   if isprim n = 1 : write n & " "
+   if isprim n = 1 : p[] &= n
    if n > 987654321 : return
    for d = n mod 10 - 1 downto 1
       nextdesc n * 10 + d
@@ -17,3 +23,6 @@ proc nextdesc n .
 for i = 9 downto 1
    nextdesc i
 .
+sort p[]
+print p[]
+

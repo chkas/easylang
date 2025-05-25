@@ -22,7 +22,5 @@ func count n .
 .
 for i = 2 to 120
    n = count i
-   if isprim n = 1
-      write i & " "
-   .
+   if isprim n = 1 : write i & " "
 .
