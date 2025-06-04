@@ -9,20 +9,16 @@ txt_tutor = String.raw`+ Programming small games
 + Try to keep the ball in the field.
 
 ##50
-background 789
-linewidth 2
-textsize 2.5
-color 789
-move 0 50
-rect 50 50
-color 700
-move 30 60
-circle 2.5
-color 444
-move 20 51
-line 30 51
-move 1 97
-text "Pts: 14"
+gbackground 789
+glinewidth 2
+gtextsize 2.5
+gcolor 789
+grect 0 50 50 50
+gcolor 700
+gcircle 30 60 2.5
+gcolor 444
+gline 20 51 30 51
+gtext 1 97 "Pts: 14"
 
 + We start with a bouncing ball.
 
@@ -32,11 +28,10 @@ x = 50
 y = 80
 #
 on animate
-   clear
-   color 700
-   move x y
-   circle 5
-   color 444
+   gclear
+   gcolor 700
+   gcircle x y 5
+   gcolor 444
    x += vx
    y += vy
    if x > 95 or x < 5
@@ -52,13 +47,11 @@ on animate
 + The paddle is controlled with the left and right arrow keys. We can determine the current status of the keys with *on key_down* and *on key_up*.
 
 px = 50
-linewidth 4
+glinewidth 4
 on animate
-   clear
-   color 444
-   move px - 10 2
-   line px + 10 2
-   move 2 95
+   gclear
+   gcolor 444
+   gline px - 10 2 px + 10 2
    if right = 1 and px < 88
       px += 1
    .
@@ -83,9 +76,9 @@ on key_up
 
 + We now combine the paddle and the ball. We also need to check whether the paddle is under the ball when it reaches the bottom.
 
-background 789
+gbackground 789
 subr init
-   linewidth 4
+   glinewidth 4
    x = 50
    y = 90
    vx = 1
@@ -95,13 +88,11 @@ subr init
 .
 init
 on animate
-   clear
-   color 700
-   move x y
-   circle 5
-   color 444
-   move px - 10 2
-   line px + 10 2
+   gclear
+   gcolor 700
+   gcircle x y 5
+   gcolor 444
+   gline px - 10 2 px + 10 2
    #
    x += vx
    y += vy
@@ -124,9 +115,8 @@ on animate
          out = 1
       .
       if y < -10
-         textsize 10
-         move 20 60
-         text "Game over"
+         gtextsize 10
+         gtext 20 60 "Game over"
       .
    .
 .
@@ -153,31 +143,30 @@ on key_up
 
 + We are writing a program with which you can test your own reaction time. After a random time, the prompt to press a button is displayed and then the time until the button is pressed is measured.
 
-background 000
+gbackground 000
 subr wait
-   clear
-   color 733
-   text "WAIT"
+   gclear
+   gcolor 733
+   gtext 20 50 "WAIT"
    timer 1 + 2 * randomf
 .
 on timer
-   clear
-   color 373
-   text "PRESS"
+   gclear
+   gcolor 373
+   gtext 20 50 "PRESS"
    time0 = systime
 .
 on mouse_down
    if time0 <> 0
-      clear
-      color 555
-      text systime - time0
+      gclear
+      gcolor 555
+      gtext 20 50 systime - time0
       time0 = 0
    else
       wait
    .
 .
-textsize 20
-move 20 50
+gtextsize 20
 wait
 
 + *systime* returns the seconds since 1.1.1970 00:00 as a floating point number. The timer event is triggered with a selectable delay by the *timer* command. *randomf* returns a random float value between 0 and 1.
@@ -191,14 +180,12 @@ proc square ind col s$ .
    ind -= 1
    x = ind mod 4 * 12 + 2
    y = ind div 4 * 12 + 52
-   color col
-   move x y
-   rect 11 11
-   move x + 3 y + 3
-   color 000
-   text s$
+   gcolor col
+   grect x y 11 11
+   gcolor 000
+   gtext x + 3 y + 3 s$
 .
-textsize 8
+gtextsize 8
 for i = 1 to 16 : square i 353 ""
 square 3 575 "A"
 square 6 575 "A"
@@ -210,18 +197,16 @@ square 9 575 "E"
 
 ##50
 proc square ind col n .
-  ind -= 1
-  x = ind mod 4 * 12 + 2
-  y = ind div 4 * 12 + 52
-  color col
-  move x y
-  rect 11 11
-  if n < 10 : x += 1.7
-  move x + 1.6 y + 3
-  color 000
-  text n
+   ind -= 1
+   x = ind mod 4 * 12 + 2
+   y = ind div 4 * 12 + 52
+   gcolor col
+   grect x y 11 11
+   if n < 10 : x += 1.7
+   gcolor 000
+   gtext x + 1.6 y + 3 n
 .
-textsize 6
+gtextsize 6
 for i = 1 to 16 : square i 353 i
 
 + At first we create a procedure that draws a square at a position (1-16).
@@ -231,11 +216,10 @@ for i = 1 to 16 : square i 353 i
 subr draw_square
    x = (ind - 1) mod 4 * 24 + 3
    y = (ind - 1) div 4 * 24 + 3
-   move x y
-   rect 22 22
+   grect x y 22 22
 .
 ind = 2
-color 353
+gcolor 353
 draw_square
 
 + *(ind - 1) mod 4* calculates the rest of the division by 4 and gives the 0-based column of the card. *(ind - 1) div 4* calculates the integer part of the division and gives the row. This is then scaled to *x* and *y* and a small square is drawn, leaving an edge free.
@@ -248,20 +232,18 @@ print cards$[]
 + Now we shuffle the cards (this array) and display them.
 
 cards$[] = strchars "AABBDDEEFFGGHHII"
-textsize 16
+gtextsize 16
 #
 subr draw_square
    x = (ind - 1) mod 4 * 24 + 3
    y = (ind - 1) div 4 * 24 + 3
-   move x y
-   rect 22 22
+   grect x y 22 22
 .
 subr show_card
-   color 575
+   gcolor 575
    draw_square
-   move x + 5 y + 5
-   color 000
-   text cards$[ind]
+   gcolor 000
+   gtext x + 5 y + 5 cards$[ind]
 .
 for ind = 16 downto 1
    r = random ind
@@ -272,24 +254,22 @@ for ind = 16 downto 1
 + On mouse-click we search for the card under the mouse pointer and uncover it.
 
 cards$[] = strchars "AABBDDEEFFGGHHII"
-textsize 16
+gtextsize 16
 #
 subr draw_square
    x = (ind - 1) mod 4 * 24 + 3
    y = (ind - 1) div 4 * 24 + 3
-   move x y
-   rect 22 22
+   grect x y 22 22
 .
 subr cover_card
-   color 353
+   gcolor 353
    draw_square
 .
 subr show_card
-   color 575
+   gcolor 575
    draw_square
-   move x + 5 y + 5
-   color 000
-   text cards$[ind]
+   gcolor 000
+   gtext x + 5 y + 5 cards$[ind]
 .
 on mouse_down
    c = mouse_x div 25
@@ -309,32 +289,30 @@ for ind = 1 to 16
 #
 cards$[] = strchars "AABBDDEEFFGGHHII"
 len open[] 16
-background 000
-textsize 16
+gbackground 000
+gtextsize 16
 #
 subr draw_square
    x = (ind - 1) mod 4 * 24 + 3
    y = (ind - 1) div 4 * 24 + 3
-   move x y
-   rect 22 22
+   grect x y 22 22
 .
 subr cover_card
    open[ind] = 0
-   color 353
+   gcolor 353
    draw_square
 .
 subr show_card
    open[ind] = 1
-   color 575
+   gcolor 575
    draw_square
-   move x + 5 y + 5
-   color 000
-   text cards$[ind]
+   gcolor 000
+   gtext x + 5 y + 5 cards$[ind]
 .
 subr init
    opencards = 0
    time0 = systime
-   clear
+   gclear
    # shuffle and close cards
    for ind = 1 to 16
       cover_card
@@ -360,10 +338,9 @@ subr open
          opencards += 2
          if opencards = 16
             # done
-            clear
-            move 5 50
-            color 575
-            text "Time: " & floor (systime - time0)
+            gclear
+            gcolor 575
+            gtext 5 50 "Time: " & floor (systime - time0)
          .
       .
    .

@@ -15,82 +15,69 @@ subr initvars
    stat = 0
 .
 proc draw_notes .
-   move 0 0
-   color 987
-   rect 100 55
+   gcolor 987
+   grect 0 0 100 55
    clk = 0
    y0 = -8
    for i = 1 to len notes[]
       if clk mod 32 = 0
          y0 += 12
-         color 000
-         linewidth 0.1
+         gcolor 000
+         glinewidth 0.1
          for j = 0 to 4
-            move 3 y0 + j * 1.5
-            line 97 y0 + j * 1.5
+            gline 3 y0 + j * 1.5 97 y0 + j * 1.5
          .
          x = 5
       .
       n = notes[i]
       t = n div 10 + 1
       n = n mod 10
-      color 000
+      gcolor 000
       if n = 9
+         glinewidth 1
          if t < 3
-            linewidth 1
-            move x + 0.5 y0 + 2
-            line x y0 + 2.5
-            linewidth 0.4
-            line x + 1 y0 + 3.5
-            line x - 0.5 y0 + 3.5
+            gline x + 0.5 y0 + 2 x y0 + 2.5
+            glinewidth 0.4
+            gline x y0 + 2.5 x + 1 y0 + 3.5
+            gline x + 1 y0 + 3.5 x - 0.5 y0 + 3.5
          else
-            linewidth 1
-            move x - 1 y0 + 2.5
-            line x + 1 y0 + 2.5
+            gline x - 1 y0 + 2.5 x + 1 y0 + 2.5
          .
       else
          y = y0 + 7.5 - n * 0.75
-         move x y
-         circle 1
+         gcircle x y 1
          if t > 3
-            color 987
-            circle 0.5
-            color 000
+            gcolor 987
+            gcircle x y 0.5
+            gcolor 000
          .
-         linewidth 0.1
+         glinewidth 0.1
          if n <= 5
-            move x + 0.9 y
-            line x + 0.9 y - 4
+            gline x + 0.9 y x + 0.9 y - 4
             if t = 1
-               linewidth 0.25
-               move x + 0.9 y - 4
-               line x + 1.8 y - 1.5
+               glinewidth 0.25
+               gline x + 0.9 y - 4 x + 1.8 y - 1.5
             .
          else
-            move x - 0.9 y
-            line x - 0.9 y + 4
+            gline x - 0.9 y x - 0.9 y + 4
             if t = 1
-               linewidth 0.25
-               move x - 0.9 y + 4
-               line x - 1.8 y + 1.5
+               glinewidth 0.25
+               gline x - 0.9 y + 4 x - 1.8 y + 1.5
             .
          .
          if n < 1
-            move x - 2 y
-            line x + 2 y
+            gline x - 2 y x + 2 y
          .
          if t = 3 or t = 5
             h = y
             if n mod 2 = 0 : h -= 0.75
-            move x + 2.5 h
-            circle 0.35
+            gcircle x + 2.5 h 0.35
          .
       .
       clk += t
       if clk mod 8 = 0
-         linewidth 0.1
-         move x + 4 y0
-         line x + 4 y0 + 6
+         glinewidth 0.1
+         gline x + 4 y0 x + 4 y0 + 6
       .
       if t = 1
          x += 4
@@ -100,13 +87,11 @@ proc draw_notes .
    .
 .
 proc btn x y s$ .
-   linewidth 8
-   move x y
-   line x + 13 y
-   move x - 1 y - 2.5
-   color 000
-   textsize 6
-   text s$
+   glinewidth 8
+   gline x y x + 13 y
+   gcolor 000
+   gtextsize 6
+   gtext x - 1 y - 2.5 s$
 .
 subr draw_btn_song
    btn 82 61 "Song"
@@ -119,35 +104,30 @@ subr draw_btn_play
 .
 proc draw_key down .
    if down = 1
-      color 765
+      gcolor 765
    else
-      color 999
+      gcolor 999
    .
    x = (ind - 1) * 12.5 + 1
-   move x 75
-   rect 10.5 25
-   color 222
+   grect x 75 10.5 25
+   gcolor 222
    if ind <= 2 or ind >= 4 and ind <= 6
-      move x + 8.5 75
-      rect 2 12
+      grect x + 8.5 75 2 12
    .
    if ind >= 2 and ind <= 3 or ind >= 5 and ind <= 7
-      move x 75
-      rect 2 12
+      grect x 75 2 12
    .
-   color 222
-   move x + 2.5 92
-   text n$[ind]
+   gcolor 222
+   gtext x + 2.5 92 n$[ind]
 .
 subr play_note
    if clk mod 32 = 0
       yn += 12
       xn = 4.5
    .
-   color 900
-   linewidth 1
-   move xn yn
-   line xn + 1 yn
+   gcolor 900
+   glinewidth 1
+   gline xn yn xn + 1 yn
    h = notes[note]
    t = h div 10 + 1
    clk += t
@@ -160,10 +140,9 @@ subr play_note
    timer t * speed - 0.1
 .
 subr play_note_done
-   color 987
-   linewidth 1
-   move xn - 0.1 yn
-   line xn + 1.2 yn
+   gcolor 987
+   glinewidth 1
+   gline xn - 0.1 yn xn + 1.2 yn
    if t = 1
       xn += 4
    else
@@ -182,7 +161,7 @@ subr play_note_done
 .
 subr start_play
    clk = 0
-   color 432
+   gcolor 432
    draw_btn_play
    note = 1
    yn = 1
@@ -190,7 +169,7 @@ subr start_play
    timer 0
 .
 subr change_song
-   color 432
+   gcolor 432
    draw_btn_song
    swap songs[song][] notes[]
    song = song mod len songs[][] + 1
@@ -228,11 +207,11 @@ on mouse_down
    .
 .
 on mouse_up
-   color 654
+   gcolor 654
    draw_btn_song
-   color 654
+   gcolor 654
    draw_btn_play
-   color 654
+   gcolor 654
    draw_btn_slow
    if stat = 1
       sound [ ]
@@ -241,21 +220,18 @@ on mouse_up
    .
 .
 initvars
-color 321
-move 0 55
-rect 100 45
-color 222
-move 5 75
-rect 30 12
-move 40 75
-rect 40 12
-textsize 6
+gcolor 321
+grect 0 55 100 45
+gcolor 222
+grect 5 75 30 12
+grect 40 75 40 12
+gtextsize 6
 for ind = 1 to 8 : draw_key 0
-color 654
+gcolor 654
 draw_btn_play
-color 654
+gcolor 654
 draw_btn_song
-color 654
+gcolor 654
 draw_btn_slow
 draw_notes
 

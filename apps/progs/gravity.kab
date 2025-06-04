@@ -2,8 +2,8 @@
 #
 n = 40
 #
-background 000
-color 999
+gbackground 000
+gcolor 999
 #
 subr interact
    dx = x[j] - x[i]
@@ -17,17 +17,18 @@ subr interact
 .
 subr draw_object
    if m[i] > 5000
-      color 900
-      circle sqrt (m[i] / 100000)
-      color 999
+      gcolor 900
+      gcircle x y sqrt (m[i] / 100000)
+      gcolor 999
    else
-      circle sqrt (m[i] / 1000)
+      gcircle x y sqrt (m[i] / 1000)
    .
 .
 on animate
-   clear
+   gclear
    for i = 1 to n
-      move x[i] + 50 y[i] + 50
+      x = x[i] + 50
+      y = y[i] + 50
       draw_object
       for j = 1 to n : if j <> i
          interact

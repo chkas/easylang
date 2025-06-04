@@ -88,17 +88,16 @@ print fact 6
 + Such a tree can be drawn relatively easily with a recursive program.
 
 proc tree x y angle depth .
-   linewidth depth * 0.4
-   move x y
-   x += cos angle * depth * 1.4 * (randomf + 0.5)
-   y += sin angle * depth * 1.4 * (randomf + 0.5)
-   line x y
+   glinewidth depth * 0.4
+   xn = x + cos angle * depth * 1.4 * (randomf + 0.5)
+   yn = y + sin angle * depth * 1.4 * (randomf + 0.5)
+   gline x y xn yn
    if depth > 1
-      tree x y angle - 20 depth - 1
-      tree x y angle + 20 depth - 1
+      tree xn yn (angle - 20) (depth - 1)
+      tree xn yn (angle + 20) (depth - 1)
    .
 .
-tree 50 5 90 10
+tree 50 10 90 10
 
 * Quicksort
 
@@ -131,35 +130,31 @@ print d[]
 
 ndisc = 5
 len tow[][] 3
-textsize 7
+gtextsize 7
 proc init .
    for i = ndisc downto 1
       tow[1][] &= i
    .
 .
 proc show .
-   clear
-   color 444
-   move 0 0
-   rect 100 10
+   gclear
+   gcolor 444
+   grect 0 0 100 10
    for t = 1 to 3
-      linewidth 3
-      color 444
+      glinewidth 3
+      gcolor 444
       x = 32 * t - 14
-      move x 12 + ndisc * 6
-      line x 10
-      move x - 2 2
+      gline x 12 + ndisc * 6 x 10
       color 998
-      text t
-      linewidth 6
+      gtext x - 2 2 t
+      glinewidth 6
       for i = 1 to len tow[t][]
          d = tow[t][i]
-         color 210 + (d - 1) * 111
+         gcolor 210 + (d - 1) * 111
          sz = 26 * d / ndisc
          x = t * 32 - 14 - sz / 2
          y = 7 + i * 6
-         move x y
-         line x + sz y
+         gline x y x + sz y
       .
    .
 .
@@ -173,9 +168,7 @@ proc movedisc src dst .
    sleep 0.5
 .
 proc hanoi n src dst aux .
-   if n = 0
-      return
-   .
+   if n = 0 : return
    hanoi n - 1 src aux dst
    movedisc src dst
    hanoi n - 1 aux dst src
@@ -193,16 +186,17 @@ n = 2 * size + 1
 f = 100 / (n - 0.5)
 len m[] n * n
 #
-background 000
+gbackground 000
 proc show_maze .
-   clear
+   gclear
+   sz = f * 1.5
+   f2 = f / 2
    for i = 1 to len m[]
       if m[i] = 0
          x = (i - 1) mod n
          y = (i - 1) div n
-         color 999
-         move x * f - f / 2 y * f - f / 2
-         rect f * 1.5 f * 1.5
+         gcolor 999
+         grect x * f - f2 y * f - f2 sz sz
       .
    .
    sleep 0.01
@@ -243,15 +237,12 @@ show_maze
 proc mark pos col .
    x = (pos - 1) mod n
    y = (pos - 1) div n
-   color col
-   move x * f + f / 4 y * f + f / 4
-   circle f / 3.5
+   gcolor col
+   gcircle x * f + f / 4 y * f + f / 4 f / 3.5
 .
 found = 0
 proc solve dir0 pos .
-   if found = 1
-      return
-   .
+   if found = 1 : return
    mark pos 900
    sleep 0.05
    if pos = endpos

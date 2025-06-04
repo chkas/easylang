@@ -8,11 +8,7 @@ cat <<EOF
 <link rel="icon" href="../icon.png" type="image/x-png">
 
 <div id=tut><b>Loading ...</b></div>
-<script src=easy_code2.js?$vers></script>
-<script src=easy_tut2.js?$vers></script>
-
 <script>
-
 txt_split = "\n*\n"
 EOF
 
@@ -42,5 +38,7 @@ The examples were created with <a href=..>${dom}<a>
 `)
 }
 </script>
+<script src=easy_code2.js?$vers></script>
+<script src=easy_tut2.js?$vers></script>
 EOF
 

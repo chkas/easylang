@@ -9,32 +9,25 @@ state = 0
 down = 0
 #
 proc showpen .
-   color 444
-   move 0 0
-   rect 100 8
-   move 2 2
-   color 834
-   rect 4 2
-   move 2 4
-   color 247
-   rect 4 2
+   gcolor 444
+   grect 0 0 100 8
+   gcolor 834
+   grect 2 2 4 2
+   gcolor 247
+   grect 2 4 4 2
    for i = 1 to len col[]
-      color col[i]
-      move i * 8 + 4 4
-      if i = sel_col
-         circle 4
-      else
-         circle 3
-      .
+      gcolor col[i]
+      sz = 3
+      if i = sel_col : sz = 4
+      gcircle i * 8 + 4 4 sz
    .
    for i = 1 to len thick[]
-      color 555
-      if i = sel_thick : color col[sel_col]
-      move 64 + i * 8 4
-      circle i
+      gcolor 555
+      if i = sel_thick : gcolor col[sel_col]
+      gcircle 64 + i * 8 4 i
    .
-   color col[sel_col]
-   linewidth thick[sel_thick]
+   gcolor col[sel_col]
+   glinewidth thick[sel_thick]
 .
 c[] = [ 9 0 0 ]
 proc picker .
@@ -46,24 +39,23 @@ proc picker .
    for i = 0 to 9
       f = 100
       for j = 0 to 2
-         move 10 + i * 8 16 + j * 6.6
-         color i * f
-         rect 8 6.6
+         gcolor i * f
+         grect 10 + i * 8 16 + j * 6.6 8 6.6
          f = f div 10
       .
    .
-   color 666
+   gcolor 666
    for i = 0 to 2
-      move c[i + 1] * 8 + 14 16 + i * 6.6 + 3.3
-      circle 1
+      gcircle c[i + 1] * 8 + 14 16 + i * 6.6 + 3.3 1
    .
 .
+global mx my .
 proc action x y .
    if state = 0
       if y < 8
          if x < 8
             state = 1
-            background -1
+            gbackground -1
             picker
          elif x < 64
             sel_col = x div 8
@@ -73,8 +65,9 @@ proc action x y .
          showpen
       else
          down = 1
-         move x y
-         line x y
+         gline x y x y
+         mx = x
+         my = y
       .
    else
       if y < 8 and x > 8 and x < 64
@@ -89,7 +82,7 @@ proc action x y .
          picker
       else
          state = 0
-         clear
+         gclear
          showpen
       .
    .
@@ -102,11 +95,12 @@ on mouse_up
 .
 on mouse_move
    if down = 1 and mouse_y > 8 + thick[sel_thick] / 2
-      line mouse_x mouse_y
+      gline mx my mouse_x mouse_y
+      mx = mouse_x
+      my = mouse_y
    .
 .
-move 0 0
-color 888
-rect 100 100
+gcolor 888
+grect 0 0 100 100
 showpen
 

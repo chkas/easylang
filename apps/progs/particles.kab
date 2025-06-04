@@ -3,26 +3,24 @@
 n_part = 40
 thres = 15
 #
-background 000
-color 999
+gbackground 000
+gcolor 999
 #
 subr connect
    h = dx * dx + dy * dy
    dist = sqrt h
    if dist < thres
       lw = (thres - dist) / 30
-      linewidth lw
-      move x y
-      line x[j] y[j]
+      glinewidth lw
+      gline x y x[j] y[j]
    .
 .
 on animate
-   clear
+   gclear
    for i = 1 to n_part
       x = x[i]
       y = y[i]
-      move x y
-      circle 0.3
+      gcircle x y 0.3
       for j = 1 to i
          dx = abs (x[j] - x)
          if dx < thres
@@ -42,3 +40,4 @@ for i = 1 to n_part
    vx[] &= (0.5 - randomf) / 3
    vy[] &= (0.5 - randomf) / 3
 .
+

@@ -19,17 +19,20 @@ static const char* token_list[] = {
 	"and", "or", "not", "mod", "mod1", "div", "div1",
 	"call",  "len",
 
-	"print", "pr", "write", "text",
-	"sleep", "timer", "textsize", "linewidth", "coord_rotate", "circle",
+	"print", "write", "text",
+	"sleep", "timer", "textsize", "linewidth", "coord_rotate", "coord_scale", "circle",
 	"color", "background", "mouse_cursor", "random_seed",
 	"move", "line", "coord_translate", "rect", "numfmt",
-	"color3", "circseg",
+	"gtext",
+	"color3", "gcircle",
+	"grect", "gline",
+	"gcircseg",
 	"sound", "polygon", "curve",
 
 	"return", "swap", "clear", "break", "drawgrid", "arrbase",
 
 	"systime", "error", "mouse_x", "mouse_y", "randomf", "pi",
-	"random", "randint", "sqrt", "log10", "abs", "sign", "bitnot", "floor", "sin", "cos", "tan", "asin", "acos", "atan",
+	"random", "sqrt", "log10", "abs", "sign", "bitnot", "floor", "sin", "cos", "tan", "asin", "acos", "atan",
 	"atan2", "pow", "bitand", "bitor", "bitxor", "bitshift", "lower", "higher",
 	"number", "strcode", "strpos", "strcmp",
 
@@ -44,6 +47,8 @@ static const char* token_list[] = {
 	"array element", "string array element",
 	"array", "string array",
 	"array array", "string array array",
+
+	"pr", "gcolor", "gclear", "gbackground", "gtextsize", "glinewidth", "gpolygon", "gcolor3", "gcurve", "randint",
 	""
 };
 
@@ -55,17 +60,20 @@ enum token_tok {
 	t_and, t_or, t_not, t_mod, t_mod1, t_divi, t_divi1,
 	t_call, t_len,
 
-	t_print, t_pr, t_write, t_text,
-	t_sleep, t_timer, t_textsize, t_linewidth, t_rotate, t_circle,
+	t_print, t_write, t_text,
+	t_sleep, t_timer, t_textsize, t_linewidth, t_co_rotate, t_co_scale, t_circle,
 	t_color, t_background, t_mouse_cursor, t_random_seed,
-	t_move, t_line, t_translate, t_rect, t_numfmt,
-	t_rgb, t_circseg,
+	t_move, t_line, t_co_translate, t_rect, t_numfmt,
+	t_gtext,
+	t_color3, t_gcircle,
+	t_grect, t_gline,
+	t_gcircseg,
 	t_sound, t_polygon, t_curve,
 
 	t_return, t_swap, t_clear, t_break, t_drawgrid, t_arrbase,
 	
 	t_systime, t_error, t_mouse_x, t_mouse_y, t_randomf, t_pi,
-	t_random, t_randint, t_sqrt, t_log10, t_abs, t_sign, t_bitnot, t_floor, t_sin, t_cos, t_tan, t_asin, t_acos, t_atan,
+	t_random, t_sqrt, t_log10, t_abs, t_sign, t_bitnot, t_floor, t_sin, t_cos, t_tan, t_asin, t_acos, t_atan,
 	t_atan2, t_pow, t_bitand, t_bitor, t_bitxor, t_bitshift, t_lower, t_higher,
 	t_number, t_strord, t_strpos, t_strcompare,
 
@@ -81,10 +89,45 @@ enum token_tok {
 	t_vnumarr, t_vstrarr,
 	t_vnumarrarr, t_vstrarrarr,
 
+	t_pr, t_gcolor, t_gclear, t_gbackground, t_gtextsize, t_glinewidth, t_gpolygon, t_gcolor3, t_gcurve, t_randint,
+
 	t_eof,
+
 
 	t_pal_consumed
 };
+
+static int tbl_a[] = { t_and, t_abs, t_asin, t_acos, t_atan, t_atan2, t_arrbase, 0 } ;
+static int tbl_b[] = { t_break, t_background, t_bitand, t_bitor, t_bitxor, t_bitshift, t_bitnot, 0 } ;
+static int tbl_c[] = { t_call, t_clear, t_color, t_circle, t_cos, t_color3, t_curve, t_co_rotate, t_co_translate, t_co_scale, 0 } ;
+static int tbl_d[] = { t_divi, t_divi1, t_drawgrid, 0 } ;
+static int tbl_e[] = { t_else, t_elif, t_end, t_error, 0 };
+static int tbl_f[] = { t_for, t_func, t_floor, t_funcdecl, t_fastfunc, 0 };
+static int tbl_g[] = { t_global, t_gcolor, t_grect, t_gline, t_gcircle, t_gtext, t_gclear, t_gtextsize, t_glinewidth, t_gbackground, t_gpolygon, t_gcolor3, t_gcurve, t_gcircseg, 0 };
+static int tbl_h[] = { t_higher, 0 };
+static int tbl_i[] = { t_if, t_input, t_input_data, 0 };
+static int tbl_j[] = { 0 };
+static int tbl_k[] = { t_keyb_key, 0 };
+static int tbl_l[] = { t_len, t_lower, t_line, t_linewidth, t_log10, 0 };
+static int tbl_m[] = { t_mod, t_mod1, t_move, t_mouse_x, t_mouse_y, t_mouse_cursor, 0 };
+static int tbl_n[] = { t_not, t_numfmt, t_number, 0 };
+static int tbl_o[] = { t_or, t_on, 0 };
+static int tbl_p[] = { t_print, t_proc, t_procdecl, t_pr, t_pi, t_pow, t_polygon, t_prefix, 0 };
+static int tbl_q[] = { 0 };
+static int tbl_r[] = { t_repeat, t_return, t_randomf, t_rect, t_random_seed, t_random, t_randint, 0 };
+static int tbl_s[] = { t_swap, t_subr, t_sleep, t_systime, t_substr, t_sqrt, t_sin, t_strord, t_strpos, t_strcompare, t_sysfunc, t_strchar, t_strjoin, t_sign, t_sound, 0 };
+static int tbl_t[] = { t_tan, t_timestr, t_text, t_timer, t_textsize, 0 };
+static int tbl_u[] = { t_until, 0 };
+static int tbl_v[] = { 0 };
+static int tbl_w[] = { t_while, t_write, 0 };
+
+static int* tbl_all[] = {
+	tbl_a, tbl_b, tbl_c, tbl_d, tbl_e, tbl_f, tbl_g, tbl_h,
+	tbl_i, tbl_j, tbl_k, tbl_l, tbl_m, tbl_n, tbl_o, tbl_p,
+	tbl_q, tbl_r, tbl_s, tbl_t, tbl_u, tbl_v, tbl_w
+} ;
+
+static int tok_repl[] = { t_print, t_color, t_clear, t_background, t_textsize, t_linewidth, t_polygon, t_color3, t_curve, t_random };
 
 static byte tok;
 static byte tokpr;
@@ -408,16 +451,6 @@ static void read_line(char* buf, int sz) {
 }
 
 
-#if 0
-static void parse_comment() {
-
-	char buf[1024];
-	cs("# ");
-	if (c == ' ') nextc();
-	read_line(buf, 1024);
-	csi(buf);
-}
-#else
 // multiline comment ## -> # #
 static void parse_comment() {
 	char buf[1024];
@@ -444,7 +477,6 @@ static void parse_comment() {
 		cs("# #");
 	}
 }
-#endif
 
 static char* input_data = NULL;
 static uint input_data_size = 0;
@@ -456,7 +488,6 @@ static void parse_input_data() {
 	while (1) {
 		read_line(buf, 65536);
 		cs_esc(buf);
-		//csi(buf);
 		if (cod) {
 			uint h = input_data_size + strlen(buf) + 1;
 			input_data = realloc(input_data, h);
@@ -467,35 +498,6 @@ static void parse_input_data() {
 		cs_nl();
 	}
 }
-static int tbl_a[] = { t_and, t_abs, t_asin, t_acos, t_atan, t_atan2, t_arrbase, 0 } ;
-static int tbl_b[] = { t_break, t_background, t_bitand, t_bitor, t_bitxor, t_bitshift, t_bitnot, 0 } ;
-static int tbl_c[] = { t_call, t_clear, t_color, t_circle, t_cos, t_rgb, t_circseg, t_curve, t_rotate, t_translate, 0 } ;
-static int tbl_d[] = { t_divi, t_divi1, t_drawgrid, 0 } ;
-static int tbl_e[] = { t_else, t_elif, t_end, t_error, 0 };
-static int tbl_f[] = { t_for, t_func, t_floor, t_funcdecl, t_fastfunc, 0 };
-static int tbl_g[] = { t_global, 0 };
-static int tbl_h[] = { t_higher, 0 };
-static int tbl_i[] = { t_if, t_input, t_input_data, 0 };
-static int tbl_j[] = { 0 };
-static int tbl_k[] = { t_keyb_key, 0 };
-static int tbl_l[] = { t_len, t_lower, t_line, t_linewidth, t_log10, 0 };
-static int tbl_m[] = { t_mod, t_mod1, t_move, t_mouse_x, t_mouse_y, t_mouse_cursor, 0 };
-static int tbl_n[] = { t_not, t_numfmt, t_number, 0 };
-static int tbl_o[] = { t_or, t_on, 0 };
-static int tbl_p[] = { t_print, t_proc, t_procdecl, t_pr, t_pi, t_pow, t_polygon, t_prefix, 0 };
-static int tbl_q[] = { 0 };
-static int tbl_r[] = { t_repeat, t_return, t_randomf, t_randint, t_rect, t_random_seed, t_random, 0 };
-static int tbl_s[] = { t_swap, t_subr, t_sleep, t_systime, t_substr, t_sqrt, t_sin, t_strord, t_strpos, t_strcompare, t_sysfunc, t_strchar, t_strjoin, t_sign, t_sound, 0 };
-static int tbl_t[] = { t_tan, t_timestr, t_text, t_timer, t_textsize, 0 };
-static int tbl_u[] = { t_until, 0 };
-static int tbl_v[] = { 0 };
-static int tbl_w[] = { t_while, t_write, 0 };
-
-static int* tbl_all[] = {
-	tbl_a, tbl_b, tbl_c, tbl_d, tbl_e, tbl_f, tbl_g, tbl_h,
-	tbl_i, tbl_j, tbl_k, tbl_l, tbl_m, tbl_n, tbl_o, tbl_p,
-	tbl_q, tbl_r, tbl_s, tbl_t, tbl_u, tbl_v, tbl_w
-} ;
 
 static void nexttok() {
 
@@ -546,6 +548,7 @@ static void nexttok() {
 		while (ti <= t_substr) {
 			if (strcmp(token_list[ti], tval) == 0) {
 				tok = ti;
+				if (tok >= t_pr) tok = tok_repl[tok - t_pr];
 				return;
 			}
 			ti += 1;
@@ -558,6 +561,7 @@ static void nexttok() {
 				while (*tbl) {
 					if (strcmp(token_list[*tbl], tval) == 0) {
 						tok = *tbl;
+						if (tok >= t_pr) tok = tok_repl[tok - t_pr];
 						return;
 					}
 					tbl += 1;

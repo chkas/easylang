@@ -1,40 +1,46 @@
 # Eyes draw
-# 
-background 777
-clear
+#
+gbackground 777
+gclear
 col = 0
 proc eye x y .
-   color 999
-   move x y
-   circle 6.5
-   color col
+   gcolor 999
+   gcircle x y 6.5
+   gcolor col
    cx = mouse_x - x
    cy = mouse_y - y
    f = sqrt (cy * cy + cx * cx) / 2
-   move x + cx / f y + cy / f
-   circle 3
+   gcircle x + cx / f y + cy / f 3
 .
 subr eyes
-   mx = mouse_x
-   my = mouse_y
    eye 20 80
    eye 40 80
 .
 linewidth 2
 on mouse_move
-   if down = 1
-      move mx my
-      line mouse_x mouse_y
-   .
    eyes
+   if down = 1
+      gline mx my mouse_x mouse_y
+      mx = mouse_x
+      my = mouse_y
+   .
 .
 on mouse_down
    down = 1
-   move mouse_x mouse_y
-   circle 1
    eyes
+   mx = mouse_x
+   my = mouse_y
+   gcircle mx my 1
 .
 on mouse_up
    down = 0
+.
+on key_down
+   if keybkey = "r"
+      col = 900
+   else
+      col = 000
+   .
+   eyes
 .
 eyes

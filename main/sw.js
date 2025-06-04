@@ -7,6 +7,7 @@ var urls = [
 	"/ide/easyw" + VERS + ".js",
 	"/ide/tut_id" + VERS + ".js",
 	"/ide/tut_learn" + VERS + ".js",
+	"/ide/tut_learn_new" + VERS + ".js",
 	"/ide/tut_docu" + VERS + ".js",
 	"/ide/tut_func" + VERS + ".js",
 	"/ide/tut_game" + VERS + ".js",

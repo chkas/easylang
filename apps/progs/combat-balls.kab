@@ -41,7 +41,8 @@ subr collide
    dy /= d
    v = (vx[i] - vx[j]) * dx + (vy[i] - vy[j]) * dy
    if v < 0
-      dx *= v ; dy *= v
+      dx *= v
+      dy *= v
       vx[i] -= dx
       vy[i] -= dy
       vx[j] += dx
@@ -68,28 +69,25 @@ on timer
    .
    timer 0.1
 .
-background 000
-textsize 3
+gbackground 000
+gtextsize 3
 #
 on animate
-   clear
-   color 222
-   move 0 0
-   line 100 0
-   line 100 100
-   line 0 100
-   line 0 0
-   color 333
-   move 2 95
+   gclear
+   gcolor 222
+   gline 0 0 100 0
+   gline 100 0 100 100
+   gline 100 100 0 100
+   gline 0 100 0 0
+   gcolor 333
    if mode = 0
-      text "Battle - click to change"
+      gtext 2 95 "Battle - click to change"
    else
-      text "Virus - click to change"
+      gtext 2 95 "Virus - click to change"
    .
    for i = 1 to n
-      color col[i]
-      move x[i] y[i]
-      circle rad
+      gcolor col[i]
+      gcircle x[i] y[i] rad
       x[i] += vx[i]
       y[i] += vy[i]
    .

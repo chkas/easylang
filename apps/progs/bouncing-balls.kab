@@ -30,17 +30,15 @@ subr collide
    .
 .
 on animate
-   clear
-   color 222
-   move 0 0
-   line 100 0
-   line 100 100
-   line 0 100
-   line 0 0
+   gclear
+   gcolor 222
+   gline 0 0 100 0
+   gline 100 0 100 100
+   gline 100 100 0 100
+   gline 0 100 0 0
    for i = 1 to n
-      color col[i]
-      move x[i] y[i]
-      circle rad
+      gcolor col[i]
+      gcircle x[i] y[i] rad
       x[i] += vx[i]
       y[i] += vy[i]
    .

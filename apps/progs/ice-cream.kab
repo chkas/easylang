@@ -16,15 +16,12 @@ subr init
    game_stat = 0
 .
 proc ice x y col .
-   color col
-   move x y
-   circle 3
-   color 432
-   polygon [ x y + 8 x - 3.5 y + 1 x + 3.5 y + 1 ]
+   gcolor col
+   gcircle x y 3
+   gcolor 432
+   gpolygon [ x y + 8 x - 3.5 y + 1 x + 3.5 y + 1 ]
 .
-ice 30 60 900
 proc draw_ice try .
-   color 990
    if try < 11 : ice 72 57 900
    if try < 10 : ice 92 57 449
    if try < 9 : ice 82 52 990
@@ -37,26 +34,23 @@ proc draw_ice try .
    if try < 2 : ice 72 12 900
    if try < 1 : ice 92 12 990
 .
-background 000
+gbackground 000
 global gind .
 proc drawkey ind col k$ .
-   textsize 9
+   gtextsize 9
    r = (ind - 1) div 5
    c = (ind - 1) mod 5
-   color col
-   move c * 13 r * 14
-   rect 12 13
-   color 997
-   move 2 + c * 13 1.8 + r * 14
-   text k$
+   gcolor col
+   grect c * 13 r * 14 12 13
+   gcolor 997
+   gtext 2 + c * 13 1.8 + r * 14 k$
 .
 proc draw .
-   clear
-   linewidth 1
-   color 997
+   gclear
+   glinewidth 1
+   gcolor 997
    for i to len w$[]
-      move i * 8 - 6 98
-      line i * 8 98
+      gline i * 8 - 6 98 i * 8 98
    .
    for ind to len sel[]
       k$ = alpha$[ind]
@@ -68,8 +62,7 @@ proc draw .
          for pos to len w$[]
             if w$[pos] = k$
                in = 1
-               move pos * 8 - 6 88
-               text w$[pos]
+               gtext pos * 8 - 6 88 w$[pos]
                found += 1
             .
          .
@@ -77,7 +70,7 @@ proc draw .
       .
    .
    draw_ice try
-   color 997
+   gcolor 997
    if found = len w$[]
       game_stat = 2
       timer 1
@@ -87,30 +80,24 @@ proc draw .
    .
 .
 proc smiley st .
-   move 80 73
-   color 983
-   circle 7
-   color 000
-   move 77 71
-   circle 1
-   move 83 71
-   circle 1
-   linewidth 1
+   gcolor 983
+   gcircle 80 73 7
+   gcolor 000
+   gcircle 77 71 1
+   gcircle 83 71 1
+   glinewidth 1
    if st = 2
-      curve [ 77 75 80 79 83 75 ]
+      gcurve [ 77 75 80 79 83 75 ]
    else
-      curve [ 77 77 80 74 83 77 ]
+      gcurve [ 77 77 80 74 83 77 ]
    .
 .
 proc sel .
    draw
    if game_stat > 1
       for i to len w$[]
-         move i * 8 - 6 88
-         text w$[i]
+         gtext i * 8 - 6 88 w$[i]
       .
-      move 60 70
-      textsize 8
       smiley game_stat
    .
 .
@@ -149,4 +136,3 @@ on mouse_down
 .
 init
 draw
-

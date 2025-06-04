@@ -4,30 +4,28 @@ subr square
    h = ind - 1
    x = h mod 4 * 24 + 6
    y = h div 4 * 24 + 6
-   linewidth 6
-   move x y
-   line x + 16 y
-   line x + 16 y + 16
-   line x y + 16
-   line x y
-   rect 16 16
+   glinewidth 6
+   gline x y x + 16 y
+   gline x + 16 y x + 16 y + 16
+   gline x + 16 y + 16 x y + 16
+   gline x y + 16 x y
+   grect x y 16 16
 .
 subr close_card
    open[ind] = 0
-   color 131
+   gcolor 131
    square
 .
 subr open_card
    open[ind] = 1
-   color 464
+   gcolor 464
    square
-   move x + 3 y + 3
-   color 000
-   text cards$[cards[ind]]
+   gcolor 000
+   gtext x + 3 y + 3 cards$[cards[ind]]
 .
 background 000
 subr start
-   clear
+   gclear
    for ind to 16 : close_card
    # shuffle
    for i = 16 downto 2
@@ -36,8 +34,8 @@ subr start
    .
    card1 = -1
    card2 = -1
-   color 000
-   textsize 16
+   gcolor 000
+   gtextsize 16
    opencards = 0
    starttime = systime
 .
@@ -72,33 +70,28 @@ on mouse_down
 .
 proc smiley t .
    if t <= 60
-      move 65 30
-      color 983
-      circle 19
-      color 000
-      move 58 37
-      circle 2
-      move 72 37
-      circle 2
-      linewidth 2
+      gcolor 983
+      gcircle 65 35 19
+      gcolor 000
+      gcircle 58 42 2
+      gcircle 72 42 2
+      glinewidth 2
       if t <= 30
-         curve [ 56 27 65 14 74 27 ]
+         gcurve [ 56 32 65 19 74 32 ]
       else
-         curve [ 58 23 65 17 72 23 ]
+         gcurve [ 58 28 65 22 72 28 ]
       .
    .
 .
 on timer
    if opencards = 16
       opencards = -1
-      clear
-      textsize 10
-      color 797
-      move 10 80
-      text "Well done!"
-      move 10 65
+      gclear
+      gtextsize 10
+      gcolor 797
+      gtext 10 80 "Well done!"
       t = floor (systime - starttime - 0.5)
-      text "Time: " & t
+      gtext 10 65 "Time: " & t
       smiley t
    else
       ind = card1

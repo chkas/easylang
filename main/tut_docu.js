@@ -204,66 +204,62 @@ for ch$ in strchars txt$
 
 + Drawing a house
 
-color 993
-move 20 0
-rect 60 45
-color 722
-polygon [ 50 70 15 45 85 45 ]
-color 444
-move 30 10
-rect 10 10
-move 30 30
-rect 10 10
-move 60 30
-rect 10 10
-move 5 85
-textsize 8
-text "MY HOUSE"
+gcolor 993
+grect 20 0 60 45
+gcolor 722
+gpolygon [ 50 70 15 45 85 45 ]
+gcolor 444
+grect 30 10 10 10
+grect 30 30 10 10
+grect 60 30 10 10
+gtextsize 8
+gtext 5 85 "MY HOUSE"
 
 + Graphic coordinates: 0/0 is bottom left, 100/100 is top right.
 
 + The colors are coded from 0 to 999, with the left digit specifying the red component, the middle digit the green component and the right digit the blue component.
 
-+ *color -1* sets the foreground color and *color -2* the background color as drawing color.
++ *gcolor -1* sets the foreground color and *gcolor -2* the background color as drawing color.
 
-+ *rect* draws a filled rectangle. *polygon* draws a filled polygon.
++ *grect* draws a filled rectangle. *gpolygon* draws a filled polygon.
 
 -
 
 + Sine wave
 
-linewidth 0.1
-move 0 50
-line 100 50
+glinewidth 0.1
+gline 0 50 100 50
 #
-color 800
-linewidth 0.5
+gcolor 800
+glinewidth 0.5
 for x = 0 step 0.5 to 100
    deg = x / 100 * 360
    y = 50 + 30 * sin deg
-   if x = 0
-      move x y
-   else
-      line x y
+   if x > 0
+      gline xp yp x y
    .
+   xp = x
+   yp = y
 .
 
-+ Coordinates are specified in floating point values and can also take intermediate values. *linewidth* sets the line width.
++ Coordinates are specified in floating point values and can also take intermediate values. *glinewidth* sets the line width.
 
 -
 
 + Turtle graphics
 
-deg = 0 ; x = 50 ; y = 50 ; down = 0
+deg = 0
+x = 50
+y = 50
+down = 0
 #
-move x y
 proc forward n .
+   x0 = x
+   y0 = y
    x += cos deg * n
    y += sin deg * n
    if down = 1
-      line x y
-   else
-      move x y
+      gline x0 y0 x y
    .
 .
 proc turn a .
@@ -279,8 +275,6 @@ for i = 1 to 18
    turn 20
 .
 
-+ The semicolon allows you to group commands together in one line.
-
 -
 
 + Visualization of the Monte Carlo algorithm
@@ -291,19 +285,17 @@ for i = 1 to n
    y = randomf
    if x * x + y * y < 1
       hit += 1
-      color 900
+      gcolor 900
    else
-      color 000
+      gcolor 000
    .
-   move x * 100 y * 100
-   circle 0.2
+   gcircle x * 100 y * 100 0.2
    if i mod 1000 = 0
       sleep 0.01
    .
 .
-color 000
-move 10 10
-text "PI: " & 4.0 * hit / n
+gcolor 000
+gtext 10 10 "PI: " & 4.0 * hit / n
 
 + The drawing area is updated when *sleep* is called.
 
@@ -311,39 +303,37 @@ text "PI: " & 4.0 * hit / n
 
 + Watching your drawing
 
-background 777
-clear
+gbackground 777
+gclear
 col = 0
 proc eye x y .
-   color 999
-   move x y
-   circle 6.5
-   color col
+   gcolor 999
+   gcircle x y 6.5
+   gcolor col
    cx = mouse_x - x
    cy = mouse_y - y
    f = sqrt (cy * cy + cx * cx) / 2
-   move x + cx / f y + cy / f
-   circle 3
+   gcircle x + cx / f y + cy / f 3
 .
 subr eyes
-   mx = mouse_x
-   my = mouse_y
    eye 20 80
    eye 40 80
 .
 linewidth 2
 on mouse_move
-   if down = 1
-      move mx my
-      line mouse_x mouse_y
-   .
    eyes
+   if down = 1
+      gline mx my mouse_x mouse_y
+      mx = mouse_x
+      my = mouse_y
+   .
 .
 on mouse_down
    down = 1
-   move mouse_x mouse_y
-   circle 1
    eyes
+   mx = mouse_x
+   my = mouse_y
+   gcircle mx my 1
 .
 on mouse_up
    down = 0
@@ -360,7 +350,7 @@ eyes
 
 + The *mouse* events are triggered after the corresponding mouse actions. *mouse_x* and *mouse_y* return the mouse position as floating point numbers.
 
-+ The *key* event is triggered when a keyboard key is pressed. *keybkey* returns the key value.
++ The *key_down* event is triggered when a keyboard key is pressed. *keybkey* returns the key value.
 
 -
 
@@ -371,27 +361,23 @@ proc picker .
    for i = 0 to 9
       f = 1
       for j = 0 to 2
-         move i * 10 j * 10
-         color i * f
-         rect 10 10
+         gcolor i * f
+         grect i * 10 j * 10 10 10
          f *= 10
       .
    .
-   color 666
+   gcolor 666
    for i = 0 to 2
-      move c[i + 1] * 10 + 5 10 * (2 - i) + 5
-      circle 1.5
+      gcircle c[i + 1] * 10 + 5 10 * (2 - i) + 5 1.5
       col = col * 10 + c[i + 1]
    .
-   color col
-   move 0 30
-   rect 100 70
-   move 30 60
-   color 000
+   gcolor col
+   grect 0 30 100 70
+   gcolor 000
    if c[1] + c[2] + c[3] < 15
-      color 888
+      gcolor 888
    .
-   text "color " & c[1] & c[2] & c[3]
+   gtext 30 60 "color " & c[1] & c[2] & c[3]
 .
 on mouse_down
    if mouse_y < 30
@@ -410,22 +396,19 @@ picker
 on timer
    if t <> floor systime
       t = floor systime
-      clear
+      gclear
       h$ = timestr t
-      move 10 58
-      text substr h$ 1 10
-      move 15 38
-      text substr h$ 12 8
+      gtext 10 58 substr h$ 1 10
+      gtext 15 38 substr h$ 12 8
    .
    timer 0.1
 .
 for i = 0 to 100
-   color3 0 (100 - i) / 100 0
-   move 0 i
-   line 100 i
+   gcolor3 0 (100 - i) / 100 0
+   gline 0 i 100 i
 .
-background -1
-textsize 12
+gbackground -1
+gtextsize 12
 timer 0
 
 + The timer event is triggered with a selectable delay by the *timer* command.
@@ -434,27 +417,30 @@ timer 0
 
 + *substr* returns a substring from the specified position and length.
 
-+ With *color3* you can set the intensity (0.0 to 1.0) of the red, green and blue color components.
++ With *gcolor3* you can set the intensity (0.0 to 1.0) of the red, green and blue color components.
 
-+ With *background -1* the current display is set as background, which can be displayed again with *clear*. You can also set a background color with this function.
++ With *gbackground -1* the current display is set as background, which can be displayed again with *gclear*. You can also set a background color with this function.
 
 -
 
 + Bouncing ball
 
-rad = 12 ; x = 50 ; y = 50
-vx = 1.5 ; vy = 2
+rad = 12
+x = 50
+y = 50
+vx = 1.5
+vy = 2
 #
 on animate
    if systime > timeout
       # every 4 seconds
       timeout = systime + 4
-      color random 999 - 1
+      gcolor random 999 - 1
    .
-   clear
-   move x y
-   circle rad
-   x += vx ; y += vy
+   gclear
+   gcircle x y rad
+   x += vx
+   y += vy
    if x > 100 - rad or x < rad : vx = -vx
    if y > 100 - rad or y < rad : vy = -vy
 .
@@ -645,9 +631,8 @@ for i range0 len a[] : print a[i]
 + With the configuration command *sysconf topleft* you can set the origin of the coordinate system to top left.
 
 sysconf topleft
-move 5 5
-textsize 4
-text "This is top left"
+gtextsize 4
+gtext 5 5 "This is top left"
 
 -
 

@@ -1,7 +1,7 @@
 # 2048
 #
 len brd[] 16
-background 987
+gbackground 987
 proc newtile .
    for i to 16 : if brd[i] = 0 : break 1
    if i > 16 : return
@@ -15,31 +15,25 @@ proc newtile .
 .
 global pts stat .
 proc show .
-   clear
-   textsize 5
-   move 10 94
-   color 222
-   text "2048 Game"
-   move 60 94
-   text "Pts: " & pts
-   textsize 7
-   move 9 9
-   color 876
-   rect 82 82
-   move 10 10
-   color 987
-   rect 80 80
+   gclear
+   gtextsize 5
+   gcolor 222
+   gtext 10 94 "2048 Game"
+   gtext 60 94 "Pts: " & pts
+   gtextsize 7
+   gcolor 876
+   grect 9 9 82 82
+   gcolor 987
+   grect 10 10 80 80
    for i to 16 : if brd[i] <> 0
       x = i mod1 4 * 20 - 9.5
       y = i div1 4 * 20 - 9.5
-      move x y
-      color 765
-      rect 19 19
+      gcolor 765
+      grect x y 19 19
       v = brd[i]
       h = 2 * floor log10 v
-      move x + 7 - h y + 7
-      color 000
-      text brd[i]
+      gcolor 000
+      gtext x + 7 - h y + 7 brd[i]
    .
 .
 proc init .
@@ -113,13 +107,12 @@ proc handle indk .
       .
    .
    if stat <> 0
-      textsize 5
-      move 10 3
+      gtextsize 5
       if stat = 1
          stat = 0
-         text "You got 2048 😊"
+         gtext 10 3 "You got 2048 😊"
       else
-         text "No more moves 🙁"
+         gtext 10 3 "No more moves 🙁"
       .
    .
 .

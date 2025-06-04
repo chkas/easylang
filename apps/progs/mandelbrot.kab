@@ -2,17 +2,15 @@
 #
 res = 4
 maxiter = 200
-#
-# better but slower:
-# res = 8 maxiter = 300
+# better but slower: res = 8 maxiter = 300
 #
 mid = res * 50
 center_x = 3 * mid / 2
 center_y = mid
 scale = mid
 #
-background 000
-textsize 2
+gbackground 000
+gtextsize 2
 #
 fastfunc iter cx cy max .
    while xx + yy < 4 and it < max
@@ -25,22 +23,20 @@ fastfunc iter cx cy max .
    return it
 .
 proc draw .
-   clear
+   gclear
    for scr_y = 0 to 2 * mid - 1
       cy = (scr_y - center_y) / scale
       for scr_x = 0 to 2 * mid - 1
          cx = (scr_x - center_x) / scale
          it = iter cx cy maxiter
          if it < maxiter
-            color3 it / 20 it / 100 it / 150
-            move scr_x / res scr_y / res
-            rect 1 / res 1 / res
+            gcolor3 it / 20 it / 100 it / 150
+            grect scr_x / res scr_y / res 1 / res 1 / res
          .
       .
    .
-   color 990
-   move 1 1
-   text "Short press to zoom in, long to zoom out"
+   gcolor 990
+   gtext 1 1 "Short press to zoom in, long to zoom out"
 .
 on timer
    if done = 0

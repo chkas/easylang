@@ -26,6 +26,7 @@ void gr_line(double fx, double fy) {}
 void gr_curve(double* val, int len) {}
 void gr_translate(double x, double y) {}
 void gr_rotate(double w) {}
+void gr_scale(double w) {}
 void gr_polygon(double* val, int len) {}
 
 
@@ -37,7 +38,13 @@ void gr_sleep(double sec) {
 */
 }
 
-void gr_text(const char* str) {}
+static void gr_text(const char* str) {}
+static void gr_gtext(double x, double y, const char* str) {}
+static void gr_gcircle(double x, double y, double r) {}
+static void gr_grect(double x, double y, double w, double h) {}
+static void gr_gline(double x, double y, double x2, double y2) {}
+static void gr_gcircseg(double x, double y, double rad, double a, double b) {}
+
 void gr_sys(unsigned short h) {}
 void gr_timer(double s) {}
 void gr_event_loop(void) {}
@@ -75,8 +82,6 @@ char gr_input(char* buf) {
 }
 
 void gr_exit(void) { exit(1); }
-
-void gr_circseg(double rad, double a, double b) {}
 void gr_step(void) {}
 void gr_info(int h) {}
 

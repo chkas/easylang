@@ -12,11 +12,10 @@ subr init
 .
 f = 100 / n
 subr show
-   clear
+   gclear
    for r = 1 to n : for c = 1 to n
       if f[r * nx + c] = 1
-         move c * f - f r * f - f
-         rect f * 0.9 f * 0.9
+         grect c * f - f r * f - f f * 0.9 f * 0.9
       .
    .
 .

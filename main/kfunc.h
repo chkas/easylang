@@ -1633,7 +1633,7 @@ S void op_linewidth(ND* nd) {
 S void op_textsize(ND* nd) {
 	gr_textsize(numf(nd->le));
 }
-S void op_rgb(ND* nd) {
+S void op_color3(ND* nd) {
 	ND* ndx = nd + 1;
 	int red = (int)(numf(nd->le) * 256);
 	if (red > 255) red = 255;
@@ -1647,8 +1647,23 @@ S void op_rgb(ND* nd) {
 S void op_circle(ND* nd) {
 	gr_circle(numf(nd->le));
 }
-S void op_rotate(ND* nd) {
+S void op_gcircle(ND* nd) {
+	ND* ndx = nd + 1;
+	gr_gcircle(numf(nd->le), numf(nd->ri), numf(ndx->ex));
+}
+S void op_grect(ND* nd) {
+	ND* ndx = nd + 1;
+	gr_grect(numf(nd->le), numf(nd->ri), numf(ndx->ex), numf(ndx->ex2));
+}
+S void op_gline(ND* nd) {
+	ND* ndx = nd + 1;
+	gr_gline(numf(nd->le), numf(nd->ri), numf(ndx->ex), numf(ndx->ex2));
+}
+S void op_co_rotate(ND* nd) {
 	gr_rotate(numf(nd->le) / 180. * M_PI);
+}
+S void op_co_scale(ND* nd) {
+	gr_scale(numf(nd->le));
 }
 S void op_line(ND* nd) {
 	gr_line(numf(nd->le), numf(nd->ri));
@@ -1656,20 +1671,32 @@ S void op_line(ND* nd) {
 S void op_move(ND* nd) {
 	gr_move(numf(nd->le), numf(nd->ri));
 }
-S void op_translate(ND* nd) {
+S void op_co_translate(ND* nd) {
 	gr_translate(numf(nd->le), numf(nd->ri));
 }
 S void op_rect(ND* nd) {
 	gr_rect(numf(nd->le), numf(nd->ri));
 }
+/*
 S void op_circseg(ND* nd) {
 	ND* ndx = nd + 1;
 	gr_circseg(numf(nd->le), numf(nd->ri), numf(ndx->ex));
+}
+*/
+S void op_gcircseg(ND* nd) {
+	ND* ndx = nd + 1;
+	gr_gcircseg(numf(nd->le), numf(nd->ri), numf(ndx->ex), numf(ndx->ex2), numf(ndx->ex3));
 }
 
 S void op_text(ND* nd) {
 	STR s = strf(nd->le);
 	gr_text(str_ptr(&s));
+	str_free(&s);
+}
+S void op_gtext(ND* nd) {
+	ND* ndx = nd + 1;
+	STR s = strf(ndx->ex);
+	gr_gtext(numf(nd->le), numf(nd->ri), str_ptr(&s));
 	str_free(&s);
 }
 

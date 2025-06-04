@@ -44,7 +44,7 @@ S ND* parse_strterm(void);
 
 S double (*numf[])(ND*) = {
 	op_sys_time, op_error, op_mouse_x, op_mouse_y, op_randomf, op_pi,
-	op_random, op_random, op_sqrt, op_log10, op_abs, op_sign, op_bitnot, op_floor, op_sin, op_cos, op_tan, op_asin, op_acos, op_atan,
+	op_random, op_sqrt, op_log10, op_abs, op_sign, op_bitnot, op_floor, op_sin, op_cos, op_tan, op_asin, op_acos, op_atan,
 	op_atan2, op_pow, op_bitand, op_bitor, op_bitxor, op_bitshift, op_lower, op_higher,
 	op_number, op_strcode, op_strpos, op_strcompare
 };
@@ -2282,6 +2282,29 @@ S void parse_funcproc(void) {
 	loop_level -= 1;
 }
 
+
+S void (*vftb[])(ND*) = {
+	op_print, op_write, op_text,
+	op_sleep, op_timer, op_textsize, op_linewidth, op_co_rotate, op_co_scale, op_circle,
+	op_color, op_background, op_mouse_cursor, op_random_seed,
+	op_move, op_line, op_co_translate, op_rect, op_numfmt,
+	op_gtext,
+	op_color3, op_gcircle,
+	op_grect, op_gline, op_gcircseg,
+	op_sound, op_polygon, op_curve,
+};
+S char vfprop[] = {
+	8, 8, 5,
+	0, 0, 1, 1, 1, 1, 1,
+	1, 1, 1, 0,
+	1, 1, 1, 1, 0,
+	5,
+	1, 1, 1,
+	1, 1,
+	2, 1, 1,
+};
+
+
 S ND* parse_stat() {
 	ND* nd = mknd();
 	opln_add(nd, fmtline);
@@ -2437,104 +2460,37 @@ S ND* parse_stat() {
 	else if (tok >= t_print && tok <= t_curve) {
 		csb_tok_spc_nt();
 		if (cod) {
-			if (tokpr == t_sleep) {
-				nd->vf = op_sleep;
-			}
-			else if (tokpr == t_timer) {
-				nd->vf = op_timer;
-			}
-			else if (tokpr == t_color) {
-				nd->vf = op_color;
-			}
-			else if (tokpr == t_linewidth) {
-				nd->vf = op_linewidth;
-			}
-			else if (tokpr == t_textsize) {
-				nd->vf = op_textsize;
-			}
-			else if (tokpr == t_move) {
-				nd->vf = op_move;
-			}
-			else if (tokpr == t_line) {
-				nd->vf = op_line;
-				prog_props |= 1;
-			}
-			else if (tokpr == t_rect) {
-				nd->vf = op_rect;
-				prog_props |= 1;
-			}
-			else if (tokpr == t_circseg) {
-				nd->vf = op_circseg;
-				prog_props |= 1;
-			}
-			else if (tokpr == t_rgb) {
-				nd->vf = op_rgb;
-			}
-			else if (tokpr == t_circle) {
-				nd->vf = op_circle;
-				prog_props |= 1;
-			}
-			else if (tokpr == t_text) {
-				nd->vf = op_text;
-				prog_props |= 5;
-			}
-			else if (tokpr == t_print || tokpr == t_pr) {
-				nd->vf = op_print;
-				prog_props |= 8;
-			}
-			else if (tokpr == t_write) {
-				nd->vf = op_write;
-				prog_props |= 8;
-			}
-			else if (tokpr == t_background) {
-				nd->vf = op_background;
-			}
-			else if (tokpr == t_mouse_cursor) {
-				nd->vf = op_mouse_cursor;
-			}
-			else if (tokpr == t_polygon) {
-				nd->vf = op_polygon;
-				prog_props |= 1;
-			}
-			else if (tokpr == t_curve) {
-				nd->vf = op_curve;
-				prog_props |= 1;
-			}
-			else if (tokpr == t_sound) {
-				nd->vf = op_sound;
-				prog_props |= 2;
-			}
-			else if (tokpr == t_random_seed) {
-				nd->vf = op_random_seed;
-			}
-			else if (tokpr == t_translate) {
-				nd->vf = op_translate;
-			}
-			else if (tokpr == t_rotate) {
-				nd->vf = op_rotate;
-			}
-			else if (tokpr == t_numfmt) {
-				nd->vf = op_numfmt;
-			}
-			else {
-				internal_error(__LINE__);
-				return 0;
-			}
+			int h = tokpr - t_print;
+			nd->vf = vftb[h];
+			prog_props |= vfprop[h];
 		}
 		if (tokpr <= t_text) {
 			nd->le = parse_strex();
 		}
-		else if (tokpr <= t_circseg) {
+		else if (tokpr <= t_gcircseg) {
 			int t = tokpr;
 			ND* ndx;
-			if (t >= t_rgb) ndx = mkndx();
+			if (t >= t_gtext) ndx = mkndx();
 			nd->le = parse_ex();
 			if (t >= t_move) {
 				cs_spc();
 				nd->ri = parse_ex();
-				if (t >= t_rgb) {
+				if (t >= t_gtext) {
 					cs_spc();
-					ndx->ex = parse_ex();
+					if (t <= t_gtext) {
+						ndx->ex = parse_strex();
+					}
+					else {
+						ndx->ex = parse_ex();
+						if (t >= t_grect) {
+							cs_spc();
+							ndx->ex2 = parse_ex();
+							if (t >= t_gcircseg) {
+								cs_spc();
+								ndx->ex3 = parse_ex();
+							}
+						}
+					}
 				}
 			}
 		}

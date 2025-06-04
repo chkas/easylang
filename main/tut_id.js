@@ -6,6 +6,7 @@ if (lang == "de") {
 	txt_header = "<p>Programmieren leicht gemacht</p><h3>Tutorials</h3>"
 	tut_descr = [
 		"Programmieren lernen",
+		"Programmieren lernen (neu)",
 		"Kleine Spiele programmieren",
 		"Dokumentation - Code-Beispiele",
 		"Funktionen and Rekursion",
@@ -14,6 +15,7 @@ if (lang == "de") {
 	txt_header = "<p>Programming made easy</p><h3>Tutorials</h3>"
 	tut_descr = [
 		"Learn programming",
+		"Learn programming (new)",
 		"Programming small games",
 		"Documentation - Code snippets",
 		"Functions and recursion",
@@ -22,6 +24,7 @@ if (lang == "de") {
 
 tut_file = [
 	"tut_learn" + VERS + ".js",
+	"tut_learn_new" + VERS + ".js",
 	"tut_game" + VERS + ".js",
 	"tut_docu" + VERS + ".js",
 	"tut_func" + VERS + ".js",
@@ -43,12 +46,11 @@ rad = 12
 x = 50
 y = 75
 vx = 1.5
-color 700
+gcolor 700
 #
 on animate
-   clear
-   move x y
-   circle rad
+   gclear
+   gcircle x y rad
    x += vx
    y += vy
    if x > 100 - rad or x < rad

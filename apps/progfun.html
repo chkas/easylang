@@ -97,16 +97,14 @@ var src = []
 
 src.push(`ang = 45
 color 881
-#
 on animate
-   clear
-   move 50 50
-   circle 1
+   gclear
+   gcircle 50 50 1
    x = 50 + 40 * sin ang
    y = 50 + 40 * cos ang
-   line x y
-   circle 6
-   vel += sin ang / 7
+   gline 50 50 x y
+   gcircle x y 6
+   vel += sin ang / 5
    ang += vel
 .
 `)
@@ -136,11 +134,10 @@ subr collide
 .
 background 111
 on animate
-   clear
+   gclear
    for i = 1 to n
-      color 700 + i * 30
-      move x[i] y[i]
-      circle rad
+      gcolor 700 + i * 30
+      gcircle x[i] y[i] rad
       x[i] += vx[i]
       y[i] += vy[i]
    .
@@ -165,31 +162,30 @@ on animate
 
 src.push(`proc tree x y l w ang dp . .
    if dp <= 2
-      color3 0 0.2 + randomf / 4 0
+      gcolor3 0 0.2 + randomf / 4 0
    else
-      color3 0.15 + randomf / 8 0.1 0
+      gcolor3 0.15 + randomf / 8 0.1 0
    .
-   linewidth w
+   glinewidth w
    move x y
-   x += l * cos ang
-   y += l * sin ang
-   line x y
+   xn = x + l * cos ang
+   yn = y + l * sin ang
+   gline x y xn yn
    if dp = 1 : break 1
    nb = 2 + if dp < 9
    for i = 1 to nb
       an = ang + (i - nb / 2 - 0.5) * 20
       an += (randomf - 0.5) * 60
       ln = l * (0.7 + randomf * 0.3)
-      tree x y ln w * 0.7 an dp - 1
+      tree xn yn ln w * 0.7 an dp - 1
    .
 .
-background 369
-textsize 3
+gbackground 369
+gtextsize 3
 subr new
-   clear
-   move 2 4
-   color 000
-   text "Click for new tree"
+   gclear
+   gcolor 000
+   gtext 2 4 "Click for new tree"
    tree 50 0 15 5 90 10
 .
 on mouse_down
@@ -205,8 +201,8 @@ len x[] n
 len y[] n
 len vx[] n
 len vy[] n
-background 479
-color 999
+gbackground 479
+gcolor 999
 on animate
    for i = 1 to 16
       ind = (ind + 1) mod1 n
@@ -215,10 +211,9 @@ on animate
       vx[ind] = (randomf - 0.5) * 0.4
       vy[ind] = 1.8 + randomf * 0.1
    .
-   clear
+   gclear
    for i = 1 to n
-      move x[i] y[i]
-      circle rad
+      gcircle x[i] y[i] rad
       x[i] += vx[i]
       y[i] += vy[i]
       vy[i] -= 0.02

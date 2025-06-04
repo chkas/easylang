@@ -48,21 +48,22 @@ subr initvars
    go_home
 .
 proc show_maze .
-   linewidth c5
-   color 000
-   move 0 0
-   rect 100 100
-   color 040
+   glinewidth c5
+   gcolor 000
+   grect 0 0 100 100
+   gcolor 040
    for r range0 sz : for co range0 sz
       if f[r * sz + co + 1] = 1
          if r mod 2 = 0
             if co mod 2 = 1
-               move c10 + (co - 1) * c2 c10 + r * c2
-               line c10 + (co + 1) * c2 c10 + r * c2
+               x = c10 + (co - 1) * c2
+               y = c10 + r * c2
+               gline x y x + c y
             .
          else
-            move c10 + co * c2 c10 + (r - 1) * c2
-            line c10 + co * c2 c10 + (r + 1) * c2
+            x = c10 + co * c2
+            y = c10 + (r - 1) * c2
+            gline x y x y + c
          .
       .
    .
@@ -98,34 +99,26 @@ proc make_maze .
 subr new_game
    make_maze
    show_maze
-   background -1
+   gbackground -1
    initvars
 .
 proc show_monster col row dirx diry .
    x = col * c + c2 + c10 + dirx * step * c5
    y = row * c + c2 + c10 + diry * step * c5
-   color 900
-   move x y
-   circle csc2
-   color 000
-   move x - c8 y - c10
-   circle c20
-   move x + c8 y - c10
-   circle c20
-   move x y + c5
-   circle c16 * abs step
+   gcolor 900
+   gcircle x y csc2
+   gcolor 000
+   gcircle x - c8 y - c10 c20
+   gcircle x + c8 y - c10 c20
+   gcircle x y + c5 c16 * abs step
 .
 subr show_me
-   move me_x me_y
-   circle csc2
-   color 000
-   move me_x - c8 me_y - c10
-   circle c20
-   move me_x + c8 me_y - c10
-   circle c20
-   linewidth c16
-   move me_x - c10 me_y + c5
-   line me_x + c10 me_y + c5
+   gcircle me_x me_y csc2
+   gcolor 000
+   gcircle me_x - c8 me_y - c10 c20
+   gcircle me_x + c8 me_y - c10 c20
+   glinewidth c16
+   gline me_x - c10 me_y + c5 me_x + c10 me_y + c5
 .
 on mouse_down
    m_x = mouse_x
@@ -195,25 +188,18 @@ proc do_y .
 proc leveldone .
    # sound [ 440 0.2 494 0.2 523 0.4 ]
    stat = -1
-   color 000
-   move 0 0
-   rect 100 100
-   textsize 8
-   color 995
-   move 5 14
-   text "Super! You made it."
-   textsize 6
-   move 5 26
-   text "Monsters: " & n_monster
-   move 5 34
-   text "Time: " & floor (systime - time_start - 0.5)
-   color 822
-   move 5 50
-   text "More and more monsters"
-   move 5 58
-   text "are coming and they"
-   move 5 66
-   text "are getting faster!"
+   gcolor 000
+   grect 0 0 100 100
+   gtextsize 8
+   gcolor 995
+   gtext 5 14 "Super! You made it."
+   gtextsize 6
+   gtext 5 26 "Monsters: " & n_monster
+   gtext 5 34 "Time: " & floor (systime - time_start - 0.5)
+   gcolor 822
+   gtext 5 50 "More and more monsters"
+   gtext 5 58 "are coming and they"
+   gtext 5 66 "are getting faster!"
    monster_delay -= 1
    n_monster += 1
 .
@@ -231,7 +217,7 @@ proc move_me .
       leveldone
    .
 .
-proc get_dir c r &x &y ..
+proc get_dir c r &x &y .
    xo = x
    yo = y
    repeat
@@ -301,7 +287,7 @@ on timer
    .
 .
 subr do_next
-   clear
+   gclear
    move_monster
    if stat = 0
       dme_x = m_x - me_x
@@ -316,20 +302,18 @@ subr do_next
             timer 1
          .
       .
-      color 070
+      gcolor 070
    else
-      color 886
+      gcolor 886
    .
    show_me
    if n_mo = 0
       stat = -1
-      color 000
-      move 0 0
-      rect 100 100
-      textsize 10
-      color 995
-      move 20 60
-      text "Game over"
+      gcolor 000
+      grect 0 0 100 100
+      gtextsize 10
+      gcolor 995
+      gtext 20 60 "Game over"
       monster_delay = 8
       n_monster = 6
    .

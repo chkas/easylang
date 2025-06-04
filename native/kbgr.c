@@ -306,8 +306,34 @@ static void thline(int x1, int y1, int x2, int y2) {
 	}
 }
 
-void gr_circle(double rad) {
+static void gr_circle(double rad) {
 	circle(gx, gy, (int)(FX * rad * 2 + 0.5));
+}
+static void gr_gcircle(double fx, double fy, double rad) {
+	int x = FX * fx;
+	int y = FX * inv(fy);
+	circle(x, y, (int)(FX * rad * 2 + 0.5));
+}
+
+static void gr_grect(double fx, double fy, double fw, double fh) {
+	int x = FX * fx;
+	int y = FX * inv(fy);
+	int h = (int)(FX * fh) + 1;
+	if (botleft) y -= h;
+	SDL_Rect r = {.x = x, .y = y, .w = (int)(FX * fw) + 1, .h = (int)(FX * fh) + 1};
+	SDL_RenderFillRect(renderer, &r);
+
+}
+static void gr_gline(double fx, double fy, double fx2, double fy2) {
+	int x = fx * FX;
+	int y = inv(fy) * FX;
+	int x2 = fx2 * FX;
+	int y2 = inv(fy2) * FX;
+
+	circle(x, y, linew);
+	if (x == x2 && y == y2) return;
+	thline(x, y, x2, y2);
+	circle(x2, y2, linew);
 }
 
 void gr_line(double fx, double fy) {
@@ -334,6 +360,9 @@ void gr_translate(double x, double y) {
 }
 void gr_rotate(double w) {
 	fprintf(stderr, "rotate not implemented yet");
+}
+void gr_scale(double w) {
+	fprintf(stderr, "scale not implemented yet");
 }
 
 void gr_polygon(double* val, int len) {
@@ -392,24 +421,32 @@ void gr_sleep(double sec) {
 	SDL_SetRenderTarget(renderer, display);
 }
 
-void gr_text(const char* str) {
+void text(int x, int y, const char* str) {
+
 	SDL_Surface* s = TTF_RenderUTF8_Solid(font, str, fcol);
 	SDL_Texture* t = SDL_CreateTextureFromSurface(renderer, s);
 	int th, tw;
 	SDL_QueryTexture(t, NULL, NULL, &tw, &th);
 
 	int h;
-//	if (botleft) h = FX * textsize - FX * textsize / 24;
 	if (botleft) h = FX * textsize;
-//	else h = FX * textsize / 8;
 	else h = FX * textsize / 4;
 
-	SDL_Rect r = { gx, gy - h, tw, th };
+	SDL_Rect r = { x, y - h, tw, th };
 	SDL_RenderCopy(renderer, t, NULL, &r);
 
 	SDL_DestroyTexture(t);
 	SDL_FreeSurface(s);
+}
+
+void gr_text(const char* str) {
+	text(gx, gy, str);
 	grline = 0;
+}
+void gr_gtext(double fx, double fy, const char* str) {
+	int x = fx * FX;
+	int y = inv(fy) * FX;
+	text(x, y, str);
 }
 
 SDL_Surface* backgr = NULL;
@@ -665,8 +702,8 @@ char gr_input(char* buf) {
 	buf[0] = 0;
 	return 1;
 }
-void gr_circseg(double rad, double a, double b) {
-	printf("** gr_arc is not implemented\n");
+void gr_gcircseg(double x, double y, double rad, double a, double b) {
+	printf("** gcircseg is not implemented\n");
 }
 void gr_exit(void) { exit(1); }
 void gr_step(void) {}

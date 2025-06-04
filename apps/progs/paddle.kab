@@ -2,7 +2,7 @@
 #
 rad = 5
 px = 50
-background 789
+gbackground 789
 #
 subr init
    x = 50
@@ -16,25 +16,20 @@ subr init
    mx = px
 .
 init
-linewidth 4
-textsize 4
+glinewidth 4
+gtextsize 4
 on animate
-   clear
+   gclear
    if pts = 0
-      move 15 70
-      text "Arrow keys or mouse to control"
+      gtext 15 70 "Arrow keys or mouse to control"
    .
-   color 000
-   move 2 95
-   text "Pts: " & pts
-   move 78 95
-   text "High: " & high
-   color 700
-   move x y
-   circle rad
-   color 444
-   move px - 10 2
-   line px + 10 2
+   gcolor 000
+   gtext 2 95 "Pts: " & pts
+   gtext 78 95 "High: " & high
+   gcolor 700
+   gcircle x y rad
+   gcolor 444
+   gline px - 10 2 px + 10 2
    #
    x += vx
    y += vy
@@ -84,4 +79,3 @@ on key_up
 on mouse_move
    mx = mouse_x
 .
-

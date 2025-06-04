@@ -13,13 +13,11 @@ subr init_vars
    res = 0
 .
 proc disp col s$ .
-   color col
-   move 3 76
-   rect 94 21
-   color 888
-   move 7 82
-   textsize 12
-   text s$
+   gcolor col
+   grect 3 76 94 21
+   gcolor 888
+   gtextsize 12
+   gtext 7 82 s$
 .
 proc show_quest .
    j = random sz
@@ -77,19 +75,17 @@ proc draw_key .
       .
    .
    y = y * 24 + 3
-   move x y
-   rect 22 22
-   move x + 5 y + 4.5
-   color 888
-   textsize 16
-   text s$
+   grect x y 22 22
+   gcolor 888
+   gtextsize 16
+   gtext x + 5 y + 4.5 s$
 .
 background 010
 proc init .
    init_vars
-   clear
+   gclear
    for ind = 0 to 11
-      color 020
+      gcolor 020
       draw_key
    .
    ind = -1
@@ -142,7 +138,7 @@ proc handle_key .
          ind = 11
       .
    .
-   color 040
+   gcolor 040
    draw_key
    handle_key2
 .
@@ -176,44 +172,37 @@ on mouse_down
 .
 on mouse_up
    if ind >= 0
-      color 020
+      gcolor 020
       draw_key
    .
 .
 proc smiley t .
    if t <= 60
-      move 65 35
-      color 983
-      circle 19
-      color 000
-      move 58 42
-      circle 2
-      move 72 42
-      circle 2
-      linewidth 2
+      gcolor 983
+      gcircle 65 35 19
+      gcolor 000
+      gcircle 58 42 2
+      gcircle 72 42 2
+      glinewidth 2
       if t <= 30
-         curve [ 56 32 65 19 74 32 ]
+         gcurve [ 56 32 65 19 74 32 ]
       else
-         curve [ 58 28 65 22 72 28 ]
+         gcurve [ 58 28 65 22 72 28 ]
       .
    .
 .
 proc done .
    t = floor (systime - t)
-   move 0 0
-   color 030
-   rect 100 100
-   color 888
-   move 10 82
-   textsize 10
-   text "Well done!"
-   move 10 66
-   text "Time: " & t
+   gcolor 030
+   grect 0 0 100 100
+   gcolor 888
+   gtextsize 10
+   gtext 10 82 "Well done!"
+   gtext 10 66 "Time: " & t
    s$ = "All"
    if row < 10 : s$ = row
-   move 10 10
-   textsize 6
-   text "Row: " & s$
+   gtextsize 6
+   gtext 10 10 "Row: " & s$
    smiley t
 .
 on timer
@@ -230,4 +219,3 @@ on timer
    .
 .
 init
-

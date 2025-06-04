@@ -140,22 +140,26 @@ Built-in graphic primitives and event-driven programming
 ```
 # simple drawing with the mouse
 #
-linewidth 4
-color 900
+glinewidth 4
+gcolor 900
 # the colors are coded from 0 to 999, where the
 # decimal digits specify the RGB components
 #
 on mouse_down
    down = 1
-   move mouse_x mouse_y
-   # moves the drawing pen to the actual mouse position
-   circle 2
+   mx = mouse_x
+   my = mouse_y
+   gcircle mx my 2
 .
 on mouse_up
    down = 0
 .
 on mouse_move
-   if down = 1 : line mouse_x mouse_y
+   if down = 1
+      gline mx my mouse_x mouse_y
+      mx = mouse_x
+      my = mouse_y
+   .
 .
 ```
 
@@ -165,13 +169,12 @@ on mouse_move
 ang = 45
 on animate
    # The animate event occurs after each screen refresh.
-   clear
-   move 50 50
-   circle 1
+   gclear
+   gcircle 50 50 1
    x = 50 + 40 * sin ang
    y = 50 + 40 * cos ang
-   line x y
-   circle 6
+   gline 50 50 x y
+   gcircle x y 6
    vel += sin ang / 5
    ang += vel
 .

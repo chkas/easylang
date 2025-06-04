@@ -5,8 +5,8 @@ p_tree = 0.002
 #
 len f[] 102 * 102
 len p[] len f[]
-background 100
-clear
+gbackground 100
+gclear
 for r = 0 to 99 : for c = 0 to 99
    i = r * 102 + c + 104
    if randomf < 0.5 : f[i] = 1
@@ -18,16 +18,15 @@ subr show
       i = r * 102 + c + 104
       h = f[i]
       if h <> p[i]
-         move c + 0.5 r + 0.5
          if h = 0
-            color 100
-            circle 0.6
+            gcolor 100
+            gcircle c + 0.5 r + 0.5 0.6
          elif h = 1
-            color 151
-            circle 0.5
+            gcolor 151
+            gcircle c + 0.5 r + 0.5 0.5
          else
-            color 9 * 100 + (18 - 2 * h) * 10
-            circle 0.5
+            gcolor 9 * 100 + (18 - 2 * h) * 10
+            gcircle c + 0.5 r + 0.5 0.5
          .
       .
    .

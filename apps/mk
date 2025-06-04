@@ -38,7 +38,7 @@ cd $src
 mk_tut() {
 #	n=$(echo $1 | tr "A-Z " a-z_)
 	n=$2
-	test $o/tut_$n.html -nt ../main/tut_$2.js && return
+	test $o/tut_$n.html -nt ../main/tut_$n.js && return
 	echo "tut_$n.html .." >&2
 	cat >$o/tut_$n.html <<xxx
 <!doctype html>
@@ -59,7 +59,7 @@ if (typeof WebAssembly != 'object') {
 	tut.innerHTML = "You need a browser with WebAssembly support for this website."
 }
 xxx
-	if test $2 = learn; then
+	if test $n = learn || test $n = learn_new; then
 		cat >>$o/tut_$n.html <<'xxx'
 txt_locale = "de"
 txt_tutor = String.raw`
@@ -68,10 +68,10 @@ txt_tutor = String.raw`
 *de Programmier-Grundlagen
 
 xxx
-		sed -ne '8,13p'  ../main/tut_learn.js >>$o/tut_$n.html
-		l=$(grep -n Debug ../main/tut_learn.js | head -1 | cut -f1 -d:)
-		head -$((l-1)) ../main/tut_learn.js | tail +27 >>$o/tut_$n.html
-		tail +$((l+4)) ../main/tut_learn.js  >>$o/tut_$n.html
+		sed -ne '8,13p'  ../main/tut_$n.js >>$o/tut_$n.html
+		l=$(grep -n Debug ../main/tut_$n.js | head -1 | cut -f1 -d:)
+		head -$((l-1)) ../main/tut_$n.js | tail +27 >>$o/tut_$n.html
+		tail +$((l+4)) ../main/tut_$n.js  >>$o/tut_$n.html
 
 		printf "txt_tutor+=String.raw\`\n" >>$o/tut_$n.html
 
@@ -160,30 +160,26 @@ xxx
 	cat >>$o/tut_$n.html <<'xxx'
 `)
 xxx
-	if test $2 = learn; then
+	if test $2 = learn || test $2 = learn_new; then
 		cat >>$o/tut_$n.html <<'xxx'
 	var srcx = `
-linewidth 8
+glinewidth 8
 timer 0.5
 on timer
    stat += 1
    if stat = 0
-      clear
+      gclear
    elif stat = 1
-      color 333
-      move 9 96
-      line 13 96
+      gcolor 333
+      gline 9 96 13 96
    elif stat = 2
-      color 900
-      move 4 91
-      line 18 91
+      gcolor 900
+      gline 4 91 18 91
    elif stat = 3
-      color 333
-      move 5 85
-      circle 3.5
+      gcolor 333
+      gcircle 5 85 3.5
    elif stat = 4
-      move 16 85
-      circle 3.5
+      gcircle 16 85 3.5
    else
       x = 0
       return
@@ -191,26 +187,20 @@ on timer
    timer 1.2
 .
 on animate
-   if stat <> 5
-      return
-   .
+   if stat <> 5 : return
    if x > 78
       stat = -1
       timer 2
       return
    .
-   clear
-   color 333
-   move x + 9 96
-   line x + 13 96
-   color 900
-   move x + 4 91
-   line x + 18 91
-   color 333
-   move x + 5 85
-   circle 3.5
-   move x + 16 85
-   circle 3.5
+   gclear
+   gcolor 333
+   gline x + 9 96 x + 13 96
+   gcolor 900
+   gline x + 4 91 x + 18 91
+   gcolor 333
+   gcircle x + 5 85 3.5
+   gcircle x + 16 85 3.5
    x += 0.4
 .
 on mouse_down
@@ -235,8 +225,11 @@ mk_tut "Documentation and code snippets" docu "easylang documentation"
 mk_tut "Procedures and recursion" func "recursive procedures"
 mk_tut "Programming small games" game "canvas game, smartphone" "" "runner"
 mk_tut "Programming basics" learn "learn programming basics"
+mk_tut "Programming basics (new)" learn_new "learn programming basics"
 sed s/555/222/g $o/tut_learn.html > $o/tmp.html
 mv $o/tmp.html $o/tut_learn.html
+sed s/555/222/g $o/tut_learn_new.html > $o/tmp.html
+mv $o/tmp.html $o/tut_learn_new.html
 
 # --------------------------------------------------------------
 
@@ -267,10 +260,9 @@ cat <<xxx
 xxx
 
 col="body{ background-color:#000; color:#ccc;}"
-for j in clock pendulum _r_maze0 _r_maze; do
+for j in clock pendulum; do
 	test progs/$j.kab = $k && col=''
 done
-test progs/_color_bars.kab = $k && col="body{ background-color:#444; color:#eee;}"
 test progs/mandelbrot.kab = $k && col="body{ background-color:#111; color:#ccc;}"
 echo $col
 
@@ -452,6 +444,7 @@ A language that doesn’t have everything is actually easier to program in than 
 <h3>Interactive tutorials</h3>
 
 <p><a href="tut_learn.html?$vers">Learn Programming Basics</a>
+<p><a href="tut_learn_new.html?$vers">Learn Programming Basics (new)</a>
 <p><a href="tut_game.html?$vers">Programming Small Games</a>
 <p><a href="tut_docu.html?$vers">Documentation and Code Snippets</a>
 <p><a href="tut_func.html?$vers">Functions and Recursion</a>
@@ -501,14 +494,13 @@ and <a href=easy.js><i>easy.js</i></a> to your web directory, you can embed a sc
 
 <script>
 src1 = `proc tree x y a d .
-   linewidth d * 0.4
-   move x y
-   x += cos a * d * 1.4 * (randomf + 0.5)
-   y += sin a * d * 1.4 * (randomf + 0.5)
-   line x y
+   glinewidth d * 0.4
+   xn = x + cos a * d * 1.4 * (randomf + 0.5)
+   yn = y + sin a * d * 1.4 * (randomf + 0.5)
+   gline x y xn yn
    if d > 1
-      tree x y a - 20 d - 1
-      tree x y a + 20 d - 1
+      tree xn yn a - 20 d - 1
+      tree xn yn a + 20 d - 1
    .
 .
 tree 50 5 90 10
@@ -551,34 +543,30 @@ function runBall() {
 # Ball
 #
 on animate
-  clear
-  color 555
-  move 0 85
-  line 0 0
-  line 100 0
-  line 100 85
-  move 10 50
-  text "programming fun"
-  color 700
-  move x y
-  circle rad
-  if x > 100 - rad or x < rad
-    vx = -vx
-  .
-  x += vx
-  if y < rad
-    vy = -vy
-  else
-    vy -= 0.1
-  .
-  y += vy
+   gclear
+   gcolor 555
+   gline 0 85 0 0
+   gline 0 0 100 0
+   gline 100 0 100 85
+   gtext 10 50 "programming fun"
+   gcolor 700
+   gcircle x y rad
+   if x > 100 - rad or x < rad
+      vx = -vx
+   .
+   x += vx
+   if y < rad
+      vy = -vy
+   else
+      vy -= 0.1
+   .
+   y += vy
 .
 rad = 12
 x = 50
 y = 85
 vx = 1.5`)
 }
-
 
 function runMandel() {
 	show(`
@@ -697,7 +685,7 @@ cat <<xxx
 <i>Easylang</i> is free of charge: free to use, free to copy and requires no registration or login. It is also Open Source.
 
 <p><a href=https://github.com/chkas/easylang>Source on GitHub</a>
-<p><a href="mailto:christof.kaser@gmail.com">Say hello ✉</a>
+<p><a href="mailto:christof.kaser@gmail.com">Contact ✉</a>
 <p>
 If you like it, recommend it to others.
 <p>
@@ -705,6 +693,3 @@ If you like it, recommend it to others.
 <hr>
 <small>christof.kaser@gmail.com</small>
 xxx
-
-
-

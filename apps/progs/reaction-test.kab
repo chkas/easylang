@@ -1,27 +1,25 @@
 # Reaction test
 #
 subr wait
-   color 733
-   text "WAIT"
+   gcolor 733
+   gtext 20 50 "WAIT"
    timer 1.5 + 2 * randomf
 .
 on timer
-   clear
-   color 373
-   text "PRESS"
+   gclear
+   gcolor 373
+   gtext 20 50 "PRESS"
    time0 = systime
 .
 on mouse_down
-   clear
+   gclear
    if time0 >= 0.15
-      color 555
-      text systime - time0
+      gcolor 555
+      gtext 20 50 systime - time0
       time0 = 0
    else
       wait
    .
 .
-textsize 20
-move 20 50
+gtextsize 20
 wait
-

@@ -351,6 +351,9 @@ function grafCommand(d) {
 		c.arc(d[1], d[2], d[3], d[4] * Math.PI / 180, d[5] * Math.PI / 180)
 		c.fill()
 		break
+	case 17:
+		c.scale(d[1], d[1])
+		break
 	}
 }
 

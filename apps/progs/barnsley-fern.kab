@@ -1,6 +1,6 @@
 # Barnsley fern
 #
-color 060
+gcolor 060
 for i = 1 to 200000
   r = randomf
   if r < 0.01
@@ -18,7 +18,6 @@ for i = 1 to 200000
   .
   x = nx
   y = ny
-  move 50 + x * 15 y * 10
-  rect 0.3 0.3
+  grect 50 + x * 15 y * 10 0.3 0.3
 .
 

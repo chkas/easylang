@@ -605,7 +605,6 @@ end
 x = -25
 while x < 120
    clear
-   move x 10
    drawcar
    sleep 0.02
    x += 0.5

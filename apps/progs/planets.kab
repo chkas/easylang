@@ -4,8 +4,8 @@
 showtrace = 0
 nbody = 1
 #
-background 000
-color 999
+gbackground 000
+gcolor 999
 #
 subr interact
    dx = x[j] - x[i]
@@ -17,18 +17,16 @@ subr interact
    vy[i] += dy * a
 .
 subr draw_obj
-   move x[i] / 5.3 + 50 y[i] / 5.3 + 50
-   color col[i]
-   circle sz[i] / 15
+   gcolor col[i]
+   gcircle x[i] / 5.3 + 50 y[i] / 5.3 + 50 sz[i] / 15
 .
-clear
-textsize 2.5
+gclear
+gtextsize 2.5
 on animate
-   if showtrace = 0 : clear
+   if showtrace = 0 : gclear
    for i to n
-      color col[i]
-      move 2 100 - i * 4
-      text n$[i]
+      gcolor col[i]
+      gtext 2 100 - i * 4 n$[i]
       draw_obj
       h = 1
       if nbody = 1 : h = n

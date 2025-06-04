@@ -22,19 +22,19 @@ txt_tutor=`* The Law of Large Numbers or Why It Is a Bad Idea to Go to the Casin
 
 flip = random 2
 if flip = 1
-  print "Heads"
+   print "Heads"
 else
-  print "Tails"
+   print "Tails"
 .
 
 + We flip a coin 1000 times and count how often heads come
 
 n = 1000
 for i = 1 to n
-  flip = random 2
-  if flip = 1
-    heads += 1
-  .
+   flip = random 2
+   if flip = 1
+      heads += 1
+   .
 .
 print "We got " & heads & " heads"
 print "That is " & 100 * heads / n & "%"
@@ -47,10 +47,10 @@ print "That is " & 100 * heads / n & "%"
 
 n = 1000000
 for i = 1 to n
-  flip = random 2
-  if flip = 1
-    heads += 1
-  .
+   flip = random 2
+   if flip = 1
+      heads += 1
+   .
 .
 print "We got " & heads & " heads"
 print "That is " & 100 * heads / n & "%"
@@ -67,19 +67,19 @@ print "That is " & 100 * heads / n & "%"
 
 numb = random 37 - 1
 if numb >= 19
-  print "You win $10"
+   print "You win $10"
 else
-  print "You lose $10"
+   print "You lose $10"
 .
 
 + Let's play a thousand times:
 
 for i = 1 to 1000
-  cash -= 10
-  numb = random 37 - 1
-  if numb >= 19
-    cash += 20
-  .
+   cash -= 10
+   numb = random 37 - 1
+   if numb >= 19
+      cash += 20
+   .
 .
 print "Cash after playing: $" & cash
 
@@ -90,11 +90,11 @@ print "Cash after playing: $" & cash
 + Now lets play 10000 times
 
 for i = 1 to 10000
-  cash -= 10
-  numb = random 37 - 1
-  if numb >= 19
-    cash += 20
-  .
+   cash -= 10
+   numb = random 37 - 1
+   if numb >= 19
+      cash += 20
+   .
 .
 print "Cash after playing: $" & cash
 
@@ -109,11 +109,11 @@ print 10 * 10000 * (18 / 37 - 19 / 37)
 + The new strategy: bet on 13 - we win $350 when the ball rolls to 13.
 
 for i = 1 to 10000
-  cash -= 10
-  numb = random 37 - 1
-  if numb = 13
-    cash += 360
-  .
+   cash -= 10
+   numb = random 37 - 1
+   if numb = 13
+      cash += 360
+   .
 .
 print "Cash after playing: $" & cash
 
@@ -126,18 +126,18 @@ print "Cash after playing: $" & cash
 cash = 1000
 day = 1
 while cash < 2000 and cash >= 10
-  game += 1
-  cash -= 10
-  numb = random 37 - 1
-  if numb >= 19
-    cash += 20
-  .
-  if game = 500
-    print "Day " & day & ": $" & cash
-    day += 1
-    game = 0
-    sleep 1.5
-  .
+   game += 1
+   cash -= 10
+   numb = random 37 - 1
+   if numb >= 19
+      cash += 20
+   .
+   if game = 500
+      print "Day " & day & ": $" & cash
+      day += 1
+      game = 0
+      sleep 1.5
+   .
 .
 print "Day " & day & ": $" & cash
 print "-------------"
@@ -157,9 +157,7 @@ subr session
 n = 1000
 for i = 1 to n
    session
-   if cash < 10
-      n_lose += 1
-   .
+   if cash < 10 : n_lose += 1
 .
 print n_lose & "/" & n & " = " & n_lose / n * 100 & "%"
 
@@ -172,25 +170,25 @@ print n_lose & "/" & n & " = " & n_lose / n * 100 & "%"
 cash = 1000
 day = 1
 while cash < 2000 and cash >= 10
-  game += 1
-  if numb < 19
-    set_high = 1
-  else
-    set_high = 0
-  .
-  cash -= 10
-  numb = random 37 - 1
-  if set_high = 1 and numb >= 19
-    cash += 20
-  elif set_high = 0 and numb >= 1 and numb <= 18
-    cash += 20
-  .
-  if game = 500
-    print "Day " & day & ": $" & cash
-    day += 1
-    game = 0
-    sleep 1.5
-  .
+   game += 1
+   if numb < 19
+      set_high = 1
+   else
+      set_high = 0
+   .
+   cash -= 10
+   numb = random 37 - 1
+   if set_high = 1 and numb >= 19
+      cash += 20
+   elif set_high = 0 and numb >= 1 and numb <= 18
+      cash += 20
+   .
+   if game = 500
+      print "Day " & day & ": $" & cash
+      day += 1
+      game = 0
+      sleep 1.5
+   .
 .
 print "Day " & day & ": $" & cash
 print "-------------"
@@ -205,27 +203,23 @@ cash = 10000
 day = 1
 bet = 10
 while cash < 20000 and cash >= 10
-  game += 1
-  cash -= bet
-  numb = random 37 - 1
-  if numb >= 19
-    cash += 2 * bet
-    bet = 10
-  else
-    bet *= 2
-    if bet > 1000
-      bet = 1000
-    .
-    if bet > cash
-      bet = cash
-    .
-  .
-  if game = 500
-    print "Day " & day & ": $" & cash
-    day += 1
-    game = 0
-    sleep 1.5
-  .
+   game += 1
+   cash -= bet
+   numb = random 37 - 1
+   if numb >= 19
+      cash += 2 * bet
+      bet = 10
+   else
+      bet *= 2
+      if bet > 1000 : bet = 1000
+      if bet > cash : bet = cash
+   .
+   if game = 500
+      print "Day " & day & ": $" & cash
+      day += 1
+      game = 0
+      sleep 1.5
+   .
 .
 print "Day " & day & ": $" & cash
 print "-------------"
@@ -233,30 +227,28 @@ print "-------------"
 + Most of the time we lose. But with this strategy we seem to be able to win more often. We'll just try this 100 times in a row and see how often it works out.
 
 subr session
-  cash = 10000
-  bet = 10
-  while cash < 20000 and cash >= 10
-    cash -= bet
-    numb = random 37 - 1
-    if numb >= 19
-      cash += 2 * bet
-      bet = 10
-    else
-      bet *= 2
-      if bet > 1000
-        bet = 1000
+   cash = 10000
+   bet = 10
+   while cash < 20000 and cash >= 10
+      cash -= bet
+      numb = random 37 - 1
+      if numb >= 19
+         cash += 2 * bet
+         bet = 10
+      else
+         bet *= 2
+         if bet > 1000
+            bet = 1000
+         .
+         if bet > cash
+            bet = cash
+         .
       .
-      if bet > cash
-        bet = cash
-      .
-    .
-  .
+   .
 .
 for i = 1 to 100
-  session
-  if cash >= 20000
-    n_win += 1
-  .
+   session
+   if cash >= 20000 : n_win += 1
 .
 print n_win
 
@@ -275,32 +267,28 @@ print n_win
 my_numbers[] = [ 3 7 13 27 31 49 ]
 #
 len box[] 49
-for i = 1 to 49
-  box[i] = i
-.
+for i = 1 to 49 : box[i] = i
 subr drawing
-  for i = 1 to 6
-    h = random (50 - i) + i - 1
-    swap box[i] box[h]
-  .
+   for i = 1 to 6
+      h = random (50 - i) + i - 1
+      swap box[i] box[h]
+   .
 .
 subr check
-  n_match = 0
-  for i = 1 to 6
-    for j = 1 to 6
-      if my_numbers[i] = box[j]
-        n_match += 1
+   n_match = 0
+   for i = 1 to 6
+      for j = 1 to 6
+         if my_numbers[i] = box[j] : n_match += 1
       .
-    .
-  .
+   .
 .
 while n_match < 6
-  drawing
-  check
-  if n_match = 5
-    print "5 correct after " & week div 52 & " years"
-  .
-  week += 1
+   drawing
+   check
+   if n_match = 5
+      print "5 correct after " & week div 52 & " years"
+   .
+   week += 1
 .
 print ""
 print "6 correct after " & week div 52 & " years"
@@ -315,11 +303,9 @@ print "6 correct after " & week div 52 & " years"
 
 n = 100000
 for i = 1 to n
-  x = randomf
-  y = randomf
-  if x * x + y * y < 1
-    hit += 1
-  .
+   x = randomf
+   y = randomf
+   if x * x + y * y < 1 : hit += 1
 .
 print "PI: " & hit / n * 4
 
@@ -327,19 +313,16 @@ print "PI: " & hit / n * 4
 
 n = 50000
 for i = 1 to n
-  x = randomf
-  y = randomf
-  if x * x + y * y < 1
-    hit += 1
-    color 900
-  else
-    color 000
-  .
-  move x * 100 y * 100
-  circle 0.2
-  if i mod 1000 = 0
-    sleep 0.03
-  .
+   x = randomf
+   y = randomf
+   if x * x + y * y < 1
+      hit += 1
+      gcolor 900
+   else
+      gcolor 000
+   .
+   gcircle x * 100 y * 100 0.2
+   if i mod 1000 = 0 : sleep 0.03
 .
 print hit / n * 4
 

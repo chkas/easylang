@@ -40,12 +40,6 @@ static byte grline;
 static void gr_color(int r, int g, int b) {
 	EM_ASM_({ push([9, $0, $1, $2])}, r, g, b);
 }
-static void gr_translate(double x, double y) {
-	EM_ASM_({ push([13, $0, $1])}, x, y);
-}
-static void gr_rotate(double w) {
-	EM_ASM_({ push([14, $0])}, w);
-}
 static void gr_backcolor(int r, int g, int b) {
 	EM_ASM_({ push([15, $0, $1, $2])}, r, g, b);
 }
@@ -78,6 +72,7 @@ static char gr_input(char* buf) {
 	EM_ASM(input());
 	return input_str == NULL;
 }
+static double grsz;
 static double grx;
 static double gry;
 static char grbotleft;
@@ -92,6 +87,7 @@ static void gr_init(const char* s, int mask) {
 	grx = 0;
 	gry = 100;
 	grbotleft = 1;
+	grsz = 100;
 	if (sysconfig & 1) {
 		gry = 0;
 		grbotleft = 0;
@@ -108,46 +104,84 @@ static void gr_sys(ushort h) {
 		EM_ASM_({ push([7, $0])}, h);
 	}
 }
+static void gr_translate(double x, double y) {
+	if (grbotleft) y = -y;
+	EM_ASM_({ push([13, $0, $1])}, x, y);
+}
+static void gr_rotate(double w) {
+	EM_ASM_({ push([14, $0])}, w);
+}
+static void gr_scale(double sc) {
+	EM_ASM_({ push([17, $0])}, sc);
+	grsz /= sc;
+	grtxty *= sc;
+}
 static void gr_textsize(double h) {
 	EM_ASM_({ push([10, $0])}, h);
 	// all ascii chars are in the box?
-	grtxty = h * 0.78;
+	//grtxty = h * 0.78;
+	grtxty = h * 78 / grsz;
 }
 static void gr_text(const char* s) {
 	double h = gry;
 	if (!grbotleft) h += grtxty;
 	EM_ASM_({ push([6, $0, $1, UTF8ToString($2)])}, grx, h, s);
-	grline = 0;
+}
+static void gr_gtext(double x, double y, const char* s) {
+	if (grbotleft) y = grsz - y;
+	else y += grtxty;
+	EM_ASM_({ push([6, $0, $1, UTF8ToString($2)])}, x, y, s);
 }
 static void gr_move(double x, double y) {
 	grx = x;
-	if (grbotleft) gry = 100 - y;
+	if (grbotleft) gry = grsz - y;
 	else gry = y;
 	grline = 1;
 }
 static void gr_line(double x, double y) {
-	if (grbotleft) y = 100 - y;
+	if (grbotleft) y = grsz - y;
 	if (grline) EM_ASM_({ push([2, $0, $1, $2, $3])}, grx, gry, x, y);
 	else grline = 1;
 	grx = x;
 	gry = y;
 }
-static void gr_rect(double x, double y) {
-	double h = gry;
-	if (grbotleft) h -= y;
-	EM_ASM_({ push([4, $0, $1, $2, $3])}, grx, h, x, y);
+static void gr_rect(double w, double h) {
+	double y = gry;
+	if (grbotleft) y -= h;
+	EM_ASM_({ push([4, $0, $1, $2, $3])}, grx, y, w, h);
 }
+/*
 static void gr_circseg(double rad, double a, double b) {
 	EM_ASM_({ push([16, $0, $1, $2, $3, $4])}, grx, gry, rad, a, b);
 }
-static void gr_circle(double x) {
-	EM_ASM_({ push([3, $0, $1, $2])}, grx, gry, x);
+*/
+static void gr_gcircseg(double x, double y, double rad, double a, double b) {
+	if (grbotleft) y = grsz - y;
+	EM_ASM_({ push([16, $0, $1, $2, $3, $4])}, x, y, rad, a, b);
+}
+static void gr_circle(double r) {
+	EM_ASM_({ push([3, $0, $1, $2])}, grx, gry, r);
+}
+static void gr_gcircle(double x, double y, double r) {
+	if (grbotleft) y = grsz - y;
+	EM_ASM_({ push([3, $0, $1, $2])}, x, y, r);
+}
+static void gr_grect(double x, double y, double w, double h) {
+	if (grbotleft) y = grsz - y - h;
+	EM_ASM_({ push([4, $0, $1, $2, $3])}, x, y, w, h);
+}
+static void gr_gline(double x, double y, double x2, double y2) {
+	if (grbotleft) {
+		y = grsz - y;
+		y2 = grsz - y2;
+	}
+	EM_ASM_({ push([2, $0, $1, $2, $3])}, x, y, x2, y2);
 }
 static void gr_curve(double* val, int len) {
 	EM_ASM(list = []);
 	for (int i = 0; i < len - 1; i += 2) {
 		double h;
-		if (grbotleft) h = 100 - val[i + 1];
+		if (grbotleft) h = grsz - val[i + 1];
 		else h = val[i + 1];
 		EM_ASM_({
 			list.push([$0, $1])
@@ -159,7 +193,7 @@ static void gr_polygon(double* val, int len) {
 	EM_ASM(list = []);
 	for (int i = 0; i < len; i += 2) {
 		double h;
-		if (grbotleft) h = 100 - val[i + 1];
+		if (grbotleft) h = grsz - val[i + 1];
 		else h = val[i + 1];
 		EM_ASM_({
 			list.push([$0, $1])
