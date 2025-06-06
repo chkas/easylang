@@ -1,7 +1,7 @@
 # AoC-15 - Day 18: Like a GIF For Your Yard
-# 
+#
 visualization = 1
-# 
+#
 repeat
    s$ = input
    until s$ = ""
@@ -22,22 +22,19 @@ if len inp$[] = 0
       inp$[] &= s$
    .
 .
-# 
+#
 n = len inp$[] + 1
 global p[] f[] .
-# 
+#
 f = 100 / (n - 1)
-background 000
-color 543
+gbackground 000
+gcolor 543
 proc show .
    if visualization = 1
-      clear
-      for r to n - 1
-         for c to n - 1
-            if f[r * n + c + 1] = 1
-               move (c - 1) * f (r - 1) * f
-               rect f * 0.9 f * 0.9
-            .
+      gclear
+      for r to n - 1 : for c to n - 1
+         if f[r * n + c + 1] = 1
+            grect (c - 1) * f (r - 1) * f f * 0.9 f * 0.9
          .
       .
       sleep 0.05
@@ -71,36 +68,26 @@ proc update .
 .
 for part to 2
    len f[] 0
-   for i to n
-      f[] &= 0
-   .
+   for i to n : f[] &= 0
    for s$ in inp$[]
       f[] &= 0
       for i to n - 1
          f[] &= if substr s$ i 1 = "#"
       .
    .
-   for i to n + 1
-      f[] &= 0
-   .
+   for i to n + 1 : f[] &= 0
    if part = 2
       patch
    .
    len p[] len f[]
    for step to 100
       update
-      if part = 2
-         patch
-      .
+      if part = 2 : patch
       show
    .
    sum = 0
-   for v in f[]
-      sum += v
-   .
+   for v in f[] : sum += v
    print sum
 .
-# 
+#
 input_data
-
-

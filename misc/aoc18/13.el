@@ -58,42 +58,37 @@ proc show crash_pos .
    w = 98 / nc
    if first_show = 1
       first_show = 0
-      background 000
-      color 777
+      gbackground 000
+      gcolor 777
       w3 = w / 3
-      color 333
-      linewidth w3
-      clear
+      gcolor 333
+      glinewidth w3
+      gclear
       for i range0 len f[]
          x = i mod nc
          y = i div nc
          if f[i] = 1
-            move x * w + 1 y * w + w3 + 1
-            rect w w3
+            grect x * w + 1 y * w + w3 + 1 w w3
          elif f[i] = 2
-            move x * w + w3 + 1 y * w + 1
-            rect w3 w
+            grect x * w + w3 + 1 y * w + 1 w3 w
          elif f[i] >= 3 and f[i] <= 5
-            move x * w + 1 y * w + w3 + 1
-            rect w w3
-            move x * w + w3 + 1 y * w + 1
-            rect w3 w
+            grect x * w + 1 y * w + w3 + 1 w w3
+            grect x * w + w3 + 1 y * w + 1 w3 w
          .
       .
-      background -1
+      gbackground -1
    .
    if crash_pos = -2
       len crash_pos[] 0
       sleep 0.2
    .
-   clear
-   color 090
+   gclear
+   gcolor 090
    for pos in car_pos[]
       if pos <> -1
          x = pos mod nc
          y = pos div nc
-         move x * w + w / 2 + 1 y * w + w / 2 + 1
-         circle w
+         gcircle x * w + w / 2 + 1 y * w + w / 2 + 1 w
       .
    .
    if crash_pos >= 0
@@ -102,14 +97,13 @@ proc show crash_pos .
    .
    n = len crash_pos[]
    if n > 0
-      color 900
+      gcolor 900
       i = 1
       while i <= n
          pos = crash_pos[i]
          x = pos mod nc
          y = pos div nc
-         move x * w + w / 2 + 1 y * w + w / 2 + 1
-         circle w * 3
+         gcircle x * w + w / 2 + 1 y * w + w / 2 + 1 w * 3
          if crash_tick[i] + 20 = tick
             crash_pos[i] = crash_pos[n]
             crash_tick[i] = crash_tick[n]

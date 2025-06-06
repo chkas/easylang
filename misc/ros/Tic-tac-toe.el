@@ -1,20 +1,16 @@
 len f[] 9
 state = 0
-textsize 14
-#
+gtextsize 14
+# 
 proc init .
-   linewidth 2
-   clear
-   color 666
-   move 34 96
-   line 34 20
-   move 62 96
-   line 62 20
-   move 10 72
-   line 86 72
-   move 10 44
-   line 86 44
-   linewidth 2.5
+   glinewidth 2
+   gclear
+   gcolor 666
+   gline 34 96 34 20
+   gline 62 96 62 20
+   gline 10 72 86 72
+   gline 10 44 86 44
+   glinewidth 2.5
    for i = 1 to 9 : f[i] = 0
    if state = 1 : timer 0.2
 .
@@ -24,20 +20,17 @@ proc draw ind .
    x = c * 28 + 20
    y = r * 28 + 30
    if f[ind] = 4
-      color 900
-      move x - 7 y - 7
-      line x + 7 y + 7
-      move x + 7 y - 7
-      line x - 7 y + 7
+      gcolor 900
+      gline x - 7 y - 7 x + 7 y + 7
+      gline x + 7 y - 7 x - 7 y + 7
    elif f[ind] = 1
-      color 009
-      move x y
-      circle 10
-      color -2
-      circle 7.5
+      gcolor 009
+      gcircle x y 10
+      gcolor -2
+      gcircle x y 7.5
    .
 .
-proc sum3 a d &st ..
+proc sum3 a d &st .
    for i = 1 to 3
       s += f[a]
       a += d
@@ -48,7 +41,7 @@ proc sum3 a d &st ..
       st = 1
    .
 .
-proc rate &res &done ..
+proc rate &res &done .
    res = 0
    for i = 1 step 3 to 7 : sum3 i 1 res
    for i = 1 to 3 : sum3 i 3 res
@@ -62,7 +55,7 @@ proc rate &res &done ..
    done = 1
    if res = 0 and cnt > 1 : done = 0
 .
-proc minmax player alpha beta &rval &rmov ..
+proc minmax player alpha beta &rval &rmov .
    rate rval done
    if done = 1
       if player = 1 : rval = -rval
@@ -87,15 +80,14 @@ proc minmax player alpha beta &rval &rmov ..
    .
 .
 proc show_result val .
-   color 555
-   move 16 4
+   gcolor 555
    if val < 0
       # this never happens
-      text "You won"
+      gtext 16 4 "You won"
    elif val > 0
-      text "You lost"
+      gtext 16 4 "You lost"
    else
-      text "Tie"
+      gtext 16 4 "Tie"
    .
    state += 2
 .

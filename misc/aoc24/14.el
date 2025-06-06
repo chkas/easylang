@@ -33,12 +33,11 @@ proc part1 .
 part1
 #
 proc show nsec .
-   clear
+   gclear
    for i to n
       ex = (px[i] + vx[i] * nsec) mod nx
       ey = (py[i] + vy[i] * nsec) mod ny
-      move ex 100 - ey
-      circle 0.5
+      gcircle ex 100 - ey 0.5
    .
    sleep 0.001
 .

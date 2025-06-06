@@ -8,22 +8,18 @@ nc = 45
 len m[] nc * nc
 arrbase m[] 0
 #
-background 543
-clear
+gbackground 543
+gclear
 proc show solve .
    if visualization = 1
       sc = 100 / nc
-      for x range0 nc
-         for y range0 nc
-            if solve = 0 and m[x + nc * y] > 0
-               color 000
-               move sc * x sc * y
-               rect sc sc
-            elif m[x + nc * y] = 2
-               color 500
-               move sc * x + sc / 2 sc * y + sc / 2
-               circle sc / 4
-            .
+      for x range0 nc : for y range0 nc
+         if solve = 0 and m[x + nc * y] > 0
+            gcolor 000
+            grect sc * x sc * y sc sc
+         elif m[x + nc * y] = 2
+            gcolor 500
+            gcircle sc * x + sc / 2 sc * y + sc / 2 sc / 4
          .
       .
       sleep 0.05
@@ -68,9 +64,7 @@ while len todon[] <> 0 and (part1 = 0 or part2 = 0)
    .
    step += 1
    show 1
-   if step = 50
-      part2 = np
-   .
+   if step = 50 : part2 = np
 .
 print part1
 print part2

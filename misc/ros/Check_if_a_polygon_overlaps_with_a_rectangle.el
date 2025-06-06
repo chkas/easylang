@@ -30,13 +30,15 @@ func polyOverlap &poly1[][] &poly2[][] .
    .
    return 1
 .
+coord_translate 5 5
+coord_scale 10
 proc polyDraw &poly[][] col .
-   color col
-   linewidth 0.5
-   for i to len poly[][]
-      line poly[i][1] * 9 + 5 poly[i][2] * 9 + 5
+   gcolor col
+   glinewidth 0.05
+   for i = 2 to len poly[][]
+      gline poly[i - 1][1] poly[i - 1][2] poly[i][1] poly[i][2]
    .
-   line poly[1][1] * 9 + 5 poly[1][2] * 9 + 5
+   gline poly[$][1] poly[$][2] poly[1][1] poly[1][2]
 .
 proc rectToPoly &r[] &p[][] .
    p[][] = [ [ r[1] r[2] ] [ r[1] + r[3] r[2] ] [ r[1] + r[3] r[2] + r[4] ] [ r[1] r[2] + r[4] ] ]
@@ -46,10 +48,10 @@ rect1[] = [ 4 0 2 2 ]
 rect2[] = [ 1 0 8 2 ]
 rectToPoly rect1[] poly2[][]
 rectToPoly rect2[] poly3[][]
-#
+# 
 polyDraw poly1[][] 900
 polyDraw poly2[][] 090
 polyDraw poly3[][] 009
-#
+# 
 print polyOverlap poly1[][] poly2[][]
 print polyOverlap poly1[][] poly3[][]

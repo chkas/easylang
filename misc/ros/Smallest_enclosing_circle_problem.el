@@ -1,3 +1,4 @@
+# smallest enclosing
 func sqr a .
    return a * a
 .
@@ -69,19 +70,21 @@ func[] welzl ps[][] rs[][] .
 .
 print welzl [ [ 5 -2 ] [ -3 -2 ] [ -2 5 ] [ 1 6 ] [ 0 2 ] ] [ ]
 # 
-proc circ x y r .
-   linewidth 0.2
-   text ""
+proc circ x0 y0 r .
+   glinewidth 0.2
    for a = 0 to 360
-      line x + sin a * r y + cos a * r
+      xp = x
+      yp = y
+      x = x0 + sin a * r
+      y = y0 + cos a * r
+      if a > 0 : gline xp yp x y
    .
 .
 for i to 10
    x = randomf * 80 + 10
    y = randomf * 80 + 10
-   move x y
    ps[][] &= [ x y ]
-   circle 0.6
+   gcircle x y 0.6
 .
 circ[] = welzl ps[][] [ ]
 circ circ[1] circ[2] circ[3]

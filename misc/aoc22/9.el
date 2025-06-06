@@ -6,10 +6,10 @@ visual = 1
 n = 600
 len m[] n * n
 global xc yc rx[] ry[] cnt s$[] .
-textsize 2.5
+gtextsize 2.5
 #
 proc show .
-   clear
+   gclear
    if rx[1] >= xc + 50
       xc += 1
    elif rx[1] <= xc - 50
@@ -20,23 +20,19 @@ proc show .
    elif ry[1] <= yc - 50
       yc -= 1
    .
-   for y = 0 to 100
-      for x = 0 to 100
-         x1 = xc - 50 + x
-         y1 = yc - 50 + y
-         move x + 0.5 y + 0.5
-         if m[y1 * n + x1] = 1
-            circle 0.3
-         .
-         for i = 1 to len rx[]
-            if x1 = rx[i] and y1 = ry[i]
-               circle 0.7
-            .
+   for y = 0 to 100 : for x = 0 to 100
+      x1 = xc - 50 + x
+      y1 = yc - 50 + y
+      if m[y1 * n + x1] = 1
+         gcircle x + 0.5 y + 0.5 0.3
+      .
+      for i = 1 to len rx[]
+         if x1 = rx[i] and y1 = ry[i]
+            gcircle x + 0.5 y + 0.5 0.7
          .
       .
    .
-   move 90 97
-   text cnt
+   gtext 90 97 cnt
    sleep 0.005
 .
 proc read .
@@ -141,4 +137,3 @@ R 17
 D 10
 L 25
 U 20
-

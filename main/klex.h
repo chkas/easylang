@@ -39,7 +39,7 @@ static const char* token_list[] = {
 	"input", "sysfunc", "keybkey", "strchar", "timestr", "strjoin", "substr",
 
 	"+", "-", "*", "/", "#", "<", ">", ".", "=", "&",
-	"(", ")", "[", "]", "][", "<>", "<=", ">=", "&=", "+=", "*=", "/=", "-=",
+	"(", ")", "[", "]", ":", ";", ",", "][", "<>", "<=", ">=", "&=", "+=", "*=", "/=", "-=",
 
 	"number", "string",
 	"name", "string variable",
@@ -80,7 +80,7 @@ enum token_tok {
 	t_input, t_sysfunc, t_keyb_key, t_strchar, t_timestr, t_strjoin, t_substr,
 
 	t_plus, t_minus, t_mult, t_div, t_hash, t_lt, t_gt, t_dot, t_eq, t_amp,
-	t_pal, t_par, t_brl, t_brr, t_brrl, t_neq, t_le, t_ge, t_ampeq, t_pleq, t_asteq, t_diveq, t_mineq,
+	t_pal, t_par, t_brl, t_brr, t_colon, t_semicol, t_comma, t_brrl, t_neq, t_le, t_ge, t_ampeq, t_pleq, t_asteq, t_diveq, t_mineq,
 
 	t_lnumber, t_lstr,
 	t_name, t_vstr,
@@ -373,19 +373,10 @@ static char tval[24];
 
 static int fmtline;
 
-static byte has_semicolon;
-
 static void cs_nl() {
-	if (has_semicolon) {
-		cs(" ; ");
-		has_semicolon = 0;
-	}
-	else {
-		csnlspc();
-		fmtline += 1;
-	}
+	csnlspc();
+	fmtline += 1;
 }
-
 static char cp, c, cn;
 static int indc_add;
 
@@ -507,9 +498,7 @@ static void nexttok() {
 		return;
 	}
 	while (1) {
-		if (c ==  ';') has_semicolon = 1;
-		else if (c == EOT || (c > ' ' && c != ',')) break;
-		// if (c != ' ' && c != '\t' && c != '\n' && c != ',' && c != ';' && c != '\r') break;
+		if (c == EOT || c > ' ') break;
 		nextc();
 	}
 
@@ -642,7 +631,7 @@ static void nexttok() {
 		return;
 	}
 	tval[1] = 0;
-	for (int ti = t_plus; ti <= t_brr; ti++) {
+	for (int ti = t_plus; ti <= t_comma; ti++) {
 		if (token_list[ti][0] == cp) {
 			tok = ti;
 			return;
@@ -950,7 +939,6 @@ static void parse_prepare() {
 	indc_add = 0;
 	indc = 0;
 	ind_tok = 0;
-	has_semicolon = 0;
 	onstats = 0;
 
 	input_data_size = 0;

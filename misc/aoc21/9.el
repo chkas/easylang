@@ -14,21 +14,17 @@ global m[] nc nr lowpt[] .
 proc show upd .
    if visual = 0 : return
    sc = 100 / nc
-   for y range0 nr
-      for x range0 nc
-         pos = y * nc + x + 1
-         if upd = 1
-            if m[pos] >= 10
-               color 432
-               move sc * x sc * y
-               rect sc sc
-            .
-         else
-            h = m[pos]
-            color3 h / 12 + 0.2 h / 12 + 0.1 h / 12
-            move sc * x sc * y
-            rect sc sc
+   for y range0 nr : for x range0 nc
+      pos = y * nc + x + 1
+      if upd = 1
+         if m[pos] >= 10
+            gcolor 432
+            grect sc * x sc * y sc sc
          .
+      else
+         h = m[pos]
+         gcolor3 h / 12 + 0.2 h / 12 + 0.1 h / 12
+         grect sc * x sc * y sc sc
       .
    .
    if upd = 0 : sleep 1
@@ -91,4 +87,3 @@ input_data
 9856789892
 8767896789
 9899965678
-

@@ -52,29 +52,25 @@ proc toarr n .
 #
 sz = 8.5
 sz2 = sz / 2
-background 000
+gbackground 000
 acol[] = [ 373 773 751 733 ]
 proc show cost t .
    if visual = 0 : break 1
-   clear
+   gclear
    x = 3
    y = 10 + sz
-   move x y
-   color 333
-   rect 11 * sz sz
+   gcolor 333
+   grect x y 11 * sz sz
    for c = 0 to 3
-      move 3 + (2 + c * 2) * sz y + sz
-      rect sz dim * sz
+      grect 3 + (2 + c * 2) * sz y + sz sz dim * sz
    .
-   textsize 4
+   gtextsize 4
    for i to 11
       if m[i] > 0
-         move x + sz2 y + sz2
-         color acol[m[i]]
-         circle sz2 - 1
-         color 000
-         move x + 3 y + 2.5
-         text strchar (m[i] + 64)
+         gcolor acol[m[i]]
+         gcircle x + sz2 y + sz2 sz2 - 1
+         gcolor 000
+         gtext x + 3 y + 2.5 strchar (m[i] + 64)
       .
       x += sz
    .
@@ -84,21 +80,18 @@ proc show cost t .
       y += sz
       for c = 0 to 3
          if m0[i] > 0
-            move x + sz2 y + sz2
-            color acol[m0[i]]
-            circle sz2 - 1
-            color 000
-            move x + 3 y + 2.5
-            text strchar (m0[i] + 64)
+            gcolor acol[m0[i]]
+            gcircle x + sz2 y + sz2 sz2 - 1
+            gcolor 000
+            gtext x + 3 y + 2.5 strchar (m0[i] + 64)
          .
          i += 1
          x += 2 * sz
       .
    .
-   textsize 6
-   color 555
-   move 5 70
-   text "Energy: " & cost
+   gtextsize 6
+   gcolor 555
+   gtext 5 70 "Energy: " & cost
    sleep t
 .
 #
@@ -180,7 +173,7 @@ proc show_way .
    m0p[] = m0[]
    toarr list[len list[]]
    if visual = 1
-      clear
+      gclear
       sleep 0.1
    .
    show cost 1
@@ -247,9 +240,8 @@ proc go_home &cur .
                   prev[] &= cur
                   prev[] &= cur0
                   break 2
-               else
-                  break 1
                .
+               break 1
             .
             if m[j] > 0 : break 1
             j += dir
@@ -339,4 +331,3 @@ input_data
 ###B#C#B#D###
   #A#D#C#A#
   #########
-

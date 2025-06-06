@@ -34,8 +34,8 @@ read
 start = 2
 dest = len m[] - 1
 #
-background 000
-textsize 5
+gbackground 000
+gtextsize 5
 sc = 100 / nc
 colind = 0
 col[] = [ 966 855 744 633 522 633 744 855 ]
@@ -45,7 +45,7 @@ proc showm m .
    if m = 1
       colind = colind mod len col[] + 1
    elif m = 0
-      clear
+      gclear
    .
    for r range0 nc
       for c range0 nc
@@ -57,18 +57,15 @@ proc showm m .
             col = col[colind]
          .
          if col >= 0
-            color col
-            move c * sc r * sc
-            rect sc sc
+            gcolor col
+            grect c * sc r * sc sc sc
          .
       .
    .
-   move 2 90
-   color 000
-   rect 14 6
-   color 666
-   move 3 91
-   text max
+   gcolor 000
+   grect 2 90 14 6
+   gcolor 666
+   gtext 3 91 max
 .
 d[] = [ 1 nc -1 (-nc) ]
 #
@@ -135,9 +132,7 @@ proc makegraph node p d0 .
    repeat
       vis[p] = 1
       if m[p] > 0 and d0 <> m[p]
-         if part = 1
-            return
-         .
+         if part = 1 : return
       .
       c = 0
       dx = (d0 + 2) mod1 4
@@ -158,9 +153,7 @@ proc makegraph node p d0 .
          deny = 1
       .
       p = pn
-      if p = dest or p = start
-         break 1
-      .
+      if p = dest or p = start : break 1
    .
    nd = pseen[p]
    if nd = 0

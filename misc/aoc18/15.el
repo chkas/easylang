@@ -35,39 +35,32 @@ read
 att_p[] = [ 3 3 ]
 dir[] = [ -nc (-1) 1 nc ]
 global f[] un[] hp[] .
-background 343
+gbackground 343
 proc show .
    if visual = 0 : return
-   clear
+   gclear
    sz = 100 / nc
-   textsize sz / 2
-   for y range0 len f[] / nc
-      for x range0 nc
-         h = f[nc * y + x]
-         if h = -2
-            color 000
-            move x * sz y * sz
-            rect sz * 1.03125 sz * 1.03125
-         elif h >= 1
-            color 944
-            if un[h] = 1
-               color 559
-            .
-            move x * sz + sz / 2 y * sz + sz / 2
-            circle sz / 2
-            color 000
-            move x * sz + sz / 16 y * sz + sz / 4
-            s$ = hp[h]
-            if hp[h] < 100 : s$ = " " & s$
-            if hp[h] < 10 : s$ = " " & s$
-            text s$
-         .
+   gtextsize sz / 2
+   for y range0 len f[] / nc : for x range0 nc
+      h = f[nc * y + x]
+      if h = -2
+         gcolor 000
+         grect x * sz y * sz sz * 1.03125 sz * 1.03125
+      elif h >= 1
+         gcolor 944
+         if un[h] = 1 : gcolor 559
+         gcircle x * sz + sz / 2 y * sz + sz / 2 sz / 2
+         gcolor 000
+         s$ = hp[h]
+         if hp[h] < 100 : s$ = " " & s$
+         if hp[h] < 10 : s$ = " " & s$
+         gtext x * sz + sz / 16 y * sz + sz / 4 s$
       .
    .
    sleep delay
 .
 #
-proc battle &res ..
+proc battle &res .
    f[] = f0[]
    un[] = un0[]
    hp[] = hp0[]
@@ -216,4 +209,3 @@ input_data
 #.G...G.#
 #.....G.#
 #########
-

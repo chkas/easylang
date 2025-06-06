@@ -35,21 +35,21 @@ proc run .
       .
    .
 .
-background 000
-clear
+gbackground 000
+gclear
 #
 proc show .
    if visual = 0 : return
    for d in in[] : s$ &= d
-   move 8 is_part2 * 35 + 15
-   color 000
-   rect 100 25
-   color 555
-   textsize 10
-   text s$
-   move 8 is_part2 * 35 + 30
-   textsize 6
-   text "z:" & v[4]
+   y = is_part2 * 35 + 15
+   gcolor 000
+   grect 8 y 100 25
+   gcolor 555
+   gtextsize 10
+   gtext 8 y s$
+   y += 15
+   gtextsize 6
+   gtext 8 y "z:" & v[4]
    sleep 0.02
 .
 proc find .

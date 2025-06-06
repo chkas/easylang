@@ -32,46 +32,41 @@ read
 sc = 95 / nc
 sc2 = sc / 2
 proc showall .
-   color 000
-   rect 100 100
+   gcolor 000
+   grect 0 0 100 100
    for p = 1 to len m[]
       y = (p - 1) div nc * sc
       x = (p - 1) mod nc * sc
-      move x + sc2 y + sc2
       h = m[p] * 0.1
-      color3 h h + 0.2 h
-      circle sc2
+      gcolor3 h h + 0.2 h
+      gcircle x + sc2 y + sc2 sc2
    .
 .
 if visual = 1
    showall
-   background -1
+   gbackground -1
 .
 #
 textsize 3
 proc showtxt s$ w .
    if visual = 0 : return
-   move 0 95
-   color 000
-   rect 50 5
-   move 5 96
-   color 777
-   text s$
+   gcolor 000
+   grect 0 95 50 5
+   gcolor 777
+   gtext 5 96 s$
    sleep w
 .
 proc show p high .
    if visual = 0 : return
    y = (p - 1) div nc * sc
    x = (p - 1) mod nc * sc
-   move x y
    h = m[p] * 0.1
    if high = 1
-      color 975
-      move x - sc / 2 y - sc / 2
-      rect 2 * sc 2 * sc
+      gcolor 975
+      grect x - sc / 2 y - sc / 2 2 * sc 2 * sc
    else
-      color3 h + 0.5 h + 0.5 h - 0.2
-      rect sc sc
+      gcolor3 h + 0.5 h + 0.5 h - 0.2
+      grect x y sc sc
    .
    sleep 0.001
 .
@@ -112,7 +107,7 @@ proc count p inc &cnt .
    .
 .
 proc count4 max p &c .
-   clear
+   gclear
    showtxt max 0
    count p 1 c1
    count p (-1) c2

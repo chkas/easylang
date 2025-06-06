@@ -10,47 +10,42 @@ sysconf topleft
 visual = 1
 #
 global m[] nc cost todo[][] endpos prev[] .
-background 000
-clear
-textsize 4
+gbackground 000
+gclear
+gtextsize 4
 proc show .
    if visual = 0 : return
    sc = 94 / nc
    if cost = 0
-      clear
+      gclear
       for y range0 nc - 1 : for x range0 nc - 1
          pos = nc + y * nc + x + 1
-         color 111 * (m[pos] - 1)
-         move sc * x sc * y
-         rect sc sc
+         gcolor 111 * (m[pos] - 1)
+         grect sc * x sc * y sc sc
       .
    else
-      color 321
       for pos in todo[cost mod 10 + 1][]
          x = (pos - 1) mod nc
          y = (pos - 1) div nc - 1
-         color 111 * m[pos]
-         move sc * x sc * y
-         rect sc sc
+         gcolor 111 * m[pos]
+         grect sc * x sc * y sc sc
       .
    .
-   color 000
-   move 2 95
-   rect 50 8
-   color 666
-   text "Total risk: " & cost
+   gcolor 000
+   grect 2 95 50 8
+   gcolor 666
+   gtext 2 95 "Total risk: " & cost
    sleep 0.01
 .
 proc show_route .
    if visual = 0 : return
    sc = 94 / nc
-   color 900
+   gcolor 900
    pos = endpos
    repeat
       x = (pos - 1) mod nc
       y = (pos - 1) div nc - 1
-      move sc * x + sc / 2 sc * y + sc / 2
-      circle sc / 2
+      gcircle sc * x + sc / 2 sc * y + sc / 2 sc / 2
       pos = prev[pos]
       until pos = -1
    .

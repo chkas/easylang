@@ -37,7 +37,7 @@ subr turns
 .
 global jd skycol st n_names disp .
 #
-proc xyz a0 d0 . .
+proc xyz a0 d0 .
    z = sinlat * sin d0 + coslat * cos d0 * cos a0
    if z > 0
       x = -coslat * sin d0 + sinlat * cos d0 * cos a0
@@ -46,20 +46,18 @@ proc xyz a0 d0 . .
 .
 n_stars = 300
 #
-proc draw_stars . .
-   color 999
+proc draw_stars .
+   gcolor 999
    for i = 1 to n_stars
       xyz st - a[i] d[i]
       if z > 0
          turn
          if xd > -1
-            move xd yd
-            circle m[i]
+            gcircle xd yd m[i]
             if i <= n_names
-               move xd + 0.2 yd - 2
-               color 888
-               text n$[i]
-               color 999
+               gcolor 888
+               gtext xd + 0.2 yd - 2 n$[i]
+               gcolor 999
             .
          .
       .
@@ -67,11 +65,11 @@ proc draw_stars . .
 .
 global const[][] const$[] .
 #
-linewidth 0.125
+glinewidth 0.125
 #
-proc draw_consts . .
-   textsize 3
-   color 987
+proc draw_consts .
+   gtextsize 3
+   gcolor 987
    for i = 1 to len const[][]
       cnt = 0
       scnd = 0
@@ -91,16 +89,12 @@ proc draw_consts . .
             turns
             cnt += 1
             if xd > -9999
-               if scnd = 0
-                  move xd yd
-                  scnd = 1
-               else
-                  line xd yd
-               .
+               if scnd = 1 : gline xp yp xd yd
+               scnd = 1
+               xp = xd
+               yp = yd
                if cnt = len const[i][] div 2
-                  move xd + 2 yd + 2
-                  text const$[i]
-                  move xd yd
+                  gtext xd + 2 yd + 2 const$[i]
                .
             .
          .
@@ -113,60 +107,54 @@ plm[] = [ 3 0.5 0.75 0.6125 0.6125 0.375 2 ]
 len pla[] len plm[]
 len pld[] len plm[]
 #
-proc draw_moon . .
+proc draw_moon .
    ph = (jd - 2459316.5208) mod 29.530588853
-   color 995
-   move xd yd
-   circle 2
+   gcolor 995
+   gcircle xd yd 2
    if ph < 1.84 or ph > 27.7
-      color 555
-      circle 2
+      gcolor 555
+      gcircle xd yd 2
    elif ph < 5.5
-      move xd - 2.2 yd
-      color skycol
-      circle 3
+      gcolor skycol
+      gcircle xd - 2.2 yd 3
    elif ph < 9.2
-      color skycol
-      circseg 2 90 270
+      gcolor skycol
+      gcircseg xd yd 2 90 270
    elif ph < 12.9
-      color skycol
-      circseg 2 100 260
-      color 995
-      move xd + 1.2 yd
-      circseg 2.5 125 235
+      gcolor skycol
+      gcircseg xd yd 2 100 260
+      gcolor 995
+      gcircseg xd + 1.2 yd 2.5 125 235
    elif ph < 16.6
       #
    elif ph < 20.3
-      color skycol
-      circseg 2 -80 80
-      color 995
-      move xd - 1.2 yd
-      circseg 2.5 -55 55
+      gcolor skycol
+      gcircseg xd yd 2 -80 80
+      gcolor 995
+      gcircseg xd - 1.2 yd 2.5 -55 55
    elif ph < 24
-      color skycol
-      circseg 2 270 90
+      gcolor skycol
+      gcircseg xd yd 2 270 90
    else
-      move xd + 2.2 yd
-      color skycol
-      circle 3
+      gcolor skycol
+      gcircle xd + 2.2 yd 3
    .
 .
-proc draw_planets . .
+proc draw_planets .
    for i = 1 to len pla[]
       xyz st - pla[i] pld[i]
       if z > 0
          turn
          if xd > -1
-            move xd yd
             if i = 7
                draw_moon
             else
-               color plac[i]
-               circle plm[i]
+               gcolor plac[i]
+               gcircle xd yd plm[i]
             .
             if n_names > 0
-               color 888
-               text pla$[i]
+               gcolor 888
+               gtext xd yd pla$[i]
             .
          .
       .
@@ -181,7 +169,7 @@ el[][] &= [ 9.53667594 -0.00125060 0.05386179 -0.00050991 2.48599187 0.00193609 
 m1[] = [ 6.29 134.9 477198.85 (-1.27) 259.2 (-413335.38) 0.66 235.7 890534.23 0.21 269.9 954397.70 (-0.19) 357.5 35999.05 (-0.11) 186.6 966404.05 ]
 m2[] = [ 5.13 93.3 483202.03 0.28 228.2 960400.87 (-0.28) 318.3 6003.18 (-0.17) 217.6 (-407332.20) ]
 #
-proc calc_planets . .
+proc calc_planets .
    T = (jd - 2451545) / 36525
    for pli = 1 to len el[][]
       swap el[] el[pli][]
@@ -262,27 +250,24 @@ xdir[] = [ -1 0 1 0 ]
 ydir[] = [ 0 1 0 -1 ]
 global time$ .
 #
-proc draw_info . .
-   color 666
-   textsize 2.5
-   move 71 1
-   text time$
-   move 1 1
-   text lat & " " & lon
+proc draw_info .
+   gcolor 666
+   gtextsize 2.5
+   gtext 71 1 time$
+   gtext 1 1 lat & " " & lon
    for i = 1 to 4
       x = xdir[i]
       y = ydir[i]
       z = 0.001
       turn
       if xd > -1
-         move xd yd + 0.5
-         text dir$[i]
+         gtext xd yd + 0.5 dir$[i]
       .
    .
 .
 subr draw_sky
-   clear
-   textsize 2.2
+   gclear
+   gtextsize 2.2
    draw_stars
    draw_planets
    draw_info
@@ -296,7 +281,7 @@ subr update
    st = 280.46061837 + 360.98564736629 * (jd - 2451545.0)
    st = (st + lon) mod 360
    calc_planets
-   background skycol
+   gbackground skycol
    draw_sky
 .
 on timer

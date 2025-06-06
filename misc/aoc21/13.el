@@ -1,94 +1,78 @@
-# AoC-21 - Day 13: Transparent Origami
+# AoC-21 - Day 11: Dumbo Octopus
 #
-# First of all, the size of the sheet is
-# determined. And then all points above
-# the fold line (no matter if x or y fold)
-# are placed relative from the double fold
-# downwards.
+# First increase all fields by 1. Then let
+# the flash spread til there is no
+# more flash
 #
-sysconf topleft
+# WARNING: Flashing
+#
 visual = 1
 #
-nc = 1500
-len m[] nc * nc
-len mn[] len m[]
-len dim[] 2
+global m[][] .
 #
+gbackground 000
+if visual = 1
+   gtext 8 70 "WARNING: Flashing"
+   sleep 3
+.
+gcolor 321
 proc draw .
    if visual = 0 : return
-   m = 100
-   clear
-   color 543
-   move 4 4
-   rect dim[1] / m * 90 + 1 dim[2] / m * 90 + 1
-   color -2
-   for x range0 m : for y range0 m
-      if m[x + y * nc + 1] = 1
-         move 5 + x / m * 90 5 + y / m * 90
-         circle 50 / m
-      .
+   gclear
+   for y to 10 : for x to 10
+      sz = m[y][x]
+      if sz = 11 : sz = 15
+      gcircle 10 * x - 5 10 * y - 5 sz / 2
    .
-   sleep 0.4
+   sleep 0.2
 .
-#
+for i to 10
+   m[][] &= number strchars input
+.
 repeat
-   s$ = input
-   until s$ = ""
-   a[] = number strsplit s$ ","
-   m[a[1] + a[2] * nc + 1] = 1
-   for i = 1 to 2
-      dim[i] = higher (a[i] + 1) dim[i]
+   for y to 10 : for x to 10
+      m[y][x] += 1
    .
-.
-draw
-repeat
-   s$ = input
-   until s$ = ""
-   a$[] = strtok s$ " ="
-   fold = number a$[4]
-   d = 1 + if a$[3] = "y"
-   for x = 0 to dim[1] : for y = 0 to dim[2]
-      if m[x + y * nc + 1] = 1
-         v[] = [ x y ]
-         if v[d] > fold
-            v[d] = 2 * fold - v[d]
+   repeat
+      flash = 0
+      for y to 10 : for x to 10
+         #
+         if m[y][x] = 10
+            flash = 1
+            m[y][x] = 11
+            for nx = higher (x - 1) 1 to lower (x + 1) 10
+               for ny = higher (y - 1) 1 to lower (y + 1) 10
+                  #
+                  if m[ny][nx] < 10 : m[ny][nx] += 1
+               .
+            .
          .
-         mn[v[1] + v[2] * nc + 1] = 1
-         m[x + y * nc + 1] = 0
+      .
+      until flash = 0
+   .
+   draw
+   h = n_flash
+   for y to 10 : for x to 10
+      #
+      if m[y][x] = 11
+         n_flash += 1
+         m[y][x] = 0
       .
    .
-   dim[d] = fold
-   swap m[] mn[]
-   draw
-   if cnt = 0
-      for i = 1 to len m[] : cnt += m[i]
-      print cnt
-   .
+   count += 1
+   if count = 100 : print n_flash
+   until n_flash - h = 100
 .
+print count
 #
 input_data
-4,28
-20,4
-6,10
-0,14
-9,10
-0,3
-10,4
-4,11
-6,0
-6,12
-4,1
-0,13
-10,12
-3,4
-3,0
-8,4
-1,10
-2,14
-8,10
-9,0
-
-fold along y=15
-fold along x=11
-fold along y=7
-fold along x=5
+5483143223
+2745854711
+5264556173
+6141336146
+6357385478
+4167524645
+2176841721
+6882881134
+4846848554
+5283751526

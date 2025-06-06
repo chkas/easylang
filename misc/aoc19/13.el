@@ -7,7 +7,7 @@ ic_mem[] = number strsplit input ","
 #
 global ball_x pad_x .
 #
-proc ic_inpf &in ..
+proc ic_inpf &in .
    if ball_x > pad_x
       in = 1
    elif ball_x < pad_x
@@ -17,32 +17,30 @@ proc ic_inpf &in ..
    .
    if visual = 1 : sleep 0.01
 .
-textsize 4
-background 000
-clear
+gtextsize 4
+gbackground 000
+gclear
 #
-proc draw_score v . .
+proc draw_score v .
    if visual = 0 : return
-   move 4 15
-   color 000
-   rect 30 4
-   color 666
-   text "Score: " & v
+   gcolor 000
+   grect 4 15 30 4
+   gcolor 666
+   gtext 4 15 "Score: " & v
 .
-proc draw x y v . .
+proc draw x y v .
    if visual = 0 : return
    col[] = [ 000 444 753 777 933 ]
-   color col[v + 1]
-   move 2.5 * x + 3 2.5 * y + 20
+   gcolor col[v + 1]
    if v = 0
-      rect 2.4 2.4
+      grect 2.5 * x + 3 2.5 * y + 20 2.4 2.4
    else
-      rect 2.3 2.3
+      grect 2.5 * x + 3 2.5 * y + 20 2.3 2.3
    .
 .
 global x y out_ind n_blocks n_points .
 #
-proc ic_outpf out . .
+proc ic_outpf out .
    if out_ind = 0
       x = out
    elif out_ind = 1
@@ -69,7 +67,7 @@ prefix ic_
 # -------- intcode --------
 base = 0
 arrbase mem[] 0
-proc mem_ind mo ind &rind ..
+proc mem_ind mo ind &rind .
    if mo = 1
       rind = ind
    elif mo = 0
@@ -81,7 +79,7 @@ proc mem_ind mo ind &rind ..
       len mem[] rind + 8
    .
 .
-proc run . .
+proc run .
    repeat
       oc0 = mem[pc]
       oc = oc0 mod 100
@@ -139,9 +137,3 @@ else
 .
 #
 input_data
-
-
-
-
-
-

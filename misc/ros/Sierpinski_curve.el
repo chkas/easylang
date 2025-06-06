@@ -14,13 +14,14 @@ proc lsysexp level &axiom$ &rules$[] .
    .
 .
 proc lsysdraw axiom$ x y ang lng .
-   linewidth 0.3
-   move x y
+   glinewidth 0.3
    for c$ in strchars axiom$
       if c$ = "F" or c$ = "G"
+         px = x
+         py = y
          x += cos dir * lng
          y += sin dir * lng
-         line x y
+         gline px py x y
       elif c$ = "-"
          dir -= ang
       elif c$ = "+"

@@ -13,9 +13,9 @@ proc nextc .
 len f[] 1000 * 1000
 arrbase f[] 0
 #
-procdecl parse &pos[] ..
+procdecl parse &pos[] .
 #
-proc parse_opt &pos[] ..
+proc parse_opt &pos[] .
    while 1 = 1
       d = 0
       if c$ = "W"
@@ -46,7 +46,7 @@ proc parse_opt &pos[] ..
    .
 .
 #
-proc parse &pos0[] ..
+proc parse &pos0[] .
    pos[] = pos0[]
    parse_opt pos[]
    pos_res[] = pos[]
@@ -71,9 +71,7 @@ proc parse &pos0[] ..
 min = 0
 max = 0
 proc show solve .
-   if visual = 0
-      break 1
-   .
+   if visual = 0 : return
    x0 = min mod 1000 - 1
    y0 = min div 1000 - 1
    x1 = max mod 1000 + 2
@@ -82,26 +80,20 @@ proc show solve .
    dy = y1 - y0
    sz = 100 / dx
    if solve = 0
-      background 000
-      clear
-      color 555
-      for y range0 dy
-         for x range0 dx
-            if f[x0 + x + 1000 * (y + y0)] = 1
-               move x * sz y * sz
-               rect sz * 1.02 sz * 1.02
-            .
+      gbackground 000
+      gclear
+      gcolor 555
+      for y range0 dy : for x range0 dx
+         if f[x0 + x + 1000 * (y + y0)] = 1
+            grect x * sz y * sz sz * 1.02 sz * 1.02
          .
       .
    else
-      color 050
-      for y range0 dy
-         for x range0 dx
-            if f[x0 + x + 1000 * (y + y0)] = 2
-               f[x0 + x + 1000 * (y + y0)] = 3
-               move x * sz y * sz
-               rect sz * 1.02 sz * 1.02
-            .
+      gcolor 050
+      for y range0 dy : for x range0 dx
+         if f[x0 + x + 1000 * (y + y0)] = 2
+            f[x0 + x + 1000 * (y + y0)] = 3
+            grect x * sz y * sz sz * 1.02 sz * 1.02
          .
       .
    .
@@ -114,14 +106,13 @@ proc build .
    parse_opt pos[]
    for i range0 len f[]
       if f[i] = 1
-         if min = 0
-            min = i
-         .
+         if min = 0 : min = i
          max = i
       .
    .
    show 0
 .
+
 build
 #
 dir[] = [ -1 -1000 1 1000 ]
@@ -153,6 +144,5 @@ print rooms
 #
 input_data
 ^WSSEESWWWNW(S|NENNEEEENN(ESSSSW(NWSW|SSEN)|WSWWN(E|WWS(E|SS))))$
-
 
 

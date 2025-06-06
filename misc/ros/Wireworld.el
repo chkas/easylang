@@ -1,25 +1,24 @@
 sysconf topleft
 global m[] nc .
-background 777
+gbackground 777
 # 
 proc show .
-   clear
+   gclear
    scale = 100 / nc
    sz = scale * 0.95
    for i to len m[]
       x = (i - 1) mod nc
       y = (i - 1) div nc
-      move x * scale y * scale
       if m[i] = 0
-         color 000
+         gcolor 000
       elif m[i] = 1
-         color 980
+         gcolor 980
       elif m[i] = 2
-         color 338
+         gcolor 338
       else
-         color 833
+         gcolor 833
       .
-      rect sz sz
+      grect x * scale y * scale sz sz
    .
 .
 proc read .
@@ -57,11 +56,9 @@ proc update .
          mn[i] = 1
       elif m[i] = 1
          s = 0
-         for dx = -1 to 1
-            for dy = -1 to 1
-               ix = i + dy * nc + dx
-               s += if m[ix] = 2
-            .
+         for dx = -1 to 1 : for dy = -1 to 1
+            ix = i + dy * nc + dx
+            s += if m[ix] = 2
          .
          if s = 2 or s = 1
             mn[i] = 2

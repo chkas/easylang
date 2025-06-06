@@ -6,10 +6,9 @@ proc show .
    sc = 100 / n
    for r range0 n
       for c range0 n
-         move c * sc r * sc
          p = r * n + c + 1
-         color 222 * m[p]
-         rect sc sc
+         gcolor 222 * m[p]
+         grect c * sc r * sc sc sc
       .
    .
    sleep 0

@@ -1,31 +1,26 @@
 # AoC-17 - Day 22: Sporifica Virus
-# 
+#
 visual = 1
-# 
+#
 nc = 1000
 len m[] nc * nc
 arrbase m[] 0
-# 
+#
 background 000
 subr show
-   if visual = 0
-      break 1
-   .
+   if visual = 0 : return
    f = 100 / 70
-   clear
-   for r range0 70
-      for c range0 70
-         h = m[(r + nc div 2 - 35) * nc + c + nc div 2 - 35]
-         if h > 0
-            color 200 * h
-            move c * f r * f
-            rect f f
-         .
+   gclear
+   for r range0 70 : for c range0 70
+      h = m[(r + nc div 2 - 35) * nc + c + nc div 2 - 35]
+      if h > 0
+         gcolor 200 * h
+         grect c * f r * f f f
       .
    .
    sleep 0
 .
-# 
+#
 s$ = input
 l = len s$
 p = nc div 2 + nc div 2 * nc
@@ -41,7 +36,7 @@ repeat
    show
 .
 m0[] = m[]
-# 
+#
 dir[] = [ -nc 1 nc -1 ]
 dir = 1
 for i range0 10000
@@ -58,7 +53,7 @@ for i range0 10000
    .
 .
 print infections
-# 
+#
 swap m[] m0[]
 p = nc div 2 + nc div 2 * nc
 dir = 1
@@ -80,10 +75,9 @@ for i range0 10000000
    .
 .
 print infections
-# 
+#
 input_data
 ..#
 #..
 ...
-
 

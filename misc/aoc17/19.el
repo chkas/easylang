@@ -10,7 +10,7 @@ repeat
    nc = len s$
    for i to nc
       c$ = substr s$ i 1
-      if c$ = " "
+      if c$ = " " or c$ = "."
          m[] &= 0
       elif strcode c$ >= 65 and strcode c$ <= 90
          m[] &= strcode c$
@@ -18,52 +18,44 @@ repeat
          m[] &= 1
       .
    .
+   m[] &= 0
+   nr += 1
 .
+nc += 1
 #
-len m[] nc * nc
+len m[] nc * (nr + 1)
 #
 for pos range0 nc
-   if m[pos] > 0
-      break 1
-   .
+   if m[pos] > 0 : break 1
 .
 #
-#
 f = 94 / nc
-background 000
+gbackground 000
 vis = 0
 vis$ = ""
-textsize 5
+gtextsize 5
 subr show
-   if visualization = 0
-      break 1
-   .
+   if visualization = 0 : return
    if vis = 0
       vis = 1
-      clear
-      color 777
-      for r range0 nc
-         for c range0 nc
-            if m[r * nc + c] = 1
-               move c * f r * f
-               rect f f
-            elif m[r * nc + c] >= 65
-               color 900
-               move c * f + f / 2 r * f + f / 2
-               circle f
-               color 777
-            .
+      gclear
+      gcolor 777
+      for r range0 nr : for c range0 nc
+         if m[r * nc + c] = 1
+            grect c * f r * f f f
+         elif m[r * nc + c] >= 65
+            gcolor 900
+            gcircle c * f + f / 2 r * f + f / 2 f
+            gcolor 777
          .
       .
    else
       r = pos div nc
       c = pos mod nc
-      color 070
-      move c * f r * f
-      rect f f
-      move 2 95
-      color 555
-      text vis$
+      gcolor 070
+      grect c * f r * f f f
+      gcolor 555
+      gtext 2 95 vis$
    .
    sleep 0.001
 .
@@ -78,7 +70,7 @@ while 1 = 1
    .
    show
    if m[pos + dirs[dir]] > 0
-      dir = dir
+      #
    elif m[pos + dirs[dir mod 4 + 1]] > 0
       dir = dir mod 4 + 1
    elif m[pos + dirs[(dir - 2) mod 4 + 1]] > 0
@@ -93,10 +85,10 @@ print steps
 #
 #
 input_data
-     |          
-     |  +--+    
-     A  |  C    
- F---|----E|--+ 
-     |  |  |  D 
-     +B-+  +--+ 
+     |        .
+     |  +--+  .
+     A  |  C  .
+ F---|----E|--+
+     |  |  |  D
+     +B-+  +--+
 

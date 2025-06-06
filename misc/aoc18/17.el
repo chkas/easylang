@@ -1,7 +1,7 @@
 # AoC-18 - Day 17: Reservoir Research
 #
 sysconf topleft
-visual = 0
+visual = 1
 #
 global f[] maxpos minpos .
 #
@@ -35,21 +35,17 @@ proc read .
 .
 read
 #
-background 765
+gbackground 765
 global pos0 skip .
 proc show p .
-   if visual = 0
-      break 1
-   .
+   if visual = 0 : return
    skip = (skip + 1) mod 10
-   if skip < 6
-      break 1
-   .
+   if skip < 6 : break 1
    p = p div 300 * 300 - 30000
    if p > pos0 + 60000
       pos0 = p
    .
-   clear
+   gclear
    sz = 1 / 3
    for y range0 300
       x = 0
@@ -62,14 +58,13 @@ proc show p .
                x += 1
             .
             if h = 1
-               color 000
+               gcolor 000
             elif h = 2
-               color 066
+               gcolor 066
             elif h = 3
-               color 008
+               gcolor 008
             .
-            move x0 * sz y * sz
-            rect sz * (x - x0) sz
+            grect x0 * sz y * sz sz * (x - x0) sz
          .
       .
    .
@@ -142,3 +137,4 @@ x=506, y=1..2
 x=498, y=10..13
 x=504, y=10..13
 y=13, x=498..504
+

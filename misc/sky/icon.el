@@ -1,27 +1,23 @@
 c = 797
-color c
-rect 100 100
-color 000
-linewidth 6
-move 24 24
-line 76 24
-line 76 76
-line 24 76
-line 24 24
-# 
-color 333
-move 27 27
-rect 46 46
+gcolor c
+grect 0 0 100 100
+gcolor 000
+glinewidth 6
+gline 24 24 76 24
+gline 76 24 76 76
+gline 76 76 24 76
+gline 24 76 24 24
+#
+gcolor 333
+grect 27 27 46 46
 x[] = [ 43 55 37 50 57 61 ]
 y[] = [ 35 39 45 50 58 68 ]
-color 999
+gcolor 999
 for i = 1 to len x[]
-  move x[i] y[i]
-  circle 1
+   gcircle x[i] y[i] 1
 .
-# 
-color c
-move 75 75
-circle 2
-#sysproc "id:10"
+#
+gcolor c
+gcircle 75 75 2
+# sysproc "id:10"
 

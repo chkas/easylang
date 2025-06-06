@@ -1,5 +1,5 @@
 # AoC-19 - Day 8: Space Image Format
-# 
+#
 sysconf topleft
 img[] = number strchars input
 arrbase img[] 0
@@ -9,19 +9,17 @@ if len img[] < 40
    w = 2
    h = 2
 .
-# 
+#
 sz = w * h
 n_layer = len img[] / sz
-# 
-proc part1 . .
+#
+proc part1 .
    min = 1 / 0
    for l range0 n_layer
       cnt = 0
       for i range0 sz
          ind = sz * l + i
-         if img[ind] = 0
-            cnt += 1
-         .
+         if img[ind] = 0 : cnt += 1
       .
       if cnt < min
          min = cnt
@@ -39,8 +37,8 @@ proc part1 . .
    print cnt1 * cnt2
 .
 part1
-# 
-proc part2 . .
+#
+proc part2 .
    len img2[] sz
    arrbase img2[] 0
    for i range0 sz
@@ -51,23 +49,21 @@ proc part2 . .
          .
       .
    .
-   background 000
-   color 777
-   clear
+   gbackground 000
+   gcolor 777
+   gclear
    for i range0 sz
       if img2[i] = 1
          x = i mod w * 3 + 10
          y = i div w * 3 + 10
-         move x + 1.5 y + 1.5
-         circle 1.8
+         gcircle x + 1.5 y + 1.5 1.8
       .
    .
 .
 part2
-# 
+#
 input_data
 0222112222120000
-
 
 
 

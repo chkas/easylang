@@ -7,13 +7,8 @@ func isprim num .
    .
    return 1
 .
-n = 1
-x = 50
-y = 50
-dx = 1
-dy = 0
 # 
-proc turn .
+subr turn
    if dx = 1
       dx = 0
       dy = 1
@@ -28,15 +23,18 @@ proc turn .
       dy = 0
    .
 .
-proc step .
+subr step
    n += 1
-   x += dx * 1
-   y += dy * 1
-   move x y
-   if isprim n = 1 : circle 0.5
+   x += dx
+   y += dy
+   if isprim n = 1 : gcircle x y 0.5
 .
-textsize 3
-move x y
+gtextsize 3
+n = 1
+x = 50
+y = 50
+dx = 1
+dy = 0
 lng = 0
 # 
 for k to 49

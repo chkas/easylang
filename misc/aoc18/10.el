@@ -10,15 +10,14 @@ repeat
    vx[] &= number s$[5]
    vy[] &= number s$[6]
 .
-background 000
-color 999
+gbackground 000
+gcolor 999
 #
 global xl yl .
 proc show .
-   clear
+   gclear
    for i to len x[]
-      move x[i] - xl + 10 y[i] - yl + 30
-      circle 0.5
+      gcircle x[i] - xl + 10 y[i] - yl + 30 0.5
    .
    sleep 0.1
 .
@@ -33,13 +32,9 @@ repeat
       yh = higher y[i] yh
    .
    sec += 1
-   if yh - yl < 500
-      show
-   .
+   if yh - yl < 500 : show
    s = 0
-   for x in x[]
-      s += if x = xl
-   .
+   for x in x[] : s += if x = xl
    until s > 5
 .
 print sec
@@ -76,5 +71,4 @@ position=<-6,  0> velocity=< 2,  0>
 position=< 5,  9> velocity=< 1, -2>
 position=<14,  7> velocity=<-2,  0>
 position=<-3,  6> velocity=< 2, -1>
-
 

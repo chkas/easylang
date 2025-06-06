@@ -14,18 +14,15 @@ proc show p .
    x = (p - 1) mod nc
    y = (p - 1) div nc
    if m[p] = 2
-      color 862
-      move (x - sx) * sc + sc / 2 y * sc + sc / 2 + 25
-      circle sc / 2
+      gcolor 862
+      gcircle (x - sx) * sc + sc / 2 y * sc + sc / 2 + 25 sc / 2
       sleep 0.01
    elif m[p] = 1
-      color 555
-      move (x - sx) * sc y * sc + 25
-      rect sc sc
+      gcolor 555
+      grect (x - sx) * sc y * sc + 25 sc sc
    else
-      color -2
-      move (x - sx) * sc y * sc + 25
-      rect sc sc
+      gcolor -2
+      grect (x - sx) * sc y * sc + 25 sc sc
    .
 .
 proc init .

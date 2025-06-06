@@ -2,33 +2,30 @@
 # 
 # the EasyLang canvas is 100x100 with 0,0 at bottom left, 100,100 at top right
 # the following maps the Processing canvas to the EasyLang one
-cWidth = 100
-cHeight = 100
-func scaleX v s .
-   return (v * 100 / s)
+scX = 1
+scY = 1
+func scaleX v .
+   return v * scX
 .
-func scaleY v s .
-   return 100 - (v * 100 / s)
+func scaleY v .
+   return 100 - (v * scY)
 .
-proc scaledMove x y .
-   move scaleX x cWidth scaleY y cHeight
-.
-proc scaledLine x y .
-   line scaleX x cWidth scaleY y cHeight
+proc scaledLine x0 y0 x y .
+   gline scaleX x0 scaleY y0 scaleX x scaleY y
 .
 # 
 # the following implements equivalents for some Processing functions and Boolean literals
 # false = 0
 true = 1
 proc size w h .
-   cWidth = w
-   cHeight = h
+   scX = 100 / w
+   scY = 100 / h
 .
 proc strokeWidth w .
-   linewidth w / 18
+   glinewidth w / 18
 .
 proc stroke rb gb bb .
-   color3 rb / 255 gb / 255 bb / 255
+   gcolor3 rb / 255 gb / 255 bb / 255
 .
 proc arc xCenter yCenter eWidth eHeight p1Angle p2Angle .
    rx = eWidth / 2
@@ -36,14 +33,13 @@ proc arc xCenter yCenter eWidth eHeight p1Angle p2Angle .
    arcAngle = p2Angle - p1Angle
    angleStep = arcAngle / 720
    angle = p1Angle
-   x = xCenter + rx * cos angle
-   y = yCenter + ry * sin angle
-   scaledMove x y
    for s = 0 to 720
+      angle += angleStep
       x = xCenter + rx * cos angle
       y = yCenter + ry * sin angle
-      scaledLine x y
-      angle = angle + angleStep
+      if s > 0 : scaledLine xp yp x y
+      xp = x
+      yp = y
    .
 .
 # 
@@ -78,8 +74,7 @@ proc drawHarriss x y dAngle lngth iteration lineW .
       if showLines = true
          stroke 255 255 255
          strokeWidth 3
-         scaledMove x y
-         scaledLine xEnd yEnd
+         scaledLine x y xEnd yEnd
       .
       radius = 1.414 * lngth
       if heading$ = "SN"
@@ -112,8 +107,8 @@ proc drawHarriss x y dAngle lngth iteration lineW .
 .
 proc setup .
    size _wndW _wndH
-   background 555
-   clear
+   gbackground 555
+   gclear
    startX = _wndW / 2 + 50
    startY = _wndH - 50
    initLen = h / HR / HR

@@ -7,12 +7,11 @@ sz = len a$[]
 fsz = 100 / sz
 n_keys = 0
 #
-proc mark p col . .
+proc mark p col .
    x = p mod sz
    y = p div sz
-   color col
-   move x * fsz + fsz / 2 y * fsz + fsz / 2
-   circle fsz / 2
+   gcolor col
+   gcircle x * fsz + fsz / 2 y * fsz + fsz / 2 fsz / 2
 .
 len map[] sz * sz
 arrbase map[] 0
@@ -20,7 +19,7 @@ len door_pos[] 26
 len key_pos[] 26 + 1
 robot = 0
 #
-proc parse . .
+proc parse .
    repeat
       a$[] = strchars inp$
       arrbase a$[] 0
@@ -35,9 +34,7 @@ proc parse . .
             if h >= 97 and h <= 122
                map[p] = h
                h -= 96
-               if h > n_keys
-                  n_keys = h
-               .
+               if h > n_keys : n_keys = h
                key_pos[h] = p
             elif h >= 65 and h <= 90
                map[p] = h
@@ -53,54 +50,43 @@ proc parse . .
 .
 parse
 #
-proc show . .
-   move 0 0
-   color 888
-   rect 100 100
-   color 000
-   for y range0 sz
-      for x range0 sz
-         p = y * sz + x
-         if map[p] = 1
-            move x * fsz y * fsz
-            rect fsz fsz
-         .
+proc show .
+   gcolor 888
+   grect 0 0 100 100
+   gcolor 000
+   for y range0 sz : for x range0 sz
+      p = y * sz + x
+      if map[p] = 1
+         grect x * fsz y * fsz fsz fsz
       .
    .
    sc = 1
-   if fsz < 2
-      sc = 2.5
-   .
-   textsize fsz * sc
-   for y range0 sz
-      for x range0 sz
-         p = y * sz + x
-         if map[p] > 1
-            if map[p] < 97
-               color 995
-            else
-               color 966
-            .
-            move x * fsz + fsz / 2 y * fsz + fsz / 2
-            circle fsz * sc * 0.6
-            color 000
-            move x * fsz y * fsz - fsz / 2
-            text strchar map[p]
+   if fsz < 2 : sc = 2.5
+   gtextsize fsz * sc
+   for y range0 sz : for x range0 sz
+      p = y * sz + x
+      if map[p] > 1
+         if map[p] < 97
+            gcolor 995
+         else
+            gcolor 966
          .
+         gcircle x * fsz + fsz / 2 y * fsz + fsz / 2 fsz * sc * 0.6
+         gcolor 000
+         gtext x * fsz y * fsz - fsz / 2 strchar map[p]
       .
    .
-   color 070
+   gcolor 070
    x = robot mod sz
    y = robot div sz
-   move x * fsz + fsz / 2 y * fsz + fsz / 2
-   circle fsz * 0.6 * sc
+   gcircle x * fsz + fsz / 2 y * fsz + fsz / 2 fsz * 0.6 * sc
    sleep 0.01
 .
 offs[] = [ -sz 1 sz -1 ]
 #
 global kk_dist[] kk_doors[][] kk_keys[][] .
 #
-proc add_kk key k dist &coll[] ..
+proc add_kk key k dist &coll[] .
    k -= 96
    key -= 1
    ind = key * n_keys + k
@@ -113,7 +99,7 @@ proc add_kk key k dist &coll[] ..
       .
    .
 .
-proc spread key . .
+proc spread key .
    len found[] n_keys
    m[] = map[]
    arrbase m[] 0
@@ -151,7 +137,7 @@ proc spread key . .
 .
 len open[] n_keys + 1
 #
-proc calc_distances . .
+proc calc_distances .
    len kk_dist[] 0
    len kk_doors[][] 0
    len kk_keys[][] 0
@@ -160,12 +146,10 @@ proc calc_distances . .
    len kk_keys[][] n_keys * n_keys + n_keys
    key_pos[n_keys + 1] = robot
    for key = 1 to n_keys + 1
-      if open[key] = 0
-         spread key
-      .
+      if open[key] = 0 : spread key
    .
 .
-proc is_path_open key k &open ..
+proc is_path_open key k &open .
    key -= 1
    ind = key * n_keys + k
    open = 0
@@ -181,7 +165,7 @@ hashsz = 199999
 len hashind[] hashsz
 len hashv[] hashsz
 #
-proc hashget ind &val ..
+proc hashget ind &val .
    hi = ind mod hashsz + 1
    repeat
       if hashind[hi] = ind
@@ -193,7 +177,7 @@ proc hashget ind &val ..
    .
    val = -1
 .
-proc hashset ind val . .
+proc hashset ind val .
    hi = ind mod hashsz + 1
    while hashind[hi] <> 0
       hi = hi mod hashsz + 1
@@ -202,7 +186,7 @@ proc hashset ind val . .
    hashv[hi] = val
 .
 #
-proc state_id key &id ..
+proc state_id key &id .
    id = 0
    for k = 1 to n_keys
       id *= 2
@@ -212,7 +196,7 @@ proc state_id key &id ..
    id += key
 .
 #
-proc solve key &dist ..
+proc solve key &dist .
    for k = 1 to n_keys
       remain += if open[k] = 0
    .
@@ -250,7 +234,7 @@ calc_distances
 solve n_keys + 1 dist0
 print dist0
 #
-proc part2 . .
+proc part2 .
    for i = 1 to 4
       map[robot + offs[i]] = 1
    .

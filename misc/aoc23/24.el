@@ -62,18 +62,17 @@ proc part1 .
 part1
 #
 proc show b1 b2 d1 d2 .
-   linewidth 0.4
+   glinewidth 0.4
    m = d1 / d2
    b = (b2 - b1 * m) * sc
-   move 0 b
-   line 100 b + 100 * m * sc2
+   gline 0 b 100 b + 100 * m * sc2
 .
 #
 proc showallxy dx dy .
-   clear
+   gclear
    drawgrid
    for i = 1 to len w[][]
-      color i * 300 + i * 2
+      gcolor i * 300 + i * 2
       d1 = w[i][5] + dy
       d2 = w[i][4] + dx
       show w[i][1] w[i][2] d1 d2

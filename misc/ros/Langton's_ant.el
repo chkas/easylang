@@ -1,11 +1,8 @@
 len f[] 100 * 100
 proc show .
-   for y = 0 to 99
-      for x = 0 to 99
-         if f[y * 100 + x + 1] = 1
-            move x y
-            rect 1 1
-         .
+   for y = 0 to 99 : for x = 0 to 99
+      if f[y * 100 + x + 1] = 1
+         grect x y 1 1
       .
    .
 .

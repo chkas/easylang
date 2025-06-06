@@ -3,19 +3,18 @@ subr home
    x = 50
    y = 50
    down = 0
-   move x y
 .
 home
 # 
 proc forward n .
+   px = x
+   py = y
    x += cos deg * n
    y += sin deg * n
    if down = 1
-      line x y
-   else
-      move x y
+      gline px py x y
    .
-   sleep 0.1
+   sleep 0.05
 .
 proc turn a .
    deg -= a

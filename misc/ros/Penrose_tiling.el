@@ -15,13 +15,14 @@ proc lsysexp level &axiom$ &rules$[] .
 .
 stack[] = [ ]
 proc lsysdraw axiom$ x y ang lng .
-   linewidth 0.3
-   move x y
+   glinewidth 0.3
    for c$ in strchars axiom$
       if c$ = "E"
+         px = x
+         py = y
          x += cos dir * lng
          y += sin dir * lng
-         line x y
+         gline px py x y
       elif c$ = "-"
          dir -= ang
       elif c$ = "+"
@@ -36,7 +37,6 @@ proc lsysdraw axiom$ x y ang lng .
          y = stack[l - 1]
          dir = stack[l]
          len stack[] -3
-         move x y
       .
    .
 .

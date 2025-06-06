@@ -2,17 +2,18 @@ size = 15
 n = 2 * size + 1
 f = 100 / (n - 0.5)
 len m[] n * n
-#
-background 000
+# 
+gbackground 000
 proc show_maze .
-   clear
+   gclear
+   sz = f * 1.5
+   f2 = f / 2
    for i = 1 to len m[]
       if m[i] = 0
          x = (i - 1) mod n
          y = (i - 1) div n
-         color 999
-         move x * f - f / 2 y * f - f / 2
-         rect f * 1.5 f * 1.5
+         gcolor 999
+         grect x * f - f2 y * f - f2 sz sz
       .
    .
    sleep 0.01
@@ -49,19 +50,16 @@ proc make_maze .
 .
 make_maze
 show_maze
-#
+# 
 proc mark pos col .
    x = (pos - 1) mod n
    y = (pos - 1) div n
-   color col
-   move x * f + f / 4 y * f + f / 4
-   circle f / 3.5
+   gcolor col
+   gcircle x * f + f / 4 y * f + f / 4 f / 3.5
 .
-global found .
+found = 0
 proc solve dir0 pos .
-   if found = 1
-      return
-   .
+   if found = 1 : return
    mark pos 900
    sleep 0.05
    if pos = endpos

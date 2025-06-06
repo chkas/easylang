@@ -3,7 +3,7 @@ proc solve c1[] c2[] c3[] s1 s2 s3 &r[] .
    x1 = c1[1] ; y1 = c1[2] ; r1 = c1[3]
    x2 = c2[1] ; y2 = c2[2] ; r2 = c2[3]
    x3 = c3[1] ; y3 = c3[2] ; r3 = c3[3]
-   #
+   # 
    v11 = 2 * x2 - 2 * x1
    v12 = 2 * y2 - 2 * y1
    v13 = x1 * x1 - x2 * x2 + y1 * y1 - y2 * y2 - r1 * r1 + r2 * r2
@@ -25,7 +25,7 @@ proc solve c1[] c2[] c3[] s1 s2 s3 &r[] .
    a = N * N + Q * Q - 1
    b = 2 * M * N - 2 * N * x1 + 2 * P * Q - 2 * Q * y1 + 2 * s1 * r1
    c = x1 * x1 + M * M - 2 * M * x1 + P * P + y1 * y1 - 2 * P * y1 - r1 * r1
-   #
+   # 
    D = b * b - 4 * a * c
    rs = (-b - sqrt D) / (2 * a)
    r[1] = M + N * rs
@@ -39,26 +39,27 @@ solve c1[] c2[] c3[] 1 1 1 r1[]
 print r1[]
 solve c1[] c2[] c3[] -1 -1 -1 r2[]
 print r2[]
-#
-proc circ x y r .
-   text ""
+# 
+proc circ x0 y0 r .
    for a = 0 to 360
-      line x + sin a * r y + cos a * r
+      xp = x
+      yp = y
+      x = x0 + sin a * r
+      y = y0 + cos a * r
+      if a > 0 : gline xp yp x y
    .
 .
 proc draw col c[] .
-   color col
+   gcolor col
    circ c[1] * 10 + 30 c[2] * 10 + 30 c[3] * 10
 .
-background 888
-clear
-linewidth 0.5
-color 000
+gbackground 888
+gclear
+glinewidth 0.5
+gcolor 000
 drawgrid
-move 30 0
-line 30 100
-move 0 30
-line 100 30
+gline 30 0 30 100
+gline 0 30 100 30
 draw 000 c1[]
 draw 000 c2[]
 draw 000 c3[]

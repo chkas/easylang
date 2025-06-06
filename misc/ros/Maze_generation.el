@@ -2,23 +2,23 @@ size = 15
 n = 2 * size + 1
 f = 100 / (n - 0.5)
 len m[] n * n
-#
-background 000
+# 
+gbackground 000
 proc show_maze .
-   clear
+   gclear
+   sz = f * 1.5
+   f2 = f / 2
    for i = 1 to len m[]
       if m[i] = 0
          x = (i - 1) mod n
          y = (i - 1) div n
-         color 999
-         move x * f - f / 2 y * f - f / 2
-         rect f * 1.5 f * 1.5
+         gcolor 999
+         grect x * f - f2 y * f - f2 sz sz
       .
    .
    sleep 0.01
 .
 offs[] = [ 1 n -1 (-n) ]
-#
 proc m_maze pos .
    m[pos] = 0
    show_maze
@@ -47,7 +47,6 @@ proc make_maze .
    h = 2 * random 15 - n + n * 2 * random 15
    m_maze h
    m[endpos] = 0
-   endpos += n
 .
 make_maze
 show_maze

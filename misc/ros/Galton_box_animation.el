@@ -1,16 +1,13 @@
 sysconf topleft
 # 
 proc drawpins .
-   for i to 9
-      for j to i
-         move (15 - i) * 3 + j * 6 i * 6 + 2
-         circle 0.7
-      .
+   for i to 9 : for j to i
+      gcircle (15 - i) * 3 + j * 6 i * 6 + 2 0.7
    .
 .
-color 555
+gcolor 555
 drawpins
-background -1
+gbackground -1
 # 
 len box[] 10
 len x[] 10
@@ -20,8 +17,7 @@ proc showbox .
    for i to 10
       x = i * 6 + 15
       for j to box[i]
-         move x 100 - j * 4 + 2
-         circle 2
+         gcircle x 100 - j * 4 + 2 2
       .
    .
 .
@@ -46,7 +42,7 @@ on timer
    else
       busy = 0
    .
-   clear
+   gclear
    showbox
    for i to 10
       x = x[i]
@@ -69,8 +65,7 @@ on timer
                .
             .
          .
-         move x y[i]
-         circle 2
+         gcircle x y[i] 2
       .
    .
    timer 0.1

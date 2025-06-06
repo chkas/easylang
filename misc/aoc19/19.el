@@ -15,7 +15,7 @@ subr reset
    mem[] = code[]
    arrbase mem[] 0
 .
-proc mem_ind mo ind &rind ..
+proc mem_ind mo ind &rind .
    rind = ind
    if mo = 0
       rind = mem[ind]
@@ -26,7 +26,7 @@ proc mem_ind mo ind &rind ..
       len mem[] rind + 8
    .
 .
-proc run . .
+proc run .
    repeat
       oc0 = mem[pc]
       oc = oc0 mod 100
@@ -73,7 +73,7 @@ proc run . .
 prefix
 # --------  --------
 #
-proc in_beam in1 in2 &out ..
+proc in_beam in1 in2 &out .
    ic_reset
    ic_in = in1
    ic_run
@@ -81,33 +81,30 @@ proc in_beam in1 in2 &out ..
    ic_run
    out = ic_out
 .
-background 222
-clear
-proc draw_light x y h . .
+gbackground 222
+gclear
+proc draw_light x y h .
    if visual = 0 : return
    if h = 1
-      color 884
+      gcolor 884
    else
-      color 000
+      gcolor 000
    .
-   move x * 2 y * 2
-   rect 1.8 1.8
+   grect x * 2 y * 2 1.8 1.8
    sleep 0
 .
 #
-proc part1 . .
+proc part1 .
    cnt = 0
-   for y range0 50
-      for x range0 50
-         in_beam x y h
-         draw_light x y h
-         cnt += h
-      .
+   for y range0 50 : for x range0 50
+      in_beam x y h
+      draw_light x y h
+      cnt += h
    .
    print cnt
 .
 #
-proc test x &y &res ..
+proc test x &y &res .
    x += 99
    repeat
       in_beam x y h
@@ -116,7 +113,7 @@ proc test x &y &res ..
    .
    in_beam x - 99 y + 99 res
 .
-proc part2 . .
+proc part2 .
    y = 0
    x = 100
    repeat
@@ -126,11 +123,11 @@ proc part2 . .
    .
    print x * 10000 + y
 .
-if len ic_code[] > 1
-   part1
-   part2
-else
+if len ic_code[] <= 1
    print "No input"
+   return
 .
+part1
+part2
 #
 input_data

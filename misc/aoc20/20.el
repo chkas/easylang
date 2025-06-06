@@ -18,7 +18,7 @@ proc build_rev .
 .
 build_rev
 #
-proc edge_val s$ &n ..
+proc edge_val s$ &n .
    n = 0
    for i to 10
       n *= 2
@@ -70,28 +70,24 @@ proc part1 .
    for c1 to n_tiles
       n = 0
       m[] = [ 0 0 0 0 ]
-      for c2 to n_tiles
-         if c1 <> c2
-            m = 0
-            for e1 to 4
-               p1 = ed[c1][e1]
-               if p1 <> 1024
-                  for e2 to 4
-                     p2 = ed[c2][e2]
-                     if p1 = p2 or p1 = rev[p2 + 1]
-                        m = 1
-                        m[e1] = 1
-                     .
+      for c2 to n_tiles : if c1 <> c2
+         m = 0
+         for e1 to 4
+            p1 = ed[c1][e1]
+            if p1 <> 1024
+               for e2 to 4
+                  p2 = ed[c2][e2]
+                  if p1 = p2 or p1 = rev[p2 + 1]
+                     m = 1
+                     m[e1] = 1
                   .
                .
             .
-            n += m
          .
+         n += m
       .
       n[c1] = n
-      if n = 2
-         prod *= id[c1]
-      .
+      if n = 2 : prod *= id[c1]
       if n < 4
          for e to 4
             if m[e] = 0
@@ -165,7 +161,6 @@ proc turn_flip mode start r .
    .
 .
 #
-# pr ed[][]
 #
 global imgids[] .
 proc build .
@@ -230,18 +225,17 @@ expand_img
 #
 proc show_grafic .
    f = 100 / irows
-   color 003
-   rect 100 100
+   gcolor 003
+   grect 0 0 100 100
    for r range0 irows
       for c range0 irows
          i = r * irows + c + 1
-         move c * f r * f
          if img[i] = 1
-            color 227
-            rect 1 * f 1 * f
+            gcolor 227
+            grect c * f r * f 1 * f 1 * f
          elif img[i] = 2
-            color 900
-            rect 1.1 * f 1.1 * f
+            gcolor 900
+            grect c * f r * f 1.1 * f 1.1 * f
          .
       .
    .
@@ -250,38 +244,30 @@ monster[][] &= [ 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 ]
 monster[][] &= [ 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 1 ]
 monster[][] &= [ 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 0 ]
 #
-proc search_monster &n_monster ..
-   for r range0 irows - 3
-      for c range0 irows - 20
-         found = 1
-         for mr range0 3
-            for mc range0 20
-               if monster[mr + 1][mc + 1] = 1
-                  i = (r + mr) * irows + c + mc + 1
-                  if img[i] <> 1
-                     found = 0
-                     break 2
-                  .
-               .
+proc search_monster &n_monster .
+   for r range0 irows - 3 : for c range0 irows - 20
+      found = 1
+      for mr range0 3 : for mc range0 20
+         if monster[mr + 1][mc + 1] = 1
+            i = (r + mr) * irows + c + mc + 1
+            if img[i] <> 1
+               found = 0
+               break 2
             .
          .
-         if found = 1
-            for mr range0 3
-               for mc range0 20
-                  if monster[mr + 1][mc + 1] = 1
-                     i = (r + mr) * irows + c + mc + 1
-                     img[i] = 2
-                  .
-               .
+      .
+      if found = 1
+         for mr range0 3 : for mc range0 20
+            if monster[mr + 1][mc + 1] = 1
+               i = (r + mr) * irows + c + mc + 1
+               img[i] = 2
             .
-            n_monster += 1
          .
+         n_monster += 1
       .
    .
    if n_monster > 0
-      for i to len img[]
-         sum += img[i]
-      .
+      for i to len img[] : sum += img[i]
       print sum - n_monster * 30
       show_grafic
    .
@@ -406,5 +392,4 @@ Tile 3079:
 ..#.###...
 ..#.......
 ..#.###...
-
 

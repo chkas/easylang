@@ -145,7 +145,7 @@ proc show .
       gcolor 444
       x = 32 * t - 14
       gline x 12 + ndisc * 6 x 10
-      color 998
+      gcolor 998
       gtext x - 2 2 t
       glinewidth 6
       for i = 1 to len tow[t][]

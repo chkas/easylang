@@ -8,25 +8,23 @@
 sysconf topleft
 visual = 1
 #
-background 000
-clear
+gbackground 000
+gclear
 proc draw x y cod .
    if visual = 0 : return
    d = 2.8
    s = 0.5
-   linewidth s * 6 / 5
+   glinewidth s * 6 / 5
    x1[] = [ x + s x x x + d - s x + d x + d x + s ]
    y1[] = [ y + d y + d - s y + d + d - s y + d + d y + d + s y + s y ]
    x2[] = [ x + d - s x x x + s x + d x + d x + d - s ]
    y2[] = [ y + d y + s y + d + s y + d + d y + d + d - s y + d - s y ]
-   color 000
-   move x - 2 y - 2
-   rect 6 10
-   color 900
+   gcolor 000
+   grect x - 2 y - 2 6 10
+   gcolor 900
    for i = 1 to 7
       if bitand cod bitshift 1 (7 - i) > 0
-         move x1[i] y1[i]
-         line x2[i] y2[i]
+         gline x1[i] y1[i] x2[i] y2[i]
       .
    .
    sleep 0.001
@@ -115,4 +113,3 @@ dbcfg fgd bdegcaf fgec aegbdf ecdfab fbedc dacgb gdcebf gf | cefg dcbef fcge gbc
 bdfegc cbegaf gecbf dfcage bdacg ed bedf ced adcbefg gebcd | ed bcgafe cdgba cbgef
 egadfb cdbfeg cegd fecab cgb gbdefca cg fgcdab egfdb bfceg | gbdfcae bgc cg cgb
 gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce
-

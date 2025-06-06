@@ -5,27 +5,26 @@ visual = 1
 #
 global port[] port$[] aa zz m[] nc nc2 .
 #
-proc mark pos col . .
+proc mark pos col .
    if visual = 0 : return
    f = 100 / nc2
    x = pos mod nc - 1
    y = pos div nc - 1
-   color col
-   move x * f y * f
-   rect f f
+   gcolor col
+   grect x * f y * f f f
    if col <> 0 : sleep 0.001
 .
-proc show . .
+proc show .
    if visual = 0 : return
-   background 555
-   clear
+   gbackground 555
+   gclear
    for i range0 len m[]
       if m[i] = -2 : mark i 000
    .
    mark zz 900
 .
 #
-proc parse . .
+proc parse .
    a1$[] = strchars input
    nc = len a1$[] - 2
    nc2 = (nc - 2)
@@ -70,7 +69,7 @@ proc parse . .
    .
 .
 parse
-proc connect . .
+proc connect .
    for i = 1 to len port$[]
       s$ = port$[i]
       if s$ = "AA"
@@ -91,7 +90,7 @@ connect
 #
 offs[] = [ -nc 1 nc -1 ]
 #
-proc part1 . .
+proc part1 .
    show
    len seen[] len port[]
    cur[] &= aa
@@ -131,7 +130,7 @@ proc part1 . .
 .
 part1
 #
-proc is_inner pos &r ..
+proc is_inner pos &r .
    x = pos mod nc
    y = pos div nc
    r = 1
@@ -139,7 +138,7 @@ proc is_inner pos &r ..
       r = 0
    .
 .
-proc mark2 pos col lev . .
+proc mark2 pos col lev .
    if visual = 0 or lev >= 6 : return
    f = 100 / nc2
    l = 1
@@ -152,26 +151,21 @@ proc mark2 pos col lev . .
    .
    x = pos mod nc - 1
    y = pos div nc - 1
-   color col
-   move x * f / l + offs y * f / l + offs
-   rect f / l f / l
+   gcolor col
+   grect x * f / l + offs y * f / l + offs f / l f / l
    if lev < 3 and col <> 0 : sleep 0.001
 .
-proc show2 . .
-   if visual = 0
-      break 1
-   .
-   clear
+proc show2 .
+   if visual = 0 : return
+   gclear
    for i range0 len m[]
       if m[i] = -2
-         for l range0 6
-            mark2 i 000 l
-         .
+         for l range0 6 : mark2 i 000 l
       .
    .
    mark2 zz 900 0
 .
-proc part2 . .
+proc part2 .
    show2
    max_level = 30
    len seen[] len port[] * (max_level + 1)
@@ -273,4 +267,3 @@ RE....#.#                           #......RF
   #############.#.#.###.###################
                A O F   N
                A A D   M
-

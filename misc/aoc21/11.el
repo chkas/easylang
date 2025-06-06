@@ -10,23 +10,19 @@ visual = 1
 #
 global m[][] .
 #
-background 000
+gbackground 000
 if visual = 1
-   move 10 70
-   text "WARNING: Flashing"
+   gtext 8 70 "WARNING: Flashing"
    sleep 3
 .
-color 321
+gcolor 321
 proc draw .
    if visual = 0 : return
-   clear
-   for y to 10
-      for x to 10
-         sz = m[y][x]
-         if sz = 11 : sz = 15
-         move 10 * x - 5 10 * y - 5
-         circle sz / 2
-      .
+   gclear
+   for y to 10 : for x to 10
+      sz = m[y][x]
+      if sz = 11 : sz = 15
+      gcircle 10 * x - 5 10 * y - 5 sz / 2
    .
    sleep 0.2
 .
@@ -80,4 +76,3 @@ input_data
 6882881134
 4846848554
 5283751526
-

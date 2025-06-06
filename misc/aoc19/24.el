@@ -3,7 +3,7 @@
 visual = 1
 #
 global inp[] .
-proc parse . .
+proc parse .
    for r = 1 to 5
       for c$ in strchars input
          inp[] &= if c$ = "#"
@@ -20,7 +20,7 @@ len p[] n1 * n1 + n2
 arrbase f[] 0
 arrbase p[] 0
 #
-proc init . .
+proc init .
    for r range0 n : for c range0 n
       f[r * n1 + c + n2] = inp[r * 5 + c + 1]
    .
@@ -32,24 +32,22 @@ found = 0
 divi = 0
 #
 if visual = 1
-   move 10 70
-   text "WARNING: Flashing"
+   gtext 10 70 "WARNING: Flashing"
    sleep 3
-   background 210
-   color 432
+   gbackground 210
+   gcolor 432
 .
-proc show . .
+proc show .
    if visual = 0 : return
-   clear
+   gclear
    for r range0 n : for c range0 n
       if f[r * n1 + c + n2] = 1
-         move c * 100 / n r * 100 / n
-         rect 98 / n 98 / n
+         grect c * 100 / n r * 100 / n 98 / n 98 / n
       .
    .
    sleep 0.05
 .
-proc update . .
+proc update .
    swap f[] p[]
    for r range0 n : for c range0 n
       i = r * n1 + c + n2
@@ -65,23 +63,19 @@ proc update . .
       .
    .
 .
-proc part1 . .
+proc part1 .
    repeat
       show
       f = 1
       divi = 0
-      for r range0 n
-         for c range0 n
-            if f[r * n1 + c + n2] = 1
-               divi += f
-            .
-            f *= 2
+      for r range0 n : for c range0 n
+         if f[r * n1 + c + n2] = 1
+            divi += f
          .
+         f *= 2
       .
       for i = 1 to len divi[]
-         if divi[i] = divi
-            found = 1
-         .
+         if divi[i] = divi : found = 1
       .
       divi[] &= divi
       until found = 1
@@ -96,14 +90,14 @@ lev0 = 120
 len f[] 25 * (lev0 * 2) + 25
 len p[] len f[]
 #
-proc init2 . .
+proc init2 .
    for i range0 len f[] : f[i] = 0
    for r range0 5 : for c range0 5
       i = r * 5 + c + lev0 * 25
       f[i] = inp[r * 5 + c + 1]
    .
 .
-proc show2 . .
+proc show2 .
    if visual = 0 : return
    for i range0 4
       b = 25 * (lev0 - 1 + i)
@@ -113,20 +107,16 @@ proc show2 . .
          off += 2 / 5 * sz
          sz = sz / 5
       .
-      color 321 + 111 * i
-      move off off
-      rect sz sz
-      color 210 + 111 * i
+      gcolor 321 + 111 * i
+      grect off off sz sz
+      gcolor 210 + 111 * i
       f = sz / 5
       fs = f * 0.96
       off += 0.02 * f
-      for r range0 5
-         for c range0 5
-            if r <> 2 or c <> 2
-               if f[b + r * 5 + c] = 1
-                  move off + c * f off + r * f
-                  rect fs fs
-               .
+      for r range0 5 : for c range0 5
+         if r <> 2 or c <> 2
+            if f[b + r * 5 + c] = 1
+               grect off + c * f off + r * f fs fs
             .
          .
       .
@@ -193,7 +183,7 @@ proc updatel lev &dirty .
       .
    .
 .
-proc update2 . .
+proc update2 .
    swap f[] p[]
    updatel lev0 h
    repeat
@@ -206,7 +196,7 @@ proc update2 . .
       print "error space"
    .
 .
-proc part2 . .
+proc part2 .
    init2
    show2
    sleep 0.02

@@ -13,7 +13,7 @@ prefix ic_
 global base pc .
 arrbase mem[] 0
 #
-proc mem_ind mo ind &rind ..
+proc mem_ind mo ind &rind .
    rind = ind
    if mo = 0
       rind = mem[ind]
@@ -24,7 +24,7 @@ proc mem_ind mo ind &rind ..
       len mem[] rind + 8
    .
 .
-proc run . .
+proc run .
    repeat
       oc0 = mem[pc]
       oc = oc0 mod 100
@@ -70,29 +70,28 @@ proc run . .
 # --------  --------
 prefix
 #
-proc go_dir d &out ..
+proc go_dir d &out .
    ic_in = d
    ic_run
    out = ic_out
 .
 len map[] 100 * 100
-background 000
-clear
+gbackground 000
+gclear
 ox_pos = 1
-proc draw pos col . .
+proc draw pos col .
    if visual = 0 : return
    pos -= 1
    x = pos mod 100
    y = pos div 100
-   color col
-   move x * 2 - 50 y * 2 - 50
-   rect 2 2
-   sleep 0.005
+   gcolor col
+   grect x * 2 - 50 y * 2 - 50 2 2
+   sleep 0.001
 .
 offs[] = [ -100 100 1 -1 ]
 rev[] = [ 2 1 4 3 ]
 #
-proc maze dir0 pos &min ..
+proc maze dir0 pos &min .
    map[pos] = 1
    draw pos 888
    min = 1 / 0
@@ -116,7 +115,7 @@ proc maze dir0 pos &min ..
    .
 .
 #
-proc oxygen . .
+proc oxygen .
    todon[] = [ ox_pos ]
    repeat
       swap todo[] todon[]
@@ -133,22 +132,19 @@ proc oxygen . .
          .
       .
       until len todon[] = 0
-      if visual = 1 : sleep 0.02
+      if visual = 1 : sleep 0.01
       minutes += 1
    .
    print minutes
 .
 if len ic_mem[] <= 1
    print "no input data"
-else
-   maze -1 5051 res
-   draw ox_pos 900
-   print res
-   #
-   oxygen
+   return
 .
+maze -1 5051 res
+draw ox_pos 900
+print res
+#
+oxygen
 #
 input_data
-99
-
-

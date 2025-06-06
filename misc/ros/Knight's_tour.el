@@ -67,31 +67,25 @@ if found = 1
 else
    print "no solutions found: (" & r0 & " " & c0 & ")"
 .
-#
+# 
 proc showgraf .
    sc = 100 / size
-   linewidth sc / 15
+   glinewidth sc / 15
    col[] = [ 777 333 ]
-   for r = 0 to size - 1
-      for c = 0 to size - 1
-         color col[(r + c) mod1 2]
-         move sc * c sc * r
-         rect sc sc
-      .
+   for r = 0 to size - 1 : for c = 0 to size - 1
+      gcolor col[(r + c) mod1 2]
+      grect sc * c sc * r sc sc
    .
-   move 0 / 0 0
    for i to size * size
-      for r = 1 to size
-         for c = 1 to size
-            if brd[r][c] = i
-               color 600
-               x = c * sc - sc / 2
-               y = r * sc - sc / 2
-               line x y
-               color 880
-               circle sc / 10
-            .
-         .
+      for r = 1 to size : for c = 1 to size : if brd[r][c] = i
+         gcolor 600
+         x = c * sc - sc / 2
+         y = r * sc - sc / 2
+         if i > 1 : gline xp yp x y
+         xp = x
+         yp = y
+         gcolor 880
+         gcircle x y sc / 10
       .
    .
 .

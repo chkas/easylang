@@ -6,7 +6,7 @@ visual = 1
 global w monitor_stat .
 arrbase m[] 0
 #
-proc init . .
+proc init .
    s$ = input
    w = len s$
    while s$ <> ""
@@ -18,38 +18,35 @@ init
 #
 sc = 100 / w
 background 000
-proc show . .
+proc show .
    if visual = 0 : return
-   clear
-   color 777
+   gclear
+   gcolor 777
    for i range0 len m[]
       if m[i] = 1
          x = i mod w
          y = i div w
-         move x * sc + sc / 2 y * sc + sc / 2
-         circle 0.6
+         gcircle x * sc + sc / 2 y * sc + sc / 2 0.6
       .
    .
 .
-proc mark i . .
+proc mark i .
    if visual = 0 : return
-   color 900
+   gcolor 900
    x = i mod w
    y = i div w
-   move x * sc + sc / 2 y * sc + sc / 2
-   circle 1
+   gcircle x * sc + sc / 2 y * sc + sc / 2 1
    sleep 0.04
 .
-proc show_ray x y . .
+proc show_ray x y .
    if visual = 0 : return
-   color 944
+   gcolor 944
    x0 = monitor_stat mod w
    y0 = monitor_stat div w
-   move x0 * sc + sc / 2 y0 * sc + sc / 2
-   line x * sc + sc / 2 y * sc + sc / 2
+   gline (x0 * sc + sc / 2) (y0 * sc + sc / 2) (x * sc + sc / 2) (y * sc + sc / 2)
    sleep 0.02
 .
-proc gcd a b &res ..
+proc gcd a b &res .
    a = abs a
    b = abs b
    while b <> 0
@@ -60,7 +57,7 @@ proc gcd a b &res ..
    res = a
 .
 global dx dx[] dy[] .
-proc get_rays stat . .
+proc get_rays stat .
    dx[] = [ ]
    dy[] = [ ]
    arrbase dx[] 0
@@ -86,17 +83,15 @@ proc get_rays stat . .
       .
    .
 .
-proc part1 . .
-   for i range0 len m[]
-      if m[i] = 1
-         get_rays i
-         if len dx[] > max
-            monitor_stat = i
-            max = len dx[]
-            show
-            mark monitor_stat
-            sleep 0.02
-         .
+proc part1 .
+   for i range0 len m[] : if m[i] = 1
+      get_rays i
+      if len dx[] > max
+         monitor_stat = i
+         max = len dx[]
+         show
+         mark monitor_stat
+         sleep 0.02
       .
    .
    print max
@@ -104,7 +99,7 @@ proc part1 . .
 #
 linewidth 0.5
 #
-proc find_next &dx &dy &ind ..
+proc find_next &dx &dy &ind .
    start_ang = atan2 dy dx
    ang = 1 / 0
    for i range0 len dx[]
@@ -119,7 +114,7 @@ proc find_next &dx &dy &ind ..
    .
 .
 n_shot = 0
-proc fire ind . .
+proc fire ind .
    x = monitor_stat mod w
    y = monitor_stat div w
    dx = dx[ind]
@@ -143,7 +138,7 @@ proc fire ind . .
    show
    mark monitor_stat
 .
-proc part2 . .
+proc part2 .
    get_rays monitor_stat
    dy = -99999
    dx = -1
@@ -181,5 +176,4 @@ input_data
 .#.#.###########.###
 #.#.#.#####.####.###
 ###.##.####.##.#..##
-
 

@@ -8,20 +8,19 @@ sysconf topleft
 visual = 1
 #
 global m[] nc .
-background 001
+gbackground 001
 col[] = [ 0 030 060 ]
 proc show .
    if visual = 0 : return
-   clear
+   gclear
    sc = 100 / nc
    sc1 = sc * 1.1
    for i to len m[]
       if m[i] >= 1
-         color col[m[i]]
+         gcolor col[m[i]]
          x = (i - 1) mod nc
          y = (i - 1) div nc
-         move sc * x sc * y
-         rect sc1 sc1
+         grect sc * x sc * y sc1 sc1
       .
    .
    sleep 0.01
@@ -112,4 +111,3 @@ v>v.vv.v..
 .vv..>.>v.
 v.v..>>v.v
 ....v..v.>
-

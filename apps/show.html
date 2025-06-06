@@ -69,6 +69,7 @@ a { color: #ddd }
 	-webkit-user-select:text;
 }
 #out {
+	font-family: monospace;
 	height:62px;
 	width:100%;
 	background-color:#000;
@@ -234,7 +235,7 @@ async function ready() {
 	}
 	else {
 		codew.textContent =  await decode `
-RU/RCoMwDHzPVxzscVjqmAhj7mE/Mop2IFQ7qnbt3y+pA/uSu8sluZ7wNM5RMAM61BdKXBpNmUvbUBRaq4Z673xAqzX5GZPfFvsa/HcmAMvqP+JCVSApsZh5nMxqpT++D8sNwa5bKHO9syYImHy0SMhFHAPr4DjCEs4dYhKYC8z/hQkP1FrzSQnOyRLuBd5QIlf7EDvz3hDGL+bSLGusW+whVx200lcRFH+B6Ac=
+RY7LCsMgEEX38xUXuiyKKQ2BULvojxRJTBBMLOZR/fsyppDdua9hLngZ7ymaHhrVjRI0akUZGk1NO8tK1jR2wYeIRikKM6awLfbdh+9MAJY1fLgGUZAkV8zsJrNazt1wVlpEu26x7MbOWxMPcrHzFgkZ0fRsJVw19sSYC+b/qYQnKqUguIkQkfAo2KJ8K46RG5CPgBWAPZewnLF+sactNJRUdzYkSSL6AQ==
 `	}
 	if (codew.textContent) {
 		updCodeInfo()
