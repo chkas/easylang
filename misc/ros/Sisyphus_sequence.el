@@ -14,7 +14,7 @@ proc nextprim .
       until isprim prim = 1
    .
 .
-numfmt 0 4
+numfmt 4 0
 n = 1
 write n
 for i = 2 to 100

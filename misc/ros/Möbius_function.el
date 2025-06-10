@@ -1,17 +1,13 @@
 mu_max = 100000
 sqroot = floor sqrt mu_max
-# 
+#
 for i to mu_max
    mu[] &= 1
 .
 for i = 2 to sqroot
    if mu[i] = 1
-      for j = i step i to mu_max
-         mu[j] *= -i
-      .
-      for j = i * i step i * i to mu_max
-         mu[j] = 0
-      .
+      for j = i step i to mu_max : mu[j] *= -i
+      for j = i * i step i * i to mu_max : mu[j] = 0
    .
 .
 for i = 2 to mu_max
@@ -25,10 +21,8 @@ for i = 2 to mu_max
       mu[i] = -1
    .
 .
-numfmt 0 3
+numfmt 3 0
 for i = 1 to 100
    write mu[i]
-   if i mod 10 = 0
-      print ""
-   .
+   if i mod 10 = 0 : print ""
 .

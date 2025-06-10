@@ -1,4 +1,4 @@
-numfmt 12 0
+numfmt 15 12
 a = 0
 b = 1
 n = 10

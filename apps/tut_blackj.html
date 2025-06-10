@@ -73,9 +73,9 @@ proc p_dealer .
     .
     dealer_draw 1 dealer_card 0 0 p_dealer[]
     #
-    numfmt 0 2
+    numfmt 2 0
     write dealer_card & ":"
-    numfmt 2 5
+    numfmt 5 2
     for i = 17 to 22
       write p_dealer[i] & ""
     .
@@ -909,7 +909,7 @@ proc calc_ev .
       .
     .
   .
-  numfmt 4 0
+  numfmt 0 4
   print "EV: " & ev_total
 .
 #
@@ -1110,7 +1110,7 @@ proc play n_games .
     .
   .
   print "$" & money
-  numfmt 4 0
+  numfmt 0 4
   print "EV: " & money / (10 * n_games)
 .
 play 500000
@@ -1173,7 +1173,7 @@ for i = 2 to 11
 .
 p_card[10] = (n_deck * 16 - removed_cards[10]) / n_cards
 #
-numfmt 3 0
+numfmt 0 3
 print p_card[]
 
 + Now we calculate the expected value with this stack of cards.
@@ -1368,7 +1368,7 @@ proc calc_ev .
       .
     .
   .
-  numfmt 4 0
+  numfmt 0 4
   print "EV: " & ev_total
 .
 #

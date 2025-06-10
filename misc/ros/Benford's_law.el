@@ -9,13 +9,13 @@ func$ add a$ b$ .
    if c > 0 : r$ &= c
    return r$
 .
-# 
+#
 len fibdist[] 9
 proc mkfibdist .
    # generate 1000 fibonacci numbers as
    # (reversed) strings, because 53 bit
    # integers are too small
-   # 
+   #
    n = 1000
    prev$ = 0
    val$ = 1
@@ -32,7 +32,7 @@ proc mkfibdist .
    .
 .
 mkfibdist
-# 
+#
 len benfdist[] 9
 proc mkbenfdist .
    for i to 9
@@ -40,8 +40,8 @@ proc mkbenfdist .
    .
 .
 mkbenfdist
-# 
-numfmt 3 0
+#
+numfmt 0 3
 print "Actual Expected"
 for i to 9
    print fibdist[i] & "   " & benfdist[i]

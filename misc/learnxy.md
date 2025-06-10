@@ -108,7 +108,7 @@ print strcode "A" & " is " & strchar 65
 #
 # set number output format
 #
-numfmt 4 0
+numfmt 0 4
 print "Square root of 2: " & sqrt 2
 print "Pi: " & pi
 print "10's logarithm of 999: " & log10 999

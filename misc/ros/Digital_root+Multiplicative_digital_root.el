@@ -15,7 +15,7 @@ proc mdr n &md &mp .
    mp = 0
    _mdr n md mp
 .
-numfmt 0 6
+numfmt 6 0
 print "Number    MDR    MP"
 for v in [ 123321 7739 893 899998 ]
    mdr v md mp

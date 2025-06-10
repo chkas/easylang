@@ -1,4 +1,4 @@
-numfmt 15 0
+numfmt 0 15
 n = 4
 while n <> prev
    prev = n

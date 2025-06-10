@@ -1,4 +1,4 @@
-numfmt 8 0
+numfmt 0 8
 func calc_sqrt .
    n = 100
    sum = n

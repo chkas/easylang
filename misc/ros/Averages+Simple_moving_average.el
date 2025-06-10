@@ -20,10 +20,10 @@ func get id x .
    return sum[id] / len smpl[id][]
 .
 prefix
-# 
+#
 sma5 = sma_new 5
 sma3 = sma_new 3
-numfmt 2 4
+numfmt 4 2
 for v in [ 1 2 3 4 5 5 4 3 2 1 ]
    print sma_get sma3 v & "  " & sma_get sma5 v
 .

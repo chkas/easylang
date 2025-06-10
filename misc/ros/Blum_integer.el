@@ -13,18 +13,16 @@ fastfunc semiprim n .
 .
 print "The first 50 Blum integers:"
 n = 3
-numfmt 0 4
+numfmt 4 0
 repeat
    prim1 = semiprim n
-   if prim1 <> 0
-      if prim1 mod 4 = 3
-         prim2 = n div prim1
-         if prim2 <> prim1 and prim2 mod 4 = 3
-            c += 1
-            if c <= 50
-               write n
-               if c mod 10 = 0 : print ""
-            .
+   if prim1 <> 0 and prim1 mod 4 = 3
+      prim2 = n div prim1
+      if prim2 <> prim1 and prim2 mod 4 = 3
+         c += 1
+         if c <= 50
+            write n
+            if c mod 10 = 0 : print ""
          .
       .
    .
@@ -33,3 +31,4 @@ repeat
 .
 print ""
 print "The 26828th Blum integer is: " & n
+

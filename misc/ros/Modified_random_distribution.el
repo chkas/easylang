@@ -20,13 +20,13 @@ histsz = 200
 binsz = 1 / nbins
 len bins[] nbins
 arrbase bins[] 0
-# 
+#
 for i to n
    rn = rand
    bn = floor (rn / binsz)
    bins[bn] += 1
 .
-numfmt 0 4
+numfmt 4 0
 for i range0 nbins
    print bins[i] & " " & rep "*" (bins[i] / histsz)
 .

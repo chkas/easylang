@@ -6,5 +6,5 @@ proc minab n .
       print ""
    .
 .
-numfmt 0 2
+numfmt 2 0
 minab 10

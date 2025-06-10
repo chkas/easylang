@@ -1,0 +1,21 @@
+#!/bin/sh
+
+test $1 || set ros.el
+cat <<xxx
+{{trans|Go}}
+
+=={{header|EasyLang}}==
+<syntaxhighlight lang="easylang">
+xxx
+cat $1
+cat <<xxx
+</syntaxhighlight>
+{{out}}
+<pre>
+xxx
+~/bin/r $1
+cat <<xxx
+</pre>
+
+xxx
+

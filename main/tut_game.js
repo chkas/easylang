@@ -51,7 +51,7 @@ glinewidth 4
 on animate
    gclear
    gcolor 444
-   gline px - 10 2 px + 10 2
+   gline px - 10, 2, px + 10, 2
    if right = 1 and px < 88
       px += 1
    .
@@ -92,7 +92,7 @@ on animate
    gcolor 700
    gcircle x y 5
    gcolor 444
-   gline px - 10 2 px + 10 2
+   gline px - 10, 2, px + 10, 2
    #
    x += vx
    y += vy
@@ -160,7 +160,7 @@ on mouse_down
    if time0 <> 0
       gclear
       gcolor 555
-      gtext 20 50 systime - time0
+      gtext 20, 50, systime - time0
       time0 = 0
    else
       wait
@@ -243,7 +243,7 @@ subr show_card
    gcolor 575
    draw_square
    gcolor 000
-   gtext x + 5 y + 5 cards$[ind]
+   gtext x + 5, y + 5, cards$[ind]
 .
 for ind = 16 downto 1
    r = random ind
@@ -269,7 +269,7 @@ subr show_card
    gcolor 575
    draw_square
    gcolor 000
-   gtext x + 5 y + 5 cards$[ind]
+   gtext x + 5, y + 5, cards$[ind]
 .
 on mouse_down
    c = mouse_x div 25
@@ -307,7 +307,7 @@ subr show_card
    gcolor 575
    draw_square
    gcolor 000
-   gtext x + 5 y + 5 cards$[ind]
+   gtext x + 5, y + 5, cards$[ind]
 .
 subr init
    opencards = 0

@@ -1,7 +1,7 @@
 func f n x y .
    return (x + y * 2 + 1) mod n
 .
-numfmt 0 3
+numfmt 3 0
 proc msqr n .
    for i = 0 to n - 1
       for j = 0 to n - 1

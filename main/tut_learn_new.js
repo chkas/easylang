@@ -39,9 +39,9 @@ gcircle x + 16 85 3.5
 
 gline 10 30 50 50
 
-+ We draw a line from (10 30), which is 10 from the left and 30 from the bottom to the position (50 50) - to the center of the drawing area.
++ We draw a line from (10 30), which is 10 from the left and 30 from the bottom, to the position (50 50) - to the center of the drawing area.
 
-+de Wir ziehen eine Linie von (10 30), das ist 10 von links und 30 von unten zu der Position (50 50) - zur Mitte der Zeichenfläche.
++de Wir ziehen eine Linie von (10 30), das ist 10 von links und 30 von unten, zu der Position (50 50) - zur Mitte der Zeichenfläche.
 
 ##
 gcolor 555

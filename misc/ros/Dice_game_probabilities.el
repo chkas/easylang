@@ -20,6 +20,6 @@ func proba n_sides1 n_dice1 n_sides2 n_dice2 .
    .
    return tot
 .
-numfmt 5 0
+numfmt 0 5
 print proba 4 9 6 6
 print proba 10 5 7 6

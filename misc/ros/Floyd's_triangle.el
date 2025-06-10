@@ -9,7 +9,7 @@ proc triangle n .
    while row <= n
       printme += 1
       cols = ceil log10 (n * (n - 1) / 2 + nprinted + 2)
-      numfmt 0 cols
+      numfmt cols 0
       write printme & " "
       nprinted += 1
       if nprinted = row

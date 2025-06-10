@@ -48,7 +48,7 @@ func[][] decode geo$ .
    .
    return r[][]
 .
-numfmt 4 0
+numfmt 0 4
 hash$ = encode 51.433718 -0.214126 8
 print hash$
 print decode hash$

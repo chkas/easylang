@@ -46,9 +46,9 @@ for try to ntry
       .
    .
 .
-numfmt 4 0
+numfmt 0 4
 print inside / ntry * (maxx - minx) * (maxy - miny)
-# 
+#
 input_data
 1.6417233788 1.6121789534 0.0848270516
 -1.4944608174 1.2077959613 1.1039549836

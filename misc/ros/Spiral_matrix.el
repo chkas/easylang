@@ -23,7 +23,7 @@ proc mkspiral n &t[] .
 .
 n = 5
 mkspiral n t[]
-numfmt 0 3
+numfmt 3 0
 for i to n * n
    write t[i]
    if i mod n = 0 : print ""

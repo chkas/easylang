@@ -1,21 +1,15 @@
 global list[] .
 proc mklist n .
    list[] = [ ]
-   for i = 1 to n
-      list[] &= randomf
-   .
+   for i = 1 to n : list[] &= randomf
 .
 func mean .
-   for v in list[]
-      sum += v
-   .
+   for v in list[] : sum += v
    return sum / len list[]
 .
 func stddev .
    avg = mean
-   for v in list[]
-      squares += (avg - v) * (avg - v)
-   .
+   for v in list[] : squares += (avg - v) * (avg - v)
    return sqrt (squares / len list[])
 .
 proc histo .
@@ -30,7 +24,7 @@ proc histo .
       print v & " " & s$
    .
 .
-numfmt 4 5
+numfmt 5 4
 proc stats size .
    mklist size
    print "Size:   " & size

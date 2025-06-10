@@ -55,16 +55,12 @@ func pisanoPeriod m .
    for i = 1 to m * m
       swap p c
       c = (p + c) mod m
-      if p = 0 and c = 1
-         return i
-      .
+      if p = 0 and c = 1 : return i
    .
    return 1
 .
 func pisanoPrime p k .
-   if isprim p = 0 or k = 0
-      return 0
-   .
+   if isprim p = 0 or k = 0 : return 0
    return ipow p (k - 1) * pisanoPeriod p
 .
 func pisano m .
@@ -91,7 +87,7 @@ proc main .
       if pp > 0 : print "pisanoPrime(" & p & ": 1) = " & pp
    .
    print ""
-   numfmt 0 3
+   numfmt 3 0
    print "pisano(n) for integers 'n' from 1 to 180 are:"
    for n = 1 to 180
       write pisano (n) & " "

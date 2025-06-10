@@ -69,7 +69,7 @@ for i = 2 to len sieve[]
 
 + Calculate PI using the Leibniz formula
 
-numfmt 4 0
+numfmt 0 4
 i = 1
 while i < 1000
    s += 1 / i
@@ -80,7 +80,7 @@ while i < 1000
 s += 1 / i / 2
 print "PI: " & s * 4
 
-+ *numfmt* sets the number of decimal places and the fill space when a number is converted to a string. The default values are *2 0*.
++ *numfmt* sets the fill space and the number of decimal places when a number is converted to a string. The default values are *0 2*.
 
 -
 

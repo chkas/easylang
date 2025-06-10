@@ -1,7 +1,7 @@
 func f x .
    return x * x * x - 3 * x * x + 2 * x
 .
-numfmt 6 0
+numfmt 0 6
 proc findroot start stop step .
    x = start
    while x <= stop

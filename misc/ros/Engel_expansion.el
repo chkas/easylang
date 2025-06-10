@@ -1,8 +1,6 @@
 func ceil x .
    f = floor x
-   if f = x
-      return f
-   .
+   if f = x : return f
    return f + 1
 .
 func[] engelenc x .
@@ -21,7 +19,7 @@ func engeldec a[] .
    .
    return x
 .
-numfmt 11 0
+numfmt 0 11
 a[] = engelenc 3.14159265358979
 print a[]
 print engeldec a[]

@@ -1,4 +1,4 @@
-numfmt 10 0
+numfmt 0 10
 proc task1 .
    print "--- Task 1 pathologic ---"
    vpp = 2

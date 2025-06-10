@@ -1765,8 +1765,8 @@ S void op_random_seed(ND* nd) {
 }
 
 S void op_numfmt(ND* nd) {
-	rt.num_scale = (int)numf(nd->le);
-	rt.num_space = (int)numf(nd->ri);
+	rt.num_space = (int)numf(nd->le);
+	rt.num_scale = (int)numf(nd->ri);
 }
 
 S void op_mouse_cursor(ND* nd) {

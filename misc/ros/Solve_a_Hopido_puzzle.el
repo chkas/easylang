@@ -39,7 +39,7 @@ proc prepare &r0 &c0 .
    .
 .
 proc printbrd .
-   numfmt 0 3
+   numfmt 3 0
    for r to maxr
       for c to maxc
          if brd[r][c] = -1

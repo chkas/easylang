@@ -32,7 +32,7 @@ func bin2num b$ .
    .
    return n / f
 .
-numfmt 6 0
+numfmt 0 6
 proc show n .
    b$ = num2bin n
    print n & " => " & b$ & " => " & bin2num b$

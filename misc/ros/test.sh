@@ -13,14 +13,15 @@ for i in *.el; do
 	test $i = Rare_numbers.el && continue
 	test $i = Self_numbers.el && continue
 
-	grep "move " $i >/dev/null && continue
-	grep "line " $i >/dev/null && continue
+	grep "gline " $i >/dev/null && continue
 	grep "on mouse" $i >/dev/null && continue
 	grep "on animation" $i >/dev/null && continue
 	grep "on timer" $i >/dev/null && continue
-	grep "circle " $i >/dev/null && continue
-	grep "rect " $i >/dev/null && continue
-	grep "polygon " $i >/dev/null && continue
+	grep "gcircle " $i >/dev/null && continue
+	grep "grect " $i >/dev/null && continue
+	grep "gtext " $i >/dev/null && continue
+	grep "gpolygon " $i >/dev/null && continue
+	grep "keybkey " $i >/dev/null && continue
 	if grep " input" $i >/dev/null; then
  		grep input_data $i >/dev/null || continue
 	fi

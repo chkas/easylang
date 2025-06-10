@@ -3,7 +3,7 @@ func sqr x .
    return x * x
 .
 eps = sqrt 0.0000001
-numfmt 10 0
+numfmt 0 10
 func myfun x y .
    return sqr (x - 1) * pow e -sqr y + y * (y + 2) * pow e (-2 * sqr x)
 .

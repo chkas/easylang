@@ -17,7 +17,7 @@ func density a z .
 func airmass a z .
    return density a z / density a 0
 .
-numfmt 8 2
+numfmt 2 8
 print "Angle   0 m      13700 m"
 print "------------------------"
 for z = 0 step 5 to 90

@@ -1,5 +1,5 @@
 proc out w[][] .
-   numfmt 0 3
+   numfmt 3 0
    for i to len w[][]
       for j to len w[i][]
          write w[i][j]

@@ -1173,6 +1173,11 @@ S int parse_proc_header(int mode, byte proctyp) {
 				goto err_variable;
 			}
 		}
+		else if (tok == t_comma) {
+			nexttok();
+			continue;
+//kc
+		}
 
 		else {
 			if (is_enter && tok == t_eof) {
@@ -2625,14 +2630,12 @@ S ND* parse_sequ(void) {
 			ndp = nd;
 		}
 		if (tok == t_dot || tok <= t_end || err) break;
-//kc
+
 		if (tok == t_semicol) {
 			cs(" ; ");
 			nexttok();
 		}
 		else cs_nl();
-
-		//cs_nl();
 	}
 	if (sequ != NULL) ndp->next = NULL;
 	return sequ;

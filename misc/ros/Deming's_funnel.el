@@ -34,7 +34,7 @@ proc experiment rule .
    print "Std dev x, y : " & stddev rxs[] & " " & stddev rys[]
    print ""
 .
-numfmt 4 0
+numfmt 0 4
 experiment 1
 experiment 2
 experiment 3

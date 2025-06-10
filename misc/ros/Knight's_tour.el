@@ -48,8 +48,8 @@ proc prepare .
    for r to size : len brd[r][] size
 .
 proc printbrd .
-   numfmt 0 3
-   if size > 10 : numfmt 0 4
+   numfmt 3 0
+   if size > 10 : numfmt 4 0
    for r to size
       for c to size : write brd[r][c]
       print ""
@@ -67,7 +67,7 @@ if found = 1
 else
    print "no solutions found: (" & r0 & " " & c0 & ")"
 .
-# 
+#
 proc showgraf .
    sc = 100 / size
    glinewidth sc / 15

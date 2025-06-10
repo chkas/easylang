@@ -2,20 +2,14 @@ base$[] = [ "A" "C" "T" "G" ]
 global seq[] seqnx[] seqpr[] .
 proc prseq .
    len cnt[] 4
-   numfmt 0 3
+   numfmt 3 0
    ind = 1
    while seqnx[ind] <> 1
       pos += 1
       ind = seqnx[ind]
-      if pos mod 40 = 1
-         print ""
-      .
-      if pos mod 40 = 1
-         write pos & ":"
-      .
-      if pos mod 4 = 1
-         write " "
-      .
+      if pos mod 40 = 1 : print ""
+      if pos mod 40 = 1 : write pos & ":"
+      if pos mod 4 = 1 : write " "
       cnt[seq[ind]] += 1
       write base$[seq[ind]]
    .
@@ -78,8 +72,6 @@ proc mutate .
 init
 print "Original:"
 prseq
-for i to 10
-   mutate
-.
+for i to 10 : mutate
 print "Mutated:"
 prseq

@@ -14,8 +14,8 @@ func dice7b .
    .
    return h mod1 7
 .
-numfmt 3 0
-# 
+numfmt 0 3
+#
 proc checkdist dicefunc n delta .
    len dist[] 7
    for i to n
@@ -40,6 +40,6 @@ proc checkdist dicefunc n delta .
    .
    print ""
 .
-# 
+#
 checkdist 1 1000000 0.01
 checkdist 2 1000000 0.01

@@ -19,18 +19,18 @@ proc regression xa[] ya[] .
    x4m = x4m / n
    xym = xym / n
    x2ym = x2ym / n
-   # 
+   #
    sxx = x2m - xm * xm
    sxy = xym - xm * ym
    sxx2 = x3m - xm * x2m
    sx2x2 = x4m - x2m * x2m
    sx2y = x2ym - x2m * ym
-   # 
+   #
    b = (sxy * sx2x2 - sx2y * sxx2) / (sxx * sx2x2 - sxx2 * sxx2)
    c = (sx2y * sxx - sxy * sxx2) / (sxx * sx2x2 - sxx2 * sxx2)
    a = ym - b * xm - c * x2m
    print "y = " & a & " + " & b & "x + " & c & "x^2"
-   numfmt 0 3
+   numfmt 3 0
    for i = 1 to n
       print xa[i] & "  " & ya[i] & " " & eval a b c xa[i]
    .
