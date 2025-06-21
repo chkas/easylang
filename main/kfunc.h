@@ -1430,6 +1430,26 @@ S ARR op_arrarr_init(ND* nd) {
 	return o_arr_init(nd, ARR_ARR, sizeof(ARR));
 }
 
+S ARR op_numstrarr(ND* nd) {
+//kc
+	ARR arr = arrf(nd->le);
+	ARR res;
+	res.typ = ARR_STR;
+	res.base = arr.base;
+	res.len = arr.len;
+	res.pstr = realloc(NULL, arr.len * sizeof(STR));
+	if (res.pstr == NULL) {
+		res.len = 0;
+		return res;
+	}
+	for (int i = 0; i < arr.len; i++) {
+		double f = arr.pnum[i];
+		res.pstr[i] = str_numfx(f, rt.num_scale, rt.num_space, sysconfig & 8);
+	}
+	free(arr.pnum);
+	return res;
+}
+
 S double op_strpos(ND* nd) {
 
 	STR s1 = strf(nd->le);
@@ -1491,14 +1511,14 @@ S ARR op_strchars(ND* nd) {
 
 S int arrstrapp(ARR* parr, char* str) {
 	parr->len += 1;
-	ARR* p = realloc(parr->p, parr->len * sizeof(STR));
+	STR* p = realloc(parr->p, parr->len * sizeof(STR));
 	if (p == NULL) {
 		parr->len = 0;
 		free(parr->p);
 		return 0;
 	}
-	parr->p = p;
-	if (parr->p == NULL) return 1;
+	parr->pstr = p;
+//	if (parr->p == NULL) return 1;
 	str_init(parr->pstr + parr->len - 1);
 	str_append(parr->pstr + parr->len - 1, str);
 	return 1;

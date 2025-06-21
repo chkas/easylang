@@ -1495,14 +1495,24 @@ S ND* parse_strarrex(void) {
 			if (p && p->typ == FUNCSTRARR) {
 				ex = parse_callfunc(p, 2);
 			}
-			else goto err_arr;
+			else goto try_nummarr;
 		}
 	}
-	else goto err_arr;
+	else goto try_nummarr;
 	return ex;
+try_nummarr:
+	{
+		ND* nd = mknd();
+		nd->arrf = op_numstrarr;
+		nd->le = parse_numarrex();
+		return nd;
+	}
+//kc
+/*
 err_arr:
 	error("string array");
 	return ex;
+*/
 }
 
 S ND* parse_strarrarrex(void) {

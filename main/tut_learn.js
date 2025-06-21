@@ -1163,13 +1163,13 @@ end
 
 +de Autos werden mit einer bestimmten Wahrscheinlichkeit auf die Straße platziert. Es muss noch geprüft werden, ob ein anderes Auto zu nah ist.
 
-+de Die Wagenfarbe wird zufällig aus einer Farbpalette ausgewählt. Wenn ein Auto die Straße verlässt, werden die dazugehörenden Array-Einträge als frei markiert.
++de Die Wagenfarbe wird zufällig aus einer Farbpalette ausgewählt.
 
 + Let's drive several cars at the same time. To do this, the current position of each car is stored in an array. The movement direction and the car color are also stored.
 
 + Cars are placed on the road with a certain probability. It is still necessary to check whether another car is too close.
 
-+ The car color is randomly selected from a color palette. If a car leaves the road, the corresponding array entries are marked as free.
++ The car color is randomly selected from a color palette.
 
 proc draw_street y .
    move 0 y
@@ -1219,7 +1219,7 @@ end
 # color palette
 colors[] = [ 900 990 090 009 000 999 666 099 ]
 # maximum 12 cars on the streets
-n = 12
+n = 10
 # car
 len x[] n
 len y[] n
@@ -1230,6 +1230,8 @@ len col[] n
 street_x[] = [ -20 100 ]
 street_y[] = [ 10 25 ]
 street_dir[] = [ 1 -1 ]
+#
+carind = 1
 #
 on animate
    # create a new car from time to time
@@ -1246,15 +1248,14 @@ on animate
          .
       .
       if free = 1
-         # search free car
-         i = 1
-         while dir[i] <> 0
-            i += 1
+         x[carind] = x
+         y[carind] = y
+         dir[carind] = street_dir[street]
+         col[carind] = colors[random len colors[]]
+         carind += 1
+         if carind > n
+            carind = 1
          end
-         x[i] = x
-         y[i] = y
-         dir[i] = street_dir[street]
-         col[i] = colors[random len colors[]]
       end
    end
    #
@@ -1265,10 +1266,6 @@ on animate
          # car is on the street
          draw_car x[i] y[i] col[i]
          x[i] += dir[i]
-         if x[i] > 100 or x[i] < -25
-            # car is outside and set to free
-            dir[i] = 0
-         end
       end
    end
 end

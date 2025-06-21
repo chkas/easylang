@@ -151,11 +151,11 @@ var strictMode
 function strictSet() {
 	if (strictMode) {
 		strictBtn.textContent = "Strict mode ✓"
-		window.localStorage["xstrict"] = "Strict"
+		window.localStorage["xstrict"] = "true"
 	}
 	else {
 		strictBtn.textContent = "Strict mode"
-		window.localStorage["xstrict"] = ""
+		window.localStorage["xstrict"] = "false"
 	}
 }
 strictBtn.onclick = function() {
@@ -1483,8 +1483,10 @@ function testReload() {
 
 async function main() {
 
-	if (window.localStorage["xstrict"] == "Strict") {
-		strictMode = true
+//	if (window.localStorage["xstrict"] == "Strict") {
+	strictMode = true
+	if (window.localStorage["xstrict"] == "false") {
+		strictMode = false
 		strictSet()
 	}
 
