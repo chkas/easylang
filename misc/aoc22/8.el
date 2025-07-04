@@ -47,7 +47,7 @@ if visual = 1
    gbackground -1
 .
 #
-textsize 3
+gtextsize 3
 proc showtxt s$ w .
    if visual = 0 : return
    gcolor 000

@@ -144,7 +144,7 @@ proc makegraph node p d0 .
       .
       cnt += 1
       if c = 0
-         pr "dead end"
+         print "dead end"
          return
       .
       until c > 1

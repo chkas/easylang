@@ -1,4 +1,4 @@
-sys topleft
+sysconf topleft
 dirs[][] = [ [ 1 2 ] [ 1 -2 ] [ 2 1 ] [ 2 -1 ] [ -1 2 ] [ -1 -2 ] [ -2 -1 ] [ -2 1 ] ]
 global brd[][] size .
 func cntmoves m[] .
@@ -67,7 +67,7 @@ if found = 1
 else
    print "no solutions found: (" & r0 & " " & c0 & ")"
 .
-#
+# 
 proc showgraf .
    sc = 100 / size
    glinewidth sc / 15

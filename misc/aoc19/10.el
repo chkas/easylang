@@ -17,7 +17,7 @@ proc init .
 init
 #
 sc = 100 / w
-background 000
+gbackground 000
 proc show .
    if visual = 0 : return
    gclear
@@ -97,7 +97,7 @@ proc part1 .
    print max
 .
 #
-linewidth 0.5
+glinewidth 0.5
 #
 proc find_next &dx &dy &ind .
    start_ang = atan2 dy dx

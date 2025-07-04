@@ -160,11 +160,11 @@ on animate
 .
 `)
 
-src.push(`proc tree x y l w ang dp . .
+src.push(`proc tree x y l w ang dp .
    if dp <= 2
-      gcolor3 0 0.2 + randomf / 4 0
+      gcolor3 0 10 + randomf * 15 0
    else
-      gcolor3 0.15 + randomf / 8 0.1 0
+      gcolor3 10 + randomf * 8 7 0
    .
    glinewidth w
    move x y

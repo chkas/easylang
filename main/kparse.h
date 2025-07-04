@@ -43,7 +43,7 @@ S ND* parse_strex(void);
 S ND* parse_strterm(void);
 
 S double (*numf[])(ND*) = {
-	op_sys_time, op_error, op_mouse_x, op_mouse_y, op_randomf, op_pi,
+	op_mouse_x, op_mouse_y, op_randomf, op_sys_time, op_error, op_pi,
 	op_random, op_sqrt, op_log10, op_abs, op_sign, op_bitnot, op_floor, op_sin, op_cos, op_tan, op_asin, op_acos, op_atan,
 	op_atan2, op_pow, op_bitand, op_bitor, op_bitxor, op_bitshift, op_lower, op_higher,
 	op_number, op_strcode, op_strpos, op_strcompare
@@ -53,7 +53,7 @@ S ND* parse_numfunc(void) {
 
 	ND* nd = mknd();
 	csb_tok_nt();
-	nd->numf = numf[tokpr - t_systime];
+	nd->numf = numf[tokpr - t_mouse_x];
 
 	if (tokpr <= t_pi) {
 	}
@@ -135,17 +135,28 @@ S int is_strfactor(void) {
 
 // -------------------------------------------------
 S void expt(int h) {
-	if (tok != h) error(token_list[h]);
+	//if (tok != h) error(tokstr[h]);
+	if (tok != h) errort(h);
 }
 
 S void expt_ntok(int h) {
 	if (is_enter && tok == t_eof) {
 		// autocomplete on enter
-		cs(token_list[h]);
+		cs(tokstr[h]);
 		return;
 	}
 	expt(h);
 	cs_tok_nt();
+}
+S void expta(const char* s) {
+	if (strcmp(tval, s) != 0) {
+		if (is_enter && tok == t_eof) {
+			csb(s);
+			cs_spc();
+			error("");
+		}
+		error(s);
+	}
 }
 
 S int is_numfactor(void) {
@@ -222,7 +233,7 @@ S int parse_vstrael(ND* nd, int aelael) {
 	}
 	else rc = -1;
 	if (ndol != NULL) ndol->v1 = nd->v1;
-	opln_add(nd, fmtline);
+	opline_add(nd, fmtline);
 	return rc;
 }
 
@@ -268,7 +279,7 @@ S ND* parse_lenfunc(void) {
 		ND* ndol = NULL;
 		nd->ri = parse_ex_arr(&ndol);
 		if (ndol != NULL) ndol->v1 = nd->v1;
-		opln_add(nd, fmtline);
+		opline_add(nd, fmtline);
 		expt_ntok(t_brrl);
 		expt_ntok(t_brr);
 	}
@@ -277,7 +288,7 @@ S ND* parse_lenfunc(void) {
 		nd->le = parse_strterm();
 	}
 	else {
-		error("array variable, string");
+		errorx(ERR_VARRSTR);
 	}
 	return nd;
 }
@@ -330,7 +341,7 @@ S void parse_call_param(ND* nd, struct proc* p, byte isfunc) {
 			nd->next = h;
 			nd = h;
 			if (b == 'F') {
-				expt(t_name);
+				if (tok != t_name) errorx(ERR_V);
 				nd->v1 = parse_var(VAR_NUM, RW);
 			}
 			else if (b == 'S') {
@@ -418,6 +429,7 @@ S byte try_call_subr(ND* nd, const char* name) {
 
 S void parse_call_stat(ND* nd, struct proc* p) {
 
+/*
 	if (p == NULL) {
 		csb_tok_spc_nt();
 		expt(t_name);
@@ -431,6 +443,7 @@ S void parse_call_stat(ND* nd, struct proc* p) {
 			return;
 		}
 	}
+*/
 	nd->vf = op_callproc;
     parse_call_param(nd, p, 0);
 	nd->ri = nd->next;
@@ -473,7 +486,7 @@ S int parse_vnumael(ND* nd, int aelael) {
 	}
 	else rc = -1;
 	if (ndol != NULL) ndol->v1 = nd->v1;
-	opln_add(nd, fmtline);
+	opline_add(nd, fmtline);
 	return rc;
 }
 
@@ -493,7 +506,7 @@ S ND* parse_fac(void) {
 		struct proc* p = proc_get(name);
 		if (p) {
 			if (p->typ != 1) {
-				error("number");
+				errorx(ERR_NUMB);
 				return NULL;
 			}
 			else nd = parse_callfunc(p, 0);
@@ -537,7 +550,7 @@ S ND* parse_fac(void) {
 			optimize_vnumael(nd);
 		}
 		else if (t != AELAEL) {
-			error("], ][");
+			errorx(ERR_BR);
 		}
 	}
 	else if (tok == t_if) {
@@ -561,8 +574,7 @@ S ND* parse_fac(void) {
 	}
 	else {
 		nd = NULL;
-		//pr(":::%c:%c:%c:%d:%s:",cp, c, cn, tok,tval);
-		error("number");
+		errorx(ERR_NUMB);
 	}
 	return nd;
 }
@@ -734,7 +746,7 @@ S ND* parse_strterm(void) {
 			nd->le = ndx;
 		}
 		else if (t == -1) {
-			error("] ][");
+			errorx(ERR_BR);
 		}
 	}
 	else if (is_strfunc()) {
@@ -793,7 +805,7 @@ S ND* parse_strterm(void) {
 			nd->le = parse_exx(ndx);
 		}
 		else {
-			error("], ][");
+			errorx(ERR_BR);
 		}
 	}
 	else if (tok == t_pal) {
@@ -815,7 +827,7 @@ S ND* parse_strterm(void) {
 		nd = parse_strarr_term();
 	}
 	else {
-		error("string");
+		errorx(ERR_STR);
 	}
 	return nd;
 }
@@ -843,7 +855,7 @@ S ND* parse_str_cmp(void) {
 	cs_spc();
 	if (tok == t_eq) nd->intf = op_eqs;
 	else if (tok == t_neq) nd->intf = op_neqs;
-	else error("=, <>");
+	else errorx(ERR_STRCMP);
 	cs_tok_spc_nt();
 	nd->ri = parse_strex();
 	return nd;
@@ -855,7 +867,7 @@ S ND* parse_arr_cmp(void) {
 	cs_spc();
 	if (tok == t_eq) nd->intf = op_eqarr;
 	else if (tok == t_neq) nd->intf = op_neqarr;
-	else error("=, <>");
+	else errorx(ERR_STRCMP);
 	cs_tok_spc_nt();
 	nd->ri = parse_numarrex();
 	return nd;
@@ -891,7 +903,7 @@ S ND* parse_cmp(ND* nd0) {
 	else if (tok == t_ge) nd->intf = op_gef;
 	else if (tok == t_eq) nd->intf = op_eqf;
 	else if (tok == t_neq) nd->intf = op_neqf;
-	else error("=, <>, <, >, <=, >=");
+	else errorx(ERR_CMP);
 	cs_tok_spc_nt();
 	nd->ri = parse_ex();
 
@@ -1008,14 +1020,14 @@ S void stat_begin_nest(void) {
 
 S ND* parse_sequ_end(void) {
 	space_add();
-	cs_nl();
+	csnl();
 	ND* nd = parse_sequ();
 	if (tok != t_dot && tok != t_end) {
-		cs_nl();
-		error("<cmd>, end, .");
+		if (nd || tokpr == t_hash) csnl();
+		errorx(ERR_CMDE);
 	}
 	space_sub();
-	cs_nl();
+	csnl();
 	cst(tok);
 	return nd;
 }
@@ -1024,15 +1036,15 @@ S ND* parse_stat();
 
 S ND* parse_sequ_if() {
 	space_add();
-	cs_nl();
+	csnl();
 	ND* nd = parse_sequ();
-//	if (tok != t_dot && tok != t_else && tok != t_elif && tok != t_end) {
-//		cs_nl();
-//		error("XXX <cmd>, else, elif, end, .");
-//	}
+	if (tok != t_dot && tok != t_else && tok != t_elif && tok != t_end) {
+		if (nd || tokpr == t_hash) csnl();
+		errorx(ERR_CMDEL);
+	}
 	space_sub();
 	if (tok != t_elif) {
-		cs_nl();
+		csnl();
 		if (tok == t_else) {
 			if (!err && sequ_level < 16) nest_block[sequ_level] = codestrln;
 		}
@@ -1176,7 +1188,6 @@ S int parse_proc_header(int mode, byte proctyp) {
 		else if (tok == t_comma) {
 			nexttok();
 			continue;
-//kc
 		}
 
 		else {
@@ -1187,7 +1198,7 @@ S int parse_proc_header(int mode, byte proctyp) {
 				//}
 				cst(t_dot);
 				space_add();
-				cs_nl();
+				csnl();
 				goto err;
 			}
 			goto err_variable;
@@ -1203,8 +1214,7 @@ S int parse_proc_header(int mode, byte proctyp) {
 	cst(t_dot);
 	nexttok();
 
-//kc
-	if (proctyp == 0 && tok == t_dot) nexttok();	//  .. -> . (delete sometime)
+	if (proctyp == 0 && tok == t_dot) nexttok();	//kc  .. -> . (delete sometime)
 
 	return 1;
 
@@ -1279,36 +1289,34 @@ S void parse_procdecl(byte typ) {
 	proc = proc_p;
 }
 
+const char* evt_name[] = { "mouse_down", "mouse_up", "mouse_move", "animate", "timer", "key_down", "key_up" };
+
 S void get_onref(const char* s, int* pid, ND*** ppsq) {
-	if (strcmp(s, "mouse_down") == 0) {
+	if (strcmp(s, evt_name[0]) == 0) {
 		*pid = 0;
 		*ppsq = &seq.mouse_down;
 	}
-	else if (strcmp(s, "animate") == 0) {
+	else if (strcmp(s, evt_name[3]) == 0) {
 		*pid = 5;
 		*ppsq = &seq.animate;
 	}
-	else if (strcmp(s, "timer") == 0) {
+	else if (strcmp(s, evt_name[4]) == 0) {
 		*pid = 6;
 		*ppsq = &seq.timer;
 	}
-	else if (strcmp(s, "mouse_up") == 0) {
+	else if (strcmp(s, evt_name[1]) == 0) {
 		*pid = 1;
 		*ppsq = &seq.mouse_up;
 	}
-	else if (strcmp(s, "mouse_move") == 0) {
+	else if (strcmp(s, evt_name[2]) == 0) {
 		*pid = 2;
 		*ppsq = &seq.mouse_move;
 	}
-	else if (strcmp(s, "key") == 0) {
+	else if (strcmp(s, evt_name[5]) == 0) {
 		*pid = 3;
 		*ppsq = &seq.key_down;
 	}
-	else if (strcmp(s, "key_down") == 0) {
-		*pid = 3;
-		*ppsq = &seq.key_down;
-	}
-	else if (strcmp(s, "key_up") == 0) {
+	else if (strcmp(s, evt_name[6]) == 0) {
 		*pid = 4;
 		*ppsq = &seq.key_up;
 	}
@@ -1323,7 +1331,7 @@ S void parse_on_stat(void) {
 	ND** psq;
 	get_onref(tval, &id, &psq);
 	if (psq == NULL) {
-		error("mouse_down, mouse_up, mouse_move, key_down, key_up, animate, timer");
+		errorx(ERR_EVT);
 		return;
 	}
 	else if (*psq != NULL) {
@@ -1379,7 +1387,7 @@ S ND* parse_numarrex(void) {
 
 		expt_ntok(t_brrl);
 		expt_ntok(t_brr);
-		opln_add(ex, fmtline);
+		opline_add(ex, fmtline);
 	}
 	else if (tok == t_number) {
 		ex->arrf = op_map_number;
@@ -1397,7 +1405,8 @@ S ND* parse_numarrex(void) {
 	else goto err_arr;
 	return ex;
 err_arr:
-	error("array");
+//	error("array");
+	errorx(ERR_ARR);
 	return ex;
 }
 
@@ -1473,7 +1482,7 @@ S ND* parse_strarrex(void) {
 
 		expt_ntok(t_brrl);
 		expt_ntok(t_brr);
-		opln_add(ex, fmtline);
+		opline_add(ex, fmtline);
 	}
 	else if (tok == t_name) {
 		if (strcmp(tval, "strchars") == 0) {
@@ -1555,7 +1564,7 @@ S void parse_strarr_ass(ND* nd) {
 		nd->vf = op_strarr_append;
 		nd->ri = parse_strex();
 	}
-	else error("=, &=");
+	else errorx(ERR_STRASS);
 }
 
 S void parse_arrarr_ass(ND* nd) {
@@ -1574,7 +1583,7 @@ S void parse_arrarr_ass(ND* nd) {
 		nd->vf = op_arrarr_append;
 		nd->ri = parse_numarrex();
 	}
-	else error("=, &=");
+	else errorx(ERR_STRASS);
 }
 
 S void parse_strarrarr_ass(ND* nd) {
@@ -1593,7 +1602,7 @@ S void parse_strarrarr_ass(ND* nd) {
 		nd->vf = op_arrarr_append;
 		nd->ri = parse_strarrex();
 	}
-	else error("=, &=");
+	else errorx(ERR_STRASS);
 }
 
 S void parse_arr_ass(ND* nd) {
@@ -1610,7 +1619,7 @@ S void parse_arr_ass(ND* nd) {
 		nd->vf = op_numarr_append;
 		nd->ri = parse_ex();
 	}
-	else error("=, &=");
+	else errorx(ERR_STRASS);
 }
 
 S void parseael_ass(ND* nd) {
@@ -1634,7 +1643,7 @@ S void parseael_ass(ND* nd) {
 		else if (tok == t_mineq) nd->vf = op_flael_assm;
 		else if (tok == t_asteq) nd->vf = op_flael_asst;
 		else if (tok == t_diveq) nd->vf = op_flael_assd;
-		else error("=, +=");
+		else errorx(ERR_ASSIGN);
 		cs_tok_spc_nt();
 		ndx->ex = parse_ex();
 	}
@@ -1655,7 +1664,7 @@ S void parseael_ass(ND* nd) {
 				nd->vf = op_arrael_ass;
 				ndx->ex = parse_numarrex();
 			}
-			else error("&=, =");
+			else errorx(ERR_STRASS);
 		}
 		else {
 			//* f[i][j] = 2
@@ -1670,13 +1679,13 @@ S void parseael_ass(ND* nd) {
 			else if (tok == t_mineq) nd->vf = op_flaelael_assm;
 			else if (tok == t_asteq) nd->vf = op_flaelael_asst;
 			else if (tok == t_diveq) nd->vf = op_flaelael_assd;
-			else error("= += -= *= /=");
+			else errorx(ERR_ASSIGN);
 			cs_tok_spc_nt();
 			ndx->ex2 = parse_ex();
 		}
 	}
 	else {
-		error("], ][");
+		errorx(ERR_BR);
 	}
 	if (ndol != NULL) ndol->v1 = nd->v1;
 }
@@ -1699,7 +1708,7 @@ S void parse_strael_ass(ND* nd) {
 		cs_spc();
 		if (tok == t_eq) nd->vf = op_strael_ass;
 		else if (tok == t_ampeq) nd->vf = op_strael_assp;
-		else error("=, &=");
+		else errorx(ERR_STRASS);
 		cs_tok_spc_nt();
 		ndx->ex = parse_strex();
 	}
@@ -1735,7 +1744,7 @@ S void parse_strael_ass(ND* nd) {
 		}
 	}
 	else {
-		error("], ][");
+		errorx(ERR_BR);
 	}
 	if (ndol != NULL) ndol->v1 = nd->v1;
 }
@@ -1772,7 +1781,7 @@ S void parse_global_stat(void) {
 		else {
 			if (is_enter && tok == t_eof) {
 				cst(t_dot);
-				cs_nl();
+				csnl();
 				error("");
 				break;
 			}
@@ -1801,10 +1810,10 @@ S void parse_if_stat(ND* ifst) {
 		statx->ex = ifst->ri;
 		ifst->ri = statx;
 
-		cs_nl();
+		csnl();
 		stat_begin_nest();
 		ifst = mknd();
-		opln_add(ifst, fmtline);
+		opline_add(ifst, fmtline);
 		statx->ex2 = ifst;
 
 		ifst->next = NULL;
@@ -1853,7 +1862,7 @@ S void parse_for_stat(ND* nd) {
 			else if (strcmp(tval, "in") == 0) t = 4;
 		}
 		else if (tok == t_eq) t = 3;
-		if (t == 0) error("=, in");
+		if (t == 0) errorx(ERR_FOR);
 
 		if (t <= 3) {
 			if (t == 3) {
@@ -1867,9 +1876,10 @@ S void parse_for_stat(ND* nd) {
 					ndx->ex3 = parse_ex();
 					cs_spc();
 					nd->vf = op_forstep;
-					if (strcmp(tval, "to") != 0) error("to");
+					//kc
+					expta("to");
 				}
-				else error("to, downto, step");
+				else errorx(ERR_FOR2);
 
 				csk_tok_spc_nt();
 				nd->ri =parse_ex();
@@ -1908,6 +1918,7 @@ S void parse_for_stat(ND* nd) {
 	nexttok();
 }
 
+//kcx
 S void parse_repeat_stat(ND* nd) {
 
 	ND* ndx = mkndx();
@@ -1915,20 +1926,24 @@ S void parse_repeat_stat(ND* nd) {
 	if (!err && sequ_level < 16) nest_block[sequ_level] = codestrln;
 	csb_tok_nt();
 	space_add();
-	cs_nl();
+	csnl();
 	nd->ri = parse_sequ();
+	if (tok != t_until) {
+		if (nd->ri || tokpr == t_hash) csnl();
+		errorx(ERR_CMDU);
+		return;
+	}
 	space_sub();
-	cs_nl();
+	csnl();
 	for (int i = 0; i < INDENT; i++) cs_spc();
-	if (tok != t_until) error("<cmd>, until");
 	csb_tok_spc_nt();
 
 	nd->le = parse_log_ex();
-	opln_add(nd->le, fmtline);
+	opline_add(nd->le, fmtline);
 
 	if (tok == t_dot || tok == t_end) {
 		ndx->ex = NULL;
-		cs_nl();
+		csnl();
 		cst(tok);
 	}
 	else {
@@ -1984,11 +1999,11 @@ S void parse_len_stat(ND* nd) {
 		ND* ndol = NULL;
 		ndx->ex = parse_ex_arr(&ndol);
 		if (ndol != NULL) ndol->v1 = nd->v1;
-		opln_add(nd, fmtline);
+		opline_add(nd, fmtline);
 		expt_ntok(t_brrl);
 		expt_ntok(t_brr);
 	}
-	else error("array variable");
+	else errorx(ERR_VARR);
 	cs_spc();
 
 	nd->ri = parse_ex();
@@ -2117,8 +2132,6 @@ S void parse_swap_stat(ND* nd) {
 			nd->v1a = get_var(VAR_NUMARRARR, RD, tval, code_utf8len);
 			cs_tok_nt();
 			csbrl();
-//pr("X %d %d %s", nd->v1, nd->v1a, tval);
-
 			ND* ndol = NULL;
 			ndx->ex2 = parse_ex_arr(&ndol);
 			if (ndol != NULL) ndol->v1 = nd->v1a;
@@ -2127,7 +2140,7 @@ S void parse_swap_stat(ND* nd) {
 			expt_ntok(t_brr);
 		}
 		else {
-			error("], ][");
+			errorx(ERR_BR);
 		}
 	}
 	else if (tok == t_vstr) {
@@ -2304,7 +2317,7 @@ S void parse_funcproc(void) {
 
 
 S void (*vftb[])(ND*) = {
-	op_print, op_write, op_text,
+	op_print, op_text, op_write,
 	op_sleep, op_timer, op_textsize, op_linewidth, op_co_rotate, op_co_scale, op_circle,
 	op_color, op_background, op_mouse_cursor, op_random_seed,
 	op_move, op_line, op_co_translate, op_rect, op_numfmt,
@@ -2314,7 +2327,7 @@ S void (*vftb[])(ND*) = {
 	op_sound, op_polygon, op_curve,
 };
 S char vfprop[] = {
-	8, 8, 5,
+	8, 5, 8,
 	0, 0, 1, 1, 1, 1, 1,
 	1, 1, 1, 0,
 	1, 1, 1, 1, 0,
@@ -2325,9 +2338,10 @@ S char vfprop[] = {
 };
 
 
-S ND* parse_stat() {
+//kc
+S ND* parse_stat(void) {
 	ND* nd = mknd();
-	opln_add(nd, fmtline);
+	opline_add(nd, fmtline);
 	if (tok == t_name) {
 
 		const char* name = getn(tval);
@@ -2337,7 +2351,7 @@ S ND* parse_stat() {
 			if (p) {
 				if (p->typ == 0) parse_call_stat(nd, p);
 				else {
-					goto error_statement;
+					return NULL;
 //							nd->vf = op_print;
 //							nd->le = parse_strex();
 				}
@@ -2350,8 +2364,11 @@ S ND* parse_stat() {
 				else if (tok == t_mineq) nd->vf = op_flassm;
 				else if (tok == t_asteq) nd->vf = op_flasst;
 				else if (tok == t_diveq) nd->vf = op_flassd;
-				else goto error_statement;
-//						else error("= += -= *= /=");
+				else {
+					errorx(ERR_ASSIGN);
+					return nd;
+				}
+
 // ?????
 //						else {
 //							nd->vf = op_print;
@@ -2373,10 +2390,6 @@ S ND* parse_stat() {
 	}
 	else if (tok == t_for) {
 		parse_for_stat(nd);
-	}
-	else if (tok == t_call) {
-		// obsolet
-		parse_call_stat(nd, NULL);
 	}
 	else if (tok == t_len) {
 		parse_len_stat(nd);
@@ -2409,7 +2422,7 @@ S ND* parse_stat() {
 		cs_spc();
 		if (tok == t_eq) nd->vf = op_strass;
 		else if (tok == t_ampeq) nd->vf = op_strassp;
-		else error("=, &=");
+		else errorx(ERR_STRASS);
 		cs_tok_spc_nt();
 		nd->ri = parse_strex();
 	}
@@ -2418,117 +2431,116 @@ S ND* parse_stat() {
 		parse_subr();
 		nd->vf = op_nop;
 	}
-	else if (tok >= t_return && tok <= t_arrbase) {
+	else if (tok >= t_return) {
+		if (tok <= t_arrbase) {
 
-		if (tok == t_return) {
-			nd->vf = op_return;
-			csb_tok_nt();
-			if (proc->typ == 0) {
+			if (tok == t_return) {
+				nd->vf = op_return;
+				csb_tok_nt();
+				if (proc->typ == 0) {
+				}
+				else if (proc->typ == 1) {
+					cs_spc();
+					nd->le = parse_ex();
+				}
+				else if (proc->typ == FUNCSTR) {
+					cs_spc();
+					nd->le = parse_strex();
+				}
+				else if (proc->typ == FUNCARR) {
+					cs_spc();
+					nd->le = parse_numarrex();
+				}
+				else if (proc->typ == FUNCSTRARR) {
+					cs_spc();
+					nd->le = parse_strarrex();
+				}
+				else {
+					cs_spc();
+					nd->le = parse_numarrarrex();
+				}
 			}
-			else if (proc->typ == 1) {
-				cs_spc();
-				nd->le = parse_ex();
+			else if (tok == t_swap) {
+				parse_swap_stat(nd);
 			}
-			else if (proc->typ == FUNCSTR) {
-				cs_spc();
+			else if (tok == t_break) {
+				if (loop_level == 0) error("not in a loop");
+				csb_tok_spc_nt();
+				ushort h = tvalf;
+				if (tok != t_lnumber || h != tvalf) error("break level");
+				if (loop_level < h) error("break level too high");
+				cs(tval);
+				nd->vf = op_break;
+				nd->v1 = h;
+				nexttok();
+			}
+			// ----------------------------------------------------------------------------
+			else if (tok == t_gclear) {
+				csb_tok_nt();
+				nd->vf = op_clear;
+				prog_props |= 1;
+			}
+			else if (tok == t_drawgrid) {
+				csb_tok_nt();
+				nd->vf = op_sys;
+				nd->v1 = 5;
+			}
+			else {	// t_arrbase
+			// else if (tok == t_arrbase) {
+				parse_arrbase_stat(nd);
+			}
+		}
+		else if (tok <= t_gcurve) {
+			csb_tok_spc_nt();
+			if (cod) {
+				int h = tokpr - t_print;
+				nd->vf = vftb[h];
+				prog_props |= vfprop[h];
+			}
+			if (tokpr <= t_write) {
 				nd->le = parse_strex();
 			}
-			else if (proc->typ == FUNCARR) {
-				cs_spc();
-				nd->le = parse_numarrex();
-			}
-			else if (proc->typ == FUNCSTRARR) {
-				cs_spc();
-				nd->le = parse_strarrex();
-			}
-			else {
-				cs_spc();
-				nd->le = parse_numarrarrex();
-			}
-		}
-		else if (tok == t_swap) {
-			parse_swap_stat(nd);
-		}
-		else if (tok == t_break) {
-			if (loop_level == 0) error("not in a loop");
-			csb_tok_spc_nt();
-			ushort h = tvalf;
-			if (tok != t_lnumber || h != tvalf) error("break level");
-			if (loop_level < h) error("break level too high");
-			cs(tval);
-			nd->vf = op_break;
-			nd->v1 = h;
-			nexttok();
-		}
-		// ----------------------------------------------------------------------------
-		else if (tok == t_clear) {
-			csb_tok_nt();
-			nd->vf = op_clear;
-			prog_props |= 1;
-		}
-		else if (tok == t_drawgrid) {
-			csb_tok_nt();
-			nd->vf = op_sys;
-			nd->v1 = 5;
-		}
-		else {	// t_arrbase
-		// else if (tok == t_arrbase) {
-			parse_arrbase_stat(nd);
-		}
-	}
-
-	else if (tok >= t_print && tok <= t_curve) {
-		csb_tok_spc_nt();
-		if (cod) {
-			int h = tokpr - t_print;
-			nd->vf = vftb[h];
-			prog_props |= vfprop[h];
-		}
-		if (tokpr <= t_text) {
-			nd->le = parse_strex();
-		}
-		else if (tokpr <= t_gcircseg) {
-			int t = tokpr;
-			ND* ndx;
-			if (t >= t_gtext) ndx = mkndx();
-			nd->le = parse_ex();
-			if (t >= t_move) {
-				if (tok == t_comma) cs_tok_nt();
-				cs_spc();
-				nd->ri = parse_ex();
-				if (t >= t_gtext) {
+			else if (tokpr <= t_gcircseg) {
+				int t = tokpr;
+				ND* ndx;
+				if (t >= t_gtext) ndx = mkndx();
+				nd->le = parse_ex();
+				if (t >= t_move) {
 					if (tok == t_comma) cs_tok_nt();
 					cs_spc();
-					if (t <= t_gtext) {
-						ndx->ex = parse_strex();
-					}
-					else {
-						ndx->ex = parse_ex();
-						if (t >= t_grect) {
-							if (tok == t_comma) cs_tok_nt();
-							cs_spc();
-							ndx->ex2 = parse_ex();
-							if (t >= t_gcircseg) {
+					nd->ri = parse_ex();
+					if (t >= t_gtext) {
+						if (tok == t_comma) cs_tok_nt();
+						cs_spc();
+						if (t <= t_gtext) {
+							ndx->ex = parse_strex();
+						}
+						else {
+							ndx->ex = parse_ex();
+							if (t >= t_grect) {
 								if (tok == t_comma) cs_tok_nt();
 								cs_spc();
-								ndx->ex3 = parse_ex();
+								ndx->ex2 = parse_ex();
+								if (t >= t_gcircseg) {
+									if (tok == t_comma) cs_tok_nt();
+									cs_spc();
+									ndx->ex3 = parse_ex();
+								}
 							}
 						}
 					}
 				}
 			}
-		}
-		else if (tokpr <= t_curve) {
-			nd->le = parse_numarrex();
+			else {		// <= t_gcurve
+				nd->le = parse_numarrex();
+			}
 		}
 		else {
-			internal_error(__LINE__);
+			return NULL;
 		}
 	}
 	else {
-error_statement:
-		error("?");
-//?		return NULL;
+		return NULL;
 	}
 	return nd;
 }
@@ -2538,17 +2550,13 @@ S ND* parse_sequ0(void) {
 	ND* sequ = NULL;
 	ND* ndp;
 
-	while (1) {
+	while (tok != t_eof) {
 
-		if (tok == t_eof) {
-			if  (is_enter) error("");
-			break;
-		}
 		if (tok == t_hash) {
 			parse_comment();
 			nexttok();
 		}
-		else if (tok <= t_global) {
+		else if (tok >= t_proc && tok <= t_global) {
 
 			if (tok == t_global) {
 				parse_global_stat();
@@ -2576,8 +2584,6 @@ S ND* parse_sequ0(void) {
 					strcpy(prefix, tval);
 					prefix_len = strlen(prefix);
 					cs_tok_nt();
-					//cs(tval);
-					//nexttok();
 				}
 				else {
 					prefix_len = 0;
@@ -2585,14 +2591,11 @@ S ND* parse_sequ0(void) {
 					nexttok();
 				}
 			}
-			else if (tok == t_input_data) {
+			else { 	// tok == t_input_data
 				csb(tval);
-				if (c != 0) cs_nl();
+				if (c != 0) csnl();
 				parse_input_data();
 				nexttok();
-			}
-			else {
-				error("<cmd>");
 			}
 		}
 		else {
@@ -2600,18 +2603,15 @@ S ND* parse_sequ0(void) {
 			if (sequ == NULL) sequ = nd;
 			else ndp->next = nd;
 			ndp = nd;
+			if (nd == NULL) break;
 		}
 		
-		// if (tok == t_eof && !is_enter || err) break;
-		if (err) break;
-
 		if (tok == t_semicol) {
 			cs(" ; ");
 			nexttok();
 		}
-		else cs_nl();
+		else csnl();
 
-//		cs_nl();
 	}
 	if (sequ != NULL) ndp->next = NULL;
 	return sequ;
@@ -2623,12 +2623,6 @@ S ND* parse_sequ(void) {
 	ND* ndp;
 
 	while (1) {
-
-		if (tok == t_eof) {
-			if (is_enter) error("");
-			else error("<cmd>");
-			break;
-		}
 		if (tok == t_hash) {
 			parse_comment();
 			nexttok();
@@ -2638,14 +2632,16 @@ S ND* parse_sequ(void) {
 			if (sequ == NULL) sequ = nd;
 			else ndp->next = nd;
 			ndp = nd;
+			if (nd == NULL) break;
 		}
-		if (tok == t_dot || tok <= t_end || err) break;
+		if (tok == t_dot || tok <= t_end || tok == t_eof || err) break;
+		//if (tok == t_dot || tok <= t_end || tok == t_eof) break;
 
 		if (tok == t_semicol) {
 			cs(" ; ");
 			nexttok();
 		}
-		else cs_nl();
+		else csnl();
 	}
 	if (sequ != NULL) ndp->next = NULL;
 	return sequ;

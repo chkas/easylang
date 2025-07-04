@@ -13,6 +13,7 @@
 
 #include "klib.h"
 
+#define ARRAY_SIZE(x) (int)(sizeof((x)) / sizeof((x)[0]))
 #define S static
 
 struct arr {
@@ -137,20 +138,244 @@ S void code_free() {
 	ndnxt = progmem;
 }
 
+
 ushort sysconfig;
+
+const char* errstrs[] = {
+	"], ][", "=, +=, ..", "=, &=", "=, <>, < ...",  "=, <>",
+	"=, in", "to, downto, step",
+	"<cmd>, end, .", "<cmd>, else, elif, end, .", "<cmd>, until", "<cmd>", "<cmd>", "variable", "array variable", "array or string variable", "number", "string", "array", "event", "topleft ..."
+};
+
+enum {
+	ERR_BR, ERR_ASSIGN, ERR_STRASS, ERR_CMP, ERR_STRCMP,
+	ERR_FOR, ERR_FOR2,
+	ERR_CMDE, ERR_CMDEL, ERR_CMDU, ERR_CMD0, ERR_CMD1, ERR_V, ERR_VARR, ERR_VARRSTR, ERR_NUMB, ERR_STR, ERR_ARR,
+	ERR_EVT, ERR_SYSCONF
+};
+
+const char* tabstrs[] =
+	{
+	":] :][", ":= :+= :-= :*= :/= ", ":= :&= ", ":= :<> :< :> :<= :>= ", ":= :<> ",
+	":= :in ", ":to :downto :step "
+};
+
+static char is_tab;
 
 #include "klex.h"
 #include "kfunc.h"
 #include "kwasm.h"
 
+static char is_enter;
+
 #include "kparse.h"
 
-//--------------------------------------------------------------------------------------
+static const char* sysconf_str[] = { "topleft", "radians", "zero_based", "hex_numbers" };
+
+static void parse_sysconf(void) {
+	sysconfig = 0;
+	while (1) {
+		if (tok == t_hash) {
+			parse_comment();
+			nexttok();
+		}
+		else if (tok == t_name && strcmp(tval, "sysconf") == 0) {
+			csb_tok_spc_nt();
+			int conf = 1;
+			int i;
+			for (i = 0; i < 4; i++) {
+				if (strcmp(tval, sysconf_str[i]) == 0) {
+					sysconfig |= conf;
+					break;
+				}
+				conf *= 2;
+			}
+			if (i == 4) errorx(ERR_SYSCONF);
+			csb_tok_nt();
+		}
+		else break;
+		csnl();
+	}
+}
+
+//------------------------------------------------------------
 
 static int caret_pos;
+STR tabbuf;
 
-extern int parse(const char* str, int opt, int pos) {
+void appt(const char* s) {
+	str_append(&tabbuf, ":");
+	str_append(&tabbuf, s);
+	str_append(&tabbuf, " ");
+}
+void apptab(const char* s, char* ts, short l) {
+	if (strncmp(ts, s, l) == 0) appt(s);
+}
 
+void append_tabb(struct proc* pro, char* ts, short l, short typ) {
+	struct vname *v = pro->vname_p;
+	if (v) while (v < pro->vname_p + pro->vname_len) {
+		if (strncmp(ts, v->name, l) == 0 && (typ == -1  || v->typ % 2 == typ ||  v->typ == typ )) {
+			str_append(&tabbuf, ":");
+			str_append(&tabbuf, v->name);
+			if (typ < 2) str_append(&tabbuf, vex(v->typ));
+			else str_append(&tabbuf, vexf(v->typ));
+			str_append(&tabbuf, " ");
+		}
+		v += 1;
+	}
+}
+void atab_names(char* ts, short l, short typ, byte withproc) {
+	append_tabb(proc_p, ts, l, typ);
+	if (errproc != proc_p) append_tabb(errproc, ts, l, typ);
+	struct proc* p = proc_p + 1;
+	if (withproc) while (p < proc_p + proc_len) {
+		if (p->typ == typ + 1) apptab(p->name, ts, l);
+		p += 1;
+	}
+}
+void append_tabb_arr(struct proc* pro, char* ts, short l) {
+	struct vname *v = pro->vname_p;
+	if (v) while (v < pro->vname_p + pro->vname_len) {
+		if (strncmp(ts, v->name, l) == 0 && v->typ >= 2) {
+			str_append(&tabbuf, ":");
+			str_append(&tabbuf, v->name);
+			str_append(&tabbuf, vexf(v->typ));
+			str_append(&tabbuf, " ");
+		}
+		v += 1;
+	}
+}
+void atab_arrs(char* ts, short l) {
+	append_tabb_arr(proc_p, ts, l);
+	if (errproc != proc_p) append_tabb_arr(errproc, ts, l);
+}
+
+void atab_numfuncs(char* ts, short l) {
+	apptab(tokstr[t_len], ts, l);
+	for (byte t = t_mouse_x; t <= t_strcompare; t++) {
+		apptab(tokstr[t], ts, l);
+	}
+}
+void atab_strfuncs(char* ts, short l) {
+	for (byte t = t_input; t <= t_substr; t++) {
+		apptab(tokstr[t], ts, l);
+	}
+}
+void make_tabbuf(char* ts) {
+	//pr("xtabstr:%s error:%s:%d", ts, errorstr, errornum);
+	str_free(&tabbuf);
+	int l = strlen(ts);
+	if (errornum >= ERR_CMDE && errornum <= ERR_CMD1) {
+		//pr("errnum %d:%d:", ERR_CMDU, errornum);
+		if (errornum == ERR_CMDU) apptab("until", ts, l);
+		if (errornum <= ERR_CMDEL) apptab("end", ts, l);
+		if (errornum == ERR_CMDEL) {
+			apptab("else", ts, l);
+			apptab("elif", ts, l);
+		}
+		atab_names(ts, l, -1, 1);
+		byte tok2 = t_gcurve;
+		if (errornum >= ERR_CMD0) tok2 = t_global;
+		for (byte t = t_if; t <= tok2; t++) {
+			if (strncmp(ts, tokstr[t], l) == 0) {
+				appt(tokstr[t]);
+				if (t == t_func) {
+					str_append(&tabbuf, ":");
+					str_append(&tabbuf, tokstr[t]);
+					str_append(&tabbuf, "$ ");
+					str_append(&tabbuf, ":");
+					str_append(&tabbuf, tokstr[t]);
+					str_append(&tabbuf, "[] ");
+				}
+			}
+		}
+		if (errornum == ERR_CMD0) apptab("sysconf", ts, l);
+	}
+	else if (errornum == ERR_NUMB) {
+		atab_names(ts, l, 0, 1);
+		atab_numfuncs(ts, l);
+		if (!ts[0]) str_append(&tabbuf, ":1:2:3:4:5:6:7:8:9:0");
+	}
+	else if (errornum == ERR_STR) {
+		if (!ts[0]) str_append(&tabbuf, ":\"");
+		atab_names(ts, l, 1, 1);
+		atab_names(ts, l, 0, 1);
+		atab_strfuncs(ts, l);
+		atab_numfuncs(ts, l);
+		if (!ts[0]) str_append(&tabbuf, ":\"\"");
+	}
+	else if (errornum == ERR_ARR) {
+		atab_names(ts, l, 2, 1);
+		//atab_arrfuncs(ts, l); ??
+	}
+	else if (errornum == ERR_VARRSTR) {
+		atab_arrs(ts, l);
+		atab_names(ts, l, 1, 0);
+	}
+	else if (errornum == ERR_VARR) {
+		atab_arrs(ts, l);
+	}
+	else if (errornum == ERR_EVT) {
+		for (byte t = 0; t <= 6; t++ ) {
+			apptab(evt_name[t], ts, l);
+		}
+	}
+	else if (errornum == ERR_SYSCONF) {
+		for (byte t = 0; t <= 3; t++ ) {
+			apptab(sysconf_str[t], ts, l);
+		}
+	}
+	else if (errornum == ERR_V) {
+		atab_names(ts, l, 0, 0);
+	}
+	else if (errornum == t_vstr) {
+		atab_names(ts, l, 1, 0);
+	}
+	else if (errornum == t_vnumarr) {
+		atab_names(ts, l, 2, 0);
+	}
+	else if (errornum == t_vstrarr) {
+		atab_names(ts, l, 3, 0);
+	}
+	else if (errornum == t_vnumarrarr) {
+		atab_names(ts, l, 4, 0);
+	}
+	else if (errornum == t_vstrarrarr) {
+		atab_names(ts, l, 4, 0);
+	}
+	else {
+		for (int i = ERR_BR; i <= ERR_FOR2; i++) {
+			if (errornum == i) {
+				char buf[16];
+				const char* p = tabstrs[i];
+				while (*p) {
+					int i = 0;
+					while (1) {
+						buf[i] = *p;
+						p += 1;
+						i += 1;
+						if (*p == ':' || *p == 0) break;
+					}
+					buf[i] = 0;
+					if (strncmp(buf + 1, ts, l) == 0) str_append(&tabbuf, buf);
+				}
+				break;
+			}
+		}
+	}
+	str_append(&tabbuf, ":");
+	str_append(&tabbuf, ts);
+	errorstr = str_ptr(&tabbuf);
+
+	while (codestrln > 0 && codestr[codestrln - 1] == ' ') codestrln--;
+	if (codestrln > 0 && codestr[codestrln - 1] == '\n') codestrln--;
+	codestr[codestrln] = 0;
+}
+
+extern int parse(char* str, int opt, int caret) {
+//extern int parse(const char* str, int opt, int caret) {
+	char ts[8];
 	syntax_high = (opt & 2);
 	if (syntax_high) {
 		bold1 = "<b>";
@@ -163,56 +388,46 @@ extern int parse(const char* str, int opt, int pos) {
 	cod = ! (opt & 4);
 	is_enter = (opt & 8);
 
-	parse_str = str;
-	
-	if (is_enter) pos = strlen(parse_str);		// on enter
+	int slen = strlen(str);
+	parse_prepare(str, slen);
 
-	parse_prepare();
+	if (is_enter) caret = slen;		// on enter
+
+	is_tab = 0;
+	char tabchar = 0;
+	if (opt & 1) {
+		//pr("slen  %d", slen);
+		is_tab = 1;
+		int h = slen - 1;
+		while (h >= 0 && islower(parse_str[h])) {
+			//pr("  %d", h);
+			h -= 1;
+		}
+		h +=1;
+		ts[0] = 0;
+		if (caret - h < 7 && h < caret) {
+			for (int i = 0; i <= caret - h; i++) {
+				ts[i] = parse_str[h + i];
+			}
+			caret = h;
+			tabchar = parse_str[caret];
+			parse_str[caret] = 0;
+		}
+//		cod = 1; //kc?
+	}
 	nextc();
 	nexttok();
 
 	sequ_level = 0;
 	fmtline = 1;
-	sysconfig = 0;
+	parse_sysconf();
+	if (tok == t_eof && is_enter) errorx(ERR_CMD0);
 
-	while (1) {
-		if (tok == t_hash) {
-			parse_comment();
-			nexttok();
-		}
-		else if (tok == t_name && (strcmp(tval, "sysconf") == 0 || strcmp(tval, "sys") == 0)) {
-			csb_tok_spc_nt();
-			if (strcmp(tval, "topleft") == 0) {
-				sysconfig |= 1;
-			}
-			else if (strcmp(tval, "radians") == 0) {
-				sysconfig |= 2;
-			}
-			else if (strcmp(tval, "zero_based") == 0) {
-				sysconfig |= 4;
-			}
-			else if (strcmp(tval, "hex_numbers") == 0) {
-				sysconfig |= 8;
-			}
-			else {
-				error("topleft, radians, zero_based, hex_numbers");
-			}
-			csb_tok_nt();
-		}
-		else break;
-		cs_nl();
-	}
-	if (tok == t_eof) {
-		if (is_enter) error("");
-	}
-	else {
-		ND* h = parse_sequ0();
-		proc_p->start = h;
-	}
-	if (tok != t_eof) {
-		cs_nl();
-		error("<cmd>");
-	}
+	ND* h = parse_sequ0();
+	proc_p->start = h;
+
+	if (tok != t_eof || is_enter) errorx(ERR_CMD1);
+
 	if (wasm) {
 		if (err) {
 			free(wasm);
@@ -220,17 +435,23 @@ extern int parse(const char* str, int opt, int pos) {
 		}
 		else build_fastfuncs();
 	}
-
 	if (err) {
 		// always when is_enter
+		if ((opt & 1) && errtok == t_eof) { // tab
+			make_tabbuf(ts);
+		}
+		else {
+			//kc?
+			if (tabchar) parse_str[caret] = tabchar;
+			if (errtok == t_eof && errorstr[1] == 'c') errorstr = "";
+		}
 		int err_pos = codestrln;
 
-#if !defined(__EMSCRIPTEN__)
+#ifndef __EMSCRIPTEN__
 		co(" *** ");
 #endif
 		while (ind_tok > 0 && parse_str[ind_tok - 1] == ' ') ind_tok--;
 		if (ind_tok > 0 && parse_str[ind_tok - 1] == '\n') ind_tok--;
-
 		co(parse_str + ind_tok);
 
 		caret_pos = code_utf8len;
@@ -259,38 +480,40 @@ extern int parse(const char* str, int opt, int pos) {
 		}
 		return err_pos;
 	}
+	// --------------------------------------------------
+
 	if (!cod) return 0;
 
 	if (!input_data) {
 		co("\n\n");
 	}
 
-	if (opt & 16) {
-		proc = proc_p;
-		while (proc < proc_p + proc_len) {
-			struct vname *p = proc->vname_p;
-			if (proc->vname_p) {	// because NULL + 0 is UB
-				while (p < proc->vname_p + proc->vname_len) {
-					if (p->typ <= VAR_NUMARRARR && p->access != RW) {
-						if (p->access == RD) error_pos("never set", p->srcpos);
-						else error_pos("never used", p->srcpos);
+	if (opt & 16) {		// strict mode
+		struct proc* pr = proc_p;
+		while (pr < proc_p + proc_len) {
+			struct vname *vn = pr->vname_p;
+			if (pr->vname_p) {	// because NULL + 0 is UB
+				while (vn < pr->vname_p + pr->vname_len) {
+					if (vn->typ <= VAR_NUMARRARR && vn->access != RW) {
+						if (vn->access == RD) error_pos("never set", vn->srcpos);
+						else error_pos("never used", vn->srcpos);
 						caret_pos = code_utf8len;
 						return codestrln;
 					}
-					p += 1;
+					vn += 1;
 				}
 			}
-			if (proc->start == NULL && proc != proc_p) {
-				error_pos("not implemented", proc->varcnt[0]);
+			if (pr->start == NULL && pr != proc_p) {
+				error_pos("not implemented", pr->varcnt[0]);
 				caret_pos = code_utf8len;
 				return codestrln;
 			}
-			proc += 1;
+			pr += 1;
 		}
 	}
 
-	caret_pos = pos;
-	if (caret_pos >= code_utf8len) pos = code_utf8len;
+	caret_pos = caret;
+	if (caret_pos >= code_utf8len) caret = code_utf8len;
 
 	int mask = 1;
 	if (prog_props & 8) mask |= 2;

@@ -6,7 +6,7 @@ nc = 1000
 len m[] nc * nc
 arrbase m[] 0
 #
-background 000
+gbackground 000
 subr show
    if visual = 0 : return
    f = 100 / 70

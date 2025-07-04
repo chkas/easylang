@@ -39,7 +39,7 @@ function push(v) {
 	if (cmds.length > 300000) update()
 }
 
-function parsex(d) {
+function parse_errchk(d) {
 	var res = Module.ccall("parse", "int", ["string", "int", "int"], [d[1], d[2], d[3]])
 	if (d[3] != -1) {
 		var src = Module.ccall("format", "string", null, null)
@@ -99,10 +99,10 @@ onmessage = function(e) {
 		lang = d[2]
 	}
 	else if (cmd == "run") {
-		if (parsex(d) < 0) runx(d[2] >> 8)
+		if (parse_errchk(d) < 0) runx(d[2] >> 8)
 	}
 	else if (cmd == "runx") {
-		var res = parsex(d)
+		var res = parse_errchk(d)
 		if (d[3] == -1 && res < 0) {
 			runx(0)
 		}
@@ -111,7 +111,7 @@ onmessage = function(e) {
 		runx(0)
 	}
 	else if (cmd == "format") {
-		var res = Module.ccall("parse", "int", ["string", "int", "int"], [d[1], 8 + 6, 0])
+		var res = Module.ccall("parse", "int", ["string", "int", "int"], [d[1], 14, 0])
 		var src = Module.ccall("format", "string", null, null)
 		var pos = Module.ccall("caret", "int", null, null)
 		var err = Module.ccall("errstr", "string", null, null)
@@ -121,6 +121,14 @@ onmessage = function(e) {
 		Module.ccall("parse", "int", ["string", "int", "int"], [d[1], 6, 0])
 		var src = Module.ccall("format", "string", null, null)
 		postMessage(["ide", "src2", src, d[2]])
+	}
+	else if (cmd == "tab") {
+		//kc todo
+		var res = Module.ccall("parse", "int", ["string", "int", "int"], [d[1], 15, 0])
+		var src = Module.ccall("format", "string", null, null)
+		var pos = Module.ccall("caret", "int", null, null)
+		var err = Module.ccall("errstr", "string", null, null)
+		postMessage(["ide", "src_nl", src, res, pos, err])
 	}
 	else if (cmd == "error") {
 		var s = Module.ccall("error", "string", null, null)

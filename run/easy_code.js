@@ -16,11 +16,13 @@ function pasteFunc(e) {
 var inp
 
 var tailSrc = null
-var cnd = create("span")
-cnd.act = false
-cnd.err = false
-appendTxt(cnd, " ")
-cnd.className = "high"
+var cnd
+function makeCnd() {
+	cnd = create("span")
+	appendTxt(cnd, " ")
+	cnd.className = "high"
+}
+makeCnd()
 
 function caret(nd, n) {
 	var r = document.createRange()
@@ -150,6 +152,7 @@ function showError(err, pos) {
 	inp.focus()
 }
 function gotSrcNl(src, res, pos, err) {
+/*
 	if (tailSrc == null) inp.innerHTML = src
 	else {
 		inp.innerHTML = src.substr(0, res)
@@ -161,6 +164,29 @@ function gotSrcNl(src, res, pos, err) {
 		}
 		tailSrc = null
 	}
+*/
+	if (tailSrc == null) {
+		inp.innerHTML = src
+		return
+	}
+	inp.innerHTML = src.substring(0, res)
+	appendTxt(inp, src.substring(res) + tailSrc)
+	if (err) {
+		if (err[0] == ":") {
+			cnd.tabopts = err.substr(1).split(":")
+			cnd.tabind = 0
+			cnd.firstChild.nodeValue = cnd.tabopts[0]
+			cnd.tab = true
+		}
+		else {
+			showError(err, pos)
+		}
+	}
+	else if (tailSrc.length < 10) {
+		inp.scrollTop = inp.scrollHeight - inp.clientHeight
+	}
+	setCaret(pos)
+	tailSrc = null
 }
 	
 function gotSrcErr(src, res, pos, err) {
@@ -237,15 +263,46 @@ function doEnter() {
 	kaFormat(s)
 }
 
+function doTabu(shift) {
+	if (cnd.tab) {
+		var dir = 1
+		if (shift) dir = -1
+		cnd.tabind = (cnd.tabind + cnd.tabopts.length + dir) % cnd.tabopts.length
+		cnd.firstChild.nodeValue = cnd.tabopts[cnd.tabind]
+	}
+	else {
+		var inps = inp.textContent
+		var p = codeCaret()
+		var s = inps.substring(0, p)
+		tailSrc = " " + inps.substring(p)
+		kaTab(s)
+	}
+}
+
 function preKey(pre, e) {
 	inp = pre
 	var k = e.keyCode
-	if (cnd.act) {
+
+	if (cnd.act && !cnd.tab) {
 		removeCnd()
-		if (k == 8) {
-			e.preventDefault()
+		if (k == 8) e.preventDefault()
+	}
+	if (k == 9) {	// Tab
+		e.preventDefault()
+		if (kaRunning()) {
+			kaStop()
 			return
 		}
+		doTabu(e.shiftKey)
+		return
+	}
+	if (cnd.tab && k != 16) { // not shift
+		if (k == 8) {		// backspace
+			e.preventDefault()
+			cnd.firstChild.nodeValue = cnd.tabopts[cnd.tabopts.length - 1]
+		}
+		cnd.className = ""
+		makeCnd()
 	}
 	if (e.ctrlKey || e.metaKey) {
 		if (k == 86 || k == 88) {	// v x

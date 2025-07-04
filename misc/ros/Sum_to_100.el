@@ -3,7 +3,7 @@ SUB = 1
 nexpr = 13122 - 1
 len f[] nexpr + 1
 arrbase f[] 0
-# 
+#
 func evaluate code .
    power = 1
    for k = 9 downto 1
@@ -29,7 +29,7 @@ proc init .
       f[i] = evaluate i
    .
 .
-call init
+init
 proc out code .
    a = 19683
    b = 6561

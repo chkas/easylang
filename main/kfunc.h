@@ -1655,11 +1655,11 @@ S void op_textsize(ND* nd) {
 }
 S void op_color3(ND* nd) {
 	ND* ndx = nd + 1;
-	int red = (int)(numf(nd->le) * 256);
+	int red = (int)(numf(nd->le) * 256 / 100);
 	if (red > 255) red = 255;
-	int green = (int)(numf(nd->ri) * 256);
+	int green = (int)(numf(nd->ri) * 256 / 100);
 	if (green > 255) green = 255;
-	int blue = (int)(numf(ndx->ex) * 256);
+	int blue = (int)(numf(ndx->ex) * 256 / 100);
 	if (blue > 255) blue = 255;
 	gr_color(red, green, blue);
 }
@@ -2311,7 +2311,8 @@ S const char* vexf(ushort typ) {
 	if (typ == VAR_NUMARR) return "[]";
 	else if (typ == VAR_STRARR) return "$[]";
 	else if (typ == VAR_NUMARRARR) return "[][]";
-	else return "$[][]";
+	else if (typ == VAR_STRARRARR) return "$[][]";
+	else return "";
 }
 S void dbg_debv(STR* ps, struct proc* fu, double* nums, STR* strs, ARR* arrs) {
 
@@ -2379,14 +2380,15 @@ S void dbg_outvars(void) {
 	STR s;
 	str_init(&s);
 	dbg_debv(&s, proc_p, rt_nums, rt_strs, rt_arrs);
-	struct proc* f = proc_p;
-	while (f < proc_p + proc_len) {
-		if (f->start == rt.proc) {
+	//struct proc* f = proc_p;
+	struct proc* p = proc_p + 1;	//kc without global
+	while (p < proc_p + proc_len) {
+		if (p->start == rt.proc) {
 			sl_as(&s, "----- Local scope -----\n");
-			dbg_debv(&s, f, rtl_nums, rtl_strs, rtl_arrs);
+			dbg_debv(&s, p, rtl_nums, rtl_strs, rtl_arrs);
 			break;
 		}
-		f += 1;
+		p += 1;
 	}
 	sl_as(&s, "\n");
 	gr_debout(str_ptr(&s));
@@ -2402,12 +2404,12 @@ S void dbg_delay(void) {
 S void dbg_line(ND* nd) {
 	if (rt.slow && rt.slow < 33) {
 		int i = 0;
-		while (i < opln_len && opln_p[i].nd != nd) i++;
-		if (i == opln_len) {
+		while (i < opline_len && opline_p[i].nd != nd) i++;
+		if (i == opline_len) {
 			internal_error(__LINE__);
 			return;
 		}
-		gr_debline(opln_p[i].line, 0);
+		gr_debline(opline_p[i].line, 0);
 		dbg_outvars();
 		if (rt.slow == 32 || rt.slow == 31) {
 			gr_step();
@@ -2743,9 +2745,9 @@ S void except(ND* nd, const char* s) {
 
 	gr_info(1);
 	int i = 0;
-	while (i < opln_len) {
-		if (opln_p[i].nd == nd) {
-			gr_debline(opln_p[i].line, 1);
+	while (i < opline_len) {
+		if (opline_p[i].nd == nd) {
+			gr_debline(opline_p[i].line, 1);
 			break;
 		}
 		i++;

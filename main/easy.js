@@ -14,6 +14,7 @@ const WORKER = "easyw.js"
 
 window["kaRun"] = kaRun
 window["kaFormat"] = kaFormat
+window["kaTab"] = kaTab
 window["kaStop"] = kaStop
 window["kaRunning"] = kaRunning
 window["easykey"] = easykey
@@ -93,6 +94,9 @@ function kaRun(s, opt = 0, pos = -1) {
 	if (eCan) canvInit()
 	isRunning = true
 	worker.postMessage(["run", s, opt, pos])
+}
+function kaTab(s) {
+	worker.postMessage(["tab", s])
 }
 function kaFormat(s, id = null) {
 	if (id == null) {

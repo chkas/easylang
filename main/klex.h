@@ -11,27 +11,28 @@
     "christof.kaser@gmail.com".
 */
 
-static const char* token_list[] = {
+static const char* tokstr[] = {
 	"",
 	"else", "elif", "until", "end",
-	"proc", "func", "fastfunc", "procdecl","funcdecl", "subr", "on", "prefix", "input_data", "global",
-	"if", "while", "for", "repeat",
 	"and", "or", "not", "mod", "mod1", "div", "div1",
-	"call",  "len",
+	"if", "while", "for", "repeat",
+	"len",
 
-	"print", "write", "text",
-	"sleep", "timer", "textsize", "linewidth", "coord_rotate", "coord_scale", "circle",
-	"color", "background", "mouse_cursor", "random_seed",
+	"return", "swap", "gclear", "break", "drawgrid", "arrbase",
+
+	"print", "text", "write",
+	"sleep", "timer", "gtextsize", "glinewidth", "coord_rotate", "coord_scale", "circle",
+	"gcolor", "gbackground", "mouse_cursor", "random_seed",
 	"move", "line", "coord_translate", "rect", "numfmt",
 	"gtext",
-	"color3", "gcircle",
+	"gcolor3", "gcircle",
 	"grect", "gline",
 	"gcircseg",
-	"sound", "polygon", "curve",
+	"sound", "gpolygon", "gcurve",
 
-	"return", "swap", "clear", "break", "drawgrid", "arrbase",
+	"proc", "func", "fastfunc", "procdecl","funcdecl", "subr", "on", "prefix", "input_data", "global",
 
-	"systime", "error", "mouse_x", "mouse_y", "randomf", "pi",
+	"mouse_x", "mouse_y", "randomf", "systime", "error", "pi",
 	"random", "sqrt", "log10", "abs", "sign", "bitnot", "floor", "sin", "cos", "tan", "asin", "acos", "atan",
 	"atan2", "pow", "bitand", "bitor", "bitxor", "bitshift", "lower", "higher",
 	"number", "strcode", "strpos", "strcmp",
@@ -45,34 +46,36 @@ static const char* token_list[] = {
 	"name", "string variable",
 
 	"array element", "string array element",
-	"array", "string array",
-	"array array", "string array array",
+	"array variable", "string array variable",
+	"array array variable", "string array array variable",
 
-	"pr", "gcolor", "gclear", "gbackground", "gtextsize", "glinewidth", "gpolygon", "gcolor3", "gcurve", "randint",
+	"pr", "color", "clear", "background", "textsize", "linewidth", "polygon", "color3", "curve", "randint",
 	""
 };
 
 enum token_tok {
 	t_default = 0,
 	t_else, t_elif, t_until, t_end,
-	t_proc, t_func, t_fastfunc, t_procdecl, t_funcdecl, t_subr, t_on, t_prefix, t_input_data, t_global,
-	t_if, t_while, t_for, t_repeat,
 	t_and, t_or, t_not, t_mod, t_mod1, t_divi, t_divi1,
-	t_call, t_len,
 
-	t_print, t_write, t_text,
-	t_sleep, t_timer, t_textsize, t_linewidth, t_co_rotate, t_co_scale, t_circle,
-	t_color, t_background, t_mouse_cursor, t_random_seed,
+	t_if, t_while, t_for, t_repeat,
+	t_len,
+
+	t_return, t_swap, t_gclear, t_break, t_drawgrid, t_arrbase,
+
+	t_print, t_text, t_write,
+	t_sleep, t_timer, t_gtextsize, t_glinewidth, t_co_rotate, t_co_scale, t_circle,
+	t_gcolor, t_gbackground, t_mouse_cursor, t_random_seed,
 	t_move, t_line, t_co_translate, t_rect, t_numfmt,
 	t_gtext,
-	t_color3, t_gcircle,
+	t_gcolor3, t_gcircle,
 	t_grect, t_gline,
 	t_gcircseg,
-	t_sound, t_polygon, t_curve,
+	t_sound, t_gpolygon, t_gcurve,
 
-	t_return, t_swap, t_clear, t_break, t_drawgrid, t_arrbase,
-	
-	t_systime, t_error, t_mouse_x, t_mouse_y, t_randomf, t_pi,
+	t_proc, t_func, t_fastfunc, t_procdecl, t_funcdecl, t_subr, t_on, t_prefix, t_input_data, t_global,
+
+	t_mouse_x, t_mouse_y, t_randomf, t_systime, t_error, t_pi,
 	t_random, t_sqrt, t_log10, t_abs, t_sign, t_bitnot, t_floor, t_sin, t_cos, t_tan, t_asin, t_acos, t_atan,
 	t_atan2, t_pow, t_bitand, t_bitor, t_bitxor, t_bitshift, t_lower, t_higher,
 	t_number, t_strord, t_strpos, t_strcompare,
@@ -89,7 +92,7 @@ enum token_tok {
 	t_vnumarr, t_vstrarr,
 	t_vnumarrarr, t_vstrarrarr,
 
-	t_pr, t_gcolor, t_gclear, t_gbackground, t_gtextsize, t_glinewidth, t_gpolygon, t_gcolor3, t_gcurve, t_randint,
+	t_pr, t_color, t_clear, t_background, t_textsize, t_linewidth, t_polygon, t_color3, t_curve, t_randint,
 
 	t_eof,
 
@@ -99,7 +102,7 @@ enum token_tok {
 
 static int tbl_a[] = { t_and, t_abs, t_asin, t_acos, t_atan, t_atan2, t_arrbase, 0 } ;
 static int tbl_b[] = { t_break, t_background, t_bitand, t_bitor, t_bitxor, t_bitshift, t_bitnot, 0 } ;
-static int tbl_c[] = { t_call, t_clear, t_color, t_circle, t_cos, t_color3, t_curve, t_co_rotate, t_co_translate, t_co_scale, 0 } ;
+static int tbl_c[] = { t_clear, t_color, t_circle, t_cos, t_color3, t_curve, t_co_rotate, t_co_translate, t_co_scale, 0 } ;
 static int tbl_d[] = { t_divi, t_divi1, t_drawgrid, 0 } ;
 static int tbl_e[] = { t_else, t_elif, t_end, t_error, 0 };
 static int tbl_f[] = { t_for, t_func, t_floor, t_funcdecl, t_fastfunc, 0 };
@@ -127,20 +130,19 @@ static int* tbl_all[] = {
 	tbl_q, tbl_r, tbl_s, tbl_t, tbl_u, tbl_v, tbl_w
 } ;
 
-static int tok_repl[] = { t_print, t_color, t_clear, t_background, t_textsize, t_linewidth, t_polygon, t_color3, t_curve, t_random };
+static int tok_repl[] = { t_print, t_gcolor, t_gclear, t_gbackground, t_gtextsize, t_glinewidth, t_gpolygon, t_gcolor3, t_gcurve, t_random };
 
 static byte tok;
 static byte tokpr;
 
-static char is_numfunc() { return tok >= t_systime && tok <= t_strcompare; }
+static char is_numfunc() { return tok >= t_mouse_x && tok <= t_strcompare; }
 static char is_strfunc() { return tok >= t_input && tok <= t_substr; }
 
 static char err;
 static int ind_tok, indc;
 
-static char is_enter;
-
-static const char* parse_str;
+//static const char* parse_str;
+static char* parse_str;
 
 #define INDENT 3
 
@@ -190,7 +192,7 @@ static void freecodestr() {
 static int code_utf8len;
 
 static void col(const char* s, int h) {
-	while (codestrln + h > codestrspc) {
+	while (codestrln + h >= codestrspc) {
 		codestrspc += 1024;
 		codestr = _realloc(codestr, codestrspc + 1);
 	}
@@ -274,19 +276,43 @@ void error_line(const char* s, int pos) {
 static ushort loop_level;
 static short nestlevel_err;
 
-static void error(const char* s) {
-	if (err) return;
+static byte errtok;
+static struct proc* errproc;
+static struct proc* proc;
+
+static void error0(const char* s) {
 	if (syntax_high) {
 		nestlevel_err = sequ_level - 1;
 		if (nestlevel_err >= 16) nestlevel_err = -1;
 	}
 	err = 1;
-	cs_spc();
+	errproc = proc;
+	errtok = tok;
 	errorstr = s;
 	cod = 0;
+	is_tab = 0;
+	cs_spc();
 #ifndef __EMSCRIPTEN__
 	error_line(s, ind_tok);
 #endif
+}
+
+static byte errornum;
+
+static void error(const char* s) {
+	if (err) return;
+	errornum = 255;
+	error0(s);
+}
+static void errorx(int num) {
+	if (err) return;
+	errornum = num;
+	error0(errstrs[num]);
+}
+static void errort(int tok) {
+	if (err) return;
+	errornum = tok;
+	error0(tokstr[tok]);
 }
 
 static void error_pos(const char* s, int pos) {
@@ -303,7 +329,7 @@ static void error_pos(const char* s, int pos) {
 }
 
 static void error_tok(int t) {
-	error(token_list[t]);
+	error(tokstr[t]);
 }
 
 static void internal_error(int n) {
@@ -365,15 +391,15 @@ static void csf(const char* s) {
 }
 
 static void cst(int t) {
-	if (t < t_plus) csb(token_list[t]);
-	else cs(token_list[t]);
+	if (t < t_plus) csb(tokstr[t]);
+	else cs(tokstr[t]);
 }
 
 static char tval[24];
 
 static int fmtline;
 
-static void cs_nl() {
+static void csnl() {
 	csnlspc();
 	fmtline += 1;
 }
@@ -486,7 +512,7 @@ static void parse_input_data() {
 			input_data_size = h;
 		}
 		if (c == EOT) break;
-		cs_nl();
+		csnl();
 	}
 }
 
@@ -535,7 +561,7 @@ static void nexttok() {
 #if 0
 		int ti = 1;
 		while (ti <= t_substr) {
-			if (strcmp(token_list[ti], tval) == 0) {
+			if (strcmp(tokstr[ti], tval) == 0) {
 				tok = ti;
 				if (tok >= t_pr) tok = tok_repl[tok - t_pr];
 				return;
@@ -548,7 +574,7 @@ static void nexttok() {
 			if (fc >= 'a' && fc <= 'w') {
 				int* tbl = tbl_all[fc - 'a'];
 				while (*tbl) {
-					if (strcmp(token_list[*tbl], tval) == 0) {
+					if (strcmp(tokstr[*tbl], tval) == 0) {
 						tok = *tbl;
 						if (tok >= t_pr) tok = tok_repl[tok - t_pr];
 						return;
@@ -606,7 +632,7 @@ static void nexttok() {
 	tval[2] = 0;
 	if (c == '=') {
 		for (int ti = t_le; ti <= t_mineq; ti++) {
-			if (token_list[ti][0] == cp) {
+			if (tokstr[ti][0] == cp) {
 				tok = ti;
 				nextc();
 				return;
@@ -632,7 +658,7 @@ static void nexttok() {
 	}
 	tval[1] = 0;
 	for (int ti = t_plus; ti <= t_comma; ti++) {
-		if (token_list[ti][0] == cp) {
+		if (tokstr[ti][0] == cp) {
 			tok = ti;
 			return;
 		}
@@ -693,7 +719,6 @@ struct procdecl {
 	ND* callref;
 };
 
-static struct proc* proc;
 static struct proc* proc_p;
 static ushort proc_len;
 static struct procdecl* procdecl;
@@ -811,12 +836,13 @@ static const char* vex(ushort typ) {
 	else if (typ == VAR_NUMARR) return "[";
 	else if (typ == VAR_STRARR) return "$[";
 	else if (typ == VAR_NUMARRARR) return "[][";
-	else return "$[][";
+	else if (typ == VAR_STRARRARR) return "$[][";
+	else return "";
 }
 
 static void lvar(byte typ, byte access, byte mode) {
 
-	if (cod && mode) {
+	if ((cod && mode) || (is_tab && mode)) {
 		const char* name = getn(tval);
 //		if (name == name_anonym) access = RW;
 
@@ -846,7 +872,8 @@ static struct vname* add_var(struct proc* f, const char* name, ushort typ, ushor
 }
 
 static short get_var(ushort typ, ushort access, const char* name, ushort pos) {
-	if (!cod) return 0;
+	if (!cod && !is_tab) return 0;
+//	if (!cod) return 0;
 //pr("get_var %s", name);
 	name = getn(name);
 //	if (name == name_anonym) access = RW;
@@ -886,22 +913,22 @@ static short parse_var(ushort typ, ushort access) {
 
 // -------------------------------------------------------------------------------
 
-struct opln {
+struct opline {
 	ND* nd;
 	ushort line;
 };
 
-static struct opln* opln_p;
-static ushort opln_len;
+static struct opline* opline_p;
+static ushort opline_len;
 
-static void opln_add(ND* nd, ushort line) {
+static void opline_add(ND* nd, ushort line) {
 	if (cod) {
-		if (opln_len % 64 == 0) {
-			opln_p = (struct opln*)_realloc(opln_p, (opln_len + 64) * sizeof(struct opln));
+		if (opline_len % 64 == 0) {
+			opline_p = (struct opline*)_realloc(opline_p, (opline_len + 64) * sizeof(struct opline));
 		}
-		opln_p[opln_len].nd = nd;
-		opln_p[opln_len].line = line;
-		opln_len += 1;
+		opline_p[opline_len].nd = nd;
+		opline_p[opline_len].line = line;
+		opline_len += 1;
 	}
 }
 
@@ -917,9 +944,9 @@ static void parse_clean() {
 
 	proc_free();
 
-	free(opln_p);
-	opln_p = NULL;
-	opln_len = 0;
+	free(opline_p);
+	opline_p = NULL;
+	opline_len = 0;
 
 	free(input_data);
 	input_data = NULL;
@@ -927,7 +954,9 @@ static void parse_clean() {
 
 S ND** nd_doll;
 
-static void parse_prepare() {
+static void parse_prepare(char* str, int slen) {
+	parse_str = str;
+
 	parse_clean();
 
 	nd_doll = NULL;
@@ -945,8 +974,7 @@ static void parse_prepare() {
 	prefix_len = 0;
 	loop_level = 0;
 
-	uint h = strlen(parse_str);
-	codestrspc = h + h / 2;
+	codestrspc = slen + slen / 2;
 	codestr = _realloc(NULL, codestrspc + 1);
 	proc = proc_add("_GLOBAL_");
 

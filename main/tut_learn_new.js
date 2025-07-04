@@ -37,11 +37,20 @@ gcircle x + 16 85 3.5
 
 +de Zuerst schauen wir uns die Befehle an, mit denen Grafiken auf dem Bildschirm erstellt werden können.
 
+gcircle 10 30 1
+gcircle 50 50 1
+
++ We draw a small circle (size 1) at the position (10 30), which is 10 from the left and 30 from the bottom, and one at the position (50 50) - this is in the middle of the drawing area.
+
++de Wir zeichnen einen kleinen Kreis (Größe 1) an der Position (10 30), das ist 10 von links und 30 von unten, und einen an der Position (50 50) - das ist in der Mitte der Zeichenfläche.
+
++ Then we connect these two points with a line.
+
++de Dann verbinden wir diese beiden Punkte mit einer Linie.
+
+gcircle 10 30 1
+gcircle 50 50 1
 gline 10 30 50 50
-
-+ We draw a line from (10 30), which is 10 from the left and 30 from the bottom, to the position (50 50) - to the center of the drawing area.
-
-+de Wir ziehen eine Linie von (10 30), das ist 10 von links und 30 von unten, zu der Position (50 50) - zur Mitte der Zeichenfläche.
 
 ##
 gcolor 555
@@ -60,7 +69,9 @@ while x <= 90
 gtext 12 28 "10/30"
 gtext 44 52 "50/50"
 gcolor 833
-glinewidth 2
+gcircle 18 34 1.2
+gcircle 50 50 1.2
+glinewidth 1
 gline 18 34 50 50
 
 + The drawing area is 100 times 100 units. The origin is bottom left. The first value (the X coordinate) is the distance from the left edge, the second value (the Y coordinate) is the distance from the bottom edge.
@@ -87,23 +98,48 @@ gline 30 20 30 40
 
 -
 
-+ With the command *grect* you can draw filled rectangles. The parameters specify the x and y position, the width and the height.
++ With the command *grect* you can draw filled rectangles. The parameters specify the *x* and *y* position, the *width* and the *height*.
 
 + Most graphic commands begin with a *g* for *graphic*, so *grect* therefore stands for *graphic rectangle*.
 
-+de Mit dem Befehl *grect* kann man gefüllte Rechtecke zeichnen. Die Parameter geben die x- und y-Position, die Breite und die Höhe an.
++de Mit dem Befehl *grect* kann man gefüllte Rechtecke zeichnen. Die Parameter geben die *x*- und *y*-Position, die *Breite* und die *Höhe* an.
 
 +de Die meisten Grafikbefehle beginnen mit einem *g* für *Grafik*, *grect* steht also für *Grafisches Rechteck*.
 
-+ *gcolor* sets the drawing color. *gcolor 900*, for example, is a rich red color.
-
-+de *gcolor* setzt die Zeichenfarbe. *gcolor 900* ist zum Beispiel eine satte rote Farbe.
-
 gcolor 900
-grect 10 15 20 20
-#
+grect 10 20 50 30
+
+##
+gcolor 555
+gtextsize 4
+gtext 6 5 "0/0"
+gtext 82 5 "100/0"
+gtext 82 91.5 "100/100"
+gtext 6 91.5 "0/100"
+glinewidth 0.5
+x = 10
+while x <= 90
+   gline x 10 x 90
+   gline 10 x 90 x
+   x += 8
+.
+gtext 12 22 "10/20"
+gcolor 833
+grect 18 26 40 24
+gcolor 555
+gcircle 18 26 1
+gtext 35 22 "50"
+gtext 59 37 "30"
+
++ *gcolor* sets the drawing color. *900*, for example, is red, *990* yellow and *444* grey.
+
++de *gcolor* setzt die Zeichenfarbe. *900* ist zum Beispiel rot, *990* gelb und *444* grau.
+
 gcolor 990
-grect 30 45 50 30
+gcircle 70 80 10
+#
+gcolor 444
+grect 10 5 40 30
 
 + There are 1000 possible colors - from 000 to 999, mixed from the primary colours red, green and blue. The left digit specifies the red component, the middle digit the green component and the right digit the blue component. These are some possible colors.
 
@@ -161,13 +197,13 @@ gtext 5 85 "MY HOUSE"
 
 +de Das *#*-Zeichen erlaubt es, Kommentare in das Programm einzufügen.
 
-+ 🤔 Draw the missing door.
++ 🤔 Draw the missing door. With the help of *drawgrid* it is easier to find the right positions.
 
-+ 🤔🤔 If you want, you can use a blue background as a sky and let a sun (*gcircle*) shine.
++ 🤔🤔 You can use a blue background as a sky and let a sun (*gcircle*) shine.
 
-+de 🤔 Zeichne die fehlende Tür.
++de 🤔 Zeichne die fehlende Tür. Mit Hilfe von *drawgrid* ist es einfacher, die richtigen Positionen zu finden.
 
-+de 🤔🤔 Wenn du willst, kannst du einen blauen Hintergrund als Himmel verwenden und eine Sonne (*gcircle*) scheinen lassen.
++de 🤔🤔 Du kannst einen blauen Hintergrund als Himmel verwenden und eine Sonne (*gcircle*) scheinen lassen.
 
 + In *Debug* mode, you can watch the computer execute its instructions one by one.
 
@@ -336,16 +372,20 @@ cod "\"a is large\"" -1 ""
 
 +de Der Block nach *else* wird ausgeführt, wenn die Bedingung nicht erfüllt ist.
 
+a = random 10
+b = random 10
+print "What is " & a & " * " & b & " ?"
 x = number input
-if x mod 2 = 0
-   print x & " is even"
+print x
+if a * b = x
+   print "Thats wright 🙂"
 else
-   print x & " is odd"
+   print "Thats wrong 🙁"
 end
 
-+ With *mod* you get the remainder of a division.
++ *random 10* returns a random number from 1 to 10.
 
-+de Mit *mod* erhält man den Rest einer Division.
++de *random 10* liefert eine zufällige Zahl von 1 bis 10.
 
 * Loop
 
@@ -440,9 +480,9 @@ end
 sleep 1
 print "The number was " & n
 
-+ *random 10* returns a random number from 1 - 10. *sleep 1* puts a pause of one second. *elif* is a combination of *else if*.
++ *sleep 1* puts a pause of one second. *elif* is a combination of *else if*.
 
-+de *random 10* liefert eine Zufallszahl von 1 - 10. *sleep 1* legt eine Pause von einer Sekunde ein. *elif* ist eine Kombination aus *else if*.
++de *sleep 1* legt eine Pause von einer Sekunde ein. *elif* ist eine Kombination aus *else if*.
 
 + 🤔🤔 Just one try and that's it - it's no fun. You should be able to guess until you have guessed the number. For this you need .... - yeah right - a loop. Hint: *<>* stands for "not equal".
 
@@ -880,13 +920,12 @@ print a[]
 
 *de Weitere nützliche Funktionen
 
-+ With *color3* you can set the character color more precisely. The function has the three basic colors red, green and blue as parameters, whereby the proportion of these colors is set as a floating point number from 0 to 1.
++ With *gcolor3* you can set the character color more precisely. The function has the brightness of the three primary colors red, green and blue as parameters, which are specified as floating point values from 0 to 100.
 
-+de Mit *color3* kannst du die Zeichenfarbe genauer einstellen. Die Funktion hat die drei Grundfarben Rot, Grün und Blau als Parameter, wobei der Anteil dieser Farben als Gleitkommazahl von 0 bis 1 eingestellt wird.
++de Mit *gcolor3* kann man die Zeichenfarbe genauer einstellen. Die Funktion hat die Helligkeit der drei Grundfarben Rot, Grün und Blau als Parameter, die als Gleitkommawerte von 0 bis 100 angegeben werden.
 
 for i = 0 to 100
-   r = i / 100
-   gcolor3 r 0 0
+   gcolor3 i 0 0
    gline 0 i 100 i
 end
 

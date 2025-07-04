@@ -839,6 +839,7 @@ function store() {
 }
 
 inp.onmousedown = function() {
+//kc
 	removeCnd()
 }
 var undoStack = []
@@ -875,6 +876,22 @@ function enter() {
 	}
 	kaFormat(s)
 }
+function doTabu(shift) {
+	if (cnd.tab) {
+		var dir = 1
+		if (shift) dir = -1
+		cnd.tabind = (cnd.tabind + cnd.tabopts.length + dir) % cnd.tabopts.length
+		cnd.firstChild.nodeValue = cnd.tabopts[cnd.tabind]
+	}
+	else {
+		var inps = inp.textContent
+		var p = getCaret()
+		var s = inps.substring(0, p)
+		tailSrc = " " + inps.substring(p)
+		kaTab(s)
+	}
+}
+
 var searchS = ""
 function search() {
 	if (window.getSelection() != "") searchS = window.getSelection().toString()
@@ -894,12 +911,28 @@ function search() {
 
 inp.onkeydown = function(e) {
 	var k = e.keyCode
-	if (cnd.act) {
+//kc
+	//if (cnd.act) {
+	if (cnd.act && !cnd.tab) {
 		removeCnd()
-		if (k == 8) {		// backspace
-			e.preventDefault()
+		if (k == 8) e.preventDefault()
+	}
+	if (k == 9) {	// Tab
+		e.preventDefault()
+		if (!runBtn.run) {
+			doStop()
 			return
 		}
+		doTabu(e.shiftKey)
+		return
+	}
+	if (cnd.tab && k != 16) { // not shift
+		if (k == 8) {		// backspace
+			e.preventDefault()
+			cnd.firstChild.nodeValue = cnd.tabopts[cnd.tabopts.length - 1]
+		}
+		cnd.className = ""
+		makeCnd()
 	}
 	if (e.ctrlKey || e.metaKey) {
 		if (k == 86 || k == 88) {	// v x
@@ -970,10 +1003,6 @@ inp.onkeydown = function(e) {
 		}
 		enter()
 	}
-	else if (k == 9) {	// tab
-		document.execCommand("insertHTML", false, "  ")
-		e.preventDefault()
-	}
 	// delete space tab
 	if (stBtn.disabled) {
 		if (k >= 46 || k == 32 || k <= 9 ) {
@@ -984,7 +1013,6 @@ inp.onkeydown = function(e) {
 }
 
 inp.addEventListener("paste", function(e) {
-// caret pos with firefox esr wrong ??
 	e.preventDefault()
 	var paste = e.clipboardData.getData("text/plain")
 	var el = document.createElement('p')
@@ -1009,11 +1037,13 @@ inp.addEventListener("drop", function(e) {
 // ------------------
 
 var tailSrc
-var cnd = create("span")
-cnd.act = false
-cnd.err = false
-appendTxt(cnd, " ")
-cnd.className = "high"
+var cnd
+function makeCnd() {
+	cnd = create("span")
+	appendTxt(cnd, " ")
+	cnd.className = "high"
+}
+makeCnd()
 
 function caret(nd, n) {
 	var r = document.createRange()
@@ -1025,7 +1055,11 @@ function caret(nd, n) {
 }
 
 function removeCnd() {
-	if (cnd.act) {
+	if (cnd.tab) {
+		cnd.className = ""
+		makeCnd()
+	}
+	else if (cnd.act) {
 		cnd.act = false
 		if (document.contains(cnd)) {
 			var n1 = cnd.previousSibling
@@ -1105,12 +1139,13 @@ function setCaret(dest, showCnd = true) {
 		var p = nd.parentNode
 		var n1 = document.createTextNode(nd.nodeValue.substring(0, pos))
 		p.insertBefore(n1, nd)
-		cnd.act = true
 		p.insertBefore(cnd, nd)
 		var n2 = document.createTextNode(nd.nodeValue.substring(pos))
 		p.insertBefore(n2, nd)
 		p.removeChild(nd)
-		caret(n1, pos)
+		if (cnd.tab) caret(n2, 0)
+		else caret(n1, pos)
+		cnd.act = true
 	}
 	else caret(nd, pos)
 }
@@ -1144,11 +1179,21 @@ function showError(err, pos) {
 function gotSrcNl(src, res, pos, err) {
 	inp.innerHTML = src.substring(0, res)
 	appendTxt(inp, src.substring(res) + tailSrc)
-	setCaret(pos)
-	if (err) showError(err, pos)
+	if (err) {
+		if (err[0] == ":") {
+			cnd.tabopts = err.substr(1).split(":")
+			cnd.tabind = 0
+			cnd.firstChild.nodeValue = cnd.tabopts[0]
+			cnd.tab = true
+		}
+		else {
+			showError(err, pos)
+		}
+	}
 	else if (tailSrc.length < 10) {
 		inp.scrollTop = inp.scrollHeight - inp.clientHeight
 	}
+	setCaret(pos)
 }
 	
 function gotSrcErr(src, res, pos, err) {

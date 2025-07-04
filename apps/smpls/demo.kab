@@ -1,15 +1,13 @@
-sys topleft
+sysconf topleft
 sz = 100
-color 000
-linewidth 3
+gcolor 000
+glinewidth 3
 while x <= 64
    b = 1.0 - x / 70
-   color3 b * 0.7 b b * 0.7
-   move x x
-   rect sz sz
+   gcolor3 b * 0.7 b b * 0.7
+   grect x x sz sz
    sz -= 6
    x += 4
 .
-textsize 4
-move 60 93
-text "easylang.online"
+gtextsize 4
+gtext 60 93 "easylang.online"
