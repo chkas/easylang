@@ -4,6 +4,8 @@ txt_tutor = String.raw`+ Documentation - Code snippets
 
 + The program can be started with the "Run" button, with Ctrl+R, with Shift+Enter or with a double press on Enter.
 
++ The tab key can be used for auto-completion of commands and parameters.
+
 i = 1
 while i <= 10
    print i * i
@@ -145,7 +147,7 @@ print r
 
 -
 
-+ Functions are defined with *func*. Only value parameters are allowed. *return* exits the function and returns the specified value.
++ Functions are defined with *func*. *return* exits the function and returns the specified value.
 
 func gcd a b.
    while b <> 0

@@ -152,19 +152,6 @@ function showError(err, pos) {
 	inp.focus()
 }
 function gotSrcNl(src, res, pos, err) {
-/*
-	if (tailSrc == null) inp.innerHTML = src
-	else {
-		inp.innerHTML = src.substr(0, res)
-		appendTxt(inp, src.substr(res) + tailSrc)
-		setCaret(pos)
-		if (err) showError(err, pos)
-		else if (tailSrc.length < 10) {
-			inp.scrollTop = inp.scrollHeight - inp.clientHeight
-		}
-		tailSrc = null
-	}
-*/
 	if (tailSrc == null) {
 		inp.innerHTML = src
 		return
@@ -263,46 +250,47 @@ function doEnter() {
 	kaFormat(s)
 }
 
-function doTabu(shift) {
-	if (cnd.tab) {
-		var dir = 1
-		if (shift) dir = -1
-		cnd.tabind = (cnd.tabind + cnd.tabopts.length + dir) % cnd.tabopts.length
-		cnd.firstChild.nodeValue = cnd.tabopts[cnd.tabind]
-	}
-	else {
-		var inps = inp.textContent
-		var p = codeCaret()
-		var s = inps.substring(0, p)
-		tailSrc = " " + inps.substring(p)
-		kaTab(s)
-	}
+function tabu() {
+	var inps = inp.textContent
+	var p = codeCaret()
+	var s = inps.substring(0, p)
+	tailSrc = " " + inps.substring(p)
+	kaTab(s)
 }
+
 
 function preKey(pre, e) {
 	inp = pre
 	var k = e.keyCode
 
-	if (cnd.act && !cnd.tab) {
-		removeCnd()
-		if (k == 8) e.preventDefault()
-	}
-	if (k == 9) {	// Tab
-		e.preventDefault()
-		if (kaRunning()) {
-			kaStop()
+	if (cnd.tab) {
+		if (k == 9 || cnd.tabk == 8 && k == 8) {
+			e.preventDefault()
+			cnd.tabind = (cnd.tabind + 1) % cnd.tabopts.length
+			cnd.firstChild.nodeValue = cnd.tabopts[cnd.tabind]
 			return
 		}
-		doTabu(e.shiftKey)
-		return
-	}
-	if (cnd.tab && k != 16) { // not shift
-		if (k == 8) {		// backspace
+		if (k == 8) {	// bs
 			e.preventDefault()
 			cnd.firstChild.nodeValue = cnd.tabopts[cnd.tabopts.length - 1]
 		}
 		cnd.className = ""
 		makeCnd()
+		return;
+	}
+	if (cnd.act) {
+		removeCnd()
+		if (k == 8) e.preventDefault()
+	}
+	if (k == 9 || k == 8 && e.shiftKey) {	// tab or shift+bs
+		e.preventDefault()
+		if (kaRunning()) {
+			kaStop()
+			return
+		}
+		cnd.tabk = k
+		tabu()
+		return
 	}
 	if (e.ctrlKey || e.metaKey) {
 		if (k == 86 || k == 88) {	// v x
@@ -449,7 +437,7 @@ function codeInit(pre, f1) {
 	runCB = f1
 	pre.className = "code"
 	pre.contentEditable = true
-	pre.autocorrect = "off"
+	pre.autocorrect = false
 	pre.autocomplete = "off"
 	pre.autocapitalize = "off"
 	pre.spellcheck = false

@@ -228,7 +228,6 @@ window.addEventListener("offline", () => hide(inst));
 
 function showcode() {
 	hide(runner)
-
 	if (isVertical()) {
 		editor.appendChild(codew)
 		runner.appendChild(canv)

@@ -89,8 +89,7 @@ hr {
 	background: #444;
 }
 
-span.high {background-color:#faa}
-
+span.high {background-color:#666}
 
 *{scrollbar-width:auto}
 ::-webkit-scrollbar{width:10px;height:10px}

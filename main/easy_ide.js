@@ -876,22 +876,6 @@ function enter() {
 	}
 	kaFormat(s)
 }
-function doTabu(shift) {
-	if (cnd.tab) {
-		var dir = 1
-		if (shift) dir = -1
-		cnd.tabind = (cnd.tabind + cnd.tabopts.length + dir) % cnd.tabopts.length
-		cnd.firstChild.nodeValue = cnd.tabopts[cnd.tabind]
-	}
-	else {
-		var inps = inp.textContent
-		var p = getCaret()
-		var s = inps.substring(0, p)
-		tailSrc = " " + inps.substring(p)
-		kaTab(s)
-	}
-}
-
 var searchS = ""
 function search() {
 	if (window.getSelection() != "") searchS = window.getSelection().toString()
@@ -908,31 +892,44 @@ function search() {
 		setCaret(m)
 	}
 }
+function tabu() {
+	var inps = inp.textContent
+	var p = getCaret()
+	var s = inps.substring(0, p)
+	tailSrc = " " + inps.substring(p)
+	kaTab(s)
+}
 
 inp.onkeydown = function(e) {
 	var k = e.keyCode
-//kc
-	//if (cnd.act) {
-	if (cnd.act && !cnd.tab) {
-		removeCnd()
-		if (k == 8) e.preventDefault()
-	}
-	if (k == 9) {	// Tab
-		e.preventDefault()
-		if (!runBtn.run) {
-			doStop()
+	if (cnd.tab) {
+		if (k == 9 || cnd.tabk == 8 && k == 8) {
+			e.preventDefault()
+			cnd.tabind = (cnd.tabind + 1) % cnd.tabopts.length
+			cnd.firstChild.nodeValue = cnd.tabopts[cnd.tabind]
 			return
 		}
-		doTabu(e.shiftKey)
-		return
-	}
-	if (cnd.tab && k != 16) { // not shift
-		if (k == 8) {		// backspace
+		if (k == 8) {	// bs
 			e.preventDefault()
 			cnd.firstChild.nodeValue = cnd.tabopts[cnd.tabopts.length - 1]
 		}
 		cnd.className = ""
 		makeCnd()
+		return;
+	}
+	if (cnd.act) {
+		removeCnd()
+		if (k == 8) e.preventDefault()
+	}
+	if (k == 9 || k == 8 && e.shiftKey) {	// tab or shift+bs
+		e.preventDefault()
+		if (!runBtn.run) {
+			doStop()
+			return
+		}
+		cnd.tabk = k
+		tabu()
+		return
 	}
 	if (e.ctrlKey || e.metaKey) {
 		if (k == 86 || k == 88) {	// v x
@@ -952,7 +949,7 @@ inp.onkeydown = function(e) {
 			search()
 		}
 
-		else if (k == 90) {		// Z undo
+		else if (k == 90) {		// z undo
 			e.preventDefault()
 			if (e.shiftKey) {
 				undoPos += 1

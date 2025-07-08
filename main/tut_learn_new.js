@@ -170,6 +170,12 @@ for i to len col[]
 
 -
 
++ The *tab* key - normally found to the left of the *W* - helps you to complete commands. For example, to write *gcircle*, simply enter *g* or *gc* and then press the tab key repeatedly until *gcircle* appears on the screen.
+
++de Die *Tab*-Taste - normalerweise links neben dem *W* zu finden - hilft dir dabei, Befehle zu vervollständigen. Um zum Beispiel *gcircle* zu schreiben, gib einfach *g* oder *gc* ein und drücke dann wiederholt die Tab-Taste, bis *gcircle* auf dem Bildschirm erscheint.
+
+-
+
 + Drawing a house
 
 +de Wir zeichnen ein Haus

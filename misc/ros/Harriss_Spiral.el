@@ -25,7 +25,7 @@ proc strokeWidth w .
    glinewidth w / 18
 .
 proc stroke rb gb bb .
-   gcolor3 rb / 255 gb / 255 bb / 255
+   gcolor3 rb / 2.55 gb / 2.55 bb / 2.55
 .
 proc arc xCenter yCenter eWidth eHeight p1Angle p2Angle .
    rx = eWidth / 2
