@@ -39,6 +39,8 @@ hr {border:1px solid #888;margin-top:6px;margin-bottom:6px}
 	float:left;
 	height:100%;
 	width:33vw;
+	display: flex;
+	flex-direction: column;
 }
 #docx {
 	overflow-y:scroll;
@@ -115,11 +117,13 @@ tt {border:solid 1px;padding:1px;font-size:120%}
 	padding:2px;
 	border-radius:5px;
 	outline:none;
+	flex:1;
 }
 canvas { display:inline }
 #canv {
 	border:1px solid #888;
 	width:100%;
+	aspect-ratio:1;
 	color:#000;
 	background:#fff;
 	vertical-align:top;
@@ -412,7 +416,7 @@ function chngTheme() {
 	<pre id=inp contenteditable=true ondrop="return false" autocomplete=off
 		autocorrect=off autocapitalize=off spellcheck=false></pre>
 
-	<span id=moreSpn style=display:none>
+	<span id=dbgSpn style=display:none>
 	<button id=stepBtn>Trace</button>
 	<button id=step2Btn style=display:none>Over</button>
 	<button id=step3Btn style=display:none>Out</button>

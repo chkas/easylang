@@ -2,7 +2,7 @@ lat = 28
 lon = 15
 sinlat = sin lat
 coslat = cos lat
-numfmt 4 0
+numfmt 0 4
 global a[] d[] m[] n$[] .
 #
 subr turn
@@ -313,7 +313,7 @@ on mouse_down
 on mouse_up
    mdown = 0
 .
-on key
+on key_down
    k$ = keybkey
    if k$ = "ArrowLeft"
       wx -= 1

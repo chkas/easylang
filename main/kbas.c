@@ -144,13 +144,15 @@ ushort sysconfig;
 const char* errstrs[] = {
 	"], ][", "=, +=, ..", "=, &=", "=, <>, < ...",  "=, <>",
 	"=, in", "to, downto, step",
-	"<cmd>, end, .", "<cmd>, else, elif, end, .", "<cmd>, until", "<cmd>", "<cmd>", "variable", "array variable", "array or string variable", "number", "string", "array", "event", "topleft ..."
+	"<cmd>, end, .", "<cmd>, else, elif, end, .", "<cmd>, until", "<cmd>", "<cmd>", "variable", "array variable", "array or string variable", "number",
+	"string", "array", "string array",
+	"event", "topleft ..."
 };
 
 enum {
 	ERR_BR, ERR_ASSIGN, ERR_STRASS, ERR_CMP, ERR_STRCMP,
 	ERR_FOR, ERR_FOR2,
-	ERR_CMDE, ERR_CMDEL, ERR_CMDU, ERR_CMD0, ERR_CMD1, ERR_V, ERR_VARR, ERR_VARRSTR, ERR_NUMB, ERR_STR, ERR_ARR,
+	ERR_CMDE, ERR_CMDEL, ERR_CMDU, ERR_CMD0, ERR_CMD1, ERR_V, ERR_VARR, ERR_VARRSTR, ERR_NUMB, ERR_STR, ERR_ARR, ERR_STRARR,
 	ERR_EVT, ERR_SYSCONF
 };
 
@@ -308,6 +310,11 @@ void make_tabbuf(char* ts) {
 	else if (errornum == ERR_ARR) {
 		atab_names(ts, l, 2, 1);
 		//atab_arrfuncs(ts, l); ??
+	}
+	else if (errornum == ERR_STRARR) {
+		atab_names(ts, l, 3, 1);
+		apptab("strsplit", ts, l);
+		apptab("strtok", ts, l);
 	}
 	else if (errornum == ERR_VARRSTR) {
 		atab_arrs(ts, l);

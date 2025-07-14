@@ -1504,24 +1504,24 @@ S ND* parse_strarrex(void) {
 			if (p && p->typ == FUNCSTRARR) {
 				ex = parse_callfunc(p, 2);
 			}
-			else goto try_nummarr;
+			else if (p && p->typ == FUNCARR) {
+				ex = mknd();
+				ex->arrf = op_numstrarr;
+				ex->le = parse_callfunc(p, 2);
+			}
+			else goto err_arr;
 		}
 	}
-	else goto try_nummarr;
-	return ex;
-try_nummarr:
-	{
-		ND* nd = mknd();
-		nd->arrf = op_numstrarr;
-		nd->le = parse_numarrex();
-		return nd;
+	else if (tok == t_vnumarr) {
+		ex = mknd();
+		ex->arrf = op_numstrarr;
+		ex->le = parse_numarrex();
 	}
-//kc
-/*
-err_arr:
-	error("string array");
+	else goto err_arr;
 	return ex;
-*/
+err_arr:
+	errorx(ERR_STRARR);
+	return ex;
 }
 
 S ND* parse_strarrarrex(void) {
@@ -2475,15 +2475,11 @@ S ND* parse_stat(void) {
 				nexttok();
 			}
 			// ----------------------------------------------------------------------------
-			else if (tok == t_gclear) {
-				csb_tok_nt();
-				nd->vf = op_clear;
-				prog_props |= 1;
-			}
-			else if (tok == t_drawgrid) {
-				csb_tok_nt();
+			else if (tok >= t_gclear && tok <= t_gpenup) {
 				nd->vf = op_sys;
-				nd->v1 = 5;
+				nd->v1 = tok - t_gclear + 11;
+				csb_tok_nt();
+				prog_props |= 1;
 			}
 			else {	// t_arrbase
 			// else if (tok == t_arrbase) {

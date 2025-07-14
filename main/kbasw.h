@@ -79,9 +79,8 @@ static char grbotleft;
 static double grtxty;
 
 static void gr_init(const char* s, int mask) {
-//	if (mask & 64) {
 	if (mask & 128) {
-		EM_ASM_({ push([7, $0])}, 1);
+		EM_ASM_({ push([7, $0])}, 11);	// gclrear
 	}
 	EM_ASM_({ postMessage(['init', $0]) }, mask);
 	grx = 0;
@@ -96,13 +95,11 @@ static void gr_init(const char* s, int mask) {
 	grline = 0;
 }
 static void gr_sys(ushort h) {
-	if (h < 10) {
-		if (h == 1) {
-			// clear
-			grline = 0;
-		}
-		EM_ASM_({ push([7, $0])}, h);
+	if (h >= 11 && h <= 13) {
+		// clear, drawgrid, penup
+		grline = 0;
 	}
+	if (h <= 12) EM_ASM_({ push([7, $0])}, h);
 }
 static void gr_translate(double x, double y) {
 	if (grbotleft) y = -y;

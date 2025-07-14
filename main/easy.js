@@ -234,19 +234,7 @@ function polyg(l) {
 	c.fill()
 }
 function sys(n) {
-	if (n == 1) {
-		// clear
-		c.save()
-		c.setTransform(1,0,0,1,0,0)
-		if (c.backImg) c.putImageData(c.backImg, 0, 0)
-		else if (c.backColor) {
-			c.fillStyle = c.backColor
-			c.fillRect(0, 0, 800, 800)
-		}
-		else c.clearRect(0, 0, 800, 800)
-		c.restore()
-	}
-	else if (n == 2) {
+	if (n == 2) {
 		// set image background
 		c.save()
 		c.setTransform(1,0,0,1,0,0)
@@ -275,7 +263,19 @@ function sys(n) {
 		c.fillStyle = h
 		c.strokeStyle = h
 	}
-	else if (n == 5) {
+	else if (n == 11) {
+		// clear
+		c.save()
+		c.setTransform(1,0,0,1,0,0)
+		if (c.backImg) c.putImageData(c.backImg, 0, 0)
+		else if (c.backColor) {
+			c.fillStyle = c.backColor
+			c.fillRect(0, 0, 800, 800)
+		}
+		else c.clearRect(0, 0, 800, 800)
+		c.restore()
+	}
+	else if (n == 12) {
 		// drawgrid
 		var lw = c.lineWidth
 		var ss = c.strokeStyle
@@ -689,9 +689,9 @@ function waitDone(msg) {
 	if (msg[0] == "mouse") {
 		evt = msg[1]
 	}
-	else if (msg[0] == "animate") {
-		evt = 5
-	}
+	//else if (msg[0] == "animate") {
+	//	evt = 5
+	//}
 	else if (msg[0] == "key") {
 		evt = msg[1] + 1
 	}
@@ -721,8 +721,10 @@ function lookEvents() {
 }
 function evtdo(msg) {
 	if (!evts) worker.postMessage(msg)
-	else if (waitEvent) waitDone(msg)
-	else evts.push(msg)
+	else if (msg[0] != "animate") {
+		if (waitEvent) waitDone(msg)
+		else evts.push(msg)
+	}
 }
 
 var worker = null
@@ -739,7 +741,7 @@ function loadInfo(s) {
 			canvInit()
 			c.fillText(s, 10, 10)
 		}
-		else if (c) sys(1)
+		else if (c) sys(11)
 	}
 }
 

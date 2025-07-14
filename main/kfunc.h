@@ -1430,8 +1430,8 @@ S ARR op_arrarr_init(ND* nd) {
 	return o_arr_init(nd, ARR_ARR, sizeof(ARR));
 }
 
-S ARR op_numstrarr(ND* nd) {
 //kc
+S ARR op_numstrarr(ND* nd) {
 	ARR arr = arrf(nd->le);
 	ARR res;
 	res.typ = ARR_STR;
@@ -1449,7 +1449,6 @@ S ARR op_numstrarr(ND* nd) {
 	free(arr.pnum);
 	return res;
 }
-
 S double op_strpos(ND* nd) {
 
 	STR s1 = strf(nd->le);
@@ -1630,9 +1629,9 @@ S void op_write(ND* nd) {
 }
 
 S void op_sys(ND* nd) {
-	if (nd->v1 <= 10) {
-		gr_sys(nd->v1);
-	}
+//	if (nd->v1 <= 10) {
+	gr_sys(nd->v1);
+//	}
 }
 
 //------------------------------------------------------------------
@@ -1754,9 +1753,9 @@ S void op_background(ND* nd) {
 	else gr_backcolor(0, 0, 0);
 }
 
-S void op_clear(ND* nd) {
-	gr_sys(1);
-}
+//S void op_clear(ND* nd) {
+//	gr_sys(1);
+//}
 
 S void op_color(ND* nd) {
 	int h = (int)numf(nd->le);

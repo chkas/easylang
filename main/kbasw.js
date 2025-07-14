@@ -76,7 +76,6 @@ function runx(dbg = 0) {
 onmessage = function(e) {
 	var d = e.data
 	var cmd = d[0]
-
 	if (cmd == "animate") {
 		Module.ccall("evt_func", "null", ["int", "string"], [0, null])
 		update()
@@ -123,7 +122,6 @@ onmessage = function(e) {
 		postMessage(["ide", "src2", src, d[2]])
 	}
 	else if (cmd == "tab") {
-		//kc todo
 		var res = Module.ccall("parse", "int", ["string", "int", "int"], [d[1], 15, 0])
 		var src = Module.ccall("format", "string", null, null)
 		var pos = Module.ccall("caret", "int", null, null)

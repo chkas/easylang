@@ -22,7 +22,6 @@ var tabs = eid("tabs")
 var tab1 = eid("tab1")
 var tab2 = eid("tab2")
 var tab3 = eid("tab3")
-var tab4 = eid("tab4")
 var dbgSel = eid("dbgSel")
 var dbgcls = eid("dbgcls")
 var inp = eid("inp")
@@ -44,7 +43,7 @@ var tutchng2 = eid("tutchng2")
 var tutinf = eid("tutinf")
 var expnd = eid("expnd")
 var dbgBtn = eid("dbgBtn")
-var moreSpn = eid("moreSpn")
+var dbgSpn = eid("dbgSpn")
 var trSpn = eid("trSpn")
 var dbg = eid("dbg")
 var stepBtn = eid("stepBtn")
@@ -117,11 +116,11 @@ document.addEventListener("click", function(event) {
 })
 
 dbgBtn.onclick = function() {
-	moreShow(!isVisible(moreSpn))
+	dbgShow(!isVisible(dbgSpn))
 	hide(hamcnt)
 }
 dbgcls.onclick = function() {
-	moreShow(false)
+	dbgShow(false)
 }
 function showurl(t) {
 	out.value = t
@@ -313,8 +312,9 @@ function loadClick(btn, istut) {
 		var code
 		if (istut) code = btn.pre.textContent
 		else code = window.localStorage[btn.ref]
-		if (doco) onTab(4)
-		else if (!istut && doce) onTab(3)
+
+		if (doco || !istut && doce) onTab(3)
+
 		if (runBtn.run) runCode(code, 0)
 		else {
 			codeToRun = code
@@ -339,7 +339,9 @@ function delClick(btn) {
 	}
 	if (delBtn == btn) {
 		window.localStorage.removeItem(btn.ref)
+		var scrl = tut.scrollTop
 		storeUpd()
+		tut.scrollTop = scrl
 		delBtn = null
 		return
 	}
@@ -520,19 +522,14 @@ function onTab(on) {
 	if (off == 1) docx.posTut = docx.scrollTop
 	else if (off == 2) docx.posSt = docx.scrollTop
 	else if (off == 3 && doce) col1.removeChild(doce)
-	else if (off == 4 && doco) col1.removeChild(doco)
 
-	if (on >= 3 && off <= 2) col1.removeChild(docx)
+	if (on == 3 && off <= 2) col1.removeChild(docx)
 
 	if (on == 3) {
 		col1.appendChild(doce)
 	}
-	else if (on == 4) {
-		col1.appendChild(doco)
-		resizeOut()
-	}
 	else {
-		if (off >= 3) col1.appendChild(docx)
+		if (off == 3) col1.appendChild(docx)
 		hide(docx.children[2 - on])
 		if (on == 1) {
 			tutUpd()
@@ -569,14 +566,15 @@ function expandEdit() {
 	resize3()
 }
 function expandOut() {
+	hideOutm()
 	onTab(3)
 	container.appendChild(outcol)
 	doco = null
-	hide(tab4)
 	show(dragb2)
 	col1.style.width = "200px"
 	outcol.style.width = "200px"
 	hamcnt.style.right = ""
+	show(dbgBtn)
 	resize2()
 }
 
@@ -592,37 +590,46 @@ function collapseEdit() {
 	onTab(3)
 	resize2()
 }
+function resizeOutm() {
+	var w = incol.offsetWidth
+	if (isVisible(out)) w += 60
+	doco.style.height = w + "px"
+	inp.style.height = "calc(100% - " + (w + 36) + "px)"
+}
+function hideOutm() {
+	inp.style.height = "100%"
+	hide(doco)
+}
+function showOutm() {
+	tab3.disabled = false
+	show(doco)
+}
 
 function collapseOut() {
 	container.removeChild(outcol)
 	outcol.style.width = "100%"
 	doco = create("div")
-	doco.style.height = "100%"
+	///doco.style.height = "100%"
 	doco.appendChild(outcol)
-	show(tab4)
+
+	incol.appendChild(doco)
+
 	hide(dragb2)
 	hide(expnd)
 	col1.style.width = "100%"
 	hamcnt.style.right = "10px"
-	onTab(2)
-}
+	hide(dbgBtn)
 
-function resizeOut() {
-	if (doco && docx.tab != 4) return
-	var w = outcol.offsetWidth
-	var h = outcol.offsetHeight - w
-	if (isVisible(canv)) {
-		if (h < 60) {
-			h = 60
-			w = outcol.offsetHeight - h
+	if (!runBtn.run) {
+		if (isVisible(canv)) {
+			hide(out)
+			resizeOutm()
 		}
-		canv.style.height = w + "px"
-		canv.style.width = w + "px"
-		out.style.height = h - 36 + "px"
+		showOutm()
 	}
-	else {
-		out.style.height = h + w - 32 + "px"
-	}
+//	else hideOutm()
+
+	onTab(3)
 }
 
 function resize2() {
@@ -643,7 +650,6 @@ function resize2() {
 	}
 	col1.style.width = dw + "px"
 	outcol.style.width = ow + "px"
-	resizeOut()
 }
 
 function resize3() {
@@ -680,7 +686,6 @@ function resize3() {
 	incol.style.width = iw + "px"
 	col1.style.width = dw + "px"
 	outcol.style.width = ow + "px"
-	resizeOut()
 }
 
 function resizeAll() {
@@ -705,9 +710,7 @@ function resizeAll() {
 			expandOut()
 			if (w > 600) expandEdit()
 		}
-		else {
-			if (docx.tab == 3) resizeOut()
-		}
+		else if (isVisible(outcol) && isVisible(canv)) resizeOutm()
 	}
 }
 
@@ -785,7 +788,6 @@ function dragmove(e) {
 	}
 	else {
 		if (l < 320 && d < 0) return
-		//if (l < 200 && d < 0) return
 		if (r < 110 && d > 0) return
 		var h = colH - r - 40
 		if (h < 16 && d < 0) return
@@ -794,11 +796,6 @@ function dragmove(e) {
 		else col1.style.width = l + "px"
 
 		outcol.style.width = r + "px"
-		if (isVisible(canv)) {
-			canv.style.height = r + "px"
-			canv.style.width = r + "px"
-			out.style.height = h + "px"
-		}
 	}
 }
 
@@ -839,7 +836,6 @@ function store() {
 }
 
 inp.onmousedown = function() {
-//kc
 	removeCnd()
 }
 var undoStack = []
@@ -903,9 +899,10 @@ function tabu() {
 inp.onkeydown = function(e) {
 	var k = e.keyCode
 	if (cnd.tab) {
-		if (k == 9 || cnd.tabk == 8 && k == 8) {
+		if (k == 9 || cnd.tabk == 8 && k == 8 || k == 37) {
 			e.preventDefault()
-			cnd.tabind = (cnd.tabind + 1) % cnd.tabopts.length
+			var d = (k == 37) ? -1 : 1
+			cnd.tabind = (cnd.tabopts.length + cnd.tabind + d) % cnd.tabopts.length
 			cnd.firstChild.nodeValue = cnd.tabopts[cnd.tabind]
 			return
 		}
@@ -975,7 +972,7 @@ inp.onkeydown = function(e) {
 
 
 /*
-//kc Ctrl-M
+// Ctrl-M
 		else if (k == 76) {
 			e.preventDefault()
 			test()
@@ -1278,27 +1275,34 @@ function selectLine(sel, car) {
 	if (car) caret(uNd.lastChild, uNd.lastChild.length)
 }
 
-function showCanv() {
-	if (!isVisible(canv)) {
+function prepOut(mode) {
+	if (!doco) {
+		if (mode & 4) show(canv)
+		else {
+			hide(canv)
+			canv.height = 800
+		}
+		return
+	}
+	if (mode & 4) {
+		if (mode & 2) show(out)
+		else hide(out)
 		show(canv)
-		resizeOut()
+		resizeOutm()
 	}
-}
-
-function hideCanv() {
-	if (isVisible(canv)) {
+	else {
 		hide(canv)
-		resizeOut()
-		canv.height = 800
+		inp.style.height = "calc(70% - 36px)"
+		doco.style.height = "30%"
+		show(out)
 	}
+	showOutm()
 }
 
 function gotSrc(src, res, pos) {
 	inp.innerHTML = src
-	var h = -res
-	if (h & 4) showCanv()
-	else hideCanv()
 	setCaret(pos, false)
+	prepOut(-res)
 }
 
 function showRun(on = true) {
@@ -1319,7 +1323,6 @@ function showRun(on = true) {
 		runBtn.textContent = "Stop"
 	}
 }
-
 function ideMsgFunc(msg, d) {
 	if (msg == "output") {
 		dbg.value = d[0]
@@ -1345,7 +1348,7 @@ function ideMsgFunc(msg, d) {
 	}
 	else if (msg == "info") {
 		console.log("info " + d[0])
-		if (d[0] == 1) moreShow(true)
+		if (d[0] == 1) dbgShow(true)
 		else if (d[0] == 0) {
 			// exception, worker restarted
 			runBtn.disabled = true
@@ -1391,7 +1394,6 @@ runBtn.run = true
 function runx() {
 	if (runBtn.disabled) return
 	if (runBtn.run) {
-		if (doco) onTab(4)
 		removeCnd()
 		runCode(inp.textContent, getCaret())
 	}
@@ -1450,16 +1452,14 @@ step3Btn.onclick = function() {
 	stepNoti(2)
 }
 
-function moreShow(on) {
+function dbgShow(on) {
 	if (on) {
 		inp.style.height = "calc(70% - 36px)"
-		//dbgBtn.className = "act"
-		show(moreSpn)
+		show(dbgSpn)
 	}
 	else {
-		hide(moreSpn)
+		hide(dbgSpn)
 		inp.style.height = "calc(100% - 38px)"
-		//dbgBtn.className = ""
 	}
 }
 
@@ -1468,8 +1468,14 @@ tutchng2.onclick = onTutChng
 expnd.onclick = expandEdit
 tab1.onclick = function() { onTab(1) }
 tab2.onclick = function() { onTab(2) }
-tab3.onclick = function() { onTab(3) }
-tab4.onclick = function() { onTab(4) }
+
+tab3.onclick = function() {
+	if (docx.tab == 3) {
+		tab3.disabled = true
+		hideOutm()
+	}
+	else onTab(3)
+}
 
 runBtn.disabled = true
 runBtn.onclick = runx
@@ -1495,15 +1501,19 @@ function ready() {
 	tryRunCode()
 }
 
-window.onbeforeunload = function(e) {
-	var t = ""
-	if (!stBtn.disabled) {
-		removeCnd()
-		t = inp.textContent
-	}
-	window.localStorage["xcode"] = t
+function saveit() {
+	removeCnd()
+	window.localStorage["xstbtnd"] = stBtn.disabled ? "x" : ""
+	window.localStorage["xcode"] = inp.textContent
 	window.localStorage["x2col"] = isVisible(expnd)
+}
 
+document.addEventListener("visibilitychange", () => {
+	if (document.hidden) saveit()
+});
+
+window.onbeforeunload = function(e) {
+	saveit()
 	if (tutf) {
 		tutf = null
 		history.back()
@@ -1525,7 +1535,6 @@ function testReload() {
 
 async function main() {
 
-//	if (window.localStorage["xstrict"] == "Strict") {
 	strictMode = true
 	if (window.localStorage["xstrict"] == "false") {
 		strictMode = false
@@ -1536,28 +1545,23 @@ async function main() {
 	if (window.localStorage["x2col"] == "true") {
 		collapseEdit()
 		show(expnd)
-		tabn = 3
 	}
 	resizeAll()
+
+	if (doce) tabn = 3
 
 	var q = location.hash.substring(1)
 	if (q != "") {
 		var vs = q.split("&")
 		for (var i = 0; i < vs.length; i++) {
 			var h = 0
-			if (vs[i].startsWith("code=")) {
-				h = 5
-				if (doce) tabn = 3
-			}
-			else if (vs[i].startsWith("cod=")) {
-				h = 1
-				if (doce) tabn = 3
-			}
+			if (vs[i].startsWith("code=")) h = 5
+			else if (vs[i].startsWith("cod=")) h = 1
 			else if (vs[i].startsWith("rux=")) h = 1
 			else if (vs[i].startsWith("run=")) h = 4
-
 			else if (vs[i] == "store") tabn = 2
 			else if (vs[i].startsWith("tut=")) initTut = Number(vs[i].substring(4))
+
 			if (h > 1) {
 				try {
 					codeToRun = decodeURIComponent(vs[i].substring(h))
@@ -1565,7 +1569,7 @@ async function main() {
 				catch(e) {
 					codeToRun = "# URI error"
 				}
-				inp.value = codeToRun
+				// inp.value = codeToRun
 				//if (h == 4) showFull()
 			}
 			else if (h) {
@@ -1575,7 +1579,7 @@ async function main() {
 				catch(e) {
 					codeToRun = "# Decompression error"
 				}
-				inp.value = codeToRun
+				// inp.value = codeToRun
 				//if (vs[i][0] == "r") showFull()
 			}
 		}
@@ -1585,11 +1589,11 @@ async function main() {
 	doTutChng()
 	onTab(tabn)
 
-	if (!codeToRun) {
+	if (codeToRun) inp.textContent = codeToRun
+	else {
 		var t = window.localStorage["xcode"]
-		if (!t || t == "\n") stBtn.disabled = true
+		if (t) stBtn.disabled = window.localStorage["xstbtnd"]
 		if (t == null) t = 'print "Hello world"'
-		// appendTxt(inp, t)
 		inp.textContent = t
 	}
 	console.log("loading ...")
