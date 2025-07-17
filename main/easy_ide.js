@@ -126,7 +126,7 @@ function showurl(t) {
 	out.value = t
 	hide(hamcnt)
 	kaStop()
-	show(canv)
+	prepOut(4)
 	show_qr(t)
 }
 urlBtn.onclick = async function() {
@@ -575,6 +575,7 @@ function expandOut() {
 	outcol.style.width = "200px"
 	hamcnt.style.right = ""
 	show(dbgBtn)
+	show(out)
 	resize2()
 }
 
@@ -609,11 +610,8 @@ function collapseOut() {
 	container.removeChild(outcol)
 	outcol.style.width = "100%"
 	doco = create("div")
-	///doco.style.height = "100%"
 	doco.appendChild(outcol)
-
 	incol.appendChild(doco)
-
 	hide(dragb2)
 	hide(expnd)
 	col1.style.width = "100%"
@@ -627,8 +625,6 @@ function collapseOut() {
 		}
 		showOutm()
 	}
-//	else hideOutm()
-
 	onTab(3)
 }
 

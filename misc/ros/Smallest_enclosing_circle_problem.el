@@ -72,12 +72,11 @@ print welzl [ [ 5 -2 ] [ -3 -2 ] [ -2 5 ] [ 1 6 ] [ 0 2 ] ] [ ]
 # 
 proc circ x0 y0 r .
    glinewidth 0.2
+   gpenup
    for a = 0 to 360
-      xp = x
-      yp = y
       x = x0 + sin a * r
       y = y0 + cos a * r
-      if a > 0 : gline xp yp x y
+      glineto x y
    .
 .
 for i to 10

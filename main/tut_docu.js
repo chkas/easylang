@@ -234,17 +234,16 @@ gline 0 50 100 50
 #
 gcolor 800
 glinewidth 0.5
+gpenup
 for x = 0 step 0.5 to 100
    deg = x / 100 * 360
    y = 50 + 30 * sin deg
-   if x > 0
-      gline xp yp x y
-   .
-   xp = x
-   yp = y
+   glineto x y
 .
 
-+ Coordinates are specified in floating point values and can also take intermediate values. *glinewidth* sets the line width.
++ *glinewidth* sets the line width. *glineto* draws a line from the current position to the specified position and updates the current position. *gpenup* lifts the drawing pen for the next *glineto*, so that the next *glineto* does not draw a line, but only updates the current position.
+
++ Coordinates are specified in floating point values and can also take intermediate values.
 
 -
 
@@ -321,7 +320,7 @@ subr eyes
    eye 20 80
    eye 40 80
 .
-linewidth 2
+glinewidth 2
 on mouse_move
    eyes
    if down = 1

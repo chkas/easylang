@@ -55,8 +55,9 @@ scy = 100 / (maxy - miny) * 0.96
 ty = -miny * scy + 2
 tx = -minx * scx + 2
 glinewidth 0.1
-for i to len pts[][] - 1
-   gline 0 ty 100 ty
-   gline tx 0 tx 100
-   gline pts[i][1] * scx + tx, pts[i][2] * scy + ty, pts[i + 1][1] * scx + tx, pts[i + 1][2] * scy + ty
+gline 0 ty 100 ty
+gline tx 0 tx 100
+gpenup
+for i to len pts[][]
+   glineto pts[i][1] * scx + tx, pts[i][2] * scy + ty
 .

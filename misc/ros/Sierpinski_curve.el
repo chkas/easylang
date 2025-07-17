@@ -1,4 +1,4 @@
-proc lsysexp level &axiom$ &rules$[] .
+func$ lsysexp level axiom$ rules$[] .
    for l to level
       an$ = ""
       for c$ in strchars axiom$
@@ -12,16 +12,17 @@ proc lsysexp level &axiom$ &rules$[] .
       .
       swap axiom$ an$
    .
+   return axiom$
 .
 proc lsysdraw axiom$ x y ang lng .
    glinewidth 0.3
+   gpenup
+   glineto x y
    for c$ in strchars axiom$
       if c$ = "F" or c$ = "G"
-         px = x
-         py = y
          x += cos dir * lng
          y += sin dir * lng
-         gline px py x y
+         glineto x y
       elif c$ = "-"
          dir -= ang
       elif c$ = "+"
@@ -31,5 +32,5 @@ proc lsysdraw axiom$ x y ang lng .
 .
 axiom$ = "F--xF--F--xF"
 rules$[] = [ "x" "xF+G+xF--F--xF+G+x" ]
-lsysexp 5 axiom$ rules$[]
-lsysdraw axiom$ 50 98 45 0.9
+curv$ = lsysexp 5 axiom$ rules$[]
+lsysdraw curv$ 50 98 45 0.9

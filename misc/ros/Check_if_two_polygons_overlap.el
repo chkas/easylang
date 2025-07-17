@@ -1,4 +1,3 @@
-# check if a poly ..
 func dot a[] b[] .
    return a[1] * b[1] + a[2] * b[2]
 .
@@ -36,10 +35,11 @@ coord_scale 10
 glinewidth 0.05
 proc polyDraw &poly[][] col .
    gcolor col
-   for i = 2 to len poly[][]
-      gline poly[i - 1][1] poly[i - 1][2] poly[i][1] poly[i][2]
+   gpenup
+   for i = 1 to len poly[][]
+      glineto poly[i][1] poly[i][2]
    .
-   gline poly[$][1] poly[$][2] poly[1][1] poly[1][2]
+   glineto poly[1][1] poly[1][2]
 .
 proc rectToPoly &r[] &p[][] .
    p[][] = [ [ r[1] r[2] ] [ r[1] + r[3] r[2] ] [ r[1] + r[3] r[2] + r[4] ] [ r[1] r[2] + r[4] ] ]
