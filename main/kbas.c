@@ -144,7 +144,7 @@ ushort sysconfig;
 const char* errstrs[] = {
 	"], ][", "=, +=, ..", "=, &=", "=, <>, < ...",  "=, <>",
 	"=, in", "to, downto, step",
-	"<cmd>, end, .", "<cmd>, else, elif, end, .", "<cmd>, until", "<cmd>", "<cmd>", "variable", "array variable", "array or string variable", "number",
+	"<cmd>, end, .", "<cmd>, else, elif, end, .", "<cmd>, until", "<cmd>", "<cmd>", "<cmd>", "variable", "array variable", "array or string variable", "number",
 	"string", "array", "string array",
 	"event", "topleft ..."
 };
@@ -152,7 +152,7 @@ const char* errstrs[] = {
 enum {
 	ERR_BR, ERR_ASSIGN, ERR_STRASS, ERR_CMP, ERR_STRCMP,
 	ERR_FOR, ERR_FOR2,
-	ERR_CMDE, ERR_CMDEL, ERR_CMDU, ERR_CMD0, ERR_CMD1, ERR_V, ERR_VARR, ERR_VARRSTR, ERR_NUMB, ERR_STR, ERR_ARR, ERR_STRARR,
+	ERR_CMDE, ERR_CMDEL, ERR_CMDU, ERR_CMD0, ERR_CMD1, ERR_CMD, ERR_V, ERR_VARR, ERR_VARRSTR, ERR_NUMB, ERR_STR, ERR_ARR, ERR_STRARR,
 	ERR_EVT, ERR_SYSCONF
 };
 
@@ -268,7 +268,7 @@ void make_tabbuf(char* ts) {
 	//pr("xtabstr:%s error:%s:%d", ts, errorstr, errornum);
 	str_free(&tabbuf);
 	int l = strlen(ts);
-	if (errornum >= ERR_CMDE && errornum <= ERR_CMD1) {
+	if (errornum >= ERR_CMDE && errornum <= ERR_CMD) {
 		//pr("errnum %d:%d:", ERR_CMDU, errornum);
 		if (errornum == ERR_CMDU) apptab("until", ts, l);
 		if (errornum <= ERR_CMDEL) apptab("end", ts, l);

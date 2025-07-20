@@ -1057,13 +1057,12 @@ S ND* parse_sequ_stat() {
 		cs(" : ");
 		nexttok();
 		ND* nd = parse_stat();
+		if (nd == NULL) errorx(ERR_CMD);
 		nd->next = NULL;
 		return nd;
 	}
 	return NULL;
 }
-
-struct vname* xx;
 
 S void parse_subr(void) {
 
