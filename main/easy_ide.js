@@ -54,6 +54,8 @@ var url2Btn = eid("url2Btn")
 var url3Btn = eid("url3Btn")
 var strictBtn = eid("strictBtn")
 var themeBtn = eid("themeBtn")
+var fontp = eid("fontp")
+var fontm = eid("fontm")
 var chngTheme = window["chngTheme"]
 
 var txt_header = window["txt_header"]
@@ -104,6 +106,18 @@ themeBtn.onclick = function() {
 	chngTheme()
 	inp.focus()
 	hide(hamcnt)
+}
+fontp.onclick = function() {
+	var s = Number(inp.style.fontSize.slice(0, -2))
+	if (s < 24) s += 1
+	inp.style.fontSize = "" + s + "px"
+	out.style.fontSize = "" + (s - 1) + "px"
+}
+fontm.onclick = function() {
+	var s = Number(inp.style.fontSize.slice(0, -2))
+	if (s > 6) s -= 1
+	inp.style.fontSize = "" + s + "px"
+	out.style.fontSize = "" + (s - 1) + "px"
 }
 hambtn.onclick = function() {
 	if (isVisible(hamcnt)) hide(hamcnt)

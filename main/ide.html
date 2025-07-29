@@ -50,7 +50,6 @@ hr {border:1px solid #888;margin-top:6px;margin-bottom:6px}
 	padding-right:12px;
 	outline:none
 }
-
 .drag {
 	float:left;
 	height:20px;
@@ -66,7 +65,7 @@ hr {border:1px solid #888;margin-top:6px;margin-bottom:6px}
 	margin-right:8px;
 }
 pre {
-	font:normal normal normal 13px/1.3 monospace;
+	font:normal normal normal 14px/1.3 monospace;
 	border:1px solid #888;
 	border-radius:8px;
 	white-space:pre-wrap;
@@ -81,7 +80,6 @@ pre {
 	padding:5px
 }
 #inp {
-	font-size:14px;
 	margin:0px;
 	width:calc(100% - 10px);
 	height:calc(100% - 36px);
@@ -110,7 +108,7 @@ pre u{text-decoration:none}
 tt {border:solid 1px;padding:1px;font-size:120%}
 
 #out {
-	font:normal normal normal 13px/1.2 monospace;
+	font:normal normal normal 14px/1.3 monospace;
 	resize:none;
 	border:1px solid #888;
 	width:calc(100% - 4px);
@@ -131,7 +129,7 @@ canvas { display:inline }
 }
 select {
 	padding:2px 3px;
-	font-size:12px;
+	font-size:13px;
 	border:1px solid grey;
 	border-radius:8px;
 	cursor:pointer;
@@ -145,7 +143,7 @@ button {
 	margin:0px 0px 0px 0px;
 	border:0px;
 	border-radius:8px;
-	font-size:12px;
+	font-size:13px;
 	outline:none;
 }
 button:enabled {cursor:pointer}
@@ -155,20 +153,20 @@ button.tut {
 	margin-left:0px;
 	margin-top:1px;
 	float:right;
-	font-size:11px;
+	font-size:12px;
 }
 button.del {
 	margin-right:1px;
 	margin-left:0px;
 	margin-top:1px;
 	float:right;
-	font-size:11px;
+	font-size:12px;
 }
 .tabd {overflow:hidden}
 button.tab  {
 	float:left;
-	padding:4px 10px;
-	margin-bottom:-6px;
+	padding:5px 10px;
+	margin-bottom:-4px;
 	margin-top:2px;
 	margin-right:-10px;
 	border-radius:0px;
@@ -179,7 +177,7 @@ button.tab  {
 	border:1px solid #888
 }
 button.tab:disabled {z-index:10}
-#expnd {font-size:10px}
+#expnd {font-size:12px}
 
 .lnk {cursor:pointer;text-decoration:underline}
 *{scrollbar-width:auto}
@@ -187,8 +185,8 @@ button.tab:disabled {z-index:10}
 ::-webkit-scrollbar-corner{background:rgba(0,0,0,0)}
 
 #hamdiv{float:right; margin:2px; margin-right:10px}
-#hambtn{border-radius:4px;padding:2px;cursor:pointer}
-.hamb {border-radius:2px;width:12px;height:1px;margin:3px}
+#hambtn{border-radius:4px;padding:1px;cursor:pointer}
+.hamb {border-radius:2px;width:14px;height:1px;margin:4px}
 #hamcnt{position:absolute;min-width:80px;box-shadow:0px 8px 16px 0px rgba(0,0,0,0.2);z-index:1}
 #hamcnt div{padding:8px;font-size:12px;cursor:pointer}
 
@@ -198,7 +196,6 @@ button.tab:disabled {z-index:10}
 .close:before{transform:rotate(45deg)}
 .close:after{transform:rotate(-45deg)}
 canvas.run {outline-style:solid;outline-color:#a00;outline-width:1px}
-
 
 .close:before,.close:after{background:#333}
 #hambtn:hover{background:#18e}
@@ -403,10 +400,12 @@ function chngTheme() {
 				<div class=hamb></div>
 			</div>
 			<div id=hamcnt style=display:none;z-index:1>
+				<div id=fontp>Font +</div>
+				<div id=fontm>Font -</div>
+				<div id=themeBtn>Theme</div>
 				<div id=url2Btn>▣ App URL</div>
 				<div id=urlBtn>▣ Code URL</div>
 				<div id=url3Btn>▣ Mail URL</div>
-				<div id=themeBtn>Theme</div>
 				<div id=dbgBtn>Debug</div>
 				<div id=strictBtn>Strict mode ✓</div>
 			</div>
@@ -414,7 +413,7 @@ function chngTheme() {
 	</div>
 
 	<pre id=inp contenteditable=true ondrop="return false" autocomplete=off
-		autocorrect=off autocapitalize=off spellcheck=false></pre>
+		autocorrect=off autocapitalize=off spellcheck=false style=font-size:15px></pre>
 
 	<span id=dbgSpn style=display:none>
 	<button id=stepBtn>Trace</button>
@@ -422,9 +421,9 @@ function chngTheme() {
 	<button id=step3Btn style=display:none>Out</button>
 	<span id=trSpn>
 		<select id=dbgSel>
-			<option>Steps</option>
+			<option selected>Steps</option>
 			<option>Slow</option>
-			<option selected>Medium</option>
+			<option>Medium</option>
 			<option>Fast</option>
 			<option>Faster</option>
 		</select>
@@ -447,7 +446,6 @@ function chngTheme() {
 </div>
 
 </div>
-
 
 <script src=tut_id.js></script>
 <script src=easy.js></script>

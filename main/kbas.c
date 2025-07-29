@@ -313,6 +313,7 @@ void make_tabbuf(char* ts) {
 	}
 	else if (errornum == ERR_STRARR) {
 		atab_names(ts, l, 3, 1);
+		apptab("strchars", ts, l);
 		apptab("strsplit", ts, l);
 		apptab("strtok", ts, l);
 	}

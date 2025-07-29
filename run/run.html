@@ -154,12 +154,13 @@ span.high {background-color:#666}
 		<div id=menud style="display:none">
 			<div id=codebtn class=lnk>Code</div>
 			<div id=remove class=lnk>Delete</div>
-			<div id=inst class=lnk>Install</div>
+			<div id=get class=lnk>Get</div>
 		</div>
 		<div id=keepd style=display:none>
 			<big><b id=namef></b></big>
 			<div id=save class=lnk>Save</div>
 			<div id=codebtn2 class=lnk>Code</div>
+			<div id=get2 class=lnk>Get</div>
 		</div>
 	</div>
 	<canvas id=canv></canvas>
@@ -197,7 +198,7 @@ hambtn.onmousedown = function(evt) {
 }
 
 window.onmousedown = function(evt) {
-	if (evt.target != remove && evt.target != codebtn && evt.target != inst) {
+	if (evt.target != remove && evt.target != codebtn && evt.target != get) {
 		hide(menud)
 	}
 }

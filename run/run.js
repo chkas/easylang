@@ -133,7 +133,7 @@ async function ready() {
 	}
 	else {
 		sel.selectedIndex = window.localStorage.getItem("xrunsel")
-		if (!window.navigator.onLine) hide(inst)
+		if (!window.navigator.onLine) hide(get)
 		updsel()
 	}
 }
@@ -186,7 +186,10 @@ function updsel() {
 		change()
 	}
 }
-inst.onclick = function() {
+get.onclick = function() {
+	window.open("../games/index.html?$date", "_self")
+}
+get2.onclick = function() {
 	window.open("../games/index.html?$date", "_self")
 }
 save.onclick = function() {
@@ -223,8 +226,8 @@ window.onbeforeunload = function(e) {
 	else window.localStorage.setItem("xrunsel", sel.selectedIndex)
 }
 
-window.addEventListener("online", () => { if (!sel.style.display) show(inst)} );
-window.addEventListener("offline", () => hide(inst));
+window.addEventListener("online", () => { if (!sel.style.display) show(get)} );
+window.addEventListener("offline", () => hide(get));
 
 function showcode() {
 	hide(runner)
