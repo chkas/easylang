@@ -41,7 +41,7 @@ proc getmagnums .
    .
 .
 getmagnums
-# 
+#
 proc show .
    print len mn[][] & " magic numbers"
    print str mn[$][] & " is the largest"

@@ -2,7 +2,7 @@
 
 test $1 || set ros.el
 cat <<xxx
-{{trans|Go}}
+{{trans|FreeBASIC}}
 
 =={{header|EasyLang}}==
 <syntaxhighlight lang="easylang">

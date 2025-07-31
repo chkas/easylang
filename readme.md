@@ -77,9 +77,3 @@ Test it locally
 
 [github.com/chkas/chkas.github.io](https://github.com/chkas/chkas.github.io)
 
-## Build native version
-
-~~~
-easylang/native/readme.md
-~~~
-

@@ -317,7 +317,7 @@ S void parse_call_param(ND* nd, struct proc* p, byte isfunc) {
 		}
 		else if (b == 's') {
 			if (isfunc) nd->next = parse_strterm();
-			else nd->next = nd->next = parse_strex();
+			else nd->next = parse_strex();
 			nd = nd->next;
 		}
 		else if (b == 'g') {
@@ -1346,7 +1346,13 @@ S void parse_on_stat(void) {
 }
 
 S ND* parse_numarrex(void) {
-
+	if (tok == t_pal) {
+		//kc
+		cs_tok_nt();
+		ND* nd = parse_numarrex();
+		expt_ntok(t_par);
+		return nd;
+	}
 	ND* ex = mknd();
 	if (tok == t_brl) {
 		cs_tok_spc_nt();
