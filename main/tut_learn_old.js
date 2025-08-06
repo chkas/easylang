@@ -1,7 +1,7 @@
 txt_locale = "de"
-txt_tutor = String.raw`+ Programming basics
+txt_tutor = String.raw`+ Programming basics (legacy)
 
-+de Programmier-Grundlagen
++de Programmier-Grundlagen (alte Version)
 
 -
 
@@ -12,14 +12,18 @@ txt_tutor = String.raw`+ Programming basics
 ##19
 #
 x = 20
-glinewidth 8
-gcolor 333
-gline x + 9 96 x + 13 96
-gcolor 900
-gline x + 4 91 x + 18 91
-gcolor 333
-gcircle x + 5 85 3.5
-gcircle x + 16 85 3.5
+linewidth 8
+color 333
+move x + 9 96
+line x + 13 96
+color 900
+move x + 4 91
+line x + 18 91
+color 333
+move x + 5 85
+circle 3.5
+move x + 16 85
+circle 3.5
 
 + You can tell the computer to draw two thick round lines in different colors at certain positions and then two black circles - and there you have a car on the screen.
 
@@ -37,42 +41,41 @@ gcircle x + 16 85 3.5
 
 +de Zuerst schauen wir uns die Befehle an, mit denen Grafiken auf dem Bildschirm erstellt werden können.
 
-gcircle 10 30 1
-gcircle 50 50 1
+move 10 30
+line 50 50
 
-+ We draw a small circle (size 1) at the position (10 30), which is 10 from the left and 30 from the bottom, and one at the position (50 50) - this is in the middle of the drawing area.
++ We set the drawing pen with *move* to position (10 30), that is 10 from the left and 30 from the bottom. From there, we draw with *line* a line to position (50 50) - to the center of the drawing area.
 
-+de Wir zeichnen einen kleinen Kreis (Größe 1) an der Position (10 30), das ist 10 von links und 30 von unten, und einen an der Position (50 50) - das ist in der Mitte der Zeichenfläche.
-
-+ Then we connect these two points with a line.
-
-+de Dann verbinden wir diese beiden Punkte mit einer Linie.
-
-gcircle 10 30 1
-gcircle 50 50 1
-gline 10 30 50 50
++de Wir setzen mit *move* den Zeichenstift auf die Position (10 30), das ist 10 von links und 30 von unten. Von dort ziehen wir dann mit *line* eine Linie auf die Position (50 50) - zur Mitte der Zeichenfläche.
 
 ##
-gcolor 555
-gtextsize 4
-gtext 6 5 "0/0"
-gtext 82 5 "100/0"
-gtext 82 91.5 "100/100"
-gtext 6 91.5 "0/100"
-glinewidth 0.5
+color 555
+textsize 4
+move 6 5
+text "0/0"
+move 82 5
+text "100/0"
+move 82 91.5
+text "100/100"
+move 6 91.5
+text "0/100"
+linewidth 0.5
 x = 10
 while x <= 90
-   gline x 10 x 90
-   gline 10 x 90 x
+   move x 10
+   line x 90
+   move 10 x
+   line 90 x
    x += 8
 .
-gtext 12 28 "10/30"
-gtext 44 52 "50/50"
-gcolor 833
-gcircle 18 34 1.2
-gcircle 50 50 1.2
-glinewidth 1
-gline 18 34 50 50
+move 12 28
+text "10/30"
+move 44 52
+text "50/50"
+color 833
+linewidth 2
+move 18 34
+line 50 50
 
 + The drawing area is 100 times 100 units. The origin is bottom left. The first value (the X coordinate) is the distance from the left edge, the second value (the Y coordinate) is the distance from the bottom edge.
 
@@ -89,8 +92,9 @@ gline 18 34 50 50
 +de 🤔 Versuche das Quadrat fertig zu zeichnen!
 
 drawgrid
-gline 10 20 30 20
-gline 30 20 30 40
+move 10 20
+line 30 20
+line 30 40
 
 + You can start the program with the *Run* button, with *Ctrl+R* or with *Shift+Enter*.
 
@@ -98,48 +102,21 @@ gline 30 20 30 40
 
 -
 
-+ With the command *grect* you can draw filled rectangles. The parameters specify the *x* and *y* position, the *width* and the *height*.
++ With the command *rect* you can draw filled rectangles. The parameters specify the width and height.
 
-+ Most graphic commands begin with a *g* for *graphic*, so *grect* therefore stands for *graphic rectangle*.
++de Mit dem Befehl *rect* kann man gefüllte Rechtecke zeichnen. Die Parameter geben die Breite und die Höhe an.
 
-+de Mit dem Befehl *grect* kann man gefüllte Rechtecke zeichnen. Die Parameter geben die *x*- und *y*-Position, die *Breite* und die *Höhe* an.
++ *color* sets the drawing color. *color 900*, for example, is a rich red color.
 
-+de Die meisten Grafikbefehle beginnen mit einem *g* für *Grafik*, *grect* steht also für *Grafisches Rechteck*.
++de *color* setzt die Zeichenfarbe. *color 900* ist zum Beispiel eine satte rote Farbe.
 
-gcolor 900
-grect 10 20 50 30
-
-##
-gcolor 555
-gtextsize 4
-gtext 6 5 "0/0"
-gtext 82 5 "100/0"
-gtext 82 91.5 "100/100"
-gtext 6 91.5 "0/100"
-glinewidth 0.5
-x = 10
-while x <= 90
-   gline x 10 x 90
-   gline 10 x 90 x
-   x += 8
-.
-gtext 12 22 "10/20"
-gcolor 833
-grect 18 26 40 24
-gcolor 555
-gcircle 18 26 1
-gtext 35 22 "50"
-gtext 59 37 "30"
-
-+ *gcolor* sets the drawing color. *900*, for example, is red, *990* yellow and *444* grey.
-
-+de *gcolor* setzt die Zeichenfarbe. *900* ist zum Beispiel rot, *990* gelb und *444* grau.
-
-gcolor 990
-gcircle 70 80 10
+color 900
+move 10 15
+rect 20 20
 #
-gcolor 444
-grect 10 5 40 30
+color 990
+move 30 45
+rect 50 30
 
 + There are 1000 possible colors - from 000 to 999, mixed from the primary colours red, green and blue. The left digit specifies the red component, the middle digit the green component and the right digit the blue component. These are some possible colors.
 
@@ -147,21 +124,23 @@ grect 10 5 40 30
 
 ##84
 col[] = [ 900 700 966 990 995 960 090 070 696 099 599 690 009 007 669 909 959 609 777 444 000 999 432 765 ]
-gtextsize 7
+textsize 7
 for i to len col[]
    y = 100 - (i - 1) mod 6 * 14 - 14
    x = (i - 1) div 6 * 22
-   gcolor col[i]
-   grect x y 21 13
+   move x y
+   color col[i]
+   rect 21 13
+   move x + 4 y + 4
    s$ = col[i]
    if col[i] <= 9
       s$ = "00" & s$
    elif col[i] <= 99
       s$ = "0" & s$
    .
-   gcolor 000
+   color 000
    if col[i] = 0 or col[i] = 432 : color 888
-   gtext x + 4 y + 4 s$
+   text s$
 .
 
 + 🤔 Draw a dark green square in the lower right area. Dark green is not present in the color palette shown. You can just take a green and lower the green component - the middle digit of the number.
@@ -170,46 +149,47 @@ for i to len col[]
 
 -
 
-+ The *tab* key - normally found to the left of the *W* - helps you to complete commands. For example, to write *gcircle*, simply enter *g* or *gc* and then press the tab key repeatedly until *gcircle* appears on the screen.
-
-+de Die *Tab*-Taste - normalerweise links neben dem *W* zu finden - hilft dir dabei, Befehle zu vervollständigen. Um zum Beispiel *gcircle* zu schreiben, gib einfach *g* oder *gc* ein und drücke dann wiederholt die Tab-Taste, bis *gcircle* auf dem Bildschirm erscheint.
-
--
-
 + Drawing a house
 
 +de Wir zeichnen ein Haus
 
 # My house
-gcolor 993
-grect 20 0 60 45
+color 993
+move 20 0
+rect 60 45
 # roof
-gcolor 722
-gpolygon [ 50 70 15 45 85 45 ]
+color 722
+polygon [ 50 70 15 45 85 45 ]
 # windows
-gcolor 444
-grect 30 10 10 10
-grect 30 30 10 10
-grect 60 30 10 10
+color 444
+move 30 10
+rect 10 10
+#
+move 30 30
+rect 10 10
+#
+move 60 30
+rect 10 10
 # text
-gtextsize 8
-gtext 5 85 "MY HOUSE"
+move 5 85
+textsize 8
+text "MY HOUSE"
 
-+ *gtext* writes a text at the specified position on the drawing area. *gpolygon [x1 y1 x2 y2 ..]* draws a filled polygon, for example a triangle, with the specified coordinates.
++ *text* writes a text to the drawing area. *polygon [x1 y1 x2 y2 ..]* draws a filled polygon, for example a triangle, with the specified coordinates.
 
-+de *gtext* schreibt einen Text an die angegebene Position auf der Zeichenfläche. *gpolygon [x1 y1 x2 y2 ..]* zeichnet ein gefülltes Polygon, zum Beispiel ein Dreieck, mit den angegebenen Koordinaten.
++de *text* schreibt einen Text auf die Zeichenfläche. *polygon [x1 y1 x2 y2 ..]* zeichnet ein gefülltes Polygon, zum Beispiel ein Dreieck, mit den angegebenen Koordinaten.
 
 + The *#* character allows you to insert comments into the program.
 
 +de Das *#*-Zeichen erlaubt es, Kommentare in das Programm einzufügen.
 
-+ 🤔 Draw the missing door. With the help of *drawgrid* it is easier to find the right positions.
++ 🤔 Draw the missing door.
 
-+ 🤔🤔 You can use a blue background as a sky and let a sun (*gcircle*) shine.
++ 🤔🤔 If you want, you can use a blue background as a sky and let a sun (*circle*) shine.
 
-+de 🤔 Zeichne die fehlende Tür. Mit Hilfe von *drawgrid* ist es einfacher, die richtigen Positionen zu finden.
++de 🤔 Zeichne die fehlende Tür.
 
-+de 🤔🤔 Du kannst einen blauen Hintergrund als Himmel verwenden und eine Sonne (*gcircle*) scheinen lassen.
++de 🤔🤔 Wenn du willst, kannst du einen blauen Hintergrund als Himmel verwenden und eine Sonne (*circle*) scheinen lassen.
 
 + In *Debug* mode, you can watch the computer execute its instructions one by one.
 
@@ -217,43 +197,51 @@ gtext 5 85 "MY HOUSE"
 
 -
 
-+ The command *gcircle* draws a filled circle at the specified position with the specified radius.
++ The command *circle* draws a filled circle on the current position.
 
-+ *glinewidth* sets the line width. The lines are rounded at the ends.
++ *linewidth* sets the line width. The lines are rounded at the ends.
 
-+de Der Befehl *gcircle* zeichnet einen gefüllten Kreis an der angegebenen Position mit dem angegebenen Radius.
++de Mit dem Befehl *circle* wird ein gefüllter Kreis an der aktuellen Position gezeichnet.
 
-+de *glinewidth* stellt die Linienstärke ein. Die Linien sind an den Enden abgerundet.
++de *linewidth* stellt die Linienstärke ein. Die Linien sind an den Enden abgerundet.
 
-gcircle 10 80 2
+move 10 80
+circle 2
 #
-gcolor 990
-gcircle 60 80 8
+color 990
+move 60 80
+circle 8
 #
-gcolor 060
-glinewidth 2
-gline 15 60 40 80
+color 060
+linewidth 2
+move 15 60
+line 40 80
 #
-glinewidth 10
-gcolor 900
-gline 10 40 25 40
+linewidth 10
+color 900
+move 10 40
+line 25 40
 #
-gcolor 333
-gline 50 50 55 50
+color 333
+move 50 50
+line 55 50
 
 -
 
-+ Now we can build a car using these parts.
++ A car
 
-+de Mit diesen Teilen können wir jetzt ein Auto bauen..
++de Ein Auto
 
-glinewidth 8
-gcolor 333
-gline 9 14 13 14
-gcolor 900
-gline 4 9 18 9
-gcolor 333
-gcircle 5 3 3.5
+linewidth 8
+color 333
+move 9 14
+line 13 14
+color 900
+move 4 9
+line 18 9
+color 333
+move 5 3
+circle 3.5
 
 + 🤔 Something is missing ...
 
@@ -345,25 +333,30 @@ if a > 20
 end
 
 ##
-gcolor 543
-gtextsize 6
-glinewidth 0.5
+color 543
+textsize 6
+linewidth 0.5
 y = 75
-proc xrect x y w h .
-   gline x y x + w y
-   gline x + w y x + w y + h
-   gline x + w y + h x y + h
-   gline x y + h x y
-.
 proc cod n$ v v$ .
-   xrect 5 y + 2 75 20
-   gtext 12 y + 11 n$
+   move 5 y + 2
+   line 80 y + 2
+   line 80 y + 22
+   line 5 y + 22
+   line 5 y + 2
+   move 12 y + 11
+   text n$
+   move 52 y + 7
    if v >= 0
-      gtext 52 y + 7 "a"
-      xrect 59 y + 6 13 7.5
-      gtext 62 y + 8 v
+      text "a"
+      move 59 y + 6
+      line 72 y + 6
+      line 72 y + 13.5
+      line 59 y + 13.5
+      line 59 y + 6
+      move 62 y + 8
+      text v
    else
-      gtext 52 y + 7 v$
+      text v$
    .
    y -= 25
 .
@@ -378,20 +371,16 @@ cod "\"a is large\"" -1 ""
 
 +de Der Block nach *else* wird ausgeführt, wenn die Bedingung nicht erfüllt ist.
 
-a = random 10
-b = random 10
-print "What is " & a & " * " & b & " ?"
 x = number input
-print x
-if a * b = x
-   print "Thats wright 🙂"
+if x mod 2 = 0
+   print x & " is even"
 else
-   print "Thats wrong 🙁"
+   print x & " is odd"
 end
 
-+ *random 10* returns a random number from 1 to 10.
++ With *mod* you get the remainder of a division.
 
-+de *random 10* liefert eine zufällige Zahl von 1 bis 10.
++de Mit *mod* erhält man den Rest einer Division.
 
 * Loop
 
@@ -417,21 +406,38 @@ end
 
 -
 
-gline 10 10 90 10
-gline 10 20 90 20
-gline 10 30 90 30
-gline 10 40 90 40
-gline 10 50 90 50
-gline 10 60 90 60
-gline 10 70 90 70
-gline 10 80 90 80
-gline 10 90 90 90
+move 10 10
+line 90 10
+#
+move 10 20
+line 90 20
+#
+move 10 30
+line 90 30
+#
+move 10 40
+line 90 40
+#
+move 10 50
+line 90 50
+#
+move 10 60
+line 90 60
+#
+move 10 70
+line 90 70
+#
+move 10 80
+line 90 80
+#
+move 10 90
+line 90 90
 
-+ 🤔 Quite a lot of code. The lines of code appear repeatedly in a very similar form. You can certainly shorten the code using a loop.
++ 🤔 Quite a lot of code. Two lines of code occur repeatedly in a very similar form. You can certainly make it shorter with a loop.
 
 + 🤔 Create a box pattern with additional vertical lines.
 
-+de 🤔 Ziemlich viel Code. Die Codezeilen erscheinen wiederholt in sehr ähnlicher Form. Du kannst den Code sicherlich mit einer Schleife kürzer machen.
++de 🤔 Ziemlich viel Code. Zwei Codezeilen kommen in sehr ähnlicher Form immer wieder vor. Mit einer Schleife kannst du das sicher kürzer machen.
 
 +de 🤔 Erzeuge mit zusätzlichen vertikalen Linien ein Kästchenmuster.
 
@@ -440,10 +446,11 @@ gline 10 90 90 90
 +de 🤔🤔 Kannst du dieses Muster erzeugen? Mit einer Schleife brauchst du dazu nur ein paar Zeilen Code.
 
 ##
-gcolor 555
-glinewidth 0.7
+color 555
+linewidth 0.7
 while i <= 100
-   gline i 0 100 i
+   move i 0
+   line 100 i
    i += 10
 .
 
@@ -478,21 +485,23 @@ write g
 sleep 1
 if g < n
    print " - is too low"
-elif g > n
+end
+if g > n
    print " - is too high"
-elif g = n
+end
+if g = n
    print " - great, you guessed the number"
 end
 sleep 1
 print "The number was " & n
 
-+ *sleep 1* puts a pause of one second. *elif* is a combination of *else if*.
++ *random 10* returns a random number from 1 - 10. *sleep 1* puts a pause of one second.
 
-+de *sleep 1* legt eine Pause von einer Sekunde ein. *elif* ist eine Kombination aus *else if*.
++de *random 10* liefert eine Zufallszahl von 1 - 10. *sleep 1* legt eine Pause von einer Sekunde ein.
 
-+ 🤔🤔 Just one try and that's it - it's no fun. You should be able to guess until you have guessed the number. For this you need .... - yeah right - a loop. Hint: *<>* stands for "not equal".
++ 🤔🤔 Just one try and that's it - it's no fun. You should be able to guess until you have guessed the number. For this you need .... - yeah right - a loop. Hint: *<>* stands for not equal.
 
-+de 🤔🤔 Nur ein Versuch und das war's - das macht keinen Spaß. Man sollte so lange raten können, bis man die Zahl erraten hat. Hierfür brauchst du .... - ja richtig - eine Schleife. Hinweis: *<>* steht für "nicht gleich".
++de 🤔🤔 Nur ein Versuch und das war's - das macht keinen Spaß. Man sollte so lange raten können, bis man die Zahl erraten hat. Hierfür brauchst du .... - ja richtig - eine Schleife. Hinweis: *<>* steht für nicht gleich.
 
 -
 
@@ -500,22 +509,23 @@ print "The number was " & n
 
 +de Mit einer Schleife innerhalb einer Schleife (verschachtelte Schleife) kannst du noch interessantere Muster erzeugen.
 
-gbackground 477
-gclear
+background 990
+clear
 y = 5
 while y < 100
    x = 5
    while x < 100
-      gcircle x y 2.5
+      move x y
+      circle 3
       sleep 0.02
       x += 10
    end
    y += 10
 end
 
-+ With each loop cycle of the outer loop, the inner loop is executed completely. *x += 10* is short for *x = x + 10* and means: increment *x* by 10. With *gbackground* you can set the color that *gclear* uses when clearing the drawing area.
++ With each loop cycle of the outer loop, the inner loop is executed completely. *x += 10* is short for *x = x + 10* and means: increment *x* by 10. With *background* you can set the color that *clear* uses when clearing the drawing area.
 
-+de Mit jedem Schleifenzyklus der äußeren Schleife wird die innere Schleife vollständig ausgeführt. *x += 10* ist die Kurzform für *x = x + 10* und bedeutet: erhöhe *x* um 10. Mit *gbackground* kannst du die Farbe festlegen, die *gclear* beim Löschen der Zeichenfläche verwendet.
++de Mit jedem Schleifenzyklus der äußeren Schleife wird die innere Schleife vollständig ausgeführt. *x += 10* ist die Kurzform für *x = x + 10* und bedeutet: erhöhe *x* um 10. Mit *background* kannst du die Farbe festlegen, die *clear* beim Löschen der Zeichenfläche verwendet.
 
 + 🤔 Change the program a little to make the pattern even more beautiful.
 
@@ -553,13 +563,14 @@ end
 
 +de Den Ball zeichnen, kurz warten, Bildschirm löschen, die Position leicht verändern, und wieder zeichnen, und so fort. So entsteht der Eindruck einer Bewegung.
 
-gcolor 900
+color 900
 x = -9
 while x < 120
    # clear the drawing area
-   gclear
+   clear
    # draw the ball at position x
-   gcircle x 10 10
+   move x 10
+   circle 10
    # wait half a second
    sleep 0.5
    # change drawing position
@@ -577,19 +588,23 @@ end
 +de Jetzt zeichnen wir statt dem Ball ein Auto.
 
 subr drawcar
-   glinewidth 8
-   gcolor 333
-   gline x + 9, 14, x + 13, 14
-   gcolor 900
-   gline x + 4, 9, x + 18, 9
-   gcolor 333
-   gcircle x + 5, 3, 3.5
-   gcircle x + 16, 3, 3.5
+   linewidth 8
+   color 333
+   move x + 9 14
+   line x + 13 14
+   color 900
+   move x + 4 9
+   line x + 18 9
+   color 333
+   move x + 5 3
+   circle 3.5
+   move x + 16 3
+   circle 3.5
 end
 #
 x = -25
 while x < 120
-   gclear
+   clear
    drawcar
    sleep 0.02
    x += 0.5
@@ -598,10 +613,6 @@ end
 + With *subr* you can combine actions that can be called from different places. This is called a *subroutine*.
 
 +de Mit *subr* können Aktionen zusammengefasst werden, die von verschiedenen Stellen aus aufgerufen werden können. Das nennt man *Unterprogramm* oder *Subroutine*.
-
-+ A comma can be used to separate the parameters of *gline* and *gcircle*. This is not necessary, but makes the code easier to read.
-
-+de Mit einem Komma kann man die Parameter von *gline* und *gcircle* trennen. Dies ist nicht notwendig, macht den Code aber leichter lesbar.
 
 + 🤔 Stop the car when it touches the right edge.
 
@@ -637,23 +648,20 @@ end
 
 +de Wir erstellen ein einfaches Malprogramm.
 
-glinewidth 4
-gcolor 900
+linewidth 4
+color 900
 #
 on mouse_down
    down = 1
-   mx = mouse_x
-   my = mouse_y
-   gcircle mx my 2
+   move mouse_x mouse_y
+   circle 2
 end
 on mouse_up
    down = 0
 end
 on mouse_move
    if down = 1
-      gline mx my mouse_x mouse_y
-      mx = mouse_x
-      my = mouse_y
+      line mouse_x mouse_y
    end
 end
 
@@ -673,14 +681,15 @@ end
 
 on key_down
    if keybkey = "r"
-      gbackground 900
+      background 900
    elif keybkey = "g"
-      gbackground 090
+      background 090
    else
-      gbackground 777
+      background 777
    end
-   gclear
-   gtext 5 90 keybkey
+   clear
+   move 5 90
+   text keybkey
 end
 
 + 🤔 Use the keyboard keys to change the drawing color of the previous painting program!
@@ -697,11 +706,12 @@ x = 50
 y = 50
 vx = 1
 vy = 0.8
-gcolor 700
+color 700
 #
 on animate
-   gclear
-   gcircle x y 10
+   clear
+   move x y
+   circle 10
    x += vx
    y += vy
    if x > 90
@@ -729,14 +739,15 @@ end
 
 +de Wir zeichnen einen Sternenhimmel. Die Position und die Helligkeit der Sterne werden zufällig erzeugt.
 
-gbackground 000
-gclear
-gcolor 999
+background 000
+clear
+color 999
 for i = 1 to 50
    x = random 99
    y = random 99
    mag = random 50
-   gcircle x y mag / 100
+   move x y
+   circle mag / 100
 end
 
 + 🤔 You can create a confetti pattern by using a random color each time and drawing the circles larger.
@@ -765,29 +776,34 @@ end
 
 ##85
 sysconf topleft
-proc xrect x y w h .
-   gline x y x + w y
-   gline x + w y x + w y + h
-   gline x + w y + h x y + h
-   gline x y + h x y
-.
-gcolor 543
-gtextsize 6
-glinewidth 0.8
-xrect 25 5 35 75
+color 543
+textsize 6
+linewidth 0.8
+move 25 5
+line 60 5
+line 60 80
+line 25 80
+line 25 5
 y = 10
 proc dr ind v .
-   gtext 31 y + 3 ind
-   gtext 43 y + 3 v
-   xrect 40 y 10 11
-   y += 18
+  move 31 y + 3
+  text ind
+  move 43 y + 3
+  text v
+  move 40 y
+  line 50 y
+  line 50 y + 11
+  line 40 y + 11
+  line 40 y
+  y += 18
 .
 a[] = [ 3 7 2 8 ]
 for i = 1 to len a[]
-   dr i a[i]
+  dr i a[i]
 .
-gtextsize 9
-gtext 4 10 "a[]"
+textsize 9
+move 4 10
+text "a[]"
 
 + How can we find the mean (average) of these numbers? The mean is the sum of all elements divided by the number of elements.
 
@@ -817,11 +833,12 @@ y[] = [ 19 52 31 11 29 36 50 17 91 15 24 65 21 13 92 48 92 72 32 66 13 25 86 37 
 #
 mag[] = [ 33 21 26 20 37 22 36 27 33 35 33 35 22 27 20 32 33 23 23 21 55 28 32 31 22 24 25 20 28 30 22 34 23 ]
 #
-gbackground 000
-gclear
-gcolor 999
+background 000
+clear
+color 999
 for i = 1 to len x[]
-   gcircle x[i], y[i], mag[i] / 100
+   move x[i] y[i]
+   circle mag[i] / 100
 end
 
 -
@@ -838,24 +855,25 @@ end
 x[] = [ 7 81 86 76 50 55 23 77 17 23 16 93 91 13 27 44 29 93 1 53 26 38 35 23 54 85 33 87 7 13 2 20 18 ]
 y[] = [ 13 29 50 15 65 42 91 24 92 19 86 48 37 58 95 25 17 13 31 39 44 32 72 61 21 36 94 75 66 52 11 92 72 ]
 m[] = [ 55 37 37 36 35 34 33 33 33 33 32 32 31 30 28 28 27 27 26 25 24 23 23 23 22 22 22 22 21 21 20 20 20 ]
-gbackground 000
-gclear
-gcolor 999
+background 000
+clear
+color 999
 for i = 1 to len x[]
-   gcircle x[i] y[i] m[i] / 100
+   move x[i] y[i]
+   circle m[i] / 100
 .
-gtextsize 3
-gtext x[5] y[5] "Polaris"
-gcolor 444
+textsize 3
+move x[5] y[5]
+text "Polaris"
+color 444
 si[][] &= [ 4 8 2 26 13 12 3 26 ]
 si[][] &= [ 11 9 7 15 27 ]
-glinewidth 0.2
+linewidth 0.2
 for s = 1 to len si[][]
+   text ""
    for i = 1 to len si[s][]
       h = si[s][i]
-      if i > 1 : gline x0 y0 x[h] y[h]
-      x0 = x[h]
-      y0 = y[h]
+      line x[h] y[h]
    .
 .
 
@@ -926,13 +944,15 @@ print a[]
 
 *de Weitere nützliche Funktionen
 
-+ With *gcolor3* you can set the character color more precisely. The function has the brightness of the three primary colors red, green and blue as parameters, which are specified as floating point values from 0 to 100.
++ With *color3* you can set the character color more precisely. The function has the three basic colors red, green and blue as parameters, whereby the proportion of these colors is set as a floating point number from 0 to 1.
 
-+de Mit *gcolor3* kann man die Zeichenfarbe genauer einstellen. Die Funktion hat die Helligkeit der drei Grundfarben Rot, Grün und Blau als Parameter, die als Gleitkommawerte von 0 bis 100 angegeben werden.
++de Mit *color3* kannst du die Zeichenfarbe genauer einstellen. Die Funktion hat die drei Grundfarben Rot, Grün und Blau als Parameter, wobei der Anteil dieser Farben als Gleitkommazahl von 0 bis 1 eingestellt wird.
 
 for i = 0 to 100
-   gcolor3 i 0 0
-   gline 0 i 100 i
+   r = i / 100
+   color3 r 0 0
+   move 0 i
+   line 100 i
 end
 
 -
@@ -941,13 +961,14 @@ end
 
 +de Mit *randomf* bekommt man eine zufälligen Gleitkommazahl zwischen 0 und 1. Das vereinfacht das Zeichnen des Sternenhimmels.
 
-gbackground 000
-gclear
-gcolor 999
+background 000
+clear
+color 999
 for i = 1 to 100
    x = randomf * 100
    y = randomf * 100
-   gcircle x y randomf * 0.5
+   move x y
+   circle randomf * 0.5
 end
 
 *de Prozeduren, lokale Variablen, Parameter
@@ -958,25 +979,30 @@ end
 
 + Let's build a street for our car.
 
-gbackground 060
+background 060
 subr street
-   gcolor 777
-   grect 0 10 100 10
+   move 0 10
+   color 777
+   rect 100 10
 end
 subr car
-   glinewidth 8
-   gcolor 333
-   gline x + 9, 25, x + 13, 25
-   gcolor 900
-   gline x + 4, 20, x + 18, 20
-   gcolor 333
-   gcircle x + 5, 14, 3.5
-   gcircle x + 16, 14, 3.5
+   linewidth 8
+   color 333
+   move x + 9 25
+   line x + 13 25
+   color 900
+   move x + 4 20
+   line x + 18 20
+   color 333
+   move x + 5 14
+   circle 3.5
+   move x + 16 14
+   circle 3.5
 end
 #
 x = -10
 while x <= 100
-   gclear
+   clear
    street
    car
    sleep 0.05
@@ -987,28 +1013,34 @@ end
 
 + Works perfectly. Now let's paint a dashed center line on the street. This is best done with a loop.
 
-gbackground 060
+background 060
 subr street
-   gcolor 777
-   grect 0 10 100 10
+   move 0 10
+   color 777
+   rect 100 10
    # dashed centerline
-   gcolor 999
-   glinewidth 1
+   color 999
+   linewidth 1
    x = 2
    while x < 110
-      gline x, 15, x + 7, 15
+      move x 15
+      line x + 7 15
       x += 12
    end
 end
 subr car
-   glinewidth 8
-   gcolor 333
-   gline x + 9, 25, x + 13, 25
-   gcolor 900
-   gline x + 4, 20, x + 18, 20
-   gcolor 333
-   gcircle x + 5, 14, 3.5
-   gcircle x + 16, 14, 3.5
+   linewidth 8
+   color 333
+   move x + 9 25
+   line x + 13 25
+   color 900
+   move x + 4 20
+   line x + 18 20
+   color 333
+   move x + 5 14
+   circle 3.5
+   move x + 16 14
+   circle 3.5
 end
 #
 x = -10
@@ -1040,33 +1072,39 @@ end
 
 + You can do this with parameters. The parameters follow the name of the procedure.
 
-gbackground 060
+background 060
 proc street .
-   gcolor 777
-   grect 0 10 100 10
+   move 0 10
+   color 777
+   rect 100 10
    # dashed centerline
-   gcolor 999
-   glinewidth 1
+   color 999
+   linewidth 1
    x = 2
    while x < 110
-      gline x, 15, x + 7, 15
+      move x 15
+      line x + 7 15
       x += 12
    end
 end
 proc car x .
-   glinewidth 8
-   gcolor 333
-   gline x + 9, 25, x + 13, 25
-   gcolor 900
-   gline x + 4, 20, x + 18, 20
-   gcolor 333
-   gcircle x + 5, 14, 3.5
-   gcircle x + 16, 14, 3.5
+   linewidth 8
+   color 333
+   move x + 9 25
+   line x + 13 25
+   color 900
+   move x + 4 20
+   line x + 18 20
+   color 333
+   move x + 5 14
+   circle 3.5
+   move x + 16 14
+   circle 3.5
 end
 #
 x = -10
 while x <= 100
-   gclear
+   clear
    street
    car x
    sleep 0.05
@@ -1077,35 +1115,41 @@ end
 
 + We can also specify one parameter for the y-position of the street and the car and one for the color of the car. Now we can have two cars with different colors driving on two streets.
 
-gbackground 060
+background 060
 proc street y .
-   gcolor 777
-   grect 0 y 100 10
-   gcolor 999
-   glinewidth 1
+   move 0 y
+   color 777
+   rect 100 10
+   color 999
+   linewidth 1
    x = 2
    while x < 110
-      gline x, y + 5, x + 7, y + 5
+      move x y + 5
+      line x + 7 y + 5
       x += 12
    end
 end
 proc car x y col .
-   glinewidth 8
-   gcolor 333
-   gline x + 9, y + 15, x + 13, y + 15
-   gcolor col
-   gline x + 4, y + 10, x + 18, y + 10
-   gcolor 333
-   gcircle x + 5, y + 4, 3.5
-   gcircle x + 16, y + 4, 3.5
+   linewidth 8
+   color 333
+   move x + 9 y + 15
+   line x + 13 y + 15
+   color col
+   move x + 4 y + 10
+   line x + 18 y + 10
+   color 333
+   move x + 5 y + 4
+   circle 3.5
+   move x + 16 y + 4
+   circle 3.5
 end
 #
 x = -10
 while x <= 125
-   gclear
+   clear
    street 10
    street 25
-   car 100 - x, 25, 990
+   car (100 - x) 25 990
    car x 10 900
    sleep 0.05
    x += 1
@@ -1128,44 +1172,53 @@ end
 + The car color is randomly selected from a color palette.
 
 proc draw_street y .
-   gcolor 777
-   grect 0 y 100 10
-   gcolor 999
-   glinewidth 1
+   move 0 y
+   color 777
+   rect 100 10
+   color 999
+   linewidth 1
    x = 2
    while x < 110
-      gline x, y + 5, x + 7, y + 5
+      move x y + 5
+      line x + 7 y + 5
       x += 12
    end
 end
 proc draw_backgr .
    # meadow
-   gcolor 050
-   grect 0 0 100 60
+   color 050
+   move 0 0
+   rect 100 60
    # sky
-   gcolor 259
-   grect 0 60 100 40
+   color 259
+   move 0 60
+   rect 100 40
    # sun
-   gcolor 995
-   gcircle 75 85 6
+   color 995
+   move 75 85
+   circle 6
    # streets
    draw_street 10
    draw_street 25
 end
 proc draw_car x y col .
-   glinewidth 8
-   gcolor 333
-   gline x + 9, y + 15, x + 13, y + 15
-   gcolor col
-   gline x + 4, y + 10, x + 18, y + 10
-   gcolor 333
-   gcircle x + 5, y + 4, 3.5
-   gcircle x + 16, y + 4, 3.5
+   linewidth 8
+   color 333
+   move x + 9 y + 15
+   line x + 13 y + 15
+   color col
+   move x + 4 y + 10
+   line x + 18 y + 10
+   color 333
+   move x + 5 y + 4
+   circle 3.5
+   move x + 16 y + 4
+   circle 3.5
 end
 #
 # color palette
 colors[] = [ 900 990 090 009 000 999 666 099 ]
-# maximum 10 cars on the streets
+# maximum 12 cars on the streets
 n = 10
 # car
 len x[] n

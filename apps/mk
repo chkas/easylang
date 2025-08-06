@@ -59,7 +59,7 @@ if (typeof WebAssembly != 'object') {
 	tut.innerHTML = "You need a browser with WebAssembly support for this website."
 }
 xxx
-	if test $n = learn || test $n = learn_new; then
+	if test $n = learn || test $n = learn_old; then
 		cat >>$o/tut_$n.html <<'xxx'
 txt_locale = "de"
 txt_tutor = String.raw`
@@ -160,7 +160,7 @@ xxx
 	cat >>$o/tut_$n.html <<'xxx'
 `)
 xxx
-	if test $2 = learn || test $2 = learn_new; then
+	if test $2 = learn || test $2 = learn_old; then
 		cat >>$o/tut_$n.html <<'xxx'
 	var srcx = `
 glinewidth 8
@@ -225,11 +225,11 @@ mk_tut "Documentation and code snippets" docu "easylang documentation"
 mk_tut "Procedures and recursion" func "recursive procedures"
 mk_tut "Programming small games" game "canvas game, smartphone" "" "runner"
 mk_tut "Programming basics" learn "learn programming basics"
-mk_tut "Programming basics (new)" learn_new "learn programming basics"
+mk_tut "Programming basics (legacy)" learn_old "learn programming basics"
 sed s/555/222/g $o/tut_learn.html > $o/tmp.html
 mv $o/tmp.html $o/tut_learn.html
-sed s/555/222/g $o/tut_learn_new.html > $o/tmp.html
-mv $o/tmp.html $o/tut_learn_new.html
+sed s/555/222/g $o/tut_learn_old.html > $o/tmp.html
+mv $o/tmp.html $o/tut_learn_old.html
 
 # --------------------------------------------------------------
 
@@ -444,7 +444,7 @@ A language that doesn’t have everything is actually easier to program in than 
 <h3>Interactive tutorials</h3>
 
 <p><a href="tut_learn.html?$vers">Learn Programming Basics</a>
-<p><a href="tut_learn_new.html?$vers">Learn Programming Basics (new)</a>
+<p><a href="tut_learn_old.html?$vers">Learn Programming Basics (legacy)</a>
 <p><a href="tut_game.html?$vers">Programming Small Games</a>
 <p><a href="tut_docu.html?$vers">Documentation and Code Snippets</a>
 <p><a href="tut_func.html?$vers">Functions and Recursion</a>

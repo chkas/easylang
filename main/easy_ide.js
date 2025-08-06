@@ -922,7 +922,7 @@ inp.onkeydown = function(e) {
 		}
 		cnd.className = ""
 		makeCnd()
-		return;
+		//return
 	}
 	if (cnd.act) {
 		removeCnd()

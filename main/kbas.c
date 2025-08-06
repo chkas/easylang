@@ -407,7 +407,7 @@ extern int parse(char* str, int opt, int caret) {
 		//pr("slen  %d", slen);
 		is_tab = 1;
 		int h = slen - 1;
-		while (h >= 0 && islower(parse_str[h])) {
+		while (h >= 0 && (isalpha(parse_str[h]) || parse_str[h] == '_')) {
 			//pr("  %d", h);
 			h -= 1;
 		}
