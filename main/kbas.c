@@ -159,7 +159,7 @@ enum {
 
 const char* tabstrs[] =
 	{
-	"", ":] :][", ":= :+= :-= :*= :/= ", ":= :&= ", ":= :<> :< :> :<= :>= ", ":= :<> ",
+	"", ":] :][", ":= :+= :-= :*= :/= ", ":= :&= ", ":= :<> ",
 	":= :in ", ":to :downto :step "
 };
 
@@ -395,25 +395,24 @@ void make_tabbuf(char* ts) {
 		atab_names(ts, l, 0, 1);
 		atab_numfuncs(ts, l);
 	}
-	else {
-		for (int i = ERR_BR; i <= ERR_FOR2; i++) {
-			if (errn == i) {
-				char buf[16];
-				const char* p = tabstrs[i];
-				while (*p) {
-					int i = 0;
-					while (1) {
-						buf[i] = *p;
-						p += 1;
-						i += 1;
-						if (*p == ':' || *p == 0) break;
-					}
-					buf[i] = 0;
-					if (strncmp(buf + 1, ts, l) == 0) str_append(&tabbuf, buf);
-				}
-				break;
+	else if (errn >= ERR_BR && errn <= ERR_FOR2) {
+		char buf[16];
+		const char* p = tabstrs[errn];
+		while (*p) {
+			int i = 0;
+			while (1) {
+				buf[i] = *p;
+				p += 1;
+				i += 1;
+				if (*p == ':' || *p == 0) break;
 			}
+			buf[i] = 0;
+			if (strncmp(buf + 1, ts, l) == 0) str_append(&tabbuf, buf);
 		}
+	}
+	else { // errn expt(tok)
+		apptab(tokstr[errn], ts, l);
+		if (tabinexpr) apptabis(inopstr, ts, l);
 	}
 	str_append(&tabbuf, ":");
 	//kc?

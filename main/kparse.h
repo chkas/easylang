@@ -135,14 +135,14 @@ S int is_strfactor(void) {
 
 // -------------------------------------------------
 S void expt(int h) {
-	//if (tok != h) error(tokstr[h]);
 	if (tok != h) errort(h);
 }
 
 S void expt_ntok(int h) {
 	if (is_enter && tok == t_eof) {
 		// autocomplete on enter
-		cs(tokstr[h]);
+		if (!is_tab) cs(tokstr[h]);
+		else errort(h);
 		return;
 	}
 	expt(h);
@@ -1766,7 +1766,7 @@ S void parse_strael_ass(ND* nd) {
 			else error("&=, =");
 		}
 		else {
-			//* f[i][j] = "apple"
+			//* f$[i][j] = "apple"
 			nd->vf = op_straelael_ass;
 			nd->v1 = get_var(VAR_STRARRARR, RD, s, pos);
 			ndx->ex = parse_ex();
