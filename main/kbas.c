@@ -145,14 +145,14 @@ const char* errstrs[] = {
 	"", "], ][", "=, +=, ..", "=, &=",  "=, <>",
 	"=, in", "to, downto, step",
 	"<cmd>, end, .", "<cmd>, else, elif, end, .", "<cmd>, until", "<cmd>", "<cmd>", "<cmd>", "variable", "array variable", "array or string variable",
-	"number", "string", "number, string", "array", "string array",
+	"number", "string", "number, string", "array", "string array", "array array", "string array array",
 	"event", "topleft ...", "=, <>, < ..."
 };
 
 enum {
 	ERR_OK, ERR_BR, ERR_ASSIGN, ERR_STRASS, ERR_STRCMP,
 	ERR_FOR, ERR_FOR2,
-	ERR_CMDE, ERR_CMDEL, ERR_CMDU, ERR_CMD0, ERR_CMD1, ERR_CMD, ERR_V, ERR_VARR, ERR_VARRSTR, ERR_NUMB, ERR_STR, ERR_NUMSTR, ERR_ARR, ERR_STRARR,
+	ERR_CMDE, ERR_CMDEL, ERR_CMDU, ERR_CMD0, ERR_CMD1, ERR_CMD, ERR_V, ERR_VARR, ERR_VARRSTR, ERR_NUMB, ERR_STR, ERR_NUMSTR, ERR_ARR, ERR_STRARR, ERR_ARRARR, ERR_STRARRARR,
 	ERR_EVT, ERR_SYSCONF, ERR_CMP,
 	ERR_LOG, ERR_ARREL
 };
@@ -221,7 +221,6 @@ void apptabi(const char* s, char* ts, short l) {
 		str_append(&tabbuf, " ");
 	}
 }
-
 void append_tabb(struct proc* pro, char* ts, short l, short typ) {
 	struct vname *v = pro->vname_p;
 	if (v) while (v < pro->vname_p + pro->vname_len) {
@@ -345,6 +344,12 @@ void make_tabbuf(char* ts) {
 		apptab("strsplit", ts, l);
 		apptab("strtok", ts, l);
 	}
+	else if (errn == ERR_ARRARR) {
+		atab_names(ts, l, 4, 1);
+	}
+	else if (errn == ERR_STRARRARR) {
+		atab_names(ts, l, 5, 1);
+	}
 	else if (errn == ERR_VARRSTR) {
 		atab_arrs(ts, l);
 		atab_names(ts, l, 1, 0);
@@ -378,7 +383,7 @@ void make_tabbuf(char* ts) {
 		atab_names(ts, l, 4, 0);
 	}
 	else if (errn == t_vstrarrarr) {
-		atab_names(ts, l, 4, 0);
+		atab_names(ts, l, 5, 0);
 	}
 	else if (errn == ERR_CMP) {
 		apptabis(cmpstr, ts, l);

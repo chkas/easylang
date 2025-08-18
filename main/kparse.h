@@ -1476,7 +1476,7 @@ S ND* parse_numarrarrex(void) {
 	else goto err_arr;
 	return ex;
 err_arr:
-	error("array array");
+	errorx(ERR_ARRARR);
 	return ex;
 }
 
@@ -1580,7 +1580,7 @@ S ND* parse_strarrarrex(void) {
 		ex->v1 = parse_var(VAR_STRARRARR, RD);
 		expt_ntok(t_brr);
 	}
-	else error("string array array");
+	else errorx(ERR_STRARRARR);
 	return ex;
 }
 

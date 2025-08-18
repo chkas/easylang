@@ -285,13 +285,12 @@ static void error0(const char* s) {
 		nestlevel_err = sequ_level - 1;
 		if (nestlevel_err >= 16) nestlevel_err = -1;
 	}
-//	err = 1;
 	errproc = proc;
 	errtok = tok;
 	errorstr = s;
 	cod = 0;
-//kc?
-//	is_tab = 0;
+//kc
+	is_tab = 0; // stops adding vars
 	cs_spc();
 #ifndef __EMSCRIPTEN__
 	error_line(s, ind_tok);
