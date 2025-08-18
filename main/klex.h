@@ -138,7 +138,7 @@ static byte tokpr;
 static char is_numfunc() { return tok >= t_mouse_x && tok <= t_strcompare; }
 static char is_strfunc() { return tok >= t_input && tok <= t_substr; }
 
-static char err;
+static byte errn;
 static int ind_tok, indc;
 
 //static const char* parse_str;
@@ -200,7 +200,7 @@ static void col(const char* s, int h) {
 	codestrln += h;
 }
 static void csnlspc() {
-	if (err) return;
+	if (errn) return;
 	int h = INDENT * sequ_level + 1;
 	col(nlspc, h);
 	code_utf8len += h;
@@ -219,29 +219,29 @@ static void coc(char c) {
 }
 
 static void cs(const char* s) {
-	if (err) return;
+	if (errn) return;
 	int h = strlen(s);
 	col(s, h);
 	code_utf8len += h;
 }
 
 static void cs_spc(void) {
-	if (err) return;
+	if (errn) return;
 	coc(' ');
 	code_utf8len += 1;
 }
 static void csbrrsp() {
-	if (err) return;
+	if (errn) return;
 	col("] ", 2);
 	code_utf8len += 2;
 }
 static void csbrr() {
-	if (err) return;
+	if (errn) return;
 	coc(']');
 	code_utf8len += 1;
 }
 static void csbrl() {
-	if (err) return;
+	if (errn) return;
 	coc('[');
 	code_utf8len += 1;
 }
@@ -285,42 +285,58 @@ static void error0(const char* s) {
 		nestlevel_err = sequ_level - 1;
 		if (nestlevel_err >= 16) nestlevel_err = -1;
 	}
-	err = 1;
+//	err = 1;
 	errproc = proc;
 	errtok = tok;
 	errorstr = s;
 	cod = 0;
-	is_tab = 0;
+//kc?
+//	is_tab = 0;
 	cs_spc();
 #ifndef __EMSCRIPTEN__
 	error_line(s, ind_tok);
 #endif
 }
 
-static byte errornum;
+static int fmtline;
+static int parseline;
+static int tabinexpr;
+
+static void init_klex(void) {
+	sequ_level = 0;
+	fmtline = 1;
+	parseline = 1;
+	tabinexpr = 0;
+}
+
+//static byte errornum;
 
 static void error(const char* s) {
-	if (err) return;
-	errornum = 255;
+	if (errn) return;
+	//pr("error %s", s);
+	errn = 255;
 	error0(s);
 }
 static void errorx(int num) {
-	if (err) return;
-	errornum = num;
+	if (errn) return;
+	//pr("errorx %d", num);
+	errn = num;
 	error0(errstrs[num]);
 }
 static void errort(int tok) {
-	if (err) return;
-	errornum = tok;
+	if (errn) return;
+	//pr("errort %d", tok);
+	errn = tok;
 	error0(tokstr[tok]);
 }
 
 static void error_pos(const char* s, int pos) {
 
-	if (err) return;
+	if (errn) return;
+//kc?
+	errn = 255;
 	code_utf8len = pos;
 	ind_tok = pos;
-	err = 1;
 	errorstr = s;
 	cod = 0;
 #ifndef __EMSCRIPTEN__
@@ -347,7 +363,7 @@ static void esc_html(const char* s) {
 }
 
 static void cs_esc(const char* s) {
-	if (err) return;
+	if (errn) return;
 	if (*s == 0) return;
 	code_utf8len += utf8len(s);
 	if (syntax_high) {
@@ -357,7 +373,7 @@ static void cs_esc(const char* s) {
 }
 
 static void csi(const char* s) {
-	if (err) return;
+	if (errn) return;
 	if (*s == 0) return;
 	code_utf8len += utf8len(s);
 	if (syntax_high) {
@@ -372,14 +388,14 @@ static char* bold1;
 static char* bold2;
 
 static void csb(const char* s) {
-	if (err) return;
+	if (errn) return;
 	code_utf8len += strlen(s);
 	co(bold1);
 	co(s);
 	co(bold2);
 }
 static void csf(const char* s) {
-	if (err) return;
+	if (errn) return;
 	code_utf8len += strlen(s);
 	if (syntax_high) {
 		co("<s>");
@@ -397,9 +413,9 @@ static void cst(int t) {
 
 static char tval[24];
 
-static int fmtline;
-
 static void csnl() {
+//kc
+	if (tabinexpr) return;
 	csnlspc();
 	fmtline += 1;
 }
@@ -411,7 +427,7 @@ static int indc_add;
 static void nextc() {
 	cp = c;
 	c = cn;
-	if (err) {
+	if (errn) {
 		cn = EOT;
 		return;
 	}
@@ -465,6 +481,7 @@ static void read_line(char* buf, int sz) {
 		nextc();
 	}
 	if (i < sz) buf[i] = 0;
+	parseline += 1;
 }
 
 
@@ -519,12 +536,13 @@ static void parse_input_data() {
 static void nexttok() {
 
 	tokpr = tok;
-	if (err) {
+	if (errn) {
 		tok = t_eof;
 		return;
 	}
 	while (1) {
 		if (c == EOT || c > ' ') break;
+		if (c == '\n') parseline += 1;
 		nextc();
 	}
 
@@ -963,7 +981,7 @@ static void parse_prepare(char* str, int slen) {
 
 	code_utf8len = 0;
 	spc[0] = 0;
-	err = 0;
+	errn = 0;
 	cn = ' ';
 	indc_add = 0;
 	indc = 0;

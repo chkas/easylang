@@ -142,23 +142,24 @@ S void code_free() {
 ushort sysconfig;
 
 const char* errstrs[] = {
-	"], ][", "=, +=, ..", "=, &=", "=, <>, < ...",  "=, <>",
+	"", "], ][", "=, +=, ..", "=, &=",  "=, <>",
 	"=, in", "to, downto, step",
-	"<cmd>, end, .", "<cmd>, else, elif, end, .", "<cmd>, until", "<cmd>", "<cmd>", "<cmd>", "variable", "array variable", "array or string variable", "number",
-	"string", "array", "string array",
-	"event", "topleft ..."
+	"<cmd>, end, .", "<cmd>, else, elif, end, .", "<cmd>, until", "<cmd>", "<cmd>", "<cmd>", "variable", "array variable", "array or string variable",
+	"number", "string", "number, string", "array", "string array",
+	"event", "topleft ...", "=, <>, < ..."
 };
 
 enum {
-	ERR_BR, ERR_ASSIGN, ERR_STRASS, ERR_CMP, ERR_STRCMP,
+	ERR_OK, ERR_BR, ERR_ASSIGN, ERR_STRASS, ERR_STRCMP,
 	ERR_FOR, ERR_FOR2,
-	ERR_CMDE, ERR_CMDEL, ERR_CMDU, ERR_CMD0, ERR_CMD1, ERR_CMD, ERR_V, ERR_VARR, ERR_VARRSTR, ERR_NUMB, ERR_STR, ERR_ARR, ERR_STRARR,
-	ERR_EVT, ERR_SYSCONF
+	ERR_CMDE, ERR_CMDEL, ERR_CMDU, ERR_CMD0, ERR_CMD1, ERR_CMD, ERR_V, ERR_VARR, ERR_VARRSTR, ERR_NUMB, ERR_STR, ERR_NUMSTR, ERR_ARR, ERR_STRARR,
+	ERR_EVT, ERR_SYSCONF, ERR_CMP,
+	ERR_LOG, ERR_ARREL
 };
 
 const char* tabstrs[] =
 	{
-	":] :][", ":= :+= :-= :*= :/= ", ":= :&= ", ":= :<> :< :> :<= :>= ", ":= :<> ",
+	"", ":] :][", ":= :+= :-= :*= :/= ", ":= :&= ", ":= :<> :< :> :<= :>= ", ":= :<> ",
 	":= :in ", ":to :downto :step "
 };
 
@@ -213,6 +214,13 @@ void appt(const char* s) {
 void apptab(const char* s, char* ts, short l) {
 	if (strncmp(ts, s, l) == 0) appt(s);
 }
+void apptabi(const char* s, char* ts, short l) {
+	if (strncmp(ts, s, l) == 0) {
+		str_append(&tabbuf, ": ");
+		str_append(&tabbuf, s);
+		str_append(&tabbuf, " ");
+	}
+}
 
 void append_tabb(struct proc* pro, char* ts, short l, short typ) {
 	struct vname *v = pro->vname_p;
@@ -222,7 +230,7 @@ void append_tabb(struct proc* pro, char* ts, short l, short typ) {
 			str_append(&tabbuf, v->name);
 			if (typ < 2) str_append(&tabbuf, vex(v->typ));
 			else str_append(&tabbuf, vexf(v->typ));
-			str_append(&tabbuf, " ");
+			if (v->typ < 2) str_append(&tabbuf, " ");
 		}
 		v += 1;
 	}
@@ -243,7 +251,7 @@ void append_tabb_arr(struct proc* pro, char* ts, short l) {
 			str_append(&tabbuf, ":");
 			str_append(&tabbuf, v->name);
 			str_append(&tabbuf, vexf(v->typ));
-			str_append(&tabbuf, " ");
+			//str_append(&tabbuf, " ");
 		}
 		v += 1;
 	}
@@ -264,42 +272,62 @@ void atab_strfuncs(char* ts, short l) {
 		apptab(tokstr[t], ts, l);
 	}
 }
+static const char* inopstr[] = { "+", "-", "*", "/", "div", "mod", NULL };
+static const char* logopstr[] = { "and", "or", NULL };
+static const char* cmpstr[] = { "=", "<>", "<", ">", "<=", ">=", NULL };
+
+void apptabis(const char* strs[], char* ts, int l) {
+	for (int i = 0; strs[i]; i++) apptabi(strs[i], ts, l);
+}
+
 void make_tabbuf(char* ts) {
-	//pr("xtabstr:%s error:%s:%d", ts, errorstr, errornum);
+	//pr("xtabstr:%s error:%s:%d", ts, errorstr, errn);
 	str_free(&tabbuf);
 	int l = strlen(ts);
-	if (errornum >= ERR_CMDE && errornum <= ERR_CMD) {
-		//pr("errnum %d:%d:", ERR_CMDU, errornum);
-		if (errornum == ERR_CMDU) apptab("until", ts, l);
-		if (errornum <= ERR_CMDEL) apptab("end", ts, l);
-		if (errornum == ERR_CMDEL) {
-			apptab("else", ts, l);
-			apptab("elif", ts, l);
+	if (errn >= ERR_CMDE && errn <= ERR_CMD) {
+		//pr("errnum %d:%d:", ERR_CMDU, errn);
+		if (tabinexpr) {
+			apptabis(inopstr, ts, l);
 		}
-		atab_names(ts, l, -1, 1);
-		byte tok2 = t_gcurve;
-		if (errornum >= ERR_CMD0) tok2 = t_global;
-		for (byte t = t_if; t <= tok2; t++) {
-			if (strncmp(ts, tokstr[t], l) == 0) {
-				appt(tokstr[t]);
-				if (t == t_func) {
-					str_append(&tabbuf, ":");
-					str_append(&tabbuf, tokstr[t]);
-					str_append(&tabbuf, "$ ");
-					str_append(&tabbuf, ":");
-					str_append(&tabbuf, tokstr[t]);
-					str_append(&tabbuf, "[] ");
+		else {
+			if (errn == ERR_CMDU) apptab("until", ts, l);
+			if (errn <= ERR_CMDEL) apptab("end", ts, l);
+			if (errn == ERR_CMDEL) {
+				apptab("else", ts, l);
+				apptab("elif", ts, l);
+			}
+			atab_names(ts, l, -1, 1);
+			byte tok2 = t_gcurve;
+			if (errn >= ERR_CMD0) tok2 = t_global;
+			for (byte t = t_if; t <= tok2; t++) {
+				if (strncmp(ts, tokstr[t], l) == 0) {
+					appt(tokstr[t]);
+					if (t == t_func) {
+						str_append(&tabbuf, ":");
+						str_append(&tabbuf, tokstr[t]);
+						str_append(&tabbuf, "$ ");
+						str_append(&tabbuf, ":");
+						str_append(&tabbuf, tokstr[t]);
+						str_append(&tabbuf, "[] ");
+					}
 				}
 			}
+			if (errn == ERR_CMD0) apptab("sysconf", ts, l);
 		}
-		if (errornum == ERR_CMD0) apptab("sysconf", ts, l);
 	}
-	else if (errornum == ERR_NUMB) {
+	else if (errn == ERR_NUMB) {
+		if (tabinexpr) apptabis(inopstr, ts, l);
 		atab_names(ts, l, 0, 1);
 		atab_numfuncs(ts, l);
 		if (!ts[0]) str_append(&tabbuf, ":1:2:3:4:5:6:7:8:9:0");
 	}
-	else if (errornum == ERR_STR) {
+	else if (errn == ERR_NUMSTR) {
+		atab_names(ts, l, 0, 1);
+		atab_names(ts, l, 1, 1);
+		atab_numfuncs(ts, l);
+		atab_strfuncs(ts, l);
+	}
+	else if (errn == ERR_STR) {
 		if (!ts[0]) str_append(&tabbuf, ":\"");
 		atab_names(ts, l, 1, 1);
 		atab_names(ts, l, 0, 1);
@@ -307,54 +335,69 @@ void make_tabbuf(char* ts) {
 		atab_numfuncs(ts, l);
 		if (!ts[0]) str_append(&tabbuf, ":\"\"");
 	}
-	else if (errornum == ERR_ARR) {
+	else if (errn == ERR_ARR) {
 		atab_names(ts, l, 2, 1);
 		//atab_arrfuncs(ts, l); ??
 	}
-	else if (errornum == ERR_STRARR) {
+	else if (errn == ERR_STRARR) {
 		atab_names(ts, l, 3, 1);
 		apptab("strchars", ts, l);
 		apptab("strsplit", ts, l);
 		apptab("strtok", ts, l);
 	}
-	else if (errornum == ERR_VARRSTR) {
+	else if (errn == ERR_VARRSTR) {
 		atab_arrs(ts, l);
 		atab_names(ts, l, 1, 0);
 	}
-	else if (errornum == ERR_VARR) {
+	else if (errn == ERR_VARR) {
 		atab_arrs(ts, l);
 	}
-	else if (errornum == ERR_EVT) {
+	else if (errn == ERR_EVT) {
 		for (byte t = 0; t <= 6; t++ ) {
 			apptab(evt_name[t], ts, l);
 		}
 	}
-	else if (errornum == ERR_SYSCONF) {
+	else if (errn == ERR_SYSCONF) {
 		for (byte t = 0; t <= 3; t++ ) {
 			apptab(sysconf_str[t], ts, l);
 		}
 	}
-	else if (errornum == ERR_V) {
+	else if (errn == ERR_V) {
 		atab_names(ts, l, 0, 0);
 	}
-	else if (errornum == t_vstr) {
+	else if (errn == t_vstr) {
 		atab_names(ts, l, 1, 0);
 	}
-	else if (errornum == t_vnumarr) {
+	else if (errn == t_vnumarr) {
 		atab_names(ts, l, 2, 0);
 	}
-	else if (errornum == t_vstrarr) {
+	else if (errn == t_vstrarr) {
 		atab_names(ts, l, 3, 0);
 	}
-	else if (errornum == t_vnumarrarr) {
+	else if (errn == t_vnumarrarr) {
 		atab_names(ts, l, 4, 0);
 	}
-	else if (errornum == t_vstrarrarr) {
+	else if (errn == t_vstrarrarr) {
 		atab_names(ts, l, 4, 0);
+	}
+	else if (errn == ERR_CMP) {
+		apptabis(cmpstr, ts, l);
+		apptabis(inopstr, ts, l);
+	}
+	else if (errn == ERR_LOG) {
+		apptabis(logopstr, ts, l);
+		apptabis(inopstr, ts, l);
+	}
+	else if (errn == ERR_ARREL) {
+		apptab("]", ts, l);
+		apptab(",", ts, l);
+		if (tabinexpr) apptabis(inopstr, ts, l);
+		atab_names(ts, l, 0, 1);
+		atab_numfuncs(ts, l);
 	}
 	else {
 		for (int i = ERR_BR; i <= ERR_FOR2; i++) {
-			if (errornum == i) {
+			if (errn == i) {
 				char buf[16];
 				const char* p = tabstrs[i];
 				while (*p) {
@@ -373,6 +416,8 @@ void make_tabbuf(char* ts) {
 		}
 	}
 	str_append(&tabbuf, ":");
+	//kc?
+	if (fmtline == parseline) str_append(&tabbuf, " ");
 	str_append(&tabbuf, ts);
 	errorstr = str_ptr(&tabbuf);
 
@@ -383,7 +428,7 @@ void make_tabbuf(char* ts) {
 
 extern int parse(char* str, int opt, int caret) {
 //extern int parse(const char* str, int opt, int caret) {
-	char ts[8];
+	char ts[12];
 	syntax_high = (opt & 2);
 	if (syntax_high) {
 		bold1 = "<b>";
@@ -413,7 +458,7 @@ extern int parse(char* str, int opt, int caret) {
 		}
 		h +=1;
 		ts[0] = 0;
-		if (caret - h < 7 && h < caret) {
+		if (caret - h < 11 && h < caret) {
 			for (int i = 0; i <= caret - h; i++) {
 				ts[i] = parse_str[h + i];
 			}
@@ -426,8 +471,8 @@ extern int parse(char* str, int opt, int caret) {
 	nextc();
 	nexttok();
 
-	sequ_level = 0;
-	fmtline = 1;
+	init_klex();
+
 	parse_sysconf();
 	if (tok == t_eof && is_enter) errorx(ERR_CMD0);
 
@@ -437,22 +482,20 @@ extern int parse(char* str, int opt, int caret) {
 	if (tok != t_eof || is_enter) errorx(ERR_CMD1);
 
 	if (wasm) {
-		if (err) {
+		if (errn) {
 			free(wasm);
 			wasm = NULL;
 		}
 		else build_fastfuncs();
 	}
-	if (err) {
-		// always when is_enter
-		if ((opt & 1) && errtok == t_eof) { // tab
-			make_tabbuf(ts);
+	if (errn) {
+		// always when is_enter or tab
+		if (opt & 1) {  // tab
+			if  (errtok == t_eof) make_tabbuf(ts);
+			else if (tabchar) parse_str[caret] = tabchar;
 		}
-		else {
-			//kc?
-			if (tabchar) parse_str[caret] = tabchar;
-			if (errtok == t_eof && errorstr[1] == 'c') errorstr = "";
-		}
+		else if (errtok == t_eof && errn >= ERR_CMDE && errn <= ERR_CMD) errorstr = "";
+
 		int err_pos = codestrln;
 
 #ifndef __EMSCRIPTEN__

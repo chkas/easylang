@@ -313,7 +313,8 @@ S double op_number(ND* nd) {
 	rt.sys_error = 0;
 	if (p == ps || *p != 0) {
 		rt.sys_error = 1;
-		//if (p == ps) d = 0.0 / 0.0;
+
+		if (p == ps) d = 0.0 / 0.0;
 	}
 	str_free(&s);
 	return d;
