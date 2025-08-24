@@ -1171,9 +1171,10 @@ S int parse_proc_header(int mode, byte proctyp) {
 			typ = 'j';
 		}
 		else if (tok == t_amp) {
-			cs_tok_nt();
-			//cs(tval);
-			//nexttok();
+			//cs_tok_nt();
+//kc?
+			csamp();
+			nexttok();
 
 			if (tok == t_name) {
 				lvar(VAR_NUM, 3, mode);

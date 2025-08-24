@@ -404,6 +404,15 @@ static void csf(const char* s) {
 	else
 		co(s);
 }
+static void csamp() {
+	if (errn) return;
+	code_utf8len += 1;
+	if (syntax_high) {
+		co("&amp;");
+	}
+	else
+		co("&");
+}
 
 static void cst(int t) {
 	if (t < t_plus) csb(tokstr[t]);

@@ -351,10 +351,12 @@ void make_tabbuf(char* ts) {
 		atab_names(ts, l, 5, 1);
 	}
 	else if (errn == ERR_VARRSTR) {
+		// ref arrays or strings
 		atab_arrs(ts, l);
 		atab_names(ts, l, 1, 0);
 	}
 	else if (errn == ERR_VARR) {
+		// ref arrays (all types)
 		atab_arrs(ts, l);
 	}
 	else if (errn == ERR_EVT) {

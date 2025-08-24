@@ -1201,6 +1201,24 @@ S void op_forstep(ND* nd) {
 		*pfro += step;
 	}
 }
+S void op_for_in(ND* nd) {
+	ND* ndx = nd + 1;
+	double* pnum = gnum(nd->v1);
+	ARR arr = arrf(nd->ri);
+	int ind = 0;
+	double old = *pnum;
+	while (ind < arr.len) {
+		*pnum = arr.pnum[ind];
+		exec_sequ(ndx->ex);
+		if (stop_flag) {
+			stop_flag -= 1;
+			break;
+		}
+		ind += 1;
+	}
+	if (ind == arr.len) *pnum = old;
+	free(arr.pnum);
+}
 
 S void op_break(ND* nd) {
 	stop_flag = nd->v1;
@@ -2437,6 +2455,7 @@ S void exec_sequ_slow(ND* nd) {
 }
 
 S void op_while_slow(ND* nd) {
+	if (rt.slow > 32) rt.slow -= 1;
 	while (intf(nd->le)) {
 		dbg_delay();
 		exec_sequ_slow(nd->ri);
@@ -2446,9 +2465,11 @@ S void op_while_slow(ND* nd) {
 		}
 		dbg_line(nd);
 	}
+	if (rt.slow > 32) rt.slow -= 1;
 }
 
 S void op_repeat_slow(ND* nd) {
+	if (rt.slow >= 32) rt.slow += 1;
 	ND* ndx = nd + 1;
 	dbg_delay();
 	while (1) {
@@ -2466,6 +2487,7 @@ S void op_repeat_slow(ND* nd) {
 			break;
 		}
 	}
+	if (rt.slow > 32) rt.slow -= 1;
 }
 
 S void op_if_slow(ND* nd) {
@@ -2494,11 +2516,14 @@ S void op_callsubr_slow(ND* nd) {
 }
 
 // ---------------------------------------------------
-S void xop_for_slow(ND* nd, double inc) {
+S void xop_for_slow(ND* nd, double inc, int start) {
+	if (rt.slow >= 32) rt.slow += 1;
 	ND* ndx = nd + 1;
 	double to = numf(nd->ri);
 	double* pfro = gnum(nd->v1);
-	*pfro = numf(ndx->ex2);
+	if (start >= 0) *pfro = start;
+	else *pfro = numf(ndx->ex2);
+	if (start == 0) to -= 1;
 	while (1) {
 		if (inc > 0 && *pfro > to) break;
 		if (inc < 0 && *pfro < to) break;
@@ -2511,75 +2536,32 @@ S void xop_for_slow(ND* nd, double inc) {
 		*pfro += inc;
 		dbg_line(nd);
 	}
+	if (rt.slow > 32) rt.slow -= 1;
 }
 
 
 S void op_for_slow(ND* nd) {
-	xop_for_slow(nd, 1);
+	xop_for_slow(nd, 1, -1);
 }
 S void op_fordown_slow(ND* nd) {
-	xop_for_slow(nd, -1);
+	xop_for_slow(nd, -1, -1);
 }
 
 S void op_forstep_slow(ND* nd) {
 	ND* ndx = nd + 1;
 	double step = numf(ndx->ex3);
-	xop_for_slow(nd, step);
+	xop_for_slow(nd, step, -1);
+}
+S void op_for_to_slow(ND* nd) {
+	xop_for_slow(nd, 1, 1);
 }
 
 S void op_for_range_slow(ND* nd) {
-	ND* ndx = nd + 1;
-	double to = numf(nd->ri);
-	double* pfro = gnum(nd->v1);
-	*pfro = 0;
-	while (*pfro < to) {
-		dbg_line(nd);
-		exec_sequ_slow(ndx->ex);
-		if (stop_flag) {
-			stop_flag -= 1;
-			break;
-		}
-		*pfro += 1;
-		dbg_delay();
-	}
-}
-S void op_for_to_slow(ND* nd) {
-	ND* ndx = nd + 1;
-	double to = numf(nd->ri);
-	double* pfro = gnum(nd->v1);
-	*pfro = 1;
-	while (*pfro <= to) {
-		dbg_line(nd);
-		exec_sequ_slow(ndx->ex);
-		if (stop_flag) {
-			stop_flag -= 1;
-			break;
-		}
-		*pfro += 1;
-		dbg_delay();
-	}
-}
-
-S void op_for_in(ND* nd) {
-	ND* ndx = nd + 1;
-	double* pnum = gnum(nd->v1);
-	ARR arr = arrf(nd->ri);
-	int ind = 0;
-	double old = *pnum;
-	while (ind < arr.len) {
-		*pnum = arr.pnum[ind];
-		exec_sequ(ndx->ex);
-		if (stop_flag) {
-			stop_flag -= 1;
-			break;
-		}
-		ind += 1;
-	}
-	if (ind == arr.len) *pnum = old;
-	free(arr.pnum);
+	xop_for_slow(nd, 1, 0);
 }
 
 S void op_for_in_slow(ND* nd) {
+	if (rt.slow >= 32) rt.slow += 1;
 	ND* ndx = nd + 1;
 	double* pnum = gnum(nd->v1);
 	ARR arr = arrf(nd->ri);
@@ -2598,9 +2580,11 @@ S void op_for_in_slow(ND* nd) {
 	}
 	if (ind == arr.len) *pnum = old;
 	free(arr.pnum);
+	if (rt.slow > 32) rt.slow -= 1;
 }
 
 S void op_for_instr(ND* nd) {
+	if (rt.slow >= 32) rt.slow += 1;
 	ND* ndx = nd + 1;
 	STR* pstr = gstr(nd->v1);
 	ARR arr = arrf(nd->ri);
@@ -2632,7 +2616,9 @@ S void op_for_instr(ND* nd) {
 	if (ind == arr.len) *pstr = old;
 	else str_free(&old);
 	free(arr.pstr);
+	if (rt.slow > 32) rt.slow -= 1;
 }
+
 #if 0
 S ARR op_map_number(ND* nd) {
 	ARR arr = arrf(nd->le);
