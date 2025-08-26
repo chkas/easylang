@@ -237,27 +237,19 @@ void append_tabb(struct proc* pro, char* ts, short l, short typ) {
 void atab_names(char* ts, short l, short typ, byte withproc) {
 	append_tabb(proc_p, ts, l, typ);
 	if (errproc != proc_p) append_tabb(errproc, ts, l, typ);
-	struct proc* p = proc_p + 1;
-	if (withproc) while (p < proc_p + proc_len) {
-		if (p->typ == typ + 1) apptab(p->name, ts, l);
-		p += 1;
-	}
-}
-void append_tabb_arr(struct proc* pro, char* ts, short l) {
-	struct vname *v = pro->vname_p;
-	if (v) while (v < pro->vname_p + pro->vname_len) {
-		if (strncmp(ts, v->name, l) == 0 && v->typ >= 2) {
-			str_append(&tabbuf, ":");
-			str_append(&tabbuf, v->name);
-			str_append(&tabbuf, vexf(v->typ));
-			//str_append(&tabbuf, " ");
+	if (withproc) {
+		struct proc* p = proc_p + 1;
+		while (p < proc_p + proc_len) {
+			if (p->typ == typ + 1) apptab(p->name, ts, l);
+			p += 1;
 		}
-		v += 1;
 	}
 }
 void atab_arrs(char* ts, short l) {
-	append_tabb_arr(proc_p, ts, l);
-	if (errproc != proc_p) append_tabb_arr(errproc, ts, l);
+	atab_names(ts, l, 2, 0);
+	atab_names(ts, l, 3, 0);
+	atab_names(ts, l, 4, 0);
+	atab_names(ts, l, 5, 0);
 }
 
 void atab_numfuncs(char* ts, short l) {
@@ -336,6 +328,7 @@ void make_tabbuf(char* ts) {
 	}
 	else if (errn == ERR_ARR) {
 		atab_names(ts, l, 2, 1);
+		atab_names(ts, l, 4, 0); //??
 		//atab_arrfuncs(ts, l); ??
 	}
 	else if (errn == ERR_STRARR) {

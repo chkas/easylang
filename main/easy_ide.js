@@ -10,8 +10,18 @@
     sysfunc "creator" or an equivalent function that returns
     "christof.kaser@gmail.com".
 */
-
 function eid(id) { return document.getElementById(id) }
+
+var infostr = `
+╭───────────────────────────────────────╮
+│ Welcome to programming with Easylang!\t│
+│\t\t\t\t\t│
+│ Some tips:\t\t\t\t│
+│\t\t\t\t\t│
+│ • TAB key suggests suitable inputs\t│
+│ • Shift+Enter or Enter/Enter to run\t│
+╰───────────────────────────────────────╯
+`
 
 var hambtn = eid("hambtn")
 var hamcnt = eid("hamcnt")
@@ -1507,6 +1517,7 @@ function ready() {
 			history.pushState(tutf, "", location.href)
 		}
 		else doTutChng()
+		out.value = infostr
 	}
 	tryRunCode()
 }

@@ -98,7 +98,7 @@ $(or)/tut_%$(v).js: tut_%.js
 	cp -p $< $@
 
 $(or)/tut_id$(v).js: tut_id.js
-	echo "const VERS = '$v'" >$@
+	echo "var VERS = '$v'" >$@
 	tail +2 $< >>$@
 
 $(or)/easyw$(v).js: $(wrk)/kbas.o kbasw.js
@@ -132,7 +132,7 @@ $(or)/index.html: $(wrk)/ide.html $(wrk)/tmp_ide.js
 
 $(or)/sw.js: sw.js $(or)/index.html $(or)/easyw$(v).js ../vers.txt
 	echo "const CACHE = 'd$(shell date +%y%m%d-%H%M)'" >$@
-	echo "const VERS = '$v'" >>$@
+	echo "var VERS = '$v'" >>$@
 	tail +3 sw.js >>$@
 
 #--------------------------------------------------------------------

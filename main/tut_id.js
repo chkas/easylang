@@ -1,4 +1,4 @@
-const VERS = ""
+var VERS = ""
 
 var lang = navigator.language.substring(0, 2)
 
@@ -20,15 +20,15 @@ if (lang == "de") {
 	]
 }
 
-tut_file = [
+var tut_file = [
 	"tut_learn" + VERS + ".js",
 	"tut_game" + VERS + ".js",
 	"tut_docu" + VERS + ".js",
 	"tut_func" + VERS + ".js",
 ]
 
-txt_locale_id = "de"
-txt_tutor_id = `
+var txt_locale_id = "de"
+var txt_tutor_id = `
 -
 
 * Demos

@@ -1171,8 +1171,6 @@ S int parse_proc_header(int mode, byte proctyp) {
 			typ = 'j';
 		}
 		else if (tok == t_amp) {
-			//cs_tok_nt();
-//kc?
 			csamp();
 			nexttok();
 
