@@ -879,9 +879,12 @@ S ND* parse_str_cmp(void) {
 	return nd;
 }
 
-S ND* parse_arr_cmp(void) {
+S ND* parse_arr_cmp(ND* nd0) {
 	ND* nd = mknd();
-	nd->le = parse_numarrex();
+//kc?
+	if (nd0) nd->le = nd0;
+	else nd->le = parse_numarrex();
+
 	cs_spc();
 	if (tok == t_eq) nd->intf = op_eqarr;
 	else if (tok == t_neq) nd->intf = op_neqarr;
@@ -961,8 +964,27 @@ S ND* parse_log_termx(ND* nd0) {
 			}
 		}
 	}
+//kc??
+	else if (tok == t_vnumael) {
+		ND* nd0 = mknd();
+		int t = parse_vnumael(nd0, 1);
+		if (t == AEL || t == AELAEL) {
+			// f[i] or f[i][j]
+			nd = parse_cmp(nd0);
+		}
+		else if (t == ARRAEL) {
+			// f[i][]
+			cs_tok_nt();
+			nd = parse_arr_cmp(nd0);
+		}
+		else {
+			nd = NULL;
+			errorx(ERR_BR);
+		}
+	}
+
 	else if (tok == t_vnumarr) {
-		nd = parse_arr_cmp();
+		nd = parse_arr_cmp(NULL);
 	}
 	else if (is_strfactor()) {
 		nd = parse_str_cmp();
@@ -974,7 +996,7 @@ S ND* parse_log_termx(ND* nd0) {
 			nd = parse_str_cmp();
 		}
 		else if (p && p->typ == FUNCARR) {
-			nd = parse_arr_cmp();
+			nd = parse_arr_cmp(NULL);
 		}
 		else {
 			nd = parse_cmp(NULL);

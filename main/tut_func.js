@@ -436,4 +436,37 @@ input_data
 4 * 6
 4.2 * ((5.3+8)*3 + 4)
 2.5 + 2 * 3.14
+
+* Returning arrays
+
+func[] vadd a[] b[] .
+   for i to len a[]
+      r[] &= a[i] + b[i]
+   .
+   return r[]
+.
+func[] vmul a[] b .
+   for i to len a[]
+      r[] &= a[i] * b
+   .
+   return r[]
+.
+print vadd [ 5 7 ] [ 2 3 ]
+print vmul [ 5 7 ] 11
+#
+func[][] matmul m1[][] m2[][] .
+   for i to len m1[][]
+      r[][] &= [ ]
+      for j to len m2[1][]
+         r[i][] &= 0
+         for k to len m2[][]
+            r[i][j] += m1[i][k] * m2[k][j]
+         .
+      .
+   .
+   return r[][]
+.
+a[][] = [ [ 1 2 3 ] [ 4 5 6 ] ]
+b[][] = [ [ 1 2 ] [ 3 4 ] [ 5 6 ] ]
+print matmul a[][] b[][]
 `

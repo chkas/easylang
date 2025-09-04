@@ -919,10 +919,9 @@ function tabu() {
 inp.onkeydown = function(e) {
 	var k = e.keyCode
 	if (cnd.tab) {
-		if (k == 9 || cnd.tabk == 8 && k == 8 || k == 37) {
+		if (k == 9 || cnd.tabk == 8 && k == 8) {
 			e.preventDefault()
-			var d = (k == 37) ? -1 : 1
-			cnd.tabind = (cnd.tabopts.length + cnd.tabind + d) % cnd.tabopts.length
+			cnd.tabind = (cnd.tabind + 1) % cnd.tabopts.length
 			cnd.firstChild.nodeValue = cnd.tabopts[cnd.tabind]
 			return
 		}
