@@ -2243,7 +2243,7 @@ S void parse_swap_stat(ND* nd) {
 		}
 	}
 // ----------------------------------------------------------------------------------------
-	else error("variable");
+	else errorx(ERR_V);
 }
 
 S void optimize_ass(ND* nd) {
