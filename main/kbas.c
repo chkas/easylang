@@ -160,7 +160,7 @@ enum {
 const char* tabstrs[] =
 	{
 	"", ":] :][", ":= :+= :-= :*= :/= ", ":= :&= ", ":= :<> ",
-	":= :in ", ":to :downto :step "
+	":= :in :to :range0 ", ":to :downto :step "
 };
 
 static char is_tab;
@@ -333,6 +333,7 @@ void make_tabbuf(char* ts) {
 	}
 	else if (errn == ERR_STRARR) {
 		atab_names(ts, l, 3, 1);
+		atab_names(ts, l, 5, 1);
 		apptab("strchars", ts, l);
 		apptab("strsplit", ts, l);
 		apptab("strtok", ts, l);

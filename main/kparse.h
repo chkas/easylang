@@ -367,6 +367,7 @@ S void parse_call_param(ND* nd, struct proc* p, byte isfunc) {
 					if (ndol != NULL) ndol->v1 = nd->v1;
 					expt_ntok(t_brrl);
 					expt_ntok(t_brr);
+					opline_add(nd, fmtline);
 				}
 				else {
 					expt(t_vnumarr);
@@ -379,10 +380,29 @@ S void parse_call_param(ND* nd, struct proc* p, byte isfunc) {
 				expt_ntok(t_brr);
 			}
 			else if (b == 'T') {
-				expt(t_vstrarr);
-				nd->v1 = parse_var(VAR_STRARR, RW);
-				nd->ri = NULL;
-				csbrr();
+//kc?
+				if (tok == t_vstrarr) {
+					// a$[]
+					nd->v1 = parse_var(VAR_STRARR, RW);
+					nd->ri = NULL;
+					csbrr();
+				}
+				else if (tok == t_vstrael) {
+					// a$[i][]
+					nd->v1 = get_var(VAR_STRARRARR, RD, tval, code_utf8len);
+					cs(tval);
+					cs("$[");
+					nexttok();
+					ND* ndol = NULL;
+					nd->ri = parse_ex_arr(&ndol);
+					if (ndol != NULL) ndol->v1 = nd->v1;
+					expt_ntok(t_brrl);
+					expt_ntok(t_brr);
+					opline_add(nd, fmtline);
+				}
+				else {
+					expt(t_vstrarr);
+				}
 			}
 			else if (b == 'U') {
 				expt(t_vstrarrarr);
@@ -964,7 +984,6 @@ S ND* parse_log_termx(ND* nd0) {
 			}
 		}
 	}
-//kc??
 	else if (tok == t_vnumael) {
 		ND* nd0 = mknd();
 		int t = parse_vnumael(nd0, 1);
@@ -982,7 +1001,6 @@ S ND* parse_log_termx(ND* nd0) {
 			errorx(ERR_BR);
 		}
 	}
-
 	else if (tok == t_vnumarr) {
 		nd = parse_arr_cmp(NULL);
 	}
@@ -1004,7 +1022,6 @@ S ND* parse_log_termx(ND* nd0) {
 	}
 	else {
 		nd = parse_cmp(NULL);
-//kc
 		if (nd == NULL) errorx(ERR_NUMSTR);
 	}
 	return nd;
