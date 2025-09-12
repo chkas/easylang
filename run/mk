@@ -107,6 +107,9 @@ if ("serviceWorker" in navigator) {
 				})
 			})
 		})
+		window.setInterval(() => {
+			reg.update()
+		}, 4 * 3600 * 1000);
 	})
 	navigator.serviceWorker.addEventListener("controllerchange", function () {
 		if (noti.inRefresh) return

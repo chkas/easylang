@@ -2,14 +2,12 @@ len row[] 90
 len col[] 90
 len box[] 90
 len grid[] 82
-# 
+#
 proc init .
    for pos = 1 to 81
       if pos mod 9 = 1
          s$ = input
-         if s$ = ""
-            s$ = input
-         .
+         if s$ = "" : s$ = input
          len inp[] 0
          for i = 1 to len s$
             if substr s$ i 1 <> " "
@@ -30,26 +28,18 @@ proc init .
    .
 .
 init
-# 
+#
 proc display .
    for i = 1 to 81
       write grid[i] & " "
-      if i mod 3 = 0
-         write " "
-      .
-      if i mod 9 = 0
-         print ""
-      .
-      if i mod 27 = 0
-         print ""
-      .
+      if i mod 3 = 0 : write " "
+      if i mod 9 = 0 : print ""
+      if i mod 27 = 0 : print ""
    .
 .
-# 
+#
 proc solve pos .
-   while grid[pos] <> 0
-      pos += 1
-   .
+   while grid[pos] <> 0 : pos += 1
    if pos > 81
       # solved
       display
@@ -76,7 +66,7 @@ proc solve pos .
    grid[pos] = 0
 .
 solve 1
-# 
+#
 input_data
 5 3 0  0 2 4  7 0 0
 0 0 2  0 0 0  8 0 0

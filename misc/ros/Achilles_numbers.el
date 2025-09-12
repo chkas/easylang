@@ -1,23 +1,24 @@
-func gcd n d .
+fastfunc gcd n d .
    if d = 0 : return n
    return gcd d (n mod d)
 .
-func totient n .
-   for m = 1 to n
+fastfunc totient n .
+   m = 1
+   while m <= n
       if gcd m n = 1 : tot += 1
+      m += 1
    .
    return tot
 .
-func isPowerful m .
+fastfunc isPowerful m .
    n = m
    f = 2
    l = sqrt m
    if m <= 1 : return 0
    while 1 = 1
-      q = n div f
       if n mod f = 0
          if m mod (f * f) <> 0 : return 0
-         n = q
+         n = n div f
          if f > n : return 1
       else
          f += 1
@@ -28,7 +29,7 @@ func isPowerful m .
       .
    .
 .
-func isAchilles n .
+fastfunc isAchilles n .
    if isPowerful n = 0 : return 0
    m = 2
    a = m * m
@@ -46,28 +47,26 @@ func isAchilles n .
 .
 print "First 50 Achilles numbers:"
 n = 1
-repeat
+while cnt < 50
    if isAchilles n = 1
       write n & " "
-      num += 1
+      cnt += 1
+      if cnt mod 10 = 0 : print ""
    .
    n += 1
-   until num >= 50
 .
-print ""
 print ""
 print "First 20 strong Achilles numbers:"
-num = 0
+cnt = 0
 n = 1
-repeat
+while cnt < 20
    if isAchilles n = 1 and isAchilles totient n = 1
       write n & " "
-      num += 1
+      cnt += 1
+      if cnt mod 10 = 0 : print ""
    .
    n += 1
-   until num >= 20
 .
-print ""
 print ""
 print "Number of Achilles numbers with 2 to 5 digits:"
 a = 10

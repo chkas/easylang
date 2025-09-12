@@ -1,4 +1,4 @@
-func divsum n alldiv .
+fastfunc divsum n alldiv .
    f = 2
    repeat
       q = n / f
@@ -31,10 +31,10 @@ proc ruth_aaron alldiv .
       n += 1
       until c >= 30
    .
+   print ""
 .
 print "first 30 ruth-aaron numbers (factors):"
 ruth_aaron 1
-print ""
 print ""
 print "first 30 ruth-aaron numbers (divisors):"
 ruth_aaron 0

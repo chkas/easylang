@@ -10,31 +10,23 @@ proc sieve .
    .
 .
 sieve
-# 
+#
 proc showsx nr .
    for i = len isdiv[] - 6 * nr downto 3
       if isdiv[i] = 0
          h = 0
-         for j to nr
-            h += isdiv[i + j * 6]
-         .
+         for j to nr : h += isdiv[i + j * 6]
          if h = 0
             cnt += 1
-            if cnt <= 5
-               s[] &= i
-            .
+            if cnt <= 5 : s[] &= i
          .
       .
    .
    print cnt & " sexy primes of " & nr + 1
-   if cnt > 5
-      write "... "
-   .
+   if cnt > 5 : write "... "
    for i = lower 5 len s[] downto 1
       write "(" & s[i]
-      for j to nr
-         write " " & s[i] + j * 6
-      .
+      for j to nr : write " " & s[i] + j * 6
       write ") "
    .
    print ""
@@ -43,16 +35,12 @@ proc showunsx .
    for i = len isdiv[] - 6 downto 2
       if isdiv[i] = 0 and isdiv[i + 6] = 1 and (i <= 6 or isdiv[i - 6] = 1)
          cnt += 1
-         if cnt <= 10
-            s[] &= i
-         .
+         if cnt <= 10 : s[] &= i
       .
    .
    print cnt & " unsexy primes"
    write "... "
-   for i = 10 downto 1
-      write s[i] & " "
-   .
+   for i = 10 downto 1 : write s[i] & " "
    print ""
 .
 showsx 1

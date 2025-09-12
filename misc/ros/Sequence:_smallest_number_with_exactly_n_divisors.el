@@ -3,9 +3,7 @@ func cntdiv n .
    while i <= sqrt n
       if n mod i = 0
          cnt += 1
-         if i <> sqrt n
-            cnt += 1
-         .
+         if i <> sqrt n : cnt += 1
       .
       i += 1
    .
@@ -21,6 +19,4 @@ while n < 15
    .
    i += 1
 .
-for v in seq[]
-   print v
-.
+print seq[]

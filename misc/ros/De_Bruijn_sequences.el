@@ -64,7 +64,7 @@ proc main .
    print substr db$ 1 130
    print ""
    write "The last 130 digits of the de Bruijn sequence are: "
-   print substr db$ -130 130
+   print substr db$ (len db$ - 129) 130
    print ""
    print "Validating the de Bruijn sequence:"
    validate db$
@@ -75,7 +75,7 @@ proc main .
    .
    validate dbr$
    print ""
-   db$ = substr db$ 1 4443 & "." & substr db$ 4445 (1 / 0)
+   db$ = substr db$ 1 4443 & "." & substr db$ 4445 9999999
    print "Validating the overlaid de Bruijn sequence:"
    validate db$
    print ""

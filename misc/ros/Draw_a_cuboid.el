@@ -1,6 +1,6 @@
 node[][] = [ [ -1 -2 -2 ] [ -1 -2 1 ] [ -1 2 -2 ] [ -1 2 1 ] [ 1 -2 -2 ] [ 1 -2 1 ] [ 1 2 -2 ] [ 1 2 1 ] ]
 edge[][] = [ [ 1 2 ] [ 2 4 ] [ 4 3 ] [ 3 1 ] [ 5 6 ] [ 6 8 ] [ 8 7 ] [ 7 5 ] [ 1 5 ] [ 2 6 ] [ 3 7 ] [ 4 8 ] ]
-# 
+#
 proc scale f .
    for i = 1 to len node[][] : for d = 1 to 3
       node[i][d] *= f
@@ -57,7 +57,7 @@ gtextsize 3
 scale 15
 rotate 45 45
 draw
-on key
+on key_down
    if keybkey = "ArrowUp"
       rotate 0 1
    elif keybkey = "ArrowDown"

@@ -263,6 +263,12 @@ void atab_strfuncs(char* ts, short l) {
 		apptab(tokstr[t], ts, l);
 	}
 }
+void atab_arrfuncs(char* ts, short l) {
+	apptab("strchars", ts, l);
+	apptab("strsplit", ts, l);
+	apptab("strtok", ts, l);
+}
+
 static const char* inopstr[] = { "+", "-", "*", "/", "div", "mod", NULL };
 static const char* logopstr[] = { "and", "or", NULL };
 static const char* cmpstr[] = { "=", "<>", "<", ">", "<=", ">=", NULL };
@@ -322,8 +328,13 @@ void make_tabbuf(char* ts) {
 		if (!ts[0]) str_append(&tabbuf, ":\"");
 		atab_names(ts, l, 1, 1);
 		atab_names(ts, l, 0, 1);
+		atab_names(ts, l, 2, 1);
+		atab_names(ts, l, 3, 1);
+		atab_names(ts, l, 4, 1);
+		atab_names(ts, l, 5, 1);
 		atab_strfuncs(ts, l);
 		atab_numfuncs(ts, l);
+		atab_arrfuncs(ts, l);
 		if (!ts[0]) str_append(&tabbuf, ":\"\"");
 	}
 	else if (errn == ERR_ARR) {
@@ -334,9 +345,7 @@ void make_tabbuf(char* ts) {
 	else if (errn == ERR_STRARR) {
 		atab_names(ts, l, 3, 1);
 		atab_names(ts, l, 5, 1);
-		apptab("strchars", ts, l);
-		apptab("strsplit", ts, l);
-		apptab("strtok", ts, l);
+		atab_arrfuncs(ts, l);
 	}
 	else if (errn == ERR_ARRARR) {
 		atab_names(ts, l, 4, 1);

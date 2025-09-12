@@ -1,7 +1,9 @@
 func$ add a$ b$ .
-   for i to higher len a$ len b$
+   if len a$ < len b$ : swap a$ b$
+   for i to len a$
       a = number substr a$ i 1
-      b = number substr b$ i 1
+      b = 0
+      if i <= len b$ : b = number substr b$ i 1
       r = a + b + c
       c = r div 10
       r$ &= r mod 10
@@ -9,13 +11,12 @@ func$ add a$ b$ .
    if c > 0 : r$ &= c
    return r$
 .
-#
 len fibdist[] 9
 proc mkfibdist .
    # generate 1000 fibonacci numbers as
    # (reversed) strings, because 53 bit
    # integers are too small
-   #
+   # 
    n = 1000
    prev$ = 0
    val$ = 1
@@ -32,7 +33,7 @@ proc mkfibdist .
    .
 .
 mkfibdist
-#
+# 
 len benfdist[] 9
 proc mkbenfdist .
    for i to 9
@@ -40,7 +41,7 @@ proc mkbenfdist .
    .
 .
 mkbenfdist
-#
+# 
 numfmt 0 3
 print "Actual Expected"
 for i to 9

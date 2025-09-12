@@ -6,6 +6,6 @@ repeat
 .
 gtext 10 70 "-> " & ans$
 # 
-on key
+on key_down
    # 
 .

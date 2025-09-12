@@ -1,23 +1,17 @@
-func has8divs n .
-   if n = 1
-      return 1
-   .
+fastfunc has8divs n .
+   if n = 1 : return 1
    cnt = 2
    sqr = sqrt n
-   for d = 2 to sqr
+   d = 2
+   while d <= sqr
       if n mod d = 0
          cnt += 1
-         if d <> sqr
-            cnt += 1
-         .
-         if cnt > 8
-            return 0
-         .
+         if d <> sqr : cnt += 1
+         if cnt > 8 : return 0
       .
+      d += 1
    .
-   if cnt = 8
-      return 1
-   .
+   if cnt = 8 : return 1
    return 0
 .
 while count < 50
@@ -27,6 +21,7 @@ while count < 50
       count += 1
    .
 .
+print ""
 while count < 50000
    x += 1
    if has8divs x = 1

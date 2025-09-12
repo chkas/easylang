@@ -1,9 +1,7 @@
 fastfunc isprim num .
    i = 2
    while i <= sqrt num
-      if num mod i = 0
-         return 0
-      .
+      if num mod i = 0 : return 0
       i += 1
    .
    return 1
@@ -17,15 +15,12 @@ func reverse s .
 .
 digs$[] = strchars "0123456789abcdef"
 func$ hex n .
-   if n = 0
-      return ""
-   .
+   if n = 0 : return ""
    return hex (n div 16) & digs$[n mod 16 + 1]
 .
 for i = 2 to 499
-   if isprim i = 1
-      if reverse i = i
-         write hex i & " "
-      .
+   if isprim i = 1 and reverse i = i
+      write hex i & " "
    .
 .
+print ""

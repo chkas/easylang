@@ -1,5 +1,4 @@
-func divcnt v .
-   n = v
+func divcnt n .
    tot = 1
    p = 2
    while p <= sqrt n

@@ -1,4 +1,4 @@
-func is_cyclops n .
+fastfunc is_cyclops n .
    if n = 0 : return 1
    m = n mod 10
    while m <> 0
@@ -13,7 +13,8 @@ func is_cyclops n .
       n = n div 10
       m = n mod 10
    .
-   return if n = 0 and count = 0
+   if n = 0 and count = 0 : return 1
+   return 0
 .
 fastfunc isprim num .
    i = 2
@@ -38,14 +39,15 @@ func blind n .
    .
    return n
 .
-func is_palindr n .
+fastfunc is_palindr n .
    l = n
    while l <> 0
       m = l mod 10
       k = 10 * k + m
       l = l div 10
    .
-   return if n = k
+   if n = k : return 1
+   return 0
 .
 proc show .
    while cnt < 50
@@ -60,7 +62,7 @@ proc show .
    i = 2
    cnt = 0
    while cnt < 50
-      if is_cyclops i = 1 and isprim i = 1
+      if isprim i = 1 and is_cyclops i = 1
          write i & " "
          cnt += 1
       .
@@ -91,5 +93,6 @@ proc show .
       .
       i += 1
    .
+   print ""
 .
 show

@@ -15,6 +15,9 @@ if ("serviceWorker" in navigator) {
 				}
 			})
 		})
+		window.setInterval(() => {
+			reg.update()
+		}, 4 * 3600 * 1000);
 	})
 	navigator.serviceWorker.ready.then(function(reg) {
 		console.log("sw ready")

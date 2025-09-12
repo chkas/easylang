@@ -120,7 +120,7 @@ $(wrk)/tmp_ide.js: easy_ide.js easy.js qrcode.js ../vers.txt
 	$(CLOSURE) $(CLOSOPT) --js $(wrk)/tmp.js --js_output_file $@
 
 
-$(or)/index.html: $(wrk)/ide.html $(wrk)/tmp_ide.js
+$(or)/index.html: $(wrk)/ide.html $(wrk)/tmp_ide.js swreg.js
 	# head -n -5 $(wrk)/ide.html >$@
 	head -n $(shell expr $(shell wc -l<$(wrk)/ide.html) - 5) $(wrk)/ide.html | sed s:/apps/:/apps/?v=$(v):g >$@
 	#head -n $(shell expr $(shell wc -l<$(wrk)/ide.html) - 5) $(wrk)/ide.html >$@

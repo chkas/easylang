@@ -916,6 +916,9 @@ function tabu() {
 	kaTab(s)
 }
 
+function issel() {
+	return window.getSelection().anchorOffset != window.getSelection().extentOffset
+}
 inp.onkeydown = function(e) {
 	var k = e.keyCode
 	if (cnd.tab) {
@@ -1023,6 +1026,7 @@ inp.onkeydown = function(e) {
 			undoAdd(inp.textContent)
 		}
 	}
+	if (k == 8 && issel()) undoAdd(inp.textContent)
 }
 
 inp.addEventListener("paste", function(e) {

@@ -1,22 +1,31 @@
-fastfunc isprim num .
-   if num mod 2 = 0
-      return 0
-   .
+fastfunc isprim3 num .
+   if num mod 2 = 0 : return 0
    i = 3
    while i <= sqrt num
-      if num mod i = 0
-         return 0
-      .
+      if num mod i = 0 : return 0
       i += 2
    .
    return 1
 .
-for n to 999
-   cnt = 0
-   for m to n
-      cnt += if n mod m = 0
+fastfunc divcnt n .
+   tot = 1
+   p = 2
+   while p <= sqrt n
+      cnt = 1
+      while n mod p = 0
+         cnt += 1
+         n = n div p
+      .
+      p += 1
+      tot *= cnt
    .
-   if cnt > 2 and isprim cnt = 1
+   if n > 1 : tot *= 2
+   return tot
+.
+for n to 99999
+   h = divcnt n
+   if h > 2 and isprim3 h = 1
       write n & " "
    .
 .
+print ""

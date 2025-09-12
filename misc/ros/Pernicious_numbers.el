@@ -1,12 +1,8 @@
 fastfunc isprim num .
-   if num < 2
-      return 0
-   .
+   if num < 2 : return 0
    i = 2
    while i <= sqrt num
-      if num mod i = 0
-         return 0
-      .
+      if num mod i = 0 : return 0
       i += 1
    .
    return 1
@@ -29,7 +25,6 @@ while cnt < 25
 print ""
 n = 1
 for n = 888888877 to 888888888
-   if isprim popc n = 1
-      write n & " "
-   .
+   if isprim popc n = 1 : write n & " "
 .
+print ""
