@@ -1220,6 +1220,35 @@ S void op_for_in(ND* nd) {
 	free(arr.pnum);
 }
 
+//kcc
+S void op_for_inarr(ND* nd) {
+	ND* ndx = nd + 1;
+	ARR* parr = garr(nd->v1);
+	ARR arrarr = arrf(nd->ri);
+	int ind = 0;
+	ARR old = *parr;
+	parr->parr = NULL;
+
+	while (ind < arrarr.len) {
+		free(parr->parr);
+		*parr = arrarr.parr[ind];
+		exec_sequ(ndx->ex);
+		if (stop_flag) {
+			stop_flag -= 1;
+			break;
+		}
+		ind += 1;
+	}
+	if (ind == arrarr.len) {
+		free(parr->parr);
+		*parr = old;
+	}
+	else {
+		free(old.parr);
+	}
+	free(arrarr.parr);
+}
+
 S void op_break(ND* nd) {
 	stop_flag = nd->v1;
 }

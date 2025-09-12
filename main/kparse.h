@@ -1922,8 +1922,6 @@ S void parse_for_stat(ND* nd) {
 	ND* ndx = mkndx();
 	stat_begin_nest();
 
-	if (tok != t_name && tok != t_vstr) error("variable");
-
 	if (tok == t_name) {
 		nd->v1 = parse_var(VAR_NUM, RW);
 		cs_spc();
@@ -1974,13 +1972,28 @@ S void parse_for_stat(ND* nd) {
 			nd->vf = op_for_in;
 		}
 	}
-	else  {
+	else if (tok == t_vstr) {
 		nd->v1 = parse_var(VAR_STR, RW);
 		cs_spc();
 		if (tok != t_name || strcmp(tval, "in") != 0) error("in");
 		csb_tok_spc_nt();
 		nd->ri = parse_strarrex();
 		nd->vf = op_for_instr;
+	}
+//kcc
+	else if (tok == t_vnumarr) {
+		nd->v1 = parse_var(VAR_NUMARR, RW);
+		csbrr();
+		cs_spc();
+		if (tok != t_name || strcmp(tval, "in") != 0) error("in");
+		csb_tok_spc_nt();
+		nd->ri = parse_numarrarrex();
+		nd->vf = op_for_inarr;
+	}
+	else {
+		//errorx(ERR_V);
+		// todo str, arr var
+		error("variable");
 	}
 	ndx->ex = parse_sequ_stat();
 	if (ndx->ex) return;
