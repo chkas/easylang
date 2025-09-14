@@ -2455,7 +2455,7 @@ S void exec_sequ_slow(ND* nd) {
 }
 
 S void op_while_slow(ND* nd) {
-	if (rt.slow > 32) rt.slow -= 1;
+	if (rt.slow >= 32) rt.slow += 1;
 	while (intf(nd->le)) {
 		dbg_delay();
 		exec_sequ_slow(nd->ri);
