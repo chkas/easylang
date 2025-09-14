@@ -12,8 +12,8 @@ proc addAxes &poly[][] &r[][] .
 proc projectAxis &poly[][] &axis[] &min &max .
    min = 1 / 0
    max = -1 / 0
-   for i to len poly[][]
-      p = dot axis[] poly[i][]
+   for p[] in poly[][]
+      p = dot axis[] p[]
       min = lower min p
       max = higher max p
    .
@@ -22,10 +22,9 @@ func polyOverlap &poly1[][] &poly2[][] .
    axes[][] = [ ]
    addAxes poly1[][] axes[][]
    addAxes poly2[][] axes[][]
-   for i to len axes[][]
-      axis[] = axes[i][]
-      projectAxis poly1[][] axis[] min1 max1
-      projectAxis poly2[][] axis[] min2 max2
+   for ax[] in axes[][]
+      projectAxis poly1[][] ax[] min1 max1
+      projectAxis poly2[][] ax[] min2 max2
       if max1 < min2 or max2 < min1 : return 0
    .
    return 1
@@ -36,8 +35,8 @@ proc polyDraw &poly[][] col .
    gcolor col
    glinewidth 0.05
    gpenup
-   for i = 1 to len poly[][]
-      glineto poly[i][1] poly[i][2]
+   for p[] in poly[][]
+      glineto p[1] p[2]
    .
    glineto poly[1][1] poly[1][2]
 .

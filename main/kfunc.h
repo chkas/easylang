@@ -1220,35 +1220,6 @@ S void op_for_in(ND* nd) {
 	free(arr.pnum);
 }
 
-//kcc
-S void op_for_inarr(ND* nd) {
-	ND* ndx = nd + 1;
-	ARR* parr = garr(nd->v1);
-	ARR arrarr = arrf(nd->ri);
-	int ind = 0;
-	ARR old = *parr;
-	parr->parr = NULL;
-
-	while (ind < arrarr.len) {
-		free(parr->parr);
-		*parr = arrarr.parr[ind];
-		exec_sequ(ndx->ex);
-		if (stop_flag) {
-			stop_flag -= 1;
-			break;
-		}
-		ind += 1;
-	}
-	if (ind == arrarr.len) {
-		free(parr->parr);
-		*parr = old;
-	}
-	else {
-		free(old.parr);
-	}
-	free(arrarr.parr);
-}
-
 S void op_break(ND* nd) {
 	stop_flag = nd->v1;
 }
@@ -2645,6 +2616,37 @@ S void op_for_instr(ND* nd) {
 	if (ind == arr.len) *pstr = old;
 	else str_free(&old);
 	free(arr.pstr);
+	if (rt.slow > 32) rt.slow -= 1;
+}
+
+//kcc
+S void op_for_inarr(ND* nd) {
+	if (rt.slow >= 32) rt.slow += 1;
+	ND* ndx = nd + 1;
+	ARR* parr = garr(nd->v1);
+	ARR arrarr = arrf(nd->ri);
+	int ind = 0;
+	ARR old = *parr;
+	while (ind < arrarr.len) {
+		*parr = arrarr.parr[ind];
+
+		if (rt.slow == 0) exec_sequ(ndx->ex);
+		else {
+			dbg_line(nd);
+			exec_sequ_slow(ndx->ex);
+		}
+
+		if (stop_flag) {
+			stop_flag -= 1;
+			break;
+		}
+		ind += 1;
+		dbg_delay();
+		free(parr->parr);
+	}
+	if (ind == arrarr.len) *parr = old;
+	else free(old.parr);
+	free(arrarr.parr);
 	if (rt.slow > 32) rt.slow -= 1;
 }
 
