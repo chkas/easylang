@@ -145,16 +145,11 @@ canvas:focus{outline: none}
 
 <div id=noti class=lnk style="margin-top:10px">Click here to update to new version<br></div>
 
-<div style="margin-top:8px;margin-left:8px" class=btn id=b_up>▲&#xFE0E;</div>
-<div class=btn id=b_down>▼&#xFE0E;</div>
-<div class=btn id=b_left>◀&#xFE0E;</div>
-<div class=btn id=b_right>▶&#xFE0E;</div>
-<br>
 <div style="margin-top:8px;margin-left:8px" class=btn id=b_time>Min+</div>
 <div class=btn id=b_hour>Hour+</div>
 <div class=btn id=b_day>Day+</div>
 <div class=btn onclick='key(this, " ")'>Now</div>
-<br>
+<p>
 <div style="margin-top:8px;margin-left:8px" class=btn onclick='key(this, "n")'>Text</div>
 <div class=btn onclick='key(this, "v")'>Visible</div>
 <div class=btn style="margin-left:16px" onclick=getpos()>GPS</div>
@@ -195,19 +190,11 @@ if ("serviceWorker" in navigator) {
 window.onresize = function() {
 	var h = window.innerHeight
 	var w = window.innerWidth
-	if (w - 340 > h - 116) {
-		if (h > w - 340) h = w - 340
-		w = h
-	}
-	else {
-		if (w > h - 116) w = h - 116
-	}
+	if (h < w) [h, w] = [w, h]
+	if (h - w < 140) w = h - 140
 	canv.style.width = Math.floor(w) + "px"
 	canv.style.height = Math.floor(w) + "px"
 }
-
-window.onresize()
-
 
 function reg(btn, key) {
 	btn.key = key
@@ -224,10 +211,6 @@ function reg(btn, key) {
 	btn.onmouseleave = mup
 }
 
-reg(b_up, "ArrowUp")
-reg(b_down, "ArrowDown")
-reg(b_left, "ArrowLeft")
-reg(b_right, "ArrowRight")
 reg(b_time, "m")
 reg(b_hour, "h")
 reg(b_day, "d")
@@ -254,6 +237,7 @@ function key(btn, k) {
 }
 
 function getpos() {
+
 	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(posfunc);
 	}
@@ -297,6 +281,8 @@ function msgf(m) {
 }
 
 easyinit(canv, null, msgf)
+
+setTimeout(window.onresize, 100)
 
 </script>
 EOF

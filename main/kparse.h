@@ -2103,11 +2103,11 @@ S void parse_arrbase_stat(ND* nd) {
 S void parse_arrarr_swap(ND* nd, byte arrtok, enum vartyp arrtype) {
 
 	nd->vf = op_swaparr;
-	nd->v1 = parse_var(arrtype + 2, RW);
+	nd->v1 = parse_var(arrtype, RW);
 	expt_ntok(t_brr);
 	cs_spc();
-	if (tok == arrtok + 2) {
-		nd->v2 = parse_var(arrtype + 2, RW);
+	if (tok == arrtok) {
+		nd->v2 = parse_var(arrtype, RW);
 		expt_ntok(t_brr);
 	}
 	else {
@@ -2266,10 +2266,10 @@ S void parse_swap_stat(ND* nd) {
 	}
 	else if (tok >= t_vnumarrarr && tok <= t_vstrarrarr) {
 		if (tok == t_vnumarrarr) {
-			parse_arrarr_swap(nd, t_vnumarr, VAR_NUMARR);
+			parse_arrarr_swap(nd, t_vnumarrarr, VAR_NUMARRARR);
 		}
 		else {
-			parse_arrarr_swap(nd, t_vstrarr, VAR_STRARR);
+			parse_arrarr_swap(nd, t_vstrarrarr, VAR_STRARRARR);
 		}
 	}
 // ----------------------------------------------------------------------------------------

@@ -1,14 +1,10 @@
 func$ encr txt$ pw$ d .
    txt$[] = strchars txt$
-   for c$ in strchars pw$
-      pw[] &= strcode c$ - 65
-   .
+   for c$ in strchars pw$ : pw[] &= strcode c$ - 65
    for c$ in txt$[]
       c = strcode c$
-      if c >= 97
-         c -= 32
-      .
-      if c >= 65 and c <= 97
+      if c >= 97 : c -= 32
+      if c >= 65 and c <= 90
          pwi = (pwi + 1) mod1 len pw[]
          c = (c - 65 + d * pw[pwi]) mod 26 + 65
          r$ &= strchar c

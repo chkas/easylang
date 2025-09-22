@@ -1,4 +1,5 @@
 fastfunc isprim num .
+   if num < 2 : return 0
    if num mod 2 = 0 and num > 2 : return 0
    i = 3
    while i <= sqrt num
@@ -7,43 +8,33 @@ fastfunc isprim num .
    .
    return 1
 .
-indN = 1
-indM = 2
-numP = 2
-numC = 4
-sumP = 2
-sumC = 4
+comp = 2
+cont = 1
 #
 numfmt 11 0
 print "        sum     primes composites"
 repeat
-   if sumC > sumP
+   if primeSum < compSum or cont = 1
       repeat
-         numP += 1
-         until isprim numP = 1
+         prime += 1
+         until isprim prime = 1
       .
-      sumP += numP
-      indN += 1
+      primeSum += prime
+      primeCnt += 1
    .
-   if sumP > sumC
+   if compSum < primeSum or cont = 1
       repeat
-         numC += 1
-         until isprim numC = 0
+         comp += 1
+         until isprim comp = 0
       .
-      sumC += numC
-      indM += 1
+      compSum += comp
+      compCnt += 1
    .
-   if sumP = sumC
-      print sumP & indN & indM
+   cont = 0
+   if primeSum = compSum
+      print primeSum & primeCnt & compCnt
+      cont = 1
       cnt += 1
-      if cnt < 8
-         repeat
-            numC += 1
-            until isprim numC = 0
-         .
-         sumC += numC
-         indM += 1
-      .
    .
    until cnt >= 8
 .
