@@ -20,7 +20,7 @@ pre{
 	overflow-y:auto;
 }
 pre.code {
-	width:50vw;
+	width:40vw;
 	max-width:680px;
 	max-height:50vh;
 	min-height:80px;
@@ -41,8 +41,8 @@ textarea {
 canvas {
 	color:#fff;
 	margin-left:12px;
-	width:calc(50vw - 63px);
-	height:calc(50vw - 63px);
+	width:calc(60vw - 63px);
+	height:calc(60vw - 63px);
 }
 @media only screen and (max-width: 600px) {
 	textarea {

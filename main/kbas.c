@@ -380,9 +380,11 @@ void make_tabbuf(char* ts) {
 	}
 	else if (errn == t_vnumarr) {
 		atab_names(ts, l, 2, 0);
+		atab_names(ts, l, 4, 0);
 	}
 	else if (errn == t_vstrarr) {
 		atab_names(ts, l, 3, 0);
+		atab_names(ts, l, 5, 0);
 	}
 	else if (errn == t_vnumarrarr) {
 		atab_names(ts, l, 4, 0);

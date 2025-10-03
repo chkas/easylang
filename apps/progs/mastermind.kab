@@ -79,8 +79,9 @@ proc rate .
       next_row
    .
 .
-on timer
-   row = -1
+subr next_guess
+   guess[col] = guess[col] mod 6 + 1
+   draw_guess
 .
 proc new .
    row = 0
@@ -115,10 +116,24 @@ proc new .
    guess[4] = 2
    next_row
 .
+on timer
+   if col > 0
+      next_guess
+      timer 0.8
+   else
+      row = -1
+   .
+.
+on mouse_up
+   if col > 0
+      timer -1
+      col = 0
+   .
+.
 proc do_move .
-   c = (mouse_x - 15) div 12
-   guess[c + 1] = guess[c + 1] mod 6 + 1
-   draw_guess
+   col = (mouse_x - 15) div 12 + 1
+   next_guess
+   timer 0.8
 .
 on mouse_down
    if row = -1

@@ -25,8 +25,11 @@ else
 	CLOSURE = java -jar $(EMSDK)/upstream/emscripten/node_modules/google-closure-compiler-java/compiler.jar
 endif
 
-#CLOSOPT = --language_in=ECMASCRIPT5_STRICT --compilation_level ADVANCED
+# only works to version 3.1.70
 CLOSOPT = --compilation_level ADVANCED
+
+# when using newer emsdk
+#CLOSOPT = --language_in=UNSTABLE --compilation_level ADVANCED
 
 out := $(HOME)/out/easylang
 wrk := $(out)/wrk
@@ -84,12 +87,12 @@ $(apps)/easyw.js: $(wrk)/easyw.js
 	$(CLOSURE) --js $< --js_output_file $@ --jscomp_off "*"
 
 $(apps)/easy.js: easy.js
-	$(CLOSURE)  $(CLOSOPT) --js $< --js_output_file $@
+	$(CLOSURE) $(CLOSOPT) --js $< --js_output_file $@
 
 $(apps)/easy_code2.js: easy.js ../run/easy_code.js
 	cat easy.js >$(wrk)/tmp.js
 	cat ../run/easy_code.js >>$(wrk)/tmp.js
-	$(CLOSURE)  $(CLOSOPT) --js $(wrk)/tmp.js --js_output_file $@
+	$(CLOSURE) $(CLOSOPT) --js $(wrk)/tmp.js --js_output_file $@
 
 $(or)/%: %
 	cp -p $< $@
