@@ -7,7 +7,6 @@ proc tree x y l w ang dp .
       gcolor3 10 + randomf * 8 7 0
    .
    glinewidth w
-   move x y
    xn = x + l * cos ang
    yn = y + l * sin ang
    gline x y xn yn

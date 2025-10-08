@@ -96,7 +96,7 @@ window.onresize()
 var src = []
 
 src.push(`ang = 45
-color 881
+gcolor 881
 on animate
    gclear
    gcircle 50 50 1
@@ -132,7 +132,7 @@ subr collide
       vy[j] += dy
    .
 .
-background 111
+gbackground 111
 on animate
    gclear
    for i = 1 to n
@@ -167,7 +167,6 @@ src.push(`proc tree x y l w ang dp .
       gcolor3 10 + randomf * 8 7 0
    .
    glinewidth w
-   move x y
    xn = x + l * cos ang
    yn = y + l * sin ang
    gline x y xn yn

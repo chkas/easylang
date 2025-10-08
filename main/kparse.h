@@ -2402,10 +2402,10 @@ S void parse_funcproc(void) {
 
 
 S void (*vftb[])(ND*) = {
-	op_print, op_text, op_write,
-	op_sleep, op_timer, op_textsize, op_linewidth, op_co_rotate, op_co_scale, op_circle,
+	op_print, op_write,
+	op_sleep, op_timer, op_textsize, op_linewidth, op_co_rotate, op_co_scale,
 	op_color, op_background, op_mouse_cursor, op_random_seed,
-	op_move, op_line, op_co_translate, op_rect, op_numfmt,
+	op_lineto, op_co_translate, op_numfmt,
 	op_gtext,
 	op_color3, op_gcircle,
 	op_grect, op_gline, op_gcircseg,
@@ -2586,7 +2586,7 @@ S ND* parse_stat(void) {
 				ND* ndx;
 				if (t >= t_gtext) ndx = mkndx();
 				nd->le = parse_ex();
-				if (t >= t_move) {
+				if (t >= t_glineto) {
 					if (tok == t_comma) cs_tok_nt();
 					cs_spc();
 					nd->ri = parse_ex();

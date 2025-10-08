@@ -18,11 +18,8 @@ void gr_color(int r, int g, int b) {}
 void gr_backcolor(int r, int g, int b) {}
 
 void gr_init(const char* progname, int mask) {}
-void gr_move(double x, double y) {}
-void gr_rect(double x, double y) {}
-void gr_circle(double rad) {}
 
-void gr_line(double fx, double fy) {}
+void gr_lineto(double fx, double fy) {}
 void gr_curve(double* val, int len) {}
 void gr_translate(double x, double y) {}
 void gr_rotate(double w) {}
@@ -38,7 +35,6 @@ void gr_sleep(double sec) {
 */
 }
 
-static void gr_text(const char* str) {}
 static void gr_gtext(double x, double y, const char* str) {}
 static void gr_gcircle(double x, double y, double r) {}
 static void gr_grect(double x, double y, double w, double h) {}

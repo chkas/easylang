@@ -471,7 +471,6 @@ print a[]
 # this defines 3 arrays with length 4
 len a[][] 3
 for i = 1 to len a[][] : len a[i][] 4
-
 a[1][2] = 99
 print a[][]
 a[1][] &= 12

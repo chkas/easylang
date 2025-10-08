@@ -20,10 +20,10 @@ static const char* tokstr[] = {
 
 	"return", "swap", "gclear", "drawgrid", "gpenup", "break",  "arrbase",
 
-	"print", "text", "write",
-	"sleep", "timer", "gtextsize", "glinewidth", "coord_rotate", "coord_scale", "circle",
+	"print", "write",
+	"sleep", "timer", "gtextsize", "glinewidth", "coord_rotate", "coord_scale",
 	"gcolor", "gbackground", "mouse_cursor", "random_seed",
-	"move", "glineto", "coord_translate", "rect", "numfmt",
+	"glineto", "coord_translate", "numfmt",
 	"gtext",
 	"gcolor3", "gcircle",
 	"grect", "gline",
@@ -49,7 +49,7 @@ static const char* tokstr[] = {
 	"array variable", "string array variable",
 	"array array variable", "string array array variable",
 
-	"pr", "color", "clear", "background", "textsize", "linewidth", "line", "polygon", "color3", "curve", "randint",
+	"pr", "randint",
 	""
 };
 
@@ -63,10 +63,10 @@ enum token_tok {
 
 	t_return, t_swap, t_gclear, t_drawgrid, t_gpenup, t_break, t_arrbase,
 
-	t_print, t_text, t_write,
-	t_sleep, t_timer, t_gtextsize, t_glinewidth, t_co_rotate, t_co_scale, t_circle,
+	t_print, t_write,
+	t_sleep, t_timer, t_gtextsize, t_glinewidth, t_co_rotate, t_co_scale,
 	t_gcolor, t_gbackground, t_mouse_cursor, t_random_seed,
-	t_move, t_glineto, t_co_translate, t_rect, t_numfmt,
+	t_glineto, t_co_translate, t_numfmt,
 	t_gtext,
 	t_gcolor3, t_gcircle,
 	t_grect, t_gline,
@@ -92,7 +92,7 @@ enum token_tok {
 	t_vnumarr, t_vstrarr,
 	t_vnumarrarr, t_vstrarrarr,
 
-	t_pr, t_color, t_clear, t_background, t_textsize, t_linewidth, t_line, t_polygon, t_color3, t_curve, t_randint,
+	t_pr, t_randint,
 
 	t_eof,
 
@@ -101,25 +101,25 @@ enum token_tok {
 };
 
 static int tbl_a[] = { t_and, t_abs, t_asin, t_acos, t_atan, t_atan2, t_arrbase, 0 } ;
-static int tbl_b[] = { t_break, t_background, t_bitand, t_bitor, t_bitxor, t_bitshift, t_bitnot, 0 } ;
-static int tbl_c[] = { t_clear, t_color, t_circle, t_cos, t_color3, t_curve, t_co_rotate, t_co_translate, t_co_scale, 0 } ;
+static int tbl_b[] = { t_break, t_bitand, t_bitor, t_bitxor, t_bitshift, t_bitnot, 0 } ;
+static int tbl_c[] = { t_cos, t_co_rotate, t_co_translate, t_co_scale, 0 } ;
 static int tbl_d[] = { t_divi, t_divi1, t_drawgrid, 0 } ;
 static int tbl_e[] = { t_else, t_elif, t_end, t_error, 0 };
 static int tbl_f[] = { t_for, t_func, t_floor, t_funcdecl, t_fastfunc, 0 };
-static int tbl_g[] = { t_global, t_gcolor, t_grect, t_gline, t_gcircle, t_gtext, t_gclear, t_gtextsize, t_glinewidth, t_gbackground, t_gpolygon, t_glineto, t_gpenup, t_gcolor3, t_gcurve, t_gcircseg, 0 };
+static int tbl_g[] = { t_global, t_gcolor, t_grect, t_gline, t_gcircle, t_gtext, t_gclear, t_gtextsize, t_glinewidth, t_gbackground, t_glineto, t_gpenup, t_gcolor3, t_gpolygon, t_gcurve, t_gcircseg, 0 };
 static int tbl_h[] = { t_higher, 0 };
 static int tbl_i[] = { t_if, t_input, t_input_data, 0 };
 static int tbl_j[] = { 0 };
 static int tbl_k[] = { t_keyb_key, 0 };
-static int tbl_l[] = { t_len, t_lower, t_line, t_linewidth, t_log10, 0 };
-static int tbl_m[] = { t_mod, t_mod1, t_move, t_mouse_x, t_mouse_y, t_mouse_cursor, 0 };
+static int tbl_l[] = { t_len, t_lower, t_log10, 0 };
+static int tbl_m[] = { t_mod, t_mod1, t_mouse_x, t_mouse_y, t_mouse_cursor, 0 };
 static int tbl_n[] = { t_not, t_numfmt, t_number, 0 };
 static int tbl_o[] = { t_or, t_on, 0 };
-static int tbl_p[] = { t_print, t_proc, t_procdecl, t_pr, t_pi, t_pow, t_polygon, t_prefix, 0 };
+static int tbl_p[] = { t_print, t_proc, t_procdecl, t_pr, t_pi, t_pow, t_prefix, 0 };
 static int tbl_q[] = { 0 };
-static int tbl_r[] = { t_repeat, t_return, t_randomf, t_rect, t_random_seed, t_random, t_randint, 0 };
+static int tbl_r[] = { t_repeat, t_return, t_randomf, t_random_seed, t_random, t_randint, 0 };
 static int tbl_s[] = { t_swap, t_subr, t_sleep, t_systime, t_substr, t_sqrt, t_sin, t_strord, t_strpos, t_strcompare, t_sysfunc, t_strchar, t_strjoin, t_sign, t_sound, 0 };
-static int tbl_t[] = { t_tan, t_timestr, t_text, t_timer, t_textsize, 0 };
+static int tbl_t[] = { t_tan, t_timestr, t_timer, 0 };
 static int tbl_u[] = { t_until, 0 };
 static int tbl_v[] = { 0 };
 static int tbl_w[] = { t_while, t_write, 0 };
@@ -130,7 +130,7 @@ static int* tbl_all[] = {
 	tbl_q, tbl_r, tbl_s, tbl_t, tbl_u, tbl_v, tbl_w
 } ;
 
-static int tok_repl[] = { t_print, t_gcolor, t_gclear, t_gbackground, t_gtextsize, t_glinewidth, t_glineto, t_gpolygon, t_gcolor3, t_gcurve, t_random };
+static int tok_repl[] = { t_print, t_random };
 
 static byte tok;
 static byte tokpr;

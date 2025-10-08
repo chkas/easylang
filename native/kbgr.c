@@ -68,7 +68,7 @@ void gr_textsize(double sz) {
 
 static int linew;
 static int linew2;
-static int grline;
+static int grpen;
 
 void gr_linewidth(double w) {
 	linew = FX * w + 0.5;
@@ -178,7 +178,7 @@ void gr_init(const char* progname, int mask) {
 	if (mask & 32) do_animate = 1;
 	botleft = true;
 	if (sysconfig & 1) botleft = false;
-	grline = 0;
+	grpen = 0;
 	gx = 0;
 	gy = FX * 100;
 }
@@ -186,21 +186,6 @@ void gr_init(const char* progname, int mask) {
 double inv(double y) {
 	if (botleft) return 100 - y;
 	return y;
-}
-
-void gr_move(double x, double y) {
-	gx = FX * x;
-	gy = FX * inv(y);
-	grline = 1;
-}
-
-void gr_rect(double cx, double cy) {
-	double h = (int)(FX * cy) + 1;
-	double y;
-	if (botleft) y = gy - h;
-	else y = gy;
-	SDL_Rect r = {.x = gx, .y = y, .w = (int)(FX * cx) + 1, .h = (int)(FX * cy) + 1};
-	SDL_RenderFillRect(renderer, &r);
 }
 
 static void line(int x1, int y1, int x2, int y2) {
@@ -306,9 +291,6 @@ static void thline(int x1, int y1, int x2, int y2) {
 	}
 }
 
-static void gr_circle(double rad) {
-	circle(gx, gy, (int)(FX * rad * 2 + 0.5));
-}
 static void gr_gcircle(double fx, double fy, double rad) {
 	int x = FX * fx;
 	int y = FX * inv(fy);
@@ -334,19 +316,22 @@ static void gr_gline(double fx, double fy, double fx2, double fy2) {
 	if (x == x2 && y == y2) return;
 	thline(x, y, x2, y2);
 	circle(x2, y2, linew);
+	grpen = 1;
+	gx = x2;
+	gy = y2;
 }
 
-void gr_line(double fx, double fy) {
+void gr_lineto(double fx, double fy) {
 	int x = fx * FX;
 	int y = inv(fy) * FX;
 
-	if (grline) {
+	if (grpen) {
 		circle(gx, gy, linew);
 		if (gx == x && gy == y) return;
 		thline(gx, gy, x, y);
 		circle(x, y, linew);
 	}
-	else grline = 1;
+	else grpen = 1;
 	gx = x;
 	gy = y;
 }
@@ -439,10 +424,6 @@ void text(int x, int y, const char* str) {
 	SDL_FreeSurface(s);
 }
 
-void gr_text(const char* str) {
-	text(gx, gy, str);
-	grline = 0;
-}
 void gr_gtext(double fx, double fy, const char* str) {
 	int x = fx * FX;
 	int y = inv(fy) * FX;
@@ -454,7 +435,7 @@ SDL_Surface* backgr = NULL;
 void gr_sys(unsigned short h) {
 
 	if (h == 1) {	// clear
-		grline = 0;
+		grpen = 0;
 		if (backgr) {
 			SDL_Texture* t = SDL_CreateTextureFromSurface(renderer, backgr);
 			SDL_RenderCopy(renderer, t, NULL, NULL);
@@ -726,33 +707,33 @@ int main(int argc, char* argv[]) {
 
 	gr_linewidth(0.5);
 	gr_move(20, 90);
-	gr_line(20, 90);
+	gr_lineto(20, 90);
 
 	gr_linewidth(0.2);
 	gr_move(30, 90);
-	gr_line(30, 90);
+	gr_lineto(30, 90);
 
 	gr_move(20, 20);
 	gr_text("Hello");
 
 	gr_color(0, 0, 255);
 	gr_move(1, 1);
-	gr_line(1, 99);
-	gr_line(99, 99);
-	gr_line(99, 1);
-	gr_line(1, 1);
+	gr_lineto(1, 99);
+	gr_lineto(99, 99);
+	gr_lineto(99, 1);
+	gr_lineto(1, 1);
 
 	gr_color(0, 255, 0);
 	gr_move(10, 10);
-	gr_line(90, 90);
+	gr_lineto(90, 90);
 
 	gr_linewidth(20);
 	gr_move(30, 50);
-	gr_line(30, 50);
+	gr_lineto(30, 50);
 
 	gr_linewidth(2);
 	gr_move(10, 50);
-	gr_line(50, 60);
+	gr_lineto(50, 60);
 
 	gr_color(255, 0, 0);
 	gr_move(10, 50);
@@ -764,7 +745,7 @@ int main(int argc, char* argv[]) {
 	gr_linewidth(0.5);
 	gr_color(0, 0, 0);
 	gr_move(20, 90);
-	gr_line(20, 90);
+	gr_lineto(20, 90);
 
 	gr_event_loop();
 	return 0;

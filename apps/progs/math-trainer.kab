@@ -117,7 +117,7 @@ proc draw_key col ind .
    gtextsize 16
    gtext x + 5 y + 4.5 s$
 .
-background 010
+gbackground 010
 proc start .
    init_vars
    gclear

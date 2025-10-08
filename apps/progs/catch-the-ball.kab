@@ -18,7 +18,7 @@ subr start
    gtextsize 6
    new_ball
 .
-background 000
+gbackground 000
 subr backgr
    gclear
    gcolor 222

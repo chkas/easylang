@@ -16,7 +16,7 @@ subr eyes
    eye 20 80
    eye 40 80
 .
-linewidth 2
+glinewidth 2
 on mouse_move
    eyes
    if down = 1

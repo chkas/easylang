@@ -160,7 +160,7 @@ for i to len col[]
       s$ = "0" & s$
    .
    gcolor 000
-   if col[i] = 0 or col[i] = 432 : color 888
+   if col[i] = 0 or col[i] = 432 : gcolor 888
    gtext x + 4 y + 4 s$
 .
 
@@ -1013,7 +1013,7 @@ end
 #
 x = -10
 while x <= 100
-   clear
+   gclear
    street
    car
    sleep 0.05
