@@ -16,8 +16,8 @@ for i range0 10
    gline i * 9 + 10 5 i * 9 + 10 97
    gtext i * 9 + 10 1 i * stx
 .
-color 900
-linewidth 0.5
+gcolor 900
+glinewidth 0.5
 gpenup
 for i = 1 to n
    x = x[i] * 9 / stx + 10

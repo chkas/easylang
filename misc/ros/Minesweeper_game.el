@@ -105,7 +105,7 @@ proc test ind .
       .
    .
 .
-background 676
+gbackground 676
 proc start .
    gclear
    gcolor 353

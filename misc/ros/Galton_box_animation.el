@@ -28,7 +28,7 @@ proc init .
    .
 .
 # 
-color 543
+gcolor 543
 on timer
    if busy = 0 and random 4 = 1
       busy = 1

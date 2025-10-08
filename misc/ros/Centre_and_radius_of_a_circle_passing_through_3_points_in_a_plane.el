@@ -26,7 +26,7 @@ sc = 2
 gcolor 966
 gcircle sc * cx sc * cy sc * cr
 # 
-color -1
+gcolor -1
 for i to 3
    gcircle sc * p[i * 2 - 1] sc * p[i * 2] 1
 .

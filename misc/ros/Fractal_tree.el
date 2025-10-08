@@ -1,4 +1,4 @@
-color 555
+gcolor 555
 proc tree x y angle depth .
    glinewidth depth * 0.4
    xn = x + cos angle * depth * 1.4 * (randomf + 0.5)
