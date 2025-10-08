@@ -3,22 +3,18 @@ rad = 25
 x = 50
 y = 75
 vx = 0.5
-linewidth 2
+glinewidth 2
 on animate
-   clear
-   color 422
-   move 0 72
-   line 0 0
-   line 100 0
-   line 100 72
-   move x y
-   color 422
-   circle rad
-   color 888
-   move x - 12 y + 5
-   text "Code"
-   move x - 13 y - 5
-   text "Runner"
+   gclear
+   gcolor 422
+   gline 0 72 0 0
+   glineto 100 0
+   glineto 100 72
+   gcolor 422
+   gcircle x y rad
+   gcolor 888
+   gtext x - 12 y + 5 "Code"
+   gtext x - 13 y - 5 "Runner"
    if x > 100 - rad or x < rad : vx = -vx
    x += vx
    if y < rad
@@ -27,13 +23,12 @@ on animate
       vy -= 0.03125
    .
    y += vy
-.`
+.
+`
 
 errapp = `
-clear
-textsize 5
-move 5 60
-text "This app is not compatible :-("
-move 5 50
-text "You should reinstall it."
+gclear
+gtextsize 5
+gtext 5 60 "This app is not compatible :-("
+gtext 5 50 "You should reinstall it."
 `
