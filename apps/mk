@@ -444,7 +444,6 @@ A language that doesn’t have everything is actually easier to program in than 
 <h3>Interactive tutorials</h3>
 
 <p><a href="tut_learn.html?$vers">Learn Programming Basics</a>
-<p><a href="tut_learn_old.html?$vers">Learn Programming Basics (legacy)</a>
 <p><a href="tut_game.html?$vers">Programming Small Games</a>
 <p><a href="tut_docu.html?$vers">Documentation and Code Snippets</a>
 <p><a href="tut_func.html?$vers">Functions and Recursion</a>
