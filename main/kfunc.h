@@ -1673,15 +1673,14 @@ S void op_textsize(ND* nd) {
 }
 S void op_color3(ND* nd) {
 	ND* ndx = nd + 1;
-	int red = (int)(numf(nd->le) * 256 / 100);
+	int red = (int)(numf(nd->le) * 255 / 100);
 	if (red > 255) red = 255;
-	int green = (int)(numf(nd->ri) * 256 / 100);
+	int green = (int)(numf(nd->ri) * 255 / 100);
 	if (green > 255) green = 255;
-	int blue = (int)(numf(ndx->ex) * 256 / 100);
+	int blue = (int)(numf(ndx->ex) * 255 / 100);
 	if (blue > 255) blue = 255;
 	gr_color(red, green, blue);
 }
-
 S void op_gcircle(ND* nd) {
 	ND* ndx = nd + 1;
 	gr_gcircle(numf(nd->le), numf(nd->ri), numf(ndx->ex));
