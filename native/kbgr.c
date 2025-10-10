@@ -434,7 +434,7 @@ SDL_Surface* backgr = NULL;
 
 void gr_sys(unsigned short h) {
 
-	if (h == 1) {	// clear
+	if (h == 11) {	// clear
 		grpen = 0;
 		if (backgr) {
 			SDL_Texture* t = SDL_CreateTextureFromSurface(renderer, backgr);
