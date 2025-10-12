@@ -603,30 +603,35 @@ S double op_divi1(ND* nd) {	// as in Julia fld1
 // ------------------------------------
 
 
-#define ulong unsigned long long
+//#define ulong unsigned long long
+#define llong long long
 S double op_bitand(ND* nd) {
-	ulong a = (ulong)numf(nd->le);
-	ulong b = (ulong)numf(nd->ri);
+	llong a = (llong)numf(nd->le);
+	llong b = (llong)numf(nd->ri);
 	return a & b;
 }
 S double op_bitor(ND* nd) {
-	ulong a = (ulong)numf(nd->le);
-	ulong b = (ulong)numf(nd->ri);
+	llong a = (llong)numf(nd->le);
+	llong b = (llong)numf(nd->ri);
 	return a | b;
 }
 S double op_bitxor(ND* nd) {
-	ulong a = (ulong)numf(nd->le);
-	ulong b = (ulong)numf(nd->ri);
+	llong a = (llong)numf(nd->le);
+	llong b = (llong)numf(nd->ri);
 	return a ^ b;
 }
 S double op_bitnot(ND* nd) {
-	ulong a = (ulong)numf(nd->le);
+	llong a = (llong)numf(nd->le);
 	return (~a) & 9007199254740991;
 }
 S double op_bitshift(ND* nd) {
-	ulong a = (ulong)numf(nd->le);
+	llong a = (llong)numf(nd->le);
 	int b = numf(nd->ri);
-	if (b >= 0) return (a << b) & 9007199254740991;
+	//if (b >= 0) return (a << b) & 9007199254740991;
+	if (b >= 0) {
+		if (a >= 0) return (a << b) & 9007199254740991;
+		return a << b;
+	}
 	else return a >> (-b);
 }
 

@@ -2422,8 +2422,6 @@ S char vfprop[] = {
 	2, 1, 1,
 };
 
-
-//kc
 S ND* parse_stat(void) {
 	ND* nd = mknd();
 	opline_add(nd, fmtline);
@@ -2625,11 +2623,10 @@ S ND* parse_stat(void) {
 	}
 	return nd;
 }
-
 S ND* parse_sequ0(void) {
 
 	ND* sequ = NULL;
-	ND* ndp;
+	ND* ndp = NULL;
 
 	while (tok != t_eof) {
 
@@ -2681,10 +2678,11 @@ S ND* parse_sequ0(void) {
 		}
 		else {
 			ND* nd = parse_stat();
-			if (sequ == NULL) sequ = nd;
+			if (ndp == NULL) sequ = nd;
 			else ndp->next = nd;
 			ndp = nd;
-			if (nd == NULL) break;
+			//if (nd == NULL) break;
+			if (nd == NULL) return NULL;
 		}
 		
 		if (tok == t_semicol) {
@@ -2694,14 +2692,14 @@ S ND* parse_sequ0(void) {
 		else csnl();
 
 	}
-	if (sequ != NULL) ndp->next = NULL;
+	if (ndp != NULL) ndp->next = NULL;
 	return sequ;
 }
 
 S ND* parse_sequ(void) {
 
 	ND* sequ = NULL;
-	ND* ndp;
+	ND* ndp = NULL;
 
 	while (1) {
 		if (tok == t_hash) {
@@ -2710,13 +2708,12 @@ S ND* parse_sequ(void) {
 		}
 		else {
 			ND* nd = parse_stat();
-			if (sequ == NULL) sequ = nd;
+			if (ndp == NULL) sequ = nd;
 			else ndp->next = nd;
 			ndp = nd;
 			if (nd == NULL) break;
 		}
 		if (tok == t_dot || tok <= t_end || tok == t_eof || errn) break;
-		//if (tok == t_dot || tok <= t_end || tok == t_eof) break;
 
 		if (tok == t_semicol) {
 			cs(" ; ");
@@ -2724,6 +2721,6 @@ S ND* parse_sequ(void) {
 		}
 		else csnl();
 	}
-	if (sequ != NULL) ndp->next = NULL;
+	if (ndp != NULL) ndp->next = NULL;
 	return sequ;
 }
