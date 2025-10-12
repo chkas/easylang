@@ -308,7 +308,7 @@ function grafCommand(d) {
 		line(d[1], d[2], d[3], d[4])
 		break
 	case 3:
-		if (d[1] >= 0) circ(d[1], d[2], d[3])
+		circ(d[1], d[2], d[3])
 		break
 	case 4:
 		c.fillRect(d[1], d[2], d[3], d[4])
