@@ -337,17 +337,16 @@ void gr_lineto(double fx, double fy) {
 }
 
 void gr_curve(double* val, int len) {
-	fprintf(stderr, "curve not implemented yet");
+	fprintf(stderr, "curve not implemented yet\n");
 }
-
 void gr_translate(double x, double y) {
-	fprintf(stderr, "translate not implemented yet");
+	fprintf(stderr, "translate not implemented yet\n");
 }
 void gr_rotate(double w) {
-	fprintf(stderr, "rotate not implemented yet");
+	fprintf(stderr, "rotate not implemented yet\n");
 }
 void gr_scale(double w) {
-	fprintf(stderr, "scale not implemented yet");
+	fprintf(stderr, "scale not implemented yet\n");
 }
 
 void gr_polygon(double* val, int len) {
