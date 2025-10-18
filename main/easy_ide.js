@@ -1187,9 +1187,9 @@ function scrollToPos(pos) {
 }
 
 function showError(err, pos) {
+	scrollToPos(pos)
 	cnd.firstChild.nodeValue = " " + err + " "
 	cnd.err = true
-	scrollToPos(pos)
 	inp.focus()
 }
 

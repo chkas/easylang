@@ -34,29 +34,35 @@ function caret(nd, n) {
 }
 
 function removeCnd() {
-	if (!cnd.act) return
-	cnd.act = false
-	if (cnd.err) {
-		cnd.firstChild.nodeValue = " "
-		cnd.err = false
+	if (cnd.tab) {
+		cnd.className = ""
+		makeCnd()
 	}
-	if (!document.contains(cnd)) return
-	var n1 = cnd.previousSibling
-	var n2 = cnd.nextSibling
-	if (n1.nodeValue && n2.nodeValue) {
-		var s = n1.nodeValue + n2.nodeValue
-		var p = cnd.parentNode
-		p.removeChild(n1)
-		p.removeChild(n2)
-		var nd = document.createTextNode(s)
-		p.insertBefore(nd, cnd)
-		cnd.parentNode.removeChild(cnd)
-		caret(nd, n1.nodeValue.length)
-	}
-	else {
-		cnd.parentNode.removeChild(cnd)
-		if (n1.nodeValue) caret(n1, n1.nodeValue.length)
-		else if (n2.nodeValue) caret(n2, 0)
+	else if (cnd.act) {
+		cnd.act = false
+		if (document.contains(cnd)) {
+			var n1 = cnd.previousSibling
+			var n2 = cnd.nextSibling
+			if (n1.nodeValue && n2.nodeValue) {
+				var s = n1.nodeValue + n2.nodeValue
+				var p = cnd.parentNode
+				p.removeChild(n1)
+				p.removeChild(n2)
+				var nd = document.createTextNode(s)
+				p.insertBefore(nd, cnd)
+				cnd.parentNode.removeChild(cnd)
+				caret(nd, n1.nodeValue.length)
+			}
+			else {
+				cnd.parentNode.removeChild(cnd)
+				if (n1.nodeValue) caret(n1, n1.nodeValue.length)
+				else if (n2.nodeValue) caret(n2, 0)
+			}
+		}
+		if (cnd.err) {
+			cnd.firstChild.nodeValue = " "
+			cnd.err = false
+		}
 	}
 }
 
@@ -146,9 +152,9 @@ function scrollToPos(pos) {
 }
 
 function showError(err, pos) {
+	scrollToPos(pos)
 	cnd.firstChild.nodeValue = " " + err + " "
 	cnd.err = true
-	scrollToPos(pos)
 	inp.focus()
 }
 function gotSrcNl(src, res, pos, err) {
@@ -276,7 +282,7 @@ function preKey(pre, e) {
 		}
 		cnd.className = ""
 		makeCnd()
-		return;
+		//return;
 	}
 	if (cnd.act) {
 		removeCnd()
