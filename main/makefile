@@ -45,7 +45,7 @@ $(wrk):
 	mkdir -p $(wrk)
 
 main: $(wrk)/easy_ide.js $(wrk)/easyw.js $(wrk)/easy.js $(wrk)/ide.html $(wrk)/qrcode.js $(wrk)/tut_test.html
-tut: $(wrk)/tut_id.js $(wrk)/tut_docu.js $(wrk)/tut_learn.js $(wrk)/tut_game.js $(wrk)/tut_func.js
+tut: $(wrk)/tut_id.js $(wrk)/tut_docu.js $(wrk)/tut_learn.js $(wrk)/tut_learnx.js $(wrk)/tut_game.js $(wrk)/tut_func.js
 
 $(wrk)/kbas.o: $(csrcf)
 	$(CC) -c $< -o $@
@@ -79,7 +79,7 @@ $(or):
 apps: $(apps)/easyw.js $(apps)/easy.js $(apps)/easy_code2.js
 
 mainr: $(or)/index.html $(or)/icon.png $(or)/icon.svg $(or)/sw.js $(or)/mfst.json $(or)/easyw$(v).js $(wrk)/wvers
-tutr: $(or)/tut_id$(v).js $(or)/tut_docu$(v).js $(or)/tut_learn$(v).js $(or)/tut_game$(v).js $(or)/tut_func$(v).js
+tutr: $(or)/tut_id$(v).js $(or)/tut_docu$(v).js $(or)/tut_learn$(v).js $(or)/tut_learnx$(v).js $(or)/tut_game$(v).js $(or)/tut_func$(v).js
 extr: $(wrk)/vers_easy.js $(wrk)/vers_easy_code.js
 
 $(apps)/easyw.js: $(wrk)/easyw.js

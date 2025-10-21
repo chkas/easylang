@@ -23,7 +23,7 @@ print r
 
 -
 
-+ Functions are defined with *func*. Only value parameters are allowed. *return* exits the function and returns the specified value.
++ Functions are defined with *func*. *return* exits the function and returns the specified value.
 
 func gcd a b.
    while b <> 0
