@@ -541,4 +541,10 @@ end
 + With *proc* or *func* you can also create *procedures* or *functions* with parameters and local variables. This will be discussed in more detail later.
 
 +de Mit *proc* oder *func* kann man auch *Prozeduren* oder *Funktionen* mit Parametern und lokalen Variablen erstellen. Darauf wird später noch näher eingegangen.
+
+-
+
++ Super, you've successfully mastered the first part covering the basics. In the second part, you'll already learn advanced programming concepts.
+
++de Super, den ersten Teil mit den Grundlagen hast du erfolgreich gemeistert. Im zweiten Teil lernst du bereits fortgeschrittene Programmierkonzepte kennen.
 `

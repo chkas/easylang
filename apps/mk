@@ -70,8 +70,16 @@ txt_tutor = String.raw`
 xxx
 		sed -ne '8,13p'  ../main/tut_$n.js >>$o/tut_$n.html
 		l=$(grep -n Debug ../main/tut_$n.js | head -1 | cut -f1 -d:)
-		head -$((l-1)) ../main/tut_$n.js | tail +27 >>$o/tut_$n.html
+		head -$((l-1)) ../main/tut_$n.js | tail +23 >>$o/tut_$n.html
 		tail +$((l+4)) ../main/tut_$n.js  >>$o/tut_$n.html
+
+		printf "txt_tutor+=String.raw\`\n" >>$o/tut_$n.html
+		cat <<xxx >>$o/tut_$n.html
+@ ./tut_learnx.html?$vers@Learn programming 2
+
+@de ./tut_learnx.html?$vers@Programmieren lernen 2
+xxx
+		printf "\`\n" >> $o/tut_$n.html
 
 	elif test $n = learnx; then
 		cat >>$o/tut_$n.html <<'xxx'
@@ -82,7 +90,7 @@ txt_tutor = String.raw`
 *de Programmieren lernen 2
 
 xxx
-		tail +7 ../main/tut_$n.js >>$o/tut_$n.html
+		tail +8 ../main/tut_$n.js >>$o/tut_$n.html
 
 		printf "txt_tutor+=String.raw\`\n" >>$o/tut_$n.html
 		cat <<xxx >>$o/tut_$n.html
@@ -96,7 +104,6 @@ xxx
 
 @de ./tut_game.html?$vers@Kleine Spiele programmieren (in Englisch)
 xxx
-
 		printf "\`\n" >> $o/tut_$n.html
 
 	else
