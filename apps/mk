@@ -452,10 +452,6 @@ This simple programming language with built-in graphical functions and an easy t
 
 <p><b><a href="../run/">Code runner - Games & more</a></b>
 
-<p><small>
-A language that doesn’t have everything is actually easier to program in than some that do. -- Dennis M. Ritchie
-</small>
-
 <h3>Interactive tutorials</h3>
 
 <p><a href="tut_learn.html?$vers">Learn Programming 1</a>
@@ -688,6 +684,10 @@ cat <<xxx
 <h3>Technical</h3>
 
 <i>Easylang</i> is statically typed and has as data types only strings and numbers (floating point), arrays of strings and numbers, and arrays of arrays. Arrays are 1-based and can grow. Programs compiled into an AST tree run in the browser or in the browser IDE. There are built-in functions for canvas graphics.
+
+<p><small>
+A language that doesn’t have everything is actually easier to program in than some that do. -- Dennis M. Ritchie
+</small>
 
 <h3>Software acknowledgements</h3>
 
