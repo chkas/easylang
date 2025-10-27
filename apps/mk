@@ -394,7 +394,7 @@ textarea {
 }
 
 h2 {background-color:#adf;padding:7px;padding-left:12px}
-h3 {background-color:#adf;padding:5px;padding-left:12px;margin-top:20px}
+h3 {background-color:#adf;padding:5px;padding-left:12px;margin-top:30px}
 
 a:hover {background-color:#adf}
 a {color: #000}
@@ -446,9 +446,13 @@ button:enabled:hover {background-color:#07d}
 
 <canvas id=canv1 style="float:right;width:150px;height:150px"></canvas>
 
-This simple programming language with built-in graphical functions and an easy to use and offline usable browser IDE is well suited as a teaching and learning language. You can also use it to write graphical applications that you can embed in a web page.
+This simple programming language with built-in graphical functions and an easy to use and offline usable browser IDE is well suited as a teaching and learning language.
 
 <p><b><a href="../ide/">Browser based development environment</a></b>
+
+<p>
+
+You can also use it to write graphical applications that you can embed in a web page, or small games that you can play on your phone.
 
 <p><b><a href="../run/">Code runner - Games & more</a></b>
 

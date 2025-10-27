@@ -1587,7 +1587,9 @@ S ARR op_strsplit(ND* nd) {
 	res.base = rt.arrbase;
 	res.p = NULL;
 	res.len = 0;
-	char* dup = strdup(str_ptr(&s1));
+	const char* s1p = str_ptr(&s1);
+	if (*s1p == 0) goto exit; // empty array for strsplit "" ..
+	char* dup = strdup(s1p);
 	if (dup == NULL) {
 		out_of_mem(nd);
 		goto exit;
