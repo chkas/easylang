@@ -40,7 +40,7 @@ proc cwheel .
             theta = atan2 dy dx
             hue = (theta + 180) / 360
             hsb2rgb hue (dist / 250) 1 r g b
-            gcolor3 100 * r 100 * g 100 * b
+            gcolor3 r g b
             grect x / 5 y / 5 0.3 0.3
          .
       .

@@ -301,12 +301,12 @@ print a[]
 
 *de Weitere nützliche Funktionen
 
-+ With *gcolor3* you can set the character color more precisely. The function has the brightness of the three primary colors red, green and blue as parameters, which are specified as floating point values from 0 to 100.
++ With *gcolor3* you can set the character color more precisely. The function has the brightness of the three primary colors red, green and blue as parameters, which are specified as floating point values from 0 to 1.
 
-+de Mit *gcolor3* kann man die Zeichenfarbe genauer einstellen. Die Funktion hat die Helligkeit der drei Grundfarben Rot, Grün und Blau als Parameter, die als Gleitkommawerte von 0 bis 100 angegeben werden.
++de Mit *gcolor3* kann man die Zeichenfarbe genauer einstellen. Die Funktion hat die Helligkeit der drei Grundfarben Rot, Grün und Blau als Parameter, die als Gleitkommawerte von 0 bis 1 angegeben werden.
 
 for i = 0 to 100
-   gcolor3 i 0 0
+   gcolor3 i / 100 0 0
    gline 0 i 100 i
 end
 

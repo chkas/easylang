@@ -405,7 +405,7 @@ on timer
    timer 0.1
 .
 for i = 0 to 100
-   gcolor3 0 (100 - i) 0
+   gcolor3 0 (100 - i) / 100 0
    gline 0 i 100 i
 .
 gbackground -1
@@ -418,7 +418,7 @@ timer 0
 
 + *substr* returns a substring from the specified position and length.
 
-+ With *gcolor3* you can set the intensity (0 to 100) of the red, green and blue color components.
++ With *gcolor3* you can set the intensity (0 to 1) of the red, green and blue color components.
 
 + With *gbackground -1* the current display is set as background, which can be displayed again with *gclear*. You can also set a background color with this function.
 

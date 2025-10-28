@@ -2,9 +2,9 @@
 #
 proc tree x y l w ang dp .
    if dp <= 2
-      gcolor3 0 10 + randomf * 15 0
+      gcolor3 0 0.1 + randomf * 0.15 0
    else
-      gcolor3 10 + randomf * 8 7 0
+      gcolor3 0.1 + randomf * 0.08 0.07 0
    .
    glinewidth w
    xn = x + l * cos ang

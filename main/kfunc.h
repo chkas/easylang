@@ -1678,14 +1678,18 @@ S void op_linewidth(ND* nd) {
 S void op_textsize(ND* nd) {
 	gr_textsize(numf(nd->le));
 }
+
+S int geticol(double cf) {
+	int c = (int)(cf * 255 + 0.5);
+	if (c < 0) c = 0;
+	else if (c > 255) c = 255;
+	return c;
+}
 S void op_color3(ND* nd) {
 	ND* ndx = nd + 1;
-	int red = (int)(numf(nd->le) * 255 / 100);
-	if (red > 255) red = 255;
-	int green = (int)(numf(nd->ri) * 255 / 100);
-	if (green > 255) green = 255;
-	int blue = (int)(numf(ndx->ex) * 255 / 100);
-	if (blue > 255) blue = 255;
+	int red = geticol(numf(nd->le));
+	int green = geticol(numf(nd->ri));
+	int blue = geticol(numf(ndx->ex));
 	gr_color(red, green, blue);
 }
 S void op_gcircle(ND* nd) {

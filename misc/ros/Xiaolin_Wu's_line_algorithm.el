@@ -5,7 +5,7 @@ global plotswap .
 proc plot x y b .
    b = 1 - b
    if plotswap = 1 : swap x y
-   gcolor3 b * 100 b * 100 b * 100
+   gcolor3 b b b
    grect x * sc y * sc sc sc
 .
 func ipart x .

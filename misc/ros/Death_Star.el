@@ -45,7 +45,7 @@ proc death_star &pos[] &neg[] k amb dir[] .
                normalize vec[]
                s = vdot dir[] vec[]
                if s < 0 : s = 0
-               lum = 100 * (pow s k + amb) / (1 + amb)
+               lum = (pow s k + amb) / (1 + amb)
                gcolor3 lum lum lum
                grect 50 + x / 4, 50 + y / 4, 0.25 0.24
             .

@@ -14,7 +14,7 @@ proc sphere r k amb dir[] .
       if z >= 0
          s = vdot dir[] norm [ x y sqrt z ]
          if s < 0 : s = 0
-         lum = 100 * (pow s k + amb) / (1 + amb)
+         lum = (pow s k + amb) / (1 + amb)
          gcolor3 lum lum lum
          grect 50 + x / 5, 50 + y / 5, 0.3 0.3
       .

@@ -37,8 +37,8 @@ proc showall .
    for p = 1 to len m[]
       y = (p - 1) div nc * sc
       x = (p - 1) mod nc * sc
-      h = m[p] * 10
-      gcolor3 h h + 20 h
+      h = m[p] * 0.1
+      gcolor3 h h + 0.2 h
       gcircle x + sc2 y + sc2 sc2
    .
 .
