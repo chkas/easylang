@@ -529,8 +529,8 @@ S void op_arrarr_append(ND* nd) {
 }
 
 S void op_arrarr_ass(ND* nd) {
-	ARR* arr = garr(nd->v1);
 	ARR a = arrf(nd->ri);
+	ARR* arr = garr(nd->v1);
 	free_arr(arr);
 	*arr = a;
 }
@@ -1038,60 +1038,59 @@ S void op_strassp(ND* nd) {
 }
 
 S void op_flael_ass(ND* nd) {
-	ARR* arr = garr(nd->v1);
-	int h = arrind(arr, numf(nd->ri), nd);
 	ND* ndx = nd + 1;
 	double n = numf(ndx->ex);
+	ARR* arr = garr(nd->v1);
+	int h = arrind(arr, numf(nd->ri), nd);
 	*(arr->pnum + h) = n;
 }
 
 S void op_flael_assp(ND* nd) {
-	ARR* arr = garr(nd->v1);
-	int h = arrind(arr, numf(nd->ri), nd);
 	ND* ndx = nd + 1;
 	double n = numf(ndx->ex);
+	ARR* arr = garr(nd->v1);
+	int h = arrind(arr, numf(nd->ri), nd);
 	*(arr->pnum + h) += n;
 }
 
 S void op_flael_assm(ND* nd) {
-	ARR* arr = garr(nd->v1);
-	int h = arrind(arr, numf(nd->ri), nd);
 	ND* ndx = nd + 1;
 	double n = numf(ndx->ex);
+	ARR* arr = garr(nd->v1);
+	int h = arrind(arr, numf(nd->ri), nd);
 	*(arr->pnum + h) -= n;
 }
 
 S void op_flael_asst(ND* nd) {
-	ARR* arr = garr(nd->v1);
-	int h = arrind(arr, numf(nd->ri), nd);
 	ND* ndx = nd + 1;
 	double n = numf(ndx->ex);
+	ARR* arr = garr(nd->v1);
+	int h = arrind(arr, numf(nd->ri), nd);
 	*(arr->pnum + h) *= n;
 }
 
 S void op_flael_assd(ND* nd) {
-	ARR* arr = garr(nd->v1);
-	int h = arrind(arr, numf(nd->ri), nd);
 	ND* ndx = nd + 1;
 	double n = numf(ndx->ex);
+	ARR* arr = garr(nd->v1);
+	int h = arrind(arr, numf(nd->ri), nd);
 	*(arr->pnum + h) /= n;
 }
 
-//kc?
 S void op_strael_ass(ND* nd) {
-	ARR* arr = garr(nd->v1);
-	int h = arrind(arr, numf(nd->ri), nd);
 	ND* ndx = nd + 1;
 	STR s = strf(ndx->ex);
+	ARR* arr = garr(nd->v1);
+	int h = arrind(arr, numf(nd->ri), nd);
 	str_free(arr->pstr + h);
 	*(arr->pstr + h) = s;
 }
 
 S void op_strael_assp(ND* nd) {
-	ARR* arr = garr(nd->v1);
-	int h = arrind(arr, numf(nd->ri), nd);
 	ND* ndx = nd + 1;
 	STR s = strf(ndx->ex);
+	ARR* arr = garr(nd->v1);
+	int h = arrind(arr, numf(nd->ri), nd);
 	str_append_str(arr->pstr + h, &s);
 	str_free(&s);
 }
@@ -1610,8 +1609,8 @@ S ARR op_strsplit(ND* nd) {
 }
 
 S void op_strarr_ass(ND* nd) {
-	ARR* arr = garr(nd->v1);
 	ARR a = arrf(nd->ri);
+	ARR* arr = garr(nd->v1);
 	if (arr->p != NULL) {
 		for (int i = 0; i < arr->len; i++) {
 			str_free(&arr->pstr[i]);
@@ -1800,8 +1799,8 @@ S void op_mouse_cursor(ND* nd) {
 // -----------------------------------------
 
 S void op_arr_ass(ND* nd) {
-	ARR* arr = garr(nd->v1);
 	ARR a = arrf(nd->ri);
+	ARR* arr = garr(nd->v1);
 	if (arr->p != NULL) free(arr->p);
 	*arr = a;
 }
@@ -1809,30 +1808,35 @@ S void op_arr_ass(ND* nd) {
 //---------------------------
 
 S void o_aelael_ass(ND* nd, ushort typ) {
-	ARR* arr = garr(nd->v1);
+	double f;
+	STR s;
 	ND* ndx = nd + 1;
+	if (typ != 1) f = numf(ndx->ex2);
+	else s = strf(ndx->ex2);
+
+	ARR* arr = garr(nd->v1);
 	int h = arrind(arr, numf(nd->ri), nd);
 	arr = arr->parr + h;
 	h = arrind(arr, numf(ndx->ex), nd);
 
 	if (typ == 0) {
-		*(arr->pnum + h) = numf(ndx->ex2);
+		*(arr->pnum + h) = f;
 	}
 	else if (typ == 2) {
-		*(arr->pnum + h) += numf(ndx->ex2);
+		*(arr->pnum + h) += f;
 	}
 	else if (typ == 3) {
-		*(arr->pnum + h) -= numf(ndx->ex2);
+		*(arr->pnum + h) -= f;
 	}
 	else if (typ == 4) {
-		*(arr->pnum + h) *= numf(ndx->ex2);
+		*(arr->pnum + h) *= f;
 	}
 	else if (typ == 5) {
-		*(arr->pnum + h) /= numf(ndx->ex2);
+		*(arr->pnum + h) /= f;
 	}
 	else { // typ = 1
 		str_free(arr->pstr + h);
-		*(arr->pstr + h) = strf(ndx->ex2);
+		*(arr->pstr + h) = s;
 	}
 }
 
@@ -1857,11 +1861,11 @@ S void op_flaelael_assd(ND* nd) {
 }
 
 S void op_arrael_ass(ND* nd) {
+	ND* ndx = nd + 1;
+	ARR a = arrf(ndx->ex);
 	ARR* arr = garr(nd->v1);
 	int h = arrind(arr, numf(nd->ri), nd);
 	arr = arr->parr + h;
-	ND* ndx = nd + 1;
-	ARR a = arrf(ndx->ex);
 	if (arr->p != NULL) free(arr->p);
 	*arr = a;
 }
