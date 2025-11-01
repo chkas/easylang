@@ -1,10 +1,10 @@
 global range[][] .
 proc start r$ .
    print "start with \"" & r$ & "\""
+   range[][] = [ ]
    for s$ in strsplit r$ ","
-      r[][] &= number strsplit s$ "-"
+      range[][] &= number strsplit s$ "-"
    .
-   swap range[][] r[][]
 .
 func$ str &range[][] .
    for r[] in range[][]

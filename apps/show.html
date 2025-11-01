@@ -292,7 +292,8 @@ urllnk.onclick = async function() {
 function msgf(msg, d) {
 	if (msg == "src") updout(-d[1] & 2)
 	codeMsgF(msg, d)
-	if (msg == "error" || msg == "selline") showcode()
+	console.log("xmsg: " + msg)
+	if (msg == "src_err" || msg == "selline") showcode()
 }
 
 easyinit(canv, out, msgf)

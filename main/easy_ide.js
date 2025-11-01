@@ -12,15 +12,9 @@
 */
 function eid(id) { return document.getElementById(id) }
 
-var infostr = `
-╭───────────────────────────────────────╮
-│ Welcome to programming with Easylang!\t│
-│\t\t\t\t\t│
-│ Some tips:\t\t\t\t│
-│\t\t\t\t\t│
-│ • TAB key suggests suitable inputs\t│
-│ • Shift+Enter or Enter/Enter to run\t│
-╰───────────────────────────────────────╯
+var infostr = `Easylang IDE tips:
+ • TAB key completes your input
+ • Shift+Enter to run program
 `
 
 var hambtn = eid("hambtn")
@@ -1455,6 +1449,7 @@ function runDebug() {
 	inp.contentEditable = false
 	tailSrc = null
 	showRun(false)
+	if (strictMode) h += 16
 	kaRun(inp.textContent, h + 2, 0)
 }
 function stepNoti(w) {
