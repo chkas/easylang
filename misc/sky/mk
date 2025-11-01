@@ -87,7 +87,9 @@ self.addEventListener("message", function (evt) {
 EOF
 
 cat >$odir/index.html <<'EOF'
-<!doctype html><meta charset=utf-8>
+<!doctype html>
+<html translate=no>
+<meta charset=utf-8>
 <title>Starry Sky</title>
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="description" content="starry sky - interactive star sky map">
@@ -285,5 +287,6 @@ easyinit(canv, null, msgf)
 setTimeout(window.onresize, 100)
 
 </script>
+</html>
 EOF
 

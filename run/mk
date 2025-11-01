@@ -129,8 +129,8 @@ echo "</script><script src=easy.js></script>" >> $wdir/run.html
 echo "<script src=easy_code.js></script><script>" >> $wdir/run.html
 
 
-cat run.apps >> $odir/index.html
-cat run.apps >> $wdir/run.html
+cat runapps.txt >> $odir/index.html
+cat runapps.txt >> $wdir/run.html
 cat run.js | sed -e "s/\$date/$date/g" >> $odir/index.html
 cat run.js | sed -e "s/\$date/$date/g" >> $wdir/run.html
 

@@ -9,6 +9,7 @@ cp ../run/icon.png $odir
 exec >$odir/index.html
 cat <<xxx
 <!doctype html>
+<html translate=no>
 <meta charset=utf-8>
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="keywords" content="learning games kids">
@@ -87,5 +88,6 @@ cat <<xxx
 <p>
 <hr>
 <small>christof.kaser@gmail.com</small>
+</html>
 xxx
 

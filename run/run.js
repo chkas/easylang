@@ -98,13 +98,14 @@ function updCodeInfo() {
 	appn = an
 }
 
-function newCode() {
+function newCode(showget2 = true) {
 	updCodeInfo()
 	hide(sel)
 	hide(hambtn)
 	namef.textContent = appn
 	hide(editor)
 	show(keepd)
+	if (showget2) show(get2)
 	show(runner)
 	show(namef)
 }
@@ -171,6 +172,7 @@ function fillsel(nm) {
 function updsel() {
 	editing = false
 	hide(keepd)
+	hide(get2)
 	if (!sel.options.length) {
 		show(info)
 		hide(hambtn)
@@ -201,7 +203,7 @@ save.onclick = function() {
 
 var rmt
 function rmreset() {
-	remove.textContent = "Delete"
+	remove.textContent = "Remove"
 	rmt = null
 }
 remove.onclick = function() {
@@ -261,7 +263,7 @@ idelnk.onclick = async function() {
 }
 
 runlnk.onclick = function() {
-	newCode()
+	newCode(false)
 	codeRun(codew, canv)
 }
 run2lnk.onclick = function() {
@@ -331,3 +333,4 @@ async function decode(txt) {
 }
 
 </script>
+</html>

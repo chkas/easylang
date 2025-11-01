@@ -38,6 +38,7 @@ make_big() {
 
 	cat <<xxx
 <!doctype html>
+<html translate=no>
 <meta charset=utf-8><title>$dom - AoC-$1</title>
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <link rel="icon" href="../icon.png" type="image/x-png">
@@ -52,8 +53,6 @@ It can be useful as a teaching and learning language due to its reduced feature 
 However, since <i>Easylang</i> has no built-in functions for special things like sorting or hashmaps, you have to program them yourself, which makes the programs longer, but somehow also more complete and enlightening.
 
 <div id=tut><b>Loading ...</b></div>
-<script src=easy_code2.js></script>
-<script src=easy_tut2.js></script>
 
 <script>
 xxx
@@ -97,6 +96,9 @@ The examples were created with <a href=..>Easylang<a>.
 `)
 }
 </script>
+<script src=easy_code2.js></script>
+<script src=easy_tut2.js></script>
+</html>
 xxx
 
 }
@@ -111,7 +113,9 @@ done
 exec > $o/index.html
 
 cat <<xxx
-<!doctype html><title>Easylang examples</title>
+<!doctype html>
+<html translate=no>
+<title>Easylang examples</title>
 <meta name="description" content="aoc solutions for Easylang - an easy programming language">
 <meta charset=utf-8>
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -256,6 +260,7 @@ All tasks of one year on one big page. The programs are editable and runnable.
 <p>
 <hr>
 <small><small>christof.kaser@gmail.com</small></small>
+</html>
 xxx
 
 for i in $(seq 15 24); do
@@ -265,6 +270,7 @@ for i in $(seq 15 24); do
 cat >$o/../aoc$i/index.html <<xxx
 
 <!doctype html>
+<html translate=no>
 <meta charset=utf-8>
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Easylang - aoc$i</title>
@@ -440,6 +446,7 @@ for (i = 1; i <= days; i++) {
 change()
 
 </script>
+</html>
 
 xxx
 

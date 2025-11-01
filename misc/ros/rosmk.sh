@@ -3,6 +3,7 @@
 vers=$1
 cat <<EOF
 <!doctype html>
+<html translate=no>
 <meta charset=utf-8><title>Easylang - Rosetta Code</title>
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <link rel="icon" href="../icon.png" type="image/x-png">
@@ -40,5 +41,7 @@ The examples were created with <a href=..>${dom}<a>
 </script>
 <script src=easy_code2.js?$vers></script>
 <script src=easy_tut2.js?$vers></script>
+</html>
+
 EOF
 

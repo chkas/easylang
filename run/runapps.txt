@@ -29,6 +29,6 @@ on animate
 errapp = `
 gclear
 gtextsize 5
-gtext 5 60 "This app is not compatible :-("
-gtext 5 50 "You should reinstall it."
+gtext 4 60 "This app is not compatible 🙁"
+gtext 4 50 "Maybe you can install it again"
 `

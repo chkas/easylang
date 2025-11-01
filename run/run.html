@@ -1,4 +1,5 @@
 <!doctype html>
+<html translate=no>
 <meta charset=utf-8>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="code runner">
@@ -47,6 +48,7 @@ a { color: #ddd }
 	display:inline;
 	user-select:none;
 	-webkit-user-select:none;
+	line-height: 2.5;
 }
 .lnk:hover {
 	background-color:#444;
@@ -123,11 +125,11 @@ span.high {background-color:#666}
 	margin:4px;
 }
 #menud {
-	margin:16px 8px 8px 8px;
+	margin:0px 8px;
 	float:left;
 }
 #keepd {
-	margin:2px 8px;
+	margin:0px 8px;
 	float:left;
 }
 #namef {
@@ -152,15 +154,15 @@ span.high {background-color:#666}
 			<div class=hamb></div>
 		</div>
 		<div id=menud style="display:none">
+			<div id=remove class=lnk>Remove</div>
 			<div id=codebtn class=lnk>Code</div>
-			<div id=remove class=lnk>Delete</div>
-			<div id=get class=lnk>Get</div>
+			<div id=get class=lnk>Install</div>
 		</div>
 		<div id=keepd style=display:none>
 			<big><b id=namef></b></big>
 			<div id=save class=lnk>Save</div>
 			<div id=codebtn2 class=lnk>Code</div>
-			<div id=get2 class=lnk>Get</div>
+			<div id=get2 class=lnk>Install</div>
 		</div>
 	</div>
 	<canvas id=canv></canvas>
@@ -169,7 +171,7 @@ span.high {background-color:#666}
 <div id=editor style="display:none">
 	<div class=menu>
 		<div id=runlnk class=lnk2>Run</div>
-		<div id=dellnk class=lnk2>Delete</div>
+		<div id=dellnk class=lnk2>Back</div>
 		<div id=idelnk class=lnk2>IDE</div>
 	</div>
 	<pre id=codew></pre>
@@ -179,7 +181,7 @@ span.high {background-color:#666}
 		<div class=menu>
 			<div id=run2lnk class=lnk2>Run</div>
 			<div id=savelnk class=lnk2>Save</div>
-			<div id=del2lnk class=lnk2>Delete</div>
+			<div id=del2lnk class=lnk2>Back</div>
 			<div id=ide2lnk class=lnk2>IDE</div>
 		</div>
 	</div>
