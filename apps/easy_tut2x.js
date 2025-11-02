@@ -283,6 +283,7 @@ function makeOut() {
 	out0 = null
 	if (!out) {
 		out = create("textarea")
+		out.setAttribute("translate", "no")
 		out.readOnly = true
 	}
 	return out
@@ -322,7 +323,7 @@ function tutUpd() {
 							h++
 						}
 						else {
-							if (st) sn += "<tt>"
+							if (st) sn += "<tt translate=no>"
 							else sn += "</tt>"
 							st = !st
 						}
@@ -380,6 +381,7 @@ function tutUpd() {
 		}
 		else if (s.startsWith("~")) {
 			var b = create("pre")
+			b.setAttribute("translate", "no")
 			b.appendChild(document.createTextNode(s.substring(k)))
 			tut.appendChild(b)
 		}

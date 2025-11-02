@@ -443,10 +443,11 @@ function codeInit(pre, f1) {
 	runCB = f1
 	pre.className = "code"
 	pre.contentEditable = true
-	pre.autocorrect = false
-	pre.autocomplete = "off"
-	pre.autocapitalize = "off"
-	pre.spellcheck = false
+	pre.setAttribute("autocorrect", false)
+	pre.setAttribute("autocomplete", "off")
+	pre.setAttribute("autocapitalize", "off")
+	pre.setAttribute("spellcheck", false)
+	pre.setAttribute("translate", "no")
 	pre.onkeydown = function(e) {
 		preKey(this, e)
 	}

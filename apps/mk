@@ -42,7 +42,7 @@ mk_tut() {
 	echo "tut_$n.html .." >&2
 	cat >$o/tut_$n.html <<xxx
 <!doctype html>
-<html translate=no>
+<html>
 <meta charset=utf-8><title>$1</title>
 xxx
 	if test "$3"; then
@@ -361,7 +361,7 @@ exec > $o/index.html
 
 cat <<xxx
 <!doctype html>
-<html lang=en translate=no>
+<html lang=en>
 <title>Easylang</title>
 <meta name="description" content="information und examples for Easylang - an easy educational browser based programming language">
 <meta charset=utf-8>
@@ -493,7 +493,7 @@ and <a href=easy.js><i>easy.js</i></a> to your web directory, you can embed a sc
 
 <p>
 <div class=flex>
-<pre id=pre1></pre>
+<pre id=pre1 translate=no></pre>
 
 <canvas id=canv></canvas>
 </div>

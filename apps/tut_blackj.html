@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang=en translate=no>
+<html lang=en>
 <meta charset=utf-8><title>Blackjack probabilities</title>
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="description" content="Blackjack - Probabilties, Card Counting">
@@ -62,7 +62,7 @@ proc dealer_draw p card cardsum n_ace &p_dealer[] .
 .
 proc p_dealer .
   len p_dealer[] 22
-  numfmt 0 5
+  numfmt 5 0
   write "  "
   for i = 17 to 22
     write i
@@ -78,7 +78,7 @@ proc p_dealer .
     write dealer_card & ":"
     numfmt 5 2
     for i = 17 to 22
-      write p_dealer[i] & ""
+      write p_dealer[i]
     .
     print ""
   .
