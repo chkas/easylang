@@ -1,6 +1,6 @@
 #!/bin/sh
 
-vers=$(cat ../vers.txt)
+vers=$(cat ../vers.txt | cut -c3-)
 src=$(pwd)
 
 o=$HOME/out/easylang/apps
@@ -53,7 +53,7 @@ xxx
 	cat >>$o/tut_$n.html <<xxx
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <link rel="icon" href="../icon.png" type="image/x-png">
-<div style="float:right;padding:8px"><a style="color:#000" href=.>Easylang<a></div>
+<div style="float:right;padding:8px"><a style="color:#000" href=.>Easylang</a></div>
 <div id=tut><b>Loading ...</b></div>
 <script>
 if (typeof WebAssembly != 'object') {
@@ -305,28 +305,21 @@ a {color:#888}
 
 </style>
 
-<b>$n</b> -
-<small>
+<b>$n</b>
+<div style="float:right;font-size:80%">
 xxx
 
 #sz=$(ls -l $k | cut -f5 -d' ')
 # if test $sz -lt 50000; then
 set -- $(ls -l $k)
 if test $5 -lt 50000; then
-
-cat <<xxx
-	<div id=edit class=lnk>Code</div>
-xxx
+	echo "<div id=edit class=lnk>Code</div>"
 else
-cat <<xxx
-	<a href=../ide/>Easylang</a>
-	<div id=edit></div>
-xxx
+	echo "<div id=edit</div>"
 fi
 
 cat <<xxx
-	- <a href=.>More samples</a>
-</small>
+ - <a href=.>More samples</a></div>
 <p>
 <canvas></canvas>
 
@@ -368,7 +361,7 @@ exec > $o/index.html
 
 cat <<xxx
 <!doctype html>
-<html translate=no>
+<html lang=en translate=no>
 <title>Easylang</title>
 <meta name="description" content="information und examples for Easylang - an easy educational browser based programming language">
 <meta charset=utf-8>

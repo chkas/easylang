@@ -91,7 +91,7 @@ function hook() {
 	var dom = window.location.host
 	tut.insertAdjacentHTML("beforeend", `
 <p><hr><p>
-The examples were created with <a href=..>Easylang<a>.
+The examples were created with <a href=..>Easylang</a>.
 <p><small>christof.kaser@gmail.com</small>
 `)
 }
@@ -137,7 +137,7 @@ h3 {background-color:#bdb;padding:5px;padding-left:12px;margin-top:20px}
 
 </style>
 
-<h2><a href=https://adventofcode.com/>AoC</a> done with Easylang</a></h2>
+<h2><a href=https://adventofcode.com/>AoC</a> done with Easylang</h2>
 
 <i>Easylang</i> is a simple programming language with built-in graphical functions and an easy to use and offline usable <a href="../ide/">browser IDE</a> is well suited as a teaching and learning language.  You can also use it to write graphical applications that you can embed in a web page.
 <p>
@@ -188,55 +188,55 @@ for v in $vis15; do
 	test $f && f="$f,"
 	f="${f}15/$v.el"
 done
-echo "<a href=show.html?f=$f>2015</a><p>"
+echo "<a href=\"show.html?f=$f\">2015</a><p>"
 f=""
 for v in $vis16; do
 	test $f && f="$f,"
 	f="${f}16/$v.el"
 done
-echo "<a href=show.html?f=$f>2016</a><p>"
+echo "<a href=\"show.html?f=$f\">2016</a><p>"
 f=""
 for v in $vis17; do
 	test $f && f="$f,"
 	f="${f}17/$v.el"
 done
-echo "<a href=show.html?f=$f>2017</a><p>"
+echo "<a href=\"show.html?f=$f\">2017</a><p>"
 f=""
 for v in $vis18; do
 	test $f && f="$f,"
 	f="${f}18/$v.el"
 done
-echo "<a href=show.html?f=$f>2018</a><p>"
+echo "<a href=\"show.html?f=$f\">2018</a><p>"
 f=""
 for v in $vis19; do
 	test $f && f="$f,"
 	f="${f}19/$v.el"
 done
-echo "<a href=show.html?f=$f>2019</a><p>"
+echo "<a href=\"show.html?f=$f\">2019</a><p>"
 f=""
 for v in $vis20; do
 	test $f && f="$f,"
 	f="${f}20/$v.el"
 done
-echo "<a href=show.html?f=$f>2020</a><p>"
+echo "<a href=\"show.html?f=$f\">2020</a><p>"
 f=""
 for v in $vis21; do
 	test $f && f="$f,"
 	f="${f}21/$v.el"
 done
-echo "<a href=show.html?f=$f>2021</a><p>"
+echo "<a href=\"show.html?f=$f\">2021</a><p>"
 f=""
 for v in $vis22; do
 	test $f && f="$f,"
 	f="${f}22/$v.el"
 done
-echo "<a href=show.html?f=$f>2022</a><p>"
+echo "<a href=\"show.html?f=$f\">2022</a><p>"
 f=""
 for v in $vis23; do
 	test $f && f="$f,"
 	f="${f}23/$v.el"
 done
-echo "<a href=show.html?f=$f>2023</a><p>"
+echo "<a href=\"show.html?f=$f\">2023</a><p>"
 
 cat <<xxx
 </div>
@@ -338,7 +338,6 @@ a {
 select {
 	background-color:#888;
 	color:#fff;
-	fontsize:110%;
 	border-radius:8px;
 	-moz-appearance: none;
 	-webkit-appearance: none;
@@ -376,9 +375,9 @@ button:hover {background-color:#ccc}
 	</span>
 </span>
 
-<span id=txtwr>
+<div id=txtwr>
 	<div id=txt spellcheck=false tabindex=0></div>
-</span>
+</div>
 
 <script>
 

@@ -1,5 +1,6 @@
-<!doctype html><title>IDE</title>
-<html translate=no>
+<!doctype html>
+<html lang=en translate=no>
+<title>IDE</title>
 <meta charset=utf-8>
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="description" content="easy browser based educational programming language to learn programming">
@@ -117,7 +118,7 @@ tt {border:solid 1px;padding:1px;font-size:120%}
 	border-radius:5px;
 	outline:none;
 	flex:1;
-    xxwhite-space:pre;
+    /* white-space:pre; */
 }
 canvas { display:inline }
 #canv {
@@ -376,17 +377,17 @@ function chngTheme() {
 		<canvas id=dragb class=drag style=float:right></canvas>
 	</div>
 	<div id=docx tabindex=0>
-		<span>
+		<div>
 			<button id=tutchng style=display:none>Back</button>
 			<span id=tut class=tut></span>
 			<button id=tutchng2 style=display:none>Back</button>
-			<div id=tutinf></div>
-		</span>
+			<span id=tutinf></span>
+		</div>
 
-		<span style=display:none>
-			<p>Programs can be stored locally within the browser</p>
-			<span id=storage class=tut></span>
-		</span>
+		<div style=display:none>
+			<p>Programs can be stored locally within the browser
+			<p><span id=storage class=tut></span>
+		</div>
 	</div>
 </div>
 
