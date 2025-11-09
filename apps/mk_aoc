@@ -98,7 +98,6 @@ The examples were created with <a href=..>Easylang</a>.
 </script>
 <script src=easy_code2.js></script>
 <script src=easy_tut2.js></script>
-</html>
 xxx
 
 }
@@ -260,7 +259,6 @@ All tasks of one year on one big page. The programs are editable and runnable.
 <p>
 <hr>
 <small><small>christof.kaser@gmail.com</small></small>
-</html>
 xxx
 
 for i in $(seq 15 24); do
@@ -445,7 +443,6 @@ for (i = 1; i <= days; i++) {
 change()
 
 </script>
-</html>
 
 xxx
 

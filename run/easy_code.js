@@ -443,7 +443,7 @@ function codeInit(pre, f1) {
 	runCB = f1
 	pre.className = "code"
 	pre.contentEditable = true
-	pre.setAttribute("autocorrect", false)
+	pre.setAttribute("autocorrect", "off")
 	pre.setAttribute("autocomplete", "off")
 	pre.setAttribute("autocapitalize", "off")
 	pre.setAttribute("spellcheck", false)

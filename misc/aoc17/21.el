@@ -1,6 +1,6 @@
 # AoC-17 - Day 21: Fractal Art
 #
-proc inarr s$ i d &f[] ..
+proc inarr s$ i d &f[] .
    len f[] d * d
    arrbase f[] 0
    for y range0 d
@@ -11,13 +11,13 @@ proc inarr s$ i d &f[] ..
       i += 1
    .
 .
-proc val &f[] &v ..
+proc val &f[] &v .
    v = 0
    for f in f[]
       v = v * 2 + f
    .
 .
-proc rotate &f[] ..
+proc rotate &f[] .
    len fp[] len f[]
    swap f[] fp[]
    arrbase f[] 0
@@ -28,7 +28,7 @@ proc rotate &f[] ..
       .
    .
 .
-proc mirror &f[] ..
+proc mirror &f[] .
    len fp[] len f[]
    swap f[] fp[]
    arrbase f[] 0
@@ -105,7 +105,7 @@ proc val_img r c d &v .
       i += nc - d
    .
 .
-proc ins_img r c d &ins[] ..
+proc ins_img r c d &ins[] .
    arrbase ins[] 0
    i = r * d * nc + c * d
    for d1 range0 d

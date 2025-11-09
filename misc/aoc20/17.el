@@ -28,7 +28,7 @@ proc init .
       y += 1
    .
 .
-proc update part turn &sum ..
+proc update part turn &sum .
    swap f[] p[]
    wx = turn
    if part = 1

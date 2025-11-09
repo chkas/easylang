@@ -1,10 +1,10 @@
 # AoC-19 - Day 2: 1202 Program Alarm
-# 
+#
 mem0[] = number strsplit input ","
 arrbase mem0[] 0
 global mem[] .
-# 
-proc run . .
+#
+proc run .
    repeat
       oc = mem[pc]
       until oc = 99
@@ -21,16 +21,16 @@ proc run . .
       pc += 4
    .
 .
-# 
-proc part1 . .
+#
+proc part1 .
    mem[] = mem0[]
    mem[1] = 12
    mem[2] = 2
    run
    print mem[0]
 .
-# 
-proc part2 . .
+#
+proc part2 .
    for noun range0 100
       for verb range0 100
          mem[] = mem0[]
@@ -54,7 +54,7 @@ else
    run
    print mem[]
 .
-# 
+#
 input_data
 1,1,1,4,99,5,6,0,99
 

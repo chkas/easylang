@@ -2,7 +2,7 @@
 #
 global col$[] cont_col[][] cont_cnt[][] .
 #
-proc col_id s$ &col ..
+proc col_id s$ &col .
    for col to len col$[]
       if col$[col] = s$ : return
    .
@@ -31,7 +31,7 @@ proc read_inp .
 read_inp
 col_id "shiny gold" gold
 #
-proc search col &fnd ..
+proc search col &fnd .
    if col = gold
       fnd = 1
       return
@@ -53,7 +53,7 @@ proc part1 .
 .
 part1
 #
-proc get_sum col &sum ..
+proc get_sum col &sum .
    sum = 0
    for i to len cont_col[col][]
       get_sum cont_col[col][i] s

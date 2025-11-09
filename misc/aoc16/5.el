@@ -11,7 +11,7 @@ proc init_hash .
 .
 init_hash
 #
-proc out h[] &s$ ..
+proc out h[] &s$ .
    s$ = ""
    for a in h[]
       for i range0 4
@@ -38,7 +38,7 @@ proc addinp b .
       inp4 = 1
    .
 .
-proc hash inp$ &hash[] ..
+proc hash inp$ &hash[] .
    inp[] = [ ]
    inp4 = 1
    for i to len inp$

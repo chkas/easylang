@@ -28,9 +28,9 @@ subr init
 #
 # Part 1
 #
-procdecl parse_expr1 &res ..
+procdecl parse_expr1 &res .
 #
-proc parse_factor1 &res ..
+proc parse_factor1 &res .
    if tok$ = "n"
       res = tokv
       ntok
@@ -43,7 +43,7 @@ proc parse_factor1 &res ..
       ntok
    .
 .
-proc parse_expr1 &res ..
+proc parse_expr1 &res .
    parse_factor1 res
    while tok$ = "+" or tok$ = "*"
       t$ = tok$
@@ -66,9 +66,9 @@ print sum
 #
 # Part 2
 #
-procdecl parse_expr &res ..
+procdecl parse_expr &res .
 #
-proc parse_factor &res ..
+proc parse_factor &res .
    if tok$ = "n"
       res = tokv
       ntok
@@ -81,7 +81,7 @@ proc parse_factor &res ..
       ntok
    .
 .
-proc parse_term &res ..
+proc parse_term &res .
    parse_factor res
    while tok$ = "+"
       ntok
@@ -89,7 +89,7 @@ proc parse_term &res ..
       res += r
    .
 .
-proc parse_expr &res ..
+proc parse_expr &res .
    parse_term res
    while tok$ = "*"
       ntok

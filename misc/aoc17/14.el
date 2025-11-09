@@ -2,7 +2,7 @@
 #
 inp$ = input
 #
-proc hash s$ &hash[] ..
+proc hash s$ &hash[] .
    inp[] = [ ]
    for i to len s$
       inp[] &= strcode substr s$ i 1
@@ -39,7 +39,7 @@ proc hash s$ &hash[] ..
       hash[] &= h
    .
 .
-proc outp &hash[] ..
+proc outp &hash[] .
    for i range0 len hash[]
       h = hash[i]
       for h in [ h div 16 h mod 16 ]

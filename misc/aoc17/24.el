@@ -19,7 +19,7 @@ arrbase a[] 0
 arrbase b[] 0
 arrbase used[] 0
 #
-proc con pins used[] ln &str0 &ln0 &ln0str ..
+proc con pins used[] ln &str0 &ln0 &ln0str .
    str0 = 0
    ln0 = 0
    for i range0 n

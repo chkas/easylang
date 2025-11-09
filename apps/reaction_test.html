@@ -1,45 +1,39 @@
 <!doctype html>
+<html translate=no>
 <meta charset=utf-8><title>Reaction tester</title>
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="description" content="Reaction tester - the examples are written in an easy programming language with a focus on graphics">
 <link rel="icon" href="../icon.png" type="image/x-png">
 
 <div id=tut><b>Loading ...</b></div>
-<script src=easy_code2.js></script>
-<script src=easy_tut2.js></script>
-
 <script>
-
 txt_tutor=`* Reaction tester
 
-# Reaction test
-#
-txt$ = ""
-proc show col s$ . .
-   color col
-   move 0 0
-   rect 100 100
-   color 000
-   move 20 50
-   text s$
-   txt$ = s$
-.
+# Reaction tester
+gbackground 000
 subr wait
-   show 500 "WAIT"
-   timer 1.5 + 2 * randomf
+   gclear
+   gcolor 733
+   gtext 20 50 "WAIT"
+   timer 1 + 2 * randomf
 .
 on timer
-   show 060 "PRESS"
+   gclear
+   gcolor 373
+   gtext 20 50 "PRESS"
    time0 = systime
 .
 on mouse_down
-   if txt$ = "PRESS"
-      show 060 systime - time0
+   if time0 <> 0
+      gclear
+      gcolor 555
+      gtext 20, 50, systime - time0
+      time0 = 0
    else
       wait
    .
 .
-textsize 20
+gtextsize 20
 wait
 
 + A URL can be created, that can start a *code runner* with the program encoded in a URL parameter.
@@ -73,5 +67,8 @@ Easylang is a programming language to teach and learn programming. There is an <
 `)
 }
 </script>
+<script src=easy_code2.js></script>
+<script src=easy_tut2.js></script>
+
 
 

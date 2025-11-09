@@ -72,7 +72,7 @@ proc arr2str ar[] &s$ .
       n = n div 256
    .
 .
-proc xorcrypt key &in[] &out[] ..
+proc xorcrypt key &in[] &out[] .
    out[] = [ ]
    for i = 1 to len in[]
       out[] &= bitxor in[i] key
@@ -167,7 +167,7 @@ proc rotrev k &x &y .
    x = bitand bitor bitshift x 8 bitshift x -24 0xffffffff
 .
 #
-proc sp_encr key &in[] &out[] ..
+proc sp_encr key &in[] &out[] .
    sp_prepkey key
    out[] = [ ]
    for i = 1 step 2 to len in[]
@@ -178,7 +178,7 @@ proc sp_encr key &in[] &out[] ..
       out[] &= y
    .
 .
-proc sp_decr key &in[] &out[] ..
+proc sp_decr key &in[] &out[] .
    sp_prepkey key
    out[] = [ ]
    for i = 1 step 2 to len in[]
@@ -268,7 +268,7 @@ proc rotrev k &x &y .
    x = bitand bitor bitshift x 8 bitshift x -24 0xffffffff
 .
 #
-proc sp_encr key &in[] &out[] ..
+proc sp_encr key &in[] &out[] .
    sp_prepkey key
    x = random 0x100000000
    y = random 0x100000000
@@ -281,7 +281,7 @@ proc sp_encr key &in[] &out[] ..
       out[] &= y
    .
 .
-proc sp_decr key &in[] &out[] ..
+proc sp_decr key &in[] &out[] .
    sp_prepkey key
    out[] = [ ]
    for i = 3 step 2 to len in[]
@@ -351,7 +351,7 @@ proc rotrev k &x &y .
    x = (x - y) mod 0x100000000
    x = bitand bitor bitshift x 8 bitshift x -24 0xffffffff
 .
-proc sp_decr key &in[] &out[] ..
+proc sp_decr key &in[] &out[] .
    sp_prepkey key
    out[] = [ ]
    for i = 3 step 2 to len in[]
@@ -370,7 +370,7 @@ func istext out[] .
    .
    return 1
 .
-proc brute_force start in[] &key ..
+proc brute_force start in[] &key .
    print "Brute forcing"
    in0[] = [ in[1] in[2] in[3] in[4] ]
    for key = start to 9007199254740991
@@ -457,7 +457,7 @@ proc rotrev k &x &y .
    x = (x - y) mod 0x100000000
    x = bitand bitor bitshift x 8 bitshift x -24 0xffffffff
 .
-proc sp_encr key &in[] &out[] ..
+proc sp_encr key &in[] &out[] .
    sp_prepkey key
    x = random 0x100000000
    y = random 0x100000000
@@ -470,7 +470,7 @@ proc sp_encr key &in[] &out[] ..
       out[] &= y
    .
 .
-proc sp_decr key &in[] &out[] ..
+proc sp_decr key &in[] &out[] .
    sp_prepkey key
    out[] = [ ]
    for i = 3 step 2 to len in[]
@@ -520,11 +520,11 @@ the encrypted data.
 actual counter can also be combined with a start value in a
 different way (XOR, concatenate).
 
-proc bytes2str ar[] &s$ ..
+proc bytes2str ar[] &s$ .
    s$ = ""
    for b in ar[] : s$ &= strchar b
 .
-proc str2bytes s$ &b[] ..
+proc str2bytes s$ &b[] .
    b[] = [ ]
    for c$ in strchars s$ : b[] &= strcode c$
 .
@@ -545,7 +545,7 @@ proc sp_prepkey key .
       spkb[] &= b
    .
 .
-proc sp_ctrmode key ctr &in[] &out[] ..
+proc sp_ctrmode key ctr &in[] &out[] .
    sp_prepkey key
    out[] = [ ]
    for i = 1 to len in[]
@@ -583,7 +583,7 @@ print s$
 + Bob and Alice exchange secret messages. A fatal mistake
 happens to them doing so.
 
-proc str2bytes s$ &b[] ..
+proc str2bytes s$ &b[] .
    b[] = [ ]
    for c$ in strchars s$ : b[] &= strcode c$
 .
@@ -604,7 +604,7 @@ proc sp_prepkey key .
       spkb[] &= b
    .
 .
-proc sp_ctrmode key ctr &in[] &out[] ..
+proc sp_ctrmode key ctr &in[] &out[] .
    sp_prepkey key
    out[] = [ ]
    for i = 1 to len in[]
@@ -655,11 +655,11 @@ c[][] &= [ 234 165 225 65 201 168 255 208 114 54 233 57 32 134 254 49 209 214 20
 c[][] &= [ 234 165 225 66 202 163 178 149 4 115 220 48 127 134 192 121 219 204 135 210 16 87 58 58 35 157 207 100 162 118 188 237 12 75 243 152 196 67 138 34 84 236 197 160 122 218 72 221 164 51 131 83 114 198 76 203 104 216 83 237 178 194 209 194 49 230 33 124 231 65 81 243 ]
 c[][] &= [ 234 165 225 65 201 168 255 208 125 54 247 51 60 194 151 120 222 221 198 152 95 32 38 57 58 157 200 109 190 56 235 251 73 67 182 132 223 22 203 34 27 245 194 183 40 216 94 159 232 91 150 74 122 137 95 153 105 198 16 229 251 195 195 198 38 176 111 90 165 8 112 249 131 ]
 #
-proc bytes2str ar[] &s$ ..
+proc bytes2str ar[] &s$ .
    s$ = ""
    for b in ar[] : s$ &= strchar b
 .
-proc crack_xor &key[] ..
+proc crack_xor &key[] .
    key[] = [ ]
    for pos = 1 to 66
       max = 1
@@ -713,7 +713,7 @@ proc crack_xor &key[] ..
 .
 crack_xor key[]
 #
-proc decrypt encr[] key[] . .
+proc decrypt encr[] key[] .
    out[] = [ ]
    for i = 1 to len key[]
       if key[i] <> -1
@@ -747,17 +747,17 @@ c[][] &= [ 234 165 225 65 201 168 255 208 114 54 233 57 32 134 254 49 209 214 20
 c[][] &= [ 234 165 225 66 202 163 178 149 4 115 220 48 127 134 192 121 219 204 135 210 16 87 58 58 35 157 207 100 162 118 188 237 12 75 243 152 196 67 138 34 84 236 197 160 122 218 72 221 164 51 131 83 114 198 76 203 104 216 83 237 178 194 209 194 49 230 33 124 231 65 81 243 ]
 c[][] &= [ 234 165 225 65 201 168 255 208 125 54 247 51 60 194 151 120 222 221 198 152 95 32 38 57 58 157 200 109 190 56 235 251 73 67 182 132 223 22 203 34 27 245 194 183 40 216 94 159 232 91 150 74 122 137 95 153 105 198 16 229 251 195 195 198 38 176 111 90 165 8 112 249 131 ]
 #
-proc str2bytes s$ &ar[] ..
+proc str2bytes s$ &ar[] .
    ar[] = [ ]
    for c$ in strchars s$
       ar[] &= strcode c$
    .
 .
-proc bytes2str ar[] &s$ ..
+proc bytes2str ar[] &s$ .
    s$ = ""
    for b in ar[] : s$ &= strchar b
 .
-proc decrypt encr[] key[] . .
+proc decrypt encr[] key[] .
    out[] = [ ]
    for i = 1 to len key[]
       if key[i] <> -1
@@ -800,4 +800,3 @@ The examples were created with <a href=..>${dom}</a>
 </script>
 <script src=easy_code2.js></script>
 <script src=easy_tut2.js></script>
-</html>

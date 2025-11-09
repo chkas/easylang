@@ -234,7 +234,6 @@ xxx
 </script>
 <script src=easy_code2.js?$vers></script>
 <script src=easy_tut2.js?$vers></script>
-</html>
 xxx
 
 
@@ -309,8 +308,6 @@ a {color:#888}
 <div style="float:right;font-size:80%">
 xxx
 
-#sz=$(ls -l $k | cut -f5 -d' ')
-# if test $sz -lt 50000; then
 set -- $(ls -l $k)
 if test $5 -lt 50000; then
 	echo "<div id=edit class=lnk>Code</div>"
@@ -350,7 +347,6 @@ printf "\`"
 cat << xxx
 </script>
 <script src=easy.js?$vers></script>
-</html>
 xxx
 
 done
@@ -474,18 +470,20 @@ for k in progs/*.kab; do
 	echo "<a href=$i?$vers>$n</a><p>"
 done
 
-cat <<'xxx'
+cat <<xxx
 </div>
 <p>
 <hr>
 <p>
 <div class=col>
 <a href="../sky/">Starry sky</a><p>
-<a href="progfun.html?$vers">Programming fun</a>
+<a href="progfun.html?$vers">Programming fun</a><p>
+<a href="attractors.html?$vers">Strange attractors</a>
 </div>
-
 <br>
+xxx
 
+cat <<'xxx'
 <h3>Embedding in a web page</h3>
 
 When copying the files <a href=easyw.wasm><i>easyw.wasm</i></a>, <a href=easyw.js><i>easyw.js</i></a>
@@ -611,8 +609,7 @@ cat <<'xxx'
 	<p><a href=javascript:runMandel()>Mandelbrot</a>
 	<hr style="width:100px;margin-left:4px">
 	<p>
-	<textarea id=code1 cols=36 rows=8 autocomplete=off
-		autocorrect=off autocapitalize=off spellcheck=false></textarea>
+	<textarea id=code1 cols=36 rows=8></textarea>
 	<br>
 	<button onclick="showx(code1.value)">Show</button>
 </div>
@@ -622,6 +619,12 @@ cat <<'xxx'
 
 <script src=easy.js></script>
 <script>
+code1.setAttribute("autocorrect", "off")
+code1.setAttribute("autocomplete", "off")
+code1.setAttribute("autocapitalize", "off")
+code1.setAttribute("spellcheck", false)
+code1.setAttribute("translate", "no")
+
 easyrun(src1, canv)
 easyrun(src1, canv1)
 show(s2)
@@ -702,5 +705,4 @@ If you like it, recommend it to others.
 
 <hr>
 <small>christof.kaser@gmail.com</small>
-</html>
 xxx

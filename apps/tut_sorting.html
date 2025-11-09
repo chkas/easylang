@@ -19,7 +19,7 @@ txt_tutor=`* Sorting algorithms
 
 print "Selection sort"
 print ""
-proc sort &d[] ..
+proc sort &d[] .
    for i = 1 to len d[] - 1
       min = i
       for j = i + 1 to len d[]
@@ -28,7 +28,7 @@ proc sort &d[] ..
       swap d[i] d[min]
    .
 .
-proc time_test . .
+proc time_test .
   len d[] 500
   write "Length" & strchar 9 & "Time"
   for test = 1 to 3
@@ -50,7 +50,7 @@ time_test
 
 print "Insertion sort"
 print ""
-proc sort &d[] ..
+proc sort &d[] .
   for i = 2 to len d[]
     h = d[i]
     j = i - 1
@@ -61,7 +61,7 @@ proc sort &d[] ..
     d[j + 1] = h
   .
 .
-proc time_test . .
+proc time_test .
   len d[] 500
   write "Length" & strchar 9 & "Time"
   for test = 1 to 3
@@ -85,7 +85,7 @@ time_test
 
 print "Heapsort"
 print ""
-proc sort &d[] ..
+proc sort &d[] .
   n = len d[]
   # make heap
   for i = 2 to n
@@ -111,7 +111,7 @@ proc sort &d[] ..
     .
   .
 .
-proc time_test . .
+proc time_test .
   len d[] 500
   write "Length" & strchar 9 & "Time"
   for test = 1 to 4
@@ -135,7 +135,7 @@ time_test
 
 print "Mergesort"
 print ""
-proc sort &d[] ..
+proc sort &d[] .
   len tmp[] len d[]
   sz = 1
   while sz < len d[]
@@ -163,7 +163,7 @@ proc sort &d[] ..
     sz += sz
   .
 .
-proc time_test . .
+proc time_test .
   len d[] 500
   write "Length" & strchar 9 & "Time"
   for test = 1 to 4
@@ -187,7 +187,7 @@ time_test
 
 print "Quicksort"
 print ""
-proc sort &d[] ..
+proc sort &d[] .
   len stack[] 64
   sp = 1
   # this is sufficient to sort 4 billion numbers
@@ -227,7 +227,7 @@ proc sort &d[] ..
     .
   .
 .
-proc time_test . .
+proc time_test .
   len d[] 500
   write "Length" & strchar 9 & "Time"
   for test = 1 to 4
@@ -253,7 +253,7 @@ time_test
 
 print "Radix sort"
 print ""
-proc sort &d[] ..
+proc sort &d[] .
   # radix = 10
   radix = 256
   max = 0
@@ -278,7 +278,7 @@ proc sort &d[] ..
     pos *= radix
   .
 .
-proc time_test . .
+proc time_test .
   len d[] 500
   write "Length" & strchar 9 & "Time"
   for test = 1 to 4
@@ -323,7 +323,7 @@ proc qsort left right &d[] .
     qsort mid + 1 right d[]
   .
 .
-proc sort &d[] ..
+proc sort &d[] .
   qsort 1 len d[] d[]
 .
 d[] = [ 29 4 72 44 55 26 27 77 92 5 ]
@@ -356,7 +356,7 @@ proc qsort left right &d[] .
     .
   .
 .
-proc sort &d[] ..
+proc sort &d[] .
   qsort 1 len d[] d[]
 .
 d[] = [ 29 4 72 44 55 26 27 77 92 5 ]
@@ -375,4 +375,3 @@ The examples were created with <a href=..>${dom}</a>
 </script>
 <script src=easy_code2.js></script>
 <script src=easy_tut2.js></script>
-</html>

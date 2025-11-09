@@ -94,7 +94,7 @@ proc md5 inp$ &s$ .
       .
    .
 .
-proc md5x in$ &h$ ..
+proc md5x in$ &h$ .
    md5 in$ h$
    for i range0 2016
       md5 h$ h$

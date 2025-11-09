@@ -8,7 +8,7 @@ for ii to 4
    p0[] &= number inp$[4]
 .
 #
-proc part_1 . .
+proc part_1 .
    p[] = p0[]
    len v[] 12
    arrbase v[] 0
@@ -39,7 +39,7 @@ proc part_1 . .
 .
 part_1
 #
-proc gcd a b &res ..
+proc gcd a b &res .
    while b <> 0
       h = b
       b = a mod b
@@ -47,13 +47,13 @@ proc gcd a b &res ..
    .
    res = a
 .
-proc lcm3 a b c &r ..
+proc lcm3 a b c &r .
    gcd a b h
    r1 = a div h * b
    gcd r1 c h
    r = r1 div h * c
 .
-proc part_2 . .
+proc part_2 .
    p[] = p0[]
    len v[] 12
    len steps[] 3

@@ -7,7 +7,7 @@ repeat
 .
 inp$[] &= "end"
 #
-proc mkmask s$ &mbin &mmsk ..
+proc mkmask s$ &mbin &mmsk .
    mbin = 0
    mmsk = 0
    for c$ in strchars s$
@@ -20,7 +20,7 @@ proc mkmask s$ &mbin &mmsk ..
       .
    .
 .
-proc wrmem addr val &mema[] &mem[] ..
+proc wrmem addr val &mema[] &mem[] .
    for i to len mem[] : if mema[i] = addr
       mem[i] = val
       return
@@ -49,7 +49,7 @@ proc part1 .
 .
 part1
 #
-proc wrmem2 addr$ val &mema$[] &mem[] ..
+proc wrmem2 addr$ val &mema$[] &mem[] .
    addr$[] = strchars addr$
    nmem = len mem[]
    for k to nmem : if mema$[k] <> ""

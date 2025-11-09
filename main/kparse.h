@@ -1274,7 +1274,7 @@ S int parse_proc_header(int mode, byte proctyp) {
 	cst(t_dot);
 	nexttok();
 
-	if (proctyp == 0 && tok == t_dot) nexttok();	//kc  .. -> . (delete sometime)
+	//if (proctyp == 0 && tok == t_dot) nexttok();	//kc  .. -> . (delete sometime)
 
 	return 1;
 

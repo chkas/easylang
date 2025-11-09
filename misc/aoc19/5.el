@@ -4,7 +4,7 @@ mem0[] = number strsplit input ","
 arrbase mem0[] 0
 global inp mem[] .
 #
-proc run . .
+proc run .
    repeat
       oc = mem[pc] mod 100
       ma = mem[pc] div 100 mod 10

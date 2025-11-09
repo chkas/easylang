@@ -2,7 +2,7 @@
 #
 global type$[] .
 #
-proc type_id s$ &id ..
+proc type_id s$ &id .
    for id to len type$[]
       if type$[id] = s$ : return
    .
@@ -49,7 +49,7 @@ proc read .
 read
 #
 #
-proc combat boost &winner &res ..
+proc combat boost &winner &res .
    units[] = units0[]
    dam[] = dam0[]
    for i to len units[]

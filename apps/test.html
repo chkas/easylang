@@ -1,35 +1,34 @@
 <!doctype html>
+<html translate=no>
 <title>easylang.online</title>
 <canvas id=canv style="width:95vh;height:95vh">
 </canvas><script src=easy.js></script>
 
 <script>
 s = `
-proc tree x y deg n . .
-  if n > 0
-    linewidth n * 0.4
-    move x y
-    x += cos deg * n * 1.4 * (randomf + 0.5)
-    y += sin deg * n * 1.4 * (randomf + 0.5)
-    line x y
-    tree x y deg - 20 n - 1
-    tree x y deg + 20 n - 1
-  .
+proc tree x y a d .
+   glinewidth d * 0.4
+   xn = x + cos a * d * 1.4 * (randomf + 0.5)
+   yn = y + sin a * d * 1.4 * (randomf + 0.5)
+   gline x y xn yn
+   if d > 1
+      tree xn yn a - 20 d - 1
+      tree xn yn a + 20 d - 1
+   .
 .
-tree 50 90 -90 10
+tree 50 5 90 10
 `
 err = `
 clear
 textsize 6
-move 5 10
-text "This app is not compatible"
+gtext 5 80 "This app is not compatible"
 `
 function msgf(a, b) {
 	if (a == "ready") easyrun(s, canv)
 	else if (a == "error") easyrun(err, canv)
 	console.log(a)
 }
-easyinit(canv, out = null, msgf) 
+easyinit(canv, out = null, msgf)
 
 
 

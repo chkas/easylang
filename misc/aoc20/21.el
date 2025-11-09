@@ -2,13 +2,13 @@
 #
 global ingre$[] allerg$[] meal_ingre[][] meal_allerg[][] .
 #
-proc ingre_id s$ &i ..
+proc ingre_id s$ &i .
    for i to len ingre$[]
       if ingre$[i] = s$ : return
    .
    ingre$[] &= s$
 .
-proc allerg_id s$ &i ..
+proc allerg_id s$ &i .
    for i to len allerg$[]
       if allerg$[i] = s$ : return
    .
@@ -44,7 +44,7 @@ n_meal = len meal_ingre[][]
 n_ingre = len ingre$[]
 n_allerg = len allerg$[]
 #
-proc allerg_in_meal allerg meal &is_in ..
+proc allerg_in_meal allerg meal &is_in .
    is_in = 0
    for i to len meal_allerg[meal][]
       if allerg = meal_allerg[meal][i]
@@ -53,7 +53,7 @@ proc allerg_in_meal allerg meal &is_in ..
       .
    .
 .
-proc ingre_in_meal ingre meal &is_in ..
+proc ingre_in_meal ingre meal &is_in .
    is_in = 0
    for i to len meal_ingre[meal][]
       if ingre = meal_ingre[meal][i]

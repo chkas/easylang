@@ -7,7 +7,7 @@ len ic_pc[] n
 len ic_base[] n
 len ic_mem[][] n
 len ic_in[][] n
-proc init . .
+proc init .
    arrbase code[] 0
    for i = 1 to n
       ic_pc[i] = 0
@@ -20,7 +20,7 @@ proc init . .
 oind = 1
 oid = 0
 len nat[] 2
-proc ic_outf h . .
+proc ic_outf h .
    if oind = 1
       oid = h
    else
@@ -35,7 +35,7 @@ proc ic_outf h . .
 # -------- intcode --------
 prefix ic_
 global pc base in[] mem[] .
-proc mem_ind mo ind &rind ..
+proc mem_ind mo ind &rind .
    rind = ind
    if mo = 0
       rind = mem[ind]
@@ -46,7 +46,7 @@ proc mem_ind mo ind &rind ..
       len mem[] rind + 8
    .
 .
-proc run id . .
+proc run id .
    pc = pc[id]
    base = base[id]
    swap mem[id][] mem[]
@@ -103,7 +103,7 @@ proc run id . .
 # --------  --------
 prefix
 #
-proc part1 . .
+proc part1 .
    init
    repeat
       for id = 1 to n
@@ -115,7 +115,7 @@ proc part1 . .
    print nat[2]
 .
 #
-proc part2 . .
+proc part2 .
    init
    repeat
       repeat

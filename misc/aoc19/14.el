@@ -7,7 +7,7 @@ func nid n$ .
    name$[] &= n$
    return i
 .
-proc parse . .
+proc parse .
    h = nid "ORE"
    h = nid "FUEL"
    h = h
@@ -30,7 +30,7 @@ proc parse . .
 .
 parse
 #
-proc produce_fuel need &n_ore ..
+proc produce_fuel need &n_ore .
    recpt[][] = recpt0[][]
    len need[] len name$[]
    need[2] = need
@@ -62,7 +62,7 @@ proc produce_fuel need &n_ore ..
 produce_fuel 1 n_ore
 print n_ore
 #
-proc part2 . .
+proc part2 .
    min = 1
    max = 9999999999
    while min + 1 < max

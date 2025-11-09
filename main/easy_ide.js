@@ -215,7 +215,7 @@ function tutUpd() {
 							h++
 						}
 						else {
-							if (st) sn += "<tt>"
+							if (st) sn += "<tt translate=no>"
 							else sn += "</tt>"
 							st = !st
 						}
@@ -255,6 +255,7 @@ function tutUpd() {
 		}
 		else {
 			var pre = create("pre")
+			pre.setAttribute("translate", "no")
 			pre.innerHTML = s
 			if (runBtn) {
 				kaFormat(s, pres.push(pre) - 1)
@@ -382,12 +383,13 @@ function expandClick(btn) {
 		btn.pre.textContent = btn.preview
 		btn.textContent = "Expand"
 		hide(btn.nextSibling)
+		btn.nextSibling.textContent = "Copy"
 	}
 }
 function copyClick(btn) {
 	navigator.clipboard.writeText(window.localStorage[btn.ref])
+	btn.textContent = "Copied"
 }
-
 function storeUpd() {
 	var fr = document.createDocumentFragment()
 	removeChilds(storage)
@@ -404,6 +406,7 @@ function storeUpd() {
 			if (i2 != -1) ind = i2
 		}
 		var pre = create("pre")
+		pre.setAttribute("translate", "no")
 		appendTxt(pre, st.substring(0, ind))
 
 		var btn
@@ -1509,6 +1512,12 @@ function ready() {
 	stepBtn.disabled = false
 
 	if (!initDone) {
+		inp.setAttribute("autocorrect", false)
+		inp.setAttribute("autocomplete", "off")
+		inp.setAttribute("autocapitalize", "off")
+		inp.setAttribute("spellcheck", false)
+		inp.setAttribute("translate", "no")
+		out.setAttribute("translate", "no")
 		initDone = true
 		if (initTut > 0 && initTut <= tut_file.length) {
 			showTut(tut_file[initTut - 1])

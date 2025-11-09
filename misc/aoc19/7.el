@@ -6,7 +6,7 @@ prefix ic_
 global out pc fin mem[] .
 in = -1
 #
-proc run . .
+proc run .
    arrbase mem[] 0
    fin = 0
    repeat
@@ -50,14 +50,14 @@ proc run . .
 .
 prefix
 #
-proc run0 inp . .
+proc run0 inp .
    ic_mem[] = code[]
    ic_in = inp
    ic_pc = 0
    ic_run
 .
 arr[] = [ 0 1 2 3 4 ]
-proc runall . .
+proc runall .
    ic_out = 0
    for i = 1 to 5
       run0 arr[i]
@@ -69,7 +69,7 @@ proc runall . .
 .
 #
 max = 0
-proc permute k . .
+proc permute k .
    for i = k to len arr[]
       swap arr[i] arr[k]
       permute k + 1
@@ -82,7 +82,7 @@ proc permute k . .
       .
    .
 .
-proc part1 . .
+proc part1 .
    permute 1
    print max
 .
@@ -91,13 +91,13 @@ part1
 #
 len mem[][] 5
 len pc[] 5
-proc init . .
+proc init .
    for i = 1 to 5
       mem[i][] = code[]
       pc[i] = 0
    .
 .
-proc runid id . .
+proc runid id .
    swap mem[id][] ic_mem[]
    ic_pc = pc[id]
    ic_run
@@ -106,7 +106,7 @@ proc runid id . .
 .
 #
 arr[] = [ 5 6 7 8 9 ]
-proc runall2 . .
+proc runall2 .
    init
    for id = 1 to 5
       ic_in = arr[id]
@@ -122,7 +122,7 @@ proc runall2 . .
    .
 .
 max = 0
-proc permute2 k . .
+proc permute2 k .
    for i = k to len arr[]
       swap arr[i] arr[k]
       permute2 k + 1
@@ -133,7 +133,7 @@ proc permute2 k . .
       if ic_out > max : max = ic_out
    .
 .
-proc part2 . .
+proc part2 .
    permute2 1
    print max
 .

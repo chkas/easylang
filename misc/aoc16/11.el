@@ -3,7 +3,7 @@
 hashsz = 1999993
 len hashind[] hashsz
 #
-proc hash ind &ret ..
+proc hash ind &ret .
    hi = ind mod hashsz + 1
    while hashind[hi] <> 0 and hashind[hi] <> ind
       hi = hi mod hashsz + 1
@@ -17,7 +17,7 @@ proc hash ind &ret ..
 .
 #
 na$[] = [ ]
-proc getid n$ &id ..
+proc getid n$ &id .
    for id to len na$[]
       if na$[id] = n$
          break 2

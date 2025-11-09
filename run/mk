@@ -86,8 +86,8 @@ EOF
 
 echo ".. run.html"
 
-cat run.html > $odir/index.html
-cat run.html > $wdir/run.html
+cat run.html | sed -e "s/\$date/$date/g" > $odir/index.html
+cat run.html | sed -e "s/\$date/$date/g" > $wdir/run.html
 
 cat >>$odir/index.html <<'xxx'
 if ("serviceWorker" in navigator) {

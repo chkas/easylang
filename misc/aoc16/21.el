@@ -5,13 +5,13 @@ repeat
    until ii$ = ""
    inp$[] &= ii$
 .
-proc tostr pw[] &pw$ ..
+proc tostr pw[] &pw$ .
    pw$ = ""
    for v in pw[]
       pw$ &= strchar (v + 97)
    .
 .
-proc hash pw[] &hash$ ..
+proc hash pw[] &hash$ .
    np = len pw[]
    len pwn[] np
    arrbase pw[] 0

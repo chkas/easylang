@@ -6,7 +6,7 @@ len scaf[] 100
 arrbase scaf[] 0
 global width height out$ start_pos .
 #
-proc ic_outpf out . .
+proc ic_outpf out .
    c$ = strchar out
    out$ &= c$
    if out = 10
@@ -36,7 +36,7 @@ subr init
    mem[] = code[]
    arrbase mem[] 0
 .
-proc mem_ind mo ind &rind ..
+proc mem_ind mo ind &rind .
    if mo = 1
       rind = ind
    elif mo = 0
@@ -46,7 +46,7 @@ proc mem_ind mo ind &rind ..
    .
    if rind >= len mem[] : len mem[] rind + 8
 .
-proc run . .
+proc run .
    repeat
       oc0 = mem[pc]
       oc = oc0 mod 100
@@ -96,7 +96,7 @@ proc run . .
 # --------  --------
 prefix
 #
-proc part1 . .
+proc part1 .
    ic_init
    ic_run
    offs[] = [ -width 1 width -1 ]
@@ -116,7 +116,7 @@ proc part1 . .
 #
 global s$[] sf$[] .
 #
-proc search si lng &matches[] ..
+proc search si lng &matches[] .
    matches[] = [ ]
    for i = si + lng to len s$[] - lng + 1
       for j range0 lng
@@ -129,7 +129,7 @@ proc search si lng &matches[] ..
 .
 len fu$[][] 3
 #
-proc apply lev start lng &matches[] ..
+proc apply lev start lng &matches[] .
    sn$[] = [ ]
    fu$[lev][] = [ ]
    match = 1
@@ -153,7 +153,7 @@ proc apply lev start lng &matches[] ..
 .
 len fuf$[][] 3
 #
-proc test_found . .
+proc test_found .
    for i = 1 to len s$[]
       if strcode s$[i] > 67 : break 1
    .
@@ -162,7 +162,7 @@ proc test_found . .
       swap sf$[] s$[]
    .
 .
-proc search_pat lev . .
+proc search_pat lev .
    si = 1
    while strcode s$[si] <= 67 : si += 1
    s0$[] = s$[]
@@ -179,7 +179,7 @@ proc search_pat lev . .
       .
    .
 .
-proc make_pat . .
+proc make_pat .
    dir = 1
    done = 0
    pos = start_pos
@@ -206,7 +206,7 @@ proc make_pat . .
       s$[] &= s$
    .
 .
-proc prog_rob . .
+proc prog_rob .
    for i = 1 to len sf$[]
       if i > 1
          ic_in = strcode ","
@@ -242,7 +242,7 @@ proc prog_rob . .
    ic_in = 10
    ic_run
 .
-proc part2 . .
+proc part2 .
    ic_init
    ic_mem[0] = 2
    ic_run

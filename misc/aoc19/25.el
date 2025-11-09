@@ -13,7 +13,7 @@ in = -1
 base = 0
 pc = 0
 #
-proc mem_ind mo ind &rind ..
+proc mem_ind mo ind &rind .
    rind = ind
    if mo = 0
       rind = mem[ind]
@@ -24,8 +24,8 @@ proc mem_ind mo ind &rind ..
       len mem[] rind + 8
    .
 .
-procdecl outf out . .
-proc run . .
+procdecl outf out .
+proc run .
    repeat
       oc0 = mem[pc]
       oc = oc0 mod 100
@@ -73,7 +73,7 @@ prefix
 len door[] 4
 global room$ item$ stat weight_fb out$ last_out$ .
 #
-proc ic_outf out . .
+proc ic_outf out .
    c$ = strchar out
    if out = 10
       a$[] = strchars out$
@@ -128,11 +128,11 @@ proc ic_outf out . .
    .
 .
 #
-proc put h . .
+proc put h .
    ic_in = h
    ic_run
 .
-proc say s$ . .
+proc say s$ .
    if verbose = 1
       print "-> " & s$
    .
@@ -145,12 +145,12 @@ proc say s$ . .
 .
 #
 dir$[] = [ "north" "east" "south" "west" ]
-proc go d . .
+proc go d .
    say dir$[d]
 .
 avoid$[] = [ "escape pod" "photons" "molten lava" "giant electromagnet" "infinite loop" ]
 item$[] = [ ]
-proc take_items . .
+proc take_items .
    if item$ <> ""
       for i = 1 to len avoid$[]
          if item$ = avoid$[i]
@@ -163,7 +163,7 @@ proc take_items . .
       .
    .
 .
-proc collect_items dir0 . .
+proc collect_items dir0 .
    if room$ <> "Secu"
       for dir = 1 to 4
          if dir <> dir0 and door[dir] = 1
@@ -177,7 +177,7 @@ proc collect_items dir0 . .
    .
 .
 pressure_floor = -1
-proc to_checkpoint rev_dir . .
+proc to_checkpoint rev_dir .
    if room$ = "Secu"
       # found
       for dir = 1 to 4
@@ -202,7 +202,7 @@ proc to_checkpoint rev_dir . .
 .
 item[] = [ ]
 n_item = 0
-proc combine_items . .
+proc combine_items .
    for i = 1 to n_item
       if item[i] = 0
          item[i] = 1
@@ -222,7 +222,7 @@ proc combine_items . .
       .
    .
 .
-proc run . .
+proc run .
    ic_run
    collect_items -1
    to_checkpoint -1

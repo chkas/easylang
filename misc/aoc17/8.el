@@ -1,7 +1,7 @@
 # AoC-17 - Day 8: I Heard You Like Registers
 #
 global name$[] v[] .
-proc getid n$ &id ..
+proc getid n$ &id .
    for id to len name$[]
       if name$[id] = n$
          break 2

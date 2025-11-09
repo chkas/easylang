@@ -197,16 +197,13 @@ nextlnk.onclick = function() {
 
 var sadSmiley = `
 #
-move 20 83
-color 983
-circle 7
-color 000
-move 17 85
-circle 1
-move 23 85
-circle 1
-linewidth 1
-curve [ 17 80 20 83 23 80 ]
+gcolor 983
+gcircle 80 73 7
+gcolor 000
+gcircle 77 71 1
+gcircle 83 71 1
+glinewidth 1
+gcurve [ 77 75 80 79 83 75 ]
 `
 
 async function ready() {
@@ -262,5 +259,4 @@ async function decode(txt) {
 }
 
 </script>
-</html>
 

@@ -120,7 +120,6 @@ span.high {background-color:#666}
 	</div>
 </div>
 
-
 <script src=easy_code2.js></script>
 <script>
 
@@ -292,9 +291,8 @@ urllnk.onclick = async function() {
 
 function msgf(msg, d) {
 	if (msg == "src") updout(-d[1] & 2)
-	codeMsgF(msg, d)
-	console.log("xmsg: " + msg)
 	if (msg == "src_err" || msg == "selline") showcode()
+	codeMsgF(msg, d)
 }
 
 easyinit(canv, out, msgf)
@@ -323,6 +321,4 @@ async function decode(txt) {
 	var dec = new TextDecoder("utf8")
 	return dec.decode(h)
 }
-
 </script>
-</html>

@@ -37,7 +37,7 @@ proc init .
 .
 init
 #
-proc match s$ &nr[] &res ..
+proc match s$ &nr[] &res .
    res = 1
    i = 1
    while i <= len nr[] and (nr[i] = a or nr[i] = b)

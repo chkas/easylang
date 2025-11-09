@@ -33,19 +33,18 @@ A tree is a piece of wood with smaller trees attached to it.
 <button id=btn>Run</button>
 <br>
 <pre id=pre>
-proc tree x y a d . .
-   linewidth d * 0.4
-   move x y
-   x += cos a * d * 1.4 * (randomf + 0.5)
-   y += sin a * d * 1.4 * (randomf + 0.5)
-   line x y
-   if d > 1
-      tree x y a - 20 d - 1
-      tree x y a + 20 d - 1
+gcolor 445
+proc tree x y angle depth .
+   glinewidth depth * 0.4
+   xn = x + cos angle * depth * 1.4 * (randomf + 0.5)
+   yn = y + sin angle * depth * 1.4 * (randomf + 0.5)
+   gline x y xn yn
+   if depth > 1
+      tree xn, yn, angle - 20, depth - 1
+      tree xn, yn, angle + 20, depth - 1
    .
 .
-tree 50 5 90 10
-
+tree 50 10 90 10
 </pre>
 
 <canvas id=canv></canvas>
@@ -58,29 +57,30 @@ Reaction Tester
 <button id=btn2>Run</button>
 <br>
 <pre id=pre2>
+gbackground 000
 subr wait
-   color 733
-   text "WAIT"
-   timer 1.5 + 2 * randomf
+   gclear
+   gcolor 733
+   gtext 20 50 "WAIT"
+   timer 1 + 2 * randomf
 .
 on timer
-   clear
-   color 373
-   text "PRESS"
+   gclear
+   gcolor 373
+   gtext 20 50 "PRESS"
    time0 = systime
 .
 on mouse_down
-   clear
-   if time0 >= 0.15
-      color 555
-      text systime - time0
+   if time0 <> 0
+      gclear
+      gcolor 555
+      gtext 20, 50, systime - time0
       time0 = 0
    else
       wait
    .
 .
-textsize 20
-move 20 50
+gtextsize 20
 wait
 </pre>
 

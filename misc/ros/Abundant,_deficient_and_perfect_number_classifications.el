@@ -1,19 +1,13 @@
 func sumprop num .
-   if num < 2
-      return 0
-   .
+   if num < 2 : return 0
    i = 2
    sum = 1
    root = sqrt num
    while i < root
-      if num mod i = 0
-         sum += i + num / i
-      .
+      if num mod i = 0 : sum += i + num / i
       i += 1
    .
-   if num mod root = 0
-      sum += root
-   .
+   if num mod root = 0 : sum += root
    return sum
 .
 for j = 1 to 20000

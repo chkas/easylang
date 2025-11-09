@@ -9,7 +9,7 @@ cp ../run/icon.png $odir
 exec >$odir/index.html
 cat <<xxx
 <!doctype html>
-<html translate=no>
+<html lang=en>
 <meta charset=utf-8>
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="keywords" content="learning games kids">
@@ -54,7 +54,7 @@ wrcode() {
 	f=$(echo $1 | cut -c1 | tr a-z A-Z)
 	n=$f$(echo $1 | cut -c2- | tr '-' ' ')
 	echo $1:$f:$n >&2
-	echo "><img src=$1.png>"
+	echo "><img src=$1.png alt=\"\">"
 	echo "<b>$n</b>"
 	echo "</a>"
 	echo "<p>"
