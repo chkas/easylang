@@ -1,0 +1,55 @@
+sysconf radians
+name$ = "Thomas' attractor"
+b = 0.19
+dt = 0.01
+#
+for _i to 15000
+   x[] &= randomf * 6 - 3
+   y[] &= randomf * 6 - 3
+   z[] &= randomf * 6 - 3
+.
+proc update .
+   for i to len x[]
+      dx = (sin y[i] - b * x[i]) * dt
+      y[i] += (sin z[i] - b * y[i]) * dt
+      z[i] += (sin x[i] - b * z[i]) * dt
+      x[i] += dx
+   .
+.
+coord_translate 50 50
+gtextsize 3
+gbackground 000
+#
+proc draw3d angx .
+   sinx = sin angx
+   cosx = cos angx
+   # z-ordering
+   len buck[][] 255
+   for i to len x[]
+      zd = x[i] * sinx + z[i] * cosx
+      bu = lower 255 floor ((zd + 4.3) * 30)
+      if bu >= 1 : buck[bu][] &= i
+   .
+   gclear
+   for bu to 255
+      c = bu / 255
+      gcolor3 c c c
+      for i in buck[bu][]
+         xd = x[i] * cosx - z[i] * sinx
+         gcircle xd * 10 y[i] * 10 0.15
+      .
+   .
+   gcolor 777
+   gtext -45 -48 name$
+.
+on animate
+   if stat = 2 : return
+   update
+   draw3d angx
+   if stat = 1 : return
+   angx += 0.005
+.
+on mouse_down
+   stat = (stat + 1) mod 3
+.
+

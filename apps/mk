@@ -476,9 +476,8 @@ cat <<xxx
 <hr>
 <p>
 <div class=col>
-<a href="../sky/">Starry sky</a><p>
-<a href="progfun.html?$vers">Programming fun</a><p>
-<a href="attractors.html?$vers">Strange attractors</a>
+<a href="../sky/">Starry sky</a>
+<p><a href="progfun.html?$vers">Programming fun</a>
 </div>
 <br>
 xxx

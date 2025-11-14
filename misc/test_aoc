@@ -1,6 +1,6 @@
 #/bin/sh
 ../../native/runc 1.el
-t0=$(date +%s.%2N)
+t0=$(($(date +%s%N)/1000000))
 for i in $(seq 1 25); do 
 	grep "0x67452301" $i.el >/dev/null && continue
 	if test $1; then
@@ -18,5 +18,5 @@ test -e sol.txt || cp /tmp/sol$$.txt sol.txt
 echo
 diff /tmp/sol$$.txt sol.txt
 rm /tmp/sol$$ /tmp/sol$$.txt
-echo "$(date +%s.%2N) - $t0" | bc -l
+echo "$(($(($(date +%s%N)/1000000)) - $t0)) ms"
 

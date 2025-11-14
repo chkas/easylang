@@ -10,23 +10,21 @@ test ! -e $D/$n && compile=1
 h="$S/kfunc.h $S/klib.h $S/klex.h $S/kparse.h $S/../native/kbgr.c $S/kwasm.h $0"
 f="$S/kbas.c"
 for i in $f $h; do
-  test $i -nt $D/$n && compile=1
+	test $i -nt $D/$n && compile=1
 done
 
 if test $compile; then
-  rm -f $D/$n
-  cc=clang
-  which $cc >/dev/null || cc=gcc
-  HB=/opt/homebrew
-  #echo "Compiling easylang (with $cc) ..." >&2
-  if which sdl2-config >/dev/null; then
-    echo "$cc -Wall -O2 -D__SDL__ -I$S -I$HB/include -L$HB/lib -O $f -lSDL2 -lSDL2_ttf -lm -o $D/$n" >&2
-    $cc -Wall -O2 -D__SDL__ -I$S -I$HB/include -L$HB/lib -O $f -lSDL2 -lSDL2_ttf -lm -o $D/$n
-  else
-    echo "$cc -Wall -O2 -D__NOSDL__ -I$S -O $f -lm -o $D/$n"
-    $cc -Wall -O2 -D__NOSDL__ -I$S -O $f -lm -o $D/$n
-  fi
-  echo "done" >&2
+	BASE=/opt/homebrew
+	rm -f $D/$n
+	if test ! -d $BASE/include/SDL3 ||  test ! -d $BASE/include/SDL3_ttf; then
+		echo "SDL3 not found"
+		echo "$cc -Wall -O2 -D__NOSDL__ -I$S -O $f -lm -o $D/$n"
+		cc -Wall -O2 -D__NOSDL__ -I$S -O $f -lm -o $D/$n
+	else
+		echo $cc -Wall -O2 -D__SDL__ -I$S -I$BASE/include -L$BASE/lib -O $f -lSDL3 -lSDL3_ttf -lm -o $D/$n
+		cc -Wall -O2 -D__SDL__ -I$S -I$BASE/include -L$BASE/lib -O $f -lSDL3 -lSDL3_ttf -lm -o $D/$n
+	fi
+	echo "done" >&2
 fi
 
 if test -x $D/$n; then

@@ -6,6 +6,7 @@ date +%y%m%d > _get_date
 	# expr "$n" : '#' >/dev/null && continue
 	test "$n" = "Hello world/Newbie" && continue
 	test "$n" = "Naming conventions" && continue
+	test "$n" = "Safe mode" && continue
 	test "$n" = "Special variables" && continue
 	x=$(echo $n|tr " " _)
 	dest=$(echo $n|tr " /" _+)

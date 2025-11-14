@@ -83,12 +83,12 @@ static void gr_init(const char* s, int mask) {
 		EM_ASM_({ push([7, $0])}, 11);	// gclrear
 	}
 	EM_ASM_({ postMessage(['init', $0]) }, mask);
-	grx = 0;
-	gry = 100;
+	//grx = 0;
+	//gry = 100;
 	grbotleft = 1;
 	grsz = 100;
 	if (sysconfig & 1) {
-		gry = 0;
+		//gry = 0;
 		grbotleft = 0;
 	}
 	grtxty = 8 * 0.78;
@@ -119,26 +119,11 @@ static void gr_textsize(double h) {
 	//grtxty = h * 0.78;
 	grtxty = h * 78 / grsz;
 }
-/*
-static void gr_text(const char* s) {
-	double h = gry;
-	if (!grbotleft) h += grtxty;
-	EM_ASM_({ push([6, $0, $1, UTF8ToString($2)])}, grx, h, s);
-}
-*/
-static void gr_gtext(double x, double y, const char* s) {
+static void gr_text(double x, double y, const char* s) {
 	if (grbotleft) y = grsz - y;
 	else y += grtxty;
 	EM_ASM_({ push([6, $0, $1, UTF8ToString($2)])}, x, y, s);
 }
-/*
-static void gr_move(double x, double y) {
-	grx = x;
-	if (grbotleft) gry = grsz - y;
-	else gry = y;
-	grpen = 1;
-}
-*/
 static void gr_lineto(double x, double y) {
 	if (grbotleft) y = grsz - y;
 	if (grpen) EM_ASM_({ push([2, $0, $1, $2, $3])}, grx, gry, x, y);
@@ -146,29 +131,19 @@ static void gr_lineto(double x, double y) {
 	grx = x;
 	gry = y;
 }
-/*
-static void gr_rect(double w, double h) {
-	double y = gry;
-	if (grbotleft) y -= h;
-	EM_ASM_({ push([4, $0, $1, $2, $3])}, grx, y, w, h);
-}
-*/
-static void gr_gcircseg(double x, double y, double rad, double a, double b) {
+static void gr_circseg(double x, double y, double rad, double a, double b) {
 	if (grbotleft) y = grsz - y;
 	EM_ASM_({ push([16, $0, $1, $2, $3, $4])}, x, y, rad, a, b);
 }
-//static void gr_circle(double r) {
-//	EM_ASM_({ push([3, $0, $1, $2])}, grx, gry, r);
-//}
-static void gr_gcircle(double x, double y, double r) {
+static void gr_circle(double x, double y, double r) {
 	if (grbotleft) y = grsz - y;
 	EM_ASM_({ push([3, $0, $1, $2])}, x, y, r);
 }
-static void gr_grect(double x, double y, double w, double h) {
+static void gr_rect(double x, double y, double w, double h) {
 	if (grbotleft) y = grsz - y - h;
 	EM_ASM_({ push([4, $0, $1, $2, $3])}, x, y, w, h);
 }
-static void gr_gline(double x, double y, double x2, double y2) {
+static void gr_line(double x, double y, double x2, double y2) {
 	if (grbotleft) {
 		y = grsz - y;
 		y2 = grsz - y2;

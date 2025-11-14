@@ -1,0 +1,9 @@
+#!/bin/sh
+
+BASE=/opt/homebrew
+if test ! -d $BASE/include/SDL3 ||  test ! -d $BASE/include/SDL3_ttf; then
+	echo "SDL3 not found"
+	exit 1
+fi
+cc -Wall -D__SDL__ -DRUN  -I$BASE/include -L$BASE/lib -O kbgr.c  -lSDL3 -lSDL3_ttf -lm -o /tmp/kbgr$$ || exit 1
+/tmp/kbgr$$

@@ -11,20 +11,22 @@
     "christof.kaser@gmail.com".
 */
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
+#include <SDL3/SDL.h>
+#include <SDL3_ttf/SDL_ttf.h>
 #include <sys/stat.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
 
-#define bool int
-#define true 1
-#define false 0
+//#define bool int
+//#define true 1
+//#define false 0
 #define swap(a, b) { int _h = a; a = b; b = _h; }
 #define min(a, b) ((a) < (b) ? (a) : (b))
 
 #ifdef RUN
 unsigned short sysconfig;
-#define M_PI 3.1415926
+//#define M_PI 3.1415926
 #endif
 
 extern int sys_error;
@@ -46,7 +48,8 @@ static unsigned short botleft;
 static const char* fontname;
 
 static void errx(const char* s) {
-	fprintf(stderr, "%s\n", s);
+	fprintf(stderr, "Error: %s", s);
+	fprintf(stderr, " - %s\n", SDL_GetError());
 	exit(1);
 }
 
@@ -88,8 +91,9 @@ void gr_backcolor(int r, int g, int b) {
 }
 
 #define FREQ 32768
-static void audio_cb(void*, Uint8*, int);
-static SDL_AudioDeviceID dev;
+static void SDLCALL new_audio_cb(void *userdata, SDL_AudioStream *stream, int additional, int total);
+
+static SDL_AudioDeviceID audio_dev;
 static char do_animate;
 
 void gr_init(const char* progname, int mask) {
@@ -105,18 +109,19 @@ void gr_init(const char* progname, int mask) {
 	fcol.a = 255;
 	SDL_Init(0);
 	if (mask & 128) {
-		SDL_InitSubSystem(SDL_INIT_VIDEO);
-		SDL_DisplayMode dm;
-		SDL_GetCurrentDisplayMode(0, &dm);
-		SZ = min(dm.w, dm.h);
+		if (!SDL_InitSubSystem(SDL_INIT_VIDEO)) errx("InitSub");
+		SDL_DisplayID disp = SDL_GetPrimaryDisplay();
+		const SDL_DisplayMode* dm = SDL_GetCurrentDisplayMode(disp);
+		if (dm == NULL) errx("dm");
+		SZ = min(dm->w, dm->h);
 
 		SZ = SZ * 9 / 10 / 100 * 100;
 		FX = SZ / 100.0;
 		FMX = FX;
 		FMY = FX;
 
-		window = SDL_CreateWindow(progname, 50, 50, SZ, SZ, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
-		renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC|SDL_RENDERER_ACCELERATED);
+		window = SDL_CreateWindow(progname, SZ, SZ, SDL_WINDOW_RESIZABLE);
+		renderer = SDL_CreateRenderer(window, 0);
 
 		if (renderer == NULL) errx("Renderer NULL");
 
@@ -131,23 +136,11 @@ void gr_init(const char* progname, int mask) {
 		gr_linewidth(1);
 	}
 	if (mask & 256) {
-		SDL_InitSubSystem(SDL_INIT_AUDIO);
-		SDL_AudioSpec want, have;
-		want.freq = FREQ;
-		want.format = AUDIO_F32;
-		want.channels = 1;
-		want.samples = 2048;
-		want.callback = audio_cb;
-		want.userdata = NULL;
-
-		dev = SDL_OpenAudioDevice(NULL, 0, &want, &have, SDL_AUDIO_ALLOW_FORMAT_CHANGE);
-		if (dev == 0) {
-			SDL_Log("Failed to open audio: %s", SDL_GetError());
-		}
-		if (have.format != want.format) { /* we let this one thing change. */
-			SDL_Log("Audioformat: %d %d", want.format, have.format);
-		}
-		SDL_PauseAudioDevice(dev, 1);
+		if (!SDL_Init(SDL_INIT_AUDIO)) errx("SDL_INIT_AUDIO");
+		const SDL_AudioSpec spec = { SDL_AUDIO_F32LE, 1, FREQ };
+		SDL_AudioStream *stream = SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &spec, new_audio_cb, NULL);
+		audio_dev = SDL_GetAudioStreamDevice(stream);
+		//SDL_ResumeAudioDevice(SDL_GetAudioStreamDevice(stream));
 	}
 	if (mask & 512) {
 
@@ -179,8 +172,8 @@ void gr_init(const char* progname, int mask) {
 	botleft = true;
 	if (sysconfig & 1) botleft = false;
 	grpen = 0;
-	gx = 0;
-	gy = FX * 100;
+	//gx = 0;
+	//gy = FX * 100;
 }
 
 double inv(double y) {
@@ -188,49 +181,52 @@ double inv(double y) {
 	return y;
 }
 
-static void line(int x1, int y1, int x2, int y2) {
-	SDL_RenderDrawLine(renderer, x1, y1, x2, y2);
+static void line(float x1, float y1, float x2, float y2) {
+	SDL_RenderLine(renderer, x1, y1, x2, y2);
 }
 
-static void circle(int x0, int y0, int lw) {
+static void circle(float x0, float y0, float lw) {
 
-	if (lw < 6) {
-		if (lw == 5) {
-			SDL_RenderDrawPoint(renderer, x0, y0 - 2);
-			SDL_RenderDrawLine(renderer, x0 - 1, y0 - 1, x0 + 1, y0 - 1);
-			SDL_RenderDrawLine(renderer, x0 - 2, y0, x0 + 2, y0);
-			SDL_RenderDrawLine(renderer, x0 - 1, y0 + 1, x0 + 1, y0 + 1);
-			SDL_RenderDrawPoint(renderer, x0, y0 + 2);
+	if (lw < 5.5) {
+		if (lw > 4.5) {
+			SDL_RenderPoint(renderer, x0, y0 - 2);
+			SDL_RenderLine(renderer, x0 - 1, y0 - 1, x0 + 1, y0 - 1);
+			SDL_RenderLine(renderer, x0 - 2, y0, x0 + 2, y0);
+			SDL_RenderLine(renderer, x0 - 1, y0 + 1, x0 + 1, y0 + 1);
+			SDL_RenderPoint(renderer, x0, y0 + 2);
 		}
-		else if (lw == 4) {
-			SDL_RenderDrawLine(renderer, x0 - 1, y0 - 1, x0 + 1, y0 - 1);
-			SDL_RenderDrawLine(renderer, x0 - 1, y0, x0 + 1, y0);
-			SDL_RenderDrawLine(renderer, x0 - 1, y0 + 1, x0 + 1, y0 + 1);
+		else if (lw > 3.5) {
+			SDL_RenderLine(renderer, x0 - 1, y0 - 1, x0 + 1, y0 - 1);
+			SDL_RenderLine(renderer, x0 - 1, y0, x0 + 1, y0);
+			SDL_RenderLine(renderer, x0 - 1, y0 + 1, x0 + 1, y0 + 1);
 		}
-		else if (lw == 3) {
-			SDL_RenderDrawPoint(renderer, x0, y0 - 1);
-			SDL_RenderDrawLine(renderer, x0 - 1, y0, x0 + 1, y0);
-			SDL_RenderDrawPoint(renderer, x0, y0 + 1);
+		else if (lw > 2.5) {
+			SDL_RenderPoint(renderer, x0, y0 - 1);
+			SDL_RenderLine(renderer, x0 - 1, y0, x0 + 1, y0);
+			SDL_RenderPoint(renderer, x0, y0 + 1);
 		}
-		else if (lw == 2) {
-			SDL_RenderDrawLine(renderer, x0, y0, x0 + 1, y0);
-			SDL_RenderDrawLine(renderer, x0, y0 + 1, x0 + 1, y0 + 1);
+		else if (lw > 1.5) {
+			SDL_RenderLine(renderer, x0, y0, x0 + 1, y0);
+			SDL_RenderLine(renderer, x0, y0 + 1, x0 + 1, y0 + 1);
 		}
 		else {
-			SDL_RenderDrawPoint(renderer, x0, y0);
+			SDL_RenderPoint(renderer, x0, y0);
 		}
 		return;
 	}
 
-	int rad = lw / 2;
+	float rad = lw / 2;
 	rad -= 1;
-	int f = 1 - rad;
-	int fx = 0;
-	int fy = -2 * rad;
-	int x = 0;
-	int y = rad;
+	float f = 1 - rad;
+	float fx = 0;
+	float fy = -2 * rad;
+	float x = 0;
+	float y = rad;
 
+	x0 -= 1;
+	y0 -= 1;
 	line(x0 - rad, y0, x0 + rad, y0);
+
 	while(x < y) {
 		if (f >= 0) {
 			y -= 1;
@@ -247,19 +243,19 @@ static void circle(int x0, int y0, int lw) {
 	}
 }
 
-static void thline(int x1, int y1, int x2, int y2) {
+static void thline(float x1, float y1, float x2, float y2) {
 	if (y1 == y2) {
 		if (x1 > x2) swap(x1, x2);
-		SDL_Rect r = {.x = x1, .y = y1 - linew2, .w = x2 - x1, .h = linew};
+		SDL_FRect r = {.x = x1, .y = y1 - linew2, .w = x2 - x1, .h = linew};
 		SDL_RenderFillRect(renderer, &r);
 	}
 	else if (x1 == x2) {
 		if (y1 > y2) swap(y1, y2);
-		SDL_Rect r = {.x = x1 - linew2, .y = y1, .w = linew, .h = y2 - y1};
+		SDL_FRect r = {.x = x1 - linew2, .y = y1, .w = linew, .h = y2 - y1};
 		SDL_RenderFillRect(renderer, &r);
 	}
 	else {
-		bool steep = abs(y2 - y1) > abs(x2 - x1);
+		bool steep = fabsf(y2 - y1) > fabsf(x2 - x1);
 		if(steep) {
 			swap(x1, y1);
 			swap(x2, y2);
@@ -268,11 +264,11 @@ static void thline(int x1, int y1, int x2, int y2) {
 			swap(x1, x2);
 			swap(y1, y2);
 		}
-		int dx = x2 - x1;
-		int dy = abs(y2 - y1);
+		float dx = x2 - x1;
+		float dy = fabsf(y2 - y1);
 
-		int error = dx / 2;
-		int ystep = (y1 < y2) ? 1 : -1;
+		float error = dx / 2;
+		float ystep = (y1 < y2) ? 1 : -1;
 
 		while (x1 <= x2) {
 
@@ -290,27 +286,31 @@ static void thline(int x1, int y1, int x2, int y2) {
 		}
 	}
 }
+float transx;
+float transy;
 
-static void gr_gcircle(double fx, double fy, double rad) {
-	int x = FX * fx;
-	int y = FX * inv(fy);
-	circle(x, y, (int)(FX * rad * 2 + 0.5));
+#define scx(h) (FX * (h + transx))
+#define scy(h) (FX * (inv(h + transy)))
+#define sc(h) (FX * h)
+
+static void gr_circle(double fx, double fy, double rad) {
+	circle(scx(fx), scy(fy), sc(rad * 2));
 }
 
-static void gr_grect(double fx, double fy, double fw, double fh) {
-	int x = FX * fx;
-	int y = FX * inv(fy);
-	int h = (int)(FX * fh) + 1;
+static void gr_rect(double fx, double fy, double fw, double fh) {
+	float x = scx(fx);
+	float y = scy(fy);
+	float h = sc(fh);
 	if (botleft) y -= h;
-	SDL_Rect r = {.x = x, .y = y, .w = (int)(FX * fw) + 1, .h = (int)(FX * fh) + 1};
+	SDL_FRect r = {.x = x, .y = y, .w = sc(fw), .h = sc(fh) };
 	SDL_RenderFillRect(renderer, &r);
 
 }
-static void gr_gline(double fx, double fy, double fx2, double fy2) {
-	int x = fx * FX;
-	int y = inv(fy) * FX;
-	int x2 = fx2 * FX;
-	int y2 = inv(fy2) * FX;
+static void gr_line(double fx, double fy, double fx2, double fy2) {
+	float x = scx(fx);
+	float y = scy(fy);
+	float x2 = scx(fx2);
+	float y2 = scy(fy2);
 
 	circle(x, y, linew);
 	if (x == x2 && y == y2) return;
@@ -322,9 +322,8 @@ static void gr_gline(double fx, double fy, double fx2, double fy2) {
 }
 
 void gr_lineto(double fx, double fy) {
-	int x = fx * FX;
-	int y = inv(fy) * FX;
-
+	float x = scx(fx);
+	float y = scy(fy);
 	if (grpen) {
 		circle(gx, gy, linew);
 		if (gx == x && gy == y) return;
@@ -340,7 +339,8 @@ void gr_curve(double* val, int len) {
 	fprintf(stderr, "curve not implemented yet\n");
 }
 void gr_translate(double x, double y) {
-	fprintf(stderr, "translate not implemented yet\n");
+	transx = x;
+	transy = y;
 }
 void gr_rotate(double w) {
 	fprintf(stderr, "rotate not implemented yet\n");
@@ -355,17 +355,17 @@ void gr_polygon(double* val, int len) {
 	int n = len / 2;
 	if (n < 2) return;
 
-	int nxs;
-	int* vx = (int*)alloca(sizeof(int) * n);
-	int* vy = (int*)alloca(sizeof(int) * n);
+	int nxs, k;
+	float* vx = (float*)alloca(sizeof(float) * n);
+	float* vy = (float*)alloca(sizeof(float) * n);
 
 	for (i = 0;	i < n; i++) {
-		vx[i] = (int)(FX * val[i * 2]);
-		vy[i] = (int)(FX * inv(val[i * 2 + 1]));
+		vx[i] = scx(val[i * 2]);
+		vy[i] = scy(val[i * 2 + 1]);
 	}
-	int* xs = (int*)alloca(sizeof(int) * n);
-	int y, k;
-	int y0 = vy[0], y1 = y0;
+	float* xs = (float*)alloca(sizeof(float) * n);
+	float y;
+	float y0 = vy[0], y1 = y0;
 	for (i = 1;	i < n; i++) {
 		y = vy[i];
 		if (y < y0) y0 = y;
@@ -373,7 +373,7 @@ void gr_polygon(double* val, int len) {
 	}
 
 	if (y0 < 0) y0 = 0;
-	if (y1 >= 100 * FX) y1 = 100 * FX - 1;
+	//if (y1 >= sc(100)) y1 = sc(100) - 1;
 
 	for (y = y0; y <= y1; y++) {
 		nxs = 0;
@@ -381,7 +381,7 @@ void gr_polygon(double* val, int len) {
 		for (i = 0; i < n; i++) {
 			if ((vy[i] < y && y <= vy[j]) || (vy[j] < y && y <= vy[i])) {
 
-				xs[nxs]= (int)rint(vx[i] + ((double)y - vy[i]) / ((double)vy[j] - vy[i]) * ((double)vx[j] - vx[i]));
+				xs[nxs]= (vx[i] + (y - vy[i]) / (vy[j] - vy[i]) * (vx[j] - vx[i]));
 				nxs++;
 				for (k = nxs - 1; k && xs[k - 1] > xs[k]; k--) {
 					swap(xs[k - 1], xs[k]);
@@ -396,36 +396,28 @@ void gr_polygon(double* val, int len) {
 }
 
 
-void gr_sleep(double sec) {
-	int msec = sec * 1000;
-	SDL_SetRenderTarget(renderer, NULL);
- 	SDL_RenderCopy(renderer, display, NULL, NULL);
-	SDL_RenderPresent(renderer);
-	SDL_Delay(msec);
-	SDL_SetRenderTarget(renderer, display);
-}
+void text(float x, float y, const char* str) {
 
-void text(int x, int y, const char* str) {
-
-	SDL_Surface* s = TTF_RenderUTF8_Solid(font, str, fcol);
+	SDL_Surface* s = TTF_RenderText_Solid(font, str, strlen(str), fcol);
 	SDL_Texture* t = SDL_CreateTextureFromSurface(renderer, s);
-	int th, tw;
-	SDL_QueryTexture(t, NULL, NULL, &tw, &th);
+	float th, tw;
+	SDL_GetTextureSize(t, &tw, &th);
 
-	int h;
-	if (botleft) h = FX * textsize;
-	else h = FX * textsize / 4;
+	//kc?
+	float h;
+	if (botleft) h = sc(textsize);
+	else h = sc(textsize / 4);
 
-	SDL_Rect r = { x, y - h, tw, th };
-	SDL_RenderCopy(renderer, t, NULL, &r);
+	SDL_FRect r = { x, y - h, tw, th };
+	SDL_RenderTexture(renderer, t, NULL, &r);
 
 	SDL_DestroyTexture(t);
-	SDL_FreeSurface(s);
+	SDL_DestroySurface(s);
 }
 
-void gr_gtext(double fx, double fy, const char* str) {
-	int x = fx * FX;
-	int y = inv(fy) * FX;
+void gr_text(double fx, double fy, const char* str) {
+	float x = scx(fx);
+	float y = scy(fy);
 	text(x, y, str);
 }
 
@@ -437,7 +429,7 @@ void gr_sys(unsigned short h) {
 		grpen = 0;
 		if (backgr) {
 			SDL_Texture* t = SDL_CreateTextureFromSurface(renderer, backgr);
-			SDL_RenderCopy(renderer, t, NULL, NULL);
+			SDL_RenderTexture(renderer, t, NULL, NULL);
 			SDL_DestroyTexture(t);
 		}
 		else {
@@ -447,11 +439,8 @@ void gr_sys(unsigned short h) {
 		}
 	}
 	else if (h == 2) {	// set_background
-		if (backgr != NULL) SDL_FreeSurface(backgr);
-		backgr = SDL_CreateRGBSurfaceWithFormat(0, SZ, SZ, 32, SDL_PIXELFORMAT_ARGB8888);
-		if (backgr) {
-			SDL_RenderReadPixels(renderer, NULL, SDL_PIXELFORMAT_ARGB8888, backgr->pixels, backgr->pitch);
-		}
+		if (backgr != NULL) SDL_DestroySurface(backgr);
+		backgr = SDL_RenderReadPixels(renderer, NULL);
 	}
 	else if (h == 3) {	// set_foreground color
 		gr_color(0, 0, 0);
@@ -459,8 +448,9 @@ void gr_sys(unsigned short h) {
 	else if (h == 4) {	// set_background color
 		gr_color(bcol.r, bcol.g, bcol.b);
 	}
-//	else if (h == 11) botleft = true;
-//	else if (h == 12) botleft = false;
+	else if (h == 13) {
+		grpen = 0;
+	}
 	else {
 		fprintf(stderr, "** sys %d not handled\n", h);
 	}
@@ -471,25 +461,25 @@ void evt_func(int id, const char* s);
 
 static void handle_event(SDL_Event* evt) {
 	switch (evt->type) {
-		case SDL_MOUSEBUTTONDOWN:
+		case SDL_EVENT_MOUSE_BUTTON_DOWN:
 			evt_mouse(0, evt->button.x / FMX, inv(evt->button.y / FMY));
 			break;
-		case SDL_MOUSEBUTTONUP:
+		case SDL_EVENT_MOUSE_BUTTON_UP:
 			evt_mouse(1, evt->button.x / FMX, inv(evt->button.y / FMY));
 			break;
-		case SDL_MOUSEMOTION:
+		case SDL_EVENT_MOUSE_MOTION:
 			evt_mouse(2, evt->motion.x / FMX, inv(evt->motion.y / FMY));
 			break;
-		case SDL_KEYUP:
-		case SDL_KEYDOWN: {
+		case SDL_EVENT_KEY_UP:
+		case SDL_EVENT_KEY_DOWN: {
 			// printf("SDL_KEYDOWN: %s\n", SDL_GetKeyName(SDL_GetKeyFromScancode(evt->key.keysym.scancode)));
-			const char* s = SDL_GetKeyName(SDL_GetKeyFromScancode(evt->key.keysym.scancode));
+			const char* s = SDL_GetKeyName(SDL_GetKeyFromScancode(evt->key.scancode, SDL_GetModState(), true));
 			char b[2];
 			const char* kn = b;
 			if (s[1] == 0) {
 				b[0] = s[0];
 				b[1] = 0;
-				if  (!(SDL_GetModState() & KMOD_SHIFT)) b[0] += 'a' - 'A';
+				if  (!(SDL_GetModState() & SDL_KMOD_SHIFT)) b[0] += 'a' - 'A';
 			}
 			else {
 				if (strcmp(s, "Right") == 0) kn = "ArrowRight";
@@ -498,41 +488,53 @@ static void handle_event(SDL_Event* evt) {
 				else if (strcmp(s, "Down") == 0) kn = "ArrowDown";
 				else if (strcmp(s, "Space") == 0) kn = " ";
 			}
-			if (evt->type == SDL_KEYDOWN) evt_func(2, kn);
+			if (evt->type == SDL_EVENT_KEY_DOWN) evt_func(2, kn);
 			else  evt_func(3, kn);
 			break;
 		}
-		case SDL_USEREVENT:
+		case SDL_EVENT_USER:
 			evt_func(1, 0);
 			break;
-		case SDL_QUIT:
+		case SDL_EVENT_QUIT:
 			exit(0);
 
-		case SDL_WINDOWEVENT:	{
+		case SDL_EVENT_WINDOW_RESIZED:	{
 			if (true)	{
 //			if (evt>window.windowID == (SDL_GetWindowID(window)))	{
-				if (evt->window.event == SDL_WINDOWEVENT_RESIZED) {
-					FMX = evt->window.data1 / 100.0;
-					FMY = evt->window.data2 / 100.0;
-//					printf("f:%f\n", FMX, FMY);
-				}
+				FMX = evt->window.data1 / 100.0;
+				FMY = evt->window.data2 / 100.0;
+//				printf("f:%f\n", FMX, FMY);
 			}
 			break;
 		}
 	}
 }
 
+void gr_sleep(double sec) {
+	SDL_Event evt;
+	int msec = sec * 1000;
+
+	SDL_SetRenderTarget(renderer, NULL);
+ 	SDL_RenderTexture(renderer, display, NULL, NULL);
+	SDL_RenderPresent(renderer);
+
+	while (SDL_PollEvent(&evt)) handle_event(&evt);
+	SDL_Delay(msec);
+	SDL_SetRenderTarget(renderer, display);
+}
+
+
 unsigned timer_id;
 
-unsigned timer_func(unsigned interval, void *param) {
+unsigned timer_func(void *userdata, unsigned id, unsigned interval) {
 	
 	SDL_Event ev;
 	SDL_UserEvent uev;
 
-	uev.type = SDL_USEREVENT;
+	uev.type = SDL_EVENT_USER;
 	uev.code = 0;
 
-	ev.type = SDL_USEREVENT;
+	ev.type = SDL_EVENT_USER;
 	ev.user = uev;
 	SDL_PushEvent(&ev);
 	return 0;
@@ -549,25 +551,28 @@ void gr_timer(double s) {
 void gr_event_loop(void) {
 
 	if (!renderer) return;
+
 	SDL_Event evt;
 
 	if (do_animate) {
+
+
+		SDL_SetRenderVSync(renderer, 1);
 		while (true) {
+
 			SDL_SetRenderTarget(renderer, NULL);
-		 	SDL_RenderCopy(renderer, display, NULL, NULL);
+		 	SDL_RenderTexture(renderer, display, NULL, NULL);
 			SDL_RenderPresent(renderer);
 			SDL_SetRenderTarget(renderer, display);
 
-			while (SDL_PollEvent(&evt)) {
-				handle_event(&evt);
-			}
+			while (SDL_PollEvent(&evt)) handle_event(&evt);
 			evt_func(0, 0);
 		}
 	}
 	else {
 		while (true) {
 			SDL_SetRenderTarget(renderer, NULL);
-		 	SDL_RenderCopy(renderer, display, NULL, NULL);
+		 	SDL_RenderTexture(renderer, display, NULL, NULL);
 			SDL_RenderPresent(renderer);
 			SDL_SetRenderTarget(renderer, display);
 
@@ -586,7 +591,7 @@ static double new_sec;
 static double angle;
 static double incr;
 
-static void audio_cb(void *userdata, Uint8 *stream0, int len0) {
+static void audio_cb(Uint8 *stream0, int len0) {
 
 	cb_cnt--;
 	float *stream = (float*) stream0;
@@ -613,7 +618,7 @@ static void audio_cb(void *userdata, Uint8 *stream0, int len0) {
 			stream[i] = stream[i] * (len - i) / len;
 			i++;
 		}
-		SDL_PauseAudioDevice(dev, 1);
+		SDL_PauseAudioDevice(audio_dev);
 
 		is_beep = false;
 		if (new_freq > 0) {
@@ -621,8 +626,18 @@ static void audio_cb(void *userdata, Uint8 *stream0, int len0) {
 			cb_first = true;
 			cb_cnt = new_sec * FREQ / 1024;
 			new_freq = 0;
-			SDL_PauseAudioDevice(dev, 0);
+			SDL_ResumeAudioDevice(audio_dev);
 			is_beep = true;
+		}
+	}
+}
+static void SDLCALL new_audio_cb(void *userdata, SDL_AudioStream *stream, int additional, int total) {
+	if (additional > 0) {
+		Uint8 *data = SDL_stack_alloc(Uint8, additional);
+		if (data) {
+			audio_cb(data, additional);
+			SDL_PutAudioStreamData(stream, data, additional);
+			SDL_stack_free(data);
 		}
 	}
 }
@@ -641,7 +656,7 @@ void gr_beep(double freq, double sec) {
 	cb_first = true;
 	cb_cnt = sec * FREQ / 1024;
 	is_beep = true;
-	SDL_PauseAudioDevice(dev, 0);
+	SDL_ResumeAudioDevice(audio_dev);
 }
 
 
@@ -682,7 +697,7 @@ char gr_input(char* buf) {
 	buf[0] = 0;
 	return 1;
 }
-void gr_gcircseg(double x, double y, double rad, double a, double b) {
+void gr_circseg(double x, double y, double rad, double a, double b) {
 	printf("** gcircseg is not implemented\n");
 }
 void gr_exit(void) { exit(1); }
@@ -699,53 +714,56 @@ void evt_func(int id, const char* s) {}
 int sys_error;
 
 int main(int argc, char* argv[]) {
-
-	gr_init("SDL-Test", 7);
+	gr_init("SDL3-Test", 512 | 256 | 128);
 
 	gr_color(0, 0, 0);
 
 	gr_linewidth(0.5);
-	gr_move(20, 90);
-	gr_lineto(20, 90);
+	gr_line(0, 0, 20, 90);
 
 	gr_linewidth(0.2);
-	gr_move(30, 90);
 	gr_lineto(30, 90);
 
-	gr_move(20, 20);
-	gr_text("Hello");
+	gr_text(20, 20, "SDL3");
 
 	gr_color(0, 0, 255);
-	gr_move(1, 1);
+	grpen = 0;
+	gr_lineto(1, 1);
 	gr_lineto(1, 99);
 	gr_lineto(99, 99);
 	gr_lineto(99, 1);
 	gr_lineto(1, 1);
 
 	gr_color(0, 255, 0);
-	gr_move(10, 10);
-	gr_lineto(90, 90);
+	gr_line(10, 10, 90, 90);
 
 	gr_linewidth(20);
-	gr_move(30, 50);
-	gr_lineto(30, 50);
+	gr_line(30, 50, 30, 50);
 
 	gr_linewidth(2);
-	gr_move(10, 50);
-	gr_lineto(50, 60);
+	gr_line(10, 50, 50, 60);
 
 	gr_color(255, 0, 0);
-	gr_move(10, 50);
-	double v[] = { 20, 0, 10, -15 };
-  	gr_fill(v, 4);
+	double v[] = { 10, 50, 20, 0, 10, -15 };
+  	gr_polygon(v, 4);
 
-	gr_beep(440, 1);
+	gr_beep(440, 0.2);
+
+gr_sys(2);
+gr_color(255, 255, 0);
+gr_rect(0,0, 80,80);
+gr_sleep(1);
+gr_sys(11);
 
 	gr_linewidth(0.5);
 	gr_color(0, 0, 0);
-	gr_move(20, 90);
-	gr_lineto(20, 90);
+	gr_line(20, 90, 20, 90);
 
+	gr_color(128, 0, 0);
+	gr_circle(50, 50, 3);
+
+	gr_color(0, 129, 0);
+	gr_rect(10, 10, 20, 10);
 	gr_event_loop();
 	return 0;
 }

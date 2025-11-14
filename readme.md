@@ -5,7 +5,6 @@ Easylang is a simple open-source programming language with built-in graphical fe
 ~~~
 # animate a pendulum
 ang = 45
-ang = 45
 on animate
    gclear
    gcircle 50 50 1

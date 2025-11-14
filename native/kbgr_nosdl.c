@@ -35,11 +35,11 @@ void gr_sleep(double sec) {
 */
 }
 
-static void gr_gtext(double x, double y, const char* str) {}
-static void gr_gcircle(double x, double y, double r) {}
-static void gr_grect(double x, double y, double w, double h) {}
-static void gr_gline(double x, double y, double x2, double y2) {}
-static void gr_gcircseg(double x, double y, double rad, double a, double b) {}
+static void gr_text(double x, double y, const char* str) {}
+static void gr_circle(double x, double y, double r) {}
+static void gr_rect(double x, double y, double w, double h) {}
+static void gr_line(double x, double y, double x2, double y2) {}
+static void gr_circseg(double x, double y, double rad, double a, double b) {}
 
 void gr_sys(unsigned short h) {}
 void gr_timer(double s) {}

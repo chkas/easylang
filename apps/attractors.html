@@ -1,0 +1,422 @@
+<!doctype html>
+<html translate=no>
+<meta charset=utf-8>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="strange attractors, easy and fun programming">
+<title>strange attractors</title>
+<link rel="icon" href="icon.png" type="image/x-png">
+
+<style>
+body {
+	background-color:#000;
+	color:#ddd;
+	font-family:sans-serif;
+	margin:0px;
+	user-select:none;
+}
+a { color: #ddd }
+
+pre i{font-weight:400;color:#9d9}
+pre b{font-weight:500;color:#fc9}
+pre s{text-decoration:none;font-weight:500;color:#9cf}
+pre u{font-weight:bold;text-decoration:none;color:#fff;background:#666}
+span.high {background-color:#666}
+
+#left {
+	margin:4px;
+	width:322px;
+	float:left
+}
+#canv {
+	margin:0px;
+	outline:none;
+}
+#code {
+	margin: 6px;
+	font-size: 15px;
+	overflow-y:auto;
+	outline: none;
+}
+
+.lnk {
+	margin-left:10px;
+	cursor:pointer;
+	text-decoration:underline;
+}
+.lnk:hover{background:#666}
+a:hover{background:#666}
+
+* {scrollbar-color:#666 #222}
+::-webkit-scrollbar{ width:10px;height:10px;cursor:pointer}
+::-webkit-scrollbar-track {background: #222}
+::-webkit-scrollbar-thumb {background: #666}
+
+</style>
+
+
+<div>
+	<div id=left>
+		<pre id=code></pre>
+		<div id=lnk><small>
+			&nbsp;
+			<span class=lnk id=runlnk>run</span>
+			&nbsp;&nbsp;
+			<span class=lnk id=nextlnk>next</span>
+			<a href=https://easylang.online style="float:right;margin-right:10px">easylang</a>
+		</small></div>
+	</div>
+	<canvas id=canv></canvas>
+</div>
+
+<script src=easy_code2.js></script>
+<script>
+
+window.onresize = function() {
+	var vh = window.innerHeight
+	var vw = window.innerWidth
+	var cw, pw, ph
+	if (vw > 3 / 4 * vh) {
+		pw = 360
+		cw = vw - pw - 24
+		ph = vh - 50
+		if (cw > vh - 16) cw = vh - 16
+	}
+	else {
+		pw = vw - 20
+		ph = 200
+		cw = vw - 16
+	}
+	left.style.width = pw + 4 + "px"
+	canv.style.width = cw + "px"
+	canv.style.height = cw + "px"
+	code.style.width = pw + "px"
+	code.style.height = ph + "px"
+}
+
+window.onresize()
+var src = []
+
+src.push(`name$ = "Thomas"
+#
+coord_translate 50 50
+gtextsize 4
+gbackground 000
+gcolor 963
+rad2deg = 180 / pi
+#
+b = 0.19
+dt = 0.1
+sc = 10
+#
+proc draw angx cnt .
+   gclear
+   sinx = sin angx
+   cosx = cos angx
+   x = 0.1
+   for i to cnt
+      dx = sin (y * rad2deg) - b * x
+      dy = sin (z * rad2deg) - b * y
+      dz = sin (x * rad2deg) - b * z
+      x += dx * dt
+      y += dy * dt
+      z += dz * dt
+      #
+      xd = x * cosx - z * sinx
+      gcircle xd * sc y * sc 0.2
+   .
+   gtext -45 -48 name$
+.
+on animate
+   if pause = 1 : return
+   draw angx cnt
+   if cnt < 1e4 : cnt += 15
+   angx += 0.2
+.
+on mouse_down
+   pause = 1 - pause
+.
+`)
+
+src.push(`name$ = "Three-scroll"
+#
+coord_translate 50 50
+gtextsize 4
+gbackground 000
+gcolor 963
+#
+a = 40
+b = 0.833
+c = 0.5
+d = 0.65
+e = 20
+dt = 0.0005
+sc = 0.6
+#
+proc draw angx cnt .
+   gclear
+   sinx = sin angx
+   cosx = cos angx
+   x = 0.1
+   y = 0.2
+   for i to cnt
+      dx = a * (y - x) + c * x * z
+      dy = e * y - x * z
+      dz = b * z + x * y - d * x * x
+      x += dx * dt
+      y += dy * dt
+      z += dz * dt
+      #
+      xd = x * cosx - (z - 25) * sinx
+      gcircle xd * sc y * sc 0.2
+   .
+   gtext -45 -48 name$
+.
+on animate
+   if pause = 1 : return
+   draw angx cnt
+   if cnt < 1e4 : cnt += 20
+   angx += 0.3
+.
+on mouse_down
+   pause = 1 - pause
+.
+`)
+
+
+src.push(`name$ = "Lorentz"
+#
+coord_translate 50 50
+gtextsize 4
+gbackground 000
+gcolor 963
+#
+b = 8 / 3
+s = 10
+r = 28
+dt = 0.005
+sc = 1.4
+#
+proc draw angx cnt .
+   gclear
+   sinx = sin angx
+   cosx = cos angx
+   x = 1
+   for i to cnt
+      dx = s * (y - x)
+      dy = x * (r - z) - y
+      dz = x * y - b * z
+      x += dx * dt
+      y += dy * dt
+      z += dz * dt
+      #
+      xd = x * cosx - (z - 25) * sinx
+      gcircle xd * sc y * sc 0.2
+   .
+   gtext -45 -48 name$
+.
+on animate
+   if pause = 1 : return
+   draw angx cnt
+   if cnt < 1e4 : cnt += 15
+   angx += 0.3
+.
+on mouse_down
+   pause = 1 - pause
+.
+`)
+
+src.push(`name$ = "Aizawa"
+#
+coord_translate 50 50
+gtextsize 4
+gbackground 000
+gcolor 963
+#
+a = 0.95
+b = 0.7
+c = 0.65
+d = 3.5
+e = 0.25
+f = 0.1
+dt = 0.005
+sc = 25
+#
+proc draw angx cnt .
+   gclear
+   sinx = sin angx
+   cosx = cos angx
+   x = 0.1
+   for i to cnt
+      dx = (z - b) * x - d * y
+      dy = d * x + (z - b) * y
+      dz = c + a * z - z * z * z / 3 - (x * x + y * y) * (1 + e * z) + f * z * x * x * x
+      x += dx * dt
+      y += dy * dt
+      z += dz * dt
+      #
+      xd = x * cosx - (z - 0.5) * sinx
+      gcircle xd * sc y * sc 0.2
+   .
+   gtext -45 -48 name$
+.
+on animate
+   if pause = 1 : return
+   draw angx cnt
+   if cnt < 1e4 : cnt += 20
+   angx += 0.3
+.
+on mouse_down
+   pause = 1 - pause
+.
+`)
+
+src.push(`sysconf radians
+name$ = "Clifford Pickover"
+#
+coord_translate 50 50
+gtextsize 4
+gbackground 000
+gcolor 963
+#
+a = 0.2
+b = 0.5
+c = 0.7
+d = 0.5
+e = 3.3
+sc = 9
+#
+proc draw angx cnt .
+   gclear
+   sinx = sin angx
+   cosx = cos angx
+   for i to cnt
+      xn = sin (a * y) - z * cos (b * x)
+      y = z * sin (c * x) - cos (d * y)
+      z = e * sin x
+      x = xn
+      #
+      xd = x * cosx - z * sinx
+      gcircle xd * sc y * sc 0.2
+   .
+   gtext -45 -48 name$
+.
+on animate
+   if pause = 1 : return
+   draw angx cnt
+   if cnt < 1e4 : cnt += 15
+   angx += 0.003
+.
+on mouse_down
+   pause = 1 - pause
+.
+`)
+
+src.push(`name$ = "Dadras"
+#
+coord_translate 50 50
+gtextsize 4
+gbackground 000
+gcolor 963
+#
+a = 3
+b = 2.7
+c = 1.7
+d = 2
+e = 9
+dt = 0.01
+sc = 2.7
+#
+proc draw angx cnt .
+   gclear
+   sinx = sin angx
+   cosx = cos angx
+   x = 0.1
+   y = 0.05
+   for i to cnt
+      dx = y - a * x + b * y * z
+      dy = c * y - x * z + z
+      dz = d * x * y - e * z
+      x += dx * dt
+      y += dy * dt
+      z += dz * dt
+      #
+      xd = x * cosx - z * sinx
+      gcircle xd * sc y * sc 0.2
+   .
+   gtext -45 -48 name$
+.
+on animate
+   if pause = 1 : return
+   draw angx cnt
+   if cnt < 1e4 : cnt += 15
+   angx += 0.2
+.
+on mouse_down
+   pause = 1 - pause
+.
+`)
+
+src.push(`name$ = "Wang - Sun"
+#
+coord_translate 50 50
+gtextsize 4
+gbackground 000
+gcolor 963
+#
+a = 0.2
+b = -0.03
+c = 0.3
+d = -0.4
+e = -1.5
+f = -1.5
+dt = 0.05
+sc = 10
+#
+proc draw angx cnt .
+   gclear
+   sinx = sin angx
+   cosx = cos angx
+   x = 0.1
+   y = 0.2
+   z = 0.3
+   for i to cnt
+      dx = a * x + c * y * z
+      dy = b * x + d * y - x * z
+      dz = e * z + f * x * y
+      x += dx * dt
+      y += dy * dt
+      z += dz * dt
+      #
+      xd = x * cosx - z * sinx
+      gcircle xd * sc y * sc 0.2
+   .
+   gtext -45 -48 name$
+.
+on animate
+   if pause = 1 : return
+   draw angx cnt
+   if cnt < 15e3 : cnt += 15
+   angx += 0.2
+.
+on mouse_down
+   pause = 1 - pause
+.
+`)
+
+nextlnk.onclick = function() {
+	src.push(src.shift());
+	code.textContent = src[0]
+	codeRun(code, canv)
+}
+runlnk.onclick = function() {
+	codeRun(code, canv)
+}
+
+easyinit(canv, null, codeMsgF)
+codeInit(code, runlnk.onclick)
+
+code.textContent = src[0]
+codeRun(code, canv)
+
+</script>
+
