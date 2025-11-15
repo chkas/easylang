@@ -90,7 +90,7 @@ void gr_backcolor(int r, int g, int b) {
 	bcol.b = b;
 }
 
-#define FREQ 32768
+#define SMPL_RATE 32768
 static void SDLCALL new_audio_cb(void *userdata, SDL_AudioStream *stream, int additional, int total);
 
 static SDL_AudioDeviceID audio_dev;
@@ -137,7 +137,7 @@ void gr_init(const char* progname, int mask) {
 	}
 	if (mask & 256) {
 		if (!SDL_Init(SDL_INIT_AUDIO)) errx("SDL_INIT_AUDIO");
-		const SDL_AudioSpec spec = { SDL_AUDIO_F32LE, 1, FREQ };
+		const SDL_AudioSpec spec = { SDL_AUDIO_F32LE, 1, SMPL_RATE };
 		SDL_AudioStream *stream = SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &spec, new_audio_cb, NULL);
 		audio_dev = SDL_GetAudioStreamDevice(stream);
 		//SDL_ResumeAudioDevice(SDL_GetAudioStreamDevice(stream));
@@ -514,13 +514,14 @@ void gr_sleep(double sec) {
 	SDL_Event evt;
 	int msec = sec * 1000;
 
-	SDL_SetRenderTarget(renderer, NULL);
- 	SDL_RenderTexture(renderer, display, NULL, NULL);
-	SDL_RenderPresent(renderer);
-
-	while (SDL_PollEvent(&evt)) handle_event(&evt);
+	if (renderer) {
+		while (SDL_PollEvent(&evt)) handle_event(&evt);
+		SDL_SetRenderTarget(renderer, NULL);
+ 		SDL_RenderTexture(renderer, display, NULL, NULL);
+		SDL_RenderPresent(renderer);
+		SDL_SetRenderTarget(renderer, display);
+	}
 	SDL_Delay(msec);
-	SDL_SetRenderTarget(renderer, display);
 }
 
 
@@ -555,8 +556,6 @@ void gr_event_loop(void) {
 	SDL_Event evt;
 
 	if (do_animate) {
-
-
 		SDL_SetRenderVSync(renderer, 1);
 		while (true) {
 
@@ -582,87 +581,56 @@ void gr_event_loop(void) {
 	}
 }
 
-static int cb_cnt;
-static bool cb_first;
-static bool is_beep = false;
-
-static double new_freq;
-static double new_sec;
 static double angle;
 static double incr;
+static int aud_attack;
+static int smpl_cnt;
 
-static void audio_cb(Uint8 *stream0, int len0) {
+static void audio_cb(float *out, int len) {
 
-	cb_cnt--;
-	float *stream = (float*) stream0;
-	int len = len0 / sizeof(float);
-	int i = 0;
-
-	while (i < len) {
-		stream[i] = sin(angle);
-		i++;
+	if (smpl_cnt <= 0) SDL_PauseAudioDevice(audio_dev);
+	for (int i = 0; i < len; i += 1) {
+		float h = sin(angle);
+		if (aud_attack < 2048) {
+			h *= aud_attack / 2048;
+			aud_attack += 1;
+		}
+		else if (smpl_cnt < 2048) {
+			h *= smpl_cnt / 2048;
+		}
+		out[i] = h;
 		angle += incr;
-	}
-
-	if (cb_first) {
-		cb_first = false;
-		i = 0;
-		while (i < len) {
-			stream[i] = stream[i] * i / len;
-			i++;
-		}
-	}
-	else if (cb_cnt <= 0) {
-		i = 0;
-		while (i < len) {
-			stream[i] = stream[i] * (len - i) / len;
-			i++;
-		}
-		SDL_PauseAudioDevice(audio_dev);
-
-		is_beep = false;
-		if (new_freq > 0) {
-			incr = new_freq * 2 * M_PI / FREQ;
-			cb_first = true;
-			cb_cnt = new_sec * FREQ / 1024;
-			new_freq = 0;
-			SDL_ResumeAudioDevice(audio_dev);
-			is_beep = true;
-		}
+		smpl_cnt -= 1;
 	}
 }
 static void SDLCALL new_audio_cb(void *userdata, SDL_AudioStream *stream, int additional, int total) {
 	if (additional > 0) {
 		Uint8 *data = SDL_stack_alloc(Uint8, additional);
 		if (data) {
-			audio_cb(data, additional);
+			audio_cb((float*)data, additional / sizeof(float));
 			SDL_PutAudioStreamData(stream, data, additional);
 			SDL_stack_free(data);
 		}
 	}
 }
 
-void gr_beep(double freq, double sec) {
+void sound(double freq, double sec) {
 
-	if (is_beep) {
-		cb_cnt = 0;
-		new_freq = freq;
-		new_sec = sec;
+	if (freq == 0 || sec == 0) {
+		smpl_cnt = 1024;
+		//SDL_PauseAudioDevice(audio_dev);
 		return;
 	}
-	if (freq == 0 || sec == 0) return;
-
-	incr = freq * 2 * M_PI / FREQ;
-	cb_first = true;
-	cb_cnt = sec * FREQ / 1024;
-	is_beep = true;
+	aud_attack = 0;
+	incr = freq * 2 * M_PI / SMPL_RATE;
+	smpl_cnt = sec * SMPL_RATE * 2;
 	SDL_ResumeAudioDevice(audio_dev);
 }
 
 
 void gr_sound(double* val, int len) {
-	if (len == 0) gr_beep(0, 0);
-	else gr_beep(val[0], val[1] / 2);
+	if (len == 0) sound(0, 0);
+	else sound(val[0], val[1] / 2);
 //kc TODO
 }
 
@@ -747,7 +715,7 @@ int main(int argc, char* argv[]) {
 	double v[] = { 10, 50, 20, 0, 10, -15 };
   	gr_polygon(v, 4);
 
-	gr_beep(440, 0.2);
+	sound(440, 0.2);
 
 gr_sys(2);
 gr_color(255, 255, 0);
