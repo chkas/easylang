@@ -1,34 +1,15 @@
-proc hsb2rgb hue sat bri &r &g &b .
+func[] hsb2rgb hue sat bri .
    h = (hue - floor hue) * 6
    f = h - floor h
    p = bri * (1 - sat)
    q = bri * (1 - sat * f)
    t = bri * (1 - sat * (1 - f))
-   if h < 1
-      r = bri
-      g = t
-      b = p
-   elif h < 2
-      r = q
-      g = bri
-      b = p
-   elif h < 3
-      r = p
-      g = bri
-      b = t
-   elif h < 4
-      r = p
-      g = q
-      b = bri
-   elif h < 5
-      r = t
-      g = p
-      b = bri
-   else
-      r = bri
-      g = p
-      b = q
-   .
+   if h < 1 : return [ bri t p ]
+   if h < 2 : return [ q bri p ]
+   if h < 3 : return [ p bri t ]
+   if h < 4 : return [ p q bri ]
+   if h < 5 : return [ t p bri ]
+   return [ bri p q ]
 .
 proc cwheel .
    for y = 0 to 499
@@ -39,8 +20,8 @@ proc cwheel .
          if dist <= 250
             theta = atan2 dy dx
             hue = (theta + 180) / 360
-            hsb2rgb hue (dist / 250) 1 r g b
-            gcolor3 r g b
+            r[] = hsb2rgb hue (dist / 250) 1
+            gcolor3 r[1] r[2] r[3]
             grect x / 5 y / 5 0.3 0.3
          .
       .

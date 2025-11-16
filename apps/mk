@@ -64,9 +64,9 @@ xxx
 		cat >>$o/tut_$n.html <<'xxx'
 txt_locale = "de"
 txt_tutor = String.raw`
-* Learn programming 1
+* Learn programming I
 
-*de Programmieren lernen 1
+*de Programmieren lernen I
 
 xxx
 		sed -ne '8,13p'  ../main/tut_$n.js >>$o/tut_$n.html
@@ -76,9 +76,9 @@ xxx
 
 		printf "txt_tutor+=String.raw\`\n" >>$o/tut_$n.html
 		cat <<xxx >>$o/tut_$n.html
-@ ./tut_learnx.html?$vers@Learn programming 2
+@ ./tut_learnx.html?$vers@Learn programming II
 
-@de ./tut_learnx.html?$vers@Programmieren lernen 2
+@de ./tut_learnx.html?$vers@Programmieren lernen II
 xxx
 		printf "\`\n" >> $o/tut_$n.html
 
@@ -86,9 +86,9 @@ xxx
 		cat >>$o/tut_$n.html <<'xxx'
 txt_locale = "de"
 txt_tutor = String.raw`
-* Learn programming 2
+* Learn programming II
 
-*de Programmieren lernen 2
+*de Programmieren lernen II
 
 xxx
 		tail +8 ../main/tut_$n.js >>$o/tut_$n.html
@@ -251,7 +251,7 @@ mv $o/tmp.html $o/tut_learn.html
 
 cd $src
 
-for k in progs/*.kab; do
+for k in ../progs/*.kab; do
 	kx=$(basename $k)
 	i=${kx%.*}.html
 	of=$o/$i
@@ -279,9 +279,9 @@ xxx
 
 col="body{ background-color:#000; color:#ccc;}"
 for j in clock pendulum; do
-	test progs/$j.kab = $k && col=''
+	test ../progs/$j.kab = $k && col=''
 done
-test progs/mandelbrot.kab = $k && col="body{ background-color:#111; color:#ccc;}"
+test ../progs/mandelbrot.kab = $k && col="body{ background-color:#111; color:#ccc;}"
 echo $col
 
 
@@ -445,8 +445,8 @@ You can also use it to write graphical applications that you can embed in a web 
 
 <h3>Interactive tutorials</h3>
 
-<p><a href="tut_learn.html?$vers">Learn Programming 1</a>
-<p><a href="tut_learnx.html?$vers">Learn Programming 2</a>
+<p><a href="tut_learn.html?$vers">Learn Programming I</a>
+<p><a href="tut_learnx.html?$vers">Learn Programming II</a>
 <p><a href="tut_game.html?$vers">Programming Small Games</a>
 <p><a href="tut_docu.html?$vers">Documentation and Code Snippets</a>
 <p><a href="tut_func.html?$vers">Functions and Recursion</a>
@@ -462,7 +462,7 @@ Some of these examples are solved tasks of
 <div class=col>
 xxx
 
-for k in progs/*.kab; do
+for k in ../progs/*.kab; do
 	h=$(basename $k)
 	i=${h%.*}.html
 	f=$(echo $i | cut -c1 | tr a-z A-Z)
@@ -534,7 +534,7 @@ function show(s) {
 
 s2 = `
 xxx
-cat progs/clock.kab
+cat ../progs/clock.kab
 cat <<'xxx'
 `
 function runClock() {
@@ -574,7 +574,7 @@ vx = 1.5`)
 function runMandel() {
 	show(`
 xxx
-cat progs/mandelbrot.kab
+cat ../progs/mandelbrot.kab
 cat <<'xxx'
 `)
 }
@@ -582,7 +582,7 @@ cat <<'xxx'
 function runPendel() {
 	show(`
 xxx
-cat progs/pendulum.kab
+cat ../progs/pendulum.kab
 cat <<'xxx'
 `)
 }
@@ -590,7 +590,7 @@ cat <<'xxx'
 function runTic() {
 	show(`
 xxx
-cat progs/tictactoe.kab
+cat ../progs/tictactoe.kab
 cat <<'xxx'
 `)
 }

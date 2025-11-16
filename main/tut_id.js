@@ -5,8 +5,8 @@ var lang = navigator.language.substring(0, 2)
 if (lang == "de") {
 	txt_header = "<p>Programmieren leicht gemacht</p><h3>Tutorials</h3>"
 	tut_descr = [
-		"Programmieren lernen 1",
-		"Programmieren lernen 2",
+		"Programmieren lernen I",
+		"Programmieren lernen II",
 		"Kleine Spiele programmieren",
 		"Dokumentation - Code-Beispiele",
 		"Funktionen and Rekursion",
@@ -14,8 +14,8 @@ if (lang == "de") {
 } else {
 	txt_header = "<p>Programming made easy</p><h3>Tutorials</h3>"
 	tut_descr = [
-		"Learn programming 1",
-		"Learn programming 2",
+		"Learn programming I",
+		"Learn programming II",
 		"Programming small games",
 		"Documentation - Code snippets",
 		"Functions and recursion",

@@ -96,7 +96,14 @@ static void SDLCALL new_audio_cb(void *userdata, SDL_AudioStream *stream, int ad
 static SDL_AudioDeviceID audio_dev;
 static char do_animate;
 
+static bool got_sigint;
+
+void handle_sigint(int sig) {
+	exit(1);
+}
 void gr_init(const char* progname, int mask) {
+
+	signal(SIGINT, handle_sigint);
 
 	if (mask == 1024) {
 		// only print
@@ -134,6 +141,7 @@ void gr_init(const char* progname, int mask) {
 
 		gr_color(0, 0, 0);
 		gr_linewidth(1);
+		SDL_RaiseWindow(window);
 	}
 	if (mask & 256) {
 		if (!SDL_Init(SDL_INIT_AUDIO)) errx("SDL_INIT_AUDIO");

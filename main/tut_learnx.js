@@ -1,7 +1,7 @@
 txt_locale = "de"
-txt_tutor = String.raw`+ Learn programming 2
+txt_tutor = String.raw`+ Learn programming II
 
-+de Programmieren lernen 2
++de Programmieren lernen II
 
 -
 
@@ -507,9 +507,9 @@ end
 
 + How can you then supply values to the procedure if the variables are only valid *locally* (within the procedure)?
 
-+de Man kann dies mit Parametern tun. Die Parameter folgen auf den Namen der Prozedur.
++de Man kann dies mit Parametern tun. Die Parameter werden direkt nach dem Prozedurnamen angegeben.
 
-+ You can do this with parameters. The parameters follow the name of the procedure.
++ You can do this with parameters. The parameters are specified directly after the procedure name.
 
 gbackground 060
 proc street .

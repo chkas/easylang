@@ -1,7 +1,7 @@
 txt_locale = "de"
-txt_tutor = String.raw`+ Learn programming 1
+txt_tutor = String.raw`+ Learn programming I
 
-+de Programmieren lernen 1
++de Programmieren lernen I
 
 -
 

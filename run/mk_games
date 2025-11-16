@@ -46,7 +46,7 @@ test -e /run && alias ghead=head
 wrcode() {
 	printf "<a href=\"../run/#cod="
 	#ghead cat $1.kab  | gzip | tail -c +11 | ghead -c -8 | base64 | ghead -c -1
-	cat progs/$1.kab  | gzip | tail -c +11 | ghead -c -8 | base64 | awk '{ printf "%s", $0 }'
+	cat ../progs/$1.kab  | gzip | tail -c +11 | ghead -c -8 | base64 | awk '{ printf "%s", $0 }'
 
 	#printf "<a href=\"../run/#code="
 	#cat $1.kab | jq -s -R -r @uri
