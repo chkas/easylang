@@ -4,12 +4,12 @@ cd ~/daten
 # h=$(date +%s)
 #d=$(expr $h - 1672531200)
 d=$(date +%y%m%d)
-f=~/archiv/easylang$d.zip
-test -f $f && f=~/archiv/easylang${d}x.zip
+f=~/archiv/easylang/el$d.zip
+test -f $f && f=~/archiv/easylang/el{d}x.zip
 echo $f
 if test -f $f; then
 	echo "File exists - overwrite" 
 	rm $f
 fi
-zip -qr $f easylang/apps/ easylang/misc/ easylang/run/ easylang/main/ easylang/native/ easylang/readme.md easylang/vers.txt easylang/mk
+zip -qr $f easylang/apps/ easylang/progs easylang/misc/ easylang/run/ easylang/main/ easylang/native/ easylang/readme.md easylang/vers.txt easylang/mk
 

@@ -52,8 +52,8 @@ xxx
 	fi
 	cat >>$o/tut_$n.html <<xxx
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<link rel="icon" href="../icon.png" type="image/x-png">
-<div style="float:right;padding:8px"><a style="color:#000" href=.>Easylang</a></div>
+<link rel="icon" href="/icon.png" type="image/x-png">
+<div style="float:right;padding:8px"><a style="color:#000" href=/apps/>Easylang</a></div>
 <div id=tut><b>Loading ...</b></div>
 <script>
 if (typeof WebAssembly != 'object') {
@@ -172,7 +172,7 @@ xxx
 	fi
 
 	cat >>$o/tut_$n.html <<xxx
-<p><hr><p>The examples were created with <a href=./?$vers>Easylang</a>. This tutorial is integrated in the <a href=../ide/>IDE<a>
+<p><hr><p>The examples were created with <a href=/apps/?$vers>Easylang</a>. This tutorial is integrated in the <a href=/ide/>IDE<a>
 <p><small>christof.kaser@gmail.com</small>
 xxx
 	cat >>$o/tut_$n.html <<'xxx'
@@ -271,7 +271,7 @@ cat <<xxx
 <meta charset=utf-8>
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="description" content="$n">
-<link rel="icon" href="../icon.png" type="image/x-png">
+<link rel="icon" href="/icon.png" type="image/x-png">
 <title>$n</title>
 
 <style>
@@ -316,7 +316,7 @@ else
 fi
 
 cat <<xxx
- - <a href=.>More samples</a></div>
+ - <a href=/apps/>More samples</a></div>
 <p>
 <canvas></canvas>
 
@@ -362,7 +362,7 @@ cat <<xxx
 <meta name="description" content="information und examples for Easylang - an easy educational browser based programming language">
 <meta charset=utf-8>
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<link rel="icon" href="../icon.png" type="image/x-png">
+<link rel="icon" href="/icon.png" type="image/x-png">
 
 <style>
 body{
@@ -433,25 +433,25 @@ button:enabled:hover {background-color:#07d}
 
 <canvas id=canv1 style="float:right;width:150px;height:150px"></canvas>
 
-This simple programming language with built-in graphical functions and an easy to use and offline usable browser IDE is well suited as a teaching and learning language.
+An easy online programming language and development environment with tutorials. For teaching and learning programming, but not only.
 
-<p><b><a href="../ide/">Browser based development environment</a></b>
-
+<b>
+<div style="font-size:20px;">
+<p><a href="/ide/">Programming IDE</a>
 <p>
-
-You can also use it to write graphical applications that you can embed in a web page, or small games that you can play on your phone.
-
-<p><b><a href="../run/">Code runner - Games & more</a></b>
+<p><a href="/run/">Code runner - Games & more</a>
+</div>
+</b>
 
 <h3>Interactive tutorials</h3>
 
-<p><a href="tut_learn.html?$vers">Learn Programming I</a>
-<p><a href="tut_learnx.html?$vers">Learn Programming II</a>
-<p><a href="tut_game.html?$vers">Programming Small Games</a>
-<p><a href="tut_docu.html?$vers">Documentation and Code Snippets</a>
-<p><a href="tut_func.html?$vers">Functions and Recursion</a>
-<p><a href="tut_sorting.html?$vers">Sorting Algorithms</a>
-<p><a href="tut_mcarlo.html?$vers">The Law of Large Numbers or Why It Is a Bad Idea to Go to the Casino</a>
+<p><a href="/apps/tut_learn.html?$vers">Learn Programming I</a>
+<p><a href="/apps/tut_learnx.html?$vers">Learn Programming II</a>
+<p><a href="/apps/tut_game.html?$vers">Programming Small Games</a>
+<p><a href="/apps/tut_docu.html?$vers">Documentation and Code Snippets</a>
+<p><a href="/apps/tut_func.html?$vers">Functions and Recursion</a>
+<p><a href="/apps/tut_sorting.html?$vers">Sorting Algorithms</a>
+<p><a href="/apps/tut_mcarlo.html?$vers">The Law of Large Numbers or Why It Is a Bad Idea to Go to the Casino</a>
 <p>
 
 <h3>Web demos</h3>
@@ -467,7 +467,7 @@ for k in ../progs/*.kab; do
 	i=${h%.*}.html
 	f=$(echo $i | cut -c1 | tr a-z A-Z)
 	n=$f$(echo ${i%.*} | cut -c2- | tr '-' ' ')
-	echo "<a href=$i?$vers>$n</a><p>"
+	echo "<a href=/apps/$i?$vers>$n</a><p>"
 done
 
 cat <<xxx
@@ -476,8 +476,8 @@ cat <<xxx
 <hr>
 <p>
 <div class=col>
-<a href="../sky/">Starry sky</a>
-<p><a href="progfun.html?$vers">Programming fun</a>
+<a href="/sky/">Starry sky</a>
+<p><a href="/apps/progfun.html?$vers">Programming fun</a>
 </div>
 <br>
 xxx
@@ -669,14 +669,14 @@ cat <<xxx
 <h3>More</h3>
 
 <a href=https://rosettacode.org/wiki/Category:EasyLang><i>Easylang</i> on <i>Rosetta Code</i></a>
-<p><a href="tut_rosetta.html?$vers">Rosetta Code Examples on one big page</a>
+<p><a href="/apps/tut_rosetta.html?$vers">Rosetta Code Examples on one big page</a>
 <p>
-<a href=../aoc/><i>Advent Of Code</i> with <i>Easylang</i></a><br>
+<a href=/aoc/><i>Advent Of Code</i> with <i>Easylang</i></a><br>
 <p>
 <a href=https://learnxinyminutes.com/docs/easylang/>Learn X in Y minutes Where X=Easylang</a>
 <p>
-<p><a href="tut_blackj.html?$vers">Blackjack - Probabilties, Card Counting</a>
-<p><a href="tut_cipher.html?$vers">Symmetric Cipher - What can you do wrong with it</a>
+<p><a href="/apps/tut_blackj.html?$vers">Blackjack - Probabilties, Card Counting</a>
+<p><a href="/apps/tut_cipher.html?$vers">Symmetric Cipher - What can you do wrong with it</a>
 
 <h3>Technical</h3>
 

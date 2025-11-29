@@ -84,10 +84,13 @@ void gr_color(int r, int g, int b) {
 	fcol.b = b;
 	SDL_SetRenderDrawColor(renderer, r, g, b, 255);
 }
+void gr_sys(unsigned short h);
+
 void gr_backcolor(int r, int g, int b) {
 	bcol.r = r;
 	bcol.g = g;
 	bcol.b = b;
+	gr_sys(11);
 }
 
 #define SMPL_RATE 32768
@@ -625,7 +628,7 @@ static void SDLCALL new_audio_cb(void *userdata, SDL_AudioStream *stream, int ad
 void sound(double freq, double sec) {
 
 	if (freq == 0 || sec == 0) {
-		smpl_cnt = 1024;
+		smpl_cnt = 2048;
 		//SDL_PauseAudioDevice(audio_dev);
 		return;
 	}

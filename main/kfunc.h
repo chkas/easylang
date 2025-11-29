@@ -1744,30 +1744,50 @@ S void op_sound(ND* nd) {
 	free(arr.pnum);
 }
 
+S void splitcol(int h, int* r, int* g, int* b) {
+	if (h < 1000) {
+		*b = h % 10 * 28.4;
+		h = h / 10;
+		*g = h % 10 * 28.4;
+		*r = h / 10 * 28.4;
+	}
+	else {
+		h %= 1000000;
+		*b = h % 100 * 2.58;
+		h = h / 100;
+		*g = h % 100 * 2.58;
+		*r = h / 100 * 2.58;
+	}
+}
+	
 S void op_background(ND* nd) {
 	int h = (int)numf(nd->le);
-	if (h >= 0 && h < 1000) {
-		int blue = (int)(h % 10 * 28.4);
-		h = h / 10;
-		int green = (int)(h % 10 * 28.4);
-		int red = (int)(h / 10 * 28.4);
-		gr_backcolor(red, green, blue);
+	if (h >= 0) {
+		int r, g, b;
+		splitcol(h, &r, &g, &b);
+		gr_backcolor(r, g, b);
+		int mod = h / 1000000;
+		if (mod == 2) {
+			gr_sys(20 + mod);
+		}
 	}
 	else if (h == -1) {
 		// image
 		gr_sys(2);
+	}
+	else if (h == -2) {
+		// black, composite lighter
+		gr_sys(5);
 	}
 	else gr_backcolor(0, 0, 0);
 }
 
 S void op_color(ND* nd) {
 	int h = (int)numf(nd->le);
-	if (h >= 0 && h < 1000) {
-		int blue = h % 10 * 28.4;
-		h = h / 10;
-		int green = h % 10 * 28.4;
-		int red = h / 10 * 28.4;
-		gr_color(red, green, blue);
+	if (h >= 0) {
+		int r, g, b;
+		splitcol(h, &r, &g, &b);
+		gr_color(r, g, b);
 	}
 	else if (h == -1) {
 		// foreground

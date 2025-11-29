@@ -80,6 +80,7 @@ function msgFunc(msg, d = null) {
 function canvInit() {
 	canvSetOff()
 	c = eCan.getContext("2d")
+	eCan["xctx"] = c
 	textsize(8)
 	linewidth(1)
 	c.backImg = null
@@ -87,6 +88,7 @@ function canvInit() {
 	c.setTransform(1,0,0,1,0,0)
 	c.translate(0.04, 0.04)
 	c.scale(8, 8)
+	c.globalCompositeOperation = "source-over"
 }
 function kaRun(s, opt = 0, pos = -1) {
 	eCan = canv0
@@ -236,6 +238,7 @@ function polyg(l) {
 function sys(n) {
 	if (n == 2) {
 		// set image background
+		c.globalCompositeOperation = "source-over"
 		c.save()
 		c.setTransform(1,0,0,1,0,0)
 		c.backImg = c.getImageData(0, 0, 800, 800)
@@ -262,6 +265,13 @@ function sys(n) {
 		}
 		c.fillStyle = h
 		c.strokeStyle = h
+	}
+	else if (n == 5) {
+		// background -2
+		c.backColor = "black";
+		c.backImg = null
+		sys(11)
+		c.globalCompositeOperation = "lighter";
 	}
 	else if (n == 11) {
 		// clear
@@ -343,8 +353,11 @@ function grafCommand(d) {
 		c.rotate(d[1])
 		break
 	case 15:
+		c.globalCompositeOperation = "source-over"
 		c.backColor = "rgb(" + d[1] + "," + d[2] + "," + d[3] + ")";
 		c.backImg = null
+		// clear
+		sys(11)
 		break
 	case 16:
 		// circseg
@@ -386,7 +399,7 @@ function soundNext() {
 }
 
 function soundDone() {
-	aud.gain.gain.setTargetAtTime(0, aud.currentTime, 0.05)
+	aud.gain.gain.setTargetAtTime(0, aud.currentTime, 0.02)
 	if (sound_vals.length != 0) {
 		aud.timer = setTimeout(soundNext, 150)
 	}
@@ -408,7 +421,7 @@ function sound(vals) {
 	if (aud.timer) {
 		clearTimeout(aud.timer)
 		aud.timer = null
-		aud.gain.gain.setTargetAtTime(0, aud.currentTime, 0.05)
+		aud.gain.gain.setTargetAtTime(0, aud.currentTime, 0.02)
 	}
 	sound_vals = vals
 	if (sound_vals.length != 0) soundNext()

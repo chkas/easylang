@@ -77,14 +77,14 @@ done
 
 
 
-cp png/*.png $odir
+cp ../progs/png/*.png $odir
 #cp png/easyide.png $odir
 cat <<xxx
 <p>
 <h3>Make your own game</h3>
-<a href="../ide/">An easy programming language and development environment.</a> These games were created with it.
+<a href="/ide/">An easy programming language and development environment.</a> These games were created with it.
 <p>
-<a href="../ide/"><img src=easyide.png alt=easylang.online></a>
+<a href="/ide/"><img src=easyide.png alt=easylang.online></a>
 <p>
 <hr>
 <small>christof.kaser@gmail.com</small>

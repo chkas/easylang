@@ -16,13 +16,10 @@ func[] bnmul a[] b[] .
 .
 func[] bnadd a[] b[] .
    if len a[] < len b[] : swap a[] b[]
-   for i = 1 to len b[]
-      h = a[i] + b[i] + c
-      r[] &= h mod 10000000
-      c = h div 10000000
-   .
-   for i = len b[] + 1 to len a[]
-      h = a[i] + c
+   for i = 1 to len a[]
+      bi = 0
+      if i <= len b[] : bi = b[i]
+      h = a[i] + bi + c
       r[] &= h mod 10000000
       c = h div 10000000
    .

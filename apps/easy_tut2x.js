@@ -43,6 +43,7 @@ canvas {
 	margin-left:12px;
 	width:calc(60vw - 63px);
 	height:calc(60vw - 63px);
+	user-select: none;
 }
 @media only screen and (max-width: 600px) {
 	textarea {
@@ -216,13 +217,20 @@ function tutMsgFunc(msg, d) {
 
 				actBtn.canv.style.height = "0px"
 				actBtn.canv.offsetHeight
-				actBtn.canv.style.height = actBtn.canv.style.width
+				var hs = "60vw - 63px"
+				if (phone) hs = "100vw - 24px"
+				actBtn.canv.style.height = "calc((" +  hs + ") * " + actBtn.xheight / 100 + ")"
+			}
+			if (actBtn.xheight != 100) {
+				if (actBtn.canv["xctx"]) {
+					var c = actBtn.canv["xctx"]
+					c.translate(0, actBtn.xheight - 100)
+				}
 			}
 		}
 		else {
 			actBtn.canv.remove()
 			canv0 = actBtn.canv
-			canv0.height = 800
 			actBtn.canv = null
 		}
 
@@ -243,8 +251,8 @@ function tutMsgFunc(msg, d) {
 			actBtn.out = null
 		}
 		if (!phone) {
-			if ((h & 6) == 6) actBtn.pre.style.height = (actBtn.canv.offsetWidth + 80) + "px"
-			else if (h & 4) actBtn.pre.style.height = (actBtn.canv.offsetWidth + 4) + "px"
+			if ((h & 6) == 6) actBtn.pre.style.height = (actBtn.canv.offsetHeight + 80) + "px"
+			else if (h & 4) actBtn.pre.style.height = (actBtn.canv.offsetHeight + 4) + "px"
 			else if (h & 2) actBtn.out.style.height = (actBtn.pre.offsetHeight - 36) + "px"
 			actBtn.pre.style.maxHeight = actBtn.pre.style.height
 		}
@@ -274,7 +282,6 @@ function makeCanv() {
 	if (!canv) {
 		canv = create("canvas")
 		canv.width = 800
-		canv.height = 800
 	}
 	return canv
 }
@@ -386,12 +393,20 @@ function tutUpd() {
 			tut.appendChild(b)
 		}
 		else {
+			var j = 0
+			var xheight = 100
+			if (s.startsWith("#*")) {
+				xheight = Number(s.substring(2, 4))
+				s = s.substring(s.indexOf("\n") + 1)
+			}
 			var pre = create("pre")
 			codeInit(pre, runCB, stopped)
 			pre.textContent = s
 			kaFormat(s, pres.push(pre) - 1)
 
 			var btn = create("button")
+			btn.xheight = xheight
+
 			btn.innerHTML = "Run"
 			btn.onclick = function() {
 				this.run = "btn"
@@ -451,7 +466,10 @@ function runClick(btn) {
 	tailSrc = null
 	prevBtn = actBtn
 	actBtn = btn
-	if (!btn.canv) btn.canv = makeCanv()
+	if (!btn.canv) {
+		btn.canv = makeCanv()
+		btn.canv.height = 8 * btn.xheight
+	}
 	if (!btn.out) btn.out = makeOut()
 	codeRun(btn.pre, btn.canv, btn.out)
 }
