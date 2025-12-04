@@ -925,10 +925,10 @@ inp.onkeydown = function(e) {
 			cnd.firstChild.nodeValue = cnd.tabopts[cnd.tabind]
 			return
 		}
-		if (k == 8) {	// bs
-			e.preventDefault()
-			cnd.firstChild.nodeValue = cnd.tabopts[cnd.tabopts.length - 1]
-		}
+		//if (k == 8) {	// bs
+		//	e.preventDefault()
+		//	cnd.firstChild.nodeValue = cnd.tabopts[cnd.tabopts.length - 1]
+		//}
 		cnd.className = ""
 		makeCnd()
 		//return

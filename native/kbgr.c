@@ -18,20 +18,16 @@
 #include <stdlib.h>
 #include <math.h>
 
-//#define bool int
-//#define true 1
-//#define false 0
 #define swap(a, b) { int _h = a; a = b; b = _h; }
 #define min(a, b) ((a) < (b) ? (a) : (b))
 
 #ifdef RUN
 unsigned short sysconfig;
-//#define M_PI 3.1415926
 #endif
 
 extern int sys_error;
 
-static int gx, gy;
+static float gx, gy;
 static SDL_Window* window;
 static SDL_Renderer* renderer = NULL;
 static TTF_Font* font;
@@ -40,9 +36,9 @@ static SDL_Color bcol;
 static SDL_Texture *display;
 
 static unsigned short SZ = 500;
-static double FX;
-static double FMX;
-static double FMY;
+static float FX;
+static float FMX;
+static float FMY;
 static unsigned short botleft;
 
 static const char* fontname;
@@ -58,7 +54,7 @@ static bool exists(const char* name) {
 	return (stat (name, &buffer) == 0);
 }
 
-double textsize;
+float textsize;
 
 void gr_textsize(double sz) {
 	if (fontname == NULL) return;
@@ -69,8 +65,8 @@ void gr_textsize(double sz) {
 	if (font == NULL) errx("Could not open font");
 }
 
-static int linew;
-static int linew2;
+static float linew;
+static float linew2;
 static int grpen;
 
 void gr_linewidth(double w) {
@@ -188,7 +184,7 @@ void gr_init(const char* progname, int mask) {
 }
 
 double inv(double y) {
-	if (botleft) return 100 - y;
+	if (botleft) return 100.0 - y;
 	return y;
 }
 
