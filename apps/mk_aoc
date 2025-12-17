@@ -32,6 +32,8 @@ done
 
 
 make_big() {
+	days=25
+	test $1 -ge 25 && days=12
 	cd $src/../misc/aoc$1/
 
 	exec >$o/aoc$1.html
@@ -64,7 +66,7 @@ txt_tutor = String.raw`-
 *
 xxx
 
-	for i in $(seq 1 25); do
+	for i in $(seq 1 $days); do
 		if test -f $i.el; then
 			s=$(head -1 $i.el | cut -c12-)
 			echo "* $s"
@@ -273,6 +275,8 @@ xxx
 for i in $(seq 15 25); do
 	mkdir -p $o/../aoc$i
 	cp $src/../misc/aoc$i/*.el $o/../aoc$i
+	days=25
+	test $i -ge 25 && days=12
 
 cat >$o/../aoc$i/index.html <<xxx
 
@@ -427,7 +431,7 @@ function change() {
 }
 sel.onchange = change
 
-var days = 25
+var days = $days
 
 next.onclick = function() {
 	sel.selectedIndex = (sel.selectedIndex + 1) % days

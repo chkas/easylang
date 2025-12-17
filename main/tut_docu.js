@@ -82,7 +82,7 @@ while i < 1000
 s += 1 / i / 2
 print "PI: " & s * 4
 
-+ *numfmt* sets the fill space and the number of decimal places when a number is converted to a string. The default values are *0 2*.
++ *numfmt* sets the fill space and the number of decimal places when a number is converted to a string. The default values are *0 2*. Whole numbers are always displayed without decimal places.
 
 -
 
@@ -448,7 +448,7 @@ on animate
 
 + The *animate* event is triggered after each screen update (usually 60 times per second). *systime* returns the time in seconds since program start.
 
-+ A colon *:* can be used to indicate that the following sequence consists of only one instruction. This instruction is then written in the same line and the sequence is implicitly ended.
++ A colon *:* can be used to indicate that the following sequence consists of only one statement. This statement is then written on the same line and the sequence is implicitly ended (without a point or *end*). Does not work with *if .. else*.
 
 * More about arrays
 
@@ -522,7 +522,7 @@ input_data
 -2
 6
 
-+ With *repeat* you can make loops, which you can leave in the loop body using *until*.
++ With *repeat* you can make loops, which you can leave in the loop body using *until*. Exactly one *until* is required.
 
 -
 
@@ -537,6 +537,8 @@ for i = 0 to 50
       .
    .
 .
+
++ There is no *continue* or *stop*. But you can end the program with *return* in the main program.
 
 * Namespaces
 
@@ -628,7 +630,7 @@ for i range0 len a[] : print a[i]
 
 -
 
-+ With the configuration command *sysconf topleft* you can set the origin of the coordinate system to top left.
++ With the configuration command *sysconf topleft* you can set the origin of the coordinate system to top left. *sysconf* must be the first statement.
 
 sysconf topleft
 gtextsize 4

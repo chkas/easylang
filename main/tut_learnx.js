@@ -297,6 +297,47 @@ for pos = 1 to len a[] - 1
 end
 print a[]
 
+* Now let's do the same with strings.
+
+*de Nun machen wir dasselbe mit Strings.
+
+s$ = input
+while s$ != ""
+   a$[] &= s$
+   s$ = input
+end
+print a$[]
+#
+for i = 2 to len a$[]
+   if strcmp a$[i] a$[1] < 0
+      swap a$[1] a$[i]
+   end
+end
+print a$[]
+#
+input_data
+Trudy
+Bob
+Thomas
+Alice
+Sandra
+
++de Mit *input_data* kann man einen beliebigen Textbereich definieren, aus dem ich dann mit *input* die Strings zeilenweise lesen kann.
+
++With *input_data* you can define any text area from which you can then read the strings line by line using “input.”
+
++de Mit *&=* kann man ein Element an ein Array anhängen.
+
++de Mit *strcmp* kann man zwei Zeichenfolgen lexikografisch vergleichen. Ist das Ergebnis kleiner als 0, ist die erste Zeichenfolge lexikografisch kleiner; ist es 0, sind sie gleich; andernfalls ist sie größer.
+
++ With *&=*, you can append an element to an array.
+
++ With *strcmp*, you can compare two strings lexicographically. If the result is less than 0, the first string is lexicographically smaller; if it is 0, they are equal; otherwise, it is larger.
+
++ 🤔🤔 Display the names in sorted order.
+
++de 🤔🤔 Zeige die Namen in sortierter Reihenfolge an.
+
 * Other useful functions
 
 *de Weitere nützliche Funktionen
@@ -322,7 +363,7 @@ gcolor 999
 for i = 1 to 100
    x = randomf * 100
    y = randomf * 100
-   gcircle x y randomf * 0.5
+   gcircle x y randomf * 0.3
 end
 
 * Event-driven programming
