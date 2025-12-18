@@ -1,0 +1,59 @@
+name: Deploy to Cloudflare
+
+on:
+  push:
+    branches: ["mainx"]
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  deployments: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install
+        run: |
+          sudo apt-get update
+          sudo apt-get install default-jdk
+          cd
+          curl -L https://github.com/emscripten-core/emsdk/archive/refs/heads/main.zip -o main.zip
+          unzip -q main.zip
+          mv emsdk-main emsdk
+          source emsdk/emsdk_env.sh
+          emsdk update ; emsdk list
+          # vers=latest
+          vers=3.1.70
+          emsdk install $vers ; emsdk activate $vers
+      - name: Checkout repository
+          uses: actions/checkout@v4
+      - name: Make
+        run: |
+          pwd
+          ls
+          source ~/emsdk/emsdk_env.sh
+          ./mk
+          (cd apps; ./mk_aoc)
+          cd
+          rm -rf ~/out/easylang/wrk
+          cp ./easylang/misc/root_easylang.html ./out/easylang/index.html
+          mv ./out/easylang ./work/easylang/easylang/dist
+          echo "/*" ./work/easylang/easylang/dist/_headers
+          echo "Cross-Origin-Opener-Policy: same-origin" ./work/easylang/easylang/dist/_headers
+          echo "Cross-Origin-Embedder-Policy: require-corp" ./work/easylang/easylang/dist/_headers
+      - name: Publish to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: easylang
+          directory: ./dist
+          wranglerVersion: '3'
+          
