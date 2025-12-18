@@ -41,13 +41,12 @@ jobs:
           source ~/emsdk/emsdk_env.sh
           ./mk
           (cd apps; ./mk_aoc)
-          cd
           rm -rf ~/out/easylang/wrk
-          cp ./easylang/misc/root_easylang.html ./out/easylang/index.html
-          mv ./out/easylang ./work/easylang/easylang/dist
-          echo "/*" ./work/easylang/easylang/dist/_headers
-          echo "Cross-Origin-Opener-Policy: same-origin" ./work/easylang/easylang/dist/_headers
-          echo "Cross-Origin-Embedder-Policy: require-corp" ./work/easylang/easylang/dist/_headers
+          cp ./misc/root_easylang.html ~/out/easylang/index.html
+          mv ~/out/easylang ./dist
+          echo "/*" > ./dist/_headers
+          echo "Cross-Origin-Opener-Policy: same-origin" >> ./dist/_headers
+          echo "Cross-Origin-Embedder-Policy: require-corp" >> ./dist/_headers
       - name: Publish to Cloudflare Pages
         uses: cloudflare/pages-action@v1
         with:
