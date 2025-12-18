@@ -33,7 +33,7 @@ jobs:
           vers=3.1.70
           emsdk install $vers ; emsdk activate $vers
       - name: Checkout repository
-          uses: actions/checkout@v4
+        uses: actions/checkout@v4
       - name: Make
         run: |
           pwd
