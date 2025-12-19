@@ -21,8 +21,8 @@ jobs:
     steps:
       - name: Install
         run: |
-          sudo apt-get update
-          sudo apt-get install default-jdk
+          #sudo apt-get update
+          #sudo apt-get install default-jdk
           cd
           curl -L https://github.com/emscripten-core/emsdk/archive/refs/heads/main.zip -o main.zip
           unzip -q main.zip

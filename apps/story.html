@@ -1,0 +1,1125 @@
+<!doctype html>
+<html lang=en>
+<meta charset=utf-8><title>Easylang story</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="Easylang story">
+<link rel="icon" href="/icon.png" type="image/x-png">
+
+<div id=tut><b>Loading ...</b></div>
+<script src=easy_code2.js></script>
+<script src=easy_tut2x.js></script>
+
+<script>
+
+txt_tutor=`* A short story of my programming language Easylang
+
+##60 40
+fastfunc getiter x y .
+   cx = -0.7
+   cy = 0.27015
+   while iter < 127
+      if x * x + y * y > 4 : return iter
+      h = x * x - y * y + cx
+      y = 2 * x * y + cy
+      x = h
+      iter += 1
+   .
+.
+gbackground 0
+for y = 40 step 0.3 to 100
+   for x = 0 step 0.3 to 100
+      gcolor3 0 0 0
+      iter = getiter ((x - 50) / 33) ((y - 70) / 33)
+      if iter < 128
+         gcolor3 iter * 0.05 0 0
+      .
+      grect x y 0.4 0.4
+   .
+.
+
++ It all started with a *Java applet* sometime around 2008. I wanted a simple programming language for kids to learn programming - in the spirit of the old home computer BASIC.
+
+i = 1
+while i <= 5
+   print i * i
+   i += 1
+end
+
++ You could copy sample code from a web page into the applet and run it there. One such example was a *Monte Carlo simulation*. Let's bet 10000 times $10 on the high numbers of the roulette table.
+
+cash = 0
+for i = 1 to 10000
+   cash -= 10
+   numb = random 37 - 1
+   if numb >= 19
+      cash += 20
+   end
+end
+print "Cash after playing: $" & cash
+
++ That was a bad day for the player and another bad day was to follow ...
+
++ One day in 2011, I could no longer copy text into the applet code editor. Access to the clipboard was disabled for Java applets for security reasons. My programming language lost its main strength and so it ended along with the Java applets.
+
+* Web Assembly
+
++ Web Assembly was on its way at the end of 2016. This made it possible to use C and C++ in the browser. An opportunity to revive Easylang. I chose C++, assuming the object-oriented Java AST interpreter would be easier to translate. Programming was a form of psychotherapy for me during a tough time. After a couple of weeks, a first version was running.
+
++ And with the JS-Interface it was possible to add simple grafical commands to my language to draw on the canvas. These commands are in the language namesspace – after all it is not a *GPL* – it is a *DSL* for learning and drawing on the canvas.
+
+#*60
+glinewidth 0.15
+i = 2
+while i <= 60
+   gline i 2 60 i
+   i += 2
+.
+
+* Teaching (kids) programming by drawing on the screen
+
++ The drawing area is 100 times 100 units. The origin is bottom left. The first value (the X coordinate) is the distance from the left edge, the second value (the Y coordinate) is the distance from the bottom edge.
+
+##
+gcolor 777
+gtextsize 4
+gtext 6 5 "0/0"
+gtext 82 5 "100/0"
+gtext 80 91.5 "100/100"
+gtext 6 91.5 "0/100"
+glinewidth 0.5
+x = 10
+while x <= 90
+   gline x 10 x 90
+   gline 10 x 90 x
+   x += 8
+.
+gcircle 18 34 1.5
+gcircle 50 50 1.5
+gtext 13 28 "10/30"
+gtext 45 44 "50/50"
+
++ There are 1000 possible colors - from 000 to 999, mixed from the primary colours red, green and blue. The left digit specifies the red component, the middle digit the green component and the right digit the blue component. These are some possible colors.
+
+##84
+col[] = [ 900 700 966 990 995 960 090 070 696 099 599 690 009 007 669 909 959 609 777 444 000 999 432 765 ]
+gtextsize 7
+for i to len col[]
+   y = 100 - (i - 1) mod 6 * 14 - 14
+   x = (i - 1) div 6 * 22
+   gcolor col[i]
+   grect x y 21 13
+   s$ = col[i]
+   if col[i] <= 9
+      s$ = "00" & s$
+   elif col[i] <= 99
+      s$ = "0" & s$
+   .
+   gcolor 000
+   if col[i] = 0 or col[i] = 432 : gcolor 888
+   gtext x + 4 y + 4 s$
+.
+
+-
+
++ Drawing a house
+
+#*80
+gcolor 993
+grect 20 0 60 45
+gcolor 722
+gpolygon [ 50 70 15 45 85 45 ]
+gcolor 444
+grect 30 10 10 10
+grect 30 30 10 10
+grect 60 30 10 10
+gtextsize 8
+gtext 5 70 "MY HOUSE"
+
++ 🤔 Can you draw the missing door? If you like, you can use a blue background as the sky and let a sun (*gcircle*) shine.
+
+-
+
++ Two thick round lines in different colors, two black circles - and you have a car on the screen. If you draw this repeatedly with a short pause at slightly different positions, the car will drive.
+
+#*60
+subr drawcar
+   glinewidth 8
+   gcolor 333
+   gline x + 9, 15, x + 13, 15
+   gcolor 900
+   gline x + 4, 10, x + 18, 10
+   gcolor 333
+   gcircle x + 5, 4, 3.5
+   gcircle x + 16, 4, 3.5
+end
+#
+x = -25
+while x < 120
+   gclear
+   drawcar
+   sleep 0.02
+   x += 0.5
+end
+
++ 🤔 Let the car drive back again when it has reached the right side.
+
+* Creating small games
+
++ The first larger program that ran with Easylang was a letter memory game. I wanted to make something interesting and educational for my daughter, who was attending kindergarten at the time.
+
+cards$[] = strchars "AABBDDEEFFGGHHII"
+len open[] 16
+gbackground 000
+gtextsize 16
+#
+subr draw_square
+   x = (ind - 1) mod 4 * 24 + 3
+   y = (ind - 1) div 4 * 24 + 3
+   grect x y 22 22
+.
+subr cover_card
+   open[ind] = 0
+   gcolor 353
+   draw_square
+.
+subr show_card
+   open[ind] = 1
+   gcolor 575
+   draw_square
+   gcolor 000
+   gtext x + 5 y + 5 cards$[ind]
+.
+subr init
+   opencards = 0
+   time0 = systime
+   gclear
+   # shuffle and close cards
+   for ind = 1 to 16
+      cover_card
+      r = random ind
+      swap cards$[r] cards$[ind]
+   .
+.
+subr open
+   show_card
+   if card1 = 0
+      # first card
+      card1 = ind
+   else
+      # second card
+      card2 = ind
+      if cards$[card2] <> cards$[card1]
+         # cards are covered after one second
+         timer 1
+      else
+         # two matching cards found
+         card1 = 0
+         card2 = 0
+         opencards += 2
+         if opencards = 16
+            # done
+            gclear
+            gcolor 575
+            gtext 5 50 "Time: " & floor (systime - time0)
+         .
+      .
+   .
+.
+on timer
+   # cover the two uncovered cards
+   ind = card1
+   cover_card
+   ind = card2
+   cover_card
+   card1 = 0
+   card2 = 0
+.
+subr search_card
+   c = mouse_x div 25
+   r = mouse_y div 25
+   ind = r * 4 + c + 1
+   if open[ind] = 0
+      open
+   .
+.
+on mouse_down
+   if opencards = 16
+      # new game
+      init
+   elif card2 = 0
+      search_card
+   .
+.
+init
+
++ I programmed in modern C++ with *smart pointers* and implicit memory management. I never really warmed to the syntax required for this. And when a C++ compiler unexpectedly issued a strange warning that a “virtual destructor is not being called” I decided to translate everything into C. Why do you need virtual methods when you have function pointers?
+
+* From C++ to C
+
++ Sooner than expected, the C implementation was up and running. It was a bit faster and the WASM file was only half the size. The *costless abstractions* of C++ obviously do not apply to the file size.
+
++ Another educational game to learn letters and words. *Hangman* was a game from my childhood and my daughter liked to play it too.
+
+sysconf topleft
+if sysfunc "lang" = "de"
+   alpha$[] = strchars "ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ"
+   words$[] = [ "MAUS" "KATZE" "HUND" "ELEFANT" "PFERD" "NASHORN" "SPINNE" "AMEISE" "TIGER" "GEPARD" "SCHLANGE" "KUH" "SCHWEIN" "KROKODIL" "RATTE" "HUHN" "GIRAFFE" "SKORPION" "WAL" "DELFIN" "EIDECHSE" "FLIEGE" "RABE" "ADLER" "AMSEL" "SPECHT" "PINGUIN" "ESEL" "ZIEGE" "SCHAF" "ENTE" "SCHWAN" "MAULWURF" "BIENE" "WESPE" "ZECKE" "SCHNECKE" "FUCHS" "WOLF" "HAI" "FORELLE" "TAUBE" "BÄR" "DACHS" "EULE" "ERDMÄNNCHEN" "EICHHÖRNCHEN" "FROSCH" "FLEDERMAUS" "GOLDFISCH" "GEIER" "GANS" "GORILLA" "SCHIMPANSE" "HORNISSE" "HAMSTER" "HASE" "REH" "HIRSCH" "MURMELTIER" "IGEL" "KÄFER" "KAMEL" "KÄNGURU" "KREBS" "LÖWE" "LUCHS" "LAMA" "MOLCH" "NASHORN" "PAPAGEI" "PANDBÄR" "PAVIAN" "QUALLE" "REGENWURM" "SCHILDKRÖTE" "STINKTIER" "SEEPFERDCHEN" "ZEBRA" "BIBER" "ANTILOPE" "SEESTERN" "MUSCHEL" "CHAMÄLEON" "FAULTIER" "FLAMINGO" "KANINCHEN" "KOALABÄR" "KRÖTE" ]
+else
+   alpha$[] = strchars "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+   words$[] = [ "MOUSE" "CAT" "DOG" "ELEPHANT" "HORSE" "RHINO" "SPIDER" "ANT" "TIGER" "CHEETAH" "SNAKE" "COW" "PIG" "CROCODILE" "RAT" "MONKEY" "CHICKEN" "GIRAFFE" "SCORPION" "WHALE" "DOLPHIN" "LIZARD" "FLY" "RAVEN" "EAGLE" "BLACKBIRD" "WOODPECKER" "PENGUIN" "DONKEY" "GOAT" "SHEEP" "DUCK" "SWAN" "MOLE" "BEE" "WASP" "TICK" "SNAIL" "FOX" "WOLF" "SHARK" "TROUT" "DOVE" "BEAR" "BADGER" "OWL" "MEERKAT" "SQUIRREL" "FROG" "BAT" "GOLDFISH" "VULTURE" "GOOSE" "GORILLA" "CHIMPANZEE" "HORNET" "HAMSTER" "HARE" "DEER" "MARMOT" "HEDGEHOG" "BEETLE" "CAMEL" "KANGAROO" "CRAB" "LION" "LYNX" "LLAMA" "NEWT" "RHINO" "PARROT" "PANDA" "BABOON" "JELLYFISH" "EARTHWORM" "TURTLE" "SKUNK" "SEAHORSE" "ZEBRA" "BEAVER" "ANTELOPE" "STARFISH" "MUSSEL" "CHAMELEON" "SLOTH" "FLAMINGO" "RABBIT" "KOALA" "TOAD" ]
+.
+len sel[] len alpha$[]
+#
+subr init
+   for i = 1 to len sel[] : sel[i] = 0
+   w$[] = strchars words$[random len words$[]]
+   gtextsize 10
+   game_stat = 0
+.
+gbackground 000
+subr draw
+   gclear
+   glinewidth 1
+   gcolor 997
+   for i = 0 to len w$[] - 1
+      gline 4 + i * 8 93 10 + i * 8 93
+   .
+   found = 0
+   try = 0
+   for ind = 1 to len sel[]
+      r = (ind - 1) div 5
+      c = (ind - 1) mod 5
+      gcolor 040
+      grect 3 + c * 11 3 + r * 12 9.75 10.75
+      gcolor 997
+      k$ = alpha$[ind]
+      if sel[ind] = 0
+         gtext 4.5 + c * 11 4.3 + r * 12 k$
+      else
+         in = 0
+         for pos = 1 to len w$[]
+            if w$[pos] = k$
+               in = 1
+               gtext pos * 8 - 4 83 w$[pos]
+               found += 1
+            .
+         .
+         if in = 0 : try += 1
+      .
+   .
+   if try > 0 : gline 65 60 65 10
+   if try > 1 : gline 65 10 85 10
+   if try > 2 : gline 85 10 85 15
+   if try > 3
+      gcircle 85 20 6
+      gcolor 000
+      gcircle 85 20 5
+      gcolor 997
+   .
+   if try > 4 : gcircle 83 18 0.8
+   if try > 5 : gcircle 87 18 0.8
+   if try > 6 : gline 84 22 86 22
+   if try > 7 : gline 85 26 85 40
+   if try > 8 : gline 78 27 85 30
+   if try > 9 : gline 85 30 92 27
+   if try > 10 : gline 78 47 85 40
+   if try > 11 : gline 85 40 92 47
+   #
+   if try > 11
+      for i = 1 to len w$[]
+         gtext i * 8 - 4 83 w$[i]
+      .
+      game_stat = 1
+      # sound [ 330 0.2 294 0.2 262 0.4 ]
+      timer 1
+   elif found = len w$[]
+      game_stat = 2
+      # sound [ 440 0.1 494 0.1 523 0.2 ]
+      timer 1
+   .
+.
+on timer
+   game_stat = 3
+.
+proc search_letter .
+   c = (mouse_x - 3) div 11
+   r = (mouse_y - 3) div 12
+   ind = c + r * 5 + 1
+   if ind <= len sel[] and sel[ind] = 0
+      sel[ind] = 1
+      draw
+   .
+.
+on mouse_down
+   if game_stat = 0
+      if mouse_x < 58 and mouse_x > 3 and mouse_y < 75 and mouse_y > 3
+         search_letter
+      .
+   elif game_stat = 3
+      init
+      draw
+   .
+.
+init
+draw
+
++ I wrote an Easylang *Code Runner* for these learning games as a *PWA* (Progressive Web App). This then feels like a native app on the phone and also works offline. I also published it in the Google Play store and classified it as suitable for children. However, the app was then banned because of *violent content*.
+
+* Locals, parameter and recursion
+
++ Up to this point, all variables were global. For a beginner's language and simple programs, this may be fine. But at some point you should also be able to do code abstraction and recursive programs.
+
+func fibonacci n .
+   if n < 2 : return n
+   return fibonacci (n - 1) + fibonacci (n - 2)
+.
+print fibonacci 20
+
+-
+
++ A tree is a piece of wood with smaller trees attached to it.
+
+#*72
+gcolor3 0.28 0.18 0.14
+proc tree x y angle depth .
+   glinewidth depth * 0.4
+   xn = x + cos angle * depth * 1.4 * (randomf + 0.5)
+   yn = y + sin angle * depth * 1.4 * (randomf + 0.5)
+   gline x y xn yn
+   if depth > 1
+      tree xn, yn, angle - 20, depth - 1
+      tree xn, yn, angle + 20, depth - 1
+   .
+.
+tree 50 3 90 9
+
+-
+
++ And of course Quicksort
+
+proc qsort left right &d[] .
+   if left >= right : return
+   mid = left
+   for i = left + 1 to right
+      if d[i] < d[left]
+         mid += 1
+         swap d[i] d[mid]
+      .
+   .
+   swap d[left] d[mid]
+   qsort left, mid - 1, d[]
+   qsort mid + 1, right, d[]
+.
+for i = 1 to 100 : d[] &= random 1000
+qsort 1 len d[] d[]
+print d[]
+
+-
+
++ My daughter was now in elementary school and the multiplication tables were on the agenda. That's something you have to practise until it becomes muscle memory. The most important thing you learn in elementary school (ok .. reading and writing is also important). Another challenge for Easylang. A few hours later the *1x1-trainer* was ready. I would never have written it in JavaScript and if I had, it would have taken many times longer.
+
+len n[] 10
+global ind row res n state sz t .
+proc disp col s$ .
+   gcolor col
+   grect 3 76 94 21
+   gcolor 888
+   gtextsize 12
+   gtext 7 82 s$
+.
+proc show_quest .
+   j = random sz
+   n = n[j]
+   n[j] = n[sz]
+   sz -= 1
+   disp 030 n & " × " & row & " = _"
+   res = 0
+.
+proc sel_row .
+   if ind < 10 and ind > 0
+      t = systime
+      row = ind
+      for i = 1 to 10 : n[i] = i
+      sz = 10
+      show_quest
+   .
+.
+proc draw_key col .
+   s$ = strchar (ind + 48)
+   h = ind
+   if h < 10 and h > 0
+      h -= 1
+      x = h mod 3 * 24 + 3
+      y = 2 - h div 3
+   else
+      x = 3 * 24 + 3
+      if h = 0
+         y = 1
+      elif h = 10
+         y = 2
+         s$ = "⌫"
+      else
+         y = 0
+         s$ = "✓"
+      .
+   .
+   y = y * 24 + 3
+   gcolor col
+   grect x y 22 22
+   gcolor 888
+   gtextsize 16
+   gtext x + 5 y + 4.5 s$
+.
+gbackground 010
+proc init .
+   state = 0
+   t = 0
+   row = -1
+   gclear
+   for ind = 0 to 11 : draw_key 020
+   ind = -1
+   disp 030 "Which row?"
+.
+proc sel_inp .
+   if ind = 11
+      state = 1
+      if n * row = res
+         col = 050
+         timer 0.5
+      else
+         sz += 1
+         col = 500
+         timer 3
+      .
+      h$ = n * row
+   else
+      if ind = 10
+         res = res div 10
+         h$ = res
+         if res = 0 : h$ = "_"
+      else
+         if res >= 10 : res = 0
+         res = res * 10 + ind
+         h$ = res
+      .
+      col = 030
+   .
+   disp col n & " × " & row & " = " & h$
+.
+proc handle_key .
+   c = mouse_x div 25
+   r = 2 - mouse_y div 25
+   if c < 3
+      ind = r * 3 + c + 1
+   else
+      if r = 1
+         ind = 0
+      elif r = 0
+         ind = 10
+      else
+         ind = 11
+      .
+   .
+   draw_key 040
+   if row = -1
+      sel_row
+   else
+      sel_inp
+   .
+.
+on mouse_down
+   if state = 3
+      init
+   elif state = 0
+      if mouse_y < 75
+         handle_key
+      elif res = 0
+         init
+      .
+   .
+.
+on mouse_up
+   if ind >= 0 : draw_key 020
+.
+proc smiley .
+   gcolor 983
+   gcircle 65 35 19
+   gcolor 000
+   gcircle 58 42 2
+   gcircle 72 42 2
+   glinewidth 2
+   gcurve [ 58 28 65 22 72 28 ]
+.
+proc done .
+   t = floor (systime - t)
+   gcolor 030
+   grect 0 0 100 100
+   gcolor 888
+   gtextsize 10
+   gtext 10 82 "Well done!"
+   gtext 10 66 "Time: " & t
+   gtextsize 6
+   gtext 10 10 "Row: " & row
+   if t <= 60 : smiley
+.
+on timer
+   if state = 2
+      state = 3
+   elif sz = 0
+      state = 2
+      ind = -1
+      timer 2
+      done
+   else
+      show_quest
+      state = 0
+   .
+.
+init
+
+* Rosetta Code examples
+
++ Rosetta Code is a wiki-based programming website with solutions for various programming problems in different programming languages. Many also in Easylang.
+
++ Peripheral drift illusion by Paul Nasca – the image is static, even if it doesn't look like it
+
+n = 15
+offs = 10 / n
+r = (100 / (3 * n + 1))
+step = 360 * 2 / (n - 1)
+#
+gbackground 470
+gclear
+for row = 0 to n - 1
+   for col = 0 to n - 1
+      x = (3 * col + 2) * r
+      y = (3 * row + 2) * r
+      #
+      h = col * step + row * step
+      gcolor 999
+      gcircle x + offs * cos h, y + offs * sin h, r
+      #
+      h += 180
+      gcolor 000
+      gcircle x + offs * cos h, y + offs * sin h, r
+      #
+      gcolor 128
+      gcircle x y r
+   .
+.
+
+-
+
++ Barnsley fern – creating a fractal with randomness
+
+gcolor 263
+for i = 1 to 100000
+   r = randomf
+   if r < 0.01
+      nx = 0
+      ny = 0.16 * y
+   elif r < 0.08
+      nx = 0.2 * x - 0.26 * y
+      ny = 0.23 * x + 0.22 * y + 1.6
+   elif r < 0.15
+      nx = -0.15 * x + 0.28 * y
+      ny = 0.26 * x + 0.24 * y + 0.44
+   else
+      nx = 0.85 * x + 0.04 * y
+      ny = -0.04 * x + 0.85 * y + 1.6
+   .
+   x = nx
+   y = ny
+   grect 50 + x * 15 y * 10 0.3 0.3
+.
+
+-
+
++ Munching squares – beautiful with little code
+
+#*70
+for x = 0 to 63 : for y = 0 to 63
+   h = bitand (bitxor x y) 63 / 63
+   gcolor3 h h h
+   grect x + 12 y + 4 1.1 1.1
+.
+
+-
+
++ Pendulum – a physics simulation
+
+#*70
+gcolor 774
+ang = 62
+on animate
+   gclear
+   gcircle 47 45 1
+   x = 47 + 40 * sin ang
+   y = 45 + 40 * cos ang
+   gline 47 45 x y
+   gcircle x y 6
+   vel += sin ang / 5
+   ang += vel
+.
+
+-
+
++ Particle fountain – a slightly more complex physics simulation
+
+rad = 0.125
+n = 6000
+#
+len x[] n
+len y[] n
+len vx[] n
+len vy[] n
+# gbackground 059
+gcolor 999
+on animate
+   for i = 1 to 32
+      ind = (ind + 1) mod1 n
+      x[ind] = 50 + randomf
+      y[ind] = i / 4
+      vx[ind] = (randomf - 0.5) * 0.4
+      vy[ind] = 2 + randomf * 0.1
+   .
+   gclear
+   for i = 1 to n
+      gcircle x[i] y[i] rad
+      x[i] += vx[i]
+      y[i] += vy[i]
+      vy[i] -= 0.025
+   .
+.
+
+-
+
++ The calculation to test whether a point is in the Mandelbrot set is time-consuming. To speed this up, it is done in a *fastfunc* and not in a *func*. Code in such a function is translated directly into *WASM code* and not only into AST code, which has to be interpreted. This only works with a small subset of the language.
+
+res = 4
+maxiter = 200
+# better but slower: res = 8 maxiter = 300
+#
+mid = res * 50
+center_x = 3 * mid / 2
+center_y = mid
+scale = mid
+#
+gbackground 000
+gtextsize 2
+#
+fastfunc iter cx cy max .
+   while xx + yy < 4 and it < max
+      y = 2 * x * y + cy
+      x = xx - yy + cx
+      xx = x * x
+      yy = y * y
+      it += 1
+   .
+   return it
+.
+proc draw .
+   gclear
+   for scr_y = 0 to 2 * mid - 1
+      cy = (scr_y - center_y) / scale
+      for scr_x = 0 to 2 * mid - 1
+         cx = (scr_x - center_x) / scale
+         it = iter cx cy maxiter
+         if it < maxiter
+            gcolor3 it * 0.05 it * 0.01 it * 0.007
+            grect scr_x / res scr_y / res 1 / res 1 / res
+         .
+      .
+   .
+   gcolor 990
+   gtext 1 1 "Short press to zoom in, long to zoom out"
+.
+on timer
+   if done = 0
+      center_x += (mid - center_x) * 3 / 4
+      center_y += (mid - center_y) * 3 / 4
+      scale /= 4
+      draw
+      done = 1
+   .
+.
+on mouse_down
+   done = 0
+   center_x += mid - mouse_x * res
+   center_y += mid - mouse_y * res
+   timer 0.3
+.
+on mouse_up
+   if done = 0
+      center_x -= mid - center_x
+      center_y -= mid - center_y
+      scale *= 2
+      draw
+      done = 1
+   .
+.
+draw
+
+-
+
++ Tic-Tac-Toe – no chance of winning, as the program calculates all paths with *alpha-beta search*
+
+len f[] 9
+state = 0
+gtextsize 13
+#
+proc init .
+   glinewidth 2
+   gclear
+   gcolor 666
+   gline 34 96 34 20
+   gline 62 96 62 20
+   gline 10 72 86 72
+   gline 10 44 86 44
+   glinewidth 2.5
+   for i = 1 to 9 : f[i] = 0
+   if state = 1 : timer 0.2
+.
+proc draw ind .
+   c = (ind - 1) mod 3
+   r = (ind - 1) div 3
+   x = c * 28 + 20
+   y = r * 28 + 30
+   if f[ind] = 4
+      gcolor 900
+      gline x - 7 y - 7 x + 7 y + 7
+      gline x + 7 y - 7 x - 7 y + 7
+   elif f[ind] = 1
+      gcolor 009
+      gcircle x y 10
+      gcolor -2
+      gcircle x y 7.5
+   .
+.
+proc sum3 a d &st .
+   for i = 1 to 3
+      s += f[a]
+      a += d
+   .
+   if s = 3
+      st = -1
+   elif s = 12
+      st = 1
+   .
+.
+proc rate &res &done .
+   res = 0
+   for i = 1 step 3 to 7 : sum3 i 1 res
+   for i = 1 to 3 : sum3 i 3 res
+   sum3 1 4 res
+   sum3 3 2 res
+   cnt = 1
+   for i = 1 to 9
+      if f[i] = 0 : cnt += 1
+   .
+   res *= cnt
+   done = 0
+   if res <> 0 or cnt = 1 : done = 1
+.
+proc minmax player alpha beta &rval &rmov .
+   rate rval done
+   if done = 1
+      if player = 1 : rval = -rval
+      return
+   .
+   rval = alpha
+   start = random 9
+   mov = start
+   repeat
+      if f[mov] = 0
+         f[mov] = player
+         minmax (5 - player) (-beta) (-rval) val h
+         val = -val
+         f[mov] = 0
+         if val > rval
+            rval = val
+            rmov = mov
+         .
+      .
+      mov = mov mod 9 + 1
+      until mov = start or rval >= beta
+   .
+.
+proc show_result val .
+   gcolor 555
+   if val < 0
+      # this never happens
+      gtext 16 4 "You won"
+   elif val > 0
+      gtext 16 4 "You lost"
+   else
+      gtext 16 4 "Tie"
+   .
+   state += 2
+.
+proc computer_turn .
+   minmax 4 -11 11 val mov
+   f[mov] = 4
+   draw mov
+   rate val done
+   if done = 1
+      timer 0.5
+   else
+      state = 0
+   .
+.
+proc human_turn .
+   mov = floor ((mouse_x - 6) / 28) + 3 * floor ((mouse_y - 16) / 28) + 1
+   if f[mov] <> 0 : return
+   f[mov] = 1
+   draw mov
+   state = 1
+   timer 0.5
+.
+on timer
+   rate val done
+   if done = 1
+      show_result val
+   else
+      computer_turn
+   .
+.
+on mouse_down
+   if state = 0 and mouse_x - 6 < 84 and mouse_y > 16
+      human_turn
+   elif state >= 2
+      state -= 2
+      init
+   .
+.
+init
+
+-
+
++ A game that I like to play
+
+col[] = [ 802 990 171 229 950 808 ]
+len code[] 4
+len guess[] 4
+row = 0
+#
+proc draw_rate r black white .
+   for j range0 2 : for c range0 2
+      x = c * 3.5 + 76.5
+      y = r * 11.5 + 9.4 - j * 3.5
+      if black > 0
+         gcolor 000
+         gcircle x y 1.4
+         black -= 1
+      elif white > 0
+         gcolor 999
+         gcircle x y 1.4
+         white -= 1
+      else
+         gcolor 310
+         gcircle x y 0.7
+      .
+   .
+.
+proc show_code .
+   gcolor 531
+   grect 27 92 46 8
+   for i to 4
+      gcolor col[code[i]]
+      gcircle i * 8 + 25 97 2
+   .
+.
+proc draw_guess .
+   for c to 4
+      gcolor col[guess[c]]
+      gcircle c * 12 + 13 row * 11.5 + 7.5 3.8
+   .
+.
+proc next_row .
+   gcolor 420
+   glinewidth 11
+   gline 22 row * 11.5 + 7.5 65 row * 11.5 + 7.5
+   draw_guess
+   gcolor 310
+   gcircle 78.5 row * 11.5 + 7.5 5.0
+   gcolor 753
+   gtextsize 7
+   gtext 76.5 row * 11.5 + 5 "✓"
+.
+proc rate .
+   gcolor 532
+   gcircle 78.5 row * 11.5 + 7.5 5.2
+   c[] = code[]
+   g[] = guess[]
+   for i to 4 : if c[i] = g[i]
+      black += 1
+      c[i] = -1
+      g[i] = -2
+   .
+   for i to 4 : for j to 4
+      if c[i] = g[j]
+         white += 1
+         c[i] = -1
+         g[j] = -2
+      .
+   .
+   draw_rate row black white
+   gcolor 531
+   glinewidth 12
+   gline 22 row * 11.5 + 7.5 65 row * 11.5 + 7.5
+   draw_guess
+   row += 1
+   if black = 4 : row = 8
+   if row = 8
+      show_code
+      timer 2
+   else
+      next_row
+   .
+.
+subr next_guess
+   guess[col] = guess[col] mod 6 + 1
+   draw_guess
+.
+proc new .
+   row = 0
+   for i to 4 : code[i] = random 6
+   gcolor 531
+   grect 15 10 70 80
+   glinewidth 10
+   gline 10 95 10 5
+   gline 10 5 90 5
+   gline 90 5 90 95
+   gline 90 95 10 95
+   gcolor 310
+   glinewidth 7
+   gline 35 96.5 63 96.5
+   gcolor 864
+   gtextsize 4
+   gtext 35 95 "Mastermind"
+   gcolor 310
+   glinewidth 0.5
+   gline 15 90 15 4
+   gline 72 90 72 4
+   gline 85 90 85 4
+   for r range0 8
+      for c range0 4
+         gcircle c * 12 + 25 r * 11.5 + 7.5 2
+      .
+      draw_rate r 0 0
+   .
+   guess[1] = 1
+   guess[2] = 1
+   guess[3] = 2
+   guess[4] = 2
+   next_row
+.
+on timer
+   if col > 0
+      next_guess
+      timer 0.8
+   else
+      row = -1
+   .
+.
+on mouse_up
+   if col > 0
+      timer -1
+      col = 0
+   .
+.
+proc do_move .
+   col = (mouse_x - 20) div 12 + 1
+   next_guess
+   timer 0.8
+.
+on mouse_down
+   if row = -1
+      new
+   elif mouse_y > row * 11.5 + 0.5 and mouse_y < row * 11.5 + 10.5 and row < 8
+      if mouse_x > 20 and mouse_x < 66
+         do_move
+      elif mouse_x > 72 and mouse_x < 85
+         rate
+      .
+   .
+.
+new
+
+-
+
++ And finally, a chaotic, dynamic system simulated with particles moving around in space.
+
+sysconf radians
+name$ = "Thomas' strange attractor"
+b = 0.19
+dt = 0.01
+#
+for _i to 15000
+   x[] &= randomf * 6 - 3
+   y[] &= randomf * 6 - 3
+   z[] &= randomf * 6 - 3
+.
+proc update .
+   for i to len x[]
+      dx = (sin y[i] - b * x[i]) * dt
+      y[i] += (sin z[i] - b * y[i]) * dt
+      z[i] += (sin x[i] - b * z[i]) * dt
+      x[i] += dx
+   .
+.
+coord_translate 50 50
+gtextsize 3
+gbackground 000
+#
+proc draw3d angx .
+   sinx = sin angx
+   cosx = cos angx
+   # z-ordering
+   len buck[][] 255
+   for i to len x[]
+      zd = x[i] * sinx + z[i] * cosx
+      bu = lower 255 floor ((zd + 4.3) * 30)
+      if bu >= 1 : buck[bu][] &= i
+   .
+   gclear
+   for bu to 255
+      c = bu / 255
+      gcolor3 c c c
+      for i in buck[bu][]
+         xd = x[i] * cosx - z[i] * sinx
+         gcircle xd * 10 y[i] * 10 0.15
+      .
+   .
+   gcolor 777
+   gtext -45 -48 name$
+.
+on animate
+   if stat = 2 : return
+   update
+   draw3d angx
+   if stat = 1 : return
+   angx += 0.005
+.
+on mouse_down
+   stat = (stat + 1) mod 3
+.
+`
+
+function hook() {
+	var dom = window.location.host
+	tut.insertAdjacentHTML("beforeend", `
+<p><hr>
+<p><a href=/ide/>Programming IDE<a>
+<p><a href=/run/>Code Runner (PWA) <a>
+<p><a href=/programming_basics.html>Programming Course<a>
+<p><a href=/apps/>About Easylang<a>
+<p><a href=https://github.com/chkas/easylang>Source on Github<a>
+<p><hr>
+<small>christof.kaser@gmail.com</small>
+`)
+}
+</script>
+</html>
+
+
