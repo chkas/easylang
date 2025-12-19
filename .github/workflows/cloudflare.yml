@@ -42,11 +42,13 @@ jobs:
           ./mk
           (cd apps; ./mk_aoc)
           rm -rf ~/out/easylang/wrk
-          cp ./misc/root_easylang.html ~/out/easylang/index.html
+          # cp ./misc/root_easylang.html ~/out/easylang/index.html
           mv ~/out/easylang ./dist
-          echo "/*" > ./dist/_headers
-          echo "Cross-Origin-Opener-Policy: same-origin" >> ./dist/_headers
-          echo "Cross-Origin-Embedder-Policy: require-corp" >> ./dist/_headers
+          cd dist
+          sh ../misc/_mk_links.sh
+          echo "/*" > _headers
+          echo "Cross-Origin-Opener-Policy: same-origin" >> _headers
+          echo "Cross-Origin-Embedder-Policy: require-corp" >> _headers
       - name: Publish to Cloudflare Pages
         uses: cloudflare/pages-action@v1
         with:
