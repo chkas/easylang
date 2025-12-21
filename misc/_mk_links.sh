@@ -2,6 +2,7 @@ ln -s apps/easy_code2.js .
 ln -s apps/easy_tut2.js .
 ln -s apps/easy_tut2x.js .
 ln -s apps/story.html .
+ln -s apps/xmas.html .
 ln -s apps/easyw.wasm .
 ln -s apps/easyw.js .
 ln -s apps/tut_learn.html .

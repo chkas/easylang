@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang=en>
+<meta charset=utf-8><title>Christmas tree</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="Programming in Easylang">
+<link rel="icon" href="/icon.png" type="image/x-png">
+
+<div id=tut><b>Loading ...</b></div>
+<script src=easy_code2.js></script>
+<script src=easy_tut2x.js></script>
+
+<script>
+
+txt_tutor=`* Drawing a Christmas tree
+
+##
+gcircle 10 10 2
+
++ We want to draw a Christmas tree at position *x, y*.
+
++ First, we draw the tree trunk, which is easy. It is a rectangle at position *x - 3, y* with a width of *6* and a height of *10*. The color is *421* — a combination of 4 parts red, 2 green, and 1 blue.
+
++ We create a green triangle using the *gpolygon* function, which expects the x and y values of the corner points alternately. *drawgrid* helps with orientation during development.
+
+drawgrid
+x = 50
+y = 10
+gcolor 421
+grect x - 3 y 6 10
+#
+gcolor 060
+y = 20
+w = 20
+gpolygon [ x (y + 20) (x - w) y (x + w) y ]
+
++ We place these triangles on top of each other, with them becoming narrower towards the top.
+
+x = 50
+y = 10
+gcolor 421
+grect x - 3 y 6 10
+#
+gcolor 060
+w = 30
+y += 10
+gcolor 050
+while y < 70
+   gpolygon [ x (y + 20) (x - w) y (x + w) y ]
+   y += 12
+   w -= 4
+.
+
++ Now it gets a little more complicated. We want to draw a 5-pointed star. To do this, we need trigonometric functions, since the points are evenly spaced around a circle. Let's try drawing it using lines. We move twice around the circle, increasing the angle by 144 degrees each time.
+
+x = 30
+y = 50
+while angle <= 720
+   x += cos angle * 40
+   y += sin -angle * 40
+   glineto x y
+   angle += 144
+.
+
++ If we collect these corner points in an array and then draw the polygon, we have our yellow star. It's best to create a procedure for this right away.
+
+proc star x y sz .
+   x -= sz / 2
+   while angle < 720
+      x += cos angle * sz
+      y += sin -angle * sz
+      f[] &= x
+      f[] &= y
+      angle += 144
+   .
+   gcolor 990
+   gpolygon f[]
+.
+x = 50
+y = 10
+gcolor 421
+grect x - 3 y 6 10
+#
+gcolor 060
+w = 30
+y += 10
+gcolor 050
+while y < 70
+   gpolygon [ x (y + 20) (x - w) y (x + w) y ]
+   y += 12
+   w -= 4
+.
+star 50 88 10
+
++ Now we can decorate the tree with red glass balls and yellow stars. We arrange the decorations alternately to the right or left of the center.
+
+proc star x y sz .
+   x -= sz / 2
+   while angle < 720
+      x += cos angle * sz
+      y += sin -angle * sz
+      f[] &= x
+      f[] &= y
+      angle += 144
+   .
+   gcolor 990
+   gpolygon f[]
+.
+proc tree .
+   x = 50
+   y = 10
+   # tree trunk
+   gcolor 421
+   grect x - 3 y 6 10
+   #
+   # green branches
+   gcolor 060
+   w = 30
+   y += 10
+   gcolor 050
+   while y < 70
+      gpolygon [ x (y + 20) (x - w) y (x + w) y ]
+      y += 12
+      w -= 4
+   .
+   # tree balls and stars
+   y = 25
+   d = 1
+   for i = 1 to 5
+      star x + d * (12 - i) y + 2 4
+      gcolor 900
+      gcircle x + d * (6 - i) y + 2 2
+      d *= -1
+      y += 12
+   .
+   star 50 88 10
+.
+tree
+
++ Now add the candles. A candle is a rectangle with a yellow circle on top.
+
+proc candle x y .
+   gcolor 800
+   grect x - 1 y 2 4
+   gcolor 990
+   gcircle x y + 5 1
+.
+proc draw_candles .
+   y = 25
+   x = 50
+   d = 1
+   for i = 1 to 5
+      d *= -1
+      candle x + d * (13 - 2 * i) y + 3
+      y += 12
+   .
+.
+draw_candles
+
++ And the Christmas presents, of course.
+
+proc present x y sz col .
+   half = sz / 2
+   band = sz * 0.12
+   gcolor col
+   grect x - half y sz sz
+   gcolor 555
+   grect x - band / 2 y band sz
+   grect x - half y + half - band / 2 sz band
+   glinewidth band * 0.8
+   bowy = y + sz + band
+   boww = sz * 0.3
+   gline x bowy - band x - boww bowy
+   gline x bowy - band x + boww bowy
+.
+present 37 30 9 900
+present 30 28 10 009
+present 60 28 9 990
+
++ Now everything together.
+
+proc present x y sz col .
+   half = sz / 2
+   band = sz * 0.12
+   gcolor col
+   grect x - half y sz sz
+   gcolor 555
+   grect x - band / 2 y band sz
+   grect x - half y + half - band / 2 sz band
+   glinewidth band * 0.8
+   bowy = y + sz + band
+   boww = sz * 0.3
+   gline x bowy - band x - boww bowy
+   gline x bowy - band x + boww bowy
+.
+present 37 10 9 900
+present 30 8 10 009
+present 60 8 9 990
+#
+proc star x y sz .
+   x -= sz / 2
+   while angle < 720
+      x += cos angle * sz
+      y += sin -angle * sz
+      f[] &= x
+      f[] &= y
+      angle += 144
+   .
+   gcolor 990
+   gpolygon f[]
+.
+proc tree .
+   x = 50
+   y = 10
+   gcolor 421
+   grect x - 3 y 6 10
+   #
+   gcolor 060
+   w = 30
+   y += 10
+   gcolor 050
+   while y < 70
+      gpolygon [ x (y + 20) (x - w) y (x + w) y ]
+      y += 12
+      w -= 4
+   .
+   y = 25
+   d = 1
+   for i = 1 to 5
+      star x + d * (12 - i) y + 2 4
+      gcolor 900
+      gcircle x + d * (6 - i) y + 2 2
+      d *= -1
+      y += 12
+   .
+   star 50 88 10
+.
+tree
+#
+proc candle x y .
+   gcolor 800
+   grect x - 1 y 2 4
+   gcolor 990
+   gcircle x y + 5 1
+.
+proc draw_candles .
+   y = 25
+   x = 50
+   d = 1
+   for i = 1 to 5
+      d *= -1
+      candle x + d * (13 - 2 * i) y + 3
+      y += 12
+   .
+.
+draw_candles
+
++ The candles should flicker. For example, we could redraw the candles five times per second and make the flame darker every tenth time. However, this looks unnatural when the candles flicker in time. It is better to draw the flame darker with a probability of 20 percent. We do this with *randomf* in the event function *on timer*.
+
+on timer
+   gcolor 800
+   grect 10 40 6 10
+   gcolor 990
+   if randomf < 0.2 : gcolor 770
+   gcircle 13 53 3
+   timer 0.1
+.
+timer 0
+
+* Happy Christmas
+
+proc present x y sz col .
+   half = sz / 2
+   band = sz * 0.12
+   gcolor col
+   grect x - half y sz sz
+   gcolor 555
+   grect x - band / 2 y band sz
+   grect x - half y + half - band / 2 sz band
+   glinewidth band * 0.8
+   bowy = y + sz + band
+   boww = sz * 0.3
+   gline x bowy - band x - boww bowy
+   gline x bowy - band x + boww bowy
+.
+present 37 10 9 900
+present 30 8 10 009
+present 60 8 9 990
+#
+proc star x y sz .
+   x -= sz / 2
+   while angle < 720
+      x += cos angle * sz
+      y += sin -angle * sz
+      f[] &= x
+      f[] &= y
+      angle += 144
+   .
+   gcolor 990
+   gpolygon f[]
+.
+proc tree .
+   x = 50
+   y = 10
+   gcolor 421
+   grect x - 3 y 6 10
+   #
+   gcolor 060
+   w = 30
+   y += 10
+   gcolor 050
+   while y < 70
+      gpolygon [ x (y + 20) (x - w) y (x + w) y ]
+      y += 12
+      w -= 4
+   .
+   y = 25
+   d = 1
+   for i = 1 to 5
+      star x + d * (12 - i) y + 2 4
+      gcolor 900
+      gcircle x + d * (6 - i) y + 2 2
+      d *= -1
+      y += 12
+   .
+   star 50 88 10
+.
+tree
+#
+proc candle x y .
+   gcolor 800
+   grect x - 1 y 2 4
+   gcolor 990
+   if randomf < 0.2 : gcolor 770
+   gcircle x y + 5 1
+.
+proc draw_candles .
+   y = 25
+   x = 50
+   d = 1
+   for i = 1 to 5
+      d *= -1
+      candle x + d * (13 - 2 * i) y + 3
+      y += 12
+   .
+.
+on timer
+   draw_candles
+   timer 0.1
+.
+timer 0
+
+`
+
+function hook() {
+	var dom = window.location.host
+	tut.insertAdjacentHTML("beforeend", `
+<p><hr>
+<p><a href=/ide/>Programming IDE<a>
+<p><a href=/programming_basics.html>Programming Course<a>
+<p><a href=/apps/>About Easylang<a>
+<p><a href=https://github.com/chkas/easylang>Source on Github<a>
+<p><hr>
+<small>christof.kaser@gmail.com</small>
+`)
+	var srcx = `
+proc present x y sz col .
+   half = sz / 2
+   band = sz * 0.12
+   gcolor col
+   grect x - half y sz sz
+   gcolor 555
+   grect x - band / 2 y band sz
+   grect x - half y + half - band / 2 sz band
+   glinewidth band * 0.8
+   bowy = y + sz + band
+   boww = sz * 0.3
+   gline x bowy - band x - boww bowy
+   gline x bowy - band x + boww bowy
+.
+present 37 10 9 900
+present 30 8 10 009
+present 60 8 9 990
+#
+proc star x y sz .
+   x -= sz / 2
+   while angle < 720
+      x += cos angle * sz
+      y += sin -angle * sz
+      f[] &= x
+      f[] &= y
+      angle += 144
+   .
+   gcolor 990
+   gpolygon f[]
+.
+proc tree .
+   x = 50
+   y = 10
+   gcolor 421
+   grect x - 3 y 6 10
+   #
+   gcolor 060
+   w = 30
+   y += 10
+   gcolor 050
+   while y < 70
+      gpolygon [ x (y + 20) (x - w) y (x + w) y ]
+      y += 12
+      w -= 4
+   .
+   y = 25
+   d = 1
+   for i = 1 to 5
+      star x + d * (12 - i) y + 2 4
+      gcolor 900
+      gcircle x + d * (6 - i) y + 2 2
+      d *= -1
+      y += 12
+   .
+   star 50 88 10
+.
+tree
+#
+proc candle x y .
+   gcolor 800
+   grect x - 1 y 2 4
+   gcolor 990
+   if randomf < 0.2 : gcolor 770
+   gcircle x y + 5 1
+.
+proc draw_candles .
+   y = 25
+   x = 50
+   d = 1
+   for i = 1 to 5
+      d *= -1
+      candle x + d * (13 - 2 * i) y + 3
+      y += 12
+   .
+.
+on timer
+   draw_candles
+   timer 0.1
+.
+timer 0
+`
+	var canvx = document.querySelector('canvas')
+	easyrun(srcx, canvx)
+}
+</script>
+</html>
+
+

@@ -21,7 +21,7 @@ on animate
 
 **[easylang.online](https://easylang.online/)**
 
-**[chkas.github.io](https://chkas.github.io/)**
+**[easylang.pages.dev](https://easylang.pages.dev/)**
 
 ## Build in Linux and MacOS
 
@@ -74,5 +74,5 @@ Test it locally
 
 ## Build with Github Actions
 
-[github.com/chkas/chkas.github.io](https://github.com/chkas/chkas.github.io)
+[github.com/chkas/easylang/actions](https://github.com/chkas/easylang/actions)
 
