@@ -184,7 +184,6 @@ xxx
 glinewidth 8
 timer 0.5
 on timer
-   stat += 1
    if stat = 0
       gclear
    elif stat = 1
@@ -198,16 +197,17 @@ on timer
       gcircle 5 85 3.5
    elif stat = 4
       gcircle 16 85 3.5
-   else
       x = 0
+   elif stat >= 5
       return
    .
+   stat += 1
    timer 1.2
 .
 on animate
    if stat <> 5 : return
    if x > 78
-      stat = -1
+      stat = 0
       timer 2
       return
    .
@@ -221,8 +221,10 @@ on animate
    gcircle x + 16 85 3.5
    x += 0.4
 .
+save_stat = 7
 on mouse_down
-   stat = 7
+   swap stat save_stat
+   timer 0
 .
 `
 	var canvx = document.querySelector('canvas')
@@ -369,7 +371,7 @@ body{
   background-color:#fff;
   font:normal normal normal 16px/1.4 Arial,sans-serif;
   margin-left:16px;margin-right:16px;
-  max-width:730px;
+  max-width:1024px;
 }
 pre{
 	white-space:pre-wrap;

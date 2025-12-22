@@ -16,119 +16,99 @@ txt_tutor=`* Drawing a Christmas tree
 ##
 gcircle 10 10 2
 
-+ We want to draw a Christmas tree at position *x, y*.
++ It's Christmas - we need a Christmas tree.
 
-+ First, we draw the tree trunk, which is easy. It is a rectangle at position *x - 3, y* with a width of *6* and a height of *10*. The color is *421* — a combination of 4 parts red, 2 green, and 1 blue.
++ First, we draw the tree trunk, which is easy. It is a rectangle at position *47, 10* with a width of *6* and a height of *10*. The color is *421*, a combination of 4 parts red, 2 green, and 1 blue.
 
-+ We create a green triangle using the *gpolygon* function, which expects the x and y values of the corner points alternately. *drawgrid* helps with orientation during development.
++ The green branches of the Christmas tree are shown as green triangles. *gpolygon* expects the x and y values of the corner points alternately.
 
 drawgrid
-x = 50
-y = 10
+# trunk
 gcolor 421
-grect x - 3 y 6 10
+grect 47 10 6 10
 #
-gcolor 060
-y = 20
+y = 30
 w = 20
-gpolygon [ x (y + 20) (x - w) y (x + w) y ]
+# branch
+gcolor 050
+gpolygon [ 50 (y + 20) (50 - w) y (50 + w) y ]
+
++ *drawgrid* helps with orientation during development.
 
 + We place these triangles on top of each other, with them becoming narrower towards the top.
 
-x = 50
+drawgrid
 y = 10
 gcolor 421
-grect x - 3 y 6 10
+grect 50 - 3 10 6 10
 #
-gcolor 060
 w = 30
-y += 10
+y = 20
 gcolor 050
 while y < 70
-   gpolygon [ x (y + 20) (x - w) y (x + w) y ]
+   gpolygon [ 50 (y + 20) (50 - w) y (50 + w) y ]
    y += 12
    w -= 4
 .
 
 + Now it gets a little more complicated. We want to draw a 5-pointed star. To do this, we need trigonometric functions, since the points are evenly spaced around a circle. Let's try drawing it using lines. We move twice around the circle, increasing the angle by 144 degrees each time.
 
-x = 30
-y = 50
-while angle <= 720
-   x += cos angle * 40
-   y += sin -angle * 40
+x = 20
+y = 70
+while deg <= 720
+   x += cos deg * 40
+   y += sin -deg * 40
    glineto x y
-   angle += 144
+   deg += 144
+   sleep 0.2
 .
 
 + If we collect these corner points in an array and then draw the polygon, we have our yellow star. It's best to create a procedure for this right away.
 
 proc star x y sz .
    x -= sz / 2
-   while angle < 720
-      x += cos angle * sz
-      y += sin -angle * sz
+   while deg < 720
+      x += cos deg * sz
+      y += sin -deg * sz
       f[] &= x
       f[] &= y
-      angle += 144
+      deg += 144
    .
    gcolor 990
    gpolygon f[]
 .
-x = 50
-y = 10
-gcolor 421
-grect x - 3 y 6 10
-#
-gcolor 060
-w = 30
-y += 10
-gcolor 050
-while y < 70
-   gpolygon [ x (y + 20) (x - w) y (x + w) y ]
-   y += 12
-   w -= 4
-.
-star 50 88 10
+star 40 80 40
 
 + Now we can decorate the tree with red glass balls and yellow stars. We arrange the decorations alternately to the right or left of the center.
 
 proc star x y sz .
    x -= sz / 2
-   while angle < 720
-      x += cos angle * sz
-      y += sin -angle * sz
+   while deg < 720
+      x += cos deg * sz
+      y += sin -deg * sz
       f[] &= x
       f[] &= y
-      angle += 144
+      deg += 144
    .
    gcolor 990
    gpolygon f[]
 .
 proc tree .
-   x = 50
-   y = 10
    # tree trunk
    gcolor 421
-   grect x - 3 y 6 10
-   #
-   # green branches
-   gcolor 060
+   grect 50 - 3 10 6 10
    w = 30
-   y += 10
-   gcolor 050
-   while y < 70
-      gpolygon [ x (y + 20) (x - w) y (x + w) y ]
-      y += 12
-      w -= 4
-   .
-   # tree balls and stars
-   y = 25
+   y = 20
    d = 1
-   for i = 1 to 5
-      star x + d * (12 - i) y + 2 4
+   while y < 70
+      # green branch
+      gcolor 050
+      gpolygon [ 50 (y + 20) (50 - w) y (50 + w) y ]
+      # tree ball and star
+      star 50 + d * w / 2 y + 6 4
       gcolor 900
-      gcircle x + d * (6 - i) y + 2 2
+      gcircle 50 + d * w / 5 y + 8 2
+      w -= 4
       d *= -1
       y += 12
    .
@@ -145,12 +125,13 @@ proc candle x y .
    gcircle x y + 5 1
 .
 proc draw_candles .
-   y = 25
-   x = 50
-   d = 1
-   for i = 1 to 5
+   y = 28
+   d = -1
+   w = 10
+   while y < 80
+      candle 50 + d * w y
       d *= -1
-      candle x + d * (13 - 2 * i) y + 3
+      w -= 2
       y += 12
    .
 .
@@ -198,37 +179,29 @@ present 60 8 9 990
 #
 proc star x y sz .
    x -= sz / 2
-   while angle < 720
-      x += cos angle * sz
-      y += sin -angle * sz
+   while deg < 720
+      x += cos deg * sz
+      y += sin -deg * sz
       f[] &= x
       f[] &= y
-      angle += 144
+      deg += 144
    .
    gcolor 990
    gpolygon f[]
 .
 proc tree .
-   x = 50
-   y = 10
    gcolor 421
-   grect x - 3 y 6 10
-   #
-   gcolor 060
+   grect 50 - 3 10 6 10
    w = 30
-   y += 10
-   gcolor 050
-   while y < 70
-      gpolygon [ x (y + 20) (x - w) y (x + w) y ]
-      y += 12
-      w -= 4
-   .
-   y = 25
+   y = 20
    d = 1
-   for i = 1 to 5
-      star x + d * (12 - i) y + 2 4
+   while y < 70
+      gcolor 050
+      gpolygon [ 50 (y + 20) (50 - w) y (50 + w) y ]
+      star 50 + d * w / 2 y + 6 4
       gcolor 900
-      gcircle x + d * (6 - i) y + 2 2
+      gcircle 50 + d * w / 5 y + 8 2
+      w -= 4
       d *= -1
       y += 12
    .
@@ -243,25 +216,26 @@ proc candle x y .
    gcircle x y + 5 1
 .
 proc draw_candles .
-   y = 25
-   x = 50
-   d = 1
-   for i = 1 to 5
+   y = 28
+   d = -1
+   w = 10
+   while y < 80
+      candle 50 + d * w y
       d *= -1
-      candle x + d * (13 - 2 * i) y + 3
+      w -= 2
       y += 12
    .
 .
 draw_candles
 
-+ The candles should flicker. For example, we could redraw the candles five times per second and make the flame darker every tenth time. However, this looks unnatural when the candles flicker in time. It is better to draw the flame darker with a probability of 20 percent. We do this with *randomf* in the event function *on timer*.
++ The candles should flicker. For example, we could redraw the candles five times per second and make the flame darker every fifth time. However, this looks unnatural when the candles flicker in time. It is better to draw the flame darker with a probability of 20 percent. We do this with *randomf* in the event function *on timer*.
 
 on timer
    gcolor 800
-   grect 10 40 6 10
+   grect 20 60 6 10
    gcolor 990
-   if randomf < 0.2 : gcolor 770
-   gcircle 13 53 3
+   if randomf < 0.2 : gcolor 660
+   gcircle 23 73 3
    timer 0.1
 .
 timer 0
@@ -288,37 +262,29 @@ present 60 8 9 990
 #
 proc star x y sz .
    x -= sz / 2
-   while angle < 720
-      x += cos angle * sz
-      y += sin -angle * sz
+   while deg < 720
+      x += cos deg * sz
+      y += sin -deg * sz
       f[] &= x
       f[] &= y
-      angle += 144
+      deg += 144
    .
    gcolor 990
    gpolygon f[]
 .
 proc tree .
-   x = 50
-   y = 10
    gcolor 421
-   grect x - 3 y 6 10
-   #
-   gcolor 060
+   grect 50 - 3 10 6 10
    w = 30
-   y += 10
-   gcolor 050
-   while y < 70
-      gpolygon [ x (y + 20) (x - w) y (x + w) y ]
-      y += 12
-      w -= 4
-   .
-   y = 25
+   y = 20
    d = 1
-   for i = 1 to 5
-      star x + d * (12 - i) y + 2 4
+   while y < 70
+      gcolor 050
+      gpolygon [ 50 (y + 20) (50 - w) y (50 + w) y ]
+      star 50 + d * w / 2 y + 6 4
       gcolor 900
-      gcircle x + d * (6 - i) y + 2 2
+      gcircle 50 + d * w / 5 y + 8 2
+      w -= 4
       d *= -1
       y += 12
    .
@@ -330,25 +296,26 @@ proc candle x y .
    gcolor 800
    grect x - 1 y 2 4
    gcolor 990
-   if randomf < 0.2 : gcolor 770
+   if randomf < 0.2 : gcolor 660
    gcircle x y + 5 1
 .
 proc draw_candles .
-   y = 25
-   x = 50
-   d = 1
-   for i = 1 to 5
+   y = 28
+   d = -1
+   w = 10
+   while y < 80
+      candle 50 + d * w y
       d *= -1
-      candle x + d * (13 - 2 * i) y + 3
+      w -= 2
       y += 12
    .
 .
+draw_candles
 on timer
    draw_candles
    timer 0.1
 .
 timer 0
-
 `
 
 function hook() {
@@ -383,37 +350,31 @@ present 60 8 9 990
 #
 proc star x y sz .
    x -= sz / 2
-   while angle < 720
-      x += cos angle * sz
-      y += sin -angle * sz
+   while deg < 720
+      x += cos deg * sz
+      y += sin -deg * sz
       f[] &= x
       f[] &= y
-      angle += 144
+      deg += 144
    .
    gcolor 990
    gpolygon f[]
 .
 proc tree .
-   x = 50
    y = 10
    gcolor 421
-   grect x - 3 y 6 10
+   grect 50 - 3 y 6 10
    #
-   gcolor 060
    w = 30
    y += 10
-   gcolor 050
-   while y < 70
-      gpolygon [ x (y + 20) (x - w) y (x + w) y ]
-      y += 12
-      w -= 4
-   .
-   y = 25
    d = 1
-   for i = 1 to 5
-      star x + d * (12 - i) y + 2 4
+   while y < 70
+      gcolor 050
+      gpolygon [ 50 (y + 20) (50 - w) y (50 + w) y ]
+      star 50 + d * w / 2 y + 6 4
       gcolor 900
-      gcircle x + d * (6 - i) y + 2 2
+      gcircle 50 + d * w / 5 y + 8 2
+      w -= 4
       d *= -1
       y += 12
    .
@@ -425,19 +386,21 @@ proc candle x y .
    gcolor 800
    grect x - 1 y 2 4
    gcolor 990
-   if randomf < 0.2 : gcolor 770
+   if randomf < 0.2 : gcolor 660
    gcircle x y + 5 1
 .
 proc draw_candles .
-   y = 25
-   x = 50
-   d = 1
-   for i = 1 to 5
+   y = 28
+   d = -1
+   w = 10
+   while y < 80
+      candle 50 + d * w y
       d *= -1
-      candle x + d * (13 - 2 * i) y + 3
+      w -= 2
       y += 12
    .
 .
+draw_candles
 on timer
    draw_candles
    timer 0.1

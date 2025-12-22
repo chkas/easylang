@@ -2184,7 +2184,8 @@ S void parse_swap_stat(ND* nd) {
 		nd->vf = op_swapnum;
 		nd->v1 = parse_var(VAR_NUM, RW);
 		cs_spc();
-		expt(t_name);
+		if (tok != t_name) errorx(ERR_V);
+		//expt(t_name);
 		nd->v2 = parse_var(VAR_NUM, RW);
 	}
 	else if (tok == t_vnumael) {
