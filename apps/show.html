@@ -224,6 +224,22 @@ function updCodeInfo() {
 	namef.textContent =  an
 }
 
+
+async function saveit() {
+	if (codeEdited()) {
+		console.log("saved")
+		var t = await encode(codew.textContent)
+		window.localStorage["xshowcode"] = t
+	}
+}
+
+window.onbeforeunload = function(e) {
+	saveit()
+}
+document.addEventListener("visibilitychange", () => {
+	if (document.hidden) saveit()
+});
+
 async function ready() {
 
 	var q = location.hash.substring(1)
@@ -234,9 +250,14 @@ async function ready() {
 		codew.textContent = await decode(q.substring(4))
 	}
 	else {
-		codew.textContent = await decode `
-RY7LCsMgEEX38xUXuiyKKQ2BULvojxRJTBBMLOZR/fsyppDdua9hLngZ7ymaHhrVjRI0akUZGk1NO8tK1jR2wYeIRikKM6awLfbdh+9MAJY1fLgGUZAkV8zsJrNazt1wVlpEu26x7MbOWxMPcrHzFgkZ0fRsJVw19sSYC+b/qYQnKqUguIkQkfAo2KJ8K46RG5CPgBWAPZewnLF+sactNJRUdzYkSSL6AQ==
-`	}
+		var t = window.localStorage["xshowcode"]
+		if (t == null) t = `
+RY1LCsMwDET3OsXsi41SMCml6V1M4gaDm4BbgnX7Ss6i2ujNjD41LpgwXKlpC0yibQx0mBx8oHXey14xMtO+IW75Hb+JAKxzSbGelKsKNAhqXMxquEw4mqF0FMP80uCJgRnOJqGHGx4d7+gv3bmkk3IGprQO6WE/k8on/W03gT3fzPDkiegH
+`
+		codew.textContent = await decode(t)
+		showcode()
+	}
+	history.replaceState(null, "", location.pathname)
 	if (codew.textContent) {
 		updCodeInfo()
 		run()

@@ -1,6 +1,7 @@
 window["codeMsgF"] = codeMsgF
 window["codeInit"] = codeInit
 window["codeRun"] = codeRun
+window["codeEdited"] = codeEdited
 
 function appendTxt(cnt, s) { cnt.appendChild(document.createTextNode(s)) }
 function create(s) { return document.createElement(s) }
@@ -264,6 +265,7 @@ function tabu() {
 	kaTab(s)
 }
 
+var edited
 
 function preKey(pre, e) {
 	inp = pre
@@ -282,7 +284,6 @@ function preKey(pre, e) {
 		}
 		cnd.className = ""
 		makeCnd()
-		//return;
 	}
 	if (cnd.act) {
 		removeCnd()
@@ -324,8 +325,11 @@ function preKey(pre, e) {
 		}
 		else doEnter()
 	}
-	if (pre != undoPre) {
-		if (k >= 46 || k == 32 || k <= 9) undoAdd(inp)
+	if (k >= 46 || k == 32 || k <= 9) {
+		edited = true
+		if (pre != undoPre) {
+			undoAdd(inp)
+		}
 	}
 }
 
@@ -338,7 +342,11 @@ function codeRun(pre, canv, out = null) {
 	easystop()
 	easyrun(pre.textContent, canv, out, codeCaret())
 }
-
+function codeEdited() {
+	var h = edited
+	edited = false
+	return h
+}
 function selectLine(sel) {
 	var ln = 1
 	var nd, uNd, nNd, n

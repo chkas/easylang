@@ -392,7 +392,10 @@ textarea {
 h2 {background-color:#adf;padding:7px;padding-left:12px}
 h3 {background-color:#adf;padding:5px;padding-left:12px;margin-top:30px}
 a:hover {background-color:#adf}
-a {color:#000}
+a {
+  color:#000;
+  padding:4px 8px;
+}
 a:visited {color: #000}
 button {
 	color:#fff;
@@ -422,8 +425,21 @@ button:enabled:hover {background-color:#07d}
 	height:330px
 }
 .url {
-	font-size: 60%;
-	padding:10px
+	font-size:60%;
+	padding:10px;
+	color:#000;
+}
+.start {
+    display:inline-block;
+    width:160px;
+    margin:12px 12px 0px 12px;
+	font-size:18px;
+	font-weight:bold;
+	border:1px solid;
+	border-radius:4px;
+	padding:8px 12px;
+    text-decoration:none;
+	background-color:#bef;
 }
 .col { columns:auto 9em }
 </style>
@@ -437,13 +453,17 @@ button:enabled:hover {background-color:#07d}
 
 An easy online programming language and development environment with tutorials. For teaching and learning programming, but not only.
 
-<b>
-<div style="font-size:20px;">
-<p><a href="/ide/">Programming IDE</a>
 <p>
-<p><a href="/run/">Code runner - Games & more</a>
-</div>
-</b>
+<a class=start href="/ide/">Programming IDE</a>
+<p>
+
+The browser-based development environment with tab completion, debugger and tutorials. It can be used offline.
+</p>
+
+<a class=start href="/run/">Code runner</a>
+</p>
+
+A progressive web app that can run Easylang programs. It includes small games and learning apps.
 
 <h3>Interactive tutorials</h3>
 

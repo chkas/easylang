@@ -18,9 +18,9 @@ gcircle 10 10 2
 
 + It's Christmas - we need a Christmas tree.
 
-+ First, we draw the tree trunk, which is easy. It is a rectangle at position *47, 10* with a width of *6* and a height of *10*. The color is *421*, a combination of 4 parts red, 2 green, and 1 blue.
++ First, we draw the tree trunk, which is easy. It is a rectangle at position *47/10* with a width of *6* and a height of *10*. The color is *421*, a combination of 4 parts red, 2 green, and 1 blue (out of 9 each).
 
-+ The green branches of the Christmas tree are shown as green triangles. *gpolygon* expects the x and y values of the corner points alternately.
++ The branches of the Christmas tree are shown as green (040) triangles. *gpolygon* expects the x and y values of the corner points alternately.
 
 drawgrid
 # trunk
@@ -30,10 +30,10 @@ grect 47 10 6 10
 y = 30
 w = 20
 # branch
-gcolor 050
+gcolor 040
 gpolygon [ 50 (y + 20) (50 - w) y (50 + w) y ]
 
-+ *drawgrid* helps with orientation during development.
++ *drawgrid* helps with orientation in the coordinate system during development.
 
 + We place these triangles on top of each other, with them becoming narrower towards the top.
 
@@ -44,7 +44,7 @@ grect 50 - 3 10 6 10
 #
 w = 30
 y = 20
-gcolor 050
+gcolor 040
 while y < 70
    gpolygon [ 50 (y + 20) (50 - w) y (50 + w) y ]
    y += 12
@@ -102,7 +102,7 @@ proc tree .
    d = 1
    while y < 70
       # green branch
-      gcolor 050
+      gcolor 040
       gpolygon [ 50 (y + 20) (50 - w) y (50 + w) y ]
       # tree ball and star
       star 50 + d * w / 2 y + 6 4
@@ -116,7 +116,7 @@ proc tree .
 .
 tree
 
-+ Now add the candles. A candle is a rectangle with a yellow circle on top.
++ Now to the candles. A candle is a rectangle with a yellow circle on top.
 
 proc candle x y .
    gcolor 800
@@ -157,7 +157,7 @@ present 37 30 9 900
 present 30 28 10 009
 present 60 28 9 990
 
-+ Now everything together.
++ Now put it all together.
 
 proc present x y sz col .
    half = sz / 2
@@ -196,7 +196,7 @@ proc tree .
    y = 20
    d = 1
    while y < 70
-      gcolor 050
+      gcolor 040
       gpolygon [ 50 (y + 20) (50 - w) y (50 + w) y ]
       star 50 + d * w / 2 y + 6 4
       gcolor 900
@@ -228,7 +228,7 @@ proc draw_candles .
 .
 draw_candles
 
-+ The candles should flicker. For example, we could redraw the candles five times per second and make the flame darker every fifth time. However, this looks unnatural when the candles flicker in time. It is better to draw the flame darker with a probability of 20 percent. We do this with *randomf* in the event function *on timer*.
++ How do we make the candles flicker? We could, for example, redraw the candles five times per second and make the flame darker every fifth time. However, this looks unnatural when the candles flicker in time. It is better to draw the flame darker each time with a certain probability. We do this with *randomf* in the event function *on timer*.
 
 on timer
    gcolor 800
@@ -279,7 +279,7 @@ proc tree .
    y = 20
    d = 1
    while y < 70
-      gcolor 050
+      gcolor 040
       gpolygon [ 50 (y + 20) (50 - w) y (50 + w) y ]
       star 50 + d * w / 2 y + 6 4
       gcolor 900
@@ -322,12 +322,7 @@ function hook() {
 	var dom = window.location.host
 	tut.insertAdjacentHTML("beforeend", `
 <p><hr>
-<p><a href=/ide/>Programming IDE<a>
-<p><a href=/programming_basics.html>Programming Course<a>
-<p><a href=/apps/>About Easylang<a>
-<p><a href=https://github.com/chkas/easylang>Source on Github<a>
-<p><hr>
-<small>christof.kaser@gmail.com</small>
+<p><small><a href=/apps/>Easylang<a></small>
 `)
 	var srcx = `
 proc present x y sz col .
@@ -369,7 +364,7 @@ proc tree .
    y += 10
    d = 1
    while y < 70
-      gcolor 050
+      gcolor 040
       gpolygon [ 50 (y + 20) (50 - w) y (50 + w) y ]
       star 50 + d * w / 2 y + 6 4
       gcolor 900
