@@ -178,7 +178,7 @@ S double op_random(ND* nd) {
 	else return (long long)(randf() * range) + rt.arrbase;
 }
 
-S double op_numlog(ND* nd) {
+S double op_numif(ND* nd) {
 	return intf(nd->le);
 }
 S double op_abs(ND* nd) {
@@ -247,6 +247,14 @@ S double op_sqrt(ND* nd) {
 }
 S double op_log10(ND* nd) {
 	return log10(numf(nd->le));
+}
+S double op_log(ND* nd) {
+	double a = numf(nd->le);
+	double b = numf(nd->ri);
+	if (b == 10) return log10(a);
+	if (b == 2) return log2(a);
+	if (b == 0) return log(a);
+	return log2(a) / log2(b);
 }
 S double op_sin(ND* nd) {
 	double h = numf(nd->le);

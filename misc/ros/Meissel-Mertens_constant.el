@@ -7,13 +7,13 @@ fastfunc isprim num .
    .
    return 1
 .
-func log x .
-   return log10 x / log10 2.7182818284590452354
+func logn x .
+   return log x 0
 .
 euler = 0.5772156649
 for x = 2 to 1e6
    if isprim x = 1
-      m += log (1 - (1 / x)) + (1 / x)
+      m += logn (1 - (1 / x)) + (1 / x)
    .
 .
 numfmt 0 11

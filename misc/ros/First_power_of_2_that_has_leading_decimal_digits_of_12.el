@@ -1,5 +1,5 @@
 func p l n .
-   log = log10 2
+   log10_2 = log 2 10
    factor = 1
    loop = l
    while loop > 10
@@ -8,7 +8,7 @@ func p l n .
    .
    while n > 0
       test += 1
-      val = floor (factor * pow 10 (test * log mod 1))
+      val = floor (factor * pow 10 (test * log10_2 mod 1))
       if val = l : n -= 1
    .
    return test

@@ -1,5 +1,5 @@
 func ndig n .
-   return log10 n div 1 + 1
+   return 1 + floor log n 10
 .
 func getexp n f .
    while n mod f = 0
@@ -9,7 +9,7 @@ func getexp n f .
    return e
 .
 len d[] 2000000
-proc sieve . .
+proc sieve .
    # count factors and get digit count
    d[1] = 1
    for i = 2 to len d[] : if d[i] = 0
@@ -27,7 +27,7 @@ proc sieve . .
    .
 .
 sieve
-proc show t s$ . .
+proc show t s$ .
    print "First 50 " & s$ & " numbers: "
    print ""
    i = 1

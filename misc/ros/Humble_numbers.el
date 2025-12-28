@@ -16,7 +16,8 @@ fastfunc next_humble n .
 len arr[] 9
 while cnt < 5193
    n = next_humble n
-   arr[log10 n + 1] += 1
+   idx = floor (log n 10 + 1)
+   arr[idx] += 1
    cnt += 1
    if cnt <= 50 : write n & " "
 .

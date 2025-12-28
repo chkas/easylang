@@ -7,7 +7,7 @@ func dtally x .
 .
 proc fangs x &f[] .
    f[] = [ ]
-   nd = floor log10 x + 1
+   nd = 1 + floor log x 10
    if nd mod 2 = 1 : return
    nd = nd div 2
    lo = higher pow 10 (nd - 1) (x + pow 10 nd - 2) div (pow 10 nd - 1)

@@ -111,7 +111,7 @@ print strcode "A" & " is " & strchar 65
 numfmt 0 4
 print "Square root of 2: " & sqrt 2
 print "Pi: " & pi
-print "10's logarithm of 999: " & log10 999
+print "10's logarithm of 1000: " & log 1000 10
 #
 a$[] = strsplit "10,15,22" ","
 print a$[]
@@ -180,7 +180,7 @@ on animate
 .
 ```
 
-* [More about Easylang](https://easylang.online/apps/)
+* [More about Easylang](https://easylang.online/)
 
 * [Source code](https://github.com/chkas/easylang/)
 

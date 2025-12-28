@@ -1,7 +1,10 @@
 #/bin/sh
 ../../native/runc 1.el
+y=$(basename $PWD | cut -c4-5)
+m=25
+test $y -ge 25 && m=12
 t0=$(($(date +%s%N)/1000000))
-for i in $(seq 1 25); do 
+for i in $(seq 1 $m); do 
 	grep "0x67452301" $i.el >/dev/null && continue
 	if test $1; then
 		echo "--- $i ---"

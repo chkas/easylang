@@ -23,7 +23,7 @@ func$ str bn[] .
 .
 func bnlen bn[] .
    if bn[] = [ 0 ] : return 1
-   return (len bn[] - 1) * 7 + floor log10 bn[$] + 1
+   return (len bn[] - 1) * 7 + floor log bn[$] 10 + 1
 .
 global mn[][] .
 proc getmagnums .
@@ -41,7 +41,7 @@ proc getmagnums .
    .
 .
 getmagnums
-#
+# 
 proc show .
    print len mn[][] & " magic numbers"
    print str mn[$][] & " is the largest"

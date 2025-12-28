@@ -29,7 +29,7 @@ proc show .
       gcolor 765
       grect x y 19 19
       v = brd[i]
-      h = 2 * floor log10 v
+      h = 2 * floor log v 10
       gcolor 000
       gtext x + 7 - h y + 7 brd[i]
    .
@@ -43,7 +43,7 @@ proc init .
    show
 .
 init
-# 
+#
 dir[] = [ -4 -1 4 1 ]
 start[] = [ 16 4 1 13 ]
 proc domove indk test &moved .

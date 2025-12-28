@@ -582,7 +582,8 @@ print "--- number functions ---"
 print pow 2 10
 print pow 2 0.5
 print sqrt 2
-print log10 1000
+print log 1000 10
+print log 1024 2
 print sin 45
 print asin 0.707
 print cos 45
@@ -616,6 +617,14 @@ a$[] = strsplit "10,15,22" ","
 print a$[]
 a[] = number strtok "10, 15, 22" ", "
 print a[]
+#
+print "--- bit operations ---"
+print bitand 254 3
+print bitor 254 3
+print bitxor 254 3
+print bitshift 254 2
+# right shift
+print bitshift 254 -2
 
 * What else is there
 

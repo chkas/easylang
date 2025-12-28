@@ -21,12 +21,11 @@ proc primcnt limit .
       cnt[i] = sum
    .
 .
-func log n .
-   e = 2.7182818284590452354
-   return log10 n / log10 e
+func logn n .
+   return log n 0
 .
 func ramamax n .
-   return floor (4 * n * log (4 * n))
+   return floor (4 * n * logn (4 * n))
 .
 func ramaprim_twins n .
    i = ramamax n

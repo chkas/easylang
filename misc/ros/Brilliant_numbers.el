@@ -14,7 +14,7 @@ func brilliant n .
    f1 = factor n
    if f1 = 1 : return 0
    f2 = n div f1
-   if floor log10 f1 <> floor log10 f2 : return 0
+   if floor log f1 10 <> floor log f2 10 : return 0
    if factor f1 = 1 and factor f2 = 1 : return 1
    return 0
 .

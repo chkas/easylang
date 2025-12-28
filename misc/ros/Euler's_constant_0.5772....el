@@ -6,7 +6,6 @@ fastfunc gethn n .
    .
    return hn
 .
-e = 2.718281828459045235
 n = 10e8
 numfmt 0 9
-print gethn n - log10 n / log10 e
+print gethn n - log n 0

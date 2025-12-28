@@ -34,7 +34,7 @@ static const char* tokstr[] = {
 
 	"mouse_x", "mouse_y", "randomf", "systime", "error", "pi",
 	"random", "sqrt", "log10", "abs", "sign", "bitnot", "floor", "sin", "cos", "tan", "asin", "acos", "atan",
-	"atan2", "pow", "bitand", "bitor", "bitxor", "bitshift", "lower", "higher",
+	"atan2", "pow", "log", "bitand", "bitor", "bitxor", "bitshift", "lower", "higher",
 	"number", "strcode", "strpos", "strcmp",
 
 	"input", "sysfunc", "keybkey", "strchar", "timestr", "strjoin", "substr",
@@ -77,7 +77,7 @@ enum token_tok {
 
 	t_mouse_x, t_mouse_y, t_randomf, t_systime, t_error, t_pi,
 	t_random, t_sqrt, t_log10, t_abs, t_sign, t_bitnot, t_floor, t_sin, t_cos, t_tan, t_asin, t_acos, t_atan,
-	t_atan2, t_pow, t_bitand, t_bitor, t_bitxor, t_bitshift, t_lower, t_higher,
+	t_atan2, t_pow, t_log, t_bitand, t_bitor, t_bitxor, t_bitshift, t_lower, t_higher,
 	t_number, t_strord, t_strpos, t_strcompare,
 
 	t_input, t_sysfunc, t_keyb_key, t_strchar, t_timestr, t_strjoin, t_substr,
@@ -111,7 +111,7 @@ static int tbl_h[] = { t_higher, 0 };
 static int tbl_i[] = { t_if, t_input, t_input_data, 0 };
 static int tbl_j[] = { 0 };
 static int tbl_k[] = { t_keyb_key, 0 };
-static int tbl_l[] = { t_len, t_lower, t_log10, 0 };
+static int tbl_l[] = { t_len, t_lower, t_log, t_log10, 0 };
 static int tbl_m[] = { t_mod, t_mod1, t_mouse_x, t_mouse_y, t_mouse_cursor, 0 };
 static int tbl_n[] = { t_not, t_numfmt, t_number, 0 };
 static int tbl_o[] = { t_or, t_on, 0 };

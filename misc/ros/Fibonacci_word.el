@@ -1,6 +1,3 @@
-func log2 x .
-   return log10 x / log10 2
-.
 func entropy s$ .
    l = len s$
    if l <= 1 : return 0
@@ -8,7 +5,7 @@ func entropy s$ .
       cnt0 += if v$ = "0"
    .
    cnt1 = l - cnt0
-   return -(cnt0 / l * log2 (cnt0 / l) + cnt1 / l * log2 (cnt1 / l))
+   return -(cnt0 / l * log (cnt0 / l) 2 + cnt1 / l * log (cnt1 / l) 2)
 .
 a$ = ""
 b$ = ""

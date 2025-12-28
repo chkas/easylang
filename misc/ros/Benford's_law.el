@@ -37,7 +37,7 @@ mkfibdist
 len benfdist[] 9
 proc mkbenfdist .
    for i to 9
-      benfdist[i] = log10 (1 + 1.0 / i)
+      benfdist[i] = log (1 + 1 / i) 10
    .
 .
 mkbenfdist

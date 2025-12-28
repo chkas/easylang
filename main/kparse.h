@@ -45,7 +45,7 @@ S ND* parse_strterm(void);
 S double (*numf[])(ND*) = {
 	op_mouse_x, op_mouse_y, op_randomf, op_sys_time, op_error, op_pi,
 	op_random, op_sqrt, op_log10, op_abs, op_sign, op_bitnot, op_floor, op_sin, op_cos, op_tan, op_asin, op_acos, op_atan,
-	op_atan2, op_pow, op_bitand, op_bitor, op_bitxor, op_bitshift, op_lower, op_higher,
+	op_atan2, op_pow, op_log, op_bitand, op_bitor, op_bitxor, op_bitshift, op_lower, op_higher,
 	op_number, op_strcode, op_strpos, op_strcompare
 };
 
@@ -577,7 +577,7 @@ S ND* parse_fac0(void) {
 		nd = mknd();
 		csb_tok_spc_nt();
 		nd->le = parse_log_ex();
-		nd->numf = op_numlog;
+		nd->numf = op_numif;
 	}
 	else if (tok == t_pal_consumed) {
 		tok = tokpr;

@@ -1,8 +1,8 @@
-func log n .
-   return log10 n / log10 2.71828182845904523
+func logn n .
+   return log n 0
 .
 proc sundaram np &primes[] .
-   nmax = floor (np * (log np + log log np) - 0.9385) + 1
+   nmax = floor (np * (logn np + logn logn np) - 0.9385) + 1
    k = (nmax - 2) / 2
    len marked[] k
    for i to k

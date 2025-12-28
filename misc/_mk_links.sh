@@ -8,6 +8,9 @@ ln -s apps/easyw.js .
 ln -s apps/tut_learn.html .
 ln -s apps/tut_learnx.html .
 ln -s apps/tut_game.html .
+ln -s apps/tut_docu.html .
+ln -s apps/tut_docu.html doc.html
+ln -s apps/tut_func.html docfunc.html
 ln -s apps/letter-memory.html .
 ln -s apps/easy.js .
 ln -s tut_learn.html programming_basics.html

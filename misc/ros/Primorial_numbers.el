@@ -1,9 +1,7 @@
 fastfunc isprim num .
    i = 2
    while i <= sqrt num
-      if num mod i = 0
-         return 0
-      .
+      if num mod i = 0 : return 0
       i += 1
    .
    return 1
@@ -35,19 +33,15 @@ func[] bnmul a[] b[] .
       .
       r[ia + ib - 1] += h
    .
-   while r[$] = 0
-      len r[] -1
-   .
+   while r[$] = 0 : len r[] -1
    return r[]
 .
 func$ str bn[] .
-   for i = len bn[] downto 1
-      s$ &= bn[i]
-   .
+   for i = len bn[] downto 1 : s$ &= bn[i]
    return s$
 .
 func bndlen b[] .
-   return (len b[] - 1) * 7 + floor log10 b[$] + 1
+   return (len b[] - 1) * 7 + floor log b[$] 10 + 1
 .
 primor[] = [ 1 ]
 prim = 2

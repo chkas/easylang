@@ -4,7 +4,9 @@ print pi
 # square root
 print sqrt 2
 # logarithm base 10
-print log10 1000
+print log 1000 10
+# natural logarithm
+print log 10 0
 # exponential is not available
 # absolute value
 print abs -20

@@ -1,9 +1,8 @@
-func log n .
-   e = 2.7182818284590452354
-   return log10 n / log10 e
+func logn n .
+   return log n 0
 .
 func randnorm .
-   return cos (360 * randomf) * sqrt (-2 * log randomf)
+   return cos (360 * randomf) * sqrt (-2 * logn randomf)
 .
 global smpl[] .
 func mean .

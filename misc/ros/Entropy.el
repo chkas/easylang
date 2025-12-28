@@ -3,11 +3,9 @@ func entropy s$ .
    for c$ in strchars s$
       d[strcode c$] += 1
    .
-   for cnt in d[]
-      if cnt > 0
-         prop = cnt / len s$
-         entr -= (prop * log10 prop / log10 2)
-      .
+   for cnt in d[] : if cnt > 0
+      prop = cnt / len s$
+      entr -= prop * log prop 2
    .
    return entr
 .

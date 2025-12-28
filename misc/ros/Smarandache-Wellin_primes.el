@@ -1,17 +1,13 @@
 fastfunc isprim num .
    i = 2
    while i <= sqrt num
-      if num mod i = 0
-         return 0
-      .
+      if num mod i = 0 : return 0
       i += 1
    .
    return 1
 .
 func nextprim num .
-   while isprim num = 0
-      num += 1
-   .
+   while isprim num = 0 : num += 1
    return num
 .
 len digs[] 10
@@ -37,7 +33,7 @@ while len prsw[] < 3 or len prdsw[] < 3
       if digs[i] = 0
          h = 10
       else
-         h = 1 + floor log10 digs[i]
+         h = 1 + floor log digs[i] 10
          h = pow 10 h
       .
       dsw = dsw * h + digs[i]
