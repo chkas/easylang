@@ -19,7 +19,7 @@ proc hinit .
    for i to len hashind[] : hashind[i] = -1
 .
 func ndigs n .
-   return floor log10 n + 1
+   return 1 + floor log n 10
 .
 proc split n &a &b .
    m = pow 10 (ndigs n div 2)

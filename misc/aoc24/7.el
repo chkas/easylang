@@ -1,7 +1,7 @@
 # AoC-24 - Day 7: Bridge Repair
 #
 func cutend a b .
-   h = pow 10 (floor log10 b + 1)
+   h = pow 10 (1 + floor log b 10)
    if a mod h = b : return a div h
    return 0
 .

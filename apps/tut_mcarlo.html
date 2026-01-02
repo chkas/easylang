@@ -33,9 +33,7 @@ else
 n = 1000
 for i = 1 to n
    flip = random 2
-   if flip = 1
-      heads += 1
-   .
+   if flip = 1 : heads += 1
 .
 print "We got " & heads & " heads"
 print "That is " & 100 * heads / n & "%"
@@ -49,18 +47,29 @@ print "That is " & 100 * heads / n & "%"
 n = 1000000
 for i = 1 to n
    flip = random 2
-   if flip = 1
-      heads += 1
-   .
+   if flip = 1 : heads += 1
 .
 print "We got " & heads & " heads"
 print "That is " & 100 * heads / n & "%"
 
 + This is called the *Law of large numbers*
 
+-
+
++ What happens if the coin is not completely balanced and lands on tail more often, for example in 51% of cases?
+
+n = 1000000
+for i = 1 to n
+   flip = random 100
+   if flip <= 49 : heads += 1
+.
+print "We got " & heads & " heads"
+
++ There is obviously no chance that the disadvantaged side will win. This brings us to the casino.
+
 * Roulette
 
-+ Now it's time to go to the casino - virtually with a software simulation.
++ It's time to go to the casino - virtually with a software simulation.
 
 + We play roulette with a single zero wheel. Double zero wheels are twice as bad for the player. There are 37 numbers, from 0 to 36. We bet on the high numbers, i.e. we win the bet if the ball rolls to a number from 19 to 36, otherwise we lose our money.
 
@@ -78,9 +87,7 @@ else
 for i = 1 to 1000
    cash -= 10
    numb = random 37 - 1
-   if numb >= 19
-      cash += 20
-   .
+   if numb >= 19 : cash += 20
 .
 print "Cash after playing: $" & cash
 
@@ -93,9 +100,7 @@ print "Cash after playing: $" & cash
 for i = 1 to 10000
    cash -= 10
    numb = random 37 - 1
-   if numb >= 19
-      cash += 20
-   .
+   if numb >= 19 : cash += 20
 .
 print "Cash after playing: $" & cash
 
@@ -112,9 +117,7 @@ print 10 * 10000 * (18 / 37 - 19 / 37)
 for i = 1 to 10000
    cash -= 10
    numb = random 37 - 1
-   if numb = 13
-      cash += 360
-   .
+   if numb = 13 : cash += 360
 .
 print "Cash after playing: $" & cash
 
@@ -130,9 +133,7 @@ while cash < 2000 and cash >= 10
    game += 1
    cash -= 10
    numb = random 37 - 1
-   if numb >= 19
-      cash += 20
-   .
+   if numb >= 19 : cash += 20
    if game = 500
       print "Day " & day & ": $" & cash
       day += 1
@@ -145,14 +146,14 @@ print "-------------"
 
 + We lose nearly every time our money.
 
+-
+
 subr session
    cash = 1000
    while cash < 2000 and cash >= 10
       cash -= 10
       numb = random 37 - 1
-      if numb >= 19
-         cash += 20
-      .
+      if numb >= 19 : cash += 20
    .
 .
 n = 1000
@@ -163,6 +164,46 @@ for i = 1 to n
 print n_lose & "/" & n & " = " & n_lose / n * 100 & "%"
 
 + The simulation tells us that there is a probability of more than 99% that we will lose our money.
+
+-
+
++ This can also be calculated using the *gambler's ruin* formula.
+
+p = 18 / 37
+r = p / (1 - p)
+p_ruin = (1 - pow r 100) / (1 - pow r 200)
+print p_ruin * 100 & "%"
+
+-
+
++ Let's take a look at 50 *random walks* to win or ruin.
+
+func walk .
+   cash = 1000
+   gpenup
+   while cash < 2000 and cash >= 10
+      if game mod 100 = 0
+         glineto game / 100 cash / 20
+      .
+      game += 1
+      cash -= 10
+      numb = random 37 - 1
+      if numb >= 19 : cash += 20
+   .
+   glineto game / 100 cash / 20
+   if cash >= 2000 : return 1
+   return 0
+.
+drawgrid
+glinewidth 0.2
+gtextsize 2
+gline 0 50 100 50
+gtext 1 97 "2000$"
+gtext 1 1 "0$"
+gtext 85 51 "100000 games"
+n = 50
+for i = 1 to n : won += walk
+print "won: " & won & "  lost: " & n - won
 
 -
 
@@ -198,7 +239,7 @@ print "-------------"
 
 -
 
-+ New Strategy: we double the bet after each loss so that the first win resumes all previous losses and makes a profit equal to the original bet. But we are limited by our capital and the table limit of $1000. Starting capital is $10000.
++ New Strategy: we double the bet after each loss so that the first win resumes all previous losses and makes a profit equal to the original bet. But we are limited by our capital and the table limit of $1000. Starting capital is $10000. This is known as the *martingale* betting strategy.
 
 cash = 10000
 day = 1
@@ -238,12 +279,8 @@ subr session
          bet = 10
       else
          bet *= 2
-         if bet > 1000
-            bet = 1000
-         .
-         if bet > cash
-            bet = cash
-         .
+         if bet > 1000: bet = 1000
+         if bet > cash : bet = cash
       .
    .
 .
@@ -261,31 +298,32 @@ print n_win
 
 * Lotto
 
-+ Getting rich at the casino doesn't work so well. Let's try lotto, it doesn't make you poor as fast as the casino.
++ Getting rich at the casino doesn't work so well. Let's try Lotto, it doesn't make you poor as fast as the casino.
 
 + How many years does it take to have a Lotto six (6 out of 49) if you give a tip every week? For a Lotto five, the years are also printed out.
 
-my_numbers[] = [ 3 7 13 27 31 49 ]
-#
+my_numbers[] = [ 1 3 7 13 27 49 ]
 len box[] 49
-for i = 1 to 49 : box[i] = i
-subr drawing
+#
+proc init .
+   for i = 1 to 49 : box[i] = i
+.
+init
+proc drawing .
    for i = 1 to 6
       h = random (50 - i) + i - 1
       swap box[i] box[h]
    .
 .
-subr check
-   n_match = 0
-   for i = 1 to 6
-      for j = 1 to 6
-         if my_numbers[i] = box[j] : n_match += 1
-      .
+func check .
+   for i = 1 to 6 : for j = 1 to 6
+      if my_numbers[i] = box[j] : ok += 1
    .
+   return ok
 .
 while n_match < 6
    drawing
-   check
+   n_match = check
    if n_match = 5
       print "5 correct after " & week div 52 & " years"
    .
@@ -295,6 +333,22 @@ print ""
 print "6 correct after " & week div 52 & " years"
 
 + Your 6 numbers will come - sooner or later, more likely later.
+
+-
+
++ You can calculate how many years it takes on average to get a 5 or 6..
+
+n = 49
+k = 6
+#
+f = 1
+for i = n - k + 1 to n : f *= i
+for i = 2 to k : f /= i
+p6 = 1 / f
+p5 = k * (n - k) * p6
+#
+print "5 correct: 1 in " & 1 / p5 div 52 & " years"
+print "6 correct: 1 in " & 1 / p6 div 52 & " years"
 
 * Not only for gambling
 
@@ -326,6 +380,29 @@ for i = 1 to n
    if i mod 1000 = 0 : sleep 0.03
 .
 print hit / n * 4
+
+-
+
++ However, the Machin formula is a more efficient method for computing PI.
+
+numfmt 0 15
+n = 10
+x1 = 1 / 5
+x2 = 1 / 239
+p1 = x1
+p2 = x2
+sgn = 1
+for k = 0 to n
+   a1 += sgn * p1 / (2 * k + 1)
+   a2 += sgn * p2 / (2 * k + 1)
+   p1 *= x1 * x1
+   p2 *= x2 * x2
+   sgn = -sgn
+.
+result = 16 * a1 - 4 * a2
+print "PI: " & result
+
++ Monte Carlo simulations are a relatively easy-to-understand method for getting a result. Mathematical formulas are generally more efficient, but are often more complicated or may not even be available.
 
 * Blackjack
 
