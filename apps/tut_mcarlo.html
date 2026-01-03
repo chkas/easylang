@@ -42,9 +42,9 @@ print "That is " & 100 * heads / n & "%"
 
 -
 
-+ If we increase the number of flips to a million, the percentage of heads comes very close to 50%.
++ If we increase the number of flips to a 100,000, the percentage of heads comes very close to 50%.
 
-n = 1000000
+n = 100000
 for i = 1 to n
    flip = random 2
    if flip = 1 : heads += 1
@@ -56,16 +56,16 @@ print "That is " & 100 * heads / n & "%"
 
 -
 
-+ What happens if the coin is not completely balanced and lands on tail more often, for example in 51% of cases?
++ What happens if the coin is not completely balanced and lands on head more often, for example in 51% of cases?
 
-n = 1000000
+n = 100000
 for i = 1 to n
    flip = random 100
-   if flip <= 49 : heads += 1
+   if flip <= 51 : heads += 1
 .
-print "We got " & heads & " heads"
+print "We got " & heads & " heads and " & n - heads & " tails"
 
-+ There is obviously no chance that the disadvantaged side will win. This brings us to the casino.
++ There is obviously no chance that the disadvantaged side will "win". This brings us to the casino.
 
 * Roulette
 
