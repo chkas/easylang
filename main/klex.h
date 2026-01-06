@@ -489,6 +489,7 @@ static void read_line(char* buf, int sz) {
 		nextc();
 	}
 	if (i < sz) buf[i] = 0;
+	else if (sz > 0) buf[sz - 1] = 0;
 	parseline += 1;
 }
 
@@ -532,7 +533,7 @@ static void parse_input_data() {
 		cs_esc(buf);
 		if (cod) {
 			uint h = input_data_size + strlen(buf) + 1;
-			input_data = realloc(input_data, h);
+			input_data = _realloc(input_data, h);
 			strcpy(input_data + input_data_size, buf);
 			input_data_size = h;
 		}

@@ -300,7 +300,7 @@ S void parse_call_param(ND* nd, struct proc* p, byte isfunc) {
 	nexttok();
 	nd->le = p->start;
 	if (p->start == NULL) {
-		procdecl = realloc(procdecl, sizeof(struct procdecl) * (procdecl_len + 1));
+		procdecl = _realloc(procdecl, sizeof(struct procdecl) * (procdecl_len + 1));
 		procdecl[procdecl_len].callref = nd;
 		procdecl[procdecl_len].proc_i = p - proc_p;
 		procdecl_len += 1;

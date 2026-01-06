@@ -5,9 +5,9 @@ txt_tutor = String.raw`+ Learn programming I
 
 -
 
-+ When programming, you tell the computer what to do with a sequence of special commands.
++ Programming means telling the computer step by step what to do—like a robot that carries out your commands.
 
-+de Beim Programmieren sagst du dem Computer mit einer Folge von speziellen Befehlen, was er machen soll.
++de Programmieren bedeutet, dem Computer Schritt für Schritt zu sagen, was er tun soll – wie ein Roboter, der deine Befehle ausführt.
 
 ##19
 #
@@ -80,11 +80,11 @@ gline 18 34 50 50
 
 -
 
-+ *drawgrid* draws a grid. This makes it easier to determine the x and y positions for the graphics commands. In the finished program you can then omit this command.
++ *drawgrid* draws a grid. This makes it easier for you to determine the x and y positions for the graphics commands. In the finished program you can then omit this command.
 
 + 🤔 Try to finish drawing the square!
 
-+de *drawgrid* zeichnet ein Raster. Damit lassen sich die x- und y-Positionen für die Grafikbefehle leichter bestimmen. Im fertigen Programm kannst du diesen Befehl dann weglassen.
++de *drawgrid* zeichnet ein Raster. Damit kannst du die x- und y-Positionen für die Grafikbefehle leichter bestimmen. Im fertigen Programm kannst du diesen Befehl dann weglassen.
 
 +de 🤔 Versuche das Quadrat fertig zu zeichnen!
 

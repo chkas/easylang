@@ -76,7 +76,6 @@ function easyrunxr() {
 function msgFunc(msg, d = null) {
 	if (eFunc) eFunc(msg, d)
 }
-
 function canvInit() {
 	canvSetOff()
 	c = eCan.getContext("2d")
@@ -127,6 +126,7 @@ function kaStop() {
 		worker.postMessage(["stop_ping"])
 		canvSetOff()
 		pingT = setTimeout(function() {
+			if (pingT === null) return;
 			pingT = null
 			console.log("stop timeout")
 			worker.terminate()

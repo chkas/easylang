@@ -24,14 +24,14 @@ static byte fastfuncn;
 static void wemit(byte b) {
 	if (wasmi >= wasm_len) {
 		wasm_len += 256;
-		wasm = realloc(wasm, wasm_len);
+		wasm = _realloc(wasm, wasm_len);
 	}
 	wasm[wasmi++] = b;
 }
 static void wemitf(double d) {
 	if (wasmi >= wasm_len - 7) {
 		wasm_len += 256;
-		wasm = realloc(wasm, wasm_len);
+		wasm = _realloc(wasm, wasm_len);
 	}
 	memcpy(wasm + wasmi, &d, 8);
 	wasmi += 8;
@@ -353,7 +353,7 @@ static void parse_fastfunc(void) {
 	else if (strcmp(proc->parms, "f") == 0) nparm = 1;
 	else if (strcmp(proc->parms, "ff") == 0) nparm = 2;
 	else if (strcmp(proc->parms, "fff") == 0) nparm = 3;
-	else if (strcmp(proc->parms, "ffff") == 0) nparm = 3;
+	else if (strcmp(proc->parms, "ffff") == 0) nparm = 4;
 	else {
 		error("a fastfunc has only max 4 number parameter");
 		return;
@@ -476,24 +476,18 @@ static void build_fastfuncs(void) {
 
 #ifdef __EMSCRIPTEN__
 
-	EM_ASM(
-		fastarr = Array();
-	);
-	for (int i = 0; i < k; i++) {
-	    EM_ASM_({
-			fastarr.push(getValue($0));
-		}, wasmhd + i);
-	}
+	EM_ASM({
+		var hdrView  = HEAPU8.subarray($0, $0 + $1);
+		var bodyView = HEAPU8.subarray($2, $2 + $3);
+		var bytes = new Uint8Array(hdrView.length + bodyView.length);
 
-	for (int i = 0; i < wasmi; i++) {
-	    EM_ASM_({
-			fastarr.push(getValue($0));
-		}, wasm + i);
-	}
-    EM_ASM(
-        var mod = new WebAssembly.Module(Uint8Array.from(fastarr));
-        fastinst = new WebAssembly.Instance(mod);
-    );
+		bytes.set(hdrView, 0);
+		bytes.set(bodyView, hdrView.length);
+
+		var mod = new WebAssembly.Module(bytes);
+		fastinst = new WebAssembly.Instance(mod);
+
+	}, wasmhd, k, wasm, wasmi);
 
 #endif
 

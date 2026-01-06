@@ -70,9 +70,54 @@ S ARR* garr(short ind) {
 	return rt_arrs - ind - 1;
 }
 
-S void out_of_bounds(ND* nd);
-S void out_of_mem(ND* nd);
+// ------------ exceptions ----------------
+
+S void dbg_outvars(void);
 S void free_rt();
+
+S void except(ND* nd, const char* s) {
+	char b[36];
+	strcpy(b, "*** ERROR: ");
+	strcat(b, s);
+	gr_print(b);
+
+	gr_info(1);
+	int i = 0;
+	while (i < opline_len) {
+		if (opline_p[i].nd == nd) {
+			gr_debline(opline_p[i].line, 1);
+			break;
+		}
+		i++;
+	}
+	dbg_outvars();
+
+	free_rt();
+	gr_exit();
+}
+
+S void out_of_bounds(ND* nd) {
+	except(nd, "index out of bounds");
+}
+
+S void out_of_mem(ND* nd) {
+	except(nd, "out of memory");
+}
+
+S void out_of_mem0(void) {
+	out_of_mem(NULL);
+}
+S void* xrealloc(void* p, unsigned long sz, ND* nd) {
+
+	void* pn = realloc(p, sz);
+	if (pn == NULL) {
+		fprintf(stderr, "realloc(%lu) failed\n", sz);
+		out_of_mem(nd);
+	}
+	return pn;
+}
+
+
 
 // ----------------------------------------------------------------------
 
@@ -214,11 +259,15 @@ S double op_strcode(ND* nd) {
 		nb = 4;
 		cp = utf8[0] & 0x07;
 	}
-	else return -1;
-
+	else {
+		cp = -1;
+		goto exit;
+	}
 	for (int i = 1; i < nb; i++) {
         cp = (cp << 6) | (utf8[i] & 0x3f);
     }
+exit:
+	str_free(&s);
     return cp;
 }
 
@@ -404,11 +453,7 @@ S void arr_len(ND* nd, unsigned int sz, int typ) {
 
 	void* p;
 	if (h > arr->len) {
-		p = realloc(arr->p, h * sz);
-		if (p == NULL) {
-			out_of_mem(nd);
-			return;
-		}
+		p = xrealloc(arr->p, h * sz, nd);
 		arr->p = p;
 		arr->typ = typ;
 		if (typ == ARR_ARR) {
@@ -421,11 +466,7 @@ S void arr_len(ND* nd, unsigned int sz, int typ) {
 	else {
 		free_arr_members(arr, h);
 		if (h) {
-			p = realloc(arr->p, h * sz);
-			if (p == NULL) {
-				out_of_mem(nd);
-				return;
-			}
+			p = xrealloc(arr->p, h * sz, nd);
 		}
 		else {
 			free(arr->p);
@@ -478,12 +519,7 @@ S ARR* arrael_append(ND* nd, int arrtyp, int sz) {
 	arr = arr->parr + h;
 	arr->typ = arrtyp;
 	arr->len += 1;
-	void* p = realloc(arr->p, arr->len * sz);
-	if (p == NULL) {
-		arr->len -= 1;
-		out_of_mem(nd);
-		return NULL;
-	}
+	void* p = xrealloc(arr->p, arr->len * sz, nd);
 	arr->p = p;
 	return arr;
 }
@@ -508,12 +544,7 @@ S ARR* arr_append(ND* nd, int arrtyp, int sz) {
 	ARR* arr = garr(nd->v1);
 	arr->typ = arrtyp;
 	arr->len += 1;
-	void* p = realloc(arr->p, arr->len * sz);
-	if (p == NULL) {
-		arr->len -= 1;
-		out_of_mem(nd);
-		return NULL;
-	}
+	void* p = xrealloc(arr->p, arr->len * sz, nd);
 	arr->p = p;
 	return arr;
 }
@@ -628,10 +659,29 @@ S double op_bitxor(ND* nd) {
 	llong b = (llong)numf(nd->ri);
 	return a ^ b;
 }
+#define BITMASK ((llong)((1ULL << 53) - 1))
+
 S double op_bitnot(ND* nd) {
 	llong a = (llong)numf(nd->le);
-	return (~a) & 9007199254740991;
+	//return (~a) & 9007199254740991;
+	return (~a) & BITMASK;
 }
+
+S double op_bitshift(ND* nd) {
+    llong a = (llong)numf(nd->le);
+    int b = (int)numf(nd->ri);
+    if (b >= 0) {
+        int s = b > 62 ? 62 : b;
+        llong r = a << s;
+        if (a >= 0) r &= BITMASK;
+        return r;
+    } else {
+        int s = (-b) > 62 ? 62 : (-b);
+        return a >> s;
+    }
+}
+
+/*
 S double op_bitshift(ND* nd) {
 	llong a = (llong)numf(nd->le);
 	int b = numf(nd->ri);
@@ -642,6 +692,7 @@ S double op_bitshift(ND* nd) {
 	}
 	else return a >> (-b);
 }
+*/
 
 // ------------------------------------
 
@@ -739,6 +790,7 @@ S STR op_numarrarrstr(ND* nd) {
 	str_init(&str);
 	ARR arr = arrf(nd->le);
 	xnumarrarrstr(&str, &arr);
+	free_arr(&arr);
 	return str;
 }
 
@@ -828,7 +880,7 @@ S STR op_sysfunc(ND* nd) {
 	}
 	else if (strcmp(p, "1") == 0) {
 		double h = sys_time() - time_start;
-		if (h >= 0 && h < 10e11) sprintf(r.d, "%.2f", h);
+		if (h >= 0 && h < 1e11) sprintf(r.d, "%.2f", h);
 	}
 	else if (strcmp(p, "argc") == 0) {
 		int i = 0;
@@ -1356,13 +1408,9 @@ S ARR o_arrx(ND* nd, int typ, int sz) {
 	}
 
 	res.len = arr->len;
-	res.p = realloc(NULL, res.len * sz);
+	res.p = xrealloc(NULL, res.len * sz, nd);
 	res.typ = typ;
 	res.base = arr->base;
-	if (res.p == NULL) {
-		out_of_mem(nd);
-		res.len = 0;
-	}
 	for (int i = 0; i < res.len; i++) {
 		if (typ == ARR_NUM) res.pnum[i] = arr->pnum[i];
 		else res.pstr[i] = str_str(arr->pstr + i);
@@ -1392,11 +1440,7 @@ S ARR op_varrarr(ND* nd) {
 	res.len = arr->len;
 	res.typ = ARR_ARR;
 	res.base = arr->base;
-	res.p = realloc(NULL, res.len * sizeof(ARR));
-	if (res.p == NULL) {
-		out_of_mem(nd);
-		res.len = 0;
-	}
+	res.p = xrealloc(NULL, res.len * sizeof(ARR), nd);
 	for (int i = 0; i < res.len; i++) {
 		ARR* a = arr->parr + i;
 		ARR r;
@@ -1404,14 +1448,10 @@ S ARR op_varrarr(ND* nd) {
 		r.typ = a->typ;
 		r.base = a->base;
 		if (r.typ == ARR_STR) {
-			r.p = realloc(NULL, r.len * sizeof(STR));
+			r.p = xrealloc(NULL, r.len * sizeof(STR), nd);
 		}
 		else {
-			r.p = realloc(NULL, r.len * sizeof(double));
-		}
-		if (r.p == NULL) {
-			out_of_mem(nd);
-			r.len = 0;
+			r.p = xrealloc(NULL, r.len * sizeof(double), nd);
 		}
 		for (int j = 0; j < r.len; j++) {
 			if (r.typ == ARR_NUM) r.pnum[j] = a->pnum[j];
@@ -1432,12 +1472,7 @@ S ARR o_arr_init(ND* nd0, int typ, int sz) {
 		res.len += 1;
 		nd = nd->next;
 	}
-	res.p = realloc(NULL, res.len * sz);
-	if (res.p == NULL) {
-		out_of_mem(nd);
-		res.len = 0;
-		goto exit;
-	}
+	res.p = xrealloc(NULL, res.len * sz, nd);
 	int i = 0;
 	nd = nd0->le;
 	while (nd) {
@@ -1447,7 +1482,6 @@ S ARR o_arr_init(ND* nd0, int typ, int sz) {
 		i += 1;
 		nd = nd->next;
 	}
-	exit:
 	return res;
 }
 
@@ -1468,11 +1502,7 @@ S ARR op_numstrarr(ND* nd) {
 	res.typ = ARR_STR;
 	res.base = arr.base;
 	res.len = arr.len;
-	res.pstr = realloc(NULL, arr.len * sizeof(STR));
-	if (res.pstr == NULL) {
-		res.len = 0;
-		return res;
-	}
+	res.pstr = xrealloc(NULL, arr.len * sizeof(STR), nd);
 	for (int i = 0; i < arr.len; i++) {
 		double f = arr.pnum[i];
 		res.pstr[i] = str_numfx(f, rt.num_scale, rt.num_space, sysconfig & 8);
@@ -1511,12 +1541,7 @@ S ARR op_strchars(ND* nd) {
 	res.len = str_ulen(p);
 	res.typ = ARR_STR;
 	res.base = rt.arrbase;
-	res.p = realloc(NULL, res.len * sizeof(STR));
-	if (res.p == NULL) {
-		out_of_mem(nd);
-		res.len = 0;
-		goto exit;
-	}
+	res.p = xrealloc(NULL, res.len * sizeof(STR), nd);
 
 	int ind = 0;
 	int i = 0;
@@ -1524,31 +1549,19 @@ S ARR op_strchars(ND* nd) {
 	while (ind < res.len) {
 		l = uchlen(p[i]);
 		str_init(res.pstr + ind);
-
-		int h = 0;
-		while (h < l) {
-			res.pstr[ind].d[h] = p[i + h];
-			h++;
-		}
-		res.pstr[ind].d[h] = 0;
+		memcpy(res.pstr[ind].d, p + i, l);
+		res.pstr[ind].d[l] = 0;
 		i += l;
 		ind++;
 	}
-	exit:
 	str_free(&s);
 	return res;
 }
 
-S int arrstrapp(ARR* parr, char* str) {
+S int arrstrapp(ARR* parr, char* str, ND* nd) {
 	parr->len += 1;
-	STR* p = realloc(parr->p, parr->len * sizeof(STR));
-	if (p == NULL) {
-		parr->len = 0;
-		free(parr->p);
-		return 0;
-	}
+	STR* p = xrealloc(parr->p, parr->len * sizeof(STR), nd);
 	parr->pstr = p;
-//	if (parr->p == NULL) return 1;
 	str_init(parr->pstr + parr->len - 1);
 	str_append(parr->pstr + parr->len - 1, str);
 	return 1;
@@ -1571,7 +1584,7 @@ S ARR op_strtok(ND* nd) {
 	}
 	char* tok = strtok(dup, s2p);
 	while (tok) {
-		if (arrstrapp(&res, tok) == 0) goto exit;
+		if (arrstrapp(&res, tok, nd) == 0) goto exit;
 		tok = strtok(NULL, s2p);
 	}
 	exit:
@@ -1605,7 +1618,7 @@ S ARR op_strsplit(ND* nd) {
 	while (1) {
 		char* tk = strstr(str, s2p);
 		if (tk != NULL) *tk = 0;
-		if (arrstrapp(&res, str) == 0) goto exit;
+		if (arrstrapp(&res, str, nd) == 0) goto exit;
 		if (tk == NULL) break;
 		str = tk + strlen(s2p);
 	}
@@ -1920,6 +1933,7 @@ void evt_func(int id, const char* v) {
 	}
 	else if (id == 2) {
 		rt.key0 = v;
+		// 0 terminated because rt.key is global and last byte not changed
 		strncpy(rt.key, v, sizeof(rt.key) - 1);
 		exsq(seq.key_down);
 		rt.key0 = NULL;
@@ -2636,7 +2650,6 @@ S void op_for_instr(ND* nd) {
 	if (rt.slow > 32) rt.slow -= 1;
 }
 
-//kcc
 S void op_for_inarr(ND* nd) {
 	if (rt.slow >= 32) rt.slow += 1;
 	ND* ndx = nd + 1;
@@ -2655,6 +2668,9 @@ S void op_for_inarr(ND* nd) {
 
 		if (stop_flag) {
 			stop_flag -= 1;
+			for (int h = ind + 1; h < arrarr.len; h++) {
+				free_arr(arrarr.parr + h);
+			}
 			break;
 		}
 		ind += 1;
@@ -2675,12 +2691,7 @@ S ARR op_map_number(ND* nd) {
 	res.len = arr.len;
 	res.typ = ARR_NUM;
 	res.base = arr.base;
-	res.p = realloc(NULL, res.len * sizeof(double));
-	if (res.p == NULL) {
-		out_of_mem(nd);
-		res.len = 0;
-		goto exit;
-	}
+	res.p = realloc(NULL, res.len * sizeof(double), nd);
 	rt.sys_error = 0;
 	for (int i = 0; i < arr.len; i++) {
 		STR s = arr.pstr[i];
@@ -2693,7 +2704,6 @@ S ARR op_map_number(ND* nd) {
 		str_free(&s);
 		res.pnum[i] = d;
 	}
-	exit:
 	free(arr.pstr);
 	return res;
 }
@@ -2719,17 +2729,11 @@ S ARR op_map_number(ND* nd) {
 		}
 		else {
 			res.len += 1;
-			res.p = realloc(res.p, res.len * sizeof(double));
-			if (res.p == NULL) {
-				out_of_mem(nd);
-				res.len = 0;
-				goto exit;
-			}
+			res.p = xrealloc(res.p, res.len * sizeof(double), nd);
 			res.pnum[res.len - 1] = d;
 		}
 		str_free(&s);
 	}
-	exit:
 	free(arr.pstr);
 	return res;
 }
@@ -2752,6 +2756,7 @@ S void exec_slow(ND* nd) {
 }
 
 
+// -------------------------------------------------------
 S void free_rt(void) {
 	free(rt_nums);
 	int i;
@@ -2766,45 +2771,6 @@ S void free_rt(void) {
 	out_of_memf = NULL;
 	parse_clean();
 }
-
-// ------------ exceptions ----------------
-
-
-
-S void except(ND* nd, const char* s) {
-	char b[36];
-	strcpy(b, "*** ERROR: ");
-	strcat(b, s);
-	gr_print(b);
-
-	gr_info(1);
-	int i = 0;
-	while (i < opline_len) {
-		if (opline_p[i].nd == nd) {
-			gr_debline(opline_p[i].line, 1);
-			break;
-		}
-		i++;
-	}
-	dbg_outvars();
-
-	free_rt();
-	gr_exit();
-}
-
-S void out_of_bounds(ND* nd) {
-	except(nd, "index out of bounds");
-}
-
-S void out_of_mem(ND* nd) {
-	except(nd, "out of memory");
-}
-
-S void out_of_mem0(void) {
-	out_of_mem(NULL);
-}
-
-// -------------------------------------------------------
 
 S void init_rt(void) {
 

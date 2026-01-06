@@ -1038,15 +1038,21 @@ inp.addEventListener("drop", function(e) {
 	e.preventDefault();
 	var file = e.dataTransfer.files[0], reader = new FileReader()
 	reader.onload = function(event) {
-//		inp.textContent = event.target.result
 		var n = event.target.result.charCodeAt(0)
 		if (n == 35 || n >= 65 && n <= 90 || n >= 97 && n <= 122) {
 			document.execCommand('selectAll', false, null)
 			document.execCommand('insertHTML', false, event.target.result)
+
+			if (runBtn.run) runCode(inp.textContent, 0)
+			else {
+				codeToRun = inp.textContent
+				doStop()
+			}
 		}
 	}
 	reader.readAsText(file)
 })
+
 
 // ------------------
 
