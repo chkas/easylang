@@ -156,6 +156,7 @@ static void mf_cmpneg(ND* nd, byte lev) {
 	wemit(W_BRIF);
 	wemit(lev);
 }
+
 static void mf_cmp(ND* nd, byte lev) {
 	void* p = nd->intf;
 	mf_expr(nd->le);
@@ -178,6 +179,7 @@ static void mf_andneg(ND* nd, byte lev) {
 	}
 	mf_cmpneg(nd, lev);
 }
+
 static void mf_and(ND* nd, byte lev) {
 	while (nd->intf == op_and) {
 		mf_cmp(nd->ri, lev);
@@ -185,7 +187,6 @@ static void mf_and(ND* nd, byte lev) {
 	}
 	mf_cmp(nd, lev);
 }
-
 
 static void mf_repand(ND* nd) {
 	void* p = nd->intf;
@@ -204,11 +205,11 @@ static void mf_repand(ND* nd) {
 		wemit(2);
 		wemit(W_END);
 	}
-
 	else {
 		mf_err("repand");
 	}
 }
+
 static void mf_condrep(ND* nd) {
 	while (nd->intf == op_or) {
 		mf_repand(nd->ri);
@@ -218,15 +219,14 @@ static void mf_condrep(ND* nd) {
 }
 
 static void mf_cond(ND* nd, byte lev) {
-
 	if (nd->intf == op_or) {
 		wemit(W_BLOCK);
 		wemit(W_VOID);
 		while (nd->intf == op_or) {
-			mf_and(nd->ri, lev);
+			mf_and(nd->ri, 0);
 			nd = nd->le;
 		}
-		mf_and(nd, lev);
+		mf_and(nd, 0);
 		wemit(W_BR);
 		wemit(lev + 1);
 		wemit(W_END);
