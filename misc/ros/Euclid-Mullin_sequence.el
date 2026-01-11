@@ -1,7 +1,5 @@
-limit = 8
 arr[] = [ 2 ]
-write 2 & " "
-for i = 2 to limit
+for i = 2 to 8
    k = 3
    repeat
       em = 1
@@ -13,5 +11,5 @@ for i = 2 to limit
       k += 2
    .
    arr[] &= k
-   write k & " "
 .
+print arr[]

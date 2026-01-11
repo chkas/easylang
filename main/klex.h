@@ -253,7 +253,7 @@ const char* errstr(void) {
 }
 
 #ifndef __EMSCRIPTEN__
-void error_line(const char* s, int pos) {
+void error2line(const char* s, int pos) {
 	int i = 0;
 	int line = 1;
 	int col = 1;
@@ -264,7 +264,8 @@ void error_line(const char* s, int pos) {
 			col = 0;
 		}
 		if (parse_str[i] == '\t') {
-			pos -= 1;
+			// tab = 3 spaces
+			pos -= 2;
 		}
 		col++;
 		i++;
@@ -272,6 +273,25 @@ void error_line(const char* s, int pos) {
 	fprintf(stderr, "Error: %d:%d - %s\n", line, col, s);
 }
 #endif
+static int line2pos_html(int line) {
+	int pos = 0;
+	int i = 0;
+	int l = 1;
+	while (l < line) {
+		byte c = codestr[i];
+		if (c == '<' && codestr[i + 1] != ' ' && codestr[i + 1] != '>' && codestr[i + 1] != '=') {
+			do i++; while (codestr[i] != '>');
+			pos -= 1;
+		}
+		else if (c == '&') {
+			do i++; while (codestr[i] != ';');
+		}
+		else if (c == '\n') l += 1;
+		i++;
+		if (c < 0x80 || c >= 0xc0) pos++;
+	}
+	return pos;
+}
 
 static ushort loop_level;
 static short nestlevel_err;
@@ -293,7 +313,7 @@ static void error0(const char* s) {
 	is_tab = 0; // stops adding vars
 	cs_spc();
 #ifndef __EMSCRIPTEN__
-	error_line(s, ind_tok);
+	error2line(s, ind_tok);
 #endif
 }
 
@@ -308,23 +328,18 @@ static void init_klex(void) {
 	tabinexpr = 0;
 }
 
-//static byte errornum;
-
 static void error(const char* s) {
 	if (errn) return;
-	//pr("error %s", s);
 	errn = 255;
 	error0(s);
 }
 static void errorx(int num) {
 	if (errn) return;
-	//pr("errorx %d", num);
 	errn = num;
 	error0(errstrs[num]);
 }
 static void errort(int tok) {
 	if (errn) return;
-	//pr("errort %d", tok);
 	errn = tok;
 	error0(tokstr[tok]);
 }
@@ -332,15 +347,15 @@ static void errort(int tok) {
 static void error_pos(const char* s, int pos) {
 
 	if (errn) return;
-//kc?
 	errn = 255;
 	code_utf8len = pos;
 	ind_tok = pos;
 	errorstr = s;
 	cod = 0;
 #ifndef __EMSCRIPTEN__
-	error_line(s, pos);
+	error2line(s, pos);
 #endif
+	caret_pos = code_utf8len;
 }
 
 static void error_tok(int t) {
@@ -422,7 +437,6 @@ static void cst(int t) {
 static char tval[24];
 
 static void csnl() {
-//kc
 	if (tabinexpr) return;
 	csnlspc();
 	fmtline += 1;
@@ -739,7 +753,6 @@ struct proc {
 // float, str, (intarr + numarr + strarr)
 	ushort varcnt[3];
 	byte typ;
-//	byte anonym_id;
 };
 struct procdecl {
 	ushort proc_i;
@@ -755,18 +768,8 @@ static ushort procdecl_len;
 
 static char prefix[16];
 static int prefix_len;
-//static char name_anonym[5];
 
 static const char* getn(const char* name) {
-/*
-pr("getn %s", name);
-
-	if (name[0] == '_' && name[1] == 0) {
-		proc->anonym_id += 1;
-		sprintf(name_anonym, "_%d", proc->anonym_id);
-		name = name_anonym;
-	}
-*/
 	if (prefix_len) {
 		if (prefix_len + strlen(name) > 15) {
 			error("name too long");
@@ -871,7 +874,6 @@ static void lvar(byte typ, byte access, byte mode) {
 
 	if ((cod && mode) || (is_tab && mode)) {
 		const char* name = getn(tval);
-//		if (name == name_anonym) access = RW;
 
 		struct vname* p = get_vname(proc, name, typ);
 		if (p != NULL) error("already used");
@@ -900,11 +902,7 @@ static struct vname* add_var(struct proc* f, const char* name, ushort typ, ushor
 
 static short get_var(ushort typ, ushort access, const char* name, ushort pos) {
 	if (!cod && !is_tab) return 0;
-//	if (!cod) return 0;
-//pr("get_var %s", name);
 	name = getn(name);
-//	if (name == name_anonym) access = RW;
-
 	struct vname* p;
 	if (proc == proc_p) {
 		p = get_vname(proc_p, name, typ);
@@ -963,6 +961,8 @@ static void opline_add(ND* nd, ushort line) {
 
 static ushort onstats;
 
+static void wasm_clean(void);
+
 static void parse_clean() {
 	freecodestr();
 
@@ -977,6 +977,8 @@ static void parse_clean() {
 
 	free(input_data);
 	input_data = NULL;
+
+	wasm_clean();
 }
 
 S ND** nd_doll;

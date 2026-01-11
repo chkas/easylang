@@ -75,6 +75,13 @@ S ARR* garr(short ind) {
 S void dbg_outvars(void);
 S void free_rt();
 
+S int getline_nd(ND* nd) {
+	for (int i = 0; i < opline_len; i++) {
+		if (opline_p[i].nd == nd) return opline_p[i].line;
+	}
+	return 0;
+}
+
 S void except(ND* nd, const char* s) {
 	char b[36];
 	strcpy(b, "*** ERROR: ");
@@ -82,16 +89,10 @@ S void except(ND* nd, const char* s) {
 	gr_print(b);
 
 	gr_info(1);
-	int i = 0;
-	while (i < opline_len) {
-		if (opline_p[i].nd == nd) {
-			gr_debline(opline_p[i].line, 1);
-			break;
-		}
-		i++;
-	}
-	dbg_outvars();
+	int l = getline_nd(nd);
+	if (l != 0) gr_debline(l, 1);
 
+	dbg_outvars();
 	free_rt();
 	gr_exit();
 }
@@ -116,8 +117,6 @@ S void* xrealloc(void* p, unsigned long sz, ND* nd) {
 	}
 	return pn;
 }
-
-
 
 // ----------------------------------------------------------------------
 

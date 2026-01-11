@@ -17,13 +17,14 @@ proc check .
    .
 .
 proc permute k .
-   for i = k to 5
+   if k = 0
+      check
+      return
+   .
+   for i = 1 to k
       swap floors[i] floors[k]
-      permute k + 1
+      permute k - 1
       swap floors[k] floors[i]
    .
-   if k = 5
-      check
-   .
 .
-permute 1
+permute len floors[]

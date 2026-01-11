@@ -36,10 +36,21 @@ static void wemitf(double d) {
 	memcpy(wasm + wasmi, &d, 8);
 	wasmi += 8;
 }
+
+static ND* nd_stat;
+
+int fastfunc_errline;
+
+static void wasm_clean(void) {
+	fastfunc_errline = 0;
+	free(wasm);
+	wasm = NULL;
+}
+ 
 static void mf_err(const char* s) {
 	pr("fastfunc error - %s", s);
 	fastfuncn = 0;
-	error("fastfunc error");
+	if (fastfunc_errline == 0) fastfunc_errline = getline_nd(nd_stat);
 }
 
 #define W_BLOCK 0x02
@@ -58,6 +69,11 @@ static void mf_err(const char* s) {
 #define W_MULT 0xa2
 #define W_DIV 0xa3
 #define W_FLOOR 0x9c
+#define W_ABS 0x99
+#define W_NEG 0x9a
+#define W_SQRT 0x9f
+#define W_MIN 0xa4
+#define W_MAX 0xa5
 
 #define W_EQ 0x61
 #define W_NE 0x62
@@ -81,8 +97,8 @@ static void mf_expr(ND* nd) {
 		else if (p == op_sub) wemit(W_SUB);
 		else if (p == op_mult) wemit(W_MULT);
 		else if (p == op_div) wemit(W_DIV);
-		else if (p == op_lower) wemit(0xa4);
-		else if (p == op_higher) wemit(0xa5);
+		else if (p == op_lower) wemit(W_MIN);
+		else if (p == op_higher) wemit(W_MAX);
 		else if (p == op_divi) {
 			wemit(W_DIV);
 			wemit(W_FLOOR);
@@ -109,9 +125,9 @@ static void mf_expr(ND* nd) {
 		mf_expr(nd->le);
 
 		if (p == op_floor) wemit(W_FLOOR);
-		else if (p == op_abs) wemit(0x99);
-		else if (p == op_negf) wemit(0x9a);
-		else if (p == op_sqrt) wemit(0x9f);
+		else if (p == op_abs) wemit(W_ABS);
+		else if (p == op_negf) wemit(W_NEG);
+		else if (p == op_sqrt) wemit(W_SQRT);
 	}
 	else if (p == op_lvnum) {
 		wemit(W_GET);
@@ -238,6 +254,7 @@ static void mf_cond(ND* nd, byte lev) {
 
 static void mf_sequ(ND* nd) {
 	while (nd) {
+		nd_stat = nd;
 		void* p = nd->vf;
 
 		if (0) {
@@ -300,10 +317,7 @@ static void mf_sequ(ND* nd) {
 			wemit(W_VOID);
 
 			mf_sequ(nd->ri);
-			//
-
 			mf_condrep(nd->le);
-			
 			mf_sequ(ndx->ex);
 
 			wemit(W_BR);
@@ -363,7 +377,7 @@ static void parse_fastfunc(void) {
 		return;
 	}
 	if (wasm == NULL) {
-		wasm = malloc(1000);
+		wasm = _realloc(NULL, 1000);
 		wasm_len = 1000;
 		wasmi = 0;
 		fastfuncn = 0;

@@ -1,4 +1,5 @@
-func crc32 buf$[] .
+global table[] .
+proc mktable .
    for i = 0 to 0xff
       rem = i
       for j to 8
@@ -10,13 +11,15 @@ func crc32 buf$[] .
       .
       table[] &= rem
    .
+.
+func crc32 s$ .
    crc = 0xffffffff
-   for c$ in buf$[]
+   for c$ in strchars s$
       c = strcode c$
       crb = bitxor bitand crc 0xff c
       crc = bitxor (bitshift crc -8) table[crb + 1]
    .
-   return bitnot crc
+   return bitand bitnot crc 0xffffffff
 .
-s$ = "The quick brown fox jumps over the lazy dog"
-print crc32 strchars s$
+mktable
+print crc32 "The quick brown fox jumps over the lazy dog"

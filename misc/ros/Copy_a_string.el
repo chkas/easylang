@@ -1,3 +1,5 @@
 a$ = "hello"
 b$ = a$
+a$ &= " a"
+print a$
 print b$

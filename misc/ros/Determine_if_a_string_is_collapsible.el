@@ -1,8 +1,6 @@
 func$ collapse s$ .
    for c$ in strchars s$
-      if c$ <> cc$
-         r$ &= c$
-      .
+      if c$ <> cc$ : r$ &= c$
       cc$ = c$
    .
    return r$

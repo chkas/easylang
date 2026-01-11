@@ -1,23 +1,27 @@
-subr first
+fastfunc next n d .
+   n = 2 * (n div d) * d + d - n
+   return n
+.
+fastfunc search n0 d0 .
    n = 1
    d = 1
-.
-proc next .
-   n = 2 * (n div d) * d + d - n
-   swap n d
+   i = 1
+   while n <> n0 or d <> d0
+      dp = d
+      d = next n d
+      n = dp
+      i += 1
+   .
+   return i
 .
 print "The first 20 terms of the Calkwin-Wilf sequence are:"
-first
+n = 1
+d = 1
 for i to 20
    write n & "/" & d & " "
-   next
+   dp = d
+   d = next n d
+   n = dp
 .
 print ""
-# 
-first
-i = 1
-while n <> 83116 or d <> 51639
-   next
-   i += 1
-.
-print "83116/51639 is at position " & i
+print "83116/51639 is at position " & search 83116 51639

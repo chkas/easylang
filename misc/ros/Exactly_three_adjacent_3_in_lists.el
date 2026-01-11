@@ -4,9 +4,7 @@ func has3adj3 l[] .
       if v = 3
          cnt += 1
       else
-         if cnt = 3
-            break 1
-         .
+         if cnt = 3 : break 1
          cnt = 0
       .
    .
@@ -15,3 +13,4 @@ func has3adj3 l[] .
 for i to len lists[][]
    write has3adj3 lists[i][] & " "
 .
+print ""

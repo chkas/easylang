@@ -164,6 +164,7 @@ const char* tabstrs[] =
 };
 
 static char is_tab;
+static int caret_pos;
 
 #include "klex.h"
 #include "kfunc.h"
@@ -203,8 +204,7 @@ static void parse_sysconf(void) {
 
 //------------------------------------------------------------
 
-static int caret_pos;
-STR tabbuf;
+static STR tabbuf;
 
 void appt(const char* s) {
 	str_append(&tabbuf, ":");
@@ -498,7 +498,7 @@ extern int parse(char* str, int opt, int caret) {
 	if (tok != t_eof || is_enter) errorx(ERR_CMD1);
 
 	if (wasm) {
-		if (errn) {
+		if (errn || fastfunc_errline) {
 			free(wasm);
 			wasm = NULL;
 		}
@@ -564,7 +564,6 @@ extern int parse(char* str, int opt, int caret) {
 					if (vn->typ <= VAR_NUMARRARR && vn->access != RW) {
 						if (vn->access == RD) error_pos("never set", vn->srcpos);
 						else error_pos("never used", vn->srcpos);
-						caret_pos = code_utf8len;
 						return codestrln;
 					}
 					vn += 1;
@@ -572,11 +571,16 @@ extern int parse(char* str, int opt, int caret) {
 			}
 			if (pr->start == NULL && pr != proc_p) {
 				error_pos("not implemented", pr->varcnt[0]);
-				caret_pos = code_utf8len;
 				return codestrln;
 			}
 			pr += 1;
 		}
+	}
+
+	if (fastfunc_errline) {
+		int pos = line2pos_html(fastfunc_errline + 1) - 1;
+		error_pos(" fastfunc error", pos);
+		return codestrln;
 	}
 
 	caret_pos = caret;

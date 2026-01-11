@@ -12,12 +12,10 @@ func check inp$ .
       elif c = 35
          v = 38
       .
-      if i mod 2 = 0
-         v *= 2
-      .
+      if i mod 2 = 0 : v *= 2
       sum += v div 10 + v mod 10
    .
-   return if (10 - (sum mod 10)) mod 10 = number substr inp$ 9 1
+   return if (10 - sum mod 10) mod 10 = number substr inp$ 9 1
 .
 for s$ in [ "037833100" "17275R102" "38259P508" "594918104" "68389X106" "68389X105" ]
    write s$ & " is "
