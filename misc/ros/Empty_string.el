@@ -1,0 +1,3 @@
+a$ = ""
+if a$ = "" : print "empty"
+if a$ <> "" : print "not empty"

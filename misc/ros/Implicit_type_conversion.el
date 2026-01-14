@@ -1,2 +1,2 @@
-string$ = 32
+string$ = 2 + 3
 print string$

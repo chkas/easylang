@@ -1,8 +1,6 @@
 func fac n .
    r = 1
-   for i = 2 to n
-      r *= i
-   .
+   for i = 2 to n : r *= i
    return r
 .
 print 0

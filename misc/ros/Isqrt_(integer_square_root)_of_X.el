@@ -1,8 +1,6 @@
 func isqrt x .
    q = 1
-   while q <= x
-      q *= 4
-   .
+   while q <= x : q *= 4
    while q > 1
       q = q div 4
       t = x - r - q

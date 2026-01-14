@@ -1,11 +1,41 @@
-func[] intersect ax1 ay1 ax2 ay2 bx1 by1 bx2 by2 .
-   d = (by2 - by1) * (ax2 - ax1) - (bx2 - bx1) * (ay2 - ay1)
-   if d = 0 : return [ 1 / 0 1 / 0 ]
-   ua = ((bx2 - bx1) * (ay1 - by1) - (by2 - by1) * (ax1 - bx1)) / d
-   ub = ((ax2 - ax1) * (ay1 - by1) - (by2 - by1) * (ax1 - bx1)) / d
-   if abs ua > 1 or abs ub > 1 : return [ 1 / 0 1 / 0 ]
-   return [ ax1 + ua * (ax2 - ax1) ay1 + ua * (ay2 - ay1) ]
+func[] intersect a[] b[] .
+   dax = a[3] - a[1]
+   day = a[4] - a[2]
+   dbx = b[3] - b[1]
+   dby = b[4] - b[2]
+   h1 = a[2] - b[2]
+   h2 = dby * (a[1] - b[1])
+   d = dby * dax - dbx * day
+   ua = (dbx * h1 - h2) / d
+   return [ a[1] + ua * dax a[2] + ua * day ]
 .
-print intersect 4 0 6 10 0 3 10 7
-print intersect 4 0 6 10 0 3 10 7.1
-print intersect 0 0 1 1 1 2 4 5
+drawgrid
+coord_scale 10
+glinewidth 0.03
+proc drawline l[] .
+   gcolor -1
+   gcircle l[1] l[2] 0.1
+   gcircle l[3] l[4] 0.1
+   a[] = intersect l[] [ 0 0 100 0 ]
+   if abs a[1] > 100 : a[] = intersect l[] [ 0 0 0 100 ]
+   b[] = intersect l[] [ 100 0 100 100 ]
+   if abs b[1] > 100 : b[] = intersect l[] [ 0 100 100 100 ]
+   gline a[1] a[2] b[1] b[2]
+.
+proc drawpt p[] .
+   gcolor 900
+   gcircle p[1] p[2] 0.1
+.
+line1[] = [ 4 0 6 10 ]
+line2[] = [ 0 3 10 7 ]
+drawline line1[]
+drawline line2[]
+pt[] = intersect line1[] line2[]
+print pt[]
+drawpt pt[]
+#
+line3[] = [ 5 1 9 2 ]
+drawline line3[]
+pt[] = intersect line1[] line3[]
+print pt[]
+drawpt pt[]

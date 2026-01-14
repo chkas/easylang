@@ -18,7 +18,7 @@ printf "txt_tutor = String.raw\`* Rosetta Code with Easylang\n"
 for f in *.el; do
 	test $f = w.el && continue
 	x=$(basename "$f" .el)
-	test $x = "A+B" || x=$(echo "$x" | tr + /)
+	x=$(echo "$x" | tr @ /)
 	n=$(echo "$x"|tr _ " ")
 	echo "*"
 	echo "* $n"

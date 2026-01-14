@@ -9,7 +9,7 @@ date +%y%m%d > _get_date
 	test "$n" = "Safe mode" && continue
 	test "$n" = "Special variables" && continue
 	x=$(echo $n|tr " " _)
-	dest=$(echo $n|tr " /" _+)
+	dest=$(echo $n|tr " /" _@)
 	dest=~/easylang/misc/ros/"$dest.el"
 	if test ! -e "$dest"; then
 		echo "..." >&2

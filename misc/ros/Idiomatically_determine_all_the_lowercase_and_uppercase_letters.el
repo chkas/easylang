@@ -1,7 +1,6 @@
-for i = strcode "a" to strcode "z"
-   write strchar i
+proc out a b .
+   for i = a to b : write strchar i
+   print ""
 .
-print ""
-for i = strcode "A" to strcode "Z"
-   write strchar i
-.
+out 97 122
+out 65 90

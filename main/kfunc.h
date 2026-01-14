@@ -2301,12 +2301,13 @@ S ARR op_callfunc_arr(ND* nd0) {
 	return retval;
 }
 
+
 S double op_fastcall(ND* nd0) {
 
 #ifdef __EMSCRIPTEN__
 
 	ND* nd = nd0->ri;
-	byte n = nd0->le->bx3 + 96;
+	byte n = nd0->le->bx3 - 1;
 	double a[4];
 	int i = 0;
 	while (nd) {
@@ -2317,30 +2318,28 @@ S double op_fastcall(ND* nd0) {
 		a[i++] = numf(nd);
 		nd = nd->next;
 	}
-
 	double r;
 	if (i == 0) {
 		r = EM_ASM_DOUBLE(
-			{ return fastinst.exports[String.fromCharCode($0)]() }, n);
+			{ return fastfuncs[$0]() }, n);
 	}
 	else if (i == 1) {
 		r = EM_ASM_DOUBLE(
-			{ return fastinst.exports[String.fromCharCode($0)]($1) }, n, a[0]);
+			{ return fastfuncs[$0]($1) }, n, a[0]);
 	}
 	else if (i == 2) {
 		r = EM_ASM_DOUBLE(
-			{ return fastinst.exports[String.fromCharCode($0)]($1, $2) }, n, a[0], a[1]);
+			{ return fastfuncs[$0]($1, $2) }, n, a[0], a[1]);
 	}
 	else if (i == 3) {
 		r = EM_ASM_DOUBLE(
-			{ return fastinst.exports[String.fromCharCode($0)]($1, $2, $3) }, n, a[0], a[1], a[2]);
+			{ return fastfuncs[$0]($1, $2, $3) }, n, a[0], a[1], a[2]);
 	}
 	else {	// if (i == 4)
 		r = EM_ASM_DOUBLE(
-			{ return fastinst.exports[String.fromCharCode($0)]($1, $2, $3, $4) }, n, a[0], a[1], a[2], a[3]);
+			{ return fastfuncs[$0]($1, $2, $3, $4) }, n, a[0], a[1], a[2], a[3]);
 	}
 	return r;
-
 #else
 	return op_callfunc(nd0);
 #endif

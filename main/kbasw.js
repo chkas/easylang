@@ -56,8 +56,20 @@ function parse_errchk(d) {
 	return res
 }
 
+var fastfuncs;
+
 function runx(dbg = 0) {
 	cmds = []
+
+	if (fastinst) {
+		fastfuncs = new Array()
+		var i = 97
+		while (true) {
+			fn = fastinst.exports[String.fromCharCode(i++)];
+			if (!fn) break
+			fastfuncs.push(fn)
+		}
+	}
 	var on = 0
 	try {
 		on = Module.ccall("exec", null, ["int", "string"], [dbg, null])

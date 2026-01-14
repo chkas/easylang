@@ -269,7 +269,7 @@ inline static struct str str_numfx(double f, int sc, int spc, int hex) {
 	else if (spc > 30) spc = 30;
 
 	double fa = fabs(f);
-	if (fa < 9007199254740992 &&  (double)(long long)f == f) {
+	if (fa <= 9007199254740992 &&  (double)(long long)f == f) {
 		if (hex) sprintf(fmt, "%%0%dllx", spc);
 		else sprintf(fmt, "%%%dlld", spc);
 		sprintf(buf, fmt, (long long)f);

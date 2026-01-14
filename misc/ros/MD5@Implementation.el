@@ -5,13 +5,17 @@ proc md5init .
    .
 .
 md5init
-# 
+#
 func$ md5 inp$ .
    subr addinp
-      if inp4 = 1 : inp[] &= 0
+      if inp4 = 1
+         inp[] &= 0
+      .
       inp[len inp[]] += b * inp4
       inp4 *= 0x100
-      if inp4 = 0x100000000 : inp4 = 1
+      if inp4 = 0x100000000
+         inp4 = 1
+      .
    .
    s[] = [ 7 12 17 22 7 12 17 22 7 12 17 22 7 12 17 22 5 9 14 20 5 9 14 20 5 9 14 20 5 9 14 20 4 11 16 23 4 11 16 23 4 11 16 23 4 11 16 23 6 10 15 21 6 10 15 21 6 10 15 21 6 10 15 21 ]
    inp[] = [ ]
@@ -33,7 +37,7 @@ func$ md5 inp$ .
       h = h div 0x100
    .
    inp[] &= 0
-   # 
+   #
    a0 = 0x67452301
    b0 = 0xefcdab89
    c0 = 0x98badcfe
@@ -56,17 +60,17 @@ func$ md5 inp$ .
             f = bitxor h1 d
             g = (3 * i + 2) mod 16
          else
-            h1 = bitor b bitnot d
-            f = bitand 0xffffffff bitxor c h1
+            h1 = bitor b bitand bitnot d 0xffffffff
+            f = bitxor c h1
             g = (7 * i - 7) mod 16
          .
-         f = bitand 0xffffffff (f + a + md5k[i] + inp[chunk + g])
+         f = bitand (f + a + md5k[i] + inp[chunk + g]) 0xffffffff
          a = d
          d = c
          c = b
          h1 = bitshift f s[i]
          h2 = bitshift f (s[i] - 32)
-         b = bitand 0xffffffff (b + h1 + h2)
+         b = bitand (b + h1 + h2) 0xffffffff
       .
       a0 += a ; b0 += b ; c0 += c ; d0 += d
    .
@@ -76,7 +80,9 @@ func$ md5 inp$ .
          a = a div 256
          for h in [ b div 16 b mod 16 ]
             h += 48
-            if h > 57 : h += 39
+            if h > 57
+               h += 39
+            .
             s$ &= strchar h
          .
       .
@@ -89,6 +95,7 @@ repeat
    print md5 s$
 .
 input_data
+
 a
 abc
 message digest

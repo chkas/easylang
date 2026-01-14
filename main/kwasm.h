@@ -41,12 +41,6 @@ static ND* nd_stat;
 
 int fastfunc_errline;
 
-static void wasm_clean(void) {
-	fastfunc_errline = 0;
-	free(wasm);
-	wasm = NULL;
-}
- 
 static void mf_err(const char* s) {
 	pr("fastfunc error - %s", s);
 	fastfuncn = 0;
@@ -489,7 +483,6 @@ static void build_fastfuncs(void) {
 	wasmhd[k++] = fastfuncn; // n functions
 
 #ifdef __EMSCRIPTEN__
-
 	EM_ASM({
 		var hdrView  = HEAPU8.subarray($0, $0 + $1);
 		var bodyView = HEAPU8.subarray($2, $2 + $3);
@@ -502,10 +495,19 @@ static void build_fastfuncs(void) {
 		fastinst = new WebAssembly.Instance(mod);
 
 	}, wasmhd, k, wasm, wasmi);
-
 #endif
 
 	free(wasm);
 	wasm = NULL;
 }
-
+static void wasm_clean(void) {
+	fastfunc_errline = 0;
+	free(wasm);
+	wasm = NULL;
+#ifdef __EMSCRIPTEN__
+	EM_ASM({
+		fastinst = null
+	});
+#endif
+}
+ 

@@ -1,10 +1,6 @@
 func root base n .
-   if base < 2
-      return base
-   .
-   if n = 0
-      return 1
-   .
+   if base < 2 : return base
+   if n = 0 : return 1
    n1 = n - 1
    n2 = n
    n3 = n1
@@ -16,9 +12,7 @@ func root base n .
       d = e
       e = (n3 * e + base div pow e n1) div n2
    .
-   if (d < e)
-      return d
-   .
+   if d < e : return d
    return e
 .
 print "3rd root of 8 = " & root 8 3
