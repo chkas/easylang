@@ -274,21 +274,28 @@ void error2line(const char* s, int pos) {
 }
 #endif
 static int line2pos_html(int line) {
-	// kc todo
+	//kc
 	int pos = 0;
-	int i = 0;
 	int l = 1;
+	int stat = 0;
+	int i = -1;
 	while (l < line) {
+		i += 1;
 		byte c = codestr[i];
-		if (c == '<' && codestr[i + 1] != ' ' && codestr[i + 1] != '>' && codestr[i + 1] != '=') {
-			do i++; while (codestr[i] != '>');
+		if (c == 0) break;
+		if (stat > 0) {
+			if (stat == 1 && c == '>') stat = 0;
+			if (stat == 2 && c == ';') stat = 0;
+			continue;
+		}
+		byte cn = codestr[i + 1];
+		if (cn == 0) break;
+		if (c == '<' && cn != ' ' && cn != '>' && cn != '=') {
+			stat = 1;
 			pos -= 1;
 		}
-		else if (c == '&' && codestr[i + 1] != '=') {
-			do i++; while (codestr[i] != ';');
-		}
+		else if (c == '&' && cn != '=') stat = 2;
 		else if (c == '\n') l += 1;
-		i++;
 		if (c < 0x80 || c >= 0xc0) pos++;
 	}
 	return pos;
