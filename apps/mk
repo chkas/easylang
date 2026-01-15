@@ -46,7 +46,7 @@ mk_tut() {
 <meta charset=utf-8><title>$1</title>
 xxx
 	if test "$3"; then
-	cat >>$o/tut_$n.html <<xxx
+		cat >>$o/tut_$n.html <<xxx
 <meta name="description" content="$3">
 xxx
 	fi
@@ -113,7 +113,19 @@ xxx
 		echo  >>$o/tut_$n.html
 		lnk="@ ./tut_learn.html?$vers@A more basic tutorial for beginners can be found here."
 		echo $lnk >>$o/tut_$n.html
-		tail +4 ../main/tut_$2.js >>$o/tut_$n.html
+		tail +4 ../main/tut_$n.js >>$o/tut_$n.html
+
+		if test $n = docu; then
+			printf "txt_tutor+=String.raw\`\n" >>$o/tut_$n.html
+			cat >>$o/tut_$n.html <<'xxx'
+-
+
++ The next tutorial describes in more detail how to use functions and procedures and how to write recursive programs.
+
+@ ./tut_func.html?$vers@Functions and recursion
+`
+xxx
+		fi
 	fi
 
 	if test "$5" = runner; then
@@ -245,7 +257,7 @@ mk_tut "Learn Programming 1" learn "learn programming basics"
 mk_tut "Learn Programming 2" learnx "learn programming basics"
 mk_tut "Programming small games" game "canvas game, smartphone" "" "runner"
 mk_tut "Documentation and code snippets" docu "easylang documentation"
-mk_tut "Procedures and recursion" func "recursive procedures"
+mk_tut "Functions and recursion" func "recursive functions"
 sed s/555/222/g $o/tut_learn.html > $o/tmp.html
 mv $o/tmp.html $o/tut_learn.html
 
@@ -498,8 +510,11 @@ cat <<xxx
 <hr>
 <p>
 <div class=col>
+<a href="/story.html">Story of Easylang</a>
+<p>
 <a href="/sky/">Starry sky</a>
-<p><a href="/apps/progfun.html?$vers">Programming fun</a>
+<p>
+<a href="/apps/progfun.html?$vers">Programming fun</a>
 </div>
 <br>
 xxx

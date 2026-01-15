@@ -42,9 +42,9 @@ static ND* nd_stat;
 int fastfunc_errline;
 
 static void mf_err(const char* s) {
-	pr("fastfunc error - %s", s);
 	fastfuncn = 0;
 	if (fastfunc_errline == 0) fastfunc_errline = getline_nd(nd_stat);
+	pr("fastfunc error:%s line:%d", s, fastfunc_errline);
 }
 
 #define W_BLOCK 0x02

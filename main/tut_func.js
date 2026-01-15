@@ -2,7 +2,7 @@ txt_tutor = String.raw`+ Functions and recursion
 
 -
 
-+ Procedures are defined with *proc*. The syntax of a procedure definition is: *proc <proc_name> <parameters> .*
++ Procedures are defined with *proc*. The syntax of a procedure definition is: *proc <proc_name> <parameters> .* They do not return a value.
 
 + Reference parameters are preceded by *&*
 

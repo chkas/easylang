@@ -274,6 +274,7 @@ void error2line(const char* s, int pos) {
 }
 #endif
 static int line2pos_html(int line) {
+	// kc todo
 	int pos = 0;
 	int i = 0;
 	int l = 1;
@@ -283,7 +284,7 @@ static int line2pos_html(int line) {
 			do i++; while (codestr[i] != '>');
 			pos -= 1;
 		}
-		else if (c == '&') {
+		else if (c == '&' && codestr[i + 1] != '=') {
 			do i++; while (codestr[i] != ';');
 		}
 		else if (c == '\n') l += 1;

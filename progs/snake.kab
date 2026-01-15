@@ -1,8 +1,8 @@
 # Snake
 #
 subr fruit
-   rx = (random 20 - 1) * 5 + 2.5
-   ry = (random 20 - 1) * 5 + 2.5
+   rx = random 18 * 5 + 2.5
+   ry = random 18 * 5 + 2.5
 .
 subr start
    fruit

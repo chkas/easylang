@@ -1,7 +1,7 @@
 # Game of life
 #
 n = 70
-time = 0.1
+time = 0.15
 #
 nx = n + 1
 subr init
@@ -10,16 +10,22 @@ subr init
       if randomf < 0.3 : f[i] = 1
    .
 .
+gbackground 999
+gcolor 000
+glinewidth 0.05
 f = 100 / n
 subr show
    gclear
+   for x = 0 step f to 100
+      gline x 0 x 100
+      gline 0 x 100 x
+   .
    for r = 1 to n : for c = 1 to n
       if f[r * nx + c] = 1
          grect c * f - f r * f - f f * 0.9 f * 0.9
       .
    .
 .
-
 subr update
    swap f[] p[]
    for r = 1 to n

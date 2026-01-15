@@ -1,27 +1,15 @@
-proc set &mem[] ind .
-   msk = bitshift 1 (ind mod 48)
-   ind = ind div 48
-   mem[ind] = bitor mem[ind] msk
-.
-func get &mem[] ind .
-   msk = bitshift 1 (ind mod 48)
-   return bitand mem[ind div 48] msk
-.
 global primes[] .
 proc mkprimes n .
-   arrbase mem[] 0
-   len mem[] n div 48 + 1
+   len sieve[] n
    max = sqrt n
-   for d = 2 to max
-      if get mem[] d = 0
-         for i = d * d step d to n
-            set mem[] i
-         .
+   for d = 2 to max : if sieve[d] = 0
+      for i = d * d step d to n
+         sieve[i] = 1
       .
    .
    primes[] = [ ]
    for i = 2 to n
-      if get mem[] i = 0 : primes[] &= i
+      if sieve[i] = 0 : primes[] &= i
    .
 .
 func phi x a .
@@ -36,7 +24,7 @@ func phi x a .
 func pix n .
    if n < 2 : return 0
    if n = 2 : return 1
-   mkprimes n
+   mkprimes floor sqrt n
    a = len primes[]
    return phi n a + a - 1
 .
