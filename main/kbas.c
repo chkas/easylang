@@ -443,6 +443,9 @@ void make_tabbuf(char* ts) {
 }
 
 extern int parse(char* str, int opt, int caret) {
+
+//pr("parse sizeof(ARR) %d", sizeof(ARR));
+
 //extern int parse(const char* str, int opt, int caret) {
 	char ts[12];
 	syntax_high = (opt & 2);
@@ -492,8 +495,8 @@ extern int parse(char* str, int opt, int caret) {
 	parse_sysconf();
 	if (tok == t_eof && is_enter) errorx(ERR_CMD0);
 
-	ND* h = parse_sequ0();
-	proc_p->start = h;
+	ND* sq0 = parse_sequ0();
+	proc_p->start = sq0;
 
 	if (tok != t_eof || is_enter) errorx(ERR_CMD1);
 

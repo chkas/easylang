@@ -6,9 +6,9 @@
 	This work is licensed under the terms of the GNU General Public
 	License version 3. For a copy, see http://www.gnu.org/licenses/.
 
-    A derivative of this software must contain the built-in function
-    sysfunc "creator" or an equivalent function that returns
-    "christof.kaser@gmail.com".
+	A derivative of this software must contain the built-in function
+	sysfunc "creator" or an equivalent function that returns
+	"christof.kaser@gmail.com".
 */
 
 // fastfunc - creates wasm code
@@ -18,17 +18,17 @@ static byte* wasm = NULL;
 static ushort wasm_len = 0;
 
 static ushort wasmi;
-static ushort wavar;
+static ushort wvar;
 static byte fastfuncn;
 
-static void wemit(byte b) {
+static void we(byte b) {
 	if (wasmi >= wasm_len) {
 		wasm_len += 256;
 		wasm = _realloc(wasm, wasm_len);
 	}
 	wasm[wasmi++] = b;
 }
-static void wemitf(double d) {
+static void wef(double d) {
 	if (wasmi >= wasm_len - 7) {
 		wasm_len += 256;
 		wasm = _realloc(wasm, wasm_len);
@@ -68,6 +68,7 @@ static void mf_err(const char* s) {
 #define W_SQRT 0x9f
 #define W_MIN 0xa4
 #define W_MAX 0xa5
+#define W_CONST 0x44
 
 #define W_EQ 0x61
 #define W_NE 0x62
@@ -76,7 +77,59 @@ static void mf_err(const char* s) {
 #define W_LE 0x65
 #define W_GE 0x66
 
+
+#define W_ADDI 0x6a
+#define W_SUBI 0x6b
+#define W_CONSTI 0x41
+#define W_SHL 0x74
+
+#define W_F2I 0xAB // i32.trunc_f64_u
+#define W_I2F 0xB8 // f64.convert_i32_u
+#define W_DROP 0x1a
+/*
+#define
+*/
+
 static void mf_sequ(ND* nd);
+static void mf_expr(ND* nd);
+
+static void mf_arrpos(short id, ND* ex) {
+	we(0x23);	// get global 1 (arrays)
+	we(0x01);
+	we(0x41);
+	int h = (id + 1) * -12;
+	if (h < 0) mf_err("expr");
+	we(h);
+	we(W_ADDI);
+
+	we(0x28);
+	we(0x00);
+	we(0x00);
+
+	mf_expr(ex);
+	we(W_F2I);
+
+#if 0
+	we(W_CONSTI);
+	we(1);
+#else
+	// arrbase
+	we(0x23);
+	we(0x01);
+	we(0x41);
+	we((id + 1) * -12 + 8);
+	we(W_ADDI);
+	we(0x2C);	// read char
+	we(0x00);
+	we(0x00);
+#endif
+	we(W_SUBI);
+
+	we(W_CONSTI);
+	we(3);
+	we(W_SHL);
+	we(W_ADDI);
+}
 
 static void mf_expr(ND* nd) {
 
@@ -87,59 +140,92 @@ static void mf_expr(ND* nd) {
 		mf_expr(nd->le);
 		mf_expr(nd->ri);
 		
-		if (p == op_add) wemit(W_ADD);
-		else if (p == op_sub) wemit(W_SUB);
-		else if (p == op_mult) wemit(W_MULT);
-		else if (p == op_div) wemit(W_DIV);
-		else if (p == op_lower) wemit(W_MIN);
-		else if (p == op_higher) wemit(W_MAX);
+		if (p == op_add) we(W_ADD);
+		else if (p == op_sub) we(W_SUB);
+		else if (p == op_mult) we(W_MULT);
+		else if (p == op_div) we(W_DIV);
+		else if (p == op_lower) we(W_MIN);
+		else if (p == op_higher) we(W_MAX);
 		else if (p == op_divi) {
-			wemit(W_DIV);
-			wemit(W_FLOOR);
+			we(W_DIV);
+			we(W_FLOOR);
 		}
 	}
 	else if (p == op_mod) {
 		mf_expr(nd->le);
-		wemit(W_TEE);
-		wemit(wavar);
-		wemit(W_GET);
-		wemit(wavar);
+		we(W_TEE);
+		we(wvar);
+		we(W_GET);
+		we(wvar);
 
 		mf_expr(nd->ri);
-		wemit(W_TEE);
-		wemit(wavar + 1);
-		wemit(W_DIV);
-		wemit(W_FLOOR);
-		wemit(W_GET);
-		wemit(wavar + 1);
-		wemit(W_MULT);
-		wemit(W_SUB);
+		we(W_TEE);
+		we(wvar + 1);
+		we(W_DIV);
+		we(W_FLOOR);
+		we(W_GET);
+		we(wvar + 1);
+		we(W_MULT);
+		we(W_SUB);
 	}
 	else if (p == op_floor || p == op_abs || p == op_negf || p == op_sqrt) {
 		mf_expr(nd->le);
 
-		if (p == op_floor) wemit(W_FLOOR);
-		else if (p == op_abs) wemit(W_ABS);
-		else if (p == op_negf) wemit(W_NEG);
-		else if (p == op_sqrt) wemit(W_SQRT);
+		if (p == op_floor) we(W_FLOOR);
+		else if (p == op_abs) we(W_ABS);
+		else if (p == op_negf) we(W_NEG);
+		else if (p == op_sqrt) we(W_SQRT);
 	}
 	else if (p == op_lvnum) {
-		wemit(W_GET);
-		wemit(nd->v1);
+		we(W_GET);
+		we(nd->v1);
 	}
 	else if (p == op_const_fl) {
-		wemit(0x44);
-		wemitf(nd->cfl);
+		we(0x44);
+		wef(nd->cfl);
 	}
-//	else if ((p == op_callfunc && proc->start->bxnd == nd->le->bxnd) || p == op_fastcall) {
 	else if ((p == op_callfunc && nd->le->bx3) || p == op_fastcall) {
 		ND* ndh = nd->ri;
 		while (ndh) {
 			mf_expr(ndh);
 			ndh = ndh->next;
 		}
-		wemit(W_CALL);
-		wemit(nd->le->bx3 - 1);
+		we(W_CALL);
+		we(nd->le->bx3 - 1);
+	}
+	else if (p == op_vnum) {
+		we(0x23);	// get global 0 (nums)
+		we(0x00);
+		we(0x41);
+		int h = nd->v1 * 8;
+		if (h < 0) mf_err("expr vnum");
+		we(h);
+		we(W_ADDI);
+		we(0x2B);	// loadf
+		we(0x00);
+		we(0x00);
+	}
+	else if (p == op_arrlen) {
+		we(0x23);
+		we(0x01);	// arrays
+		we(0x41);
+
+		int h = (nd->v1 + 1) * -12 + 4;
+		if (h < 0) mf_err("expr");
+		we(h);
+		we(W_ADDI);
+
+		we(0x28);	// load
+		we(0x00);
+		we(0x00);
+		we(W_I2F);
+	}
+	else if (p == op_vnumael) {
+		mf_arrpos(nd->v1, nd->ri);
+		we(0x2B);	// loadf
+		we(0x00);
+		we(0x00);
+
 	}
 	else {
 		mf_err("expr");
@@ -156,46 +242,47 @@ static void mf_cmpneg(ND* nd, byte lev) {
 	mf_expr(nd->le);
 	mf_expr(nd->ri);
 	//reverse
-	if (p == op_eqf) wemit(W_NE);
-	else if (p == op_neqf) wemit(W_EQ);
-	else if (p == op_ltf) wemit(W_GE);
-	else if (p == op_gtf) wemit(W_LE);
-	else if (p == op_lef) wemit(W_GT);
-	else if (p == op_gef) wemit(W_LT);
+	if (p == op_eqf) we(W_NE);
+	else if (p == op_neqf) we(W_EQ);
+	else if (p == op_ltf) we(W_GE);
+	else if (p == op_gtf) we(W_LE);
+	else if (p == op_lef) we(W_GT);
+	else if (p == op_gef) we(W_LT);
 	else mf_err("cmpneg");
-	wemit(W_BRIF);
-	wemit(lev);
+	we(W_BRIF);
+	we(lev);
 }
 
 static void mf_cmp(ND* nd, byte lev) {
 	void* p = nd->intf;
 	mf_expr(nd->le);
 	mf_expr(nd->ri);
-	if (p == op_eqf) wemit(W_EQ);
-	else if (p == op_neqf) wemit(W_NE);
-	else if (p == op_ltf) wemit(W_LT);
-	else if (p == op_gtf) wemit(W_GT);
-	else if (p == op_lef) wemit(W_LE);
-	else if (p == op_gef) wemit(W_GE);
+	if (p == op_eqf) we(W_EQ);
+	else if (p == op_neqf) we(W_NE);
+	else if (p == op_ltf) we(W_LT);
+	else if (p == op_gtf) we(W_GT);
+	else if (p == op_lef) we(W_LE);
+	else if (p == op_gef) we(W_GE);
 	else mf_err("cmp");
-	wemit(W_BRIF);
-	wemit(lev);
+	we(W_BRIF);
+	we(lev);
 }
-
 static void mf_andneg(ND* nd, byte lev) {
-	while (nd->intf == op_and) {
-		mf_cmpneg(nd->ri, lev);
-		nd = nd->le;
+	if (nd->intf != op_and) {
+		mf_cmpneg(nd, lev);
+		return;
 	}
-	mf_cmpneg(nd, lev);
+	mf_andneg(nd->le, lev);
+	mf_cmpneg(nd->ri, lev);
 }
 
 static void mf_and(ND* nd, byte lev) {
-	while (nd->intf == op_and) {
-		mf_cmp(nd->ri, lev);
-		nd = nd->le;
+	if (nd->intf != op_and) {
+		mf_cmp(nd, lev);
+		return;
 	}
-	mf_cmp(nd, lev);
+	mf_and(nd->le, lev);
+	mf_cmp(nd->ri, lev);
 }
 
 static void mf_repand(ND* nd) {
@@ -206,14 +293,14 @@ static void mf_repand(ND* nd) {
 	}
 	else if (nd->intf == op_and) {
 
-		wemit(W_BLOCK);
-		wemit(W_VOID);
+		we(W_BLOCK);
+		we(W_VOID);
 
 		mf_andneg(nd, 0);
 
-		wemit(W_BR);
-		wemit(2);
-		wemit(W_END);
+		we(W_BR);
+		we(2);
+		we(W_END);
 	}
 	else {
 		mf_err("repand");
@@ -221,133 +308,285 @@ static void mf_repand(ND* nd) {
 }
 
 static void mf_condrep(ND* nd) {
-	while (nd->intf == op_or) {
-		mf_repand(nd->ri);
-		nd = nd->le;
+	if (nd->intf != op_or) {
+		mf_repand(nd);
+		return;
 	}
-	mf_repand(nd);
+	mf_condrep(nd->le);
+	mf_repand(nd->ri);
+}
+
+static void mf_or(ND* nd) {
+	if (nd->intf != op_or) {
+		mf_and(nd, 0);
+		return;
+	}
+	mf_or(nd->le);
+	mf_and(nd->ri, 0);
 }
 
 static void mf_cond(ND* nd, byte lev) {
 	if (nd->intf == op_or) {
-		wemit(W_BLOCK);
-		wemit(W_VOID);
-		while (nd->intf == op_or) {
-			mf_and(nd->ri, 0);
-			nd = nd->le;
-		}
-		mf_and(nd, 0);
-		wemit(W_BR);
-		wemit(lev + 1);
-		wemit(W_END);
+		we(W_BLOCK);
+		we(W_VOID);
+
+		mf_or(nd);
+
+		we(W_BR);
+		we(lev + 1);
+		we(W_END);
 	}
 	else {
 		mf_andneg(nd, lev);
 	}
 }
+static void mf_statement(ND* nd) {
+	nd_stat = nd;
+	void* p = nd->vf;
 
-static void mf_sequ(ND* nd) {
-	while (nd) {
-		nd_stat = nd;
-		void* p = nd->vf;
+	if (0) {}
+	else if (p == op_while) {
 
-		if (0) {
-		}
-		else if (p == op_while) {
+		we(W_BLOCK);
+		we(W_VOID);
+		we(W_LOOP);
+		we(W_VOID);
 
-			wemit(W_BLOCK);
-			wemit(W_VOID);
-			wemit(W_LOOP);
-			wemit(W_VOID);
+		mf_cond(nd->le, 1);
+		mf_sequ(nd->ri);
 
-			mf_cond(nd->le, 1);
-			mf_sequ(nd->ri);
+		we(W_BR);
+		we(0);
+		we(W_END);
+		we(W_END);
+	}
+	else if (p == op_for) {
+		ND* ndx = nd + 1;
+		mf_expr(ndx->ex2);		// from
 
-			wemit(W_BR);
-			wemit(0);
-			wemit(W_END);
-			wemit(W_END);
+		we(W_SET);
+		we(nd->v1);				// loop var
 
-		}
-		else if (p == op_if) {
+		mf_expr(nd->ri);		// to
+		we(W_SET);
+		we(wvar);
 
-			wemit(W_BLOCK);
-			wemit(W_VOID);
+		we(W_BLOCK);
+		we(W_VOID);
+		we(W_LOOP);
+		we(W_VOID);
 
-			mf_cond(nd->le, 0);
-			mf_sequ(nd->ri);
+		we(W_GET);
+		we(wvar);
+		we(W_GET);
+		we(wvar);
+		we(W_GET);
+		we(nd->v1);
+		we(W_LT);
+		we(W_BRIF);			// exit loop
+		we(1);
 
-			wemit(W_END);
+		mf_sequ(ndx->ex);
 
-		}
-		else if (p == op_if_else) {
-			ND* ndx = nd->ri;
+		we(W_GET);
+		we(nd->v1);
+		we(W_CONST);
+		wef(1);
+		we(W_ADD);
+		we(W_SET);
+		we(nd->v1);
 
-			wemit(W_BLOCK);
-			wemit(W_VOID);
-			wemit(W_BLOCK);
-			wemit(W_VOID);
+		we(W_SET);
+		we(wvar);
+		we(W_BR);
+		we(0);
 
-			mf_cond(nd->le, 0);
+		we(W_END);
+		we(W_END);
+	}
+	else if (p == op_if) {
 
-			mf_sequ(ndx->ex);
+		we(W_BLOCK);
+		we(W_VOID);
 
-			wemit(W_BR);
-			wemit(1);
-			wemit(W_END);
+		mf_cond(nd->le, 0);
+		mf_sequ(nd->ri);
 
-			mf_sequ(ndx->ex2);
+		we(W_END);
 
-			wemit(W_END);
+	}
+	else if (p == op_if_else) {
+		ND* ndx = nd->ri;
 
-		}
-		else if (p == op_repeat) {
+		we(W_BLOCK);
+		we(W_VOID);
+		we(W_BLOCK);
+		we(W_VOID);
 
-			ND* ndx = nd + 1;
+		mf_cond(nd->le, 0);
 
-			wemit(W_BLOCK);
-			wemit(W_VOID);
-			wemit(W_LOOP);
-			wemit(W_VOID);
+		mf_sequ(ndx->ex);
 
-			mf_sequ(nd->ri);
-			mf_condrep(nd->le);
-			mf_sequ(ndx->ex);
+		we(W_BR);
+		we(1);
+		we(W_END);
 
-			wemit(W_BR);
-			wemit(0);
+		mf_sequ(ndx->ex2);
 
-			wemit(W_END);
-			wemit(W_END);
+		we(W_END);
 
-		}
-		else if (p == op_flassp || p == op_flassm || p == op_flasst || p == op_flassd) {
-			wemit(W_GET);
-			wemit(nd->v1);
-			if (nd->v1 < 0) {
-				mf_err("flass global");
-			}
+	}
+	else if (p == op_repeat) {
+
+		ND* ndx = nd + 1;
+
+		we(W_BLOCK);
+		we(W_VOID);
+		we(W_LOOP);
+		we(W_VOID);
+
+		mf_sequ(nd->ri);
+		mf_condrep(nd->le);
+		mf_sequ(ndx->ex);
+
+		we(W_BR);
+		we(0);
+
+		we(W_END);
+		we(W_END);
+
+	}
+	else if (p == op_flassp || p == op_flassm || p == op_flasst || p == op_flassd) {
+		if (nd->v1 >= 0) {
+			we(W_GET);
+			we(nd->v1);
 			mf_expr(nd->ri);
-			if (p == op_flassp) wemit(W_ADD);
-			else if (p == op_flassm) wemit(W_SUB);
-			else if (p == op_flasst) wemit(W_MULT);
-			else wemit(W_DIV);
-
-			wemit(W_SET);
-			wemit(nd->v1);
-		}
-		else if (p == op_flass) {
-			mf_expr(nd->ri);
-			wemit(W_SET);
-			wemit(nd->v1);
-		}
-		else if (p == op_return) {
-			mf_expr(nd->le);
-			wemit(0x0f);
+			if (p == op_flassp) we(W_ADD);
+			else if (p == op_flassm) we(W_SUB);
+			else if (p == op_flasst) we(W_MULT);
+			else we(W_DIV);
+			we(W_SET);
+			we(nd->v1);
 		}
 		else {
-			mf_err("sequence");
+			we(0x23);	// get global 0 (nums)
+			we(0x00);
+			we(0x41);
+			we((nd->v1 + 1) * -8);
+			we(W_ADDI);
+			we(W_TEE);
+			we(wvar + 2);
+			we(W_GET);
+			we(wvar + 2);
+			we(0x2B);	// loadf
+			we(0x00);
+			we(0x00);
+			mf_expr(nd->ri);
+			if (p == op_flassp) we(W_ADD);
+			else if (p == op_flassm) we(W_SUB);
+			else if (p == op_flasst) we(W_MULT);
+			else we(W_DIV);
+			we(0x39);	// store
+			we(0x00);
+			we(0x00);
 		}
+	}
+	else if (p == op_flass) {
+		if (nd->v1 >= 0) {	// local
+			mf_expr(nd->ri);
+			we(W_SET);
+			we(nd->v1);
+		}
+		else {
+			we(0x23);
+			we(0x00);
+			we(0x41);
+			int h = (nd->v1 + 1) * -8;
+			we(h);
+			we(W_ADDI);
+			mf_expr(nd->ri);
+			we(0x39);	// store
+			we(0x00);
+			we(0x00);
+		}
+	}
+	else if (p == op_flael_ass) {
+
+		ND* ndx = nd + 1;
+
+		mf_arrpos(nd->v1, nd->ri);
+		mf_expr(ndx->ex);
+
+		we(0x39);	// store
+		we(0x00);
+		we(0x00);
+
+	}
+	else if (p == op_return) {
+		if (nd->le) mf_expr(nd->le);
+		else {
+			we(W_CONST);
+			wef(0);
+		}
+		we(0x0f);
+	}
+
+
+	else if ((p == op_callproc && nd->le->bx3) || p == op_fastcallproc) {
+		ND* ndh = nd->ri;
+		while (ndh) {
+			mf_expr(ndh);
+			ndh = ndh->next;
+		}
+		we(W_CALL);
+		we(nd->le->bx3 - 1);
+		we(W_DROP);
+	}
+	else if (p == op_swapnumael) {
+		// swap a[i] a[j]
+		ND* ndx = nd + 1;
+
+		mf_arrpos(nd->v1, nd->ri);
+		we(W_TEE);
+		we(wvar + 2);	// &a[i]
+		we(0x2B);	// loadf
+		we(0x00);
+		we(0x00);		// a[i]
+
+
+		we(W_GET);
+		we(wvar + 2);	// &a[i]
+
+		mf_arrpos(ndx->vx2, ndx->ex);
+		we(W_TEE);
+		we(wvar + 3);	// &a[j]
+		we(0x2B);	// loadf
+		we(0x00);
+		we(0x00);		// a[j]
+
+		we(0x39);	// storef  a[i] <= a[j]
+		we(0x00);
+		we(0x00);
+
+		we(W_SET);
+		we(wvar);
+		we(W_GET);
+		we(wvar + 3);	// &a[j]
+		we(W_GET);
+		we(wvar);
+
+		we(0x39);	// storef  a[j] <= a[i]
+		we(0x00);
+		we(0x00);
+	}
+	else {
+		mf_err("sequence");
+	}
+
+}
+static void mf_sequ(ND* nd) {
+	while (nd) {
+		mf_statement(nd);
 		nd = nd->next;
 	}
 }
@@ -384,11 +623,14 @@ static void parse_fastfunc(void) {
 	wasmi += 2;
 
 	byte b = proc->varcnt[0] - nparm;
-	wavar = b + nparm;
+	wvar = b + nparm;
 	b += 2;
-	wemit(1);
-	wemit(b);
-	wemit(0x7c);
+
+	we(2);
+	we(b);			// count
+	we(0x7c);		// f64
+	we(2);			// count
+	we(0x7f);		// i32
 
 	mf_sequ(proc->start->bxnd);
 
@@ -397,11 +639,10 @@ static void parse_fastfunc(void) {
 		goto cleanup;
 	}
 
-	// return 0
-	wemit(0x44);
-	wemitf(0);
+	we(0x44);	// constf
+	wef(0);
 
-	wemit(W_END);
+	we(W_END);
 
 	ushort h = wasmi - 2 - fstart;
 
@@ -422,35 +663,87 @@ cleanup:
 	wasm = NULL;
 }
 
+
+static int emleb(byte* out, uint v) {
+	int n = 0;
+	do {
+		byte b = v & 0x7F;
+		v >>= 7;
+		if (v) b |= 0x80;
+		out[n++] = b;
+	} while (v);
+	return n;
+}
+static int emstr(byte* out, const char* s) {
+	int len = strlen(s);
+	int n = emleb(out, len);
+	memcpy(out + n, s, len);
+	return n + len;
+}
+
 static void build_fastfuncs(void) {
 
-	byte wasmhd[200];
+	byte wasmhd[2048];
+	byte tmp[1024];
 
-	memcpy(wasmhd, "\0asm", 4);
-	memcpy(wasmhd + 4, "\1\0\0\0", 4);
-	wasmhd[8] = 1;	// section type
+	int k = 0;
+	int t;
 
-	wasmhd[10] = 5;	// num types
-	byte k = 11;
+	memcpy(wasmhd + k, "\0asm", 4); k += 4;
+	memcpy(wasmhd + k, "\1\0\0\0", 4); k += 4;
 
+	// --- type
+	t = 0;
+	tmp[t++] = 5;				  // number of types
 	for (byte j = 0; j <= 4; j++) {
-		wasmhd[k++] = 0x60;	// func type
-		wasmhd[k++] = j;
-		for (byte i = 0; i < j; i++) {
-			wasmhd[k++] = 0x7c;
-		}
-		wasmhd[k++] = 1;		// 1 return value
-		wasmhd[k++] = 0x7c;		// return type
+		tmp[t++] = 0x60;		   // func type
+		tmp[t++] = j;			  // param count = j
+		for (byte i = 0; i < j; i++) tmp[t++] = 0x7c;  // f64
+		tmp[t++] = 1;			  // result count
+		tmp[t++] = 0x7c;		   // f64 result
 	}
-	wasmhd[9] = k - 10;
 
+	wasmhd[k++] = 0x01;			// section id: Type
+	k += emleb(wasmhd + k, t);  // section size
+	memcpy(wasmhd + k, tmp, t);
+	k += t;
 
-	wasmhd[k++] = 3;				// section function
-	wasmhd[k++] = 1 + fastfuncn;	// section size
-	wasmhd[k++] = fastfuncn;	// n functions
+	// --- import
+	t = 0;
+	tmp[t++] = 3;							// import count = 2
+
+	// -- import 1: memory
+	t += emstr(tmp + t, "env");				// module "env"
+	t += emstr(tmp + t, "memory");			// field  "memory"
+	tmp[t++] = 0x02;						// kind = memory
+	tmp[t++] = 0x00;						// limits flags = 0 (min only)
+	t += emleb(tmp + t, 1);					// min = 1 page
+
+	// -- import 2: globals
+	t += emstr(tmp + t, "env");				// module "env"
+	t += emstr(tmp + t, "gnum");			// field  "gnum"
+	tmp[t++] = 0x03;						// kind = global
+	tmp[t++] = 0x7f;						// valtype = i32
+	tmp[t++] = 0x01;						// mutable = true
+
+	t += emstr(tmp + t, "env");
+	t += emstr(tmp + t, "garr");
+	tmp[t++] = 0x03;
+	tmp[t++] = 0x7f;
+	tmp[t++] = 0x01;
+
+	wasmhd[k++] = 0x02;						// section id: Import
+	k += emleb(wasmhd + k, t);
+	memcpy(wasmhd + k, tmp, t);
+	k += t;
+
+	// --- function
+	t = 0;
+
+	tmp[t++] = fastfuncn;					// number of functions
 
 	byte nparm;
-	struct proc *p = proc_p;
+	struct proc* p = proc_p;
 	while (p < proc_p + proc_len) {
 		if (p->start->bx3 != 0) {
 			if (strcmp(p->parms, "") == 0) nparm = 0;
@@ -458,48 +751,67 @@ static void build_fastfuncs(void) {
 			else if (strcmp(p->parms, "ff") == 0) nparm = 2;
 			else if (strcmp(p->parms, "fff") == 0) nparm = 3;
 			else nparm = 4;
-			wasmhd[k++] = nparm;	// signature func 0
+			tmp[t++] = nparm;				// type index (0..4)
 		}
 		p += 1;
 	}
-	wasmhd[k++] = 7;					// exports
-	wasmhd[k++] = 1 + 4 * fastfuncn;	// size
-	wasmhd[k++] = fastfuncn;			// n exports
+	wasmhd[k++] = 0x03;					  // section id: Function
+	k += emleb(wasmhd + k, t);
+	memcpy(wasmhd + k, tmp, t);
+	k += t;
 
+	// --- export
+	// "a","b","c",.
+	t = 0;
+
+	tmp[t++] = fastfuncn;					// number of exports
 	for (byte i = 0; i < fastfuncn; i++) {
-		wasmhd[k++] = 1;	// str len
-		wasmhd[k++] = 'a' + i;
-		wasmhd[k++] = 0;	// export kind
-		wasmhd[k++] = i;	// func index
+		tmp[t++] = 1;				// str len
+		tmp[t++] = 'a' + i;
+		tmp[t++] = 0;				// export kind
+		tmp[t++] = i;				// func index
 	}
+	wasmhd[k++] = 0x07;				// section id: Export
+	k += emleb(wasmhd + k, t);
+	memcpy(wasmhd + k, tmp, t);
+	k += t;
 
-	wasmhd[k++] = 0x0a; // code
+	// --- code
+	int ncount = emleb(tmp, fastfuncn);
+	uint payload_size = wasmi + ncount;
 
-	// code section size
-	ushort h = wasmi + 1;
-
-	wasmhd[k++] = (h & 127) | 128;
-	wasmhd[k++] = h >> 7;
-	wasmhd[k++] = fastfuncn; // n functions
+	wasmhd[k++] = 0x0A;						// section id: Code
+	k += emleb(wasmhd + k, payload_size);	// section size
+	memcpy(wasmhd + k, tmp, ncount);
+	k += ncount;							// function count
 
 #ifdef __EMSCRIPTEN__
 	EM_ASM({
-		var hdrView  = HEAPU8.subarray($0, $0 + $1);
+		var hdrView = HEAPU8.subarray($0, $0 + $1);
 		var bodyView = HEAPU8.subarray($2, $2 + $3);
 		var bytes = new Uint8Array(hdrView.length + bodyView.length);
-
 		bytes.set(hdrView, 0);
 		bytes.set(bodyView, hdrView.length);
 
 		var mod = new WebAssembly.Module(bytes);
-		fastinst = new WebAssembly.Instance(mod);
+		Module['gnum'] = new WebAssembly.Global({ value: 'i32', mutable: true }, 0);
+		Module['garr'] = new WebAssembly.Global({ value: 'i32', mutable: true }, 0);
+
+		fastinst = new WebAssembly.Instance(mod, {
+			env: {
+				// memory: Module['wasmMemory'],
+				memory: wasmMemory,
+				gnum: Module['gnum'],
+				garr: Module['garr']
+			}
+		});
 
 	}, wasmhd, k, wasm, wasmi);
 #endif
-
 	free(wasm);
 	wasm = NULL;
 }
+
 static void wasm_clean(void) {
 	fastfunc_errline = 0;
 	free(wasm);
@@ -510,4 +822,3 @@ static void wasm_clean(void) {
 	});
 #endif
 }
- 

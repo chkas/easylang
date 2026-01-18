@@ -1,27 +1,25 @@
-alpha$ = "0123456789AB"
 func$ itoa n b .
-   if n > 0 : return itoa (n div b) b & substr alpha$ (n mod b + 1) 1
+   if n = 0 : return ""
+   d = n mod b + 48
+   if d >= 58 : d += 7
+   return itoa (n div b) b & strchar d
 .
-func unique s$ .
-   len dig[] 12
-   for c$ in strchars s$
-      ind = strpos alpha$ c$
-      dig[ind] = 1
+func unique s b .
+   len dig[] b + 1
+   while s > 0
+      dig[s mod b + 1] = 1
+      s = s div b
    .
    for v in dig[] : cnt += v
    return cnt
 .
 proc find b .
-   n = floor pow b ((b - 1) div 2)
+   n = floor pow b ((b - 1) / 2) + 1
    repeat
       sq = n * n
-      sq$ = itoa sq b
-      until len sq$ >= b and unique sq$ = b
+      until unique sq b = b
       n += 1
    .
-   n$ = itoa n b
-   print "Base " & b & ": " & n$ & "² = " & sq$
+   print "Base " & b & ": " & itoa n b & "² = " & itoa sq b
 .
-for base = 2 to 12
-   find base
-.
+for base = 2 to 12 : find base

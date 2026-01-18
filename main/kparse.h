@@ -464,9 +464,13 @@ S void parse_call_stat(ND* nd, struct proc* p) {
 		}
 	}
 */
-	nd->vf = op_callproc;
     parse_call_param(nd, p, 0);
 	nd->ri = nd->next;
+	nd->vf = op_callproc;
+
+	if (p->start && p->start->bx3 != 0) {
+		nd->vf = op_fastcallproc;
+	}
 }
 
 S int parse_vnumael(ND* nd, int aelael) {
@@ -2394,7 +2398,16 @@ S void parse_funcproc(void) {
 		}
 	}
 	else {
-		parse_proc(0);
+		if (tok == t_fastproc && cod) {
+			in_fastfunc = 1;
+			parse_proc(0);
+			if (!errn) parse_fastfunc();
+			in_fastfunc = 0;
+		}
+		else {
+			parse_proc(0);
+		}
+//		parse_proc(0);
 
 	}
 	proc = proc_p;
@@ -2522,6 +2535,7 @@ S ND* parse_stat(void) {
 				nd->vf = op_return;
 				csb_tok_nt();
 				if (proc->typ == 0) {
+					nd->le = NULL;
 				}
 				else if (proc->typ == 1) {
 					cs_spc();

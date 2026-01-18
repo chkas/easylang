@@ -2345,6 +2345,15 @@ S double op_fastcall(ND* nd0) {
 #endif
 }
 
+S void op_fastcallproc(ND* nd0) {
+
+#ifdef __EMSCRIPTEN__
+	op_fastcall(nd0);
+#else
+	op_callproc(nd0);
+#endif
+}
+
 #define sl_as(ps, s) str_append(ps, s)
 
 S void sl_anf(STR* ps, double h) {
@@ -2770,6 +2779,11 @@ S void free_rt(void) {
 	parse_clean();
 }
 
+void* arrptr(int t) {
+	if (t == 0) return rt_nums;
+	return rt_arrs;
+}
+
 S void init_rt(void) {
 
 	int h;
@@ -2780,9 +2794,16 @@ S void init_rt(void) {
 	h = proc_p->varcnt[1] * sizeof(STR);
 	rt_strs = (STR*)_realloc(NULL, h);
 	memset(rt_strs, 0, h);
-
 	h = proc_p->varcnt[2] * sizeof(ARR);
 	rt_arrs = (ARR*)_realloc(NULL, h);
+#ifdef __EMSCRIPTEN__
+	EM_ASM({
+		if (fastinst) {
+			Module['gnum'].value = Module._arrptr(0);
+			Module['garr'].value = Module._arrptr(1);
+		}
+	});
+#endif
 
 	time_start = sys_time();
 
