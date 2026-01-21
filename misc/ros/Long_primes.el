@@ -8,13 +8,13 @@ fastfunc isprim num .
    return 1
 .
 prim = 2
-proc nextprim .
+fastproc nextprim .
    repeat
       prim += 1
       until isprim prim = 1
    .
 .
-func period n .
+fastfunc period n .
    r = 1
    repeat
       r = (r * 10) mod n

@@ -294,7 +294,7 @@ static int line2pos_html(int line) {
 			stat = 1;
 			pos -= 1;
 		}
-		else if (c == '&' && cn != '=') stat = 2;
+		else if (c == '&' && isalnum(cn)) stat = 2;
 		else if (c == '\n') l += 1;
 		if (c < 0x80 || c >= 0xc0) pos++;
 	}

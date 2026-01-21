@@ -1,4 +1,4 @@
-func fac n .
+fastfunc fac n .
    r = 1
    for i = 2 to n : r *= i
    return r
@@ -20,7 +20,7 @@ fastfunc ends89 n .
 items[] = [ 0 1 2 3 4 5 6 7 8 9 ]
 global comb[] sum .
 # 
-proc docomb .
+fastproc docomb .
    ncomb = fac len comb[]
    for i = 1 to len comb[]
       h = items[comb[i]]

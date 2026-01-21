@@ -1,4 +1,4 @@
-func maxprimcubefree num .
+fastfunc maxprimcubefree num .
    t = 2
    while t * t <= num
       if num mod t = 0

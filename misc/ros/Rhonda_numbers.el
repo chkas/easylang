@@ -1,4 +1,4 @@
-func isprim n .
+fastfunc isprim n .
    i = 2
    while i <= sqrt n
       if n mod i = 0 : return 0
@@ -6,7 +6,7 @@ func isprim n .
    .
    return 1
 .
-func digitProduct base n .
+fastfunc digitProduct base n .
    product = 1
    while n <> 0
       product *= n mod base
@@ -14,7 +14,7 @@ func digitProduct base n .
    .
    return product
 .
-func primeFactorSum n .
+fastfunc primeFactorSum n .
    for p = 2 to sqrt n
       while n mod p = 0
          sum += p

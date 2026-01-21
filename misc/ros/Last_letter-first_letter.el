@@ -1,35 +1,46 @@
-repeat
-   s$ = input
-   until s$ = ""
-   for n$ in strsplit s$ " " : pok$[] &= n$
-.
-# 
-chain$[] = [ ]
-proc search lng .
-   if lng > len chain$[]
-      chain$[] = [ ]
-      for j to lng
-         chain$[] &= pok$[j]
+global pok$[] pok[] fc[] lc[] .
+proc init .
+   repeat
+      s$ = input
+      until s$ = ""
+      for pok$ in strsplit s$ " "
+         i += 1
+         fc[] &= strcode substr pok$ 1 1
+         lc[] &= strcode substr pok$ len pok$ 1
+         pok[] &= i
+         pok$[] &= pok$
       .
    .
-   lastc$ = substr pok$[lng] len pok$[lng] 1
-   for i = lng + 1 to len pok$[]
-      if substr pok$[i] 1 1 = lastc$
-         swap pok$[i] pok$[lng + 1]
+.
+init
+#
+len chain[] len pok[]
+maxchain = 0
+#
+fastproc search lng .
+   if lng > maxchain
+      for j = 1 to lng : chain[j] = pok[j]
+      maxchain = lng
+   .
+   lastc = lc[pok[lng]]
+   for i = lng + 1 to len pok[]
+      if fc[pok[i]] = lastc
+         swap pok[i] pok[lng + 1]
          search lng + 1
-         swap pok$[i] pok$[lng + 1]
+         swap pok[i] pok[lng + 1]
       .
    .
 .
-for i to len pok$[]
-   swap pok$[i] pok$[1]
+for i to len pok[]
+   swap pok[i] pok[1]
    search 1
-   swap pok$[i] pok$[1]
+   swap pok[i] pok[1]
 .
-for p$ in chain$[]
-   write p$ & " "
+for i to maxchain
+   write pok$[chain[i]] & " "
 .
-# 
+print ""
+#
 input_data
 audino bagon baltoy banette bidoof braviary bronzor carracosta charmeleon
 cresselia croagunk darmanitan deino emboar emolga exeggcute gabite

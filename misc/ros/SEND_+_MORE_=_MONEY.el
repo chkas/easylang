@@ -1,52 +1,52 @@
-func fac n .
-   f = 1
-   for i to n : f *= i
-   return f
-.
-global elements[] nperm permb perma .
-proc perminit a b .
-   perma = a
-   permb = b
-   elements[] = [ ]
-   for i to a : elements[] &= i - 1
-   nperm = fac a / fac b
-.
-func[] getperm r .
-   digs[] = elements[]
+global elements[] nperm perma permb digs[] perm[] .
+fastproc mkperm p .
    fa = nperm
-   for i = perma downto 1 + permb
+   ind = 1
+   for i = perma downto permb + 1
       fa /= i
-      d = r div fa + 1
-      r = r mod fa
-      r[] &= digs[d]
+      d = p div fa + 1
+      p = p mod fa
+      perm[ind] = digs[d]
       for j = d to i - 1
          digs[j] = digs[j + 1]
       .
+      ind += 1
    .
-   return r[]
+.
+proc perminit a b .
+   perma = a
+   permb = b
+   len perm[] a - b
+   elements[] = [ ]
+   for i to a : elements[] &= i - 1
+   nperm = 1
+   for i = a downto b + 1
+      nperm *= i
+   .
+.
+proc test .
+   if perm[1] = 0 or perm[5] = 0 : return
+   for i to 4
+      send = 10 * send + perm[i]
+   .
+   for i = 5 to 7
+      more = 10 * more + perm[i]
+   .
+   more = 10 * more + perm[2]
+   money = more div 100
+   money = 10 * money + perm[3]
+   money = 10 * money + perm[2]
+   money = 10 * money + perm[8]
+   if send + more = money
+      print send & " + " & more & " = " & money
+   .
 .
 proc sendmore .
    perminit 10 2
    for p range0 nperm
-      r[] = getperm p
-      if r[1] <> 0 and r[5] <> 0
-         send = 0
-         for i to 4
-            send = 10 * send + r[i]
-         .
-         more = 0
-         for i = 5 to 7
-            more = 10 * more + r[i]
-         .
-         more = 10 * more + r[2]
-         money = more div 100
-         money = 10 * money + r[3]
-         money = 10 * money + r[2]
-         money = 10 * money + r[8]
-         if send + more = money
-            print send & " + " & more & " = " & money
-         .
-      .
+      digs[] = elements[]
+      mkperm p
+      test
    .
 .
 sendmore

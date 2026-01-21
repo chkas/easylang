@@ -8,7 +8,7 @@ fastfunc isprim num .
    .
    return 1
 .
-func tobase n b .
+fastfunc tobase n b .
    while n > 0
       d = n mod b
       n = n div b

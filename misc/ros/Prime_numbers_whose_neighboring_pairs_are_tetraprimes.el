@@ -1,5 +1,5 @@
 len nfac[] 1000000
-proc sieve .
+fastproc sieve .
    nfac[1] = 1
    for i = 2 to len nfac[]
       if nfac[i] = 0
@@ -13,7 +13,7 @@ proc sieve .
    .
 .
 sieve
-#
+# 
 fastfunc isprim num .
    i = 3
    while i <= sqrt num

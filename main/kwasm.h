@@ -60,7 +60,7 @@ static void mf_err(const char* s) {
 
 #define W_ADD 0xa0
 #define W_SUB 0xa1
-#define W_MULT 0xa2
+#define W_MUL 0xa2
 #define W_DIV 0xa3
 #define W_FLOOR 0x9c
 #define W_ABS 0x99
@@ -142,7 +142,7 @@ static void mf_expr(ND* nd) {
 		
 		if (p == op_add) we(W_ADD);
 		else if (p == op_sub) we(W_SUB);
-		else if (p == op_mult) we(W_MULT);
+		else if (p == op_mult) we(W_MUL);
 		else if (p == op_div) we(W_DIV);
 		else if (p == op_lower) we(W_MIN);
 		else if (p == op_higher) we(W_MAX);
@@ -165,7 +165,7 @@ static void mf_expr(ND* nd) {
 		we(W_FLOOR);
 		we(W_GET);
 		we(wvar + 1);
-		we(W_MULT);
+		we(W_MUL);
 		we(W_SUB);
 	}
 	else if (p == op_floor || p == op_abs || p == op_negf || p == op_sqrt) {
@@ -360,9 +360,15 @@ static void mf_statement(ND* nd) {
 		we(W_END);
 		we(W_END);
 	}
-	else if (p == op_for) {
+	else if (p == op_for || p == op_fordown || p == op_for_to || p == op_forstep) {
 		ND* ndx = nd + 1;
-		mf_expr(ndx->ex2);		// from
+		if (p == op_for_to) {
+			we(W_CONST);
+			wef(1);
+		}
+		else mf_expr(ndx->ex2);		// from
+
+		if (nd->v1 < 0) mf_err("loop var");
 
 		we(W_SET);
 		we(nd->v1);				// loop var
@@ -371,6 +377,12 @@ static void mf_statement(ND* nd) {
 		we(W_SET);
 		we(wvar);
 
+		if (p == op_forstep) {
+			mf_expr(ndx->ex3);		// step
+			we(W_SET);
+			we(wvar + 1);
+		}
+
 		we(W_BLOCK);
 		we(W_VOID);
 		we(W_LOOP);
@@ -378,21 +390,57 @@ static void mf_statement(ND* nd) {
 
 		we(W_GET);
 		we(wvar);
-		we(W_GET);
-		we(wvar);
-		we(W_GET);
-		we(nd->v1);
-		we(W_LT);
+
+		if (p == op_forstep) {
+			we(W_GET);
+			we(wvar + 1);
+			we(W_CONST);
+			wef(1);
+			we(W_GET);
+			we(wvar + 1);
+			we(0xA6); 	// copysign
+
+			we(W_TEE);
+			we(wvar + 1);	// sign
+			we(W_GET);
+			we(wvar);
+			we(W_MUL);
+
+			we(W_GET);
+			we(nd->v1);
+			we(W_GET);
+			we(wvar + 1);	// sign
+			we(W_MUL);
+		}
+		else {
+			we(W_GET);
+			we(wvar);
+			we(W_GET);
+			we(nd->v1);
+		}
+		if (p == op_fordown) we(W_GT);
+		else we(W_LT);
+
 		we(W_BRIF);			// exit loop
 		we(1);
 
 		mf_sequ(ndx->ex);
 
-		we(W_GET);
-		we(nd->v1);
-		we(W_CONST);
-		wef(1);
-		we(W_ADD);
+		if (p == op_forstep) {
+			we(W_TEE);
+			we(wvar + 1);
+			we(W_GET);
+			we(nd->v1);
+			we(W_ADD);
+		}
+		else {
+			we(W_GET);
+			we(nd->v1);
+			we(W_CONST);
+			wef(1);
+			if (p == op_fordown) we(W_SUB);
+			else we(W_ADD);
+		}
 		we(W_SET);
 		we(nd->v1);
 
@@ -463,7 +511,7 @@ static void mf_statement(ND* nd) {
 			mf_expr(nd->ri);
 			if (p == op_flassp) we(W_ADD);
 			else if (p == op_flassm) we(W_SUB);
-			else if (p == op_flasst) we(W_MULT);
+			else if (p == op_flasst) we(W_MUL);
 			else we(W_DIV);
 			we(W_SET);
 			we(nd->v1);
@@ -475,16 +523,16 @@ static void mf_statement(ND* nd) {
 			we((nd->v1 + 1) * -8);
 			we(W_ADDI);
 			we(W_TEE);
-			we(wvar + 2);
+			we(wvar + 3);
 			we(W_GET);
-			we(wvar + 2);
+			we(wvar + 3);
 			we(0x2B);	// loadf
 			we(0x00);
 			we(0x00);
 			mf_expr(nd->ri);
 			if (p == op_flassp) we(W_ADD);
 			else if (p == op_flassm) we(W_SUB);
-			else if (p == op_flasst) we(W_MULT);
+			else if (p == op_flasst) we(W_MUL);
 			else we(W_DIV);
 			we(0x39);	// store
 			we(0x00);
@@ -520,7 +568,29 @@ static void mf_statement(ND* nd) {
 		we(0x39);	// store
 		we(0x00);
 		we(0x00);
+	}
 
+	else if (p == op_flael_assp || p == op_flael_assm || p == op_flael_asst || p == op_flael_assd) {
+
+		ND* ndx = nd + 1;
+		mf_arrpos(nd->v1, nd->ri);
+		we(W_TEE);
+		we(wvar + 3);
+		we(W_GET);
+		we(wvar + 3);
+		we(0x2B);	// loadf
+		we(0x00);
+		we(0x00);
+		mf_expr(ndx->ex);
+
+		if (p == op_flael_assp) we(W_ADD);
+		else if (p == op_flael_assm) we(W_SUB);
+		else if (p == op_flael_asst) we(W_MUL);
+		else we(W_DIV);
+
+		we(0x39);	// store
+		we(0x00);
+		we(0x00);
 	}
 	else if (p == op_return) {
 		if (nd->le) mf_expr(nd->le);
@@ -548,18 +618,18 @@ static void mf_statement(ND* nd) {
 
 		mf_arrpos(nd->v1, nd->ri);
 		we(W_TEE);
-		we(wvar + 2);	// &a[i]
+		we(wvar + 3);	// &a[i]
 		we(0x2B);	// loadf
 		we(0x00);
 		we(0x00);		// a[i]
 
 
 		we(W_GET);
-		we(wvar + 2);	// &a[i]
+		we(wvar + 3);	// &a[i]
 
 		mf_arrpos(ndx->vx2, ndx->ex);
 		we(W_TEE);
-		we(wvar + 3);	// &a[j]
+		we(wvar + 4);	// &a[j]
 		we(0x2B);	// loadf
 		we(0x00);
 		we(0x00);		// a[j]
@@ -571,7 +641,7 @@ static void mf_statement(ND* nd) {
 		we(W_SET);
 		we(wvar);
 		we(W_GET);
-		we(wvar + 3);	// &a[j]
+		we(wvar + 4);	// &a[j]
 		we(W_GET);
 		we(wvar);
 
@@ -624,7 +694,7 @@ static void parse_fastfunc(void) {
 
 	byte b = proc->varcnt[0] - nparm;
 	wvar = b + nparm;
-	b += 2;
+	b += 3;
 
 	we(2);
 	we(b);			// count

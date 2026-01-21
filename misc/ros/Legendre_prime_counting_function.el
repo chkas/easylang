@@ -12,7 +12,7 @@ proc mkprimes n .
       if sieve[i] = 0 : primes[] &= i
    .
 .
-func phi x a .
+fastfunc phi x a .
    while a > 1
       pa = primes[a]
       if x <= pa : return 1

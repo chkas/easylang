@@ -1,19 +1,15 @@
 fastfunc next curr n limit .
    repeat
       curr += 1
-      if curr = limit
-         return -1
-      .
+      if curr = limit : return -1
       sum = 0
       tmp = curr
       repeat
          dig = tmp mod 10
          tmp = tmp div 10
-         h = n
          r = 1
-         while h > 0
+         for h = n downto 1
             r *= dig
-            h -= 1
          .
          sum += r
          until tmp = 0
@@ -27,6 +23,7 @@ for n = 3 to 8
    repeat
       curr = next curr n pow 10 n
       until curr = -1
-      print curr
+      write curr & " "
    .
 .
+print ""
