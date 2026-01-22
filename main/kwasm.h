@@ -225,7 +225,24 @@ static void mf_expr(ND* nd) {
 		we(0x2B);	// loadf
 		we(0x00);
 		we(0x00);
+	}
+	else if (p == op_sign) {
+		we(W_CONST);
+		wef(1);
+		mf_expr(nd->le);
+		we(W_TEE);
+		we(wvar);
+		we(0xA6); 	// copysign
+		we(W_CONST);
+		wef(0);
 
+		we(W_CONST);
+		wef(0);
+		we(W_GET);
+		we(wvar);
+		we(W_NE);
+
+		we(0x1B);	// select
 	}
 	else {
 		mf_err("expr");
