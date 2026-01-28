@@ -45,7 +45,7 @@ repeat
 proc solv id &v .
    if o[id] = 0
       v = a[id]
-      break 1
+      return
    .
    solv a[id] a
    solv b[id] b

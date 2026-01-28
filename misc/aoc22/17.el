@@ -77,7 +77,7 @@ proc mov dir &block .
          ind = irock + r * 9 + c
          if rock[r * 4 + c + 1] = 1 and m[ind + dir] = 1
             block = 1
-            break 3
+            return
          .
       .
    .

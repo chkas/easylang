@@ -6,7 +6,7 @@ cnt[] = [ 3 7 2 3 0 0 5 3 2 1 ]
 proc getid n$ &id .
    for id to len name$[]
       if name$[id] = n$
-         break 2
+         return
       .
    .
 .

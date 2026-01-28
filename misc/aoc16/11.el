@@ -20,7 +20,7 @@ na$[] = [ ]
 proc getid n$ &id .
    for id to len na$[]
       if na$[id] = n$
-         break 2
+         return
       .
    .
    na$[] &= n$

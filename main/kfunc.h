@@ -29,6 +29,8 @@
 #endif
 
 S struct {
+	ushort arrbase;
+	ushort radians;
 	double mouse_x;
 	double mouse_y;
 	const char* key0;
@@ -41,8 +43,6 @@ S struct {
 	ushort slow;
 	uint input_data_pos;
 	int randseed;
-	ushort radians;
-	ushort arrbase;
 } rt;
 
 S volatile int stop_flag;
@@ -191,7 +191,8 @@ S double op_sys_time(ND* nd) {
 S double randf(void) {
 	double f;
 
-#ifdef __EMSCRIPTEN__
+//#ifdef __EMSCRIPTEN__
+#if 0
 	if (rt.randseed == -1) {
 //		f = emscripten_random();  // is only float
 		f = emscripten_math_random();
@@ -199,7 +200,8 @@ S double randf(void) {
 	else f = ((double)rand() / 0x80000000);
 #else
 	if (rt.randseed == -1) {
-		rt.randseed = time(0);
+		rt.randseed = (int)(long long)(sys_time() * 1000);
+		//rt.randseed = time(0);
 		srand(rt.randseed);
 		rand();
 	}
@@ -207,8 +209,8 @@ S double randf(void) {
 #endif
 	return f;
 }
-S double op_random(ND* nd) {
-	long long range = (long long)numf(nd->le);
+double wrandom(double rangef) {
+	long long range = (long long)rangef;
 	if (range < 1) return randf();
 
 	if (range <= 0x80000000) {
@@ -222,6 +224,9 @@ S double op_random(ND* nd) {
 	else return (long long)(randf() * range) + rt.arrbase;
 }
 
+S double op_random(ND* nd) {
+	return wrandom(numf(nd->le));
+}
 S double op_numif(ND* nd) {
 	return intf(nd->le);
 }
@@ -296,58 +301,77 @@ S double op_sqrt(ND* nd) {
 S double op_log10(ND* nd) {
 	return log10(numf(nd->le));
 }
-S double op_log(ND* nd) {
-	double a = numf(nd->le);
-	double b = numf(nd->ri);
-	if (b == 10) return log10(a);
-	if (b == 2) return log2(a);
-	if (b == 0) return log(a);
-	return log2(a) / log2(b);
-}
-S double op_sin(ND* nd) {
-	double h = numf(nd->le);
+S double xsin(double h) {
 	if (rt.radians) return sin(h);
 	if (h >= 360 || h <= -360) h = fmod(h, 360);
 	return sin(h / 180. * M_PI);
 
 //	return sin(numf(nd->le) / 180. * M_PI);
-// not supported in emscripten
+// not supported in emscripten (musl)
 // return __sinpi(numf(nd->le) / 180.);
 }
-S double op_cos(ND* nd) {
-	double h = numf(nd->le);
+S double op_sin(ND* nd) {
+	return xsin(numf(nd->le));
+}
+S double xcos(double h) {
 	if (rt.radians) return cos(h);
 	if (h >= 360 || h <= -360) h = fmod(h, 360);
 	return cos(h / 180. * M_PI);
-//	return cos(numf(nd->le) / 180. * M_PI);
 }
-S double op_tan(ND* nd) {
-	double h = numf(nd->le);
+S double op_cos(ND* nd) {
+	return xcos(numf(nd->le));
+}
+S double xtan(double h) {
 	if (!rt.radians) h = h / 180. * M_PI;
 	return tan(h);
 }
+S double op_tan(ND* nd) {
+	return xtan(numf(nd->le));
+}
+S double xasin(double v) {
+	double h = asin(v);
+	if (rt.radians) return h;
+	return  h * 180 / M_PI;
+}
 S double op_asin(ND* nd) {
-	double h = asin(numf(nd->le));
+	return xasin(numf(nd->le));
+}
+S double xacos(double v) {
+	double h = acos(v);
 	if (rt.radians) return h;
 	return  h * 180 / M_PI;
 }
 S double op_acos(ND* nd) {
-	double h = acos(numf(nd->le));
+	return xacos(numf(nd->le));
+}
+S double xatan(double v) {
+	double h = atan(v);
 	if (rt.radians) return h;
 	return  h * 180 / M_PI;
 }
 S double op_atan(ND* nd) {
-	double h = atan(numf(nd->le));
+	return xatan(numf(nd->le));
+}
+S double xatan2(double v1, double v2) {
+	double h = atan2(v1, v2);
 	if (rt.radians) return h;
 	return  h * 180 / M_PI;
 }
 S double op_atan2(ND* nd) {
-	double h = atan2(numf(nd->le), numf(nd->ri));
-	if (rt.radians) return h;
-	return  h * 180 / M_PI;
+	return xatan2(numf(nd->le), numf(nd->ri));
 }
 S double op_pow(ND* nd) {
 	return pow(numf(nd->le), numf(nd->ri));
+}
+
+S double xlog(double a, double b) {
+	if (b == 10) return log10(a);
+	if (b == 2) return log2(a);
+	if (b == 0) return log(a);
+	return log2(a) / log2(b);
+}
+S double op_log(ND* nd) {
+	return xlog(numf(nd->le), numf(nd->ri));
 }
 
 S double op_higher(ND* nd) {
@@ -2827,3 +2851,82 @@ S void init_rt(void) {
 	if (sysconfig & 4) rt.arrbase = 0;
 	arrs_init(rt_arrs, proc_p->varcnt[2]);
 }
+
+
+#ifdef __EMSCRIPTEN__
+
+EMSCRIPTEN_KEEPALIVE
+double libfunc(int nr, double v) {
+	switch (nr) {
+	case 0:
+		return wrandom(v);
+	case 1:
+		return randf();
+	case 2:
+		return M_PI;
+	case 3:
+		return xsin(v);
+	case 4:
+		return xcos(v);
+	case 5:
+		return xtan(v);
+	case 6:
+		return xasin(v);
+	case 7:
+		return xacos(v);
+	case 8:
+		return xatan(v);
+
+	default: return NAN;
+	}
+}
+EMSCRIPTEN_KEEPALIVE
+double libfunc2(int nr, double a, double b) {
+	switch (nr) {
+	case 0:
+		return xatan2(a, b);
+	case 1:
+		return pow(a, b);
+	case 2:
+		return xlog(a, b);
+
+	default: return NAN;
+	}
+}
+EMSCRIPTEN_KEEPALIVE
+double* arrfunc(double* arr, int olen, int nlen) {
+	if (nlen == 0) {
+		free(arr);
+		return NULL;
+	}
+	if (nlen < 0) {
+		nlen = olen + nlen;
+		if (nlen < 0) nlen = 0;
+	}
+	arr = xrealloc(arr, nlen * sizeof(double), NULL);
+	if (nlen > olen) memset(arr + olen, 0, (nlen - olen) * sizeof(double));
+	return arr;
+}
+
+EMSCRIPTEN_KEEPALIVE
+void xtrafunc(int id, int iarg, double farg) {
+	if (id == 0) {		// global arr_append
+		ARR* arr = rt_arrs + iarg;
+		arr->typ = 0;
+		arr->len += 1;
+		void* p = xrealloc(arr->p, arr->len * sizeof(double), NULL);
+		arr->p = p;
+		if (arr) *(arr->pnum + arr->len - 1) = farg;
+	}
+
+	else if (id == 1) {		// global len[]
+		int len = (int)farg;
+		ARR* arr = rt_arrs + iarg;
+		arr->typ = 0;
+		void* p = xrealloc(arr->p, len * sizeof(double), NULL);
+		if (len > arr->len) memset(arr->pnum + arr->len, 0, (len - arr->len) * sizeof(double));
+		arr->len = len;
+		arr->p = p;
+	}
+}
+#endif

@@ -1132,7 +1132,7 @@ S ND* parse_sequ_stat() {
 
 S void parse_subr(void) {
 
-	loop_level += 1;
+//	loop_level += 1;
 	stat_begin_nest();
 	if (tok != t_name) error_tok(t_name);
 	const char* name = getn(tval);
@@ -1151,14 +1151,12 @@ S void parse_subr(void) {
 	p->sstart->ex = h;
 	
 	nexttok();
-	loop_level -= 1;
+//	loop_level -= 1;
 }
 
 S int parse_proc_header(int mode, byte proctyp) {
 
 	// mode:0 procdecl
-	csb_tok_spc_nt();
-
 	if (tok != t_name) error_tok(t_name);
 	const char* name = getn(tval);
 	proc = proc_get(name);
@@ -1173,7 +1171,7 @@ S int parse_proc_header(int mode, byte proctyp) {
 	}
 	else {
 		proc = proc_add(name);
-		if (proc == NULL) return 0;
+		//kc? if (proc == NULL) return 0;
 	}
 	proc->typ = proctyp;
 
@@ -1295,9 +1293,19 @@ err:
 	return 0;
 }
 
+ND* gnd;
+
 S void parse_proc(byte typ) {
 
-	if (!parse_proc_header(1, typ)) return;
+	byte hereproc = 0;
+	csb_tok_spc_nt();
+	if (typ == 0 && tok == t_dot) {
+		cs_tok_nt();
+		hereproc = 1;
+		proc = proc_add("");
+		proc->typ = 0;
+	}
+	else if (!parse_proc_header(1, typ)) return;
 
 	ND* nd = mknd();
 	proc->start = nd;
@@ -1338,16 +1346,23 @@ S void parse_proc(byte typ) {
 		nd->bx[i] = ptyp;
 		i += 1;
 	}
-
 	for (int i = 0; i < procdecl_len; i++) {
 		if (procdecl[i].proc_i == proc - proc_p) {
 			ND* nd = procdecl[i].callref;
 			nd->le = proc->start;
 		}
 	}
+
+	if (hereproc == 1) {
+		gnd = mknd();
+		gnd->le = proc->start;
+		gnd->ri = NULL;
+		gnd->vf = op_callproc;
+	}
 }
 
 S void parse_procdecl(byte typ) {
+	csb_tok_spc_nt();
 	parse_proc_header(0, typ);
 	proc->varcnt[0] = code_utf8len;
 	proc = proc_p;
@@ -1913,9 +1928,13 @@ S void parse_while_stat(ND* nd) {
 	stat_begin_nest();
 	nd->vf = op_while;
 	nd->le = parse_log_ex();
-	nd->ri = parse_sequ_stat();
-	if (nd->ri) return;
+
 	loop_level += 1;
+	nd->ri = parse_sequ_stat();
+	if (nd->ri) {
+		loop_level -= 1;
+		return;
+	}
 	nd->ri = parse_sequ_end();
 	loop_level -= 1;
 	nexttok();
@@ -1999,9 +2018,12 @@ S void parse_for_stat(ND* nd) {
 		// todo str, arr var
 		error("variable");
 	}
-	ndx->ex = parse_sequ_stat();
-	if (ndx->ex) return;
 	loop_level += 1;
+	ndx->ex = parse_sequ_stat();
+	if (ndx->ex) {
+		loop_level -= 1;
+		return;
+	}
 	ndx->ex = parse_sequ_end();
 	loop_level -= 1;
 	nexttok();
@@ -2383,7 +2405,7 @@ S void parse_funcproc(void) {
 
 	// proc .. or funcXX ..
 	if (sequ_level != 0) error("not allowed here");
-	loop_level += 1;
+//	loop_level += 1;
 	if (!errn && sequ_level < 16) nest_block[sequ_level] = codestrln;
 	if (tok == t_func || tok == t_fastfunc) {
 
@@ -2402,6 +2424,7 @@ S void parse_funcproc(void) {
 			in_fastfunc = 1;
 			parse_proc(0);
 			if (!errn) parse_fastfunc();
+			if (gnd) gnd->vf = op_fastcallproc;
 			in_fastfunc = 0;
 		}
 		else {
@@ -2411,7 +2434,7 @@ S void parse_funcproc(void) {
 
 	}
 	proc = proc_p;
-	loop_level -= 1;
+//	loop_level -= 1;
 }
 
 
@@ -2524,7 +2547,7 @@ S ND* parse_stat(void) {
 		nd->ri = parse_strex();
 	}
 	else if (tok == t_subr) {
-		if (loop_level != 1 || proc == proc_p) error("not allowed here");
+		if (sequ_level != 1 || proc == proc_p) error("not allowed here");
 		parse_subr();
 		nd->vf = op_nop;
 	}
@@ -2564,7 +2587,7 @@ S ND* parse_stat(void) {
 			else if (tok == t_break) {
 				if (loop_level == 0) error("not in a loop");
 				csb_tok_spc_nt();
-				ushort h = tvalf;
+				ushort h = (ushort)(int)tvalf;
 				if (tok != t_lnumber || h != tvalf) error("break level");
 				if (loop_level < h) error("break level too high");
 				cs(tval);
@@ -2655,8 +2678,13 @@ S ND* parse_sequ0(void) {
 				parse_global_stat();
 			}
 			else if (tok >= t_proc && tok <= t_fastfunc) {
+				gnd = NULL;
 				parse_funcproc();
-
+				if (gnd) {
+					if (ndp == NULL) sequ = gnd;
+					else ndp->next = gnd;
+					ndp = gnd;
+				}
 			}
 			else if (tok == t_subr) {
 				parse_subr();

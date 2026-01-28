@@ -4,7 +4,7 @@ global name$[] r[] .
 proc getid n$ &id .
    for id to len name$[]
       if name$[id] = n$
-         break 2
+         return
       .
    .
    name$[] &= n$

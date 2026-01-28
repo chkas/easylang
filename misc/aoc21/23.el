@@ -55,7 +55,7 @@ sz2 = sz / 2
 gbackground 000
 acol[] = [ 373 773 751 733 ]
 proc show cost t .
-   if visual = 0 : break 1
+   if visual = 0 : return
    gclear
    x = 3
    y = 10 + sz
@@ -204,7 +204,7 @@ proc take_min &cur &cost .
    n = len todo[]
    if n = 0
       cur = -1
-      break 1
+      return
    .
    for i to n - 1
       if cost[i] < cost[n]
@@ -306,7 +306,7 @@ proc run .
       take_min cur cost
       if cur = -1
          print "not solved"
-         break 2
+         return
       .
       go_home cur
       if cnt mod 100 = 0 : show cost 0.01

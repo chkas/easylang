@@ -40,7 +40,7 @@ global pos0 skip .
 proc show p .
    if visual = 0 : return
    skip = (skip + 1) mod 10
-   if skip < 6 : break 1
+   if skip < 6 : return
    p = p div 300 * 300 - 30000
    if p > pos0 + 60000
       pos0 = p

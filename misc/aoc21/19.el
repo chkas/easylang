@@ -118,7 +118,7 @@ proc all_rotations .
             rotall [ 1 3 2 ] [ 1 -1 1 ]
             test found
             if found = 1
-               break 4
+               return
             .
          .
          if ry = 2 and rz = 1

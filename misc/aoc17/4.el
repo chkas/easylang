@@ -6,7 +6,7 @@ proc name n$ &ret .
    for h$ in name$[]
       if h$ = n$
          ret = 1
-         break 2
+         return
       .
    .
    name$[] &= n$

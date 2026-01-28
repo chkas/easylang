@@ -4,7 +4,7 @@ global name$[] childs[][] parent[] w[] root .
 proc name2id n$ &id .
    for id to len name$[]
       if name$[id] = n$
-         break 2
+         return
       .
    .
    name$[] &= n$

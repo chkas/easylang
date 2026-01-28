@@ -12,7 +12,7 @@ ifeq ($(shell echo $(shell cd /tmp;emcc -sSTACK_SIZE=2MB 2>&1 | wc -l)), 4)
 	LDOPT := ""
 endif
 
-LD = emcc -O3 -s WASM=1 -s EXPORTED_FUNCTIONS="['_parse','_exec','_format', '_errstr', '_k_free', '_caret', '_evt_mouse', '_evt_func', '_main', '_arrptr']" -s EXPORTED_RUNTIME_METHODS="['ccall']" -s ALLOW_MEMORY_GROWTH=1 $(LDOPT)
+LD = emcc -O3 -s WASM=1 -s EXPORTED_FUNCTIONS="['_parse','_exec','_format', '_errstr', '_k_free', '_caret', '_evt_mouse', '_evt_func', '_main', '_arrptr', '_libfunc', '_libfunc2', '_arrfunc', '_xtrafunc']" -s EXPORTED_RUNTIME_METHODS="['ccall','wasmMemory','wasmTable']" -s ALLOW_MEMORY_GROWTH=1 $(LDOPT)
 
 ifeq ($(DBG), true)
 	CC := $(CC) -g -gsource-map

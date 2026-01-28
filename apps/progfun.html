@@ -171,7 +171,7 @@ src.push(`proc tree x y l w ang dp .
    xn = x + l * cos ang
    yn = y + l * sin ang
    gline x y xn yn
-   if dp = 1 : break 1
+   if dp = 1 : return
    nb = 2 + if dp < 9
    for i = 1 to nb
       an = ang + (i - nb / 2 - 0.5) * 20

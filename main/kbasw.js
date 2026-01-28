@@ -1,4 +1,4 @@
-/*	kbasw.c
+/*	kbasw.js
 
 	Copyright (c) Christof Kaser christof.kaser@gmail.com.
 	All rights reserved.
@@ -60,7 +60,6 @@ var fastfuncs;
 
 function runx(dbg = 0) {
 	cmds = []
-
 	if (fastinst) {
 		fastfuncs = new Array()
 		var i = 97
@@ -84,6 +83,7 @@ function runx(dbg = 0) {
 	if (on == 0) postMessage(["done"])
 	else postMessage(["events"])
 }
+var sysTable
 
 onmessage = function(e) {
 	var d = e.data
@@ -108,6 +108,16 @@ onmessage = function(e) {
 	else if (cmd == "init") {
 		sab = d[1]
 		lang = d[2]
+
+		Module._libfunc(-1, 0)
+		Module._libfunc2(-1, 0, 0)
+		Module._arrfunc(0, 0, 0)
+		Module._xtrafunc(-1, 0, 0)
+		sysTable = new WebAssembly.Table({ element:"anyfunc", initial:4, maximum:4 })
+		sysTable.set(0, Module._libfunc);
+		sysTable.set(1, Module._libfunc2);
+		sysTable.set(2, Module._arrfunc);
+		sysTable.set(3, Module._xtrafunc);
 	}
 	else if (cmd == "run") {
 		if (parse_errchk(d) < 0) runx(d[2] >> 8)

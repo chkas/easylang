@@ -4,7 +4,7 @@ global name$[] .
 proc add_name n$ .
    for id to len name$[]
       if name$[id] = n$
-         break 2
+         return
       .
    .
    name$[] &= n$
@@ -13,7 +13,7 @@ global na$[] r$[][] .
 proc getid n$ &id .
    for id to len na$[]
       if na$[id] = n$
-         break 2
+         return
       .
    .
    na$[] &= n$

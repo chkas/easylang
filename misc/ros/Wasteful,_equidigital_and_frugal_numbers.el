@@ -1,7 +1,11 @@
-func ndig n .
-   return 1 + floor log n 10
+fastfunc ndig n .
+   while n > 0
+      n = n div 10
+      d += 1
+   .
+   return d
 .
-func getexp n f .
+fastfunc getexp n f .
    while n mod f = 0
       n = n div f
       e += 1
@@ -9,7 +13,7 @@ func getexp n f .
    return e
 .
 len d[] 2000000
-proc sieve .
+fastproc sieve .
    # count factors and get digit count
    d[1] = 1
    for i = 2 to len d[] : if d[i] = 0
