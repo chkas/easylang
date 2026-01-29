@@ -1,24 +1,21 @@
 sysconf zero_based
-func isprim n .
-   for i = 2 to sqrt n : if n mod i = 0 : return 0
+fastfunc isprim n .
+   for i = 2 to sqrt n
+      if n mod i = 0 : return 0
+   .
    return 1
 .
 len isPrime[] 64
-proc init .
-   for i = 2 to 63 : if isprim i = 1 : isPrime[i] = 1
-.
-init
-global a[] .
-proc printRow .
-   numfmt 2 0
-   for i range0 len a[]
-      if i <> 0 : write " "
-      write a[i]
+proc .
+   for i = 2 to 63
+      if isprim i = 1 : isPrime[i] = 1
    .
-   print ""
 .
-func findRow start length .
-   if length = 2 : return isPrime[a[start] + a[start + 1]]
+global a[] .
+fastfunc findRow start length .
+   if length = 2
+      return isPrime[a[start] + a[start + 1]]
+   .
    for i = 1 step 2 to length - 2
       if isPrime[a[start] + a[start + i]] = 1
          swap a[start + i] a[start + 1]
@@ -28,7 +25,7 @@ func findRow start length .
    .
    return 0
 .
-func countRows start length .
+fastfunc countRows start length .
    if length = 2
       if isPrime[a[start] + a[start + 1]] = 1 : count += 1
    else
@@ -41,6 +38,14 @@ func countRows start length .
       .
    .
    return count
+.
+proc printRow .
+   numfmt 2 0
+   for i range0 len a[]
+      if i <> 0 : write " "
+      write a[i]
+   .
+   print ""
 .
 for i = 2 to 20
    a[] = [ ]

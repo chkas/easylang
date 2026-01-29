@@ -60,6 +60,7 @@ static void mf_err(const char* s) {
 #define W_GET 0x20
 #define W_SET 0x21
 #define W_TEE 0x22
+#define W_GLGET 0x23
 
 #define W_ADD 0xa0
 #define W_SUB 0xa1
@@ -80,6 +81,16 @@ static void mf_err(const char* s) {
 #define W_LE 0x65
 #define W_GE 0x66
 
+#define W_EQI 0x46
+#define W_NEI 0x47
+#define W_LTIS 0x48
+#define W_LTI 0x49
+#define W_GTIS 0x4A
+#define W_GTI 0x4B
+#define W_LEIS 0x4C
+#define W_LEI 0x4D
+#define W_GEIS 0x4E
+#define W_GEI 0x4F
 
 #define W_ADDI 0x6a
 #define W_SUBI 0x6b
@@ -169,8 +180,7 @@ static void mf_larrpos(ushort pos, ND* ex) {
 	we(W_ADDI);
 }
 static void mf_arrpos(short id, ND* ex) {
-	we(0x23);	// get global 1 (arrays)
-	we(0x01);
+	wex(W_GLGET, 1);	// arrays
 	we(W_CONSTI);
 	int h = (id + 1) * -12;
 	if (h < 0) mf_err("expr");
@@ -187,9 +197,7 @@ static void mf_arrpos(short id, ND* ex) {
 	we(W_CONSTI);
 	we(1);
 #else
-	// arrbase
-	we(0x23);
-	we(0x01);
+	wex(W_GLGET, 1); 	// arrays
 	we(W_CONSTI);
 	we((id + 1) * -12 + 8);
 	we(W_ADDI);
@@ -202,6 +210,34 @@ static void mf_arrpos(short id, ND* ex) {
 	wex(W_CONSTI, 3);
 	we(W_SHL);
 	we(W_ADDI);
+}
+
+static void mf_arrlen(int v) {
+	if (v >= 0) {
+		wex(W_GET, wvara + v * 3 + 1);
+	}
+	else {
+		wex(W_GLGET, 1); 	// arrays
+		wex(W_CONSTI, (v + 1) * -12 + 4);
+		we(W_ADDI);
+		we(W_LOADI);	// load
+		we(0x00);
+		we(0x00);
+	}
+}
+
+static void mf_arrbase(int v) {
+	if (v >= 0) {
+		wex(W_GET, wvara + v * 3);
+	}
+	else {
+		wex(W_GLGET, 1);
+		wex(W_CONSTI, (v + 1) * -12);
+		we(W_ADDI);
+		we(W_LOADI);
+		we(0x00);
+		we(0x00);
+	}
 }
 
 static void mf_expr(ND* nd) {
@@ -261,8 +297,7 @@ static void mf_expr(ND* nd) {
 		wex(W_CALL, nd->le->bx3 - 1);
 	}
 	else if (p == op_vnum) {
-		we(0x23);	// get global 0 (nums)
-		we(0x00);
+		wex(W_GLGET, 0);	// nums
 		we(W_CONSTI);
 		int h = nd->v1 * 8;
 		if (h < 0) mf_err("expr vnum");
@@ -273,36 +308,19 @@ static void mf_expr(ND* nd) {
 		we(0x00);
 	}
 	else if (p == op_arrlen) {
-
-		if (nd->v1 >= 0) {
-			wex(W_GET, wvara + nd->v1 * 3 + 1);
-			we(W_I2F);
-		}
-		else {
-			we(0x23);
-			we(0x01);	// arrays
-			we(W_CONSTI);
-			we((nd->v1 + 1) * -12 + 4);
-			we(W_ADDI);
-			we(W_LOADI);	// load
-			we(0x00);
-			we(0x00);
-			we(W_I2F);
-		}
+		mf_arrlen(nd->v1);
+		we(W_I2F);
 	}
 	else if (p == op_vnumael) {
 		if (nd->v1 >= 0) {
 			mf_larrpos(wvara + nd->v1 * 3, nd->ri);
-			we(W_LOADF);
-			we(0x00);
-			we(0x00);
 		}
 		else {
 			mf_arrpos(nd->v1, nd->ri);
-			we(W_LOADF);
-			we(0x00);
-			we(0x00);
 		}
+		we(W_LOADF);
+		we(0x00);
+		we(0x00);
 	}
 	else if (p == op_sign) {
 		we(W_CONST);
@@ -320,7 +338,6 @@ static void mf_expr(ND* nd) {
 		we(W_SELECT);
 	}
 
-
 	else if (p == op_random) mf_opf(0, nd->le);
 	else if (p == op_randomf) mf_op(1);
 	else if (p == op_pi) mf_op(2);
@@ -330,7 +347,6 @@ static void mf_expr(ND* nd) {
 	else if (p == op_asin) mf_opf(6, nd->le);
 	else if (p == op_acos) mf_opf(7, nd->le);
 	else if (p == op_atan) mf_opf(8, nd->le);
-
 
 	else if (p == op_atan2) mf_opff(0, nd->le, nd->ri);
 	else if (p == op_pow) mf_opff(1, nd->le, nd->ri);
@@ -511,8 +527,7 @@ static void mf_statement(ND* nd) {
 		if (p == op_fordown) we(W_GT);
 		else we(W_LT);
 
-		we(W_BRIF);			// exit loop
-		we(1);
+		wex(W_BRIF, 1);			// exit loop
 
 		mf_sequ(ndx->ex);
 
@@ -535,6 +550,62 @@ static void mf_statement(ND* nd) {
 
 		blend(W_LOOP);
 		blend(W_BLOCK);
+	}
+	else if (p == op_for_in) {
+
+		ND* ndx = nd + 1;
+
+		if (nd->v1 < 0) mf_err("iter variable must be local");
+		if (nd->ri->arrf != op_vnumarr) mf_err("array expected");
+
+		wex(W_GET, nd->v1);			// iter var
+
+		wex(W_CONSTI, 0);
+		wex(W_SET, wvar + 2);
+
+		blstart(W_BLOCK);
+		blstart(W_LOOP);
+		wex(W_GET, wvar + 2);
+
+		mf_arrlen(nd->ri->v1);
+		we(W_GEI);
+		wex(W_BRIF, 1);
+
+		wex(W_GET, wvar + 2);
+
+		mf_arrbase(nd->ri->v1);
+
+		wex(W_GET, wvar + 2);
+		wex(W_CONSTI, 3);
+		we(W_SHL);
+		we(W_ADDI);
+		we(W_LOADF);
+		we(0x00);
+		we(0x00);
+
+		wex(W_SET, nd->v1);			// iter var
+
+		mf_sequ(ndx->ex);
+
+		wex(W_CONSTI, 1);
+		we(W_ADDI);
+
+		wex(W_SET, wvar + 2);
+		wex(W_BR, 0);
+
+		blend(W_LOOP);
+		blend(W_BLOCK);
+
+		// set old iter var, when loop reached end
+		wex(W_GET, nd->v1);
+		wex(W_GET, wvar + 2);
+
+		mf_arrlen(nd->ri->v1);
+
+		we(W_EQI);
+		we(W_SELECT);
+		wex(W_SET, nd->v1);
+		
 	}
 	else if (p == op_if) {
 
@@ -590,8 +661,7 @@ static void mf_statement(ND* nd) {
 			wex(W_SET, nd->v1);
 		}
 		else {
-			we(0x23);	// get global 0 (nums)
-			we(0x00);
+			wex(W_GLGET, 0);	// nums
 			we(W_CONSTI);
 			we((nd->v1 + 1) * -8);
 			we(W_ADDI);
@@ -616,8 +686,7 @@ static void mf_statement(ND* nd) {
 			wex(W_SET, nd->v1);
 		}
 		else {
-			we(0x23);
-			we(0x00);
+			wex(W_GLGET, 0);
 			we(W_CONSTI);
 			we((nd->v1 + 1) * -8);
 			we(W_ADDI);

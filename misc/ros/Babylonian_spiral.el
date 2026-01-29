@@ -1,11 +1,20 @@
-proc babylon_spiral nsteps &pts[][] .
-   pts[][] = [ [ 0 0 ] [ 0 1 ] ]
+global ptsx[] ptsy[] .
+# 
+fastproc babylon_spiral nsteps .
+   len ptsx[] 2
+   len ptsy[] 2
+   ptsx[1] = 0
+   ptsx[2] = 0
+   ptsy[1] = 0
+   ptsy[2] = 1
    norm = 1
-   last[] = pts[$][]
+   lastx = ptsx[$]
+   lasty = ptsy[$]
    for k to nsteps - 2
-      theta = atan2 last[2] last[1]
-      cands[][] = [ ]
-      while len cands[][] = 0
+      theta = atan2 lasty lastx
+      len candsi[] 0
+      len candsj[] 0
+      while len candsi[] = 0
          norm += 1
          for i = 0 to nsteps
             a = i * i
@@ -14,41 +23,40 @@ proc babylon_spiral nsteps &pts[][] .
                b = j * j
                if a + b < norm : break 1
                if a + b = norm
-                  cands[][] &= [ i, j ]
-                  cands[][] &= [ -i, j ]
-                  cands[][] &= [ i, -j ]
-                  cands[][] &= [ -i, -j ]
-                  cands[][] &= [ j, i ]
-                  cands[][] &= [ -j, i ]
-                  cands[][] &= [ j, -i ]
-                  cands[][] &= [ -j, -i ]
+                  candsi[] &= i
+                  candsj[] &= j
                .
             .
          .
       .
       min = 1 / 0
-      for i to len cands[][]
-         h = (theta - atan2 cands[i][2] cands[i][1]) mod 360
-         if h < min
-            min = h
-            mini = i
+      for i to len candsi[] : for sw to 2
+         for sj = -1 step 2 to 1 : for si = -1 step 2 to 1
+            hx = si * candsi[i]
+            hy = sj * candsj[i]
+            if sw = 2 : swap hx hy
+            h = (theta - atan2 hy hx) mod 360
+            if h < min
+               min = h
+               lastx = hx
+               lasty = hy
+            .
          .
       .
-      last[] = cands[mini][]
-      pts[][] &= pts[$][]
-      pts[$][1] += last[1]
-      pts[$][2] += last[2]
+      ptsx[] &= ptsx[$] + lastx
+      ptsy[] &= ptsy[$] + lasty
    .
 .
-babylon_spiral 40 pts[][]
-print pts[][]
-# 
-babylon_spiral 10000 pts[][]
-for pt[] in pts[][]
-   minx = lower minx pt[1]
-   maxx = higher maxx pt[1]
-   miny = lower miny pt[2]
-   maxy = higher maxy pt[2]
+babylon_spiral 40
+for i to len ptsx[]
+   write "(" & ptsx[i] & " " & ptsy[i] & ") "
+.
+babylon_spiral 10000
+for i to len ptsx[]
+   minx = lower minx ptsx[i]
+   maxx = higher maxx ptsx[i]
+   miny = lower miny ptsy[i]
+   maxy = higher maxy ptsy[i]
 .
 scx = 100 / (maxx - minx) * 0.96
 scy = 100 / (maxy - miny) * 0.96
@@ -58,6 +66,6 @@ glinewidth 0.1
 gline 0 ty 100 ty
 gline tx 0 tx 100
 gpenup
-for pt[] in pts[][]
-   glineto pt[1] * scx + tx, pt[2] * scy + ty
+for i to len ptsx[]
+   glineto ptsx[i] * scx + tx, ptsy[i] * scy + ty
 .

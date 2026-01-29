@@ -1,9 +1,5 @@
 ADD = 0
 SUB = 1
-nexpr = 13122 - 1
-len f[] nexpr + 1
-arrbase f[] 0
-# 
 fastfunc evaluate code .
    power = 1
    for k = 9 downto 1
@@ -24,21 +20,21 @@ fastfunc evaluate code .
    .
    return value
 .
-proc init .
+nexpr = 13122 - 1
+len f[] nexpr + 1
+arrbase f[] 0
+fastproc .
    for i = 0 to nexpr
       f[i] = evaluate i
    .
 .
-init
 proc out code .
    a = 19683
    b = 6561
    for k = 1 to 9
       h = code mod a div b
       if h = ADD
-         if k > 1
-            s$ &= "+"
-         .
+         if k > 1 : s$ &= "+"
       elif h = SUB
          s$ &= "-"
       .
@@ -50,12 +46,15 @@ proc out code .
 .
 # 
 print "Show all solutions that sum to 100\n"
-for i = 0 to nexpr : if f[i] = 100 : out i
+proc .
+   for i = 0 to nexpr : if f[i] = 100 : out i
+.
 # 
+print "\nShow the sum that has the maximum number of solutions\n"
 global best nbest .
-fastproc max_solutions .
-   for ii = 0 to nexpr
-      test = f[ii]
+fastproc .
+   for i = 0 to nexpr
+      test = f[i]
       if test > 0
          ntest = 0
          for j = 0 to nexpr
@@ -68,30 +67,32 @@ fastproc max_solutions .
       .
    .
 .
-print "\nShow the sum that has the maximum number of solutions\n"
-max_solutions
-# 
 print best & " has " & nbest & " solutions"
+# 
 print "\nShow the lowest positive number that can't be expressed\n"
-for i = 0 to 123456789
-   for j = 0 to nexpr
-      if i = f[j] : break 1
-   .
-   if j > nexpr : break 1
-.
-print i
-print "\nShow the ten highest numbers that can be expressed\n"
-limit = 123456789 + 1
-for i = 1 to 10
-   best = 0
-   for j = 0 to nexpr
-      test = f[j]
-      if test < limit and test > best
-         best = test
+proc .
+   for i = 0 to 123456789
+      for j = 0 to nexpr
+         if i = f[j] : break 1
       .
+      if j > nexpr : break 1
    .
-   for j = 0 to nexpr
-      if f[j] = best : out j
+   print i
+.
+print "\nShow the ten highest numbers that can be expressed\n"
+proc .
+   limit = 123456789 + 1
+   for i = 1 to 10
+      best = 0
+      for j = 0 to nexpr
+         test = f[j]
+         if test < limit and test > best
+            best = test
+         .
+      .
+      for j = 0 to nexpr
+         if f[j] = best : out j
+      .
+      limit = best
    .
-   limit = best
 .

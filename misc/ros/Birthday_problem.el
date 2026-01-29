@@ -1,4 +1,4 @@
-func run npers nsame .
+fastfunc run npers nsame .
    len day[] 365
    for i to npers
       r = random 365
@@ -7,14 +7,17 @@ func run npers nsame .
    .
    return 0
 .
-nruns = 10000
 npers = 2
-for nsame = 2 to 5
+nruns = 10000
+fastfunc getnpers nsame .
    repeat
       ok = 0
       for t to nruns : ok += run npers nsame
       until ok / nruns > 0.5
       npers += 1
    .
-   print npers
+   return npers
+.
+for nsame = 2 to 5
+   print getnpers nsame
 .

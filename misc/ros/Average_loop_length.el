@@ -1,9 +1,11 @@
-func average n reps .
+fastfunc average n reps .
+   len f[] n
+   len seen[] n
    for r to reps
-      f[] = [ ]
-      for i to n : f[] &= random n
-      seen[] = [ ]
-      len seen[] n
+      for i = 1 to n
+         f[i] = random n
+         seen[i] = 0
+      .
       x = 1
       while seen[x] = 0
          seen[x] = 1
@@ -13,7 +15,7 @@ func average n reps .
    .
    return count / reps
 .
-func analytical n .
+fastfunc analytical n .
    s = 1
    t = 1
    for i = n - 1 downto 1
