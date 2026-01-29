@@ -44,7 +44,7 @@ int fastfunc_errline;
 
 static void mf_err(const char* s) {
 	fastfuncn = 0;
-	if (fastfunc_errline == 0) fastfunc_errline = getline_nd(nd_stat);
+	if (fastfunc_errline == -1) fastfunc_errline = getline_nd(nd_stat);
 	pr("fastfunc error:%s line:%d", s, fastfunc_errline);
 }
 
@@ -982,7 +982,7 @@ static void parse_fastfunc(void) {
 	wasm[fstart] = (h & 127) | 128;
 	wasm[fstart + 1] = h >> 7;
 
-	// printf("fastfunc %s - size %d\n", proc->name, h);
+	//printf("fastfunc %s - size %d\n", proc->name, h);
 	return;
 
 cleanup:
@@ -1181,7 +1181,7 @@ static void build_fastfuncs(void) {
 }
 
 static void wasm_clean(void) {
-	fastfunc_errline = 0;
+	fastfunc_errline = -1;
 	free(wasm);
 	wasm = NULL;
 #ifdef __EMSCRIPTEN__

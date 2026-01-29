@@ -2923,10 +2923,9 @@ void xtrafunc(int id, int iarg, double farg) {
 		int len = (int)farg;
 		ARR* arr = rt_arrs + iarg;
 		arr->typ = 0;
-		void* p = xrealloc(arr->p, len * sizeof(double), NULL);
+		arr->p = xrealloc(arr->p, len * sizeof(double), NULL);
 		if (len > arr->len) memset(arr->pnum + arr->len, 0, (len - arr->len) * sizeof(double));
 		arr->len = len;
-		arr->p = p;
 	}
 }
 #endif

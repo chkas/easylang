@@ -501,7 +501,7 @@ extern int parse(char* str, int opt, int caret) {
 	if (tok != t_eof || is_enter) errorx(ERR_CMD1);
 
 	if (wasm) {
-		if (errn || fastfunc_errline) {
+		if (errn || fastfunc_errline != -1) {
 			free(wasm);
 			wasm = NULL;
 		}
@@ -580,8 +580,9 @@ extern int parse(char* str, int opt, int caret) {
 		}
 	}
 
-	if (fastfunc_errline) {
+	if (fastfunc_errline != -1) {
 		int pos = line2pos_html(fastfunc_errline + 1) - 1;
+		if (pos < 0) pos = 0;
 		error_pos(" fastfunc error", pos);
 		return codestrln;
 	}
