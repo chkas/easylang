@@ -402,78 +402,58 @@ static void mf_cmp(ND* nd, byte lev) {
 	we(W_BRIF);
 	we(lev);
 }
-static void mf_andneg(ND* nd, byte lev) {
-	if (nd->intf != op_and) {
-		mf_cmpneg(nd, lev);
-		return;
-	}
-	mf_andneg(nd->le, lev);
-	mf_cmpneg(nd->ri, lev);
-}
+static void mf_brtrue(ND* nd, byte lev);
+static void mf_brfalse(ND* nd, byte lev);
 
-static void mf_and(ND* nd, byte lev) {
-	if (nd->intf != op_and) {
-		mf_cmp(nd, lev);
-		return;
-	}
-	mf_and(nd->le, lev);
-	mf_cmp(nd->ri, lev);
-}
-
-static void mf_repand(ND* nd) {
+static void mf_brtrue(ND* nd, byte lev) {
 	void* p = nd->intf;
 
-	if (mf_iscmp(p)) {
-		mf_cmp(nd, 1);
+	if (p == op_or) {
+		mf_brtrue(nd->le, lev);
+		mf_brtrue(nd->ri, lev);
 	}
-	else if (nd->intf == op_and) {
-
-		we(W_BLOCK);
-		we(W_VOID);
-
-		mf_andneg(nd, 0);
-
-		we(W_BR);
-		we(2);
+	else if (p == op_and) {
+		we(W_BLOCK); we(W_VOID);
+		mf_brfalse(nd->le, 0);
+		mf_brtrue(nd->ri, lev + 1);
 		we(W_END);
 	}
+	else if (mf_iscmp(p)) {
+		mf_cmp(nd, lev);
+	}
 	else {
-		mf_err("repand");
+		mf_err("brtrue");
 	}
 }
 
-static void mf_condrep(ND* nd) {
-	if (nd->intf != op_or) {
-		mf_repand(nd);
-		return;
-	}
-	mf_condrep(nd->le);
-	mf_repand(nd->ri);
-}
+static void mf_brfalse(ND* nd, byte lev) {
+	void* p = nd->intf;
 
-static void mf_or(ND* nd) {
-	if (nd->intf != op_or) {
-		mf_and(nd, 0);
-		return;
+	if (p == op_or) {
+		we(W_BLOCK); we(W_VOID);
+		mf_brtrue(nd->le, 0);
+		mf_brfalse(nd->ri, lev + 1);
+		we(W_END);
 	}
-	mf_or(nd->le);
-	mf_and(nd->ri, 0);
+	else if (p == op_and) {
+		mf_brfalse(nd->le, lev);
+		mf_brfalse(nd->ri, lev);
+	}
+	else if (mf_iscmp(p)) {
+		mf_cmpneg(nd, lev);
+	}
+	else {
+		mf_err("brfalse");
+	}
 }
 
 static void mf_cond(ND* nd, byte lev) {
-	if (nd->intf == op_or) {
-		we(W_BLOCK);
-		we(W_VOID);
-
-		mf_or(nd);
-
-		wex(W_BR, lev + 1);
-		we(W_END);
-	}
-	else {
-		mf_andneg(nd, lev);
-	}
+	mf_brfalse(nd, lev);
 }
+static void mf_condrep(ND* nd) {
+	mf_brtrue(nd, 1);
+}
+
 static void mf_statement(ND* nd) {
 	nd_stat = nd;
 	void* p = nd->vf;
