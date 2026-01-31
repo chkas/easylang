@@ -16,18 +16,21 @@ fastfunc risefall n .
    if rises = falls : return 1
    return 0
 .
-numfmt 4 0
-n = 1
-repeat
-   if risefall n = 1
-      cnt += 1
-      if cnt <= 200
-         write n
-         if cnt mod 10 = 0 : print ""
-      .
+fastfunc next n .
+   repeat
+      n += 1
+      until risefall n = 1
    .
-   until cnt = 1e7
-   n += 1
+   return n
+.
+numfmt 4 0
+while cnt < 1e7
+   n = next n
+   cnt += 1
+   if cnt <= 200
+      write n
+      if cnt mod 10 = 0 : print ""
+   .
 .
 print ""
 print n

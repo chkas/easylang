@@ -21,6 +21,7 @@ struct arr {
 		void* p;
 		double* pnum;
 		STR* pstr;
+		byte* pbyte;
 		struct arr* parr;
 	};
 	int len;
@@ -227,10 +228,7 @@ void append_tabb(struct proc* pro, char* ts, short l, short typ) {
 		if (strncmp(ts, v->name, l) == 0 && (typ == -1  || v->typ % 2 == typ ||  v->typ == typ )) {
 			str_append(&tabbuf, ":");
 			str_append(&tabbuf, v->name);
-
 			str_append(&tabbuf, vexf(v->typ));
-			//if (typ < 2) str_append(&tabbuf, vex(v->typ));
-			//else str_append(&tabbuf, vexf(v->typ));
 			if (v->typ < 2) str_append(&tabbuf, " ");
 		}
 		v += 1;
@@ -252,6 +250,7 @@ void atab_arrs(char* ts, short l) {
 	atab_names(ts, l, 3, 0);
 	atab_names(ts, l, 4, 0);
 	atab_names(ts, l, 5, 0);
+	atab_names(ts, l, 6, 0);
 }
 
 void atab_numfuncs(char* ts, short l) {

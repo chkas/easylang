@@ -168,6 +168,7 @@ S int is_numfactor(void) {
 	if (tok == t_if) return 1;
 	if (is_numfunc()) return 1;
 	if (tok == t_vnumael) return 1;
+	if (tok == t_vbyteael) return 1;
 	return 0;
 }
 
@@ -286,6 +287,10 @@ S ND* parse_lenfunc(void) {
 	else if (is_strfactor()) {
 		nd->numf = op_strlen;
 		nd->le = parse_strterm();
+	}
+	else if (tok == t_vbytearr) {
+		nd->v1 = parse_var(VAR_BYTEARR, RD);
+		csbrr();
 	}
 	else {
 		errorx(ERR_VARRSTR);
@@ -589,6 +594,18 @@ S ND* parse_fac0(void) {
 		nd = parse_ex();
 		expt_ntok(t_par);
 	}
+
+	else if (tok == t_vbyteael) {
+		nd = mknd();
+		nd->numf = op_vbyteael;
+		nd->v1 = parse_var(VAR_BYTEARR, RD);
+		ND* ndol = NULL;
+		nd->ri = parse_ex_arr(&ndol);
+		if (ndol != NULL) ndol->v1 = nd->v1;
+		opline_add(nd, fmtline);
+		expt_ntok(t_brr);
+	}
+
 	else if (nd_doll != NULL && tok == 0 && cp == '$' && *nd_doll == NULL) {
 		nd = mknd();
 		cs_tok_nt();
@@ -1713,7 +1730,7 @@ S void parse_arr_ass(ND* nd) {
 	else errorx(ERR_STRASS);
 }
 
-S void parseael_ass(ND* nd) {
+S void parse_numael_ass(ND* nd) {
 
 	char s[16];
 	strcpy(s, tval);
@@ -1729,11 +1746,11 @@ S void parseael_ass(ND* nd) {
 		cs_tok_nt();
 		nd->v1 = get_var(VAR_NUMARR, RD, s, pos);
 		cs_spc();
-		if (tok == t_eq) nd->vf = op_flael_ass;
-		else if (tok == t_pleq) nd->vf = op_flael_assp;
-		else if (tok == t_mineq) nd->vf = op_flael_assm;
-		else if (tok == t_asteq) nd->vf = op_flael_asst;
-		else if (tok == t_diveq) nd->vf = op_flael_assd;
+		if (tok == t_eq) nd->vf = op_numael_ass;
+		else if (tok == t_pleq) nd->vf = op_numael_assp;
+		else if (tok == t_mineq) nd->vf = op_numael_assm;
+		else if (tok == t_asteq) nd->vf = op_numael_asst;
+		else if (tok == t_diveq) nd->vf = op_numael_assd;
 		else errorx(ERR_ASSIGN);
 		cs_tok_spc_nt();
 		ndx->ex = parse_ex();
@@ -1759,17 +1776,17 @@ S void parseael_ass(ND* nd) {
 		}
 		else {
 			//* f[i][j] = 2
-			nd->vf = op_flaelael_ass;
+			nd->vf = op_numaelael_ass;
 			nd->v1 = get_var(VAR_NUMARRARR, RD, s, pos);
 			ndx->ex = parse_ex();
 			expt_ntok(t_brr);
 			cs_spc();
 
-			if (tok == t_eq) nd->vf = op_flaelael_ass;
-			else if (tok == t_pleq) nd->vf = op_flaelael_assp;
-			else if (tok == t_mineq) nd->vf = op_flaelael_assm;
-			else if (tok == t_asteq) nd->vf = op_flaelael_asst;
-			else if (tok == t_diveq) nd->vf = op_flaelael_assd;
+			if (tok == t_eq) nd->vf = op_numaelael_ass;
+			else if (tok == t_pleq) nd->vf = op_numaelael_assp;
+			else if (tok == t_mineq) nd->vf = op_numaelael_assm;
+			else if (tok == t_asteq) nd->vf = op_numaelael_asst;
+			else if (tok == t_diveq) nd->vf = op_numaelael_assd;
 			else errorx(ERR_ASSIGN);
 			cs_tok_spc_nt();
 			ndx->ex2 = parse_ex();
@@ -2029,7 +2046,6 @@ S void parse_for_stat(ND* nd) {
 	nexttok();
 }
 
-//kcx
 S void parse_repeat_stat(ND* nd) {
 
 	ND* ndx = mkndx();
@@ -2075,6 +2091,12 @@ S void parse_len_stat(ND* nd) {
 		nd->v1 = parse_var(VAR_NUMARR, WR);
 		csbrr();
 	}
+	else if (tok == t_vbytearr) {
+		nd->vf = op_bytearr_len;
+		nd->v1 = parse_var(VAR_BYTEARR, WR);
+		csbrr();
+	}
+
 	else if (tok == t_vstrarr) {
 		nd->vf = op_strarr_len;
 		nd->v1 = parse_var(VAR_STRARR, WR);
@@ -2514,9 +2536,10 @@ S ND* parse_stat(void) {
 	else if (tok == t_len) {
 		parse_len_stat(nd);
 	}
-	else if (tok >= t_vnumael && tok <= t_vstrarrarr) {
+	else if (tok >= t_vnumael && tok <= t_vbyteael) {
+	//else if (tok >= t_vnumael && tok <= t_vstrarrarr) {
 		if (tok == t_vnumael) {
-			parseael_ass(nd);
+			parse_numael_ass(nd);
 		}
 		else if (tok == t_vnumarr) {
 			parse_arr_ass(nd);
@@ -2530,8 +2553,22 @@ S ND* parse_stat(void) {
 		else if (tok == t_vnumarrarr) {
 			parse_arrarr_ass(nd);
 		}
-		else {
+		else if (tok == t_vstrarrarr){
 			parse_strarrarr_ass(nd);
+		}
+		else  {			// t_vbyteael
+			ND* ndx = mkndx();
+			nd->vf = op_byteael_ass;
+			nd->v1 = parse_var(VAR_BYTEARR, RD);
+			ND* ndol = NULL;
+			nd->ri = parse_ex_arr(&ndol);
+			if (ndol != NULL) ndol->v1 = nd->v1;
+			opline_add(nd, fmtline);
+			expt_ntok(t_brr);
+			cs_spc();
+			expt_ntok(t_eq);
+			cs_spc();
+			ndx->ex = parse_ex();
 		}
 	}
 	else if (tok == t_repeat) {

@@ -1,13 +1,10 @@
 fastfunc jpnum m .
-   n = m
    limite = 7
-   while 1 = 1
+   repeat
+      n = m
       fac = 1
-      i = 1
-      while i < limite
-         i += 1
-         fac *= i
-      .
+      for i = 2 to limite : fac *= i
+      i = limite
       repeat
          q = n div fac
          if n mod fac = 0
@@ -20,24 +17,25 @@ fastfunc jpnum m .
          until i = 1
       .
       limite -= 1
-      if limite = 0 : return 0
-      n = m
+      until limite = 0
    .
+   return 0
 .
-numfmt 5 0
-write 1
-c = 1
-n = 2
-repeat
-   if jpnum n = 1
-      c += 1
-      if c <= 50
-         write n
-         if c mod 8 = 0 : print ""
-      .
-      sn = n
+write 1 & " "
+fastfunc next n .
+   repeat
+      n += 2
+      until jpnum n = 1
    .
-   n += 2
+   return n
+.
+for c = 2 to 50
+   n = next n
+   write n & " "
+.
+repeat
+   sn = n
+   n = next n
    until n >= 1e8
 .
 print ""

@@ -1,15 +1,17 @@
 arr[] = [ 2 ]
-for i = 2 to 8
-   k = 3
-   repeat
-      em = 1
-      for j = 1 to i - 1
-         em = em * arr[j] mod k
+fastproc .
+   for i = 2 to 9
+      k = 3
+      repeat
+         em = 1
+         for j = 1 to i - 1
+            em = em * arr[j] mod k
+         .
+         em = (em + 1) mod k
+         until em = 0
+         k += 2
       .
-      em = (em + 1) mod k
-      until em = 0
-      k += 2
+      arr[] &= k
    .
-   arr[] &= k
 .
 print arr[]

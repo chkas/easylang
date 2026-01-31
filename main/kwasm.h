@@ -179,7 +179,7 @@ static void mf_larrpos(ushort pos, ND* ex) {
 	we(W_SHL);
 	we(W_ADDI);
 }
-static void mf_arrpos(short id, ND* ex) {
+static void mf_arrpos(short id, ND* ex, byte typ) {
 	wex(W_GLGET, 1);	// arrays
 	we(W_CONSTI);
 	int h = (id + 1) * -12;
@@ -206,9 +206,10 @@ static void mf_arrpos(short id, ND* ex) {
 	we(0x00);
 #endif
 	we(W_SUBI);
-
-	wex(W_CONSTI, 3);
-	we(W_SHL);
+	if (typ == 0) {
+		wex(W_CONSTI, 3);
+		we(W_SHL);
+	}
 	we(W_ADDI);
 }
 
@@ -316,7 +317,7 @@ static void mf_expr(ND* nd) {
 			mf_larrpos(wvara + nd->v1 * 3, nd->ri);
 		}
 		else {
-			mf_arrpos(nd->v1, nd->ri);
+			mf_arrpos(nd->v1, nd->ri, 0);
 		}
 		we(W_LOADF);
 		we(0x00);
@@ -351,6 +352,15 @@ static void mf_expr(ND* nd) {
 	else if (p == op_atan2) mf_opff(0, nd->le, nd->ri);
 	else if (p == op_pow) mf_opff(1, nd->le, nd->ri);
 	else if (p == op_log) mf_opff(2, nd->le, nd->ri);
+
+	else if (p == op_vbyteael) {
+		if (nd->v1 >= 0) mf_err("local array");
+		mf_arrpos(nd->v1, nd->ri, 1);
+		we(0x2d);		// load u8 -> i32
+		we(0x00);
+		we(0x00);
+		we(W_I2F);
+	}
 	else {
 		mf_err("expr");
 	}
@@ -696,29 +706,28 @@ static void mf_statement(ND* nd) {
 			we(0x00);
 		}
 	}
-	else if (p == op_flael_ass) {
+	else if (p == op_numael_ass) {
 
 		ND* ndx = nd + 1;
 		if (nd->v1 >= 0) {	// local
 			mf_larrpos(wvara + nd->v1 * 3, nd->ri);
 		}
 		else {
-			mf_arrpos(nd->v1, nd->ri);
+			mf_arrpos(nd->v1, nd->ri, 0);
 		}
 		mf_expr(ndx->ex);
 		we(W_STOREF);	// store
 		we(0x00);
 		we(0x00);
 	}
-
-	else if (p == op_flael_assp || p == op_flael_assm || p == op_flael_asst || p == op_flael_assd) {
+	else if (p == op_numael_assp || p == op_numael_assm || p == op_numael_asst || p == op_numael_assd) {
 
 		ND* ndx = nd + 1;
 		if (nd->v1 >= 0) {	// local
 			mf_larrpos(wvara + nd->v1 * 3, nd->ri);
 		}
 		else {
-			mf_arrpos(nd->v1, nd->ri);
+			mf_arrpos(nd->v1, nd->ri, 0);
 		}
 		wex(W_TEE, wvar + 2);
 		wex(W_GET, wvar + 2);
@@ -726,9 +735,9 @@ static void mf_statement(ND* nd) {
 		we(0x00);
 		we(0x00);
 		mf_expr(ndx->ex);
-		if (p == op_flael_assp) we(W_ADD);
-		else if (p == op_flael_assm) we(W_SUB);
-		else if (p == op_flael_asst) we(W_MUL);
+		if (p == op_numael_assp) we(W_ADD);
+		else if (p == op_numael_assm) we(W_SUB);
+		else if (p == op_numael_asst) we(W_MUL);
 		else we(W_DIV);
 		we(W_STOREF);	// store
 		we(0x00);
@@ -761,7 +770,7 @@ static void mf_statement(ND* nd) {
 		// swap a[i] a[j]
 		ND* ndx = nd + 1;
 
-		mf_arrpos(nd->v1, nd->ri);
+		mf_arrpos(nd->v1, nd->ri, 0);
 		wex(W_TEE, wvar + 2);	// &a[i]
 		we(W_LOADF);	// loadf
 		we(0x00);
@@ -769,7 +778,7 @@ static void mf_statement(ND* nd) {
 
 		wex(W_GET, wvar + 2);	// &a[i]
 
-		mf_arrpos(ndx->vx2, ndx->ex);
+		mf_arrpos(ndx->vx2, ndx->ex, 0);
 		wex(W_TEE, wvar + 3);	// &a[j]
 		we(W_LOADF);			// loadf
 		we(0x00);
@@ -868,6 +877,17 @@ static void mf_statement(ND* nd) {
 		wex(W_SET, nd->v1);
 		wex(W_SET, nd->v2);
 	}
+	else if (p == op_byteael_ass) {
+		ND* ndx = nd + 1;
+		if (nd->v1 >= 0) mf_err("local array");
+		mf_arrpos(nd->v1, nd->ri, 1);
+		mf_expr(ndx->ex);
+		we(W_F2I);
+		we(0x3a);	// i32-> 8 store
+		we(0x00);
+		we(0x00);
+	}
+
 	else {
 		mf_err("sequence");
 	}

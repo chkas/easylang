@@ -108,7 +108,7 @@ S void out_of_mem(ND* nd) {
 S void out_of_mem0(void) {
 	out_of_mem(NULL);
 }
-S void* xrealloc(void* p, unsigned long sz, ND* nd) {
+S void* xrealloc(void* p, ulong sz, ND* nd) {
 
 	void* pn = realloc(p, sz);
 	if (pn == NULL) {
@@ -456,18 +456,18 @@ S void arrs_init(ARR* arrs, int n_arr) {
 	}
 }
 
-S void arr_len(ND* nd, unsigned int sz, int typ) {
+S void arr_len(ND* nd, uint sz, int typ) {
 	ND* ndx = nd + 1;
 	ARR* arr = garr(nd->v1);
 	arr->typ = typ;
-    if (typ > ARR_ARR) {
+    if (typ > ARR_ARR && typ <= ARR_AELSTR) {
 		arr->typ = ARR_ARR;
 		int h = arrind(arr, numf(ndx->ex), nd);
 		arr = arr->parr + h;
 		typ = typ - (ARR_AEL - ARR_NUM );
 	}
 
-	long h = (long)numf(nd->ri);
+	long long h = (long long)numf(nd->ri);
 	if (h == arr->len) return;
 	if (h < 0) {
 		h = arr->len + h;
@@ -500,6 +500,9 @@ S void arr_len(ND* nd, unsigned int sz, int typ) {
 	arr->len = h;
 }
 
+S void op_bytearr_len(ND* nd) {
+	arr_len(nd, sizeof(byte), ARR_BYTE);
+}
 S void op_numarr_len(ND* nd) {
 	arr_len(nd, sizeof(double), ARR_NUM);
 }
@@ -617,6 +620,11 @@ S double op_vnumael(ND* nd) {
 	ARR* arr = garr(nd->v1);
 	int h = arrind(arr, numf(nd->ri), nd);
 	return *(arr->pnum + h);
+}
+S double op_vbyteael(ND* nd) {
+	ARR* arr = garr(nd->v1);
+	int h = arrind(arr, numf(nd->ri), nd);
+	return (double)*(arr->pbyte + h);
 }
 
 // -------------- expressions ------------------------------------
@@ -1120,7 +1128,7 @@ S void op_strassp(ND* nd) {
 	str_free(&s);
 }
 
-S void op_flael_ass(ND* nd) {
+S void op_numael_ass(ND* nd) {
 	ND* ndx = nd + 1;
 	double n = numf(ndx->ex);
 	ARR* arr = garr(nd->v1);
@@ -1128,7 +1136,7 @@ S void op_flael_ass(ND* nd) {
 	*(arr->pnum + h) = n;
 }
 
-S void op_flael_assp(ND* nd) {
+S void op_numael_assp(ND* nd) {
 	ND* ndx = nd + 1;
 	double n = numf(ndx->ex);
 	ARR* arr = garr(nd->v1);
@@ -1136,7 +1144,7 @@ S void op_flael_assp(ND* nd) {
 	*(arr->pnum + h) += n;
 }
 
-S void op_flael_assm(ND* nd) {
+S void op_numael_assm(ND* nd) {
 	ND* ndx = nd + 1;
 	double n = numf(ndx->ex);
 	ARR* arr = garr(nd->v1);
@@ -1144,7 +1152,7 @@ S void op_flael_assm(ND* nd) {
 	*(arr->pnum + h) -= n;
 }
 
-S void op_flael_asst(ND* nd) {
+S void op_numael_asst(ND* nd) {
 	ND* ndx = nd + 1;
 	double n = numf(ndx->ex);
 	ARR* arr = garr(nd->v1);
@@ -1152,12 +1160,20 @@ S void op_flael_asst(ND* nd) {
 	*(arr->pnum + h) *= n;
 }
 
-S void op_flael_assd(ND* nd) {
+S void op_numael_assd(ND* nd) {
 	ND* ndx = nd + 1;
 	double n = numf(ndx->ex);
 	ARR* arr = garr(nd->v1);
 	int h = arrind(arr, numf(nd->ri), nd);
 	*(arr->pnum + h) /= n;
+}
+
+S void op_byteael_ass(ND* nd) {
+	ND* ndx = nd + 1;
+	double n = numf(ndx->ex);
+	ARR* arr = garr(nd->v1);
+	int h = arrind(arr, numf(nd->ri), nd);
+	*(arr->pbyte + h) = (byte)n;
 }
 
 S void op_strael_ass(ND* nd) {
@@ -1904,23 +1920,23 @@ S void o_aelael_ass(ND* nd, ushort typ) {
 	}
 }
 
-S void op_flaelael_ass(ND* nd) {
+S void op_numaelael_ass(ND* nd) {
 	// f[i][j] = 2
 	o_aelael_ass(nd, 0);
 }
 S void op_straelael_ass(ND* nd) {
 	o_aelael_ass(nd, 1);
 }
-S void op_flaelael_assp(ND* nd) {
+S void op_numaelael_assp(ND* nd) {
 	o_aelael_ass(nd, 2);
 }
-S void op_flaelael_assm(ND* nd) {
+S void op_numaelael_assm(ND* nd) {
 	o_aelael_ass(nd, 3);
 }
-S void op_flaelael_asst(ND* nd) {
+S void op_numaelael_asst(ND* nd) {
 	o_aelael_ass(nd, 4);
 }
-S void op_flaelael_assd(ND* nd) {
+S void op_numaelael_assd(ND* nd) {
 	o_aelael_ass(nd, 5);
 }
 
@@ -2386,14 +2402,6 @@ S void sl_anf(STR* ps, double h) {
 	str_free(&s);
 }
 
-S const char* vexf(ushort typ) {
-	if (typ < VAR_NUMARR) return vex(typ);
-	if (typ == VAR_NUMARR) return "[]";
-	else if (typ == VAR_STRARR) return "$[]";
-	else if (typ == VAR_NUMARRARR) return "[][]";
-	else if (typ == VAR_STRARRARR) return "$[][]";
-	else return "";
-}
 S void dbg_debv(STR* ps, struct proc* fu, double* nums, STR* strs, ARR* arrs) {
 
 	if (fu->vname_p == NULL) return;

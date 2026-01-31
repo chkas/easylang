@@ -13,14 +13,18 @@ fastfunc mod2x3x n .
    while n mod 3 = 0 : n /= 3
    return n
 .
-proc show50 offs .
-   i = 1
-   while cnt < 50
-      if mod2x3x i = 1 and isprim (i + offs) = 1
-         cnt += 1
-         write i + offs & " "
-      .
+fastfunc next i offs .
+   repeat
       i += 1
+      until mod2x3x i = 1 and isprim (i + offs) = 1
+   .
+   return i
+.
+proc show50 offs .
+   while cnt < 50
+      i = next i offs
+      cnt += 1
+      write i + offs & " "
    .
    print ""
    print ""

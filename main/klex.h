@@ -48,6 +48,7 @@ static const char* tokstr[] = {
 	"array element", "string array element",
 	"array variable", "string array variable",
 	"array array variable", "string array array variable",
+	"byte array element", "byte array variable",
 
 	"pr", "randint",
 	""
@@ -91,6 +92,7 @@ enum token_tok {
 	t_vnumael, t_vstrael,
 	t_vnumarr, t_vstrarr,
 	t_vnumarrarr, t_vstrarrarr,
+	t_vbyteael, t_vbytearr,
 
 	t_pr, t_randint,
 
@@ -670,6 +672,17 @@ static void nexttok() {
 				tok = t_vstr;
 			}
 		}
+		else if (c == '@' && cn == '[') {
+			nextc();
+			nextc();
+			if (c == ']') {
+				tok = t_vbytearr;
+				nextc();
+			}
+			else {
+				tok = t_vbyteael;
+			}
+		}
 		else {
 			tok = t_name;
 		}
@@ -837,7 +850,7 @@ static ushort prog_props;
 
 enum vartyp { VAR_NUM, VAR_STR,
 	VAR_NUMARR, VAR_STRARR,
-	VAR_NUMARRARR, VAR_STRARRARR, VAR_SUBR };
+	VAR_NUMARRARR, VAR_STRARRARR, VAR_BYTEARR, VAR_SUBR };
 
 static struct vname* get_vname(struct proc* f, const char* name, char typ) {
 
@@ -864,19 +877,30 @@ static struct vname* add_vname(struct proc* f, const char* name, char typ, ushor
 
 enum varaccess { WR = 1, RD, RW };
 
-enum arrtyp { ARR_XXX, ARR_NUM, ARR_STR, ARR_ARR, ARR_AEL, ARR_AELSTR };
+enum arrtyp { ARR_XXX, ARR_NUM, ARR_STR, ARR_ARR, ARR_AEL, ARR_AELSTR, ARR_BYTE };
 
 enum paramtyp { PAR_NUM, PAR_STR, PAR_ARR, PAR_RNUM, PAR_RSTR, PAR_RARR};
 
-static const char* vex(ushort typ) {
+S const char* vex(ushort typ) {
 	if (typ == VAR_NUM) return "";
 	else if (typ == VAR_STR) return "$";
 	else if (typ == VAR_NUMARR) return "[";
 	else if (typ == VAR_STRARR) return "$[";
 	else if (typ == VAR_NUMARRARR) return "[][";
 	else if (typ == VAR_STRARRARR) return "$[][";
+	else if (typ == VAR_BYTEARR) return "@[";
 	else return "";
 }
+S const char* vexf(ushort typ) {
+	if (typ < VAR_NUMARR) return vex(typ);
+	if (typ == VAR_NUMARR) return "[]";
+	else if (typ == VAR_STRARR) return "$[]";
+	else if (typ == VAR_NUMARRARR) return "[][]";
+	else if (typ == VAR_STRARRARR) return "$[][]";
+	else if (typ == VAR_BYTEARR) return "@[]";
+	else return "";
+}
+
 
 static void lvar(byte typ, byte access, byte mode) {
 
