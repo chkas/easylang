@@ -23,11 +23,15 @@ gcircle x + 16 85 3.5
 
 + You can tell the computer to draw two thick round lines in different colors at certain positions and then two black circles - and there you have a car on the screen.
 
-+ If this is done repeatedly with a short pause at slightly shifted positions, the car will drive. How to program this and other things you can learn here.
++ If this is done repeatedly with a short pause at slightly shifted positions, the car will drive.
+
++ How to program this and other things you can learn here.
 
 +de Man kann den Computer anweisen, zwei dicke runde Striche in verschiedenen Farben an bestimmten Positionen zu zeichnen und dann noch zwei schwarze Kreise  - und schon hat man ein Auto auf dem Bildschirm.
 
-+de Wenn dies wiederholend mit einer kurzen Pause bei leicht verschobenen Positionen gemacht wird, fährt das Auto. Wie man dies und andere Dinge programmiert, erfährst du hier.
++de Wenn dies wiederholend mit einer kurzen Pause bei leicht verschobenen Positionen gemacht wird, fährt das Auto.
+
++de Wie man dies und andere Dinge programmiert, erfährst du hier.
 
 * Graphics
 
@@ -37,16 +41,24 @@ gcircle x + 16 85 3.5
 
 +de Zuerst schauen wir uns die Befehle an, mit denen Grafiken auf dem Bildschirm erstellt werden können.
 
++ *gcircle <x> <y> <r>* draws a filled circle at the specified position with the specified radius.
+
++de *gcircle <x> <y> <r>* zeichnet einen gefüllten Kreis an der angegebenen Position mit dem angegebenen Radius.
+
 gcircle 10 30 1
 gcircle 50 50 1
 
-+ We draw a small circle (size 1) at the position (10 30), which is 10 from the left and 30 from the bottom, and one at the position (50 50) - this is in the middle of the drawing area.
++ We draw a small circle with *radius=1* at the position *x=10 y=30*, which is 10 from the left and 30 from the bottom, and one at the position *x=50 y=50* - this is in the middle of the drawing area.
 
-+de Wir zeichnen einen kleinen Kreis (Größe 1) an der Position (10 30), das ist 10 von links und 30 von unten, und einen an der Position (50 50) - das ist in der Mitte der Zeichenfläche.
++de Wir zeichnen einen kleinen Kreis mit *Radius=1* an der Position *x=10 y=30*, das ist 10 von links und 30 von unten, und einen an der Position *x=50 y=50* - das ist in der Mitte der Zeichenfläche.
 
 + Then we connect these two points with a line.
 
 +de Dann verbinden wir diese beiden Punkte mit einer Linie.
+
++ *gline <x1> <y1> <x2> <y2>* draws a line between the points at *x1/y1* and *x2/y2*.
+
++de *gline <x1> <y1> <x2> <y2>* zeichnet eine Linie zwischen den Punkten *x1/y1* and *x2/y2*.
 
 gcircle 10 30 1
 gcircle 50 50 1
@@ -74,9 +86,13 @@ gcircle 50 50 1.2
 glinewidth 1
 gline 18 34 50 50
 
-+ The drawing area is 100 times 100 units. The origin is bottom left. The first value (the X coordinate) is the distance from the left edge, the second value (the Y coordinate) is the distance from the bottom edge.
++ The drawing area is *100x100* units. The origin is bottom left.
 
-+de Die Zeichenfläche beträgt 100 mal 100 Einheiten. Der Ursprung ist links unten. Der erste Wert (die X-Koordinate) ist der Abstand vom linken Rand, der zweite Wert (die Y-Koordinate) ist der Abstand vom unteren Rand.
++ The first value (the *x-coordinate*) is the distance from the left edge, the second value (the *y-coordinate*) is the distance from the bottom edge.
+
++de Die Zeichenfläche beträgt *100x100* Einheiten. Der Ursprung ist links unten.
+
++de Der erste Wert (die *X-Koordinate*) ist der Abstand vom linken Rand, der zweite Wert (die *Y-Koordinate*) ist der Abstand vom unteren Rand.
 
 -
 
@@ -98,11 +114,11 @@ gline 30 20 30 40
 
 -
 
-+ With the command *grect* you can draw filled rectangles. The parameters specify the *x* and *y* position, the *width* and the *height*.
++ *grect <x> <y> <w> <h>* draws a filled rectangle. The parameters specify the *x* and *y* position, the *width* and the *height*.
 
 + Most graphic commands begin with a *g* for *graphic*, so *grect* therefore stands for *graphic rectangle*.
 
-+de Mit dem Befehl *grect* kann man gefüllte Rechtecke zeichnen. Die Parameter geben die *x*- und *y*-Position, die *Breite* und die *Höhe* an.
++de *grect <x> <y> <w> <h>* zeichnet ein gefülltes Rechteck. Die Parameter geben die *x*- und *y*-Position, die *Breite* und die *Höhe* an.
 
 +de Die meisten Grafikbefehle beginnen mit einem *g* für *Grafik*, *grect* steht also für *Grafisches Rechteck*.
 
@@ -131,9 +147,9 @@ gcircle 18 26 1
 gtext 35 22 "50"
 gtext 59 37 "30"
 
-+ *gcolor* sets the drawing color. *900*, for example, is red, *990* yellow and *444* grey.
++ *gcolor <rgb>* sets the drawing color. *900*, for example, is red, *990* yellow and *444* grey.
 
-+de *gcolor* setzt die Zeichenfarbe. *900* ist zum Beispiel rot, *990* gelb und *444* grau.
++de *gcolor <rgb>* setzt die Zeichenfarbe. *900* ist zum Beispiel rot, *990* gelb und *444* grau.
 
 gcolor 990
 gcircle 70 80 10
@@ -141,9 +157,17 @@ gcircle 70 80 10
 gcolor 444
 grect 10 5 40 30
 
-+ There are 1000 possible colors - from 000 to 999, mixed from the primary colours red, green and blue. The left digit specifies the red component, the middle digit the green component and the right digit the blue component. These are some possible colors.
++ There are 1000 possible colors - from 000 to 999, mixed from the primary colours red, green and blue.
 
-+de Es gibt 1000 mögliche Farben - und zwar von 000 bis 999. Die Farben werden dabei aus den Grundfarben Rot, Grün und Blau gemischt. Die linke Ziffer gibt den Rotanteil, die mittlere den Grünanteil und die rechte den Blauanteil an. Dies sind einige mögliche Farben.
++ The left digit specifies the red component, the middle digit the green component and the right digit the blue component.
+
++ These are some possible colors.
+
++de Es gibt 1000 mögliche Farben - und zwar von 000 bis 999. Die Farben werden dabei aus den Grundfarben Rot, Grün und Blau gemischt.
+
++de Die linke Ziffer gibt den Rotanteil, die mittlere den Grünanteil und die rechte den Blauanteil an.
+
++de Dies sind einige mögliche Farben.
 
 ##84
 col[] = [ 900 700 966 990 995 960 090 070 696 099 599 690 009 007 669 909 959 609 777 444 000 999 432 765 ]
@@ -195,9 +219,13 @@ grect 60 30 10 10
 gtextsize 8
 gtext 5 85 "MY HOUSE"
 
-+ *gtext* writes a text at the specified position on the drawing area. *gpolygon [x1 y1 x2 y2 ..]* draws a filled polygon, for example a triangle, with the specified coordinates.
++ *gtext <x> <y> <txt>* writes a text at the specified position on the drawing area.
 
-+de *gtext* schreibt einen Text an die angegebene Position auf der Zeichenfläche. *gpolygon [x1 y1 x2 y2 ..]* zeichnet ein gefülltes Polygon, zum Beispiel ein Dreieck, mit den angegebenen Koordinaten.
++ *gpolygon [x1 y1 x2 y2 ..]* draws a filled polygon, for example a triangle, with the specified coordinates.
+
++de *gtext <x> <y> <txt>* schreibt einen Text an die angegebene Position auf der Zeichenfläche.
+
++de *gpolygon [x1 y1 x2 y2 ..]* zeichnet ein gefülltes Polygon, zum Beispiel ein Dreieck, mit den angegebenen Koordinaten.
 
 + The *#* character allows you to insert comments into the program.
 
@@ -211,19 +239,15 @@ gtext 5 85 "MY HOUSE"
 
 +de 🤔🤔 Du kannst einen blauen Hintergrund als Himmel verwenden und eine Sonne (*gcircle*) scheinen lassen.
 
-+ In *Debug* mode, you can watch the computer execute its instructions one by one.
++ In *Debug* mode, you can watch the computer execute its instructions one by one. You can find the debug mode in the hamburger menu.
 
-+de Im *Debug*-Modus kannst du dem Computer zuschauen, wie er nacheinander seine Anweisungen ausführt.
++de Im *Debug*-Modus kannst du dem Computer zuschauen, wie er nacheinander seine Anweisungen ausführt. Den Debug-Modus findest du im Hamburger-Menü.
 
 -
 
-+ The command *gcircle* draws a filled circle at the specified position with the specified radius.
++ *glinewidth <w>* sets the line width. The lines are rounded at the ends.
 
-+ *glinewidth* sets the line width. The lines are rounded at the ends.
-
-+de Der Befehl *gcircle* zeichnet einen gefüllten Kreis an der angegebenen Position mit dem angegebenen Radius.
-
-+de *glinewidth* stellt die Linienstärke ein. Die Linien sind an den Enden abgerundet.
++de *glinewidth <w>* stellt die Linienstärke ein. Die Linien sind an den Enden abgerundet.
 
 gcircle 10 80 2
 #
@@ -299,9 +323,9 @@ print a
 
 *de Bedingte Anweisung
 
-+ With *if* you can instruct the computer to execute a block of commands only if a condition is met. The end of the block is indicated by *end*.
++ With *if <cond>* you can instruct the computer to execute a block of commands only if a condition is met. The end of the block is indicated by *end*.
 
-+de Mit *if* kannst du dem Computer sagen, dass er einen Block von Befehlen nur ausführen soll, wenn eine Bedingung erfüllt ist. Das Ende des Blocks wird durch *end* angezeigt.
++de Mit *if <cond>* kannst du dem Computer sagen, dass er einen Block von Befehlen nur ausführen soll, wenn eine Bedingung erfüllt ist. Das Ende des Blocks wird durch *end* angezeigt.
 
 a = 7
 a = 9 * a
@@ -355,17 +379,21 @@ else
    print "Thats wrong 🙁"
 end
 
-+ *random 10* returns a random number from 1 to 10. *number input* reads a number from the keyboard.
++ *random 10* returns a random number from 1 to 10.
 
-+de *random 10* liefert eine zufällige Zahl von 1 bis 10. *number input* liest eine Zahl von der Tastatur ein.
++ *number input* reads a number from the keyboard.
+
++de *random 10* liefert eine zufällige Zahl von 1 bis 10.
+
++de *number input* liest eine Zahl von der Tastatur ein.
 
 * Loop
 
 *de Schleife
 
-+ *while* works similar to *if*, except that the conditional actions are executed again and again as long as the condition is fulfilled. This is called a *loop*.
++ *while <cond>* works similar to *if*, except that the conditional actions are executed again and again as long as the condition is fulfilled. This is called a *loop*.
 
-+de *while* funktioniert ähnlich wie *if*, nur dass die bedingten Aktionen immer wieder ausgeführt werden, solange die Bedingung erfüllt ist. Das nennt man eine *Schleife*.
++de *while <cond>* funktioniert ähnlich wie *if*, nur dass die bedingten Aktionen immer wieder ausgeführt werden, solange die Bedingung erfüllt ist. Das nennt man eine *Schleife*.
 
 i = 1
 while i <= 4
@@ -434,7 +462,6 @@ print c & "°C = " & f & "°F"
 +de Mit einer Schleife innerhalb einer Schleife (verschachtelte Schleife) kannst du noch interessantere Muster erzeugen.
 
 gbackground 477
-gclear
 y = 5
 while y < 100
    x = 5
@@ -446,13 +473,21 @@ while y < 100
    y += 10
 end
 
-+ With each loop cycle of the outer loop, the inner loop is executed completely. *x += 10* is short for *x = x + 10* and means: increment *x* by 10.
++ With each loop cycle of the outer loop, the inner loop is executed completely.
 
-+de Mit jedem Schleifenzyklus der äußeren Schleife wird die innere Schleife vollständig ausgeführt. *x += 10* ist die Kurzform für *x = x + 10* und bedeutet: erhöhe *x* um 10.
++ *x += 10* is short for *x = x + 10* and means: increment *x* by 10.
 
-+ With *gbackground* you can set the color that *gclear* uses when clearing the drawing area. *sleep 0.02* puts a pause of 0.02 seconds.
++de Mit jedem Schleifenzyklus der äußeren Schleife wird die innere Schleife vollständig ausgeführt.
 
-+de  Mit *gbackground* kannst du die Farbe festlegen, die *gclear* beim Löschen der Zeichenfläche verwendet. *sleep 0.02* legt eine Pause von 0.02 Sekunden ein.
++de *x += 10* ist die Kurzform für *x = x + 10* und bedeutet: erhöhe *x* um 10.
+
++ With *gbackground <col>* you can set the color of the background.
+
++ *sleep 0.02* puts a pause of 0.02 seconds.
+
++de Mit *gbackground <col>* kann man die Hintergrundfarbe festlegen.
+
++de *sleep 0.02* legt eine Pause von 0.02 Sekunden ein.
 
 + 🤔 Change the program a little to make the pattern even more beautiful.
 
@@ -482,6 +517,10 @@ while x < 120
    # change drawing position
    x += 5
 end
+
++ *gclear* clears the drawing area.
+
++de *gclear* löscht die Zeichenfläche.
 
 + 🤔 Try to make the animation smoother by increasing the x-position of the circle only by 1 or 0.5 each time and shortening the pause to the next frame.
 
@@ -516,9 +555,9 @@ end
 
 +de Mit *subr* können Aktionen zusammengefasst werden, die von verschiedenen Stellen aus aufgerufen werden können. Das nennt man *Unterprogramm* oder *Subroutine*.
 
-+ A comma can be used to separate the parameters of *gline* and *gcircle*. This is not necessary, but makes the code easier to read.
++ A comma can be used to separate the parameters of *gline* and *gcircle*. This is not necessary, but makes the code sometimes easier to read.
 
-+de Mit einem Komma kann man die Parameter von *gline* und *gcircle* trennen. Dies ist nicht notwendig, macht den Code aber leichter lesbar.
++de Mit einem Komma kann man die Parameter von *gline* und *gcircle* trennen. Dies ist nicht notwendig, macht den Code aber manchmal leichter lesbar.
 
 + 🤔 Stop the car when it touches the right edge.
 

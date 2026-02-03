@@ -97,8 +97,11 @@ S void except(ND* nd, const char* s) {
 	gr_exit();
 }
 
-S void out_of_bounds(ND* nd) {
-	except(nd, "index out of bounds");
+S void out_of_bounds(ND* nd, int ind) {
+	char buf[40];
+	strcpy(buf, "index out of bounds");
+	if (ind != -999999) sprintf(buf + strlen(buf), " (%d)", ind);
+	except(nd, buf);
 }
 
 S void out_of_mem(ND* nd) {
@@ -156,17 +159,17 @@ S void op_assp_fl(ND* nd) {
 }
 
 S int arrind(ARR* arr, int ind, ND* nd) {
-	int h = ind - arr->base;
-	if (h < 0 || h >= arr->len) {
-#if 0
+	unsigned h = ind - arr->base;
+	if (h >= (unsigned)arr->len) {
+#if 1
 		// handle negative indices
-		h = arr->len + h + 1;
-		if (h < 0 || h >= arr->len) {
-			out_of_bounds(nd);
+		h = arr->len + h;
+		if (h >= (unsigned)arr->len) {
+			out_of_bounds(nd, ind);
 			return 0;
 		}
 #else
-		out_of_bounds(nd);
+		out_of_bounds(nd, h);
 		return 0;
 #endif
 	}
@@ -2920,7 +2923,7 @@ EMSCRIPTEN_KEEPALIVE
 void xtrafunc(int id, int iarg, double farg) {
 	if (id == 0) {		// global arr_append
 		ARR* arr = rt_arrs + iarg;
-		arr->typ = 0;
+		arr->typ = ARR_NUM;
 		arr->len += 1;
 		void* p = xrealloc(arr->p, arr->len * sizeof(double), NULL);
 		arr->p = p;
@@ -2930,10 +2933,21 @@ void xtrafunc(int id, int iarg, double farg) {
 	else if (id == 1) {		// global len[]
 		int len = (int)farg;
 		ARR* arr = rt_arrs + iarg;
-		arr->typ = 0;
+		arr->typ = ARR_NUM;
 		arr->p = xrealloc(arr->p, len * sizeof(double), NULL);
 		if (len > arr->len) memset(arr->pnum + arr->len, 0, (len - arr->len) * sizeof(double));
 		arr->len = len;
+	}
+	else if (id == 2) {		// global byte len[]
+		int len = (int)farg;
+		ARR* arr = rt_arrs + iarg;
+		arr->typ = ARR_BYTE;
+		arr->p = xrealloc(arr->p, len * sizeof(byte), NULL);
+		if (len > arr->len) memset(arr->pbyte + arr->len, 0, (len - arr->len) * sizeof(byte));
+		arr->len = len;
+	}
+	else if (id == 3) {		// out of bounds
+		out_of_bounds((ND*)iarg, -999999);
 	}
 }
 #endif

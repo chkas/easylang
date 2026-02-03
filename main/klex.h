@@ -992,10 +992,12 @@ static void opline_add(ND* nd, ushort line) {
 // ---------------------------------------------------------
 
 static ushort onstats;
+static byte in_index;
 
 static void wasm_clean(void);
 
 static void parse_clean() {
+	in_index = 0;
 	freecodestr();
 
 	cstrs_free();
@@ -1013,14 +1015,14 @@ static void parse_clean() {
 	wasm_clean();
 }
 
-S ND** nd_doll;
+// S ND** nd_doll;
 
 static void parse_prepare(char* str, int slen) {
 	parse_str = str;
 
 	parse_clean();
 
-	nd_doll = NULL;
+	//nd_doll = NULL;
 
 	code_utf8len = 0;
 	spc[0] = 0;

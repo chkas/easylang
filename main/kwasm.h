@@ -14,6 +14,8 @@
 // fastfunc - creates wasm code
 // currently works only partially - experimenting
 
+#ifdef __EMSCRIPTEN__
+
 static byte* wasm = NULL;
 static ushort wasm_len = 0;
 
@@ -29,13 +31,37 @@ static void we(byte b) {
 	}
 	wasm[wasmi++] = b;
 }
-static void wef(double d) {
+static void checksize() {
 	if (wasmi >= wasm_len - 7) {
 		wasm_len += 256;
 		wasm = _realloc(wasm, wasm_len);
 	}
+}
+static void wef(double d) {
+	checksize();
 	memcpy(wasm + wasmi, &d, 8);
 	wasmi += 8;
+}
+/*
+static void wei32u(uint v) {
+	while(1) {
+		checksize();
+		uint b = v & 0x7F;
+		v >>= 7;
+		wasm[wasmi++] = (byte)((v ? 0x80 : 0) | b);
+		if (!v) break;
+	}
+}
+*/
+static void wei32s(int v) {
+	while(1) {
+		checksize();
+		uint b = v & 0x7F;
+		int cont = !((v == 0  && !(b & 0x40)) || (v == -1 && (b & 0x40)));
+		wasm[wasmi++] = (byte)(cont ? (b | 0x80) : b);
+		if (!cont) break;
+		v >>= 7;
+	}
 }
 
 static ND* nd_stat;
@@ -44,8 +70,10 @@ int fastfunc_errline;
 
 static void mf_err(const char* s) {
 	fastfuncn = 0;
-	if (fastfunc_errline == -1) fastfunc_errline = getline_nd(nd_stat);
-	pr("fastfunc error:%s line:%d", s, fastfunc_errline);
+	if (fastfunc_errline == -1) {
+		fastfunc_errline = getline_nd(nd_stat);
+		pr("fastfunc error:%s line:%d", s, fastfunc_errline);
+	}
 }
 
 #define W_BLOCK 0x02
@@ -98,6 +126,7 @@ static void mf_err(const char* s) {
 #define W_SHL 0x74
 
 #define W_F2I 0xAB // i32.trunc_f64_u
+#define W_F2IS 0xAA // i32.trunc_f64_s
 #define W_I2F 0xB8 // f64.convert_i32_u
 #define W_DROP 0x1a
 #define W_CALL_INDIRECT 0x11
@@ -169,17 +198,59 @@ static void mf_opff(int nr, ND* arg, ND* arg2) {
 	we(0);
 }
 
-static void mf_larrpos(ushort pos, ND* ex) {
+static void mf_larrpos(ushort pos, ND* ex, ND* nd) {
 	wex(W_GET, pos);
 	mf_expr(ex);
 	we(W_F2I);
+#if 0
+	wex(W_CONSTI, 1);
+#else
 	wex(W_GET, pos + 2);
+#endif
 	we(W_SUBI);
+#if 1
+	// reverse indexing, and oob check
+	wex(W_SET, wvar + 2); // index (corrected to 0 base)
+
+	wex(W_BLOCK, W_VOID);
+
+	wex(W_GET, wvar + 2); // index
+	wex(W_GET, pos + 1);	// len
+
+	we(W_LTI);
+	wex(W_BRIF, 0);
+
+	wex(W_GET, wvar + 2);	// index
+	wex(W_GET, pos + 1);	// len
+
+	we(W_ADDI);
+	wex(W_TEE, wvar + 2); // index
+
+	// oob test
+	wex(W_GET, pos + 1);	// len
+	we(W_LTI);
+	wex(W_BRIF, 0);
+	
+	// exception
+	wex(W_CONSTI, 3);
+	we(W_CONSTI);
+	wei32s((int)nd);
+	wex(W_GET, wvar + 0);			// dummy
+
+	wex(W_CONSTI, 3);				// function 3
+	we(W_CALL_INDIRECT);
+	we(7);							// (i32,i32,f64)
+	we(0);
+
+	we(W_END);
+
+	wex(W_GET, wvar + 2);
+#endif
 	wex(W_CONSTI, 3);
 	we(W_SHL);
 	we(W_ADDI);
 }
-static void mf_arrpos(short id, ND* ex, byte typ) {
+static void mf_arrpos(short id, ND* ex, byte typ, ND* nd) {
 	wex(W_GLGET, 1);	// arrays
 	we(W_CONSTI);
 	int h = (id + 1) * -12;
@@ -191,13 +262,12 @@ static void mf_arrpos(short id, ND* ex, byte typ) {
 	we(0x00);
 
 	mf_expr(ex);
-	we(W_F2I);
+	we(W_F2IS);
 
 #if 0
-	we(W_CONSTI);
-	we(1);
+	wex(W_CONSTI, 1);	// array base fix 1
 #else
-	wex(W_GLGET, 1); 	// arrays
+	wex(W_GLGET, 1); 	// array base from struct arr
 	we(W_CONSTI);
 	we((id + 1) * -12 + 8);
 	we(W_ADDI);
@@ -206,11 +276,56 @@ static void mf_arrpos(short id, ND* ex, byte typ) {
 	we(0x00);
 #endif
 	we(W_SUBI);
+#if 1
+	// reverse indexing, and oob check
+	wex(W_SET, wvar + 2); // index (corrected to 0 base)
+
+	wex(W_BLOCK, W_VOID);
+	wex(W_GET, wvar + 2); // index
+
+	wex(W_GLGET, 1); 	// arrays
+	wex(W_CONSTI, (id + 1) * -12 + 4);
+	we(W_ADDI);
+	we(W_LOADI);
+	we(0x00);
+	we(0x00);
+	wex(W_TEE, wvar + 3);	// len
+
+	we(W_LTI);
+	wex(W_BRIF, 0);
+
+	wex(W_GET, wvar + 2);	// index
+	wex(W_GET, wvar + 3);	// len
+	we(W_ADDI);
+	wex(W_TEE, wvar + 2); // index
+
+	// oob test
+	wex(W_GET, wvar + 3);	// len
+	we(W_LTI);
+	wex(W_BRIF, 0);
+	
+	// exception
+	wex(W_CONSTI, 3);
+
+	we(W_CONSTI);
+	wei32s((int)nd);
+	wex(W_GET, wvar + 0);			// dummy
+
+	wex(W_CONSTI, 3);				// function 3
+	we(W_CALL_INDIRECT);
+	we(7);							// (i32,i32,f64)
+	we(0);
+
+	we(W_END);
+
+	wex(W_GET, wvar + 2);
+#endif
+
 	if (typ == 0) {
 		wex(W_CONSTI, 3);
 		we(W_SHL);
 	}
-	we(W_ADDI);
+	we(W_ADDI);				// address
 }
 
 static void mf_arrlen(int v) {
@@ -314,10 +429,10 @@ static void mf_expr(ND* nd) {
 	}
 	else if (p == op_vnumael) {
 		if (nd->v1 >= 0) {
-			mf_larrpos(wvara + nd->v1 * 3, nd->ri);
+			mf_larrpos(wvara + nd->v1 * 3, nd->ri, nd);
 		}
 		else {
-			mf_arrpos(nd->v1, nd->ri, 0);
+			mf_arrpos(nd->v1, nd->ri, 0, nd);
 		}
 		we(W_LOADF);
 		we(0x00);
@@ -355,7 +470,7 @@ static void mf_expr(ND* nd) {
 
 	else if (p == op_vbyteael) {
 		if (nd->v1 >= 0) mf_err("local array");
-		mf_arrpos(nd->v1, nd->ri, 1);
+		mf_arrpos(nd->v1, nd->ri, 1, nd);
 		we(0x2d);		// load u8 -> i32
 		we(0x00);
 		we(0x00);
@@ -690,10 +805,10 @@ static void mf_statement(ND* nd) {
 
 		ND* ndx = nd + 1;
 		if (nd->v1 >= 0) {	// local
-			mf_larrpos(wvara + nd->v1 * 3, nd->ri);
+			mf_larrpos(wvara + nd->v1 * 3, nd->ri, nd);
 		}
 		else {
-			mf_arrpos(nd->v1, nd->ri, 0);
+			mf_arrpos(nd->v1, nd->ri, 0, nd);
 		}
 		mf_expr(ndx->ex);
 		we(W_STOREF);	// store
@@ -704,10 +819,10 @@ static void mf_statement(ND* nd) {
 
 		ND* ndx = nd + 1;
 		if (nd->v1 >= 0) {	// local
-			mf_larrpos(wvara + nd->v1 * 3, nd->ri);
+			mf_larrpos(wvara + nd->v1 * 3, nd->ri, nd);
 		}
 		else {
-			mf_arrpos(nd->v1, nd->ri, 0);
+			mf_arrpos(nd->v1, nd->ri, 0, nd);
 		}
 		wex(W_TEE, wvar + 2);
 		wex(W_GET, wvar + 2);
@@ -750,7 +865,7 @@ static void mf_statement(ND* nd) {
 		// swap a[i] a[j]
 		ND* ndx = nd + 1;
 
-		mf_arrpos(nd->v1, nd->ri, 0);
+		mf_arrpos(nd->v1, nd->ri, 0, nd);
 		wex(W_TEE, wvar + 2);	// &a[i]
 		we(W_LOADF);	// loadf
 		we(0x00);
@@ -758,7 +873,7 @@ static void mf_statement(ND* nd) {
 
 		wex(W_GET, wvar + 2);	// &a[i]
 
-		mf_arrpos(ndx->vx2, ndx->ex, 0);
+		mf_arrpos(ndx->vx2, ndx->ex, 0, nd);
 		wex(W_TEE, wvar + 3);	// &a[j]
 		we(W_LOADF);			// loadf
 		we(0x00);
@@ -788,8 +903,7 @@ static void mf_statement(ND* nd) {
 			we(W_F2I);
 			wex(W_TEE,wvara + nd->v1 * 3 + 1);
 
-			we(W_CONSTI);
-			we(2);							// function 2
+			wex(W_CONSTI, 2);				// function 2
 			we(W_CALL_INDIRECT);
 			we(6);							// (i32,i32,i32)->i32
 			we(0);
@@ -800,8 +914,7 @@ static void mf_statement(ND* nd) {
 			wex(W_CONSTI, -(nd->v1 + 1));
 			mf_expr(nd->ri);
 
-			we(W_CONSTI);
-			we(3);							// function 3
+			wex(W_CONSTI, 3);				// function 3
 			we(W_CALL_INDIRECT);
 			we(7);							// (i32,i32,f64)
 			we(0);
@@ -860,12 +973,25 @@ static void mf_statement(ND* nd) {
 	else if (p == op_byteael_ass) {
 		ND* ndx = nd + 1;
 		if (nd->v1 >= 0) mf_err("local array");
-		mf_arrpos(nd->v1, nd->ri, 1);
+		mf_arrpos(nd->v1, nd->ri, 1, nd);
 		mf_expr(ndx->ex);
 		we(W_F2I);
 		we(0x3a);	// i32-> 8 store
 		we(0x00);
 		we(0x00);
+	}
+	else if (p == op_bytearr_len) {
+
+		if (nd->v1 >= 0) mf_err("arrlen");
+		wex(W_CONSTI, 2);
+		wex(W_CONSTI, -(nd->v1 + 1));
+		mf_expr(nd->ri);
+
+		we(W_CONSTI);
+		we(3);							// function 3
+		we(W_CALL_INDIRECT);
+		we(7);							// (i32,i32,f64)
+		we(0);
 	}
 
 	else {
@@ -1151,7 +1277,6 @@ static void build_fastfuncs(void) {
 	memcpy(wasmhd + k, tmp, ncount);
 	k += ncount;							// function count
 
-#ifdef __EMSCRIPTEN__
 	EM_ASM({
 
 		var hdrView = HEAPU8.subarray($0, $0 + $1);
@@ -1175,7 +1300,6 @@ static void build_fastfuncs(void) {
 		});
 
 	}, wasmhd, k, wasm, wasmi);
-#endif
 	free(wasm);
 	wasm = NULL;
 }
@@ -1184,9 +1308,18 @@ static void wasm_clean(void) {
 	fastfunc_errline = -1;
 	free(wasm);
 	wasm = NULL;
-#ifdef __EMSCRIPTEN__
 	EM_ASM({
 		fastinst = null
 	});
-#endif
 }
+#else
+static byte* wasm = NULL;
+static void build_fastfuncs(void) {
+	pr("");
+}
+static void parse_fastfunc(void) {}
+static void wasm_clean(void) {}
+int fastfunc_errline = -1;
+
+#endif
+

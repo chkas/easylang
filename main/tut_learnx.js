@@ -122,11 +122,15 @@ end
 
 + Now let's draw a starry sky from a star map. For this we need something like a list.
 
-+ We use an *array* for this. The field elements can be accessed using square brackets and a position specification, also called *index*. The first element is at position 1, *len* returns the number of elements in the array.
++ We use an *array* for this. The field elements can be accessed using square brackets and a position specification, also called *index*.
+
++ The first element is at position 1, *len* returns the number of elements in the array.
 
 +de Jetzt wollen wir einen Sternenhimmel nach einer Sternenkarte zeichnen. Dazu brauchen wir so etwas wie eine Liste.
 
-+de Wir verwenden dazu ein *Feld* (engl. *Array*). Auf die Feldelemente kann über eckige Klammern und eine Positionsangabe, auch *Index* genannt, zugegriffen werden. Das erste Element steht an der Position 1. *len* gibt die Anzahl der Elemente im Array zurück.
++de Wir verwenden dazu ein *Feld* (engl. *Array*). Auf die Feldelemente kann über eckige Klammern und eine Positionsangabe, auch *Index* genannt, zugegriffen werden.
+
++de Das erste Element steht an der Position 1. *len* gibt die Anzahl der Elemente im Array zurück.
 
 a[] = [ 3 7 2 8 ]
 print len a[]
@@ -182,9 +186,9 @@ print "Mean: " & m
 
 -
 
-+ Back to the starry sky: the X and Y positions and the magnitudes of the stars are placed in one array each.
++ Back to the starry sky: the X and Y positions and the magnitudes of the stars are placed in one array each. So the first star has coordinates *23/19* and brightness *33*.
 
-+de Zurück zum Sternenhimmel: Die X- und Y-Positionen und die Helligkeiten der Sterne stehen in jeweils einem Feld.
++de Zurück zum Sternenhimmel: Die X- und Y-Positionen und die Helligkeiten der Sterne stehen in jeweils einem Feld. Der erste Stern hat also die Koordinaten *23/19* und die Helligkeit *33*.
 
 x[] = [ 23 13 1 2 81 85 86 29 23 76 77 50 54 93 20 93 17 35 38 7 7 44 16 91 33 26 53 18 27 13 87 55 23 ]
 #

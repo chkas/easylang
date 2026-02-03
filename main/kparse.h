@@ -185,11 +185,19 @@ S void optimize_vnumael(ND* nd) {
 
 S ND* parse_log_ex(void);
 
+/*
 S ND* parse_ex_arr(ND** ndolp) {
 	ND** old = nd_doll;
 	nd_doll = ndolp;
 	ND* nd = parse_ex();
 	nd_doll = old;
+	return nd;
+}
+*/
+S ND* parse_ex_arr(void) {
+	in_index += 1;
+	ND* nd = parse_ex();
+	in_index -= 1;
 	return nd;
 }
 
@@ -204,8 +212,9 @@ S int parse_vstrael(ND* nd, int aelael) {
 	strcpy(s, tval);
 	cs_tok_nt();
 	cs("$[");
-	ND* ndol = NULL;
-	nd->ri = parse_ex_arr(&ndol);
+//	ND* ndol = NULL;
+//	nd->ri = parse_ex_arr(&ndol);
+	nd->ri = parse_ex_arr();
 
 	int rc = AEL;
 	if (tok == t_brr) {
@@ -233,7 +242,7 @@ S int parse_vstrael(ND* nd, int aelael) {
 		}
 	}
 	else rc = -1;
-	if (ndol != NULL) ndol->v1 = nd->v1;
+//	if (ndol != NULL) ndol->v1 = nd->v1;
 	opline_add(nd, fmtline);
 	return rc;
 }
@@ -277,9 +286,10 @@ S ND* parse_lenfunc(void) {
 		csbrl();
 		nd->numf = op_arrarrael_len;
 
-		ND* ndol = NULL;
-		nd->ri = parse_ex_arr(&ndol);
-		if (ndol != NULL) ndol->v1 = nd->v1;
+		nd->ri = parse_ex_arr();
+//		ND* ndol = NULL;
+//		nd->ri = parse_ex_arr(&ndol);
+//		if (ndol != NULL) ndol->v1 = nd->v1;
 		opline_add(nd, fmtline);
 		expt_ntok(t_brrl);
 		expt_ntok(t_brr);
@@ -367,9 +377,11 @@ S void parse_call_param(ND* nd, struct proc* p, byte isfunc) {
 					csbrl();
 					nexttok();
 	
-					ND* ndol = NULL;
-					nd->ri = parse_ex_arr(&ndol);
-					if (ndol != NULL) ndol->v1 = nd->v1;
+					nd->ri = parse_ex_arr();
+					//ND* ndol = NULL;
+					//nd->ri = parse_ex_arr(&ndol);
+					//if (ndol != NULL) ndol->v1 = nd->v1;
+
 					expt_ntok(t_brrl);
 					expt_ntok(t_brr);
 					opline_add(nd, fmtline);
@@ -398,9 +410,11 @@ S void parse_call_param(ND* nd, struct proc* p, byte isfunc) {
 					cs(tval);
 					cs("$[");
 					nexttok();
-					ND* ndol = NULL;
-					nd->ri = parse_ex_arr(&ndol);
-					if (ndol != NULL) ndol->v1 = nd->v1;
+
+					nd->ri = parse_ex_arr();
+					// ND* ndol = NULL;
+					// nd->ri = parse_ex_arr(&ndol);
+					// if (ndol != NULL) ndol->v1 = nd->v1;
 					expt_ntok(t_brrl);
 					expt_ntok(t_brr);
 					opline_add(nd, fmtline);
@@ -486,8 +500,10 @@ S int parse_vnumael(ND* nd, int aelael) {
 	ushort pos = code_utf8len;
 	cs_tok_nt();
 	csbrl();
-	ND* ndol = NULL;
-	nd->ri = parse_ex_arr(&ndol);
+
+	nd->ri = parse_ex_arr();
+	//ND* ndol = NULL;
+	//nd->ri = parse_ex_arr(&ndol);
 	nd->numf = NULL;
 	if (tok == t_brr) {
 		cs_tok_nt();
@@ -514,7 +530,7 @@ S int parse_vnumael(ND* nd, int aelael) {
 		}
 	}
 	else rc = -1;
-	if (ndol != NULL) ndol->v1 = nd->v1;
+	//if (ndol != NULL) ndol->v1 = nd->v1;
 	opline_add(nd, fmtline);
 	return rc;
 }
@@ -599,13 +615,21 @@ S ND* parse_fac0(void) {
 		nd = mknd();
 		nd->numf = op_vbyteael;
 		nd->v1 = parse_var(VAR_BYTEARR, RD);
-		ND* ndol = NULL;
-		nd->ri = parse_ex_arr(&ndol);
-		if (ndol != NULL) ndol->v1 = nd->v1;
+
+		nd->ri = parse_ex_arr();
+		//ND* ndol = NULL;
+		//nd->ri = parse_ex_arr(&ndol);
+		//if (ndol != NULL) ndol->v1 = nd->v1;
 		opline_add(nd, fmtline);
 		expt_ntok(t_brr);
 	}
-
+	else if (in_index && tok == 0 && cp == '$') {
+		nd = mknd();
+		nd->numf = op_const_fl;
+		nd->cfl = 0;
+		cs_tok_nt();
+	}
+/*
 	else if (nd_doll != NULL && tok == 0 && cp == '$' && *nd_doll == NULL) {
 		nd = mknd();
 		cs_tok_nt();
@@ -613,6 +637,7 @@ S ND* parse_fac0(void) {
 		*nd_doll = nd;
 		nd_doll = NULL;
 	}
+*/
 	else {
 		nd = NULL;
 		//errorx(ERR_NUMB);
@@ -1488,9 +1513,10 @@ S ND* parse_numarrex(void) {
 		csbrl();
 		nexttok();
 
-		ND* ndol = NULL;
-		ex->ri = parse_ex_arr(&ndol);
-		if (ndol != NULL) ndol->v1 = ex->v1;
+		ex->ri = parse_ex_arr();
+		//ND* ndol = NULL;
+		//ex->ri = parse_ex_arr(&ndol);
+		//if (ndol != NULL) ndol->v1 = ex->v1;
 
 		expt_ntok(t_brrl);
 		expt_ntok(t_brr);
@@ -1583,9 +1609,10 @@ S ND* parse_strarrex(void) {
 		cs("$[");
 		nexttok();
 
-		ND* ndol = NULL;
-		ex->ri = parse_ex_arr(&ndol);
-		if (ndol != NULL) ndol->v1 = ex->v1;
+		ex->ri = parse_ex_arr();
+		//ND* ndol = NULL;
+		//ex->ri = parse_ex_arr(&ndol);
+		//if (ndol != NULL) ndol->v1 = ex->v1;
 
 		expt_ntok(t_brrl);
 		expt_ntok(t_brr);
@@ -1738,8 +1765,10 @@ S void parse_numael_ass(ND* nd) {
 	cs_tok_nt();
 	csbrl();
 	ND* ndx = mkndx();
-	ND* ndol = NULL;
-	nd->ri = parse_ex_arr(&ndol);
+
+	nd->ri = parse_ex_arr();
+	//ND* ndol = NULL;
+	//nd->ri = parse_ex_arr(&ndol);
 
 	if (tok == t_brr) {
 		//* f[i] = 2
@@ -1795,7 +1824,7 @@ S void parse_numael_ass(ND* nd) {
 	else {
 		errorx(ERR_BR);
 	}
-	if (ndol != NULL) ndol->v1 = nd->v1;
+	//if (ndol != NULL) ndol->v1 = nd->v1;
 }
 
 S void parse_strael_ass(ND* nd) {
@@ -1806,8 +1835,10 @@ S void parse_strael_ass(ND* nd) {
 	cs_tok_nt();
 	cs("$[");
 	ND* ndx = mkndx();
-	ND* ndol = NULL;
-	nd->ri = parse_ex_arr(&ndol);
+
+	nd->ri = parse_ex_arr();
+	//ND* ndol = NULL;
+	//nd->ri = parse_ex_arr(&ndol);
 
 	if (tok == t_brr) {
 		//* f$[i] = "apple"
@@ -1854,7 +1885,7 @@ S void parse_strael_ass(ND* nd) {
 	else {
 		errorx(ERR_BR);
 	}
-	if (ndol != NULL) ndol->v1 = nd->v1;
+	//if (ndol != NULL) ndol->v1 = nd->v1;
 }
 
 S void parse_global_stat(void) {
@@ -1885,6 +1916,10 @@ S void parse_global_stat(void) {
 		else if (tok == t_vstrarrarr) {
 			parse_var(VAR_STRARRARR, 0);
 			expt_ntok(t_brr);
+		}
+		else if (tok == t_vbytearr) {
+			parse_var(VAR_BYTEARR, 0);
+			csbrr();
 		}
 		else {
 			if (is_enter && tok == t_eof) {
@@ -2129,9 +2164,11 @@ S void parse_len_stat(ND* nd) {
 		}
 		//* len a[i][] 2
 		nexttok();
-		ND* ndol = NULL;
-		ndx->ex = parse_ex_arr(&ndol);
-		if (ndol != NULL) ndol->v1 = nd->v1;
+
+		ndx->ex = parse_ex_arr();
+		//ND* ndol = NULL;
+		//ndx->ex = parse_ex_arr(&ndol);
+		//if (ndol != NULL) ndol->v1 = nd->v1;
 		opline_add(nd, fmtline);
 		expt_ntok(t_brrl);
 		expt_ntok(t_brr);
@@ -2186,9 +2223,11 @@ S void parse_arr_swap(ND* nd, byte arrtok, enum vartyp arrtype) {
 		csbrl();
 		nexttok();
 		ndx->vx = h;
-		ND* ndol = NULL;
-		nd->ri = parse_ex_arr(&ndol);
-		if (ndol != NULL) ndol->v1 = nd->v1;
+
+		nd->ri = parse_ex_arr();
+		//ND* ndol = NULL;
+		//nd->ri = parse_ex_arr(&ndol);
+		//if (ndol != NULL) ndol->v1 = nd->v1;
 		expt_ntok(t_brrl);
 		expt_ntok(t_brr);
 	}
@@ -2213,9 +2252,11 @@ S void parse_arr_swap2(ND* nd, byte arrtok, enum vartyp arrtype) {
 		if (arrtok == t_vstrarr) cs("$");
 		csbrl();
 		nexttok();
-		ND* ndol = NULL;
-		ndx->ex = parse_ex_arr(&ndol);
-		if (ndol != NULL) ndol->v1 = ndx->vx2;
+
+		ndx->ex = parse_ex_arr();
+		//ND* ndol = NULL;
+		//ndx->ex = parse_ex_arr(&ndol);
+		//if (ndol != NULL) ndol->v1 = ndx->vx2;
 		expt_ntok(t_brrl);
 		expt_ntok(t_brr);
 	}
@@ -2245,9 +2286,11 @@ S void parse_swap_stat(ND* nd) {
 			cs_spc();
 			expt(t_vnumael);
 			ndx->vx2 = parse_var(VAR_NUMARR, RD);
-			ND* ndol = NULL;
-			ndx->ex = parse_ex_arr(&ndol);
-			if (ndol != NULL) ndol->v1 = ndx->vx2;
+
+			ndx->ex = parse_ex_arr();
+			//ND* ndol = NULL;
+			//ndx->ex = parse_ex_arr(&ndol);
+			//if (ndol != NULL) ndol->v1 = ndx->vx2;
 			expt_ntok(t_brr);
 		}
 		else if (t == ARRAEL) {
@@ -2266,9 +2309,11 @@ S void parse_swap_stat(ND* nd) {
 			nd->v1a = get_var(VAR_NUMARRARR, RD, tval, code_utf8len);
 			cs_tok_nt();
 			csbrl();
-			ND* ndol = NULL;
-			ndx->ex2 = parse_ex_arr(&ndol);
-			if (ndol != NULL) ndol->v1 = nd->v1a;
+
+			ndx->ex2 = parse_ex_arr();
+			//ND* ndol = NULL;
+			//ndx->ex2 = parse_ex_arr(&ndol);
+			//if (ndol != NULL) ndol->v1 = nd->v1a;
 			expt_ntok(t_brrl);
 			ndx->ex3 = parse_ex();
 			expt_ntok(t_brr);
@@ -2293,9 +2338,11 @@ S void parse_swap_stat(ND* nd) {
 			cs_spc();
 			expt(t_vstrael);
 			ndx->vx2 = parse_var(VAR_STRARR, RD);
-			ND* ndol = NULL;
-			ndx->ex = parse_ex_arr(&ndol);
-			if (ndol != NULL) ndol->v1 = ndx->vx2;
+
+			ndx->ex = parse_ex_arr();
+			//ND* ndol = NULL;
+			//ndx->ex = parse_ex_arr(&ndol);
+			//if (ndol != NULL) ndol->v1 = ndx->vx2;
 			expt_ntok(t_brr);
 		}
 		else if (t == ARRAEL) {
@@ -2560,9 +2607,11 @@ S ND* parse_stat(void) {
 			ND* ndx = mkndx();
 			nd->vf = op_byteael_ass;
 			nd->v1 = parse_var(VAR_BYTEARR, RD);
-			ND* ndol = NULL;
-			nd->ri = parse_ex_arr(&ndol);
-			if (ndol != NULL) ndol->v1 = nd->v1;
+
+			nd->ri = parse_ex_arr();
+			//ND* ndol = NULL;
+			//nd->ri = parse_ex_arr(&ndol);
+			//if (ndol != NULL) ndol->v1 = nd->v1;
 			opline_add(nd, fmtline);
 			expt_ntok(t_brr);
 			cs_spc();

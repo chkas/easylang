@@ -265,6 +265,8 @@ proc solve dir0 pos .
 sleep 1
 solve 0 n + 2
 
++ *mod1* is a shorthand for *((x - 1) mod m) + 1*. It is often more practical for handling indexes in 1-based arrays.
+
 * Eight queens puzzle
 
 + In the 8-queens problem you should place 8 queens on a chessboard, so that no two queens threaten each other. Two queens are therefore not allowed on the same row, column or diagonal.

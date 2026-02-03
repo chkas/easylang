@@ -109,7 +109,7 @@ else
    print a & " * " & a & " = " & a * a
 .
 
-+ String variables end with the *$* character. *input* requests an input from the user. *number* converts a string to an integer. *error* indicates a conversion error. Strings are concatenated with the *&* character.
++ String variables end with the *$* character. *input* requests an input from the user. *number* converts a string to a number. *error* indicates a conversion error. Strings are concatenated with the *&* character.
 
 + *print* (or *pr*) outputs a string to the text console with a line feed. Numbers are converted to strings.
 
@@ -448,7 +448,7 @@ on animate
 
 + The *animate* event is triggered after each screen update (usually 60 times per second). *systime* returns the time in seconds since program start.
 
-+ A colon *:* can be used to indicate that the following sequence consists of only one statement. This statement is then written on the same line and the sequence is implicitly ended (without a point or *end*). Does not work with *if .. else*.
++ A colon *:* can be used to indicate that the following sequence consists of only one statement. This statement is then written on the same line and the sequence is implicitly ended (without a point or *end*). This does not work with *if .. else*.
 
 * More about arrays
 
@@ -542,7 +542,11 @@ for i = 0 to 50
 
 * Namespaces
 
++
+
 + Namespaces are implemented with the *prefix* directive. All names - variables, procedures, subroutines - within the range specified are prefixed with the specified string.
+
++ Identifiers may be up to 15 characters long. This limitation also applies to the total length of the prefix and the name.
 
 pos = 12345
 #
@@ -576,6 +580,7 @@ print 7 + 3
 print 7 - 3
 print 7 * 3
 print 7 / 3
+# integer division
 print 7 div 3
 print 7 mod 3
 print "--- number functions ---"
@@ -628,17 +633,6 @@ print bitshift 254 -2
 
 * What else is there
 
-+ *arrbase* changes the array index base, which is 1 by default, for an array. *range0* is used for a for-loop with 0 start value and exclusive end.
-
-a[] = [ 10 20 30 ]
-arrbase a[] 0
-print a[0]
-print ""
-#
-for i range0 len a[] : print a[i]
-
--
-
 + With the configuration command *sysconf topleft* you can set the origin of the coordinate system to top left. *sysconf* must be the first statement.
 
 sysconf topleft
@@ -652,5 +646,80 @@ if sysfunc "lang" = "de"
 else
    print "The system language is not German."
 .
+
+-
+
++ Array elements can also be addressed starting from the back. 0 is the last element, -1 is the second to last, and so on.
+
++ To make the intention clearer, you can write a *$* inside the square brackets instead of 0. This will then be converted to 0.
+
+a[] = [ 11 22 33 ]
+print a[0]
+print a[$]
+
+* Fast functions
+
++ A function declared with *fastfunc* instead of *func* is translated into WASM instead of being interpreted. This usually results in a performance boost of a factor of 10 or more. However, the JIT WASM compiler only works for a subset of Easylang. Strings, for example, do not work.
+
+func primetest num .
+   # this is interpreted
+   i = 2
+   while i <= sqrt num
+      if num mod i = 0 : return 0
+      i += 1
+   .
+   return 1
+.
+fastfunc primetestf num .
+   # this is compiled to wasm
+   i = 2
+   while i <= sqrt num
+      if num mod i = 0 : return 0
+      i += 1
+   .
+   return 1
+.
+start = systime
+n = 1000000000000037
+write "primetest  -> "
+r = primetest n
+print r & " - time: " & systime - start
+start = systime
+write "primetestf -> "
+r = primetestf n
+print r & " - time: " & systime - start
+
+* Byte arrays
+
++ Byte arrays are labeled with *@* and store bytes (numbers between 0 and 255) and only require one byte of memory per entry, whereas a normal number (which is a *double*) requires 8 bytes of memory. A byte array can contain up to slightly more than 2 billion entries.
+
+global sieve@[] .
+fastproc mksieve size .
+   len sieve@[] size
+   sieve@[1] = 1
+   max = sqrt len sieve@[]
+   for i = 2 to max
+      if sieve@[i] = 0
+         j = i * i
+         while j <= len sieve@[]
+            sieve@[j] = 1
+            j += i
+         .
+      .
+   .
+.
+print "Working ..."
+mksieve 1e9
+fastfunc primecnt n .
+   for i to n : sum += 1 - sieve@[i]
+   return sum
+.
+print "There are " & primecnt 1e9 & " prime numbers up to a billion"
+n = 342778763
+write n & " is "
+if sieve@[n] = 1 : write "not "
+print "a prime number"
+
++ *global* makes a variable globally known. If it later appears in a function, it will then be used globally.
 `
 
