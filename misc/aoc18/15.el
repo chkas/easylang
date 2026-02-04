@@ -28,7 +28,6 @@ proc read .
          f0[] &= f
       .
    .
-   arrbase f0[] 0
 .
 read
 #
@@ -42,7 +41,7 @@ proc show .
    sz = 100 / nc
    gtextsize sz / 2
    for y range0 len f[] / nc : for x range0 nc
-      h = f[nc * y + x]
+      h = f[nc * y + x + 1]
       if h = -2
          gcolor 000
          grect x * sz y * sz sz * 1.03125 sz * 1.03125
@@ -89,9 +88,7 @@ proc battle &res .
                show
                hp = 0
                for i = 1 to len hp[]
-                  if hp[i] > 0
-                     hp += hp[i]
-                  .
+                  if hp[i] > 0 : hp += hp[i]
                .
                res = hp * round
                return
@@ -99,16 +96,12 @@ proc battle &res .
             .
             for i to 4
                h = f[pos + dir[i]]
-               if h >= 0 and un[h] = target
-                  break 1
-               .
+               if h >= 0 and un[h] = target : break 1
             .
             if i > 4
                ways[] = [ ]
                for i range0 len f[]
-                  if f[i] = -3
-                     f[i] = -1
-                  .
+                  if f[i] = -3 : f[i] = -1
                .
                for i to 4
                   h = pos + dir[i]

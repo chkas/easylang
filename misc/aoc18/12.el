@@ -1,73 +1,56 @@
-# AoC-18 - Day 12: Subterranean Sustainability
+# AoC-17 - Day 24: Electromagnetic Moat
 #
-n_rounds = 200
-global f[] rul[] .
-proc read .
-   a$[] = strchars substr input 16 999
-   len f[] 4 + 2 * n_rounds + len a$[]
-   arrbase f[] 0
-   #
-   for i = 1 to len a$[]
-      if a$[i] = "#"
-         f[i + n_rounds + 1] = 1
-      .
-   .
+s0$ = input
+repeat
    s$ = input
-   s$ = s$
-   #
-   len rul[] 32
-   arrbase rul[] 0
-   repeat
-      a$[] = strchars input
-      until len a$[] = 0
-      ri = 0
-      for i = 1 to 5
-         ri *= 2
-         if a$[i] = "#" : ri += 1
-      .
-      if a$[10] = "#" : rul[ri] = 1
-   .
+   until s$ = ""
+   h[] = number strsplit s$ "/"
+   a[] &= h[1]
+   b[] &= h[2]
 .
-read
+h[] = number strsplit s0$ "/"
+a[] &= h[1]
+b[] &= h[2]
+n = len a[]
+len used[] n
 #
-proc run .
-   len p[] len f[]
-   arrbase p[] 0
-   for ro = 1 to n_rounds
-      sp = s
-      s = 0
-      swap f[] p[]
-      for i = 2 to len f[] - 3
-         ri = 0
-         for j = -2 to 2
-            ri *= 2
-            ri += p[i + j]
+proc con pins used[] ln &str0 &ln0 &ln0str .
+   str0 = 0
+   ln0 = 0
+   for i range0 n
+      if used[i] = 0 and (a[i] = pins or b[i] = pins)
+         used[i] = 1
+         if a[i] = pins
+            con b[i] used[] ln + 1 str ln lnstr
+         else
+            con a[i] used[] ln + 1 str ln lnstr
          .
-         f[i] = rul[ri]
-         s += f[i] * (i - n_rounds - 2)
+         used[i] = 0
+         str += a[i] + b[i]
+         if str > str0 : str0 = str
+         ln = ln + 1
+         if ln > ln0
+            ln0 = ln
+            ln0str = a[i] + b[i] + lnstr
+         elif ln = ln0 and str > ln0str
+            ln0str = a[i] + b[i] + lnstr
+         .
       .
-      if ro = 20 : print s
    .
-   dif = s - sp
-   print 50000000000 * dif - n_rounds * dif + s
 .
-run
+#
+con 0 used[] 0 str ln lnstr
+print str
+print lnstr
 #
 input_data
-initial state: #..#.#..##......###...###
+0/2
+2/2
+2/3
+3/4
+3/5
+0/1
+10/1
+9/10
 
-...## => #
-..#.. => #
-.#... => #
-.#.#. => #
-.#.## => #
-.##.. => #
-.#### => #
-#.#.# => #
-#.### => #
-##.#. => #
-##.## => #
-###.. => #
-###.# => #
-####. => #
 

@@ -6,7 +6,6 @@ visualization = 1
 nc = 50
 nr = 6
 len m[] nc * nr
-arrbase m[] 0
 #
 f = 90 / nc
 proc show m .
@@ -35,8 +34,6 @@ proc show m .
 #
 len r[] nr
 len c[] nc
-arrbase r[] 0
-arrbase c[] 0
 #
 repeat
    s$ = input

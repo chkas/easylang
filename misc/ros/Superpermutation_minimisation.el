@@ -1,7 +1,6 @@
 max = 12
 # 
 len cnt[] max
-arrbase cnt[] 0
 global sp[] pos .
 # 
 fastfunc r n .
@@ -29,7 +28,6 @@ proc superperm n .
       le += f
    .
    len sp[] le
-   arrbase sp[] 0
    for i = 0 to n : cnt[i] = i
    for i = 1 to n : sp[i - 1] = i
    callr n

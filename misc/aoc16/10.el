@@ -1,15 +1,11 @@
 # AoC-16 - Day 10: Balance Bots
-# 
+#
 n = 256
 len bh[] n
 len bl[] n
 len bv[] n
 len out[] 24
-arrbase bh[] 0
-arrbase bl[] 0
-arrbase bv[] 0
-arrbase out[] 0
-# 
+#
 repeat
    inp$ = input
    until inp$ = ""
@@ -66,8 +62,8 @@ repeat
    until m > 0
 .
 print m
-# 
-# 
+#
+#
 input_data
 value 5 goes to bot 2
 bot 2 gives low to bot 1 and high to bot 0
@@ -75,6 +71,5 @@ value 3 goes to bot 1
 bot 1 gives low to output 1 and high to bot 0
 bot 0 gives low to output 2 and high to output 0
 value 2 goes to bot 2
-
 
 

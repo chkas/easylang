@@ -4,8 +4,6 @@ m$[] = strsplit input ","
 np = 16
 len prog[] np
 len ind[] np
-arrbase prog[] 0
-arrbase ind[] 0
 #
 subr tostr
    prog$ = ""
@@ -53,6 +51,5 @@ print prog$[1000000000 mod iter + 1]
 #
 input_data
 s1,x3/4,pe/b
-
 
 

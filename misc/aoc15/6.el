@@ -5,10 +5,8 @@ repeat
    until s$ = ""
    inp$[] &= s$
 .
-for part to 2
-   m[] = [ ]
+proc go part .
    len m[] 1000 * 1000
-   arrbase m[] 0
    for s$ in inp$[]
       s$[] = strtok s$ " ,"
       inc = 2
@@ -39,18 +37,13 @@ for part to 2
          .
       .
    .
-   sum = 0
-   for v in m[]
-      sum += v
-   .
+   for v in m[] : sum += v
    print sum
 .
+go 1
+go 2
 #
 input_data
 turn on 0,0 through 999,999
 toggle 0,0 through 999,0
 turn off 499,499 through 500,500
-
-
-
-

@@ -1,15 +1,12 @@
 # AoC-17 - Day 10: Knot Hash
-# 
+#
 inp$ = input
 global inp[] l[] .
-arrbase l[] 0
 proc init .
    len l[] 256
-   for i range0 256
-      l[i] = i
-   .
+   for i range0 256 : l[i] = i
 .
-# 
+#
 proc run rounds .
    for _ range0 rounds
       for l in inp[]
@@ -28,10 +25,8 @@ proc run rounds .
 inp[] = number strsplit inp$ ","
 init
 run 1
-
-#run 1
 print l[0] * l[1]
-# 
+#
 init
 inp[] = [ ]
 for i to len inp$
@@ -42,7 +37,7 @@ inp[] &= 31
 inp[] &= 73
 inp[] &= 47
 inp[] &= 23
-# 
+#
 run 64
 for i range0 16
    h = 0
@@ -61,7 +56,7 @@ for i to 16
    .
 .
 print ""
-# 
+#
 input_data
 72, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100
 

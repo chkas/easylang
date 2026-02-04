@@ -7,16 +7,13 @@ repeat
 .
 proc tostr pw[] &pw$ .
    pw$ = ""
-   for v in pw[]
-      pw$ &= strchar (v + 97)
+   for i range0 len pw[]
+      pw$ &= strchar (pw[i] + 97)
    .
 .
 proc hash pw[] &hash$ .
    np = len pw[]
    len pwn[] np
-   arrbase pw[] 0
-   arrbase pwn[] 0
-   #
    for inp$ in inp$[]
       s$[] = strsplit inp$ " "
       if s$[1] = "swap"
@@ -89,7 +86,14 @@ proc hash pw[] &hash$ .
    .
    tostr pw[] hash$
 .
-hash [ 0 1 2 3 4 5 6 7 ] h$
+func[] arr s$ .
+   len r[] len s$
+   for i range0 len r[]
+      r[i] = strcode substr s$ (i + 1) 1 - 97
+   .
+   return r[]
+.
+hash arr "abcdefgh" h$
 print h$
 #
 perm[] = [ 0 1 2 3 4 5 6 7 ]
@@ -125,4 +129,3 @@ move position 1 to position 4
 move position 3 to position 0
 rotate based on position of letter b
 rotate based on position of letter d
-

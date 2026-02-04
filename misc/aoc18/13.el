@@ -1,12 +1,9 @@
 # AoC-18 - Day 13: Mine Cart Madness
 #
-# input format ???
-#
 sysconf topleft
 visual = 1
 #
 global nc f[] car_dir[] car_pos[] .
-arrbase f[] 0
 #
 proc init .
    repeat
@@ -67,11 +64,12 @@ proc show crash_pos .
       for i range0 len f[]
          x = i mod nc
          y = i div nc
-         if f[i] = 1
+         h = f[i + 1]
+         if h = 1
             grect x * w + 1 y * w + w3 + 1 w w3
-         elif f[i] = 2
+         elif h = 2
             grect x * w + w3 + 1 y * w + 1 w3 w
-         elif f[i] >= 3 and f[i] <= 5
+         elif h >= 3 and h <= 5
             grect x * w + 1 y * w + w3 + 1 w w3
             grect x * w + w3 + 1 y * w + 1 w3 w
          .
@@ -138,11 +136,12 @@ proc run .
       for id to len car_pos[]
          pos = car_pos[id]
          if pos <> -1
-            if f[pos] = 3
+            h = f[pos + 1]
+            if h = 3
                car_dir[id] = 5 - car_dir[id]
-            elif f[pos] = 4
+            elif h = 4
                car_dir[id] = (2 - car_dir[id]) mod 4 + 1
-            elif f[pos] = 5
+            elif h = 5
                car_dir[id] = (car_dir[id] + car_turn[id] - 2) mod 4 + 1
                car_turn[id] = (car_turn[id] + 1) mod 3
             .

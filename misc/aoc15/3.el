@@ -1,11 +1,9 @@
 # AoC-15 - Day 3: Perfectly Spherical Houses in a Vacuum
-# 
+#
 s$ = input
 nc = 1000
-arrbase m[] 0
-# 
-for part to 2
-   len m[] 0
+#
+proc go part .
    len m[] nc * nc
    p = nc * nc / 2 + nc / 2
    p1 = p
@@ -34,15 +32,15 @@ for part to 2
          p1 = p
       .
    .
-   sum = 0
-   for v in m[]
-      sum += v
-   .
+   for v in m[] : sum += v
    print sum
 .
-# 
+go 1
+go 2
+#
 input_data
 ^>v<
+
 
 
 

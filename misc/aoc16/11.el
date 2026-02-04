@@ -19,16 +19,13 @@ proc hash ind &ret .
 na$[] = [ ]
 proc getid n$ &id .
    for id to len na$[]
-      if na$[id] = n$
-         return
-      .
+      if na$[id] = n$ : return
    .
    na$[] &= n$
 .
 global todo[] todon[] .
 global el el0 cod destcod .
 len ar[] 16
-arrbase ar[] 0
 #
 proc init .
    len ob[] 5
@@ -37,9 +34,7 @@ proc init .
       s$[] = strsplit input " "
       j = 6
       while j < len s$[]
-         if s$[j] = "a"
-            j += 1
-         .
+         if s$[j] = "a" : j += 1
          n$ = substr s$[j] 1 2
          getid n$ id
          if substr s$[j + 1] 1 3 = "gen"
@@ -61,8 +56,8 @@ init
 #
 proc tocod .
    cod = 0
-   for v in ar[]
-      cod = cod * 8 + v
+   for i range0 len ar[]
+      cod = cod * 8 + ar[i]
    .
    cod = cod * 4 + el
 .
@@ -90,17 +85,13 @@ proc add_check i1 i2 .
       if ar[i] > 0
          m = i mod 4
          g = i div 4
-         if m = el and g <> el and gen > 0
-            break 1
-         .
+         if m = el and g <> el and gen > 0 : break 1
       .
    .
    if i = 16
       tocod
       hash cod h
-      if h = 0
-         todon[] &= cod
-      .
+      if h = 0 : todon[] &= cod
    .
    ar[i1] += 1
    ar[i2] -= 1
@@ -197,5 +188,4 @@ The first floor contains a hydrogen-compatible microchip and a lithium-compatibl
 The second floor contains a hydrogen generator.
 The third floor contains a lithium generator.
 The fourth floor contains nothing relevant.
-
 

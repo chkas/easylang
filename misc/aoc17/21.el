@@ -2,7 +2,6 @@
 #
 proc inarr s$ i d &f[] .
    len f[] d * d
-   arrbase f[] 0
    for y range0 d
       for x range0 d
          f[x + d * y] = if substr s$ i 1 = "#"
@@ -13,14 +12,13 @@ proc inarr s$ i d &f[] .
 .
 proc val &f[] &v .
    v = 0
-   for f in f[]
-      v = v * 2 + f
+   for i range0 len f[]
+      v = v * 2 + f[i]
    .
 .
 proc rotate &f[] .
    len fp[] len f[]
    swap f[] fp[]
-   arrbase f[] 0
    d = sqrt len f[]
    for x range0 d
       for y range0 d
@@ -31,7 +29,6 @@ proc rotate &f[] .
 proc mirror &f[] .
    len fp[] len f[]
    swap f[] fp[]
-   arrbase f[] 0
    d = sqrt len f[]
    for x range0 d
       for y range0 d
@@ -41,8 +38,6 @@ proc mirror &f[] .
 .
 len r2[][] 16
 len r3[][] 512
-arrbase r2[][] 0
-arrbase r3[][] 0
 #
 proc read_rules .
    repeat
@@ -76,8 +71,9 @@ proc read_rules .
 .
 read_rules
 #
-img[] = [ 0 1 0 0 0 1 1 1 1 ]
-arrbase img[] 0
+# img[] = [ 0 1 0 0 0 1 1 1 1 ]
+# index 0 is last
+img[] = [ 1 0 0 0 1 1 1 1 0 ]
 nc = 3
 #
 proc show .
@@ -106,7 +102,6 @@ proc val_img r c d &v .
    .
 .
 proc ins_img r c d &ins[] .
-   arrbase ins[] 0
    i = r * d * nc + c * d
    for d1 range0 d
       for d2 range0 d
@@ -124,18 +119,16 @@ proc expand .
       ex = 3
    .
    nr = nc / ex
-   arrbase ids[] 0
+   len ids[] nr * nr
    for r range0 nr
       for c range0 nr
          val_img r c ex v
-         ids[] &= v
+         ids[r * nr + c] = v
       .
    .
    ex += 1
    nc = nr * ex
-   img[] = [ ]
    len img[] nc * nc
-   arrbase img[] 0
    for r range0 nr
       for c range0 nr
          if ex = 4
@@ -170,4 +163,3 @@ else
 input_data
 ../.# => ##./#../...
 .#./..#/### => #..#/..../..../#..#
-

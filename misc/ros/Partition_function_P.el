@@ -54,7 +54,6 @@ proc calc i &p[][] .
    .
 .
 proc partitions_p n &p[][] .
-   arrbase p[][] 0
    len p[][] n + 1
    p[0][] = [ 1 ]
    for i to n : calc i p[][]

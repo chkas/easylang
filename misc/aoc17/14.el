@@ -12,12 +12,9 @@ proc hash s$ &hash[] .
    inp[] &= 73
    inp[] &= 47
    inp[] &= 23
-   arrbase l[] 0
    len l[] 256
-   for i range0 256
-      l[i] = i
-   .
-   for _ range0 64
+   for i range0 256 : l[i] = i
+   for k range0 64
       for l in inp[]
          a = pos
          b = (pos + l - 1) mod 256
@@ -44,15 +41,13 @@ proc outp &hash[] .
       h = hash[i]
       for h in [ h div 16 h mod 16 ]
          h += 48
-         if h > 57
-            h += 39
-         .
+         if h > 57 : h += 39
          write strchar h
       .
    .
    print ""
 .
-m[] = []
+m[] = [ ]
 #
 proc bits b[] .
    for b in b[]
@@ -68,9 +63,7 @@ proc make_grid .
       hash inp$ & "-" & i hash[]
       bits hash[]
    .
-   for h in m[]
-      sum += h
-   .
+   for h in m[] : sum += h
    print sum
 .
 make_grid
@@ -96,10 +89,8 @@ for i to len m[]
       expand i
    .
 .
-
 print nreg
 #
 input_data
 flqrgnkx
-
 

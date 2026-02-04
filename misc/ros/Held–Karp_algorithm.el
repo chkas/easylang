@@ -1,5 +1,3 @@
-sysconf zero_based
-#
 proc held_karp &dist[][] &min_cost &tour[] .
    n = len dist[][]
    nn = bitshift 1 n
@@ -19,7 +17,7 @@ proc held_karp &dist[][] &min_cost &tour[] .
          prev_mask = bitxor mask bitshift 1 j
          for k range0 n
             if bitand prev_mask bitshift 1 k <> 0
-               cost = dp[prev_mask][k] + dist[k][j]
+               cost = dp[prev_mask][k] + dist[k + 1][j + 1]
                if cost < dp[mask][j]
                   dp[mask][j] = cost
                   parent[mask][j] = k
@@ -32,7 +30,7 @@ proc held_karp &dist[][] &min_cost &tour[] .
    min_cost = 1 / 0
    last = 0
    for j = 1 to n - 1
-      cost = dp[full_mask][j] + dist[j][0]
+      cost = dp[full_mask][j] + dist[j + 1][1]
       if cost < min_cost
          min_cost = cost
          last = j
@@ -48,7 +46,7 @@ proc held_karp &dist[][] &min_cost &tour[] .
       curr = prev
    .
    tour[] &= 0
-   for i range0 len tour[] div 2 : swap tour[i] tour[$ - i - 1]
+   for i to len tour[] div 2 : swap tour[i] tour[$ - i + 1]
    tour[] &= 0
 .
 dist[][] = [ [ 0 2 9 10 ] [ 1 0 6 4 ] [ 15 7 0 8 ] [ 6 3 12 0 ] ]

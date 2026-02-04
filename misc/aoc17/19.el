@@ -3,7 +3,6 @@
 sysconf topleft
 visualization = 1
 #
-arrbase m[] 0
 repeat
    s$ = input
    until s$ = ""
@@ -25,7 +24,7 @@ nc += 1
 #
 len m[] nc * (nr + 1)
 #
-for pos range0 nc
+for pos to nc
    if m[pos] > 0 : break 1
 .
 #
@@ -41,17 +40,18 @@ subr show
       gclear
       gcolor 777
       for r range0 nr : for c range0 nc
-         if m[r * nc + c] = 1
+         ind = r * nc + c + 1
+         if m[ind] = 1
             grect c * f r * f f f
-         elif m[r * nc + c] >= 65
+         elif m[ind] >= 65
             gcolor 900
             gcircle c * f + f / 2 r * f + f / 2 f
             gcolor 777
          .
       .
    else
-      r = pos div nc
-      c = pos mod nc
+      r = (pos - 1) div nc
+      c = (pos - 1) mod nc
       gcolor 070
       grect c * f r * f f f
       gcolor 555
@@ -91,4 +91,3 @@ input_data
  F---|----E|--+
      |  |  |  D
      +B-+  +--+
-

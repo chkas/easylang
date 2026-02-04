@@ -1,4 +1,3 @@
-sysconf zero_based
 func$ b2s i vars .
    for k to vars
       if i mod 2 = 1
@@ -18,7 +17,7 @@ func$ merge i$ j$ .
    lng = lower len i$ len j$
    i$[] = strchars i$
    j$[] = strchars j$
-   for k range0 lng
+   for k to lng
       a$ = i$[k]
       b$ = j$[k]
       if a$ = "X" or b$ = "X"
@@ -49,13 +48,13 @@ proc computePrimes &cubes$[] vars &primes$[] .
    len sigma$[][] vars + 1
    for j = 0 to vars
       for cube$ in cubes$[]
-         if bitCount cube$ = j : addToSet sigma$[j][] cube$
-         if len sigma$[j][] > 0 : sigmaCount = j + 1
+         if bitCount cube$ = j : addToSet sigma$[j + 1][] cube$
+         if len sigma$[j + 1][] > 0 : sigmaCount = j + 1
       .
    .
    while sigmaCount > 0
       len nsigma$[][] sigmaCount - 1
-      for i range0 sigmaCount - 1
+      for i = 1 to sigmaCount - 1
          nc$[] = [ ]
          for a$ in sigma$[i][]
             for b$ in sigma$[i + 1][]
@@ -69,14 +68,15 @@ proc computePrimes &cubes$[] vars &primes$[] .
          .
          swap nsigma$[i][] nc$[]
       .
-      for i range0 sigmaCount
+      for i to sigmaCount
          for cube$ in sigma$[i][]
             if inSet redundant$[] cube$ = 0 : addToSet primes$[] cube$
          .
       .
       sigmaCount = len nsigma$[][]
       if sigmaCount > 0
-         for i range0 sigmaCount
+         len sigma$[][] sigmaCount
+         for i to sigmaCount
             swap sigma$[i][] nsigma$[i][]
          .
       .
@@ -85,7 +85,7 @@ proc computePrimes &cubes$[] vars &primes$[] .
 proc activePrimes cubesel &primes$[] &result$[] .
    result$[] = [ ]
    s$[] = strchars b2s cubesel len primes$[]
-   for i range0 len primes$[]
+   for i to len primes$[]
       if s$[i] = "1" : addToSet result$[] primes$[i]
    .
 .
@@ -93,7 +93,7 @@ func isCover prime$ one$ .
    length = lower len prime$ len one$
    prime$[] = strchars prime$
    one$[] = strchars one$
-   for i range0 length
+   for i to length
       if prime$[i] <> "X" and prime$[i] <> one$[i] : return 0
    .
    return 1

@@ -1,4 +1,3 @@
-sysconf zero_based
 fastfunc isprim n .
    for i = 2 to sqrt n
       if n mod i = 0 : return 0
@@ -48,14 +47,14 @@ proc printRow .
    print ""
 .
 for i = 2 to 20
-   a[] = [ ]
-   for j range0 i : a[] &= j + 1
+   len a[] i
+   for j range0 i : a[j] = j + 1
    if findRow 0 i = 1 : printRow
 .
 print ""
 for i = 2 to 20
-   a[] = [ ]
-   for j range0 i : a[] &= j + 1
+   len a[] i
+   for j range0 i : a[j] = j + 1
    if i > 2 : s$ &= " "
    s$ &= countRows 0 i
 .

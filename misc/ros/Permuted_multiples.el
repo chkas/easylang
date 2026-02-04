@@ -1,6 +1,5 @@
 func norm n .
    len f[] 10
-   arrbase f[] 0
    while n > 0
       d = n mod 10
       f[d] += 1
@@ -17,9 +16,7 @@ repeat
    n += 1
    x = norm n
    for j = 2 to 6
-      if norm (n * j) <> x
-         break 1
-      .
+      if norm (n * j) <> x : break 1
    .
    until j = 7
 .

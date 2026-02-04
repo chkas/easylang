@@ -1,7 +1,7 @@
 # AoC-16 - Day 24: Air Duct Spelunking
-#  
+#
 len pos[] 7
-# 
+#
 repeat
    s$ = input
    until s$ = ""
@@ -23,21 +23,19 @@ repeat
       m[] &= h
    .
 .
-arrbase m[] 0
-# 
+#
 pos = pos0
 n = len m[]
 found_all = pow 2 max
 len seen[] n * found_all
 found_all -= 1
-arrbase seen[] 0
-# 
+#
 todo[] = [ pos ]
 while len todo[] <> 0
    for cod in todo[]
       pos = cod mod n
       found = cod div n
-      # 
+      #
       if found = found_all and done1 = 0
          done1 = 1
          print steps
@@ -47,16 +45,16 @@ while len todo[] <> 0
          break 2
       .
       for posn in [ pos - nc pos + 1 pos + nc pos - 1 ]
-         if m[posn] >= 0
+         if m[posn + 1] >= 0
             foundn = found
-            if m[posn] > 0
-               h = m[posn] - 1
+            if m[posn + 1] > 0
+               h = m[posn + 1] - 1
                foundn = bitor found bitshift 1 h
             .
             codn = foundn * n + posn
-            if seen[codn] = 0
+            if seen[codn + 1] = 0
                todon[] &= codn
-               seen[codn] = 1
+               seen[codn + 1] = 1
             .
          .
       .
@@ -65,12 +63,11 @@ while len todo[] <> 0
    todon[] = [ ]
    steps += 1
 .
-# 
+#
 input_data
 ###########
 #0.1.....2#
 #.#######.#
 #4.......3#
 ###########
-
 

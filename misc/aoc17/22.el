@@ -4,7 +4,6 @@ visual = 1
 #
 nc = 1000
 len m[] nc * nc
-arrbase m[] 0
 #
 gbackground 000
 subr show

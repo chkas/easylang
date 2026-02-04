@@ -9,9 +9,9 @@ proc read .
    repeat
       s$ = input
       until s$ = ""
-      b[] = number strsplit substr s$ 10 9 " "
+      b[] = number strsplit substr s$ 10 10 " "
       o[] = number strsplit input " "
-      a[] = number strsplit substr input 10 9 " "
+      a[] = number strsplit substr input 10 10 " "
       b[][] &= b[]
       o[][] &= o[]
       a[][] &= a[]
@@ -23,6 +23,10 @@ read
 len r[] 4
 #
 proc opf op a b c .
+   h = r[1]
+   for i = 1 to 3 : r[i] = r[i + 1]
+   r[4] = h
+   #
    if op = 0
       r[c] = r[a] + r[b]
    elif op = 1
@@ -88,35 +92,36 @@ proc opf op a b c .
          r[c] = 0
       .
    .
+   #
+   h = r[4]
+   for i = 4 downto 2 : r[i] = r[i - 1]
+   r[1] = h
 .
 proc part1 .
    for tst = 1 to len b[][]
+      pr b[tst][]
+      pr o[tst][]
+      pr a[tst][]
       ok = 0
       for op range0 16
          r[] = b[tst][]
-         arrbase r[] 0
          opf op o[tst][2] o[tst][3] o[tst][4]
          if r[] = a[tst][]
             ok += 1
          .
       .
-      if ok >= 3
-         res1 += 1
-      .
+      if ok >= 3 : res1 += 1
    .
    print res1
 .
 part1
+# return
 #
 proc part2 .
    len op[] 16
    len op_match[] 16
-   arrbase op[] 0
-   arrbase op_match[] 0
    #
-   for i range0 16
-      op[i] = -1
-   .
+   for i range0 16 : op[i] = -1
    for _ range0 16
       for tst_op range0 16
          if op[tst_op] = -1
@@ -126,11 +131,10 @@ proc part2 .
                   for tst = 1 to len b[][]
                      if o[tst][1] = tst_op
                         r[] = b[tst][]
-                        arrbase r[] 0
+                        
+
                         opf op o[tst][2] o[tst][3] o[tst][4]
-                        if r[] <> a[tst][]
-                           break 2
-                        .
+                        if r[] <> a[tst][] : break 2
                      .
                   .
                   if tst > len b[][]
@@ -164,6 +168,5 @@ input_data
 Before: [3, 2, 1, 1]
 9 2 1 2
 After:  [3, 2, 2, 1]
-
 
 

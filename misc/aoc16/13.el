@@ -6,7 +6,6 @@ visualization = 1
 inp = number input
 nc = 45
 len m[] nc * nc
-arrbase m[] 0
 #
 gbackground 543
 gclear

@@ -1,9 +1,7 @@
 # AoC-17 - Day 12: Digital Plumber
-# 
-arrbase r[][] 0
+#
 len r[][] 2000
-# 
-
+#
 repeat
    s$ = input
    until s$ = ""
@@ -11,10 +9,9 @@ repeat
    for i = 3 to len s$[]
       r[number s$[1]][] &= number s$[i]
    .
-   n+=1
+   n += 1
 .
 len con[] n
-arrbase con[] 0
 for i range0 n
    if con[i] = 0
       groups += 1
@@ -34,14 +31,12 @@ for i range0 n
       .
    .
    if i = 0
-      for v in con[]
-         sum += v
-      .
+      for v in con[] : sum += v
       print sum
    .
 .
 print groups
-# 
+#
 input_data
 0 <-> 2
 1 <-> 1
@@ -50,5 +45,4 @@ input_data
 4 <-> 2, 3, 6
 5 <-> 6
 6 <-> 4, 5
-
 

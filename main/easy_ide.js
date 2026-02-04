@@ -893,13 +893,8 @@ var searchS = ""
 function search() {
 	if (window.getSelection() != "") searchS = window.getSelection().toString()
 	var p = getCaret()
-	var s = inp.textContent.substring(p + 1)
-	var m = s.search(searchS)
-	if (m != -1) m = p + m + 1
-	else {
-		s = inp.textContent.substring(0, p)
-		m = s.search(searchS)
-	}
+	var m = inp.textContent.indexOf(searchS, p + 1)
+	if (m == -1) m = inp.textContent.indexOf(searchS, 0)
 	if (m != -1) {
 		scrollToPos(m)
 		setCaret(m)
