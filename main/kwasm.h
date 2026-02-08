@@ -16,6 +16,7 @@
 
 #ifdef __EMSCRIPTEN__
 
+
 static byte* wasm = NULL;
 static ushort wasm_len = 0;
 
@@ -42,18 +43,7 @@ static void wef(double d) {
 	memcpy(wasm + wasmi, &d, 8);
 	wasmi += 8;
 }
-/*
-static void wei32u(uint v) {
-	while(1) {
-		checksize();
-		uint b = v & 0x7F;
-		v >>= 7;
-		wasm[wasmi++] = (byte)((v ? 0x80 : 0) | b);
-		if (!v) break;
-	}
-}
-*/
-static void wei32s(int v) {
+static void wei64(long long v) {
 	while(1) {
 		checksize();
 		uint b = v & 0x7F;
@@ -75,6 +65,15 @@ static void mf_err(const char* s) {
 		pr("fastfunc error:%s line:%d", s, fastfunc_errline);
 	}
 }
+
+/*
+static void dump_last(const char* tag, int n) {
+	int from = wasmi - n; if (from < 0) from = 0;
+	printf("%s @%d..%d :", tag, from, wasmi);
+	for (int i = from; i < wasmi; ++i) printf(" %02X", wasm[i]);
+	printf("\n");
+}
+*/
 
 #define W_BLOCK 0x02
 #define W_LOOP 0x03
@@ -137,6 +136,16 @@ static void mf_err(const char* s) {
 #define W_LOADBS 0x2C
 #define W_LOADF 0x2B
 #define W_STOREF 0x39
+
+#define W_IF	0x04
+#define W_ELSE  0x05
+
+#define	WVF1  wvar
+#define	WVF2  (wvar + 1)
+#define	WVI1  (wvar + 2)
+#define	WVI2  (wvar + 3)
+#define	WVL1  (wvar + 4)
+
 
 static ushort wretlev;
 static ushort wlooplev;
@@ -210,21 +219,21 @@ static void mf_larrpos(ushort pos, ND* ex, ND* nd) {
 	we(W_SUBI);
 #if 1
 	// reverse indexing, and oob check
-	wex(W_SET, wvar + 2); // index (corrected to 0 base)
+	wex(W_SET, WVI1); // index (corrected to 0 base)
 
 	wex(W_BLOCK, W_VOID);
 
-	wex(W_GET, wvar + 2); // index
+	wex(W_GET, WVI1); // index
 	wex(W_GET, pos + 1);	// len
 
 	we(W_LTI);
 	wex(W_BRIF, 0);
 
-	wex(W_GET, wvar + 2);	// index
+	wex(W_GET, WVI1);	// index
 	wex(W_GET, pos + 1);	// len
 
 	we(W_ADDI);
-	wex(W_TEE, wvar + 2); // index
+	wex(W_TEE, WVI1); // index
 
 	// oob test
 	wex(W_GET, pos + 1);	// len
@@ -234,8 +243,8 @@ static void mf_larrpos(ushort pos, ND* ex, ND* nd) {
 	// exception
 	wex(W_CONSTI, 3);
 	we(W_CONSTI);
-	wei32s((int)nd);
-	wex(W_GET, wvar + 0);			// dummy
+	wei64((int)nd);
+	wex(W_GET, WVF1);			// dummy
 
 	wex(W_CONSTI, 3);				// function 3
 	we(W_CALL_INDIRECT);
@@ -244,7 +253,7 @@ static void mf_larrpos(ushort pos, ND* ex, ND* nd) {
 
 	we(W_END);
 
-	wex(W_GET, wvar + 2);
+	wex(W_GET, WVI1);
 #endif
 	wex(W_CONSTI, 3);
 	we(W_SHL);
@@ -278,10 +287,10 @@ static void mf_arrpos(short id, ND* ex, byte typ, ND* nd) {
 	we(W_SUBI);
 #if 1
 	// reverse indexing, and oob check
-	wex(W_SET, wvar + 2); // index (corrected to 0 base)
+	wex(W_SET, WVI1); // index (corrected to 0 base)
 
 	wex(W_BLOCK, W_VOID);
-	wex(W_GET, wvar + 2); // index
+	wex(W_GET, WVI1); // index
 
 	wex(W_GLGET, 1); 	// arrays
 	wex(W_CONSTI, (id + 1) * -12 + 4);
@@ -289,18 +298,18 @@ static void mf_arrpos(short id, ND* ex, byte typ, ND* nd) {
 	we(W_LOADI);
 	we(0x00);
 	we(0x00);
-	wex(W_TEE, wvar + 3);	// len
+	wex(W_TEE, WVI2);	// len
 
 	we(W_LTI);
 	wex(W_BRIF, 0);
 
-	wex(W_GET, wvar + 2);	// index
-	wex(W_GET, wvar + 3);	// len
+	wex(W_GET, WVI1);	// index
+	wex(W_GET, WVI2);	// len
 	we(W_ADDI);
-	wex(W_TEE, wvar + 2); // index
+	wex(W_TEE, WVI1); // index
 
 	// oob test
-	wex(W_GET, wvar + 3);	// len
+	wex(W_GET, WVI2);	// len
 	we(W_LTI);
 	wex(W_BRIF, 0);
 	
@@ -308,8 +317,8 @@ static void mf_arrpos(short id, ND* ex, byte typ, ND* nd) {
 	wex(W_CONSTI, 3);
 
 	we(W_CONSTI);
-	wei32s((int)nd);
-	wex(W_GET, wvar + 0);			// dummy
+	wei64((int)nd);
+	wex(W_GET, WVF1);			// dummy
 
 	wex(W_CONSTI, 3);				// function 3
 	we(W_CALL_INDIRECT);
@@ -318,7 +327,7 @@ static void mf_arrpos(short id, ND* ex, byte typ, ND* nd) {
 
 	we(W_END);
 
-	wex(W_GET, wvar + 2);
+	wex(W_GET, WVI1);
 #endif
 
 	if (typ == 0) {
@@ -378,17 +387,74 @@ static void mf_expr(ND* nd) {
 	}
 	else if (p == op_mod) {
 		mf_expr(nd->le);
-		wex(W_TEE, wvar);
-		wex(W_GET, wvar);
+		wex(W_TEE, WVF1);
+		wex(W_GET, WVF1);
 
 		mf_expr(nd->ri);
-		wex(W_TEE, wvar + 1);
+		wex(W_TEE, WVF2);
 		we(W_DIV);
 		we(W_FLOOR);
-		wex(W_GET, wvar + 1);
+		wex(W_GET, WVF2);
 		we(W_MUL);
 		we(W_SUB);
 	}
+
+	else if (p == op_bitand || p == op_bitor || p == op_bitxor) {
+		mf_expr(nd->le);
+		we(0xB0);	// W_F2L (signed)
+		//wex(0xfc, 0x06);	// W_F2L (sat signed)
+		mf_expr(nd->ri);
+		we(0xB0);	// W_F2L
+		if (p == op_bitand) we(0x83);		// W_AND
+		else if (p == op_bitor) we(0x84);	// W_AND
+		else we(0x85);						// W_XOR
+		we(0xBA);	// W_L2F
+	}
+	else if (p == op_bitnot) {
+		mf_expr(nd->le);
+		we(0xB0);	// W_F2L
+		we(0x42);
+		wei64(9007199254740991);			// 2^53 - 1
+		we(0x85);   // W_XOR
+		we(0xBA);	// W_L2F
+	}
+
+	else if (p == op_bitshift) {
+		mf_expr(nd->le);				 // a:f64
+		we(0xB0);						// i64.trunc_f64_s
+		wex(W_SET, WVL1);				// WVL1 := ai (i64)
+	
+		mf_expr(nd->ri);				 // b:f64
+		we(W_F2IS);					  // i32.trunc_f64_s
+
+		wex(W_TEE, WVI1);				// WVI1 := bi (i32)
+		wex(W_CONSTI, 0);
+		we(W_GEIS);
+		we(W_IF); we(0x7E);			  // if (result i64)
+			wex(W_GET, WVL1);			// ai
+			wex(W_GET, WVI1);			// bi  (s)
+			we(0xAC);					// i64.extend_i32_s
+			we(0x86);					// i64.shl
+		we(W_ELSE);
+			wex(W_GET, WVL1);			// ai
+			wex(W_CONSTI, 0);
+			wex(W_GET, WVI1);
+			we(W_SUBI);				  // -bi (s)
+			we(0xAC);					// i64.extend_i32_s
+			we(0x87);					// i64.shr_s
+		we(W_END);
+	
+		we(0x42);  wei64(9007199254740991LL);   // true: BITMASK = 2^53-1
+		we(0x42);  wei64(-1);				 // false: -1
+		wex(W_GET, WVL1);
+		we(0x42);  wei64(0);
+		we(0x59);								// i64.ge_s  (ai >= 0)?
+		we(W_SELECT);							// -> mask (i64)
+		we(0x83);								// i64.and
+
+		we(0xB9);								// f64.convert_i64_s
+	}
+
 	else if (p == op_floor || p == op_abs || p == op_negf || p == op_sqrt) {
 		mf_expr(nd->le);
 
@@ -442,14 +508,14 @@ static void mf_expr(ND* nd) {
 		we(W_CONST);
 		wef(1);
 		mf_expr(nd->le);
-		wex(W_TEE, wvar);
+		wex(W_TEE, WVF1);
 		we(W_COPYSIGN);
 		we(W_CONST);
 		wef(0);
 
 		we(W_CONST);
 		wef(0);
-		wex(W_GET, wvar);
+		wex(W_GET, WVF1);
 		we(W_NE);
 		we(W_SELECT);
 	}
@@ -598,35 +664,35 @@ static void mf_statement(ND* nd) {
 		wex(W_SET, nd->v1);			// loop var
 
 		mf_expr(nd->ri);			// to
-		wex(W_SET, wvar);
+		wex(W_SET, WVF1);
 
 		if (p == op_forstep) {
 			mf_expr(ndx->ex3);		// step
-			wex(W_SET, wvar + 1);
+			wex(W_SET, WVF2);
 		}
 
 		blstart(W_BLOCK);
 		blstart(W_LOOP);
 
-		wex(W_GET, wvar);
+		wex(W_GET, WVF1);
 
 		if (p == op_forstep) {
-			wex(W_GET, wvar + 1);
+			wex(W_GET, WVF2);
 			we(W_CONST);
 			wef(1);
-			wex(W_GET, wvar + 1);
+			wex(W_GET, WVF2);
 			we(W_COPYSIGN);
 
-			wex(W_TEE, wvar + 1);	// sign
-			wex(W_GET, wvar);
+			wex(W_TEE, WVF2);	// sign
+			wex(W_GET, WVF1);
 			we(W_MUL);
 
 			wex(W_GET, nd->v1);
-			wex(W_GET, wvar + 1);	// sign
+			wex(W_GET, WVF2);	// sign
 			we(W_MUL);
 		}
 		else {
-			wex(W_GET, wvar);
+			wex(W_GET, WVF1);
 			wex(W_GET, nd->v1);
 		}
 		if (p == op_fordown) we(W_GT);
@@ -637,7 +703,7 @@ static void mf_statement(ND* nd) {
 		mf_sequ(ndx->ex);
 
 		if (p == op_forstep) {
-			wex(W_TEE, wvar + 1);
+			wex(W_TEE, WVF2);
 			wex(W_GET, nd->v1);
 			we(W_ADD);
 		}
@@ -650,7 +716,7 @@ static void mf_statement(ND* nd) {
 		}
 		wex(W_SET, nd->v1);
 
-		wex(W_SET, wvar);
+		wex(W_SET, WVF1);
 		wex(W_BR, 0);
 
 		blend(W_LOOP);
@@ -666,21 +732,21 @@ static void mf_statement(ND* nd) {
 		wex(W_GET, nd->v1);			// iter var
 
 		wex(W_CONSTI, 0);
-		wex(W_SET, wvar + 2);
+		wex(W_SET, WVI1);
 
 		blstart(W_BLOCK);
 		blstart(W_LOOP);
-		wex(W_GET, wvar + 2);
+		wex(W_GET, WVI1);
 
 		mf_arrlen(nd->ri->v1);
 		we(W_GEI);
 		wex(W_BRIF, 1);
 
-		wex(W_GET, wvar + 2);
+		wex(W_GET, WVI1);
 
 		mf_arrbase(nd->ri->v1);
 
-		wex(W_GET, wvar + 2);
+		wex(W_GET, WVI1);
 		wex(W_CONSTI, 3);
 		we(W_SHL);
 		we(W_ADDI);
@@ -695,7 +761,7 @@ static void mf_statement(ND* nd) {
 		wex(W_CONSTI, 1);
 		we(W_ADDI);
 
-		wex(W_SET, wvar + 2);
+		wex(W_SET, WVI1);
 		wex(W_BR, 0);
 
 		blend(W_LOOP);
@@ -703,7 +769,7 @@ static void mf_statement(ND* nd) {
 
 		// set old iter var, when loop reached end
 		wex(W_GET, nd->v1);
-		wex(W_GET, wvar + 2);
+		wex(W_GET, WVI1);
 
 		mf_arrlen(nd->ri->v1);
 
@@ -770,8 +836,8 @@ static void mf_statement(ND* nd) {
 			we(W_CONSTI);
 			we((nd->v1 + 1) * -8);
 			we(W_ADDI);
-			wex(W_TEE, wvar + 2);
-			wex(W_GET, wvar + 2);
+			wex(W_TEE, WVI1);
+			wex(W_GET, WVI1);
 			we(W_LOADF);
 			we(0x00);
 			we(0x00);
@@ -824,8 +890,8 @@ static void mf_statement(ND* nd) {
 		else {
 			mf_arrpos(nd->v1, nd->ri, 0, nd);
 		}
-		wex(W_TEE, wvar + 2);
-		wex(W_GET, wvar + 2);
+		wex(W_TEE, WVI1);
+		wex(W_GET, WVI1);
 		we(W_LOADF);
 		we(0x00);
 		we(0x00);
@@ -845,7 +911,7 @@ static void mf_statement(ND* nd) {
 			wef(0);
 		}
 		if (must_cleanup) {
-			wex(W_SET, wvar);
+			wex(W_SET, WVF1);
 			wex(W_BR, wretlev);
 		}
 		else we(0x0f);
@@ -866,15 +932,15 @@ static void mf_statement(ND* nd) {
 		ND* ndx = nd + 1;
 
 		mf_arrpos(nd->v1, nd->ri, 0, nd);
-		wex(W_TEE, wvar + 2);	// &a[i]
+		wex(W_TEE, WVI1);	// &a[i]
 		we(W_LOADF);	// loadf
 		we(0x00);
 		we(0x00);		// a[i]
 
-		wex(W_GET, wvar + 2);	// &a[i]
+		wex(W_GET, WVI1);	// &a[i]
 
 		mf_arrpos(ndx->vx2, ndx->ex, 0, nd);
-		wex(W_TEE, wvar + 3);	// &a[j]
+		wex(W_TEE, WVI2);	// &a[j]
 		we(W_LOADF);			// loadf
 		we(0x00);
 		we(0x00);				// a[j]
@@ -883,9 +949,9 @@ static void mf_statement(ND* nd) {
 		we(0x00);
 		we(0x00);
 
-		wex(W_SET, wvar);
-		wex(W_GET, wvar + 3);	// &a[j]
-		wex(W_GET, wvar);
+		wex(W_SET, WVF1);
+		wex(W_GET, WVI2);	// &a[j]
+		wex(W_GET, WVF1);
 
 		we(W_STOREF);	// storef  a[j] <= a[i]
 		we(0x00);
@@ -927,7 +993,7 @@ static void mf_statement(ND* nd) {
 			wex(W_GET, wvara + nd->v1 * 3);
 			wex(W_GET, wvara + nd->v1 * 3 + 1); // len
 			wex(W_GET, wvara + nd->v1 * 3 + 1);
-			wex(W_TEE, wvar + 2);
+			wex(W_TEE, WVI1);
 			wex(W_CONSTI, 1);
 			we(W_ADDI);
 			wex(W_TEE, wvara + nd->v1 * 3 + 1); // nlen
@@ -939,7 +1005,7 @@ static void mf_statement(ND* nd) {
 			we(0);
 
 			wex(W_TEE, wvara + nd->v1 * 3);
-			wex(W_GET, wvar + 2);
+			wex(W_GET, WVI1);
 			wex(W_CONSTI, 3);
 			we(W_SHL);
 			we(W_ADDI);
@@ -1040,7 +1106,7 @@ static void parse_fastfunc(void) {
 	// func size
 	wasmi += 2;
 
-	we(4);							// 4 sections
+	we(5);							// 5 sections
 	we(proc->varcnt[0]);			// count
 	we(W_F64);						// f64
 
@@ -1051,8 +1117,12 @@ static void parse_fastfunc(void) {
 	wvar = proc->varcnt[0] + proc->varcnt[2] * 3 + nparm;
 	we(2);			// count
 	we(W_F64);		// f64
+
 	we(2);			// count
-	we(0x7f);		// i32
+	we(0x7F);		// i64
+
+	we(1);			// count
+	we(0x7E);		// i64
 
 // ---------------- start
 
@@ -1078,7 +1148,7 @@ static void parse_fastfunc(void) {
 
 	if (must_cleanup) {
 
-		wex(W_SET, wvar);
+		wex(W_SET, WVF1);
 		we(W_END);
 
 		for (int i = 0; i < proc->varcnt[2]; i++) {
@@ -1093,7 +1163,7 @@ static void parse_fastfunc(void) {
 			we(0);
 			we(W_DROP);
 		}
-		wex(W_GET, wvar);
+		wex(W_GET, WVF1);
 	}
 	we(W_END);
 
