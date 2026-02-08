@@ -29,7 +29,6 @@ proc parse .
    nc = len a1$[] - 2
    nc2 = (nc - 2)
    len m[] nc * nc
-   arrbase m[] 0
    for i range0 len m[] : m[i] = -3
    a2$[] = strchars input
    a3$[] = strchars input

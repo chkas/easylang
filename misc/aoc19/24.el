@@ -17,8 +17,6 @@ n1 = n + 1
 n2 = n + 2
 len f[] n1 * n1 + n2
 len p[] n1 * n1 + n2
-arrbase f[] 0
-arrbase p[] 0
 #
 proc init .
    for r range0 n : for c range0 n

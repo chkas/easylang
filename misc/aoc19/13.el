@@ -3,7 +3,20 @@
 sysconf topleft
 visual = 1
 #
+proc arr0init &a[] .
+   h = a[1]
+   for i = 1 to len a[] - 1 : a[i] = a[i + 1]
+   a[0] = h
+.
+proc ic_arr0len &a[] l .
+   h = a[0]
+   a[0] = 0
+   len a[] l
+   a[0] = h
+.
+#
 ic_mem[] = number strsplit input ","
+arr0init ic_mem[]
 #
 global ball_x pad_x .
 #
@@ -66,7 +79,6 @@ proc ic_outpf out .
 prefix ic_
 # -------- intcode --------
 base = 0
-arrbase mem[] 0
 proc mem_ind mo ind &rind .
    if mo = 1
       rind = ind
@@ -76,7 +88,7 @@ proc mem_ind mo ind &rind .
       rind = base + mem[ind]
    .
    if rind >= len mem[]
-      len mem[] rind + 8
+      arr0len mem[] rind + 8
    .
 .
 proc run .
@@ -137,3 +149,4 @@ else
 .
 #
 input_data
+1

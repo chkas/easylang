@@ -31,7 +31,7 @@ for i range0 n
       .
    .
    if i = 0
-      for v in con[] : sum += v
+      for j range0 len con[] : sum += con[j]
       print sum
    .
 .

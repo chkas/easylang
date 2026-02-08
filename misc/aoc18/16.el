@@ -2,6 +2,11 @@
 #
 global b[][] o[][] a[][] .
 #
+proc arr0based &r[] .
+   h = r[1]
+   for i = 1 to len r[] - 1 : r[i] = r[i + 1]
+   r[0] = h
+.
 proc read .
    len b[] 4
    len o[] 4
@@ -10,8 +15,10 @@ proc read .
       s$ = input
       until s$ = ""
       b[] = number strsplit substr s$ 10 10 " "
+      arr0based b[]
       o[] = number strsplit input " "
       a[] = number strsplit substr input 10 10 " "
+      arr0based a[]
       b[][] &= b[]
       o[][] &= o[]
       a[][] &= a[]
@@ -23,10 +30,6 @@ read
 len r[] 4
 #
 proc opf op a b c .
-   h = r[1]
-   for i = 1 to 3 : r[i] = r[i + 1]
-   r[4] = h
-   #
    if op = 0
       r[c] = r[a] + r[b]
    elif op = 1
@@ -72,7 +75,6 @@ proc opf op a b c .
       else
          r[c] = 0
       .
-      #
    elif op = 13
       if a = r[b]
          r[c] = 1
@@ -92,16 +94,9 @@ proc opf op a b c .
          r[c] = 0
       .
    .
-   #
-   h = r[4]
-   for i = 4 downto 2 : r[i] = r[i - 1]
-   r[1] = h
 .
 proc part1 .
    for tst = 1 to len b[][]
-      pr b[tst][]
-      pr o[tst][]
-      pr a[tst][]
       ok = 0
       for op range0 16
          r[] = b[tst][]
@@ -115,14 +110,13 @@ proc part1 .
    print res1
 .
 part1
-# return
 #
 proc part2 .
    len op[] 16
    len op_match[] 16
    #
    for i range0 16 : op[i] = -1
-   for _ range0 16
+   for k range0 16
       for tst_op range0 16
          if op[tst_op] = -1
             n_match = 0
@@ -131,10 +125,8 @@ proc part2 .
                   for tst = 1 to len b[][]
                      if o[tst][1] = tst_op
                         r[] = b[tst][]
-                        
-
                         opf op o[tst][2] o[tst][3] o[tst][4]
-                        if r[] <> a[tst][] : break 2
+                        if r[] <> a[tst][] : break 1
                      .
                   .
                   if tst > len b[][]
@@ -153,7 +145,6 @@ proc part2 .
    .
    s$ = input
    r[] = [ 0 0 0 0 ]
-   arrbase r[] 0
    repeat
       s$ = input
       until s$ = ""

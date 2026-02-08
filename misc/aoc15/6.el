@@ -37,7 +37,7 @@ proc go part .
          .
       .
    .
-   for v in m[] : sum += v
+   for i range0 len m[] : sum += m[i]
    print sum
 .
 go 1

@@ -792,6 +792,7 @@ static int prefix_len;
 
 static const char* getn(const char* name) {
 	if (prefix_len) {
+		if (name[0] == '_') return name + 1;
 		if (prefix_len + strlen(name) > 15) {
 			error("name too long");
 			return name;

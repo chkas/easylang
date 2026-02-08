@@ -9,11 +9,9 @@ targy = number s$[3]
 nx = 100
 ny = 1000
 len f[] nx * ny
-arrbase f[] 0
 #
 proc part1 .
    len ero[] nx
-   arrbase ero[] 0
    ero[0] = depth mod 20183
    f[0] = ero[0] mod 3
    for x to nx - 1
@@ -40,7 +38,6 @@ part1
 #
 nx2 = 2 * nx
 len w[] nx2 * ny
-arrbase w[] 0
 for i range0 len w[]
    w[i] = 99999
 .

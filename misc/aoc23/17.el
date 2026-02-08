@@ -19,7 +19,6 @@ dir[] = [ 1 nc (-1) (-nc) ]
 #
 global cost[] max .
 len todo[][] 100
-arrbase todo[][] 0
 #
 proc add p c d cnt .
    skip = 1

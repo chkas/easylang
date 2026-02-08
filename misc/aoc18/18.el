@@ -2,13 +2,12 @@
 #
 visual = 1
 #
-global n .
-arrbase f[] 0
+global n f[] .
 #
 proc read .
    s$ = input
    n = len s$ + 2
-   len f[] n
+   len f[] n - 1
    while s$ <> ""
       f[] &= 0
       for c$ in strchars s$
@@ -27,11 +26,10 @@ proc read .
 .
 read
 len p[] len f[]
-arrbase p[] 0
 #
 if visual = 1
    gtext 10 60 "WARNING: Flashing"
-   sleep 2
+   sleep 0.2
 .
 proc show .
    if visual = 0 : return
@@ -69,17 +67,11 @@ proc update .
       s -= p[i]
       f[i] = p[i]
       if p[i] = 0
-         if s mod 10 >= 3
-            f[i] = 1
-         .
+         if s mod 10 >= 3 : f[i] = 1
       elif p[i] = 1
-         if s >= 30
-            f[i] = 10
-         .
+         if s >= 30 : f[i] = 10
       elif p[i] = 10
-         if s < 10 or s mod 10 < 1
-            f[i] = 0
-         .
+         if s < 10 or s mod 10 < 1 : f[i] = 0
       .
    .
 .
@@ -100,7 +92,6 @@ proc sum &r .
    r = sumt * suml
 .
 proc run .
-   arrbase hash[] 0
    for i to 10
       update
       show
@@ -110,17 +101,15 @@ proc run .
    #
    while 1 = 1
       hash r
-      for i range0 len hash[]
-         if r = hash[i]
-            break 2
-         .
+      for i to len hash[]
+         if r = hash[i] : break 2
       .
       hash[] &= r
       update
       show
    .
-   m = len hash[] - i
-   ind = (1000000000 - i - 10) mod m
+   m = len hash[] - i + 1
+   ind = (1000000000 - i + 1 - 10) mod m
    for i range0 ind
       update
       show

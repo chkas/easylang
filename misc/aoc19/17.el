@@ -1,10 +1,23 @@
 # AoC-19 - Day 17: Set and Forget
 #
+proc arr0init &a[] .
+   h = a[1]
+   for i = 1 to len a[] - 1 : a[i] = a[i + 1]
+   a[0] = h
+.
+proc arr0len &a[] l .
+   h = a[0]
+   a[0] = 0
+   len a[] l
+   a[0] = h
+.
+#
 ic_code[] = number strsplit input ","
+arr0init ic_code[]
 #
 len scaf[] 100
-arrbase scaf[] 0
-global width height out$ start_pos .
+global width height out$ .
+global start_pos .
 #
 proc ic_outpf out .
    c$ = strchar out
@@ -23,7 +36,9 @@ proc ic_outpf out .
    .
    if out = 10
       scaf[] &= 0
-      if width = 0 : width = len scaf[] - 100
+      if width = 0
+         width = len scaf[] - 100
+      .
       height += 1
    .
 .
@@ -34,7 +49,6 @@ subr init
    pc = 0
    base = 0
    mem[] = code[]
-   arrbase mem[] 0
 .
 proc mem_ind mo ind &rind .
    if mo = 1
@@ -44,7 +58,9 @@ proc mem_ind mo ind &rind .
    elif mo = 2
       rind = base + mem[ind]
    .
-   if rind >= len mem[] : len mem[] rind + 8
+   if rind >= len mem[]
+      _arr0len mem[] rind + 8
+   .
 .
 proc run .
    repeat
@@ -104,11 +120,13 @@ proc part1 .
    for y range0 height - 1
       for x range0 width - 1
          ind = y * width + 100 + x
-         s = scaf[ind]
+         s = scaf[ind + 1]
          for i = 1 to 4
-            s += scaf[ind + offs[i]]
+            s += scaf[ind + offs[i] + 1]
          .
-         if s = 5 : al += x * y
+         if s = 5
+            al += x * y
+         .
       .
    .
    print al
@@ -119,12 +137,15 @@ global s$[] sf$[] .
 proc search si lng &matches[] .
    matches[] = [ ]
    for i = si + lng to len s$[] - lng + 1
+      found = 1
       for j range0 lng
          if s$[si + j] <> s$[i + j] or strcode s$[si + j] <= 67
-            break 1
+            found = 0
          .
       .
-      if j = lng : matches[] &= i
+      if found = 1
+         matches[] &= i
+      .
    .
 .
 len fu$[][] 3
@@ -154,17 +175,22 @@ proc apply lev start lng &matches[] .
 len fuf$[][] 3
 #
 proc test_found .
+   found = 1
    for i = 1 to len s$[]
-      if strcode s$[i] > 67 : break 1
+      if strcode s$[i] > 67
+         found = 0
+      .
    .
-   if i > len s$[]
+   if found = 1
       swap fuf$[][] fu$[][]
       swap sf$[] s$[]
    .
 .
 proc search_pat lev .
    si = 1
-   while strcode s$[si] <= 67 : si += 1
+   while strcode s$[si] <= 67
+      si += 1
+   .
    s0$[] = s$[]
    for lng = 2 to 6
       search si lng matches[]
@@ -187,10 +213,10 @@ proc make_pat .
    repeat
       dirp = (dir - 2) mod 4 + 1
       dirn = dir mod 4 + 1
-      if scaf[pos + offs[dirp]] = 1
+      if scaf[pos + offs[dirp] + 1] = 1
          s$ = "L"
          dir = dirp
-      elif scaf[pos + offs[dirn]] = 1
+      elif scaf[pos + offs[dirn] + 1] = 1
          s$ = "R"
          dir = dirn
       else
@@ -198,7 +224,7 @@ proc make_pat .
       .
       until done = 1
       i = 0
-      while scaf[pos + offs[dir]] = 1
+      while scaf[pos + offs[dir] + 1] = 1
          i += 1
          pos += offs[dir]
       .
@@ -259,3 +285,4 @@ else
 .
 #
 input_data
+1

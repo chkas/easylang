@@ -6,12 +6,10 @@ proc next &secr .
    secr = (bitxor (secr * 2048) secr) mod 16777216
 .
 len bananas[] 104976
-arrbase bananas[] 0
 #
 sum1 = 0
 proc do2000 n .
    len seen[] 104976
-   arrbase seen[] 0
    dig = n mod 10
    for i to 3
       next n

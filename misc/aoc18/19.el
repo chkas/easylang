@@ -1,7 +1,7 @@
 # AoC-18 - Day 19: Go With The Flow
-# 
+#
 global ipr cd[] .
-# 
+#
 memn$[] = [ "addr" "addi" "mulr" "muli" "banr" "bani" "borr" "bori" "setr" "seti" "gtir" "gtri" "gtrr" "eqir" "eqri" "eqrr" ]
 proc read .
    ipr = number substr input 5 1
@@ -21,10 +21,9 @@ proc read .
    .
 .
 read
-# 
+#
 len r[] 6
-arrbase r[] 0
-# 
+#
 proc opf op a b c .
    if op = 0
       r[c] = r[a] + r[b]
@@ -34,12 +33,12 @@ proc opf op a b c .
       r[c] = r[a] * r[b]
    elif op = 3
       r[c] = r[a] * b
-      # 
+      #
    elif op = 8
       r[c] = r[a]
    elif op = 9
       r[c] = a
-      # 
+      #
    elif op = 10
       if a > r[b]
          r[c] = 1
@@ -58,7 +57,6 @@ proc opf op a b c .
       else
          r[c] = 0
       .
-      # 
    elif op = 13
       if a = r[b]
          r[c] = 1
@@ -77,7 +75,6 @@ proc opf op a b c .
       else
          r[c] = 0
       .
-      # 
    elif op = 4
       h = bitand r[a] r[b]
       r[c] = h
@@ -105,10 +102,10 @@ proc part1 .
    print r[0]
 .
 part1
-# 
+#
 proc part2 .
-   r[] = [ 1 0 0 0 0 0 ]
-   arrbase r[] 0
+   r[] = [ 0 0 0 0 0 0 ]
+   r[0] = 1
    ip = 0
    repeat
       ind = ip * 4 + 1
@@ -118,11 +115,8 @@ proc part2 .
       until ip = 0
       ip += 1
    .
-   # 
    for i range0 6
-      if r[i] > n
-         n = r[i]
-      .
+      if r[i] > n : n = r[i]
    .
    for i = 1 to sqrt n
       if n mod i = 0
@@ -136,7 +130,7 @@ proc part2 .
    print sum
 .
 part2
-# 
+#
 input_data
 #ip 0
 seti 5 0 1
@@ -148,16 +142,16 @@ seti 8 0 4
 seti 9 0 5
 
     jmp l17
-     r3 = 1    
+     r3 = 1
 l2: r2 = 1
-l3: r4 = r3 * r2 
+l3: r4 = r3 * r2
     if r4 = r1
 l5: then jmp over
     jmp over
-    r0 += r3  
+    r0 += r3
     r2 += 1
     if r2 > r1
-    then jmp over 
+    then jmp over
     jmp l3
     r3 += 1
     if r3 > r1
@@ -165,6 +159,5 @@ l5: then jmp over
     jmp l2
     r5 *= r5
 l17:
-
 
 

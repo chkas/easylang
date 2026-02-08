@@ -4,7 +4,7 @@ sysconf topleft
 visual = 1
 #
 global w monitor_stat .
-arrbase m[] 0
+global m[] .
 #
 proc init .
    s$ = input
@@ -15,6 +15,12 @@ proc init .
    .
 .
 init
+proc arr0based &r[] .
+   h = r[1]
+   for i = 1 to len r[] - 1 : r[i] = r[i + 1]
+   r[0] = h
+.
+arr0based m[]
 #
 sc = 100 / w
 gbackground 000
@@ -60,8 +66,6 @@ global dx dx[] dy[] .
 proc get_rays stat .
    dx[] = [ ]
    dy[] = [ ]
-   arrbase dx[] 0
-   arrbase dy[] 0
    x = stat mod w
    y = stat div w
    for i range0 len m[]
@@ -73,10 +77,10 @@ proc get_rays stat .
          gcd dx dy r
          dx = dx div r
          dy = dy div r
-         for k range0 len dx[]
+         for k to len dx[]
             if dx = dx[k] and dy = dy[k] : break 1
          .
-         if k = len dx[]
+         if k > len dx[]
             dx[] &= dx
             dy[] &= dy
          .
@@ -102,11 +106,9 @@ glinewidth 0.5
 proc find_next &dx &dy &ind .
    start_ang = atan2 dy dx
    ang = 1 / 0
-   for i range0 len dx[]
+   for i to len dx[]
       h = atan2 dy[i] dx[i]
-      if h <= start_ang
-         h += 360
-      .
+      if h <= start_ang : h += 360
       if h < ang
          ang = h
          ind = i
@@ -123,10 +125,10 @@ proc fire ind .
       x += dx
       y += dy
       if x < 0 or y < 0 or x >= w or y >= w
-         dx[ind] = dx[len dx[] - 1]
-         dy[ind] = dy[len dy[] - 1]
-         len dx[] len dx[] - 1
-         len dy[] len dy[] - 1
+         dx[ind] = dx[len dx[]]
+         dy[ind] = dy[len dy[]]
+         len dx[] -1
+         len dy[] -1
          return
       .
       until m[x + y * w] = 1
@@ -176,4 +178,3 @@ input_data
 .#.#.###########.###
 #.#.#.#####.####.###
 ###.##.####.##.#..##
-

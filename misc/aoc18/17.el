@@ -7,14 +7,15 @@ global f[] maxpos minpos .
 #
 proc read .
    len f[] 300 * 2500
-   arrbase f[] 0
    miny = 9999
    maxy = 0
    repeat
       s$ = input
       until s$ = ""
       n[] = number strtok s$ "=."
-      a = n[1] ; b = n[2] ; c = n[3]
+      a = n[1]
+      b = n[2]
+      c = n[3]
       if substr s$ 1 1 = "x"
          for y = b to c
             p = y * 300 + a - 300
@@ -25,7 +26,8 @@ proc read .
             p = a * 300 + x - 300
             f[p] = 1
          .
-         b = a ; c = a
+         b = a
+         c = a
       .
       miny = lower miny b
       maxy = higher maxy b
@@ -68,13 +70,11 @@ proc show p .
          .
       .
    .
-   sleep 0
+   sleep 0.01
 .
 proc run .
    pos = 500 - 300
-   while pos < minpos
-      pos += 300
-   .
+   while pos < minpos : pos += 300
    todo_n[] &= pos
    while len todo_n[] > 0
       len todo[] 0
@@ -105,12 +105,8 @@ proc run .
                show pos
                pos -= 300
             .
-            if f[l] = 0
-               todo_n[] &= l
-            .
-            if f[r] = 0
-               todo_n[] &= r
-            .
+            if f[l] = 0 : todo_n[] &= l
+            if f[r] = 0 : todo_n[] &= r
          .
       .
    .
@@ -118,9 +114,7 @@ proc run .
    for i range0 len f[]
       if f[i] > 1
          sum += 1
-         if f[i] = 2
-            sum2 += 1
-         .
+         if f[i] = 2 : sum2 += 1
       .
    .
    print sum

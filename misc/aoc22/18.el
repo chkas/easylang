@@ -3,7 +3,6 @@
 nc = 25
 ncc = nc * nc
 len m[] ncc * nc
-arrbase m[] 0
 #
 proc init .
    repeat

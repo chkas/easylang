@@ -14,7 +14,6 @@ proc mark p col .
    gcircle x * fsz + fsz / 2 y * fsz + fsz / 2 fsz / 2
 .
 len map[] sz * sz
-arrbase map[] 0
 len door_pos[] 26
 len key_pos[] 26 + 1
 robot = 0
@@ -22,9 +21,8 @@ robot = 0
 proc parse .
    repeat
       a$[] = strchars inp$
-      arrbase a$[] 0
-      for x range0 len a$[]
-         p = y * sz + x
+      for x to len a$[]
+         p = y * sz + x - 1
          if a$[x] = "#"
             map[p] = 1
          elif a$[x] = "@"
@@ -102,7 +100,6 @@ proc add_kk key k dist &coll[] .
 proc spread key .
    len found[] n_keys
    m[] = map[]
-   arrbase m[] 0
    posn[] = [ key_pos[key] ]
    colln[][] &= [ ]
    dist = 0

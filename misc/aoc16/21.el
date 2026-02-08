@@ -1,5 +1,5 @@
 # AoC-16 - Day 21: Scrambled Letters and Hash
-#
+# 
 repeat
    ii$ = input
    until ii$ = ""
@@ -95,9 +95,9 @@ func[] arr s$ .
 .
 hash arr "abcdefgh" h$
 print h$
-#
+# 
 perm[] = [ 0 1 2 3 4 5 6 7 ]
-#
+# 
 global permlist[][] .
 proc mk_permlist k .
    for i = k to len perm[]
@@ -110,7 +110,7 @@ proc mk_permlist k .
    .
 .
 mk_permlist 1
-#
+# 
 for i to len permlist[][]
    hash permlist[i][] hash$
    if hash$ = "fbgdceah"
@@ -119,7 +119,7 @@ for i to len permlist[][]
       break 1
    .
 .
-#
+# 
 input_data
 swap position 4 with position 0
 swap letter d with letter b
@@ -129,3 +129,4 @@ move position 1 to position 4
 move position 3 to position 0
 rotate based on position of letter b
 rotate based on position of letter d
+

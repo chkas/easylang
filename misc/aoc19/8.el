@@ -1,8 +1,13 @@
 # AoC-19 - Day 8: Space Image Format
 #
 sysconf topleft
+proc arr0based &r[] .
+   h = r[1]
+   for i = 1 to len r[] - 1 : r[i] = r[i + 1]
+   r[0] = h
+.
 img[] = number strchars input
-arrbase img[] 0
+arr0based img[]
 w = 25
 h = 6
 if len img[] < 40
@@ -40,7 +45,6 @@ part1
 #
 proc part2 .
    len img2[] sz
-   arrbase img2[] 0
    for i range0 sz
       for l = n_layer - 1 downto 0
          ind = sz * l + i
@@ -64,6 +68,3 @@ part2
 #
 input_data
 0222112222120000
-
-
-

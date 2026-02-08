@@ -3,7 +3,20 @@
 sysconf topleft
 visual = 1
 #
+proc arr0init &a[] .
+   h = a[1]
+   for i = 1 to len a[] - 1 : a[i] = a[i + 1]
+   a[0] = h
+.
+proc ic_arr0len &a[] l .
+   h = a[0]
+   a[0] = 0
+   len a[] l
+   a[0] = h
+.
+#
 ic_mem[] = number strsplit input ","
+arr0init ic_mem[]
 #
 ic_out = -1
 ic_in = -1
@@ -11,7 +24,6 @@ ic_in = -1
 prefix ic_
 # -------- intcode --------
 global base pc .
-arrbase mem[] 0
 #
 proc mem_ind mo ind &rind .
    rind = ind
@@ -148,3 +160,4 @@ print res
 oxygen
 #
 input_data
+1

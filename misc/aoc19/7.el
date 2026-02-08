@@ -1,13 +1,17 @@
 # AoC-19 - Day 7: Amplification Circuit
 #
-code[] = number strsplit input ","
+global code[] .
+proc .
+   h[] = number strsplit input ","
+   len code[] len h[]
+   for i to len h[] : code[i - 1] = h[i]
+.
 #
 prefix ic_
 global out pc fin mem[] .
 in = -1
 #
 proc run .
-   arrbase mem[] 0
    fin = 0
    repeat
       oc = mem[pc] mod 100
@@ -141,4 +145,3 @@ part2
 #
 input_data
 3,31,3,32,1002,32,10,32,1001,31,-2,31,1007,31,0,33,1002,33,7,33,1,33,31,31,1,32,31,31,4,31,99,0,0,0
-

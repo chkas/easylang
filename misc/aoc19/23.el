@@ -1,6 +1,19 @@
 # AoC-19 - Day 23: Category Six
 #
 code[] = number strsplit input ","
+proc arr0init &a[] .
+   h = a[1]
+   for i = 1 to len a[] - 1 : a[i] = a[i + 1]
+   a[0] = h
+.
+proc ic_arr0len &a[] l .
+   h = a[0]
+   a[0] = 0
+   len a[] l
+   a[0] = h
+.
+#
+arr0init code[]
 #
 n = 50
 len ic_pc[] n
@@ -8,7 +21,6 @@ len ic_base[] n
 len ic_mem[][] n
 len ic_in[][] n
 proc init .
-   arrbase code[] 0
    for i = 1 to n
       ic_pc[i] = 0
       ic_base[i] = 0
@@ -42,9 +54,7 @@ proc mem_ind mo ind &rind .
    elif mo = 2
       rind = base + mem[ind]
    .
-   if rind >= len mem[]
-      len mem[] rind + 8
-   .
+   if rind >= len mem[] : arr0len mem[] rind + 8
 .
 proc run id .
    pc = pc[id]
@@ -121,9 +131,7 @@ proc part2 .
       repeat
          idle = 1
          for id = 1 to n
-            if len ic_in[id][] <> 0
-               idle = 0
-            .
+            if len ic_in[id][] <> 0 : idle = 0
             ic_in[id][] &= -1
             ic_run id
          .
@@ -144,6 +152,4 @@ else
 .
 #
 input_data
-
-
-
+1

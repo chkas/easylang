@@ -1,17 +1,16 @@
 # AoC-19 - Day 12: The N-Body Problem
 #
-arrbase p0[] 0
-for ii to 4
+len p0[] 12
+for ii range0 4
    inp$[] = strsplit input "="
-   p0[] &= number inp$[2]
-   p0[] &= number inp$[3]
-   p0[] &= number inp$[4]
+   p0[ii * 3] = number inp$[2]
+   p0[ii * 3 + 1] = number inp$[3]
+   p0[ii * 3 + 2] = number inp$[4]
 .
 #
 proc part_1 .
    p[] = p0[]
    len v[] 12
-   arrbase v[] 0
    for step to 1000
       for i range0 12
          for j = 1 to 3
@@ -22,9 +21,7 @@ proc part_1 .
             .
          .
       .
-      for i range0 12
-         p[i] += v[i]
-      .
+      for i range0 12 : p[i] += v[i]
    .
    for i range0 4
       p = 0
@@ -57,8 +54,6 @@ proc part_2 .
    p[] = p0[]
    len v[] 12
    len steps[] 3
-   arrbase v[] 0
-   arrbase steps[] 0
    for axis range0 3
       repeat
          for moon range0 4
@@ -92,4 +87,3 @@ input_data
 <x=2, y=-10, z=-7>
 <x=4, y=-8, z=8>
 <x=3, y=5, z=-1>
-

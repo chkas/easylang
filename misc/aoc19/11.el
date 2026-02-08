@@ -3,12 +3,22 @@
 sysconf topleft
 #
 ic_mem[] = number strsplit input ","
+proc arr0init &a[] .
+   h = a[1]
+   for i = 1 to len a[] - 1 : a[i] = a[i + 1]
+   a[0] = h
+.
+proc ic_arr0len &a[] l .
+   h = a[0]
+   a[0] = 0
+   len a[] l
+   a[0] = h
+.
+arr0init ic_mem[]
 #
 nc = 100
 len painted[] nc * nc
 len hull[] len painted[]
-arrbase painted[] 0
-arrbase hull[] 0
 #
 pos = nc * nc div 2 + nc div 2
 global n_painted out_ind .
@@ -55,7 +65,6 @@ proc make_pic .
 #
 prefix ic_
 # -------- intcode --------
-arrbase mem[] 0
 base = 0
 proc mem_ind mo ind &rind .
    if mo = 1
@@ -66,7 +75,7 @@ proc mem_ind mo ind &rind .
       rind = base + mem[ind]
    .
    if rind >= len mem[]
-      len mem[] rind + 8
+      arr0len mem[] rind + 8
    .
 .
 proc run .
@@ -126,3 +135,4 @@ else
 .
 #
 input_data
+1

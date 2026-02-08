@@ -4,7 +4,6 @@
 # number of fishes with age 0, 1, 2 .. matters.
 #
 len n[] 9
-arrbase n[] 0
 #
 for v in number strtok input ","
    n[v] += 1
@@ -18,7 +17,7 @@ for day = 1 to 256
    n[6] += h
    if day = 80 or day = 256
       sum = 0
-      for n in n[] : sum += n
+      for i range0 len n[] : sum += n[i]
       print sum
    .
 .

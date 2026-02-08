@@ -176,7 +176,7 @@ static char is_enter;
 
 #include "kparse.h"
 
-static const char* sysconf_str[] = { "topleft", "radians", "zero_based", "hex_numbers" };
+static const char* sysconf_str[] = { "topleft", "radians", "hex_numbers" };
 
 static void parse_sysconf(void) {
 	sysconfig = 0;
@@ -213,22 +213,35 @@ void appt(const char* s) {
 	str_append(&tabbuf, s);
 	str_append(&tabbuf, " ");
 }
-void apptab(const char* s, char* ts, short l) {
-	if (strncmp(ts, s, l) == 0) appt(s);
+void apptab(const char* s, char* ts, short l) {		// builtins
+	if (!strncmp(ts, s, l)) appt(s);
 }
-void apptabi(const char* s, char* ts, short l) {
-	if (strncmp(ts, s, l) == 0) {
+void apptabi(const char* s, char* ts, short l) {	// =; <>, <= + ...
+	if (!strncmp(ts, s, l)) {
 		str_append(&tabbuf, ": ");
 		str_append(&tabbuf, s);
 		str_append(&tabbuf, " ");
 	}
 }
+
+int match(const char* s, const char* ts, int l) {
+	if (prefix_len) {
+		if (strncmp(prefix, s, prefix_len)) return 0;
+		return (!strncmp(s + prefix_len, ts, l));
+	}
+	return !strncmp(s, ts, l);
+}
+
+void apptabn(const char* s, char* ts, short l) {	// names, (procs, vars, ..)
+	if (match(s, ts, l)) appt(s + prefix_len);
+}
+
 void append_tabb(struct proc* pro, char* ts, short l, short typ) {
 	struct vname *v = pro->vname_p;
 	if (v) while (v < pro->vname_p + pro->vname_len) {
-		if (strncmp(ts, v->name, l) == 0 && (typ == -1  || v->typ % 2 == typ ||  v->typ == typ )) {
+		if (match(v->name, ts, l) && (typ == -1  || v->typ % 2 == typ ||  v->typ == typ )) {
 			str_append(&tabbuf, ":");
-			str_append(&tabbuf, v->name);
+			str_append(&tabbuf, v->name + prefix_len);
 			str_append(&tabbuf, vexf(v->typ));
 			if (v->typ < 2) str_append(&tabbuf, " ");
 		}
@@ -241,7 +254,7 @@ void atab_names(char* ts, short l, short typ, byte withproc) {
 	if (withproc) {
 		struct proc* p = proc_p + 1;
 		while (p < proc_p + proc_len) {
-			if (p->typ == typ + 1) apptab(p->name, ts, l);
+			if (p->typ == typ + 1) apptabn(p->name, ts, l);
 			p += 1;
 		}
 	}

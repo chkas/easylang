@@ -83,7 +83,7 @@ S int getline_nd(ND* nd) {
 }
 
 S void except(ND* nd, const char* s) {
-	char b[36];
+	char b[48];
 	strcpy(b, "*** ERROR: ");
 	strcat(b, s);
 	gr_print(b);

@@ -67,6 +67,7 @@ print snd
 #
 part2 = 1
 pc = 1
+pc1 = 1
 id = 0
 id1 = 1
 r[] = [ ]

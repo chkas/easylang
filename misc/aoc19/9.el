@@ -1,7 +1,12 @@
 # AoC-19 - Day 9: Sensor Boost
 #
 code[] = number strsplit input ","
-arrbase code[] 0
+proc arr0based &r[] .
+   h = r[1]
+   for i = 1 to len r[] - 1 : r[i] = r[i + 1]
+   r[0] = h
+.
+arr0based code[]
 #
 global base mem[] .
 #
@@ -67,5 +72,4 @@ run 2
 #
 input_data
 1102,34915192,34915192,7,4,7,99,0
-
 

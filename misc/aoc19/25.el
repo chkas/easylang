@@ -2,13 +2,25 @@
 #
 verbose = 0
 #
+proc arr0init &a[] .
+   h = a[1]
+   for i = 1 to len a[] - 1 : a[i] = a[i + 1]
+   a[0] = h
+.
+proc ic_arr0len &a[] l .
+   h = a[0]
+   a[0] = 0
+   len a[] l
+   a[0] = h
+.
+#
 ic_mem[] = number strsplit input ","
+arr0init ic_mem[]
 #
 # -------- intcode --------
 #
 prefix ic_
 #
-arrbase mem[] 0
 in = -1
 base = 0
 pc = 0
@@ -21,7 +33,7 @@ proc mem_ind mo ind &rind .
       rind = base + mem[ind]
    .
    if rind >= len mem[]
-      len mem[] rind + 8
+      arr0len mem[] rind + 8
    .
 .
 procdecl outf out .
@@ -243,5 +255,4 @@ else
 .
 #
 input_data
-
-
+1

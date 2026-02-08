@@ -11,7 +11,6 @@ proc nextc .
    ind += 1
 .
 len f[] 1000 * 1000
-arrbase f[] 0
 #
 procdecl parse &pos[] .
 #

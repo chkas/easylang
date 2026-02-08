@@ -1,5 +1,5 @@
 # AoC-16 - Day 20: Firewall Rules
-# 
+#
 repeat
    a[] = number strsplit input "-"
    until len a[] < 2
@@ -39,7 +39,7 @@ for i = 2 step 2 to len l[] - 2
    .
 .
 print sum
-# 
+#
 input_data
 5-8
 0-2

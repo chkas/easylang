@@ -1,8 +1,11 @@
 # AoC-19 - Day 5: Sunny with a Chance of Asteroids
 #
-mem0[] = number strsplit input ","
-arrbase mem0[] 0
-global inp mem[] .
+global inp mem0[] mem[] .
+proc .
+   h[] = number strsplit input ","
+   len mem0[] len h[]
+   for i to len h[] : mem0[i - 1] = h[i]
+.
 #
 proc run .
    repeat

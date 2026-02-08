@@ -51,7 +51,6 @@ func codeperm perm s$ .
    return cod
 .
 len digit[] 128
-arrbase digit[] 0
 #
 proc init .
    for i range0 128 : digit[i] = -1
