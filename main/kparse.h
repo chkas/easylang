@@ -2178,12 +2178,6 @@ S void parse_len_stat(ND* nd) {
 
 	nd->ri = parse_ex();
 }
-S void parse_arrbase_stat(ND* nd) {
-	parse_len_stat(nd);
-	if (nd->vf == op_arrnumarrel_len || nd->vf == op_arrstrarrel_len)
-		nd->vf = op_arrbase2;
-	else nd->vf = op_arrbase;
-}
 
 S void parse_arrarr_swap(ND* nd, byte arrtok, enum vartyp arrtype) {
 
@@ -2638,7 +2632,7 @@ S ND* parse_stat(void) {
 		nd->vf = op_nop;
 	}
 	else if (tok >= t_return) {
-		if (tok <= t_arrbase) {
+		if (tok <= t_break) {
 
 			if (tok == t_return) {
 				nd->vf = op_return;
@@ -2682,15 +2676,12 @@ S ND* parse_stat(void) {
 				nexttok();
 			}
 			// ----------------------------------------------------------------------------
-			else if (tok >= t_gclear && tok <= t_gpenup) {
+			// else if (tok >= t_gclear && tok <= t_gpenup) {
+			else {
 				nd->vf = op_sys;
 				nd->v1 = tok - t_gclear + 11;
 				csb_tok_nt();
 				prog_props |= 1;
-			}
-			else {	// t_arrbase
-			// else if (tok == t_arrbase) {
-				parse_arrbase_stat(nd);
 			}
 		}
 		else if (tok <= t_gcurve) {

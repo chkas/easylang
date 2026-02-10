@@ -211,12 +211,10 @@ static void mf_larrpos(ushort pos, ND* ex, ND* nd) {
 	wex(W_GET, pos);
 	mf_expr(ex);
 	we(W_F2I);
-#if 0
+
 	wex(W_CONSTI, 1);
-#else
-	wex(W_GET, pos + 2);
-#endif
 	we(W_SUBI);
+
 #if 1
 	// reverse indexing, and oob check
 	wex(W_SET, WVI1); // index (corrected to 0 base)
@@ -273,18 +271,9 @@ static void mf_arrpos(short id, ND* ex, byte typ, ND* nd) {
 	mf_expr(ex);
 	we(W_F2IS);
 
-#if 0
 	wex(W_CONSTI, 1);	// array base fix 1
-#else
-	wex(W_GLGET, 1); 	// array base from struct arr
-	we(W_CONSTI);
-	we((id + 1) * -12 + 8);
-	we(W_ADDI);
-	we(W_LOADBS);
-	we(0x00);
-	we(0x00);
-#endif
 	we(W_SUBI);
+
 #if 1
 	// reverse indexing, and oob check
 	wex(W_SET, WVI1); // index (corrected to 0 base)
@@ -339,7 +328,7 @@ static void mf_arrpos(short id, ND* ex, byte typ, ND* nd) {
 
 static void mf_arrlen(int v) {
 	if (v >= 0) {
-		wex(W_GET, wvara + v * 3 + 1);
+		wex(W_GET, wvara + v * 2 + 1);
 	}
 	else {
 		wex(W_GLGET, 1); 	// arrays
@@ -353,7 +342,7 @@ static void mf_arrlen(int v) {
 
 static void mf_arrbase(int v) {
 	if (v >= 0) {
-		wex(W_GET, wvara + v * 3);
+		wex(W_GET, wvara + v * 2);
 	}
 	else {
 		wex(W_GLGET, 1);
@@ -495,7 +484,7 @@ static void mf_expr(ND* nd) {
 	}
 	else if (p == op_vnumael) {
 		if (nd->v1 >= 0) {
-			mf_larrpos(wvara + nd->v1 * 3, nd->ri, nd);
+			mf_larrpos(wvara + nd->v1 * 2, nd->ri, nd);
 		}
 		else {
 			mf_arrpos(nd->v1, nd->ri, 0, nd);
@@ -871,7 +860,7 @@ static void mf_statement(ND* nd) {
 
 		ND* ndx = nd + 1;
 		if (nd->v1 >= 0) {	// local
-			mf_larrpos(wvara + nd->v1 * 3, nd->ri, nd);
+			mf_larrpos(wvara + nd->v1 * 2, nd->ri, nd);
 		}
 		else {
 			mf_arrpos(nd->v1, nd->ri, 0, nd);
@@ -885,7 +874,7 @@ static void mf_statement(ND* nd) {
 
 		ND* ndx = nd + 1;
 		if (nd->v1 >= 0) {	// local
-			mf_larrpos(wvara + nd->v1 * 3, nd->ri, nd);
+			mf_larrpos(wvara + nd->v1 * 2, nd->ri, nd);
 		}
 		else {
 			mf_arrpos(nd->v1, nd->ri, 0, nd);
@@ -962,18 +951,18 @@ static void mf_statement(ND* nd) {
 
 		if (nd->v1 >= 0) {
 
-			wex(W_GET, wvara + nd->v1 * 3);
-			wex(W_GET, wvara + nd->v1 * 3 + 1); // olen
+			wex(W_GET, wvara + nd->v1 * 2);
+			wex(W_GET, wvara + nd->v1 * 2 + 1); // olen
 
 			mf_expr(nd->ri); 				// nlen
 			we(W_F2I);
-			wex(W_TEE,wvara + nd->v1 * 3 + 1);
+			wex(W_TEE,wvara + nd->v1 * 2 + 1);
 
 			wex(W_CONSTI, 2);				// function 2
 			we(W_CALL_INDIRECT);
 			we(6);							// (i32,i32,i32)->i32
 			we(0);
-			wex(W_SET, wvara + nd->v1 * 3);
+			wex(W_SET, wvara + nd->v1 * 2);
 		}
 		else {
 			wex(W_CONSTI, 1);
@@ -990,13 +979,13 @@ static void mf_statement(ND* nd) {
 
 		if (nd->v1 >= 0) {
 
-			wex(W_GET, wvara + nd->v1 * 3);
-			wex(W_GET, wvara + nd->v1 * 3 + 1); // len
-			wex(W_GET, wvara + nd->v1 * 3 + 1);
+			wex(W_GET, wvara + nd->v1 * 2);
+			wex(W_GET, wvara + nd->v1 * 2 + 1); // len
+			wex(W_GET, wvara + nd->v1 * 2 + 1);
 			wex(W_TEE, WVI1);
 			wex(W_CONSTI, 1);
 			we(W_ADDI);
-			wex(W_TEE, wvara + nd->v1 * 3 + 1); // nlen
+			wex(W_TEE, wvara + nd->v1 * 2 + 1); // nlen
 	
 			we(W_CONSTI);
 			we(2);							// function 2
@@ -1004,7 +993,7 @@ static void mf_statement(ND* nd) {
 			we(6);							// (i32,i32,i32)->i32
 			we(0);
 
-			wex(W_TEE, wvara + nd->v1 * 3);
+			wex(W_TEE, wvara + nd->v1 * 2);
 			wex(W_GET, WVI1);
 			wex(W_CONSTI, 3);
 			we(W_SHL);
@@ -1111,10 +1100,10 @@ static void parse_fastfunc(void) {
 	we(W_F64);						// f64
 
 	wvara = proc->varcnt[0] + nparm;
-	we(proc->varcnt[2] * 3);		// count
+	we(proc->varcnt[2] * 2);		// count
 	we(0x7f);						// i32
 
-	wvar = proc->varcnt[0] + proc->varcnt[2] * 3 + nparm;
+	wvar = proc->varcnt[0] + proc->varcnt[2] * 2 + nparm;
 	we(2);			// count
 	we(W_F64);		// f64
 
@@ -1132,10 +1121,6 @@ static void parse_fastfunc(void) {
 	}
 	wretlev = 0;
 
-	for (int i = 0; i < proc->varcnt[2]; i++) {		// arrbase default 1
-		wex(W_CONSTI, 1);
-		wex(W_SET, wvara + i * 3 + 2);
-	}
 	mf_sequ(proc->start->bxnd);
 
 	if (fastfuncn == 0) {
@@ -1153,7 +1138,7 @@ static void parse_fastfunc(void) {
 
 		for (int i = 0; i < proc->varcnt[2]; i++) {
 			// free local arrays
-			wex(W_GET, wvara + i * 3);
+			wex(W_GET, wvara + i * 2);
 			wex(W_CONSTI, 0);
 			wex(W_CONSTI, 0);
 

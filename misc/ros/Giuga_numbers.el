@@ -1,4 +1,4 @@
-func giuga m .
+fastfunc giuga m .
    n = m
    for f = 2 to sqrt n
       while n mod f = 0
@@ -16,4 +16,3 @@ while cnt < 4
    .
    n += 1
 .
-

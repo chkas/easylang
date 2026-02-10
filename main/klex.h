@@ -18,7 +18,7 @@ static const char* tokstr[] = {
 	"if", "while", "for", "repeat",
 	"len",
 
-	"return", "swap", "gclear", "drawgrid", "gpenup", "break",  "arrbase",
+	"return", "swap", "gclear", "drawgrid", "gpenup", "break",
 
 	"print", "write",
 	"sleep", "timer", "gtextsize", "glinewidth", "coord_rotate", "coord_scale",
@@ -62,7 +62,7 @@ enum token_tok {
 	t_if, t_while, t_for, t_repeat,
 	t_len,
 
-	t_return, t_swap, t_gclear, t_drawgrid, t_gpenup, t_break, t_arrbase,
+	t_return, t_swap, t_gclear, t_drawgrid, t_gpenup, t_break,
 
 	t_print, t_write,
 	t_sleep, t_timer, t_gtextsize, t_glinewidth, t_co_rotate, t_co_scale,
@@ -102,7 +102,7 @@ enum token_tok {
 	t_pal_consumed
 };
 
-static int tbl_a[] = { t_and, t_abs, t_asin, t_acos, t_atan, t_atan2, t_arrbase, 0 } ;
+static int tbl_a[] = { t_and, t_abs, t_asin, t_acos, t_atan, t_atan2, 0 } ;
 static int tbl_b[] = { t_break, t_bitand, t_bitor, t_bitxor, t_bitshift, t_bitnot, 0 } ;
 static int tbl_c[] = { t_cos, t_co_rotate, t_co_translate, t_co_scale, 0 } ;
 static int tbl_d[] = { t_divi, t_divi1, t_drawgrid, 0 } ;

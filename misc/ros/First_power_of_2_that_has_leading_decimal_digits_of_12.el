@@ -1,4 +1,4 @@
-func p l n .
+fastfunc p l n .
    log10_2 = log 2 10
    factor = 1
    loop = l

@@ -29,7 +29,6 @@
 #endif
 
 S struct {
-	ushort arrbase;
 	ushort radians;
 	double mouse_x;
 	double mouse_y;
@@ -159,7 +158,7 @@ S void op_assp_fl(ND* nd) {
 }
 
 S int arrind(ARR* arr, int ind, ND* nd) {
-	unsigned h = ind - arr->base;
+	unsigned h = ind - 1;
 	if (h >= (unsigned)arr->len) {
 #if 1
 		// handle negative indices
@@ -222,9 +221,9 @@ double wrandom(double rangef) {
 		do {
 			h = randf() * 0x80000000;
 		} while (h >= max);
-		return h % range + rt.arrbase;
+		return h % range + 1;
 	}
-	else return (long long)(randf() * range) + rt.arrbase;
+	else return (long long)(randf() * range) + 1;
 }
 
 S double op_random(ND* nd) {
@@ -454,9 +453,6 @@ S void free_arr(ARR* a) {
 
 S void arrs_init(ARR* arrs, int n_arr) {
 	memset(arrs, 0, n_arr * sizeof(ARR));
-	for (int i = 0; i < n_arr; i++) {
-		arrs[i].base = rt.arrbase;
-	}
 }
 
 S void arr_len(ND* nd, uint sz, int typ) {
@@ -523,21 +519,6 @@ S void op_arrnumarrel_len(ND* nd) {
 
 S void op_arrstrarrel_len(ND* nd) {
 	arr_len(nd, sizeof(STR), ARR_AELSTR);
-}
-S void op_arrbase(ND* nd) {
-	ARR* arr = garr(nd->v1);
-	arr->base = 1;
-	int h = (int)numf(nd->ri);
-	if (h <= 127 && h >= -128) arr->base = (char)h;
-}
-S void op_arrbase2(ND* nd) {
-	ND* ndx = nd + 1;
-	ARR* arr = garr(nd->v1);
-	int h = arrind(arr, numf(ndx->ex), nd);
-	arr = arr->parr + h;
-	arr->base = 1;
-	h = (int)numf(nd->ri);
-	if (h <= 127 && h >= -128) arr->base = (char)h;
 }
 
 // -------------------------------------------------------------
@@ -880,7 +861,7 @@ S STR op_substr(ND* nd) {
 	ND* ndx = nd + 1;
 	STR s = strf(nd->le);
 
-	int a = (int)numf(nd->ri) - rt.arrbase;
+	int a = (int)numf(nd->ri) - 1;
 	//if (a < 0) a = str_ulen(str_ptr(&s)) + a + 1;
 	int l = (int)numf(ndx->ex);
 	if (a < 0) {
@@ -1452,7 +1433,6 @@ S ARR o_arrx(ND* nd, int typ, int sz) {
 	res.len = arr->len;
 	res.p = xrealloc(NULL, res.len * sz, nd);
 	res.typ = typ;
-	res.base = arr->base;
 	for (int i = 0; i < res.len; i++) {
 		if (typ == ARR_NUM) res.pnum[i] = arr->pnum[i];
 		else res.pstr[i] = str_str(arr->pstr + i);
@@ -1481,14 +1461,12 @@ S ARR op_varrarr(ND* nd) {
 	ARR res;
 	res.len = arr->len;
 	res.typ = ARR_ARR;
-	res.base = arr->base;
 	res.p = xrealloc(NULL, res.len * sizeof(ARR), nd);
 	for (int i = 0; i < res.len; i++) {
 		ARR* a = arr->parr + i;
 		ARR r;
 		r.len = a->len;
 		r.typ = a->typ;
-		r.base = a->base;
 		if (r.typ == ARR_STR) {
 			r.p = xrealloc(NULL, r.len * sizeof(STR), nd);
 		}
@@ -1508,7 +1486,6 @@ S ARR o_arr_init(ND* nd0, int typ, int sz) {
 	ARR res;
 	res.len = 0;
 	res.typ = typ;
-	res.base = rt.arrbase;
 	ND* nd = nd0->le;
 	while (nd) {
 		res.len += 1;
@@ -1537,12 +1514,10 @@ S ARR op_arrarr_init(ND* nd) {
 	return o_arr_init(nd, ARR_ARR, sizeof(ARR));
 }
 
-//kc
 S ARR op_numstrarr(ND* nd) {
 	ARR arr = arrf(nd->le);
 	ARR res;
 	res.typ = ARR_STR;
-	res.base = arr.base;
 	res.len = arr.len;
 	res.pstr = xrealloc(NULL, arr.len * sizeof(STR), nd);
 	for (int i = 0; i < arr.len; i++) {
@@ -1572,7 +1547,7 @@ S double op_strpos(ND* nd) {
 	if (p[i] == 0) ind = -1;
 	str_free(&s1);
 	str_free(&s2);
-	return ind + rt.arrbase;
+	return ind + 1;
 }
 
 S ARR op_strchars(ND* nd) {
@@ -1582,7 +1557,6 @@ S ARR op_strchars(ND* nd) {
 	ARR res;
 	res.len = str_ulen(p);
 	res.typ = ARR_STR;
-	res.base = rt.arrbase;
 	res.p = xrealloc(NULL, res.len * sizeof(STR), nd);
 
 	int ind = 0;
@@ -1617,7 +1591,6 @@ S ARR op_strtok(ND* nd) {
 	ARR res;
 	res.len = 0;
 	res.typ = ARR_STR;
-	res.base = rt.arrbase;
 	res.p = NULL;
 	char* dup = strdup(str_ptr(&s1));
 	if (dup == NULL) {
@@ -1646,7 +1619,6 @@ S ARR op_strsplit(ND* nd) {
 	STR s1 = strf(nd->le);
 	ARR res;
 	res.typ = ARR_STR;
-	res.base = rt.arrbase;
 	res.p = NULL;
 	res.len = 0;
 	const char* s1p = str_ptr(&s1);
@@ -2338,7 +2310,6 @@ S ARR op_callfunc_arr(ND* nd0) {
 	retval.len = 0;
 
 	retval.typ = ARR_NUM;
-	retval.base = rt.arrbase;
 	retval.p = NULL;
 	callfunc(nd0, NULL, NULL, &retval);
 	return retval;
@@ -2732,7 +2703,6 @@ S ARR op_map_number(ND* nd) {
 	ARR res;
 	res.len = arr.len;
 	res.typ = ARR_NUM;
-	res.base = arr.base;
 	res.p = realloc(NULL, res.len * sizeof(double), nd);
 	rt.sys_error = 0;
 	for (int i = 0; i < arr.len; i++) {
@@ -2757,7 +2727,6 @@ S ARR op_map_number(ND* nd) {
 	ARR res;
 	res.len = 0;
 	res.typ = ARR_NUM;
-	res.base = arr.base;
 	res.p = NULL;
 	rt.sys_error = 0;
 	for (int i = 0; i < arr.len; i++) {
@@ -2858,8 +2827,6 @@ S void init_rt(void) {
 	rt.randseed = -1;
 	rt.radians = 0;
 	if (sysconfig & 2) rt.radians = 1;
-	rt.arrbase = 1;
-	if (sysconfig & 4) rt.arrbase = 0;
 	arrs_init(rt_arrs, proc_p->varcnt[2]);
 }
 

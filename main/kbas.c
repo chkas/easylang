@@ -24,9 +24,7 @@ struct arr {
 		byte* pbyte;
 		struct arr* parr;
 	};
-	//uint len;
 	int len;
-	char base;
 	char typ;
 };
 typedef struct arr ARR;
