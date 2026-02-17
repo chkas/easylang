@@ -1,9 +1,7 @@
 func isprim num .
    i = 2
    while i <= sqrt num
-      if num mod i = 0
-         return 0
-      .
+      if num mod i = 0 : return 0
       i += 1
    .
    return 1
@@ -15,5 +13,6 @@ for n = 1 to 45
       until isprim p = 1
       m += 1
    .
-   print n & " " & m & " " & p
+   write "(" & n & " " & m & " " & p & ") "
 .
+print ""

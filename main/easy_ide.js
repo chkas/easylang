@@ -857,22 +857,25 @@ inp.onmousedown = function() {
 }
 var undoStack = []
 var undoPos = 0
+var undoChanged = 0
 function undoAdd(t, c = 0) {
 	while (undoStack.length - 1 > undoPos) undoStack.pop()
-	if (undoStack.length > 9) undoStack.shift()
+	if (undoStack.length > 20) undoStack.shift()
 	undoStack.push([t, c])
 	undoPos = undoStack.length
+	undoChanged = false
 }
 var enterTime = 0
 function enter() {
 	if (Date.now() - enterTime < 300) {
+		if (undoChanged) undoAdd(inp.textContent)
 		runx()
 		return
 	}
 	enterTime = Date.now()
 	var inps = inp.textContent
 	var p = getCaret()
-	undoAdd(inps, p)
+	if (undoChanged) undoAdd(inps, p)
 	if (p != 0 && inps[p - 1] != "\n") {
 		while (p < inps.length && inps[p] != "\n") p++
 	}
@@ -920,13 +923,8 @@ inp.onkeydown = function(e) {
 			cnd.firstChild.nodeValue = cnd.tabopts[cnd.tabind]
 			return
 		}
-		//if (k == 8) {	// bs
-		//	e.preventDefault()
-		//	cnd.firstChild.nodeValue = cnd.tabopts[cnd.tabopts.length - 1]
-		//}
 		cnd.className = ""
 		makeCnd()
-		//return
 	}
 	if (cnd.act) {
 		removeCnd()
@@ -1012,11 +1010,9 @@ inp.onkeydown = function(e) {
 		enter()
 	}
 	// delete space tab
-	if (stBtn.disabled) {
-		if (k >= 46 || k == 32 || k <= 9 ) {
-			stBtn.disabled = false
-			undoAdd(inp.textContent)
-		}
+	if (k >= 46 || k == 32 || k <= 9 ) {
+		undoChanged = true
+		stBtn.disabled = false
 	}
 	if (k == 8 && issel()) undoAdd(inp.textContent)
 }

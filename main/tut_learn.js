@@ -5,9 +5,9 @@ txt_tutor = String.raw`+ Learn programming I
 
 -
 
-+ Programming means telling the computer step by step what to do—like a robot that carries out your commands.
++ When programming, you tell the computer - in its language - step by step what it should do.
 
-+de Programmieren bedeutet, dem Computer Schritt für Schritt zu sagen, was er tun soll – wie ein Roboter, der deine Befehle ausführt.
++de Beim Programmieren sagst du dem Computer - in seiner Sprache – Schritt für Schritt, was er tun soll.
 
 ##19
 #

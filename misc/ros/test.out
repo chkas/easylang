@@ -1,18 +1,9 @@
 -------  100_doors.el  -------
-1
-4
-9
-16
-25
-36
-49
-64
-81
-100
--------  100_prisoners.el  -------
+1 4 9 16 25 36 49 64 81 100 -------  100_prisoners.el  -------
 -------  10001th_prime.el  -------
 104743
 -------  15_puzzle_game.el  -------
+-------  2048.el  -------
 -------  21_game.el  -------
 -------  24_game.el  -------
 -------  4-rings_or_4-squares_puzzle.el  -------
@@ -37,6 +28,11 @@ low:3 hi:9 unique:1
 low:0 hi:9 unique:0
 2860 solutions
 
+-------  9_billion_names_of_God_the_integer.el  -------
+23: 1255
+123: 2552338241
+1234: 156978797223733228787865722354959930
+12345: 69420357953926116819562977205209384460667673094671463620270321700806074195845953959951425306140971942519870679768681736
 -------  99_bottles_of_beer.el  -------
 -------  A+B.el  -------
 -------  Abbreviations,_automatic.el  -------
@@ -48,7 +44,7 @@ low:0 hi:9 unique:0
 
 -------  Abbreviations,_easy.el  -------
 RIGHT REPEAT *error* PUT MOVE RESTORE *error* *error* *error* POWERINPUT -------  Abbreviations,_simple.el  -------
--------  ABC_correlation.el  -------
+RIGHT REPEAT *error* PUT MOVE RESTORE *error* *error* *error* POWERINPUT -------  ABC_correlation.el  -------
 abc internet black venus jupiter neptune pluto -------  ABC_problem.el  -------
 A can be spelled in 2 ways
 BARK can be spelled in 8 ways
@@ -61,7 +57,7 @@ CONFUSE can be spelled in 32 ways
 drawback
 fabric
 -------  Abelian_sandpile_model.el  -------
--------  Abelian_sandpile_model+Identity.el  -------
+-------  Abelian_sandpile_model@Identity.el  -------
 avalanche:
 2 1 0 
 0 3 3 
@@ -105,17 +101,34 @@ Abundant: 4953
 Deficient: 15043
 -------  Achilles_numbers.el  -------
 First 50 Achilles numbers:
-72 108 200 288 392 432 500 648 675 800 864 968 972 1125 1152 1323 1352 1372 1568 1800 1944 2000 2312 2592 2700 2888 3087 3200 3267 3456 3528 3872 3888 4000 4232 4500 4563 4608 5000 5292 5324 5400 5408 5488 6075 6125 6272 6728 6912 7200 
+72 108 200 288 392 432 500 648 675 800 
+864 968 972 1125 1152 1323 1352 1372 1568 1800 
+1944 2000 2312 2592 2700 2888 3087 3200 3267 3456 
+3528 3872 3888 4000 4232 4500 4563 4608 5000 5292 
+5324 5400 5408 5488 6075 6125 6272 6728 6912 7200 
 
 First 20 strong Achilles numbers:
-500 864 1944 2000 2592 3456 5000 10125 10368 12348 12500 16875 19652 19773 30375 31104 32000 33275 37044 40500 
+500 864 1944 2000 2592 3456 5000 10125 10368 12348 
+12500 16875 19652 19773 30375 31104 32000 33275 37044 40500 
 
 Number of Achilles numbers with 2 to 5 digits:
 1 12 47 192 -------  Ackermann_function.el  -------
 509
+-------  Addition_chains.el  -------
+L(7) = 4, count of minimum chain: 5
+L(14) = 5, count of minimum chain: 14
+L(21) = 6, count of minimum chain: 26
+L(29) = 7, count of minimum chain: 114
+L(32) = 5, count of minimum chain: 1
+L(42) = 7, count of minimum chain: 78
+L(64) = 6, count of minimum chain: 1
+L(47) = 8, count of minimum chain: 183
+L(79) = 9, count of minimum chain: 492
+L(191) = 11, count of minimum chain: 7172
+L(382) = 11, count of minimum chain: 4
+L(379) = 12, count of minimum chain: 6583
 -------  Additive_primes.el  -------
-2 3 5 7 11 23 29 41 43 47 61 67 83 89 101 113 131 137 139 151 157 173 179 191 193 197 199 223 227 229 241 263 269 281 283 311 313 317 331 337 353 359 373 379 397 401 409 421 443 449 461 463 467 487 
--------  Air_mass.el  -------
+2 3 5 7 11 23 29 41 43 47 61 67 83 89 101 113 131 137 139 151 157 173 179 191 193 197 199 223 227 229 241 263 269 281 283 311 313 317 331 337 353 359 373 379 397 401 409 421 443 449 461 463 467 487 -------  Air_mass.el  -------
 Angle   0 m      13700 m
 ------------------------
  0    1  1
@@ -137,6 +150,17 @@ Angle   0 m      13700 m
 80   5.53885809 5.53928113
 85   10.07896219 10.08115981
 90   34.32981136 34.36666557
+-------  AKS_test_for_primes.el  -------
+(x-1)^0 : 1
+(x-1)^1 : x - 1
+(x-1)^2 : x^2 - 2x + 1
+(x-1)^3 : x^3 - 3x^2 + 3x - 1
+(x-1)^4 : x^4 - 4x^3 + 6x^2 - 4x + 1
+(x-1)^5 : x^5 - 5x^4 + 10x^3 - 10x^2 + 5x - 1
+(x-1)^6 : x^6 - 6x^5 + 15x^4 - 20x^3 + 15x^2 - 6x + 1
+(x-1)^7 : x^7 - 7x^6 + 21x^5 - 35x^4 + 35x^3 - 21x^2 + 7x - 1
+
+2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 
 -------  Align_columns.el  -------
 Given      a          text       file       of         many       lines,     where      fields     within     a          line                  
 are        delineated by         a          single     'dollar'   character, write      a          program    
@@ -160,30 +184,30 @@ justified, right      justified, or         center     justified  within     its
 justified,    right   justified,     or       center    justified   within       its      column.  
 -------  Aliquot_sequence_classifications.el  -------
 Number classification sequence
-1 terminating  0
-2 terminating  1 0
-3 terminating  1 0
-4 terminating  3 1 0
-5 terminating  1 0
-6 perfect  6
-7 terminating  1 0
-8 terminating  7 1 0
-9 terminating  4 3 1 0
-10 terminating  8 7 1 0
-11 terminating  1 0
-12 terminating  16 15 9 4 3 1 0
-28 perfect  28
-496 perfect  496
-220 amicable  284 220
-1184 amicable  1210 1184
-12496 sociable (period 5)  14288 15472 14536 14264 12496
-1264460 sociable (period 4)  1547860 1727636 1305184 1264460
-790 aspiring  650 652 496 496
-909 aspiring  417 143 25 6 6
-562 cyclic (at 284)  284 220 284
-1064 cyclic (at 1184)  1336 1184 1210 1184
-1488 non-terminating (after 16 terms)   2480 3472 4464 8432 9424 10416 21328 22320 55056 95728 96720 236592 459792 881392 882384
-15355717786080 non-terminating (term > 140737488355328)  44534663601120 144940087464480 471714103310688
+1: terminating [ 0 ]
+2: terminating [ 1 0 ]
+3: terminating [ 1 0 ]
+4: terminating [ 3 1 0 ]
+5: terminating [ 1 0 ]
+6: perfect [ 6 ]
+7: terminating [ 1 0 ]
+8: terminating [ 7 1 0 ]
+9: terminating [ 4 3 1 0 ]
+10: terminating [ 8 7 1 0 ]
+11: terminating [ 1 0 ]
+12: terminating [ 16 15 9 4 3 1 0 ]
+28: perfect [ 28 ]
+496: perfect [ 496 ]
+220: amicable [ 284 220 ]
+1184: amicable [ 1210 1184 ]
+12496: sociable (period 5) [ 14288 15472 14536 14264 12496 ]
+1264460: sociable (period 4) [ 1547860 1727636 1305184 1264460 ]
+790: aspiring [ 650 652 496 496 ]
+909: aspiring [ 417 143 25 6 6 ]
+562: cyclic (at 284) [ 284 220 284 ]
+1064: cyclic (at 1184) [ 1336 1184 1210 1184 ]
+1488: non-terminating (after 16 terms)  [ 2480 3472 4464 8432 9424 10416 21328 22320 55056 95728 96720 236592 459792 881392 882384 ]
+15355717786080: non-terminating (term > 140737488355328) [ 44534663601120 144940087464480 471714103310688 ]
 -------  Almost_prime.el  -------
 k=1 : 2 3 5 7 11 13 17 19 23 29 
 k=2 : 4 6 9 10 14 15 21 22 25 26 
@@ -192,6 +216,8 @@ k=4 : 16 24 36 40 54 56 60 81 84 88
 k=5 : 32 48 72 80 108 112 120 162 168 176 
 -------  Alternade_words.el  -------
 friend -> fin red
+-------  Amb.el  -------
+[ "that" "thing" "grows" "slowly" ]
 -------  Amicable_pairs.el  -------
 220 284
 1184 1210
@@ -204,7 +230,7 @@ friend -> fin red
 -------  Anagrams.el  -------
 abel able 
 angel angle 
--------  Anagrams+Deranged_anagrams.el  -------
+-------  Anagrams@Deranged_anagrams.el  -------
 ancestral lancaster
 -------  Anaprimes.el  -------
 4
@@ -312,6 +338,16 @@ ancestral lancaster
 -2.0000000000 -2 -> true
 3.1415926536 3.1415926536 -> true
 -------  Archimedean_spiral.el  -------
+-------  Arithmetic_coding@As_a_generalized_change_of_radix.el  -------
+DABDDB => 251 * 10^2
+decoded: DABDDB
+
+ABRACADABRA => 7954170 * 10^4
+decoded: ABRACADABRA
+
+TOBEORNOTTOBEORTOBEORNOT => 1150764267498783364 * 10^15
+decoded: TOBEORNOTTOBEORTOBEORNOT
+
 -------  Arithmetic_derivative.el  -------
 -75 -77 -1 -272 -24 -49 -34 -96 -20 -123 -1 -140 -32 -45 -22 -124 -1 -43 -108 -176 -1 -71 -18 -80 -55 -39 -1 -156 -1 -59 -26 -72 -1 -61 -18 -192 -51 -33 -1 -92 -1 -31 -22 -92 -16 -81 -1 -56 -20 -45 -14 -112 -1 -25 -39 -48 -1 -41 -1 -68 -16 -21 -1 -60 -12 -19 -14 -80 -1 -31 -1 -32 -27 -15 -10 -44 -1 -13 -10 -24 -1 -21 -1 -32 -8 -9 -1 -16 -1 -7 -6 -12 -1 -5 -1 -4 -1 -1 0 0 0 1 1 4 1 5 1 12 6 7 1 16 1 9 8 32 1 21 1 24 10 13 1 44 10 15 27 32 1 31 1 80 14 19 12 60 1 21 16 68 1 41 1 48 39 25 1 112 14 45 20 56 1 81 16 92 22 31 1 92 1 33 51 192 18 61 1 72 26 59 1 156 1 39 55 80 18 71 1 176 108 43 1 124 22 45 32 140 1 123 20 96 34 49 24 272 1 77 75 140 -------  Arithmetic_evaluation.el  -------
 Inp: 4 * 
@@ -328,16 +364,7 @@ Eval: 11.28
 
 -------  Arithmetic_numbers.el  -------
 The first 100 arithmetic numbers are:
-  1   3   5   6   7  11  13  14  15  17 
- 19  20  21  22  23  27  29  30  31  33 
- 35  37  38  39  41  42  43  44  45  46 
- 47  49  51  53  54  55  56  57  59  60 
- 61  62  65  66  67  68  69  70  71  73 
- 77  78  79  83  85  86  87  89  91  92 
- 93  94  95  96  97  99 101 102 103 105 
-107 109 110 111 113 114 115 116 118 119 
-123 125 126 127 129 131 132 133 134 135 
-137 138 139 140 141 142 143 145 147 149 
+1 3 5 6 7 11 13 14 15 17 19 20 21 22 23 27 29 30 31 33 35 37 38 39 41 42 43 44 45 46 47 49 51 53 54 55 56 57 59 60 61 62 65 66 67 68 69 70 71 73 77 78 79 83 85 86 87 89 91 92 93 94 95 96 97 99 101 102 103 105 107 109 110 111 113 114 115 116 118 119 123 125 126 127 129 131 132 133 134 135 137 138 139 140 141 142 143 145 147 149 
 
 1000th arithmetic number: 1361
 Composite arithmetic numbers: 782
@@ -349,57 +376,54 @@ Composite arithmetic numbers: 8458
 Composite arithmetic numbers: 88219
 -------  Arithmetic-geometric_mean.el  -------
 0.8472130847939792
--------  Arithmetic-geometric_mean+Calculate_Pi.el  -------
+-------  Arithmetic-geometric_mean@Calculate_Pi.el  -------
 3.141592653589794
--------  Arithmetic+Complex.el  -------
+-------  Arithmetic@Complex.el  -------
 [ 4.14 2.20 ]
 [ 1.94 4.34 ]
 [ -1 -1 ]
 [ 0.50 -0.50 ]
--------  Arithmetic+Integer.el  -------
+-------  Arithmetic@Integer.el  -------
 -------  Array_concatenation.el  -------
 [ 1 2 3 4 5 6 ]
 -------  Array_length.el  -------
 2
 -------  Arrays.el  -------
-1
-2
-3
-4
-5
+[ 1 2 3 4 55 ]
 -------  Ascending_primes.el  -------
-123457 12347 1234789 123479 12356789 1235789 1237 12379 124567 1245689 12457 124679 12479 1249 12569 125789 12589 1259 12689 127 1279 1289 13 13457 13469 134789 13567 1367 13679 137 13789 139 1456789 145679 1459 1489 149 1567 15679 157 1579 167 17 1789 179 19 2 23 23456789 234589 23459 2347 23567 235679 2357 235789 23689 23789 2389 239 245789 2459 2467 25679 257 2579 2689 269 2789 29 3 345679 345689 3457 34589 3467 34679 3469 347 349 359 367 37 379 389 4567 457 467 4679 47 4789 479 5 5689 569 59 67 7 79 89 -------  Associative_array+Creation.el  -------
+[ 2 3 5 7 13 17 19 23 29 37 47 59 67 79 89 127 137 139 149 157 167 179 239 257 269 347 349 359 367 379 389 457 467 479 569 1237 1249 1259 1279 1289 1367 1459 1489 1567 1579 1789 2347 2357 2389 2459 2467 2579 2689 2789 3457 3467 3469 4567 4679 4789 5689 12347 12379 12457 12479 12569 12589 12689 13457 13469 13567 13679 13789 15679 23459 23567 23689 23789 25679 34589 34679 123457 123479 124567 124679 125789 134789 145679 234589 235679 235789 245789 345679 345689 1234789 1235789 1245689 1456789 12356789 23456789 ]
+-------  Associative_array@Creation.el  -------
 red
 green
--------  Associative_array+Iteration.el  -------
+-------  Associative_array@Iteration.el  -------
 type: t-shirt
 color: red
 size: xl
--------  Associative_array+Merging.el  -------
+-------  Associative_array@Merging.el  -------
 [ [ "name" "Rocket Skates" ] [ "price" "15.25" ] [ "color" "red" ] [ "year" "1974" ] ]
 -------  Attractive_numbers.el  -------
 4 6 8 9 10 12 14 15 18 20 21 22 25 26 27 28 30 32 33 34 35 38 39 42 44 45 46 48 49 50 51 52 55 57 58 62 63 65 66 68 69 70 72 74 75 76 77 78 80 82 85 86 87 91 92 93 94 95 98 99 102 105 106 108 110 111 112 114 115 116 117 118 119 120 -------  Average_loop_length.el  -------
--------  Averages+Arithmetic_mean.el  -------
+-------  Averages@Arithmetic_mean.el  -------
 4.50
--------  Averages+Mean_angle.el  -------
+-------  Averages@Mean_angle.el  -------
 -1.6e-15
 90
 20.00
--------  Averages+Mean_time_of_day.el  -------
+-------  Averages@Mean_time_of_day.el  -------
 23:47:43
--------  Averages+Median.el  -------
+-------  Averages@Median.el  -------
 4.40
 4.25
--------  Averages+Mode.el  -------
+-------  Averages@Mode.el  -------
 [ 6 ]
 [ 1 4 ]
--------  Averages+Pythagorean_means.el  -------
+-------  Averages@Pythagorean_means.el  -------
 5.50
 4.53
 3.41
--------  Averages+Root_mean_square.el  -------
+-------  Averages@Root_mean_square.el  -------
 6.20
--------  Averages+Simple_moving_average.el  -------
+-------  Averages@Simple_moving_average.el  -------
    1     1
 1.50  1.50
    2     2
@@ -410,19 +434,26 @@ size: xl
    4  4.20
    3  3.80
    2     3
+-------  B-spline.el  -------
 -------  Babbage_problem.el  -------
 25264
+-------  Babylonian_spiral.el  -------
+-------  Bacon_cipher.el  -------
+BacON's cIPHer Is a METhoD of stEgAnogRaphy crEatEd By FRAncis baCOn.thIs TASk Is TO imPLeMENT a proGrAm FOR eNcRYPTIOn anD deCRyPtioN Of plAINTExt UsING the SIMpLe AlPhaBet Of thE BAConIan CIphER Or sOme OTHer kInD Of reprESenTATion OF This alPHaBET (makE An
+
+the quick brown fox jumps over the lazy dog
 -------  Balanced_brackets.el  -------
 	1
-[]   	1
-[][]   	1
-[[][]] 	1
+[]	1
+[][]	1
+[[][]]	1
 ][	0
 ][][	0
 []][[]	0
 -------  Barnsley_fern.el  -------
 -------  Base_16_numbers_needing_a_to_f.el  -------
-10 11 12 13 14 15 26 27 28 29 30 31 42 43 44 45 46 47 58 59 60 61 62 63 74 75 76 77 78 79 90 91 92 93 94 95 106 107 108 109 110 111 122 123 124 125 126 127 138 139 140 141 142 143 154 155 156 157 158 159 160 161 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198 199 200 201 202 203 204 205 206 207 208 209 210 211 212 213 214 215 216 217 218 219 220 221 222 223 224 225 226 227 228 229 230 231 232 233 234 235 236 237 238 239 240 241 242 243 244 245 246 247 248 249 250 251 252 253 254 255 266 267 268 269 270 271 282 283 284 285 286 287 298 299 300 301 302 303 314 315 316 317 318 319 330 331 332 333 334 335 346 347 348 349 350 351 362 363 364 365 366 367 378 379 380 381 382 383 394 395 396 397 398 399 410 411 412 413 414 415 416 417 418 419 420 421 422 423 424 425 426 427 428 429 430 431 432 433 434 435 436 437 438 439 440 441 442 443 444 445 446 447 448 449 450 451 452 453 454 455 456 457 458 459 460 461 462 463 464 465 466 467 468 469 470 471 472 473 474 475 476 477 478 479 480 481 482 483 484 485 486 487 488 489 490 491 492 493 494 495 496 497 498 499 500 -------  Bell_numbers.el  -------
+10 11 12 13 14 15 26 27 28 29 30 31 42 43 44 45 46 47 58 59 60 61 62 63 74 75 76 77 78 79 90 91 92 93 94 95 106 107 108 109 110 111 122 123 124 125 126 127 138 139 140 141 142 143 154 155 156 157 158 159 160 161 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198 199 200 201 202 203 204 205 206 207 208 209 210 211 212 213 214 215 216 217 218 219 220 221 222 223 224 225 226 227 228 229 230 231 232 233 234 235 236 237 238 239 240 241 242 243 244 245 246 247 248 249 250 251 252 253 254 255 266 267 268 269 270 271 282 283 284 285 286 287 298 299 300 301 302 303 314 315 316 317 318 319 330 331 332 333 334 335 346 347 348 349 350 351 362 363 364 365 366 367 378 379 380 381 382 383 394 395 396 397 398 399 410 411 412 413 414 415 416 417 418 419 420 421 422 423 424 425 426 427 428 429 430 431 432 433 434 435 436 437 438 439 440 441 442 443 444 445 446 447 448 449 450 451 452 453 454 455 456 457 458 459 460 461 462 463 464 465 466 467 468 469 470 471 472 473 474 475 476 477 478 479 480 481 482 483 484 485 486 487 488 489 490 491 492 493 494 495 496 497 498 499 500 
+-------  Bell_numbers.el  -------
 1
 2
 5
@@ -449,6 +480,22 @@ Actual Expected
 0.056   0.058
 0.053   0.051
 0.045   0.046
+-------  Bernoulli's_triangle.el  -------
+[ 1 ]
+[ 1 2 ]
+[ 1 3 4 ]
+[ 1 4 7 8 ]
+[ 1 5 11 15 16 ]
+[ 1 6 16 26 31 32 ]
+[ 1 7 22 42 57 63 64 ]
+[ 1 8 29 64 99 120 127 128 ]
+[ 1 9 37 93 163 219 247 255 256 ]
+[ 1 10 46 130 256 382 466 502 511 512 ]
+[ 1 11 56 176 386 638 848 968 1013 1023 1024 ]
+[ 1 12 67 232 562 1024 1486 1816 1981 2036 2047 2048 ]
+[ 1 13 79 299 794 1586 2510 3302 3797 4017 4083 4095 4096 ]
+[ 1 14 92 378 1093 2380 4096 5812 7099 7814 8100 8178 8191 8192 ]
+[ 1 15 106 470 1471 3473 6476 9908 12911 14913 15914 16278 16369 16383 16384 ]
 -------  Bernstein_basis_polynomials.el  -------
 Subprogram(1) examples:
 mono {1 0 0}--> bern {1 1 1}
@@ -517,6 +564,7 @@ Rest: 13
 Rest: 59
 
 -------  Binary_digits.el  -------
+0
 101
 110010
 10001100101000
@@ -575,7 +623,7 @@ Self-inverting:
 Re-inverted:
 [ 1 0 0 1 0 1 1 1 2 2 3 4 5 7 9 12 16 21 28 37 ]
 
--------  Bioinformatics+base_count.el  -------
+-------  Bioinformatics@Base_count.el  -------
    1: CGTA AAAA ATTA CAAC GTCC TTTG GCTA TCTC TTAA ACTC
   41: CTGC TAAA TGCT CGTG CTTT CCAA TTAT GTAA GCGT TCCG
   81: AGAC GGGG TGGT CGAT TCTG AGGA CAAA GGTC AAGA TGGA
@@ -594,10 +642,13 @@ C:   97
 G:  119
 T:  155
 Total:  500
--------  Bioinformatics+Sequence_mutation.el  -------
+-------  Bioinformatics@Sequence_mutation.el  -------
+-------  Bioinformatics@Subsequence.el  -------
 -------  Biorhythms.el  -------
--------  Bitmap+Bézier_curves+Quadratic.el  -------
--------  Bitmap+Bresenham's_line_algorithm.el  -------
+-------  Birthday_problem.el  -------
+-------  Bitmap@Bézier_curves@Quadratic.el  -------
+-------  Bitmap@Bresenham's_line_algorithm.el  -------
+-------  Bitmap@Midpoint_circle_algorithm.el  -------
 -------  Bitwise_operations.el  -------
 2
 15
@@ -670,6 +721,12 @@ Index  Degrees  Compass point
 31	337.50	North-northwest
 32	354.37	Northbywest
 1	354.38	North
+-------  Boyer-Moore_string_search.el  -------
+TCTA ? GCTAGCTCTACGAGTCTA -> [ 7 15 ]
+TAATAAA ? GGCTATAATGCGTA -> [ ]
+word ? there would have been a time for such a word -> [ 41 ]
+needle ? needle need noodle needle -> [ 1 20 ]
+alfa ? alfalfa -> [ 1 4 ]
 -------  Brace_expansion.el  -------
 ~/{Downloads,Pictures}/*.{jpg,gif,png} ->
 ~/Downloads/*.jpg
@@ -716,6 +773,7 @@ First 20 prime Brazilian numbers:
 1018081 (10538)
 -------  Brownian_tree.el  -------
 -------  Bulls_and_cows.el  -------
+-------  Bulls_and_cows@Player.el  -------
 -------  Burrows–Wheeler_transform.el  -------
 banana
 bnn¹aaa²
@@ -743,40 +801,6 @@ Rosetta Code
 -------  Calculating_the_value_of_e.el  -------
 2.718281828459046
 -------  Calendar.el  -------
-                        [ picture of Snoopy goes here ]                        
-                                      1969                                      
-              January              February                March                
-       Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa         
-                 1  2  3  4                     1                     1         
-        5  6  7  8  9 10 11   2  3  4  5  6  7  8   2  3  4  5  6  7  8         
-       12 13 14 15 16 17 18   9 10 11 12 13 14 15   9 10 11 12 13 14 15         
-       19 20 21 22 23 24 25  16 17 18 19 20 21 22  16 17 18 19 20 21 22         
-       26 27 28 29 30 31     23 24 25 26 27 28     23 24 25 26 27 28 29         
-                                                   30 31                        
-               April                 May                  June                  
-       Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa         
-              1  2  3  4  5               1  2  3   1  2  3  4  5  6  7         
-        6  7  8  9 10 11 12   4  5  6  7  8  9 10   8  9 10 11 12 13 14         
-       13 14 15 16 17 18 19  11 12 13 14 15 16 17  15 16 17 18 19 20 21         
-       20 21 22 23 24 25 26  18 19 20 21 22 23 24  22 23 24 25 26 27 28         
-       27 28 29 30           25 26 27 28 29 30 31  29 30                        
-                                                                                
-               July                 August               September              
-       Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa         
-              1  2  3  4  5                  1  2      1  2  3  4  5  6         
-        6  7  8  9 10 11 12   3  4  5  6  7  8  9   7  8  9 10 11 12 13         
-       13 14 15 16 17 18 19  10 11 12 13 14 15 16  14 15 16 17 18 19 20         
-       20 21 22 23 24 25 26  17 18 19 20 21 22 23  21 22 23 24 25 26 27         
-       27 28 29 30 31        24 25 26 27 28 29 30  28 29 30                     
-                             31                                                 
-             October               November              December               
-       Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa         
-                 1  2  3  4                     1      1  2  3  4  5  6         
-        5  6  7  8  9 10 11   2  3  4  5  6  7  8   7  8  9 10 11 12 13         
-       12 13 14 15 16 17 18   9 10 11 12 13 14 15  14 15 16 17 18 19 20         
-       19 20 21 22 23 24 25  16 17 18 19 20 21 22  21 22 23 24 25 26 27         
-       26 27 28 29 30 31     23 24 25 26 27 28 29  28 29 30 31                  
-                             30                                                 
 -------  Calkin-Wilf_sequence.el  -------
 The first 20 terms of the Calkwin-Wilf sequence are:
 1/1 1/2 2/1 1/3 3/2 2/3 3/1 1/4 4/3 3/5 5/2 2/5 5/3 3/4 4/1 1/5 5/4 4/7 7/3 3/8 
@@ -785,6 +809,12 @@ The first 20 terms of the Calkwin-Wilf sequence are:
 9
 3 2
 25
+-------  Calmo_numbers.el  -------
+165 273 385 399 561 595 665 715 957 
+-------  CalmoSoft_primes.el  -------
+7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 
+7 + 11 + 13 + 17 + 19 + 23 + 29 + 31 + 37 + 41 + 43 + 47 + 53 + 59 + 61 + 67 + 71 + 73 + 79 + 83 + 89 = 953
+Longest sequence = 21
 -------  Camel_case_and_snake_case.el  -------
 === To snake_case ===
 snakeCase -> snake_case
@@ -894,22 +924,7 @@ The three dogs are named Benjamin, Samba, and Bernie.
 1 9 10 18 19 27 28 36 37 45 46 54 55 63 64 72 73 81 82 90 91 99 
 Trying 22 numbers instead of 99 numbers saves 77.78
 -------  Catalan_numbers.el  -------
-1
-1
-2
-5
-14
-42
-132
-429
-1430
-4862
-16796
-58786
-208012
-742900
-2674440
--------  Catalan_numbers+Pascal's_triangle.el  -------
+1 1 2 5 14 42 132 429 1430 4862 16796 58786 208012 742900 2674440 -------  Catalan_numbers@Pascal's_triangle.el  -------
 1
 2
 5
@@ -926,7 +941,12 @@ Trying 22 numbers instead of 99 numbers saves 77.78
 2674440
 9694845
 -------  Centre_and_radius_of_a_circle_passing_through_3_points_in_a_plane.el  -------
-Centre: (18.98, 16.27)  Radius: 14.71
+-------  Centroid_of_a_set_of_N-dimensional_points.el  -------
+[ 2 ]
+[ 4 1 ]
+[ 7.50 7.50 0 ]
+[ -1.50 -1.48 5.47 ]
+[ 0 0.25 0.25 0.25 0.25 ]
 -------  Change_e_letters_to_i_in_words.el  -------
 analyses -> analysis
 -------  Changeable_words.el  -------
@@ -939,14 +959,14 @@ WELLDONEISBETTERTHANWELLSAID
 97
 a
 -------  Chebyshev_coefficients.el  -------
-1.647169475390
+ 1.647169475390
 -0.232299371615
 -0.053715114622
-0.002458235267
-0.000282119057
+ 0.002458235267
+ 0.000282119057
 -0.000007722229
 -0.000000589856
-0.000000011521
+ 0.000000011521
 6.59629972866e-10
 -1.00226882349e-11
 -------  Check_if_a_polygon_overlaps_with_a_rectangle.el  -------
@@ -996,6 +1016,9 @@ month:7 day:16
       Fire Rooster Yin 34/60
       丁酉
 
+-------  Cholesky_decomposition.el  -------
+[ [ 5 0 0 ] [ 3 3 0 ] [ -1 1 3 ] ]
+[ [ 4.24 0 0 0 ] [ 5.19 6.57 0 0 ] [ 12.73 3.05 1.65 0 ] [ 9.90 1.62 1.85 1.39 ] ]
 -------  Chowla_numbers.el  -------
 chowla number from 1 to 37
   1: 0
@@ -1067,34 +1090,33 @@ Points: (0.12 0.99) (0.12 0.99) Radius: 0
 Radius of zero gives no circles
 
 -------  Circular_primes.el  -------
-2
-3
-5
-7
-11
-13
-17
-37
-79
-113
-197
-199
-337
-1193
-3779
-11939
-19937
-193939
-199933
--------  Cistercian_numerals.el  -------
+2 3 5 7 11 13 17 37 79 113 197 199 337 1193 3779 11939 19937 193939 199933 -------  Cistercian_numerals.el  -------
 -------  Closest-pair_problem.el  -------
 distance between (0.8917 0.8886) and (0.9251 0.8182) is 0.0779
--------  Code_Golf:_Code_Golf.el  -------
+-------  Code_Golf.el  -------
 Code GolfCode Golf-------  Collect_and_sort_square_numbers_in_ascending_order_from_three_lists.el  -------
 [ 4 9 16 25 36 36 49 81 121 144 169 ]
 -------  Collections.el  -------
 [ 1 2 3 ]
 [ [ 1 2 ] [ 3 4 ] [ 5 6 ] ]
+-------  Color_Difference_CIE_ΔE2000.el  -------
+     L1     a1     b1     L2     a2     b2      ΔE2000
+---------------------------------------------------------
+     73     49   39.4     73     49   39.4              0
+     30    -41 -119.1     30    -41   -119   0.0134319631
+     79   -117 -100.4   79.5   -117   -100   0.3572501235
+     15    -55    6.7     14    -55      7   0.6731711696
+     83     98  -59.5   85.2     98  -59.5   1.4597018301
+     59    -11    -95   56.3    -11    -95   2.4566352112
+     74     -1   68.6     81     -1     69   4.9755487499
+   46.4    125      6     40    125      6   5.8974138376
+     18     -5     68     20      5     82   6.8542258013
+   35.5    -99    109     25    -99    109   8.1462591143
+     59     77   41.5   63.3     77   12.4  13.1325726695
+     40    -92    7.7     58    -92     -8  19.1411733022
+     49     -9  -74.5   51.1     31     16  48.1082375109
+     88   -124     56     97     62    -28  63.9449872676
+     98   75.7     11      3    -62     11 126.5088270078
 -------  Color_wheel.el  -------
 -------  Colorful_numbers.el  -------
 Colorful numbers less than 100:
@@ -1114,8 +1136,8 @@ Count of colorful numbers by number of digits:
 8   14256
 
 Total: 57256
--------  Colour_bars+Display.el  -------
--------  Colour_pinstripe+Display.el  -------
+-------  Colour_bars@Display.el  -------
+-------  Colour_pinstripe@Display.el  -------
 -------  Combinations_and_permutations.el  -------
 => Exact results:
 P(1,0)=1
@@ -1162,7 +1184,7 @@ jam plain
 plain plain 
 
 220 results with 10 donuts
--------  Combinations_with_repetitions+Square_digit_chain.el  -------
+-------  Combinations_with_repetitions@Square_digit_chain.el  -------
 8581146
 85744333
 84908800643
@@ -1212,17 +1234,7 @@ Rosetta - 7
 Code - 4
 
 -------  Composite_numbers_k_with_no_single_digit_factors_whose_factors_are_all_substrings_of_k.el  -------
-15317
-59177
-83731
-119911
-183347
-192413
-1819231
-2111317
-2237411
-3129361
--------  Concatenate_two_primes_is_also_prime.el  -------
+15317 59177 83731 119911 183347 192413 1819231 2111317 2237411 3129361 -------  Concatenate_two_primes_is_also_prime.el  -------
 [ 23 37 53 73 113 137 173 193 197 211 223 229 233 241 271 283 293 311 313 313 317 317 331 337 347 353 359 367 373 373 379 383 389 397 433 523 541 547 571 593 613 617 673 677 719 733 743 761 773 797 797 977 1117 1123 1129 1153 1171 1319 1361 1367 1373 1723 1741 1747 1753 1759 1783 1789 1913 1931 1973 1979 1997 2311 2341 2347 2371 2383 2389 2917 2953 2971 3119 3137 3167 3719 3761 3767 3779 3797 4111 4129 4153 4159 4337 4373 4397 4723 4729 4759 4783 4789 5323 5347 5923 5953 6113 6131 6143 6173 6197 6719 6737 6761 6779 7129 7159 7331 7919 7937 8311 8317 8329 8353 8389 8923 8929 8941 8971 9719 9743 9767 ]
 -------  Conditional_structures.el  -------
 -------  Conjugate_a_Latin_verb.el  -------
@@ -1246,10 +1258,47 @@ dant
 128981 128983 128987 128993 129001 129011 129023 129037 
 322171 322193 322213 322229 322237 322243 322247 322249 
 -------  Constrained_random_points_on_a_circle.el  -------
+-------  Continued_fraction_convergents.el  -------
+415/93 = 4 9/2 58/13 415/93
+649/200 = 3 13/4 159/49 490/151 649/200
+sqrt(2) = 1 3/2 7/5 17/12 41/29 99/70 239/169 577/408
+sqrt(5) = 2 9/4 38/17 161/72 682/305 2889/1292 12238/5473 51841/23184
+golden ratio = 1 2 3/2 5/3 8/5 13/8 21/13 34/21
 -------  Continued_fraction.el  -------
 1.41421356
 2.71828183
 3.14159257
+-------  Convert_day_count_to_ordinal_date.el  -------
+Daycount: 0
+02-01-0000
+01-01-0400
+01-01-0800
+01-01-1200
+01-01-1600
+01-01-2000
+
+Daycount: 109573
+01-01-0300
+01-01-0700
+01-01-1100
+01-01-1500
+01-01-1900
+01-01-2300
+
+Daycount: 146096
+31-12-0399
+31-12-0799
+31-12-1199
+31-12-1599
+31-12-1999
+31-12-2399
+
+-------  Convert_decimal_number_to_rational.el  -------
+67/74
+14/27
+3/4
+1/3
+8/9
 -------  Convert_seconds_to_compound_duration.el  -------
 2 hr, 59 sec
 1 d
@@ -1262,7 +1311,13 @@ dant
 [ 17 23 ]
 [ 18 29 ]
 -------  Copy_a_string.el  -------
+hello a
 hello
+-------  CORDIC.el  -------
+ -9: -0.9111
+  0:      1
+1.5: 0.0707
+  6: 0.9602
 -------  Count_how_many_vowels_and_consonants_occur_in_a_string.el  -------
 There are 22 vowels and 31 consonants
 -------  Count_in_factors.el  -------
@@ -1331,7 +1386,7 @@ There are 22 vowels and 31 consonants
 242
 139946140451
 1.3e+16
--------  Count_the_coins+0-1.el  -------
+-------  Count_the_coins@0-1.el  -------
 3
 9
 464
@@ -1344,7 +1399,7 @@ There are 22 vowels and 31 consonants
 -4
 1.00
 -------  CRC-32.el  -------
-9007196055511865
+1095738169
 -------  Create_a_two-dimensional_array_at_runtime.el  -------
 -------  Create_an_HTML_table.el  -------
 -------  CSV_data_manipulation.el  -------
@@ -1364,7 +1419,8 @@ C1,C2,C3,C4,C5,SUM
 </table>
 -------  Cuban_primes.el  -------
 -------  Cubic_special_primes.el  -------
-2 3 11 19 83 1811 2027 2243 2251 2467 2531 2539 3539 3547 4547 5059 10891 12619 13619 13627 13691 13907 14419 -------  Cullen_and_Woodall_numbers.el  -------
+2 3 11 19 83 1811 2027 2243 2251 2467 2531 2539 3539 3547 4547 5059 10891 12619 13619 13627 13691 13907 14419 
+-------  Cullen_and_Woodall_numbers.el  -------
 3 9 25 65 161 385 897 2049 4609 10241 22529 49153 106497 229377 491521 1048577 2228225 4718593 9961473 20971521 
 1 7 23 63 159 383 895 2047 4607 10239 22527 49151 106495 229375 491519 1048575 2228223 4718591 9961471 20971519 
 -------  Cumulative_standard_deviation.el  -------
@@ -1376,6 +1432,11 @@ C1,C2,C3,C4,C5,SUM
 5 1
 7 1.40
 9 2
+-------  Currency.el  -------
+22000000000000005.72
+1683000000000000.44
+23683000000000006.16
+-------  Curve_that_touches_three_points.el  -------
 -------  Curzon_numbers.el  -------
 First 50 Curzon numbers using a base of 2:
     1    2    5    6    9   14   18   21   26
@@ -1466,14 +1527,38 @@ cycle length: 6 start index: 3
 
 101 103 107 109 307 401 503 509 601 607 701 709 809 907 11071 11087 11093 12037 12049 12097 13099 14029 14033 14051 14071 14081 14083 14087 15031 15053 15083 16057 16063 16067 16069 16097 17021 17033 17041 17047 17053 17077 18047 18061 18077 18089 19013 19031 19051 19073 
 
-101 16061 31013 35053 38083 73037 74047 91019 94049 1120211 1150511 1160611 1180811 1190911 1250521 1280821 1360631 1390931 1490941 1520251 1550551 1580851 1630361 1640461 1660661 1670761 1730371 1820281 1880881 1930391 1970791 3140413 3160613 3260623 3310133 3380833 3460643 3470743 3590953 3670763 3680863 3970793 7190917 7250527 7310137 7540457 7630367 7690967 7750577 7820287 -------  Damm_algorithm.el  -------
+101 16061 31013 35053 38083 73037 74047 91019 94049 1120211 1150511 1160611 1180811 1190911 1250521 1280821 1360631 1390931 1490941 1520251 1550551 1580851 1630361 1640461 1660661 1670761 1730371 1820281 1880881 1930391 1970791 3140413 3160613 3260623 3310133 3380833 3460643 3470743 3590953 3670763 3680863 3970793 7190917 7250527 7310137 7540457 7630367 7690967 7750577 7820287 
+-------  Damm_algorithm.el  -------
 5724 is valid
 5727 is invalid
 112946 is valid
 112949 is invalid
 -------  Date_format.el  -------
-2025-05-01
-Thursday, May 1, 2025
+-------  Dating_agency.el  -------
+Dating service should NOT offer a date with Ariel
+Dating service should offer a date with Bertha
+    Sailor Dune should take an offer to date her.
+    Sailor Kai should take an offer to date her.
+    Sailor Ray should take an offer to date her.
+    Sailor Tao should take an offer to date her.
+Dating service should offer a date with Blue
+    Sailor Dune should take an offer to date her.
+    Sailor Kai should take an offer to date her.
+    Sailor Ray should take an offer to date her.
+    Sailor Tao should take an offer to date her.
+Dating service should NOT offer a date with Cali
+Dating service should NOT offer a date with Catalina
+Dating service should NOT offer a date with Gale
+Dating service should offer a date with Hannah
+    Sailor Adrian should take an offer to date her.
+    Sailor Caspian should take an offer to date her.
+    Sailor Finn should take an offer to date her.
+    Sailor Fisher should take an offer to date her.
+    Sailor Heron should take an offer to date her.
+    Sailor Sailor should take an offer to date her.
+Dating service should NOT offer a date with Isla
+Dating service should NOT offer a date with Marina
+Dating service should NOT offer a date with Shelly
 -------  Day_of_the_week_of_Christmas_and_New_Year.el  -------
 2021-12-21 is on Tuesday
 2022-01-01 is on Saturday
@@ -1498,7 +1583,7 @@ The length of the de Bruijn sequence is 10003
 
 The first 130 digits of the de Bruijn sequence are: 0000100020003000400050006000700080009001100120013001400150016001700180019002100220023002400250026002700280029003100320033003400350
 
-The last 130 digits of the de Bruijn sequence are: 
+The last 130 digits of the de Bruijn sequence are: 6898689969697769786979698769886989699769986999777787779778877897798779978787978887889789878997979887989799879998888988998989999000
 
 Validating the de Bruijn sequence:
   No errors found
@@ -1513,57 +1598,7 @@ Validating the overlaid de Bruijn sequence:
     PIN number 8145 missing
 
 -------  De_Polignac_numbers.el  -------
-1
-127
-149
-251
-331
-337
-373
-509
-599
-701
-757
-809
-877
-905
-907
-959
-977
-997
-1019
-1087
-1199
-1207
-1211
-1243
-1259
-1271
-1477
-1529
-1541
-1549
-1589
-1597
-1619
-1649
-1657
-1719
-1759
-1777
-1783
-1807
-1829
-1859
-1867
-1927
-1969
-1973
-1985
-2171
-2203
-2213
--------  Deal_cards_for_FreeCell.el  -------
+1 127 149 251 331 337 373 509 599 701 757 809 877 905 907 959 977 997 1019 1087 1199 1207 1211 1243 1259 1271 1477 1529 1541 1549 1589 1597 1619 1649 1657 1719 1759 1777 1783 1807 1829 1859 1867 1927 1969 1973 1985 2171 2203 2213 -------  Deal_cards_for_FreeCell.el  -------
 hand 1
 JD 2D 9H JC 5D 7H 7C 5H KD KC 9S 5S AD 
 QC KH 3H 2S KS 9D QD JS AS AH 3C 4C 5C 
@@ -1576,12 +1611,13 @@ hand 617
 9S 3C 8S 7H 4D JS 4C QS 9C 9H 7C 6H 2C 
 2S 4S TS 2H 5D JC 6C JH QH JD KS KC 4H 
 
+-------  Death_Star.el  -------
 -------  Deceptive_numbers.el  -------
 91 259 451 481 703 1729 2821 2981 3367 4141 -------  Decimal_floating_point_number_to_binary.el  -------
 5.625000 => 101.101 => 5.625000
 2.100000 => 10.000110011001100110011001100110011001100110011001101 => 2.100000
 -------  Decision_tables.el  -------
--------  Deconvolution+1D.el  -------
+-------  Deconvolution@1D.el  -------
 [ -8 -9 -3 -1 -6 7 ]
 [ -8 -9 -3 -1 -6 7 ]
 [ -3 -6 -1 8 -6 3 -1 -9 -9 3 -2 5 2 -2 -7 -1 ]
@@ -1626,7 +1662,8 @@ Std dev x, y : 1.5874 3.9304
   6  4  2
   6  5  1
 -------  Descending_primes.el  -------
-98765431 98764321 987631 987541 9875321 98731 9871 986543 98641 98621 98543 9851 983 98321 97 97654321 97651 9754321 975421 9743 9721 971 9643 96431 9631 953 9521 94321 9431 9421 941 8765321 87643 8764321 876431 87641 87631 8761 87541 8753 87421 8741 8731 865321 86531 8641 863 8543 853 8521 8431 83 821 7 76543 76541 7643 764321 76421 7621 761 75431 7541 751 743 73 7321 71 653 6521 643 6421 641 631 61 5 5431 541 53 521 43 431 421 41 3 31 2 -------  Detect_division_by_zero.el  -------
+[ 2 3 5 7 31 41 43 53 61 71 73 83 97 421 431 521 541 631 641 643 653 743 751 761 821 853 863 941 953 971 983 5431 6421 6521 7321 7541 7621 7643 8431 8521 8543 8641 8731 8741 8753 8761 9421 9431 9521 9631 9643 9721 9743 9851 9871 75431 76421 76541 76543 86531 87421 87541 87631 87641 87643 94321 96431 97651 98321 98543 98621 98641 98731 764321 865321 876431 975421 986543 987541 987631 8764321 8765321 9754321 9875321 97654321 98764321 98765431 ]
+-------  Detect_division_by_zero.el  -------
 0
 1
 -------  Determinant_and_permanent.el  -------
@@ -1736,12 +1773,14 @@ Just make sure you don't break it -> N
 -------  Dice_game_probabilities.el  -------
 0.57314
 0.64279
+-------  Digit_fifth_powers.el  -------
+443839
 -------  Digital_root.el  -------
 627615 -> [ 9 2 ]
 39390 -> [ 6 2 ]
 588225 -> [ 3 2 ]
 393900588225 -> [ 9 2 ]
--------  Digital_root+Multiplicative_digital_root.el  -------
+-------  Digital_root@Multiplicative_digital_root.el  -------
 Number    MDR    MP
 123321     8     3
   7739     8     3
@@ -1769,44 +1808,19 @@ Fletcher lives on floor 4
 Miller lives on floor 5
 Smith lives on floor 1
 -------  Disarium_numbers.el  -------
-0
-1
-2
-3
-4
-5
-6
-7
-8
-9
-89
-135
-175
-518
-598
-1306
-1676
-2427
-2646798
+1 2 3 4 5 6 7 8 9 89 135 175 518 598 1306 1676 2427 2646798 
 -------  Discordian_date.el  -------
-2016-01-05 --> Setting Orange, day 5 of Chaos in the YOLD 3182. Celebrate Mungday!
-2016-02-28 --> Prickle-Prickle, day 59 of Chaos in the YOLD 3182.
-2016-02-29 --> St. Tib's Day, in the YOLD 3182
-2016-03-01 --> Setting Orange, day 60 of Chaos in the YOLD 3182.
-2016-12-31 --> Setting Orange, day 73 of The Aftermath in the YOLD 3182.
-2025-03-19 --> Pungenday, day 5 of Discord in the YOLD 3191. Celebrate Mojoday!
-2025-05-01 --> Sweetmorn, day 48 of Discord in the YOLD 3191.
 -------  Display_a_linear_combination.el  -------
-e1+2*e2+3*e3
-e2+2*e3+3*e4
-e1+3*e3+4*e4
-e1+2*e2
+e(1)+2*e(2)+3*e(3)
+e(2)+2*e(3)+3*e(4)
+e(1)+3*e(3)+4*e(4)
+e(1)+2*e(2)
 0
 0
-e1+e2+e3
--e1-e2-e3
--3*e4
--e1
+e(1)+e(2)+e(3)
+-e(1)-e(2)-e(3)
+-e(1)-2*e(2)-3*e(4)
+-e(1)
 -------  Distinct_palindromes_within_decimal_numbers.el  -------
 100: 00 1 0 
 101: 101 1 0 
@@ -1836,6 +1850,12 @@ e1+e2+e3
 125: 1 2 5 
 
 13202679478494903612056
+-------  Distinct_power_numbers.el  -------
+[ 4 8 9 16 25 27 32 64 81 125 243 256 625 1024 3125 ]
+-------  Distribution_of_0_digits_in_factorial_series.el  -------
+0.246753186
+0.203544551
+0.173003848
 -------  Diversity_prediction_theorem.el  -------
 Average error : 3
 Crowd error   : 0.11
@@ -1845,6 +1865,8 @@ Average error : 14.50
 Crowd error   : 4
 Diversity     : 10.50
 
+-------  Dividuus_numbers.el  -------
+1 2 3 4 5 6 7 8 9 12 24 111 112 132 135 144 216 312 315 432 612 624 1116 1212 1344 1416 2112 2232 3168 3312 4112 4224 6624 8112 11112 11115 11133 11172 11232 11313 11331 11424 11664 12132 12216 12312 12432 12768 13113 13131 
 -------  Doomsday_rule.el  -------
 1800-01-06 -> Monday
 1875-03-29 -> Monday
@@ -1855,11 +1877,18 @@ Diversity     : 10.50
 2101-04-02 -> Saturday
 -------  Dot_product.el  -------
 3
+-------  Double_Twin_Primes.el  -------
+(5 7 11 13) 
+(11 13 17 19) 
+(101 103 107 109) 
+(191 193 197 199) 
+(821 823 827 829) 
 -------  Dragon_curve.el  -------
 -------  Draw_a_clock.el  -------
 -------  Draw_a_cuboid.el  -------
 -------  Draw_a_pixel.el  -------
 -------  Draw_a_rotating_cube.el  -------
+-------  Draw_a_sphere.el  -------
 -------  Duffinian_numbers.el  -------
 First 50 Duffinian numbers:
 4 8 9 16 21 25 27 32 35 36 39 49 50 55 57 63 64 65 75 77 81 85 93 98 100 111 115 119 121 125 128 129 133 143 144 155 161 169 171 175 183 185 187 189 201 203 205 209 215 217 
@@ -1881,9 +1910,16 @@ First 15 Duffinian triplets:
 6399 - 6401
 8449 - 8451
 -------  Dutch_national_flag_problem.el  -------
+-------  Earliest_difference_between_prime_gaps.el  -------
+> 10: gaps 4/6 range 7-23 (16)
+> 100: gaps 14/16 range 113-1831 (1718)
+> 1000: gaps 14/16 range 113-1831 (1718)
+> 10000: gaps 36/38 range 9551-30593 (21042)
+> 100000: gaps 70/72 range 173359-31397 (141962)
+> 1000000: gaps 100/102 range 396733-1444309 (1047576)
 -------  Eban_numbers.el  -------
-2 - 1000: 2 4 6 30 32 34 36 40 42 44 46 50 52 54 56 60 62 64 66 (count=19)
-1000 - 4000: 2000 2002 2004 2006 2030 2032 2034 2036 2040 2042 2044 2046 2050 2052 2054 2056 2060 2062 2064 2066 4000 (count=21)
+2 - 1000: [ 2 4 6 30 32 34 36 40 42 44 46 50 52 54 56 60 62 64 66 ] (count=19)
+1000 - 4000: [ 2000 2002 2004 2006 2030 2032 2034 2036 2040 2042 2044 2046 2050 2052 2054 2056 2060 2062 2064 2066 4000 ] (count=21)
 2 - 10000: (count=79)
 2 - 100000: (count=399)
 2 - 1000000: (count=399)
@@ -1891,6 +1927,23 @@ First 15 Duffinian triplets:
 2 - 100000000: (count=7999)
 -------  Egyptian_division.el  -------
 580 / 34 = 17 R 2
+-------  EKG_sequence_convergence.el  -------
+[ 1 2 4 6 3 9 12 8 10 5 15 ]
+[ 1 5 10 2 4 6 3 9 12 8 14 ]
+[ 1 7 14 2 4 6 3 9 12 8 10 ]
+[ 1 9 3 6 2 4 8 10 5 15 12 ]
+[ 1 10 2 4 6 3 9 12 8 14 7 ]
+-------  Element-wise_operations.el  -------
+[ [ 10 6 ] [ 8 4 ] ]
+[ [ 2.50 1.50 ] [ 2 1 ] ]
+[ [ 7 5 ] [ 6 4 ] ]
+[ [ 3 1 ] [ 2 0 ] ]
+[ [ 25 9 ] [ 16 4 ] ]
+[ [ 5 6 ] [ 28 16 ] ]
+[ [ 5 1.50 ] [ 0.57 0.25 ] ]
+[ [ 6 5 ] [ 11 10 ] ]
+[ [ 4 1 ] [ -3 -6 ] ]
+[ [ 5 9 ] [ 16384 256 ] ]
 -------  Elementary_cellular_automaton.el  -------
 .###.##.#.#.#.#..#..
 .#.#####.#.#.#......
@@ -1931,6 +1984,61 @@ First 15 Duffinian triplets:
 ###############
 ...............
 
+-------  Elementary_cellular_automaton@Infinite_length.el  -------
+ Rule #90
+                            ..O..
+                           ..O.O..
+                          ..O...O..
+                         ..O.O.O.O..
+                        ..O.......O..
+                       ..O.O.....O.O..
+                      ..O...O...O...O..
+                     ..O.O.O.O.O.O.O.O..
+                    ..O...............O..
+                   ..O.O.............O.O..
+                  ..O...O...........O...O..
+                 ..O.O.O.O.........O.O.O.O..
+                ..O.......O.......O.......O..
+               ..O.O.....O.O.....O.O.....O.O..
+              ..O...O...O...O...O...O...O...O..
+             ..O.O.O.O.O.O.O.O.O.O.O.O.O.O.O.O..
+            ..O...............................O..
+           ..O.O.............................O.O..
+          ..O...O...........................O...O..
+         ..O.O.O.O.........................O.O.O.O..
+        ..O.......O.......................O.......O..
+       ..O.O.....O.O.....................O.O.....O.O..
+      ..O...O...O...O...................O...O...O...O..
+     ..O.O.O.O.O.O.O.O.................O.O.O.O.O.O.O.O..
+    ..O...............O...............O...............O..
+
+ Rule #30
+                            ..O..
+                           ..OOO..
+                          ..OO..O..
+                         ..OO.OOOO..
+                        ..OO..O...O..
+                       ..OO.OOOO.OOO..
+                      ..OO..O....O..O..
+                     ..OO.OOOO..OOOOOO..
+                    ..OO..O...OOO.....O..
+                   ..OO.OOOO.OO..O...OOO..
+                  ..OO..O....O.OOOO.OO..O..
+                 ..OO.OOOO..OO.O....O.OOOO..
+                ..OO..O...OOO..OO..OO.O...O..
+               ..OO.OOOO.OO..OOO.OOO..OO.OOO..
+              ..OO..O....O.OOO...O..OOO..O..O..
+             ..OO.OOOO..OO.O..O.OOOOO..OOOOOOO..
+            ..OO..O...OOO..OOOO.O....OOO......O..
+           ..OO.OOOO.OO..OOO....OO..OO..O....OOO..
+          ..OO..O....O.OOO..O..OO.OOO.OOOO..OO..O..
+         ..OO.OOOO..OO.O..OOOOOO..O...O...OOO.OOOO..
+        ..OO..O...OOO..OOOO.....OOOO.OOO.OO...O...O..
+       ..OO.OOOO.OO..OOO...O...OO....O...O.O.OOO.OOO..
+      ..OO..O....O.OOO..O.OOO.OO.O..OOO.OO.O.O...O..O..
+     ..OO.OOOO..OO.O..OOO.O...O..OOOO...O..O.OO.OOOOOO..
+    ..OO..O...OOO..OOOO...OO.OOOOO...O.OOOOO.O..O.....O..
+
 -------  Emirp_primes.el  -------
 First 20 emirps: 13 17 31 37 71 73 79 97 107 113 149 157 167 179 199 311 337 347 359 389 
 Emirps between 7700 8000: 7717 7757 7817 7841 7867 7879 7901 7927 7949 7951 7963 
@@ -1938,6 +2046,7 @@ The 10000th emirp: 948349
 -------  Empty_program.el  -------
 -------  Empty_string.el  -------
 empty
+-------  Endless_maze.el  -------
 -------  Engel_expansion.el  -------
 [ 1 1 1 8 8 17 19 300 1991 2767 8641 16313 1628438 7702318 25297938 431350188 765676622 776491263 1739733589 2329473788 6871947674 17179869184 ]
 3.14159265359
@@ -1945,14 +2054,14 @@ empty
 1.85
 -------  Equal_prime_and_composite_sums.el  -------
         sum     primes composites
-         10          3          3
-       1988         33         52
-      14697         80        148
-      83292        175        362
-    1503397        660       1583
-   18859052       2143       5700
-   93952013       4556      12822
-89171409882     118785     403342
+         10          3          2
+       1988         33         51
+      14697         80        147
+      83292        175        361
+    1503397        660       1582
+   18859052       2143       5699
+   93952013       4556      12821
+89171409882     118785     403341
 -------  Equilibrium_index.el  -------
 [ 4 7 ]
 -------  Erdős-Nicolas_numbers.el  -------
@@ -1965,7 +2074,35 @@ empty
 392448 equals the sum of its first 68 divisors
 1571328 equals the sum of its first 115 divisors
 -------  Erdős-primes.el  -------
-2 101 211 367 409 419 461 557 673 709 769 937 967 1009 1201 1259 1709 1831 1889 2141 2221 2309 2351 2411 2437 -------  Esthetic_numbers.el  -------
+2 101 211 367 409 419 461 557 673 709 769 937 967 1009 1201 1259 1709 1831 1889 2141 2221 2309 2351 2411 2437 -------  Erdös-Selfridge_categorization_of_primes.el  -------
+Category 1:
+[ 2 3 5 7 11 17 23 31 47 53 71 107 127 191 383 431 647 863 971 1151 ]
+
+Category 2:
+[ 13 19 29 41 43 59 61 67 79 83 89 97 101 109 131 137 139 149 167 179 197 199 211 223 229 239 241 251 263 269 271 281 283 293 307 317 349 359 367 373 419 433 439 449 461 479 499 503 509 557 563 577 587 593 599 619 641 643 659 709 719 743 751 761 769 809 827 839 881 919 929 953 967 991 1019 1033 1049 1069 1087 1103 1187 1223 ]
+
+Category 3:
+[ 37 103 113 151 157 163 173 181 193 227 233 257 277 311 331 337 347 353 379 389 397 401 409 421 457 463 467 487 491 521 523 541 547 569 571 601 607 613 631 653 683 701 727 733 773 787 797 811 821 829 853 857 859 877 883 911 937 947 983 997 1009 1013 1031 1039 1051 1061 1063 1091 1097 1117 1123 1153 1163 1171 1181 1193 1217 ]
+
+Category 4:
+[ 73 313 443 617 661 673 677 691 739 757 823 887 907 941 977 1093 1109 1129 1201 1213 ]
+
+Category 5:
+[ 1021 ]
+
+First million primes:
+Category 1: First = 2 Last = 10616831 Count = 46
+Category 2: First = 13 Last = 15482669 Count = 10497
+Category 3: First = 37 Last = 15485863 Count = 201987
+Category 4: First = 73 Last = 15485849 Count = 413891
+Category 5: First = 1021 Last = 15485837 Count = 263109
+Category 6: First = 2917 Last = 15485857 Count = 87560
+Category 7: First = 15013 Last = 15484631 Count = 19389
+Category 8: First = 49681 Last = 15485621 Count = 3129
+Category 9: First = 532801 Last = 15472811 Count = 363
+Category 10: First = 1065601 Last = 15472321 Count = 28
+Category 11: First = 8524807 Last = 8524807 Count = 1
+-------  Esthetic_numbers.el  -------
 Base 2: 8th to 12th esthetic numbers:
 10101010 101010101 1010101010 10101010101 101010101010 
 
@@ -2015,7 +2152,8 @@ Base 10 esthetic numbers between 1000 and 9999:
 1010 1012 1210 1212 1232 1234 2101 2121 2123 2321 2323 2343 2345 3210 3212 3232 3234 3432 3434 3454 3456 4321 4323 4343 4345 4543 4545 4565 4567 5432 5434 5454 5456 5654 5656 5676 5678 6543 6545 6565 6567 6765 6767 6787 6789 7654 7656 7676 7678 7876 7878 7898 8765 8767 8787 8789 8987 8989 9876 9878 9898 -------  Ethiopian_multiplication.el  -------
 578
 -------  Euclid-Mullin_sequence.el  -------
-2 3 7 43 13 53 5 6221671 -------  Euclidean_rhythm.el  -------
+[ 2 3 7 43 13 53 5 6221671 ]
+-------  Euclidean_rhythm.el  -------
 10010010
 -------  Euler_method.el  -------
 -------  Euler's_constant_0.5772....el  -------
@@ -2023,523 +2161,64 @@ Base 10 esthetic numbers between 1000 and 9999:
 -------  Euler's_identity.el  -------
 [ 0 1.2e-16 ]
 -------  Euler's_sum_of_powers_conjecture.el  -------
-133 110 84 27 144
+133⁵ + 110⁴ + 84³ + 27² = 144⁵
 -------  Evaluate_binomial_coefficients.el  -------
 10
+13983816
+-------  Even_numbers_which_cannot_be_expressed_as_the_sum_of_two_twin_primes.el  -------
+2 4 94 96 98 400 402 404 514 516 518 784 786 788 904 906 908 1114 1116 1118 1144 1146 1148 1264 1266 1268 1354 1356 1358 3244 3246 3248 4204 4206 4208 
+
+94 96 98 400 402 404 514 516 518 784 786 788 904 906 908 1114 1116 1118 1144 1146 1148 1264 1266 1268 1354 1356 1358 3244 3246 3248 4204 4206 4208 
 -------  Even_or_odd.el  -------
 13 is odd
 -------  Events.el  -------
 -------  Evolutionary_algorithm.el  -------
 -------  Exactly_three_adjacent_3_in_lists.el  -------
-1 0 0 0 1 -------  Execute_Brain****.el  -------
+1 0 0 0 1 
+-------  Execute_Brain****.el  -------
 Hello World!
--------  Execute_Computer+Zero.el  -------
+-------  Execute_Computer@Zero.el  -------
 2+2: 4
 7*8: 56
 Fibonacci: 55
 List: 6
 Prisoner: 0
 -------  Execute_HQ9+.el  -------
-Hello, world!
-HQ9+
-99 bottles of beer on the wall
-99 bottles of beer
-Take one down, pass it around
-99 bottles of beer on the wall
-
-98 bottles of beer on the wall
-98 bottles of beer
-Take one down, pass it around
-98 bottles of beer on the wall
-
-97 bottles of beer on the wall
-97 bottles of beer
-Take one down, pass it around
-97 bottles of beer on the wall
-
-96 bottles of beer on the wall
-96 bottles of beer
-Take one down, pass it around
-96 bottles of beer on the wall
-
-95 bottles of beer on the wall
-95 bottles of beer
-Take one down, pass it around
-95 bottles of beer on the wall
-
-94 bottles of beer on the wall
-94 bottles of beer
-Take one down, pass it around
-94 bottles of beer on the wall
-
-93 bottles of beer on the wall
-93 bottles of beer
-Take one down, pass it around
-93 bottles of beer on the wall
-
-92 bottles of beer on the wall
-92 bottles of beer
-Take one down, pass it around
-92 bottles of beer on the wall
-
-91 bottles of beer on the wall
-91 bottles of beer
-Take one down, pass it around
-91 bottles of beer on the wall
-
-90 bottles of beer on the wall
-90 bottles of beer
-Take one down, pass it around
-90 bottles of beer on the wall
-
-89 bottles of beer on the wall
-89 bottles of beer
-Take one down, pass it around
-89 bottles of beer on the wall
-
-88 bottles of beer on the wall
-88 bottles of beer
-Take one down, pass it around
-88 bottles of beer on the wall
-
-87 bottles of beer on the wall
-87 bottles of beer
-Take one down, pass it around
-87 bottles of beer on the wall
-
-86 bottles of beer on the wall
-86 bottles of beer
-Take one down, pass it around
-86 bottles of beer on the wall
-
-85 bottles of beer on the wall
-85 bottles of beer
-Take one down, pass it around
-85 bottles of beer on the wall
-
-84 bottles of beer on the wall
-84 bottles of beer
-Take one down, pass it around
-84 bottles of beer on the wall
-
-83 bottles of beer on the wall
-83 bottles of beer
-Take one down, pass it around
-83 bottles of beer on the wall
-
-82 bottles of beer on the wall
-82 bottles of beer
-Take one down, pass it around
-82 bottles of beer on the wall
-
-81 bottles of beer on the wall
-81 bottles of beer
-Take one down, pass it around
-81 bottles of beer on the wall
-
-80 bottles of beer on the wall
-80 bottles of beer
-Take one down, pass it around
-80 bottles of beer on the wall
-
-79 bottles of beer on the wall
-79 bottles of beer
-Take one down, pass it around
-79 bottles of beer on the wall
-
-78 bottles of beer on the wall
-78 bottles of beer
-Take one down, pass it around
-78 bottles of beer on the wall
-
-77 bottles of beer on the wall
-77 bottles of beer
-Take one down, pass it around
-77 bottles of beer on the wall
-
-76 bottles of beer on the wall
-76 bottles of beer
-Take one down, pass it around
-76 bottles of beer on the wall
-
-75 bottles of beer on the wall
-75 bottles of beer
-Take one down, pass it around
-75 bottles of beer on the wall
-
-74 bottles of beer on the wall
-74 bottles of beer
-Take one down, pass it around
-74 bottles of beer on the wall
-
-73 bottles of beer on the wall
-73 bottles of beer
-Take one down, pass it around
-73 bottles of beer on the wall
-
-72 bottles of beer on the wall
-72 bottles of beer
-Take one down, pass it around
-72 bottles of beer on the wall
-
-71 bottles of beer on the wall
-71 bottles of beer
-Take one down, pass it around
-71 bottles of beer on the wall
-
-70 bottles of beer on the wall
-70 bottles of beer
-Take one down, pass it around
-70 bottles of beer on the wall
-
-69 bottles of beer on the wall
-69 bottles of beer
-Take one down, pass it around
-69 bottles of beer on the wall
-
-68 bottles of beer on the wall
-68 bottles of beer
-Take one down, pass it around
-68 bottles of beer on the wall
-
-67 bottles of beer on the wall
-67 bottles of beer
-Take one down, pass it around
-67 bottles of beer on the wall
-
-66 bottles of beer on the wall
-66 bottles of beer
-Take one down, pass it around
-66 bottles of beer on the wall
-
-65 bottles of beer on the wall
-65 bottles of beer
-Take one down, pass it around
-65 bottles of beer on the wall
-
-64 bottles of beer on the wall
-64 bottles of beer
-Take one down, pass it around
-64 bottles of beer on the wall
-
-63 bottles of beer on the wall
-63 bottles of beer
-Take one down, pass it around
-63 bottles of beer on the wall
-
-62 bottles of beer on the wall
-62 bottles of beer
-Take one down, pass it around
-62 bottles of beer on the wall
-
-61 bottles of beer on the wall
-61 bottles of beer
-Take one down, pass it around
-61 bottles of beer on the wall
-
-60 bottles of beer on the wall
-60 bottles of beer
-Take one down, pass it around
-60 bottles of beer on the wall
-
-59 bottles of beer on the wall
-59 bottles of beer
-Take one down, pass it around
-59 bottles of beer on the wall
-
-58 bottles of beer on the wall
-58 bottles of beer
-Take one down, pass it around
-58 bottles of beer on the wall
-
-57 bottles of beer on the wall
-57 bottles of beer
-Take one down, pass it around
-57 bottles of beer on the wall
-
-56 bottles of beer on the wall
-56 bottles of beer
-Take one down, pass it around
-56 bottles of beer on the wall
-
-55 bottles of beer on the wall
-55 bottles of beer
-Take one down, pass it around
-55 bottles of beer on the wall
-
-54 bottles of beer on the wall
-54 bottles of beer
-Take one down, pass it around
-54 bottles of beer on the wall
-
-53 bottles of beer on the wall
-53 bottles of beer
-Take one down, pass it around
-53 bottles of beer on the wall
-
-52 bottles of beer on the wall
-52 bottles of beer
-Take one down, pass it around
-52 bottles of beer on the wall
-
-51 bottles of beer on the wall
-51 bottles of beer
-Take one down, pass it around
-51 bottles of beer on the wall
-
-50 bottles of beer on the wall
-50 bottles of beer
-Take one down, pass it around
-50 bottles of beer on the wall
-
-49 bottles of beer on the wall
-49 bottles of beer
-Take one down, pass it around
-49 bottles of beer on the wall
-
-48 bottles of beer on the wall
-48 bottles of beer
-Take one down, pass it around
-48 bottles of beer on the wall
-
-47 bottles of beer on the wall
-47 bottles of beer
-Take one down, pass it around
-47 bottles of beer on the wall
-
-46 bottles of beer on the wall
-46 bottles of beer
-Take one down, pass it around
-46 bottles of beer on the wall
-
-45 bottles of beer on the wall
-45 bottles of beer
-Take one down, pass it around
-45 bottles of beer on the wall
-
-44 bottles of beer on the wall
-44 bottles of beer
-Take one down, pass it around
-44 bottles of beer on the wall
-
-43 bottles of beer on the wall
-43 bottles of beer
-Take one down, pass it around
-43 bottles of beer on the wall
-
-42 bottles of beer on the wall
-42 bottles of beer
-Take one down, pass it around
-42 bottles of beer on the wall
-
-41 bottles of beer on the wall
-41 bottles of beer
-Take one down, pass it around
-41 bottles of beer on the wall
-
-40 bottles of beer on the wall
-40 bottles of beer
-Take one down, pass it around
-40 bottles of beer on the wall
-
-39 bottles of beer on the wall
-39 bottles of beer
-Take one down, pass it around
-39 bottles of beer on the wall
-
-38 bottles of beer on the wall
-38 bottles of beer
-Take one down, pass it around
-38 bottles of beer on the wall
-
-37 bottles of beer on the wall
-37 bottles of beer
-Take one down, pass it around
-37 bottles of beer on the wall
-
-36 bottles of beer on the wall
-36 bottles of beer
-Take one down, pass it around
-36 bottles of beer on the wall
-
-35 bottles of beer on the wall
-35 bottles of beer
-Take one down, pass it around
-35 bottles of beer on the wall
-
-34 bottles of beer on the wall
-34 bottles of beer
-Take one down, pass it around
-34 bottles of beer on the wall
-
-33 bottles of beer on the wall
-33 bottles of beer
-Take one down, pass it around
-33 bottles of beer on the wall
-
-32 bottles of beer on the wall
-32 bottles of beer
-Take one down, pass it around
-32 bottles of beer on the wall
-
-31 bottles of beer on the wall
-31 bottles of beer
-Take one down, pass it around
-31 bottles of beer on the wall
-
-30 bottles of beer on the wall
-30 bottles of beer
-Take one down, pass it around
-30 bottles of beer on the wall
-
-29 bottles of beer on the wall
-29 bottles of beer
-Take one down, pass it around
-29 bottles of beer on the wall
-
-28 bottles of beer on the wall
-28 bottles of beer
-Take one down, pass it around
-28 bottles of beer on the wall
-
-27 bottles of beer on the wall
-27 bottles of beer
-Take one down, pass it around
-27 bottles of beer on the wall
-
-26 bottles of beer on the wall
-26 bottles of beer
-Take one down, pass it around
-26 bottles of beer on the wall
-
-25 bottles of beer on the wall
-25 bottles of beer
-Take one down, pass it around
-25 bottles of beer on the wall
-
-24 bottles of beer on the wall
-24 bottles of beer
-Take one down, pass it around
-24 bottles of beer on the wall
-
-23 bottles of beer on the wall
-23 bottles of beer
-Take one down, pass it around
-23 bottles of beer on the wall
-
-22 bottles of beer on the wall
-22 bottles of beer
-Take one down, pass it around
-22 bottles of beer on the wall
-
-21 bottles of beer on the wall
-21 bottles of beer
-Take one down, pass it around
-21 bottles of beer on the wall
-
-20 bottles of beer on the wall
-20 bottles of beer
-Take one down, pass it around
-20 bottles of beer on the wall
-
-19 bottles of beer on the wall
-19 bottles of beer
-Take one down, pass it around
-19 bottles of beer on the wall
-
-18 bottles of beer on the wall
-18 bottles of beer
-Take one down, pass it around
-18 bottles of beer on the wall
-
-17 bottles of beer on the wall
-17 bottles of beer
-Take one down, pass it around
-17 bottles of beer on the wall
-
-16 bottles of beer on the wall
-16 bottles of beer
-Take one down, pass it around
-16 bottles of beer on the wall
-
-15 bottles of beer on the wall
-15 bottles of beer
-Take one down, pass it around
-15 bottles of beer on the wall
-
-14 bottles of beer on the wall
-14 bottles of beer
-Take one down, pass it around
-14 bottles of beer on the wall
-
-13 bottles of beer on the wall
-13 bottles of beer
-Take one down, pass it around
-13 bottles of beer on the wall
-
-12 bottles of beer on the wall
-12 bottles of beer
-Take one down, pass it around
-12 bottles of beer on the wall
-
-11 bottles of beer on the wall
-11 bottles of beer
-Take one down, pass it around
-11 bottles of beer on the wall
-
-10 bottles of beer on the wall
-10 bottles of beer
-Take one down, pass it around
-10 bottles of beer on the wall
-
-9 bottles of beer on the wall
-9 bottles of beer
-Take one down, pass it around
-9 bottles of beer on the wall
-
-8 bottles of beer on the wall
-8 bottles of beer
-Take one down, pass it around
-8 bottles of beer on the wall
-
-7 bottles of beer on the wall
-7 bottles of beer
-Take one down, pass it around
-7 bottles of beer on the wall
-
-6 bottles of beer on the wall
-6 bottles of beer
-Take one down, pass it around
-6 bottles of beer on the wall
-
-5 bottles of beer on the wall
-5 bottles of beer
-Take one down, pass it around
-5 bottles of beer on the wall
-
-4 bottles of beer on the wall
-4 bottles of beer
-Take one down, pass it around
-4 bottles of beer on the wall
-
-3 bottles of beer on the wall
-3 bottles of beer
-Take one down, pass it around
-3 bottles of beer on the wall
-
-2 bottles of beer on the wall
-2 bottles of beer
-Take one down, pass it around
-2 bottles of beer on the wall
-
-1 bottles of beer on the wall
-1 bottles of beer
-Take one down, pass it around
-1 bottles of beer on the wall
-
-1
 -------  Execute_SNUSP.el  -------
 Hello World!
+-------  Exponential_digital_sums.el  -------
+7^4  
+8^3  
+9^2  
+17^3  
+18^3  18^6  18^7  
+20^13  
+22^4  
+25^4  
+26^3  
+27^3  27^7  
+28^4  28^5  
+31^7  
+34^7  
+35^5  
+36^4  36^5  
+40^13  
+43^7  
+45^6  
+46^5  46^8  
+53^7  
+
+18^3  18^6  18^7  
+54^6  54^8  54^9  
+90^19  90^20  90^21  90^22  90^28  
+107^11  107^13  107^15  
+181^16  181^18  181^19  181^20  
+360^45  360^46  360^49  360^51  
+370^48  370^54  370^57  370^59  
+388^32  388^35  388^36  
+523^39  523^42  523^44  523^45  
+603^44  603^47  603^54  
+
 -------  Exponentiation_operator.el  -------
 9.87
 0.25
@@ -2558,7 +2237,8 @@ Hello World!
 104729
 1299709
 -------  Extra_primes.el  -------
-2 3 5 7 23 223 227 337 353 373 557 577 733 757 773 2333 2357 2377 2557 2753 2777 3253 3257 3323 3527 3727 5233 5237 5273 5323 5527 7237 7253 7523 7723 7727 -------  Extract_file_extension.el  -------
+2 3 5 7 23 223 227 337 353 373 557 577 733 757 773 2333 2357 2377 2557 2753 2777 3253 3257 3323 3527 3727 5233 5237 5273 5323 5527 7237 7253 7523 7723 7727 
+-------  Extract_file_extension.el  -------
 http://example.com/download.tar.gz -> gz
 CharacterModel.3DS -> 3DS
 .desktop -> desktop
@@ -2570,17 +2250,28 @@ positive  infinity: inf
 negative infinity: -inf
 negative zero: 0
 not a number: nan
+
 +inf + 2 = inf
 +inf - 10.1 = inf
 +inf + -inf = nan
 0 * +inf = nan
 1/-0 = -inf
-NaN + 1 = nan
-NaN + NaN = nan
-NaN == NaN = 0
+nan + 1 = nan
+nan + nan = nan
+
+nan == nan = 0
 0 = -0 = 1
 -------  Extreme_primes.el  -------
-2 5 17 41 197 281 7699 8893 22039 24133 25237 28697 32353 37561 38921 43201 44683 55837 61027 66463 70241 86453 102001 109147 116533 119069 121631 129419 132059 263171 -------  Factorial_primes.el  -------
+2 5 17 41 197 281 7699 8893 22039 24133 25237 28697 32353 37561 38921 43201 44683 55837 61027 66463 70241 86453 102001 109147 116533 119069 121631 129419 132059 263171 -------  Factor-perfect_numbers.el  -------
+48 sequences using first definition:
+[ [ 1 2 4 8 16 48 ] [ 1 2 4 8 24 48 ] [ 1 2 4 8 48 ] [ 1 2 4 12 24 48 ] [ 1 2 4 12 48 ] [ 1 2 4 16 48 ] [ 1 2 4 24 48 ] [ 1 2 4 48 ] [ 1 2 6 12 24 48 ] [ 1 2 6 12 48 ] [ 1 2 6 24 48 ] [ 1 2 6 48 ] [ 1 2 8 16 48 ] [ 1 2 8 24 48 ] [ 1 2 8 48 ] [ 1 2 12 24 48 ] [ 1 2 12 48 ] [ 1 2 16 48 ] [ 1 2 24 48 ] [ 1 2 48 ] [ 1 3 6 12 24 48 ] [ 1 3 6 12 48 ] [ 1 3 6 24 48 ] [ 1 3 6 48 ] [ 1 3 12 24 48 ] [ 1 3 12 48 ] [ 1 3 24 48 ] [ 1 3 48 ] [ 1 4 8 16 48 ] [ 1 4 8 24 48 ] [ 1 4 8 48 ] [ 1 4 12 24 48 ] [ 1 4 12 48 ] [ 1 4 16 48 ] [ 1 4 24 48 ] [ 1 4 48 ] [ 1 6 12 24 48 ] [ 1 6 12 48 ] [ 1 6 24 48 ] [ 1 6 48 ] [ 1 8 16 48 ] [ 1 8 24 48 ] [ 1 8 48 ] [ 1 12 24 48 ] [ 1 12 48 ] [ 1 16 48 ] [ 1 24 48 ] [ 1 48 ] ]
+
+48 sequences using second definition:
+[ [ 2 2 2 2 3 ] [ 2 2 2 3 2 ] [ 2 2 2 6 ] [ 2 2 3 2 2 ] [ 2 2 3 4 ] [ 2 2 4 3 ] [ 2 2 6 2 ] [ 2 2 12 ] [ 2 3 2 2 2 ] [ 2 3 2 4 ] [ 2 3 4 2 ] [ 2 3 8 ] [ 2 4 2 3 ] [ 2 4 3 2 ] [ 2 4 6 ] [ 2 6 2 2 ] [ 2 6 4 ] [ 2 8 3 ] [ 2 12 2 ] [ 2 24 ] [ 3 2 2 2 2 ] [ 3 2 2 4 ] [ 3 2 4 2 ] [ 3 2 8 ] [ 3 4 2 2 ] [ 3 4 4 ] [ 3 8 2 ] [ 3 16 ] [ 4 2 2 3 ] [ 4 2 3 2 ] [ 4 2 6 ] [ 4 3 2 2 ] [ 4 3 4 ] [ 4 4 3 ] [ 4 6 2 ] [ 4 12 ] [ 6 2 2 2 ] [ 6 2 4 ] [ 6 4 2 ] [ 6 8 ] [ 8 2 3 ] [ 8 3 2 ] [ 8 6 ] [ 12 2 2 ] [ 12 4 ] [ 16 3 ] [ 24 2 ] [ 48 ] ]
+
+OEIS A163272:
+0 1 48 1280 2496 28672 29808 
+-------  Factorial_primes.el  -------
 1! + 1 = 2
 2! + 1 = 3
 3! - 1 = 5
@@ -2593,6 +2284,11 @@ NaN == NaN = 0
 14! - 1 = 87178291199
 -------  Factorial.el  -------
 5040
+-------  Factorions.el  -------
+base 9 factorions: 1 2 41282
+base 10 factorions: 1 2 145 40585
+base 11 factorions: 1 2 26 48 40472
+base 12 factorions: 1 2
 -------  Factorize_string_into_Lyndon_words.el  -------
 011
 01
@@ -2606,6 +2302,7 @@ NaN == NaN = 0
 -------  Factors_of_a_Mersenne_number.el  -------
 13007
 -------  Factors_of_an_integer.el  -------
+[ 1 2 5 10 ]
 [ 1 2 3 4 5 6 8 9 10 12 15 16 18 20 24 30 36 40 45 48 60 72 80 90 120 144 180 240 360 720 ]
 -------  Fairshare_between_two_and_more.el  -------
 2: 0 1 1 0 1 0 0 1 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 0 
@@ -2639,7 +2336,29 @@ NaN == NaN = 0
 >Rosetta_Example_1
 THERECANBENOSPACE
 >Rosetta_Example_2
-THERECANBESEVERALLINESBUTTHEYALLMUSTBECONCATENATED-------  Feigenbaum_constant_calculation.el  -------
+THERECANBESEVERALLINESBUTTHEYALLMUSTBECONCATENATED-------  Faulhaber's_formula.el  -------
+0 : 1n
+1 : n^2 + 1/2n
+2 : n^3 + 1/2n^2 + 1/6n
+3 : n^4 + 1/2n^3 + 1/4n^2
+4 : n^5 + 1/2n^4 + 1/3n^3 - 1/30n
+5 : n^6 + 1/2n^5 + 5/12n^4 - 1/12n^2
+6 : n^7 + 1/2n^6 + 1/2n^5 - 1/6n^3 + 1/42n
+7 : n^8 + 1/2n^7 + 7/12n^6 - 7/24n^4 + 1/12n^2
+8 : n^9 + 1/2n^8 + 2/3n^7 - 7/15n^5 + 2/9n^3 - 1/30n
+9 : n^10 + 1/2n^9 + 3/4n^8 - 7/10n^6 + 1/2n^4 - 3/20n^2
+-------  Faulhaber's_triangle.el  -------
+     1
+   1/2   1/2
+   1/6   1/2   1/3
+     0   1/4   1/2   1/4
+ -1/30     0   1/3   1/2   1/5
+     0 -1/12     0  5/12   1/2   1/6
+  1/42     0  -1/6     0   1/2   1/2   1/7
+     0  1/12     0 -7/24     0  7/12   1/2   1/8
+ -1/30     0   2/9     0 -7/15     0   2/3   1/2   1/9
+     0 -3/20     0   1/2     0 -7/10     0   3/4   1/2  1/10
+-------  Feigenbaum_constant_calculation.el  -------
 2 3.218511
 3 4.385678
 4 4.600949
@@ -2652,6 +2371,43 @@ THERECANBESEVERALLINESBUTTHEYALLMUSTBECONCATENATED-------  Feigenbaum_constant_c
 11 4.669200
 12 4.669201
 13 4.669205
+-------  Fermat_numbers.el  -------
+F(0) = 3
+F(1) = 5
+F(2) = 17
+F(3) = 257
+F(4) = 65537
+F(5) = 4294967297
+F(6) = 18446744073709551617
+F(7) = 340282366920938463463374607431768211457
+F(8) = 115792089237316195423570985008687907853269984665640564039457584007913129639937
+F(9) = 13407807929942597099574024998205846127479365820592393377723561443721764030073546976801874298166903427690031858186486050853753882811946569946433649006084097
+F(10) = 179769313486231590772930519078902473361797697894230657273430081157732675805500963132708477322407536021120113879871393357658789768814416622492847430639474124377767893424865485276302219601246094119453082952085005768838150682342462881473913110540827237163350510684586298239947245938479716304835356329624224137217
+
+Factors F(5): 641 6700417 
+Factors F(6): 274177 67280421310721 
+-------  Fermat_pseudoprimes.el  -------
+First 20 Fermat pseudoprimes and count to 12000:
+Base 1: 4 6 8 9 10 12 14 15 16 18 20 21 22 24 25 26 27 28 30 32 - 10561
+Base 2: 341 561 645 1105 1387 1729 1905 2047 2465 2701 2821 3277 4033 4369 4371 4681 5461 6601 7957 8321 - 25
+Base 3: 91 121 286 671 703 949 1105 1541 1729 1891 2465 2665 2701 2821 3281 3367 3751 4961 5551 6601 - 25
+Base 4: 15 85 91 341 435 451 561 645 703 1105 1247 1271 1387 1581 1695 1729 1891 1905 2047 2071 - 50
+Base 5: 4 124 217 561 781 1541 1729 1891 2821 4123 5461 5611 5662 5731 6601 7449 7813 8029 8911 9881 - 22
+Base 6: 35 185 217 301 481 1105 1111 1261 1333 1729 2465 2701 2821 3421 3565 3589 3913 4123 4495 5713 - 31
+Base 7: 6 25 325 561 703 817 1105 1825 2101 2353 2465 3277 4525 4825 6697 8321 10225 10585 10621 11041 - 21
+Base 8: 9 21 45 63 65 105 117 133 153 231 273 341 481 511 561 585 645 651 861 949 - 76
+Base 9: 4 8 28 52 91 121 205 286 364 511 532 616 671 697 703 946 949 1036 1105 1288 - 55
+Base 10: 9 33 91 99 259 451 481 561 657 703 909 1233 1729 2409 2821 2981 3333 3367 4141 4187 - 35
+Base 11: 10 15 70 133 190 259 305 481 645 703 793 1105 1330 1729 2047 2257 2465 2821 4577 4921 - 30
+Base 12: 65 91 133 143 145 247 377 385 703 1045 1099 1105 1649 1729 1885 1891 2041 2233 2465 2701 - 35
+Base 13: 4 6 12 21 85 105 231 244 276 357 427 561 1099 1785 1891 2465 2806 3605 5028 5149 - 31
+Base 14: 15 39 65 195 481 561 781 793 841 985 1105 1111 1541 1891 2257 2465 2561 2665 2743 3277 - 33
+Base 15: 14 341 742 946 1477 1541 1687 1729 1891 1921 2821 3133 3277 4187 6541 6601 7471 8701 8911 9073 - 22
+Base 16: 15 51 85 91 255 341 435 451 561 595 645 703 1105 1247 1261 1271 1285 1387 1581 1687 - 69
+Base 17: 4 8 9 16 45 91 145 261 781 1111 1228 1305 1729 1885 2149 2821 3991 4005 4033 4187 - 31
+Base 18: 25 49 65 85 133 221 323 325 343 425 451 637 931 1105 1225 1369 1387 1649 1729 1921 - 46
+Base 19: 6 9 15 18 45 49 153 169 343 561 637 889 905 906 1035 1105 1629 1661 1849 1891 - 48
+Base 20: 21 57 133 231 399 561 671 861 889 1281 1653 1729 1891 2059 2413 2501 2761 2821 2947 3059 - 35
 -------  Fibonacci_n-step_number_sequences.el  -------
 Fibonacci: 1 1 2 3 5 8 13 21 34 55 
 Tribonacci: 1 1 2 4 7 13 24 44 81 149 
@@ -2699,6 +2455,7 @@ Lucas: 2 1 3 4 7 11 18 29 47 76
       35  9227465 0.959419
       36 14930352 0.959419
       37 24157817 0.959419
+-------  Fibonacci_word@fractal.el  -------
 -------  File_extension_is_in_extensions_list.el  -------
 MyData.a## -> .a## -> true
 MyData.tar.gz -> .gz -> true
@@ -2737,10 +2494,18 @@ MyData_v1.0.bz2 -> false
 954827 - 954763 = 64
 981887 - 981823 = 64
 997877 - 997813 = 64
+-------  Find_Chess960_starting_position_identifier.el  -------
+QNRBBNKR -> 105
+RNBQKBNR -> 518
+RQNBBKRN -> 601
+RNQBBKRN -> 617
 -------  Find_common_directory_path.el  -------
 /home/user1/tmp
 -------  Find_first_missing_positive.el  -------
-3 2 1 -------  Find_if_a_point_is_within_a_triangle.el  -------
+[ 1 2 0 ] -> 3
+[ 3 4 -1 1 ] -> 2
+[ 7 8 9 11 12 ] -> 1
+-------  Find_if_a_point_is_within_a_triangle.el  -------
 -------  Find_limit_of_recursion.el  -------
 -------  Find_minimum_number_of_coins_that_make_a_given_value.el  -------
 coins of 200: 4
@@ -2760,15 +2525,14 @@ coins of 1: 1
 90396755477 1010100001100000100010000011000010101(2) 22122022220102222022122(3)
 -------  Find_prime_n_such_that_reversed_n_is_also_prime.el  -------
 2 3 5 7 11 13 17 31 37 71 73 79 97 101 107 113 131 149 151 157 167 179 181 191 199 311 313 337 347 353 359 373 383 389 -------  Find_prime_numbers_of_the_form_n*n*n+2.el  -------
-3 29 127 24391 91127 250049 274627 328511 357913 571789 1157627 1442899 1860869 2146691 2924209 3581579 5000213 5177719 6751271 -------  Find_square_difference.el  -------
+3 29 127 24391 91127 250049 274627 328511 357913 571789 1157627 1442899 1860869 2146691 2924209 3581579 5000213 5177719 6751271 
+-------  Find_square_difference.el  -------
 501
 -------  Find_squares_n_where_n+1_is_prime.el  -------
-1 4 16 36 100 196 256 400 576 676 -------  Find_the_intersection_of_a_line_with_a_plane.el  -------
+1 4 16 36 100 196 256 400 576 676 
+-------  Find_the_intersection_of_a_line_with_a_plane.el  -------
 [ 0 -5 5 ]
 -------  Find_the_intersection_of_two_lines.el  -------
-[ 5 5 ]
-[ 5.01 5.05 ]
-[ inf inf ]
 -------  Find_the_last_Sunday_of_each_month.el  -------
 2013-01-27
 2013-02-24
@@ -2794,6 +2558,7 @@ nevertheless
 einstein
 -------  Find_words_with_alternating_vowels_and_consonants.el  -------
 aboriginal
+-------  Finite_state_machine.el  -------
 -------  First_9_prime_Fibonacci_number.el  -------
 2 3 5 13 89 233 1597 28657 514229 -------  First_perfect_square_in_base_n_with_n_unique_digits.el  -------
 Base 2: 10² = 100
@@ -2807,6 +2572,8 @@ Base 9: 11642² = 136802574
 Base 10: 32043² = 1026753849
 Base 11: 111453² = 1240A536789
 Base 12: 3966B9² = 124A7B538609
+Base 13: 3828943² = 10254773CA86B9
+Base 14: 3A9DB7C² = 10269B8C57D3A4
 -------  First_power_of_2_that_has_leading_decimal_digits_of_12.el  -------
 p(12, 1) = 7
 p(12, 2) = 80
@@ -2814,312 +2581,24 @@ p(123, 45) = 12710
 p(123, 12345) = 3510491
 p(123, 678910) = 193060223
 -------  Five_weekends.el  -------
-1901-Mar
-1902-Aug
-1903-May
-1904-Jan
-1904-Jul
-1905-Dec
-1907-Mar
-1908-May
-1909-Jan
-1909-Oct
-1910-Jul
-1911-Dec
-1912-Mar
-1913-Aug
-1914-May
-1915-Jan
-1915-Oct
-1916-Dec
-1918-Mar
-1919-Aug
-1920-Oct
-1921-Jul
-1922-Dec
-1924-Aug
-1925-May
-1926-Jan
-1926-Oct
-1927-Jul
-1929-Mar
-1930-Aug
-1931-May
-1932-Jan
-1932-Jul
-1933-Dec
-1935-Mar
-1936-May
-1937-Jan
-1937-Oct
-1938-Jul
-1939-Dec
-1940-Mar
-1941-Aug
-1942-May
-1943-Jan
-1943-Oct
-1944-Dec
-1946-Mar
-1947-Aug
-1948-Oct
-1949-Jul
-1950-Dec
-1952-Aug
-1953-May
-1954-Jan
-1954-Oct
-1955-Jul
-1957-Mar
-1958-Aug
-1959-May
-1960-Jan
-1960-Jul
-1961-Dec
-1963-Mar
-1964-May
-1965-Jan
-1965-Oct
-1966-Jul
-1967-Dec
-1968-Mar
-1969-Aug
-1970-May
-1971-Jan
-1971-Oct
-1972-Dec
-1974-Mar
-1975-Aug
-1976-Oct
-1977-Jul
-1978-Dec
-1980-Aug
-1981-May
-1982-Jan
-1982-Oct
-1983-Jul
-1985-Mar
-1986-Aug
-1987-May
-1988-Jan
-1988-Jul
-1989-Dec
-1991-Mar
-1992-May
-1993-Jan
-1993-Oct
-1994-Jul
-1995-Dec
-1996-Mar
-1997-Aug
-1998-May
-1999-Jan
-1999-Oct
-2000-Dec
-2002-Mar
-2003-Aug
-2004-Oct
-2005-Jul
-2006-Dec
-2008-Aug
-2009-May
-2010-Jan
-2010-Oct
-2011-Jul
-2013-Mar
-2014-Aug
-2015-May
-2016-Jan
-2016-Jul
-2017-Dec
-2019-Mar
-2020-May
-2021-Jan
-2021-Oct
-2022-Jul
-2023-Dec
-2024-Mar
-2025-Aug
-2026-May
-2027-Jan
-2027-Oct
-2028-Dec
-2030-Mar
-2031-Aug
-2032-Oct
-2033-Jul
-2034-Dec
-2036-Aug
-2037-May
-2038-Jan
-2038-Oct
-2039-Jul
-2041-Mar
-2042-Aug
-2043-May
-2044-Jan
-2044-Jul
-2045-Dec
-2047-Mar
-2048-May
-2049-Jan
-2049-Oct
-2050-Jul
-2051-Dec
-2052-Mar
-2053-Aug
-2054-May
-2055-Jan
-2055-Oct
-2056-Dec
-2058-Mar
-2059-Aug
-2060-Oct
-2061-Jul
-2062-Dec
-2064-Aug
-2065-May
-2066-Jan
-2066-Oct
-2067-Jul
-2069-Mar
-2070-Aug
-2071-May
-2072-Jan
-2072-Jul
-2073-Dec
-2075-Mar
-2076-May
-2077-Jan
-2077-Oct
-2078-Jul
-2079-Dec
-2080-Mar
-2081-Aug
-2082-May
-2083-Jan
-2083-Oct
-2084-Dec
-2086-Mar
-2087-Aug
-2088-Oct
-2089-Jul
-2090-Dec
-2092-Aug
-2093-May
-2094-Jan
-2094-Oct
-2095-Jul
-2097-Mar
-2098-Aug
-2099-May
-2100-Jan
-2100-Oct
+1901-Mar 
+1902-Aug 
+1903-May 
+1904-Jan 
+1904-Jul 
+.
+.
+2097-Mar 
+2098-Aug 
+2099-May 
+2100-Jan 
+2100-Oct 
+
 Total : 201
 -------  Fivenum.el  -------
 [ -1.95 -0.68 0.23 0.75 1.73 ]
 [ 7 15 37.50 40 41 ]
 -------  FizzBuzz.el  -------
-1
-2
-Fizz
-4
-Buzz
-Fizz
-7
-8
-Fizz
-Buzz
-11
-Fizz
-13
-14
-FizzBuzz
-16
-17
-Fizz
-19
-Buzz
-Fizz
-22
-23
-Fizz
-Buzz
-26
-Fizz
-28
-29
-FizzBuzz
-31
-32
-Fizz
-34
-Buzz
-Fizz
-37
-38
-Fizz
-Buzz
-41
-Fizz
-43
-44
-FizzBuzz
-46
-47
-Fizz
-49
-Buzz
-Fizz
-52
-53
-Fizz
-Buzz
-56
-Fizz
-58
-59
-FizzBuzz
-61
-62
-Fizz
-64
-Buzz
-Fizz
-67
-68
-Fizz
-Buzz
-71
-Fizz
-73
-74
-FizzBuzz
-76
-77
-Fizz
-79
-Buzz
-Fizz
-82
-83
-Fizz
-Buzz
-86
-Fizz
-88
-89
-FizzBuzz
-91
-92
-Fizz
-94
-Buzz
-Fizz
-97
-98
-Fizz
-Buzz
 -------  Flow-control_structures.el  -------
 23² + 43³ = 80036
 -------  Floyd-Warshall_algorithm.el  -------
@@ -3196,11 +2675,62 @@ Ninety-nine million nine hundred ninety-nine thousand nine hundred ninety-nine i
 1 0 0 0 0 0 0 0 0 1 
 1 1 1 1 1 1 1 1 1 1 
 -------  Fractal_tree.el  -------
+-------  Fraction_reduction.el  -------
+16/64 = 1/4 by omitting 6's
+19/95 = 1/5 by omitting 9's
+26/65 = 2/5 by omitting 6's
+49/98 = 4/8 by omitting 9's
+2-digit fractions: 4
+Omitted digits: [ 0 0 0 0 0 2 0 0 2 ]
+
+132/231 = 12/21 by omitting 3's
+134/536 = 14/56 by omitting 3's
+134/938 = 14/98 by omitting 3's
+136/238 = 16/28 by omitting 3's
+138/345 = 18/45 by omitting 3's
+139/695 = 13/65 by omitting 9's
+143/341 = 13/31 by omitting 4's
+146/365 = 14/35 by omitting 6's
+149/298 = 14/28 by omitting 9's
+149/596 = 14/56 by omitting 9's
+149/894 = 14/84 by omitting 9's
+154/253 = 14/23 by omitting 5's
+3-digit fractions: 122
+Omitted digits: [ 0 0 9 1 6 15 16 15 60 ]
+
+1234/4936 = 124/496 by omitting 3's
+1239/6195 = 123/615 by omitting 9's
+1246/3649 = 126/369 by omitting 4's
+1249/2498 = 124/248 by omitting 9's
+1259/6295 = 125/625 by omitting 9's
+1279/6395 = 127/635 by omitting 9's
+1283/5132 = 128/512 by omitting 3's
+1297/2594 = 127/254 by omitting 9's
+1297/3891 = 127/381 by omitting 9's
+1298/2596 = 128/256 by omitting 9's
+1298/3894 = 128/384 by omitting 9's
+1298/5192 = 128/512 by omitting 9's
+4-digit fractions: 660
+Omitted digits: [ 14 25 92 14 29 63 16 17 390 ]
+
 -------  Fractran.el  -------
 [ 2 15 825 725 1925 2275 425 390 330 290 770 910 170 156 132 ]
-2 3 5 7 -------  Frobenius_numbers.el  -------
+2 3 5 7 -------  French_Republican_calendar.el  -------
+1 Vendémiaire 1 => 22 September 1792
+1 Prairial 3 => 20 May 1795
+27 Messidor 7 => 15 July 1799
+Fête de la Révolution 11 => 23 September 1803
+10 Nivôse 14 => 31 December 1805
+22 September 1792 => 1 Vendémiaire 1
+20 May 1795 => 1 Prairial 3
+15 July 1799 => 27 Messidor 7
+23 September 1803 => Fête de la Révolution 11
+31 December 1805 => 10 Nivôse 14
+-------  Frobenius_numbers.el  -------
 1 7 23 59 119 191 287 395 615 839 1079 1439 1679 1931 2391 3015 3479 3959 4619 5039 5615 6395 7215 8447 9599 -------  Function_definition.el  -------
 35
+-------  Function_prototype.el  -------
+3
 -------  Fusc_sequence.el  -------
 0 1 1 2 1 3 2 3 1 4 3 5 2 5 3 4 1 5 4 7 3 8 5 7 2 7 5 8 3 7 4 5 1 6 5 9 4 11 7 10 3 11 8 13 5 12 7 9 2 9 7 12 5 13 8 11 3 10 7 11 4 
 
@@ -3246,7 +2776,8 @@ First 10 gapful numbers >= 1000000000
 -------  Gauss-Jordan_matrix_inversion.el  -------
 [ [ -0.81 0.12 0.19 ] [ 0.12 -0.25 0.12 ] [ 0.52 0.12 -0.15 ] ]
 -------  Gaussian_elimination.el  -------
-[ -0.01 1.60 -1.61 1.25 -0.49 0.07 ]
+[ 5 -1 2 ]
+-------  Gaussian_primes.el  -------
 -------  General_FizzBuzz.el  -------
 1
 2
@@ -3294,7 +2825,7 @@ gcpue5hp
   5  6 13  9  6 11  7  7 14  6
   8 13  5  8 11  7  9 13  8  9
 5402
--------  Golden_ratio+Convergence.el  -------
+-------  Golden_ratio@Convergence.el  -------
 Iterations: 13
 Result: 1.6180327869
 Error: -0.0000012019
@@ -3319,6 +2850,11 @@ Error: -0.0000012019
 20000000211
 855935016215
 44580503598539
+-------  Gosper's_hack.el  -------
+1: 2 4 8 16 32 64 128 256 512 1024 
+3: 5 6 9 10 12 17 18 20 24 33 
+7: 11 13 14 19 21 22 25 26 28 35 
+15: 23 27 29 30 39 43 45 46 51 53 
 -------  Gradient_descent.el  -------
 0.1076268438 -1.2232596637
 -------  Gray_code.el  -------
@@ -3365,21 +2901,34 @@ Error: -0.0000012019
 1693 
 -------  Greatest_subsequential_sum.el  -------
 Max sum = 15
-3 5 6 -2 -1 4 -------  Greyscale_bars+Display.el  -------
+3 5 6 -2 -1 4 -------  Greyscale_bars@Display.el  -------
 -------  Guess_the_number.el  -------
--------  Guess_the_number+With_feedback_(player).el  -------
--------  Guess_the_number+With_feedback.el  -------
+-------  Guess_the_number@With_feedback_(player).el  -------
+-------  Guess_the_number@With_feedback.el  -------
 -------  Hailstone_sequence.el  -------
 27 has length 112 with 27 82 41 124 ... 8 4 2 1 
 77031 has length 351
 -------  Halt_and_catch_fire.el  -------
-*** ERROR: index out of bounds
+*** ERROR: index out of bounds (1)
 ** LINE: 2 **
 -------  Hamming_numbers.el  -------
 1 2 3 4 5 6 8 9 10 12 15 16 18 20 24 25 27 30 32 36 
 2125764000
 -------  Happy_numbers.el  -------
-1 7 10 13 19 23 28 31 -------  Harmonic_series.el  -------
+1 7 10 13 19 23 28 31 -------  Happy_primes.el  -------
+7 13 19 23 31 79 97 103 109 139 167 193 239 263 293 313 331 367 379 383 397 409 487 563 617 653 673 683 709 739 761 863 881 907 937 1009 1033 1039 1093 1151 1277 1303 1373 1427 1447 1481 1487 1511 1607 1663 
+
+1/3  3 10
+1/4  140 973
+1/5  260 1760
+1/6  396 2620
+1/7  1253 8571
+1/8  2960 19398
+1/9  6984 45385
+1/10  18140 123669
+1/11  34848 235265
+1/12  72816 500245
+-------  Harmonic_series.el  -------
 The first twenty harmonic numbers are:
  1  1
  2 1.50000
@@ -3416,11 +2965,18 @@ The first harmonic number greater than:
 -------  Harshad_or_Niven_series.el  -------
 1 2 3 4 5 6 7 8 9 10 12 18 20 21 24 27 30 36 40 42 
 1002
+-------  Hash_from_two_arrays.el  -------
+555-1234
+555-2323
+555-6666
 -------  Haversine_formula.el  -------
 2886.44
--------  Hello_world+Graphical.el  -------
--------  Hello_world+Newline_omission.el  -------
-Goodbye, World!-------  Hello_world+Text.el  -------
+-------  Held–Karp_algorithm.el  -------
+Tour: [ 0 2 3 1 0 ]
+Cost: 21
+-------  Hello_world@Graphical.el  -------
+-------  Hello_world@Newline_omission.el  -------
+Goodbye, World!-------  Hello_world@Text.el  -------
 Hello world!
 -------  Here_document.el  -------
 This is a 'raw' string with the following properties:
@@ -3461,6 +3017,9 @@ Number of triangles: 517
 8 facade 16435934
 2 words
 
+-------  Hierholzer's_algorithm.el  -------
+1 => 2 => 3 => 1
+1 => 7 => 5 => 6 => 1 => 2 => 3 => 4 => 5 => 3 => 1
 -------  Hilbert_curve.el  -------
 -------  Hofstadter_Figure-Figure_sequences.el  -------
 R(1 .. 10): 1 3 7 12 18 26 35 45 56 69 
@@ -3491,10 +3050,104 @@ max between 2^18 and 2^19 was 0.5346
 max between 2^19 and 2^20 was 0.5338
 winning number 1489
 -------  Honaker_primes.el  -------
-(32 131) (56 263) (88 457) (175 1039) (176 1049) (182 1091) (212 1301) (218 1361) (227 1433) (248 1571) (293 1913) (295 1933) (323 2141) (331 2221) (338 2273) (362 2441) (377 2591) (386 2663) (394 2707) (397 2719) (398 2729) (409 2803) (439 3067) (446 3137) (457 3229) (481 3433) (499 3559) (508 3631) (563 4091) (571 4153) (595 4357) (599 4397) (635 4703) (637 4723) (655 4903) (671 5009) (728 5507) (751 5701) (752 5711) (755 5741) (761 5801) (767 5843) (779 5927) (820 6301) (821 6311) (826 6343) (827 6353) (847 6553) (848 6563) (857 6653) -------  Horizontal_sundial_calculations.el  -------
+(32 131) (56 263) (88 457) (175 1039) (176 1049) (182 1091) (212 1301) (218 1361) (227 1433) (248 1571) (293 1913) (295 1933) (323 2141) (331 2221) (338 2273) (362 2441) (377 2591) (386 2663) (394 2707) (397 2719) (398 2729) (409 2803) (439 3067) (446 3137) (457 3229) (481 3433) (499 3559) (508 3631) (563 4091) (571 4153) (595 4357) (599 4397) (635 4703) (637 4723) (655 4903) (671 5009) (728 5507) (751 5701) (752 5711) (755 5741) (761 5801) (767 5843) (779 5927) (820 6301) (821 6311) (826 6343) (827 6353) (847 6553) (848 6563) (857 6653) -------  Honeycombs.el  -------
+-------  Horizontal_sundial_calculations.el  -------
 -------  Horner's_rule_for_polynomial_evaluation.el  -------
 128
+-------  Horse_racing.el  -------
+Race 4
+
+Pos  Horse  Weight  Dist Gender
+  1   I      8.11     0  filly
+  2   J      8.11     2  filly
+  3   A      9.00     1  colt
+  4   F      9.00   0.5  colt
+  5   H      9.00   0.5  colt
+  6   E      9.00   0.5  colt
+  7   D      8.11     1  filly
+  7   B      8.11     0  filly
+  9   C      9.00     1  colt
+ 10   G      9.00   0.5  colt
+
+Time:   1 minute 35.4 seconds
+-------  Hourglass_puzzle.el  -------
+Turn over both hour glasses at the same time
+and continue flipping them each when they 
+individually run down until the 4 hour glass
+is flipped 4 times, wherupon the 7 hour glass
+is immediately placed on its side with 5 hours
+of sand in it.
+You can measure 9 hours by flipping the 4 hour
+glass once, then flipping the remaining sand in
+the 7 hour glass when the 4 hour glass ends.
 -------  Humble_numbers.el  -------
+-------  Hunt_the_Wumpus.el  -------
+-------  I'm_a_software_engineer,_get_me_out_of_here.el  -------
+Shortest ways to safe points:
+11:11 -> 10:11 -> 7:11 -> 6:12 -> 0:12
+11:11 -> 10:11 -> 7:11 -> 7:12 -> 1:6
+11:11 -> 10:11 -> 10:14 -> 12:16 -> 16:20
+11:11 -> 10:11 -> 13:11 -> 17:15 -> 20:18
+11:11 -> 10:11 -> 13:8 -> 14:7 -> 18:3
+11:11 -> 10:11 -> 7:8 -> 4:8 -> 1:8
+11:11 -> 10:11 -> 7:8 -> 4:11 -> 1:14
+11:11 -> 10:11 -> 7:8 -> 7:5 -> 2:5
+11:11 -> 10:11 -> 7:8 -> 7:5 -> 12:0
+11:11 -> 10:11 -> 7:8 -> 4:5 -> 3:4
+11:11 -> 11:12 -> 8:15 -> 9:16 -> 2:16
+11:11 -> 11:12 -> 11:15 -> 11:17 -> 7:21
+11:11 -> 11:12 -> 11:15 -> 11:17 -> 15:21
+11:11 -> 11:12 -> 14:15 -> 16:15 -> 19:18
+11:11 -> 11:12 -> 14:12 -> 16:12 -> 20:16
+11:11 -> 11:12 -> 14:9 -> 18:13 -> 22:13
+11:11 -> 11:12 -> 14:9 -> 18:13 -> 22:9
+11:11 -> 11:12 -> 14:9 -> 18:5 -> 19:4
+11:11 -> 11:12 -> 11:9 -> 9:9 -> 3:3
+11:11 -> 11:12 -> 8:9 -> 2:9 -> 1:9
+11:11 -> 11:12 -> 8:9 -> 2:15 -> 1:15
+11:11 -> 11:12 -> 8:9 -> 2:15 -> 1:16
+11:11 -> 11:12 -> 8:9 -> 14:3 -> 11:0
+11:11 -> 11:12 -> 8:9 -> 8:3 -> 8:1
+11:11 -> 11:12 -> 8:9 -> 8:3 -> 6:1
+11:11 -> 12:11 -> 9:14 -> 6:17 -> 4:19
+11:11 -> 12:11 -> 12:14 -> 8:18 -> 3:18
+11:11 -> 12:11 -> 12:14 -> 16:18 -> 13:21
+11:11 -> 12:11 -> 12:14 -> 16:18 -> 16:21
+11:11 -> 12:11 -> 15:8 -> 18:11 -> 22:11
+11:11 -> 12:11 -> 15:8 -> 15:5 -> 18:2
+11:11 -> 12:11 -> 12:8 -> 16:4 -> 16:1
+11:11 -> 12:11 -> 12:8 -> 16:4 -> 13:1
+11:11 -> 12:11 -> 12:8 -> 12:4 -> 15:1
+11:11 -> 12:11 -> 12:8 -> 12:4 -> 9:1
+11:11 -> 12:11 -> 12:8 -> 8:4 -> 6:2
+11:11 -> 12:10 -> 13:10 -> 18:15 -> 21:15
+11:11 -> 12:10 -> 13:10 -> 13:5 -> 13:0
+11:11 -> 10:10 -> 8:10 -> 5:13 -> 1:13
+11:11 -> 10:10 -> 8:10 -> 5:7 -> 2:4
+40 different safe points can be reached with 4 steps (only one possible route is displayed in each case)
+
+One of the shortest routes between 21/11 and 1/11:
+21:11 -> 20:11 -> 19:10 -> 14:10 -> 10:10 -> 8:8 -> 4:8 -> 1:11
+
+One of the shortest routes between 1/11 and 21/11:
+1:11 -> 2:10 -> 5:13 -> 9:9 -> 15:3 -> 20:8 -> 20:10 -> 21:11
+
+The longest shortest routes between any to points is 9
+These points can be connected with this distance:
+1:11 -> 1:12 -> 4:12 -> 6:12 -> 12:18 -> 13:19 -> 13:20 -> 17:16 -> 18:16 -> 20:14
+
+2:9 -> 1:10 -> 4:10 -> 6:12 -> 12:18 -> 13:19 -> 13:20 -> 17:16 -> 18:16 -> 20:14
+
+2:13 -> 2:15 -> 3:15 -> 6:12 -> 12:18 -> 13:19 -> 13:20 -> 17:16 -> 18:16 -> 20:14
+
+7:3 -> 6:3 -> 3:6 -> 6:9 -> 8:9 -> 14:15 -> 16:17 -> 17:16 -> 18:16 -> 20:14
+
+10:21 -> 11:20 -> 15:16 -> 16:15 -> 16:12 -> 16:8 -> 15:8 -> 15:5 -> 15:2 -> 14:2
+
+11:21 -> 12:20 -> 15:17 -> 15:15 -> 16:14 -> 13:11 -> 17:7 -> 15:5 -> 15:2 -> 14:2
+
+12:21 -> 14:19 -> 16:19 -> 13:16 -> 13:13 -> 13:11 -> 17:7 -> 15:5 -> 15:2 -> 14:2
+
 -------  IBAN.el  -------
 GB82 WEST 1234 5698 7654 32 is valid
 GB82WEST12345698765432 is valid
@@ -3503,7 +3156,8 @@ GB82 TEST 1234 5698 7654 32 is not valid
 GB82 WEST 1243 5698 7654 32 is not valid
 GB82 west 1243 5698 7654 32 is not valid
 -------  Iccanobif_primes.el  -------
-2 3 5 31 43 773 7951 64901 52057 393121 -------  Identity_matrix.el  -------
+2 3 5 31 43 773 7951 64901 52057 393121 
+-------  Identity_matrix.el  -------
 [ [ 1 0 0 0 ] [ 0 1 0 0 ] [ 0 0 1 0 ] [ 0 0 0 1 ] ]
 -------  Idiomatically_determine_all_the_characters_that_can_be_used_for_symbols.el  -------
 First character:
@@ -3511,10 +3165,12 @@ _ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
 Not as the first character additionally:
 0123456789-------  Idiomatically_determine_all_the_lowercase_and_uppercase_letters.el  -------
 abcdefghijklmnopqrstuvwxyz
-ABCDEFGHIJKLMNOPQRSTUVWXYZ-------  Idoneal_numbers.el  -------
- 1 2 3 4 5 6 7 8 9 10 12 13 15 16 18 21 22 24 25 28 30 33 37 40 42 45 48 57 58 60 70 72 78 85 88 93 102 105 112 120 130 133 165 168 177 190 210 232 240 253 273 280 312 330 345 357 385 408 462 520 760 840 1320 1365 1848-------  Image_noise.el  -------
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+-------  Idoneal_numbers.el  -------
+ 1 2 3 4 5 6 7 8 9 10 12 13 15 16 18 21 22 24 25 28 30 33 37 40 42 45 48 57 58 60 70 72 78 85 88 93 102 105 112 120 130 133 165 168 177 190 210 232 240 253 273 280 312 330 345 357 385 408 462 520 760 840 1320 1365 1848
+-------  Image_noise.el  -------
 -------  Implicit_type_conversion.el  -------
-32
+5
 -------  Inconsummate_numbers_in_base_10.el  -------
 62 63 65 75 84 95 161 173 195 216 261 266 272 276 326 371 372 377 381 383 386 387 395 411 416 422 426 431 432 438 441 443 461 466 471 476 482 483 486 488 491 492 493 494 497 498 516 521 522 527 
 
@@ -3549,11 +3205,11 @@ ABCDEFGHIJKLMNOPQRSTUVWXYZ-------  Idoneal_numbers.el  -------
 inf
 inf
 -------  Input_loop.el  -------
--------  Input+Output_for_lines_of_text.el  -------
+-------  Input@Output_for_lines_of_text.el  -------
 hello
 hello world
 Pack my Box with 5 dozen liquor jugs
--------  Input+Output_for_pairs_of_numbers.el  -------
+-------  Input@Output_for_pairs_of_numbers.el  -------
 3
 30
 2
@@ -3571,31 +3227,22 @@ Pack my Box with 5 dozen liquor jugs
 3
 4
 5
-6
-7
-8
-9
-10
 .
 .
-9007199254740983
-9007199254740984
-9007199254740985
-9007199254740986
 9007199254740987
 9007199254740988
 9007199254740989
 9007199254740990
 9007199254740991
-9e+15
+9007199254740992
 -------  Inventory_sequence.el  -------
 0 1 1 0 2 2 2 0 3 2 4 1 1 0 4 4 4 1 4 0 5 5 4 1 6 2 1 0 6 7 5 1 6 3 3 1 0 7 9 5 3 6 4 4 2 0 8 9 6 4 9 4 5 2 1 3 0 9 10 7 5 10 6 6 3 1 4 2 0 10 11 8 6 11 6 9 3 2 5 3 2 0 11 11 10 8 11 7 9 4 3 6 4 5 0 12 11 10 9 13 
-24256 1001
+24255 1001
 -------  ISBN13_check_digit.el  -------
-978-0596528126 is a valid ISBN
-978-0596528120 is not a valid ISBN
-978-1788399081 is a valid ISBN
-978-1788399083 is not a valid ISBN
+978-0596528126: good
+978-0596528120: bad
+978-1788399081: good
+978-1788399083: bad
 -------  Isograms_and_heterograms.el  -------
 aaa
 iii
@@ -3625,6 +3272,28 @@ Integer square roots of 7^n
 21 747359260
 -------  Iterated_digits_squaring.el  -------
 85744333
+-------  Jaccard_index.el  -------
+J(A, A) ➜ 1
+J(A, B) ➜ 0	J(B, A) ➜ 0
+J(A, C) ➜ 0	J(C, A) ➜ 0
+J(A, D) ➜ 0	J(D, A) ➜ 0
+J(A, E) ➜ 0	J(E, A) ➜ 0
+J(A, F) ➜ 0	J(F, A) ➜ 0
+J(B, B) ➜ 1
+J(B, C) ➜ 0.43	J(C, B) ➜ 0.43
+J(B, D) ➜ 0.25	J(D, B) ➜ 0.25
+J(B, E) ➜ 0.50	J(E, B) ➜ 0.50
+J(B, F) ➜ 0	J(F, B) ➜ 0
+J(C, C) ➜ 1
+J(C, D) ➜ 0	J(D, C) ➜ 0
+J(C, E) ➜ 0.50	J(E, C) ➜ 0.50
+J(C, F) ➜ 0	J(F, C) ➜ 0
+J(D, D) ➜ 1
+J(D, E) ➜ 0.12	J(E, D) ➜ 0.12
+J(D, F) ➜ 0.20	J(F, D) ➜ 0.20
+J(E, E) ➜ 1
+J(E, F) ➜ 0	J(F, E) ➜ 0
+J(F, F) ➜ 1
 -------  Jacobi_symbol.el  -------
  n/a  0  1  2  3  4  5  6  7  8  9
  ---------------------------------
@@ -3637,6 +3306,18 @@ Integer square roots of 7^n
  13   0  1 -1  1  1 -1 -1 -1 -1  1
  15   0  1  1  0  1  0  0 -1  1  0
  17   0  1  1 -1  1 -1 -1 -1  1  1
+-------  Jacobsthal_numbers.el  -------
+First 30 Jacobsthal numbers:
+0 1 1 3 5 11 21 43 85 171 341 683 1365 2731 5461 10923 21845 43691 87381 174763 349525 699051 1398101 2796203 5592405 11184811 22369621 44739243 89478485 178956971 
+
+First 30 Jacobsthal-Lucas numbers:
+2 1 5 7 17 31 65 127 257 511 1025 2047 4097 8191 16385 32767 65537 131071 262145 524287 1048577 2097151 4194305 8388607 16777217 33554431 67108865 134217727 268435457 536870911 
+
+First 20 Jacobsthal oblong numbers:
+0 1 3 15 55 231 903 3655 14535 58311 232903 932295 3727815 14913991 59650503 238612935 954429895 3817763271 15270965703 61084037575 
+
+First 10 Jacobsthal prime numbers:
+3 5 11 43 683 2731 43691 174763 2796203 715827883 
 -------  Jaro_similarity.el  -------
 0.94
 0.68
@@ -3667,14 +3348,9 @@ wich ->
 -------  Jewels_and_stones.el  -------
 3
 0
+2
 -------  Jordan-Pólya_numbers.el  -------
-    1    2    4    6    8   12   16   24
-   32   36   48   64   72   96  120  128
-  144  192  216  240  256  288  384  432
-  480  512  576  720  768  864  960 1024
- 1152 1296 1440 1536 1728 1920 2048 2304
- 2592 2880 3072 3456 3840 4096 4320 4608
- 5040 5184
+1 2 4 6 8 12 16 24 32 36 48 64 72 96 120 128 144 192 216 240 256 288 384 432 480 512 576 720 768 864 960 1024 1152 1296 1440 1536 1728 1920 2048 2304 2592 2880 3072 3456 3840 4096 4320 4608 5040 5184 
 The largest Jordan-Polya number before 100 million: 99532800
 -------  JortSort.el  -------
 1
@@ -3683,16 +3359,47 @@ The largest Jordan-Polya number before 100 million: 99532800
 prisoners: 41
 step size: 3
 final survivor: 30
+-------  Juggler_sequence.el  -------
+ n l[n]           h[n]   i[n]
+-----------------------------
+ 20  3              20    0
+ 21  9             140    4
+ 22  3              22    0
+ 23  9             110    1
+ 24  3              24    0
+ 25 11           52214    3
+ 26  6              36    3
+ 27  6             140    1
+ 28  6              36    3
+ 29  9             156    1
+ 30  6              36    3
+ 31  6             172    1
+ 32  6              36    3
+ 33  8            2598    2
+ 34  6              36    3
+ 35  8            2978    2
+ 36  3              36    0
+ 37 17  24906114455136    8
+ 38  3              38    0
+ 39 14          233046    3
 -------  Julia_set.el  -------
+-------  K-means++_clustering.el  -------
 -------  Kaprekar_numbers.el  -------
-1 9 45 55 99 297 703 999 2223 2728 4879 4950 5050 5292 7272 7777 9999 -------  Keyboard_input+Keypress_check.el  -------
--------  Keyboard_input+Obtain_a_Y_or_N_response.el  -------
+1 9 45 55 99 297 703 999 2223 2728 4879 4950 5050 5292 7272 7777 9999 -------  Kempner_numbers.el  -------
+1 2 3 4 5 3 7 4 6 5 11 4 13 7 5 6 17 6 19 5 7 11 23 4 10 13 9 7 29 5 31 8 11 17 7 6 37 19 13 5 41 7 43 11 6 23 47 6 14 10 
+-------  Kernighans_large_earthquake_problem.el  -------
+8/27/1883    Krakatoa            8.8
+5/18/1980    MountStHelens       7.6
+1/25/4567    EdgeCase3           6.1
+-------  Keyboard_input@Keypress_check.el  -------
+-------  Keyboard_input@Obtain_a_Y_or_N_response.el  -------
 -------  Klarner-Rado_sequence.el  -------
 1 3 4 7 9 10 13 15 19 21 22 27 28 31 39 40 43 45 46 55 57 58 63 64 67 79 81 82 85 87 91 93 94 111 115 117 118 121 127 129 130 135 136 139 159 163 165 166 171 172 175 183 187 189 190 193 202 223 231 235 237 238 243 244 247 255 256 259 261 262 271 273 274 279 280 283 319 327 331 333 334 343 345 346 351 352 355 364 367 375 379 381 382 387 388 391 405 406 409 418 
 
-8487 157653 2911581 54381285 -------  Knapsack_problem+0-1.el  -------
+8487 157653 2911581 54381285 
+-------  Knapsack_problem@0-1.el  -------
 weight: 396 value: 1030
-items: map compass water sandwich glucose banana suntan cream waterproof trousers waterproof overclothes note-case sunglasses socks-------  Knapsack_problem+Bounded.el  -------
+items: map compass water sandwich glucose banana suntan cream waterproof trousers waterproof overclothes note-case sunglasses socks-------  Knapsack_problem@Bounded.el  -------
 weight: 396 value: 1010
 items:
   sunglasses
@@ -3709,13 +3416,13 @@ items:
   note-case
   map
   water
--------  Knapsack_problem+Continuous.el  -------
+-------  Knapsack_problem@Continuous.el  -------
 3 kg salami
 3.60 kg ham
 2.50 kg brawn
 2.40 kg greaves
 3.50 kg welt
--------  Knapsack_problem+Unbounded.el  -------
+-------  Knapsack_problem@Unbounded.el  -------
 9 panacea
 11 gold
 -------  Knight's_tour.el  -------
@@ -3743,11 +3450,17 @@ First 30 members of the sequence generated by [ 1 3 2 1 ]:
 Possible Kolakoski sequence? No
 
 -------  Kosaraju.el  -------
-[ 0 0 0 3 3 5 5 7 ]
+0 0 0 3 3 5 5 7 
 -------  Kronecker_product_based_fractals.el  -------
 -------  Kronecker_product.el  -------
 [ [ 0 5 0 10 ] [ 6 7 12 14 ] [ 0 15 0 20 ] [ 18 21 24 28 ] ]
 [ [ 0 0 0 0 1 1 1 1 0 0 0 0 ] [ 0 0 0 0 1 0 0 1 0 0 0 0 ] [ 0 0 0 0 1 1 1 1 0 0 0 0 ] [ 1 1 1 1 1 1 1 1 1 1 1 1 ] [ 1 0 0 1 1 0 0 1 1 0 0 1 ] [ 1 1 1 1 1 1 1 1 1 1 1 1 ] [ 0 0 0 0 1 1 1 1 0 0 0 0 ] [ 0 0 0 0 1 0 0 1 0 0 0 0 ] [ 0 0 0 0 1 1 1 1 0 0 0 0 ] ]
+-------  L-system.el  -------
+I
+M
+MI
+MIM
+MIMMI
 -------  Lagrange_Interpolation.el  -------
 2.17x^3 - 16x^2 + 35.83x - 21
 -------  Lah_numbers.el  -------
@@ -3777,6 +3490,8 @@ Possible Kolakoski sequence? No
 906609
 -------  Largest_prime_factor.el  -------
 6857
+3
+13
 -------  Largest_product_in_a_grid.el  -------
 51267216
 -------  Largest_proper_divisor_of_n.el  -------
@@ -3794,7 +3509,8 @@ Possible Kolakoski sequence? No
 2012-11-30
 2012-12-28
 -------  Last_letter-first_letter.el  -------
-machamp petilil landorus scrafty yamask kricketune emboar registeel loudred darmanitan nosepass simisear relicanth heatmor rufflet trapinch haxorus seaking girafarig gabite exeggcute emolga audino -------  Last_list_item.el  -------
+machamp petilil landorus scrafty yamask kricketune emboar registeel loudred darmanitan nosepass simisear relicanth heatmor rufflet trapinch haxorus seaking girafarig gabite exeggcute emolga audino 
+-------  Last_list_item.el  -------
 [ 69 81 243 14 25 49 123 17 ]
 [ 123 81 243 69 25 49 31 ]
 [ 123 81 243 69 49 56 ]
@@ -3820,6 +3536,39 @@ machamp petilil landorus scrafty yamask kricketune emboar registeel loudred darm
 1
 -------  Least_common_multiple.el  -------
 36
+-------  Legendre_prime_counting_function.el  -------
+10^0  0
+10^1  4
+10^2  25
+10^3  168
+10^4  1229
+10^5  9592
+10^6  78498
+10^7  664579
+10^8  5761455
+10^9  50847534
+-------  Lempel–Ziv_complexity.el  -------
+                          String  LZ Substrings
+================================ === =================================================
+              AZSEDRFTGYGUJIJOKB  16 A.Z.S.E.D.R.F.T.G.Y.GU.J.I.JO.K.B
+              ABCABCABCABCABCABC   4 A.B.C.ABCABCABCABCABC
+        111011111001111011111001   6 1.110.1111.100.111101.1111001
+              101001010010111110   5 1.0.100.101001011.1110
+                1001111011000010   6 1.0.01.1110.1100.0010
+                      1010101010   3 1.0.10101010
+                1010101010101010   3 1.0.10101010101010
+          1001111011000010000010   7 1.0.01.1110.1100.0010.000010
+        100111101100001000001010   8 1.0.01.1110.1100.0010.0000101.0
+                0001101001000101   6 0.001.10.100.1000.101
+                         1111111   2 1.111111
+                            0001   2 0.001
+                             010   3 0.1.0
+                               1   1 1
+                                   0 
+            01011010001101110010   7 0.1.011.0100.011011.1001.0
+      ABCDEFGHIJKLMNOPQRSTUVWXYZ  26 A.B.C.D.E.F.G.H.I.J.K.L.M.N.O.P.Q.R.S.T.U.V.W.X.Y.Z
+HELLO WORLD! HELLO WORLD! HELLO WORLD! HELLO WORLD!
+                              ->  11 H.E.L.LO. .W.OR.LD.!. H.ELLO WORLD! HELLO WORLD! HELLO WORLD!
 -------  Length_of_an_arc_between_two_angles.el  -------
 43.63
 -------  Leonardo_numbers.el  -------
@@ -3857,9 +3606,10 @@ z: 1
 -------  Levenshtein_distance.el  -------
 3
 8
--------  Levenshtein_distance+Alignment.el  -------
+-------  Levenshtein_distance@Alignment.el  -------
 r-oset-tacode
 raisethysword
+-------  Line_circle_intersection.el  -------
 -------  Linear_congruential_generator.el  -------
 12345
 1406932606
@@ -3873,24 +3623,23 @@ raisethysword
 2437
 8855
 -------  List_rooted_trees.el  -------
-Number of 5-trees: 9
 ((((()))))
 (((()())))
-((()(())))
+(((())()))
 ((()()()))
-(()((())))
-(()(()()))
+(((()))())
+((()())())
 ((())(()))
-(()()(()))
+((())()())
 (()()()())
--------  Literals+Floating_point.el  -------
+-------  Literals@Floating_point.el  -------
 57.10
 57.10
 57.10
--------  Literals+Integer.el  -------
+-------  Literals@Integer.el  -------
 57
 57
--------  Literals+String.el  -------
+-------  Literals@String.el  -------
 EasyLang
 简
 -------  Logical_operations.el  -------
@@ -3898,6 +3647,12 @@ EasyLang
 0 1 1
 0 1 0
 1 1 0
+-------  Logistic_curve_fitting_in_epidemiology.el  -------
+r = 0.112302, R0 = 3.848279
+-------  Long_literals,_with_continuations.el  -------
+Last revision date:   2021-02-05
+Number of elements:   118
+Last element in list: oganesson
 -------  Long_multiplication.el  -------
 340282366920938463463374607431768211456
 -------  Long_primes.el  -------
@@ -3912,6 +3667,7 @@ The number of long primes up to:
 8000 is 390
 16000 is 716
 32000 is 1300
+-------  Long_stairs.el  -------
 -------  Long_year.el  -------
 2004 2009 2015 2020 2026 2032 2037 2043 2048 2054 2060 2065 2071 2076 2082 2088 2093 2099 -------  Longest_common_prefix.el  -------
 inters
@@ -3967,15 +3723,15 @@ abba
 aA1
 bB2
 cC3
--------  Loops+Break.el  -------
--------  Loops+Do-while.el  -------
+-------  Loops@Break.el  -------
+-------  Loops@Do-while.el  -------
 1
 2
 3
 4
 5
 6
--------  Loops+Downward_for.el  -------
+-------  Loops@Downward_for.el  -------
 10
 9
 8
@@ -3987,7 +3743,7 @@ cC3
 2
 1
 0
--------  Loops+For_with_a_specified_step.el  -------
+-------  Loops@For_with_a_specified_step.el  -------
 0
 2
 4
@@ -4039,13 +3795,13 @@ cC3
 96
 98
 100
--------  Loops+For.el  -------
+-------  Loops@For.el  -------
 *
 **
 ***
 ****
 *****
--------  Loops+Foreach.el  -------
+-------  Loops@Foreach.el  -------
 5
 1
 19
@@ -4054,54 +3810,24 @@ cC3
 1
 14
 7
--------  Loops+Increment_loop_index_within_loop_body.el  -------
+-------  Loops@Increment_loop_index_within_loop_body.el  -------
 n=1 43
 n=2 89
 n=3 179
 n=4 359
 n=5 719
-n=6 1439
-n=7 2879
-n=8 5779
-n=9 11579
-n=10 23159
-n=11 46327
-n=12 92657
-n=13 185323
-n=14 370661
-n=15 741337
-n=16 1482707
-n=17 2965421
-n=18 5930887
-n=19 11861791
-n=20 23723597
-n=21 47447201
-n=22 94894427
-n=23 189788857
-n=24 379577741
-n=25 759155483
-n=26 1518310967
-n=27 3036621941
-n=28 6073243889
-n=29 12146487779
-n=30 24292975649
-n=31 48585951311
-n=32 97171902629
-n=33 194343805267
-n=34 388687610539
-n=35 777375221081
-n=36 1554750442183
-n=37 3109500884389
+.
+.
 n=38 6219001768781
 n=39 12438003537571
 n=40 24876007075181
 n=41 49752014150467
 n=42 99504028301131
--------  Loops+Infinite.el  -------
--------  Loops+N_plus_one_half.el  -------
-1, 2, 3, 4, 5, 6, 7, 8, 9, 10-------  Loops+Nested.el  -------
+-------  Loops@Infinite.el  -------
+-------  Loops@N_plus_one_half.el  -------
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10-------  Loops@Nested.el  -------
 20 at 2,3
--------  Loops+While.el  -------
+-------  Loops@While.el  -------
 1024
 512
 256
@@ -4113,6 +3839,25 @@ n=42 99504028301131
 4
 2
 1
+-------  Loops@Wrong_ranges.el  -------
+[ -2 2 1 ]:  -2 -1 0 1 2 
+[ 2 2 0 ]:  infinite loop
+[ -2 2 -1 ]:  
+[ -2 2 10 ]:  -2 
+[ 2 -2 1 ]:  
+[ 2 2 1 ]:  2 
+[ 2 2 -1 ]:  2 
+[ 2 2 0 ]:  infinite loop
+[ 0 0 0 ]:  infinite loop
+-------  LU_decomposition.el  -------
+[ [ 1 0 0 ] [ 0.50 1 0 ] [ 0.50 -1 1 ] ]
+[ [ 2 4 7 ] [ 0 1 1.50 ] [ 0 0 -2 ] ]
+[ [ 0 1 0 ] [ 1 0 0 ] [ 0 0 1 ] ]
+
+[ [ 1 0 0 0 ] [ 0.27 1 0 0 ] [ 0.09 0.29 1 0 ] [ 0.18 0.23 0.00 1 ] ]
+[ [ 11 9 24 2 ] [ 0 14.55 11.45 0.45 ] [ 0 0 -3.47 5.69 ] [ 0 0 0 0.51 ] ]
+[ [ 1 0 0 0 ] [ 0 0 1 0 ] [ 0 1 0 0 ] [ 0 0 0 1 ] ]
+
 -------  Lucas-Lehmer_test.el  -------
 Mersenne Primes: M3 M5 M7 M13 M17 M19 -------  Ludic_numbers.el  -------
 1 2 3 5 7 11 13 17 23 25 29 37 41 43 47 53 61 67 71 77 83 89 91 97 107 
@@ -4198,7 +3943,14 @@ count by number of digits:
 381654729 is minimal pandigital in 1..9
 3816547290 is minimal pandigital in 0..9
 -------  Magic_squares_of_doubly_even_order.el  -------
-[ [  1 63 62  4  5 59 58  8 ] [ 56 10 11 53 52 14 15 49 ] [ 48 18 19 45 44 22 23 41 ] [ 25 39 38 28 29 35 34 32 ] [ 33 31 30 36 37 27 26 40 ] [ 24 42 43 21 20 46 47 17 ] [ 16 50 51 13 12 54 55  9 ] [ 57  7  6 60 61  3  2 64 ] ]
+[  1 63 62  4  5 59 58  8 ]
+[ 56 10 11 53 52 14 15 49 ]
+[ 48 18 19 45 44 22 23 41 ]
+[ 25 39 38 28 29 35 34 32 ]
+[ 33 31 30 36 37 27 26 40 ]
+[ 24 42 43 21 20 46 47 17 ]
+[ 16 50 51 13 12 54 55  9 ]
+[ 57  7  6 60 61  3  2 64 ]
 -------  Magic_squares_of_odd_order.el  -------
   2 23 19 15  6
  14 10  1 22 18
@@ -4206,7 +3958,12 @@ count by number of digits:
   8  4 25 16 12
  20 11  7  3 24
 -------  Magic_squares_of_singly_even_order.el  -------
-[ [ 35  1  6 26 19 24 ] [  3 32  7 21 23 25 ] [ 31  9  2 22 27 20 ] [  8 28 33 17 10 15 ] [ 30  5 34 12 14 16 ] [  4 36 29 13 18 11 ] ]
+[ 35  1  6 26 19 24 ]
+[  3 32  7 21 23 25 ]
+[ 31  9  2 22 27 20 ]
+[  8 28 33 17 10 15 ]
+[ 30  5 34 12 14 16 ]
+[  4 36 29 13 18 11 ]
 -------  Magnanimous_numbers.el  -------
 1-45: 0 1 2 3 4 5 6 7 8 9 11 12 14 16 20 21 23 25 29 30 32 34 38 41 43 47 49 50 52 56 58 61 65 67 70 74 76 83 85 89 92 94 98 101 110
 241-250: 17992 19972 20209 20261 20861 22061 22201 22801 22885 24407
@@ -4224,6 +3981,8 @@ count by number of digits:
 8 -> -0.20
 9 -> -0.10
 10 -> 0
+-------  Marching_squares.el  -------
+x: 3 y: -3 path: SSESENNNWW
 -------  Mastermind.el  -------
 -------  Matrix_chain_multiplication.el  -------
 Dims  : [ 5 6 3 1 ]
@@ -4304,21 +4063,24 @@ Cost  : 1773740
 -------  Maze_solving.el  -------
 -------  McNuggets_problem.el  -------
 43
+-------  MD4.el  -------
+a52bcfc6a0d0d300cdc5ddbfbefe478b
 -------  MD5.el  -------
 e38ca1d920c4b8b8d3946b2c72f01680
--------  MD5+Implementation.el  -------
+-------  MD5@Implementation.el  -------
+d41d8cd98f00b204e9800998ecf8427e
 0cc175b9c0f1b6a831c399e269772661
 900150983cd24fb0d6963f7d28e17f72
 f96b697d7cb7938d525a2f31aaf161d0
 c3fcd3d76192e4007dfb496cca67e13b
 d174ab98d277d9f5a5611c2c9f419d9f
 57edf4a22be3c955ac49da2e2107b67a
--------  Meissel–Mertens_constant.el  -------
+-------  Meissel-Mertens_constant.el  -------
 mm = 0.26149724673
 -------  Merge_and_aggregate_datasets.el  -------
 PATIENT_ID | LASTNAME | LAST_VISIT | SCORE_SUM | SCORE_AVG
  1001      | Hopper   | 2020-11-19 | 17.40     | 5.80      
- 2002      | Gosling  | 2020-10-08 | 6.80      | 3.40      
+ 2002      | Gosling  | 2020-10-08 |           |           
  3003      | Kemeny   | 2020-11-12 |           |           
  4004      | Wirth    | 2020-11-05 | 15.40     | 7.70      
  5005      | Kurtz    |            |           |           
@@ -4368,6 +4130,7 @@ error
 error
 error
 error
+-------  Miller-Rabin_primality_test.el  -------
 -------  Mind_boggling_card_trick.el  -------
 -------  Minesweeper_game.el  -------
 -------  Minimum_multiple_of_m_where_digital_sum_equals_m.el  -------
@@ -4386,6 +4149,10 @@ error
 [ 5 22 12 21 38 ]
 -------  Minimum_primes.el  -------
 [ 43 101 79 59 67 ]
+-------  Minkowski_question-mark_function.el  -------
+1.6666666666696983 1.6666666666666667
+-0.5657414540893351 -0.5657414540893352
+0.7182818280000092 0.1213141516171819
 -------  Möbius_function.el  -------
   1 -1 -1  0 -1  1 -1  0  0  1
  -1  0 -1  1  1  0 -1  0 -1  0
@@ -4398,6 +4165,8 @@ error
   0  1 -1  0  1  1  1  0 -1  0
   1  0  1  1  1  0 -1  0  0  0
 -------  Modified_random_distribution.el  -------
+-------  Modular_exponentiation.el  -------
+1527229998585248450016808958343740453059
 -------  Modular_inverse.el  -------
 1969
 -------  Monte_Carlo_methods.el  -------
@@ -4417,6 +4186,18 @@ s ...
 0 1 0 1 0 1 
 1 0 1 0 1 0 
 0 1 0 1 0 1 
+-------  Moser's_circle_problem.el  -------
+Direct calculation of a 4th order equation:
+1 2 4 8 16 31 57 99 163 256 386 562 794 1093 1471 1941 2517 3214 4048 5036 
+
+Using a binomial sums:
+1 2 4 8 16 31 57 99 163 256 386 562 794 1093 1471 1941 2517 3214 4048 5036 
+
+Using a binomial transform:
+1 2 4 8 16 31 57 99 163 256 386 562 794 1093 1471 1941 2517 3214 4048 5036 
+
+Partial sums of Pascals triangle:
+1 2 4 8 16 31 57 99 163 256 386 562 794 1093 1471 1941 2517 3214 4048 5036 
 -------  Motzkin_numbers.el  -------
 1
 1
@@ -4462,6 +4243,18 @@ s ...
 broood -> [ 1 17 15 0 0 5 ]
 babanaaa -> [ 1 1 1 1 13 1 0 0 ]
 hiphophiphop -> [ 7 8 15 2 15 2 2 3 2 2 3 2 ]
+-------  Multi-base_primes.el  -------
+1 digit(s)  max: 34
+2 [ 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 ]
+2 digit(s)  max: 18
+21 [ 3 5 6 8 9 11 14 15 18 20 21 23 26 29 30 33 35 36 ]
+3 digit(s)  max: 18
+131 [ 4 5 7 8 9 10 12 14 15 18 19 20 23 25 27 29 30 34 ]
+551 [ 6 7 11 13 14 15 16 17 19 21 22 24 25 26 30 32 35 36 ]
+737 [ 8 9 11 12 13 15 16 17 19 22 23 24 25 26 29 30 31 36 ]
+4 digit(s)  max: 19
+1727 [ 8 9 11 12 13 15 16 17 19 20 22 23 24 26 27 29 31 33 36 ]
+5347 [ 8 9 10 11 12 13 16 18 19 22 24 25 26 30 31 32 33 34 36 ]
 -------  Multifactorial.el  -------
 degree 1: 1 2 6 24 120 720 5040 40320 362880 3628800
 degree 2: 1 2 3 8 15 48 105 384 945 3840
@@ -4519,38 +4312,34 @@ Solution 1
 250 to 265:
 250th 251st 252nd 253rd 254th 255th 256th 257th 258th 259th 260th 261st 262nd 263rd 264th 265th 
 1000 to 1025:
-1000th 1001st 1002nd 1003rd 1004th 1005th 1006th 1007th 1008th 1009th 1010th 1011th 1012th 1013th 1014th 1015th 1016th 1017th 1018th 1019th 1020th 1021st 1022nd 1023rd 1024th 1025th -------  Narcissistic_decimal_number.el  -------
-0
-1
-2
-3
-4
-5
-6
-7
-8
-9
-153
-370
-371
-407
-1634
-8208
-9474
-54748
-92727
-93084
-548834
-1741725
-4210818
-9800817
-9926315
+1000th 1001st 1002nd 1003rd 1004th 1005th 1006th 1007th 1008th 1009th 1010th 1011th 1012th 1013th 1014th 1015th 1016th 1017th 1018th 1019th 1020th 1021st 1022nd 1023rd 1024th 1025th -------  Names_to_numbers.el  -------
+none => 0
+one => 1
+twenty-five => 25
+minus one hundred and seventeen => -117
+hundred and fifty-six => 156
+minus two thousand two => -2002
+nine thousand seven hundred one => 9701
+minus six hundred and twenty six thousand eight hundred and fourteen => -626814
+four million seven hundred thousand three hundred and eighty-six => 4700386
+fifty-one billion two hundred and fifty-two million seventeen thousand one hundred eighty-four => 51252017184
+two hundred and one billion twenty-one million two thousand and one => 201021002001
+minus three hundred trillion nine million four hundred and one thousand and thirty-one => -300000009401031
+one quadrillion and one => 1000000000000001
+minus nine quadrillion one hundred thirty-seven => -9000000000000137
+-------  Narcissistic_decimal_number.el  -------
+0 1 2 3 4 5 6 7 8 9 153 370 371 407 1634 8208 9474 54748 92727 93084 548834 1741725 4210818 9800817 9926315 
 -------  Negative_base_numbers.el  -------
 10 -> 11110_-2 -> 10
 146 -> 21102_-3 -> 146
 15 -> 195_-10 -> 15
 -------  Neighbour_primes.el  -------
-3 5 7 13 19 67 149 179 229 239 241 269 277 307 313 397 401 419 439 487 -------  Next_highest_int_from_digits.el  -------
+3 5 7 13 19 67 149 179 229 239 241 269 277 307 313 397 401 419 439 487 -------  Nested_function.el  -------
+1. first
+2. second
+3. third
+
+-------  Next_highest_int_from_digits.el  -------
 0 -> 0
 9 -> 0
 12 -> 21
@@ -4562,17 +4351,58 @@ Solution 1
 -------  Next_special_primes.el  -------
 2 3 5 11 19 29 41 59 79 101 127 157 191 227 269 313 359 409 461 521 587 659 733 809 887 967 1049 -------  Nice_primes.el  -------
 509 547 563 569 587 599 601 617 619 641 653 659 673 677 691 709 727 743 761 797 821 839 853 857 887 907 911 929 941 947 977 983 997 -------  Nim_game.el  -------
+-------  Nimber_arithmetic.el  -------
+ + |   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+--- -------------------------------------------------
+  0 |  0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  1 |  1  0  3  2  5  4  7  6  9  8 11 10 13 12 15 14
+  2 |  2  3  0  1  6  7  4  5 10 11  8  9 14 15 12 13
+  3 |  3  2  1  0  7  6  5  4 11 10  9  8 15 14 13 12
+  4 |  4  5  6  7  0  1  2  3 12 13 14 15  8  9 10 11
+  5 |  5  4  7  6  1  0  3  2 13 12 15 14  9  8 11 10
+  6 |  6  7  4  5  2  3  0  1 14 15 12 13 10 11  8  9
+  7 |  7  6  5  4  3  2  1  0 15 14 13 12 11 10  9  8
+  8 |  8  9 10 11 12 13 14 15  0  1  2  3  4  5  6  7
+  9 |  9  8 11 10 13 12 15 14  1  0  3  2  5  4  7  6
+ 10 | 10 11  8  9 14 15 12 13  2  3  0  1  6  7  4  5
+ 11 | 11 10  9  8 15 14 13 12  3  2  1  0  7  6  5  4
+ 12 | 12 13 14 15  8  9 10 11  4  5  6  7  0  1  2  3
+ 13 | 13 12 15 14  9  8 11 10  5  4  7  6  1  0  3  2
+ 14 | 14 15 12 13 10 11  8  9  6  7  4  5  2  3  0  1
+ 15 | 15 14 13 12 11 10  9  8  7  6  5  4  3  2  1  0
+
+ * |   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+--- -------------------------------------------------
+  0 |  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+  1 |  0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  2 |  0  2  3  1  8 10 11  9 12 14 15 13  4  6  7  5
+  3 |  0  3  1  2 12 15 13 14  4  7  5  6  8 11  9 10
+  4 |  0  4  8 12  6  2 14 10 11 15  3  7 13  9  5  1
+  5 |  0  5 10 15  2  7  8 13  3  6  9 12  1  4 11 14
+  6 |  0  6 11 13 14  8  5  3  7  1 12 10  9 15  2  4
+  7 |  0  7  9 14 10 13  3  4 15  8  6  1  5  2 12 11
+  8 |  0  8 12  4 11  3  7 15 13  5  1  9  6 14 10  2
+  9 |  0  9 14  7 15  6  1  8  5 12 11  2 10  3  4 13
+ 10 |  0 10 15  5  3  9 12  6  1 11 14  4  2  8 13  7
+ 11 |  0 11 13  6  7 12 10  1  9  2  4 15 14  5  3  8
+ 12 |  0 12  4  8 13  1  9  5  6 10  2 14 11  7 15  3
+ 13 |  0 13  6 11  9  4 15  2 14  3  8  5  7 10  1 12
+ 14 |  0 14  7  9  5 11  2 12 10  4 13  3 15  1  8  6
+ 15 |  0 15  5 10  1 14  4 11  2 13  7  8  3 12  6  9
+
+21508 + 42689 = 62149
+21508 * 42689 = 35202
 -------  No_prime_sums.el  -------
 both: [ 1 8 24 25 86 1260 1890 14136 ]
 odd: [ 1 9 15 39 105 731 2805 59535 ]
 even: [ 1 8 24 86 90 780 5940 52350 ]
 -------  Non-continuous_subsequences.el  -------
 [ [ 1 3 ] [ 1 4 ] [ 2 4 ] [ 1 2 4 ] [ 1 3 4 ] ]
--------  Non-decimal_radices+Convert.el  -------
+-------  Non-decimal_radices@Convert.el  -------
 fd
 253
 0
--------  Non-decimal_radices+Input.el  -------
+-------  Non-decimal_radices@Input.el  -------
 1234
 160
 -------  Nonoblock.el  -------
@@ -4610,6 +4440,8 @@ blocks [ 2 3 ] cells 5
 No solution
 -------  Nth_root.el  -------
 3.1416
+1.4142
+3.0000
 -------  Number_names.el  -------
 twelve
 one million forty-eight thousand five hundred seventy-six
@@ -4617,18 +4449,22 @@ nine quintillion
 negative two
 zero
 -------  Number_reversal_game.el  -------
--------  Numbers_divisible_by_their_individual_digits,_but_not_by_the_product_of_their_digits..el  -------
+-------  Numbers_divisible_by_their_individual_digits,_but_not_by_the_product_of_their_digits.el  -------
 22 33 44 48 55 66 77 88 99 122 124 126 155 162 168 184 222 244 248 264 288 324 333 336 366 396 412 424 444 448 488 515 555 636 648 666 728 777 784 824 848 864 888 936 999 -------  Numbers_in_base_10_that_are_palindromic_in_bases_2,_4,_and_16.el  -------
 0 1 3 5 15 17 51 85 255 257 273 771 819 1285 1365 3855 4095 4097 4369 12291 13107 20485 21845 -------  Numbers_in_base-16_representation_that_cannot_be_written_with_decimal_digits.el  -------
 10 11 12 13 14 15 170 171 172 173 174 175 186 187 188 189 190 191 202 203 204 205 206 207 218 219 220 221 222 223 234 235 236 237 238 239 250 251 252 253 254 255 -------  Numbers_k_whose_divisor_sum_is_equal_to_the_divisor_sum_of_k_+_1.el  -------
-14 206 957 1334 1364 1634 2685 2974 4364 14841 18873 19358 20145 24957 33998 36566 42818 56564 64665 74918 79826 79833 84134 92685 109214 111506 116937 122073 138237 147454 161001 162602 166934 174717 190773 193893 201597 230390 274533 289454 347738 383594 416577 422073 430137 438993 440013 445874 455373 484173 -------  Numbers_which_are_not_the_sum_of_distinct_squares.el  -------
+14 206 957 1334 1364 1634 2685 2974 4364 14841 18873 19358 20145 24957 33998 36566 42818 56564 64665 74918 79826 79833 84134 92685 109214 111506 116937 122073 138237 147454 161001 162602 166934 174717 190773 193893 201597 230390 274533 289454 347738 383594 416577 422073 430137 438993 440013 445874 455373 484173 
+-------  Numbers_which_are_not_the_sum_of_distinct_squares.el  -------
 2 3 6 7 8 11 12 15 18 19 22 23 24 27 28 31 32 33 43 44 47 48 60 67 72 76 92 96 108 112 128 -------  Numbers_which_are_the_cube_roots_of_the_product_of_their_proper_divisors.el  -------
-1 24 30 40 42 54 56 66 70 78 88 102 104 105 110 114 128 130 135 136 138 152 154 165 170 174 182 184 186 189 190 195 222 230 231 232 238 246 248 250 255 258 266 273 282 285 286 290 296 297 500th: 2526
+1 24 30 40 42 54 56 66 70 78 88 102 104 105 110 114 128 130 135 136 138 152 154 165 170 174 182 184 186 189 190 195 222 230 231 232 238 246 248 250 255 258 266 273 282 285 286 290 296 297 
+500th: 2526
 5000th: 23118
 50000th: 223735
 -------  Numbers_whose_binary_and_ternary_digit_sums_are_prime.el  -------
-5 6 7 10 11 12 13 17 18 19 21 25 28 31 33 35 36 37 41 47 49 55 59 61 65 67 69 73 79 82 84 87 91 93 97 103 107 109 115 117 121 127 129 131 133 137 143 145 151 155 157 162 167 171 173 179 181 185 191 193 199 -------  Numbers_whose_count_of_divisors_is_prime.el  -------
-4 9 16 25 49 64 81 121 169 289 361 529 625 729 841 961 -------  Numbers_with_equal_rises_and_falls.el  -------
+5 6 7 10 11 12 13 17 18 19 21 25 28 31 33 35 36 37 41 47 49 55 59 61 65 67 69 73 79 82 84 87 91 93 97 103 107 109 115 117 121 127 129 131 133 137 143 145 151 155 157 162 167 171 173 179 181 185 191 193 199 
+-------  Numbers_whose_count_of_divisors_is_prime.el  -------
+4 9 16 25 49 64 81 121 169 289 361 529 625 729 841 961 1024 1369 1681 1849 2209 2401 2809 3481 3721 4096 4489 5041 5329 6241 6889 7921 9409 10201 10609 11449 11881 12769 14641 15625 16129 17161 18769 19321 22201 22801 24649 26569 27889 28561 29929 32041 32761 36481 37249 38809 39601 44521 49729 51529 52441 54289 57121 58081 59049 63001 65536 66049 69169 72361 73441 76729 78961 80089 83521 85849 94249 96721 97969 
+-------  Numbers_with_equal_rises_and_falls.el  -------
    1   2   3   4   5   6   7   8   9  11
   22  33  44  55  66  77  88  99 101 102
  103 104 105 106 107 108 109 111 120 121
@@ -4653,7 +4489,12 @@ zero
 41909002
 -------  Numbers_with_prime_digits_whose_sum_is_13.el  -------
 337 355 373 535 553 733 2227 2272 2335 2353 2533 2722 3235 3253 3325 3352 3523 3532 5233 5323 5332 7222 22225 22252 22333 22522 23233 23323 23332 25222 32233 32323 32332 33223 33232 33322 52222 222223 222232 222322 223222 232222 322222 -------  Numbers_with_same_digit_set_in_base_10_and_base_16.el  -------
-0 1 2 3 4 5 6 7 8 9 53 371 913 1040 2080 2339 4100 5141 5412 5441 6182 8200 9241 13593 13665 13969 16406 20530 26946 30979 32803 33638 33840 33841 33842 33843 33844 33845 33846 33847 33848 33849 34883 37943 38931 38966 38995 66310 71444 71497 71511 75120 75121 75122 75123 75124 75125 75126 75127 75128 75129 75621 86150 88165 91465 91769 96617 98711 99481 -------  O'Halloran_numbers.el  -------
+0 1 2 3 4 5 6 7 8 9 53 371 913 1040 2080 2339 4100 5141 5412 5441 6182 8200 9241 13593 13665 13969 16406 20530 26946 30979 32803 33638 33840 33841 33842 33843 33844 33845 33846 33847 33848 33849 34883 37943 38931 38966 38995 66310 71444 71497 71511 75120 75121 75122 75123 75124 75125 75126 75127 75128 75129 75621 86150 88165 91465 91769 96617 98711 99481 -------  Numerical_integration@Adaptive_Simpson's_method.el  -------
+0.4596976941
+-------  Numerical_integration@Romberg_integration.el  -------
+0.45969769
+20.03575941
+-------  O'Halloran_numbers.el  -------
 8 12 20 36 44 60 84 116 140 156 204 260 380 420 660 924 -------  Odd_and_square_numbers.el  -------
 121 169 225 289 361 441 529 625 729 841 961 -------  Odd_squarefree_semiprimes.el  -------
 15 21 33 35 39 51 55 57 65 69 77 85 87 91 93 95 111 115 119 123 129 133 141 143 145 155 159 161 177 183 185 187 201 203 205 209 213 215 217 219 221 235 237 247 249 253 259 265 267 287 291 295 299 301 303 305 309 319 321 323 327 329 335 339 341 355 365 371 377 381 391 393 395 403 407 411 413 415 417 427 437 445 447 451 453 469 471 473 481 485 489 493 497 501 505 511 515 517 519 527 533 535 537 543 545 551 553 559 565 573 579 581 583 589 591 597 611 623 629 633 635 649 655 667 669 671 679 681 685 687 689 695 697 699 703 707 713 717 721 723 731 737 745 749 753 755 763 767 771 779 781 785 789 791 793 799 803 807 813 815 817 831 835 843 849 851 865 869 871 879 889 893 895 899 901 905 913 917 921 923 933 939 943 949 951 955 959 965 973 979 985 989 993 995 -------  Odd_word_problem.el  -------
@@ -4776,24 +4617,7 @@ First 30 Ormiston pairs:
 Ormiston pairs up to million: 382
 -------  Ormiston_triples.el  -------
 -------  Own_digits_power_sum.el  -------
-153
-370
-371
-407
-1634
-8208
-9474
-54748
-92727
-93084
-548834
-1741725
-4210818
-9800817
-9926315
-24678050
-24678051
-88593477
+153 370 371 407 1634 8208 9474 54748 92727 93084 548834 1741725 4210818 9800817 9926315 24678050 24678051 88593477 
 -------  Padovan_n-step_number_sequences.el  -------
 2: 1 1 1 2 2 3 4 5 7 9 12 16 21 28 37 
 3: 1 1 1 2 3 4 6 9 13 19 28 41 60 88 129 
@@ -4839,8 +4663,10 @@ step on no pets is a palindrome
 été is a palindrome
 🦊😀🦊 is a palindrome
 -------  Palindromic_primes_in_base_16.el  -------
-2 3 5 7 b d 11 101 151 161 191 1b1 1c1 -------  Palindromic_primes.el  -------
-2 3 5 7 11 101 131 151 181 191 313 353 373 383 727 757 787 797 919 929 -------  Pan_base_non-primes.el  -------
+2 3 5 7 b d 11 101 151 161 191 1b1 1c1 
+-------  Palindromic_primes.el  -------
+2 3 5 7 11 101 131 151 181 191 313 353 373 383 727 757 787 797 919 929 
+-------  Pan_base_non-primes.el  -------
 First 50 prime pan-base composites:
 4 6 8 9 20 22 24 26 28 30 33 36 39 40 42 44 46 48 50 55 60 62 63 64 66 68 69 70 77 80 82 84 86 88 90 93 96 99 100 110 112 114 116 118 120 121 130 132 134 136 
 
@@ -4862,7 +4688,27 @@ The quick brown fox jumped over the lazy dog.
 QwErTyUiOpAsDfGhJkLzXcVbNm
   --> pangram
 
--------  Parsing+RPN_calculator_algorithm.el  -------
+-------  Paraffins.el  -------
+1: 1
+2: 1
+3: 1
+4: 2
+5: 3
+6: 5
+7: 9
+8: 18
+9: 35
+10: 75
+.
+.
+244: 34576004768296889785887066794910718730985852896707505707076422305798138880427343561380451664648670542260
+245: 96356944442415066997623733664230869603611716312377642117711752082444867783045964116385053282421589905891
+246: 268540209617944059776303921971316267806082307732727328919911735252505071315985779867844056236080213000010
+247: 748434113260252449609376828666343341456610378512725586135955779939163320693444008584504390382026391947130
+248: 2086006351917005252913566124773054331962205157167696706926185063169623907656246841866717933958839366769700
+249: 5814271898167303040368103945830220447130073898083466852225709084407144308593691069932064987528870826155297
+250: 16206624309085062837751018464745815688226709117091506494175397665527493805947344857313038875654104100026504
+-------  Parsing@RPN_calculator_algorithm.el  -------
 3 -> [ 3 ]
 4 -> [ 3 4 ]
 2 -> [ 3 4 2 ]
@@ -4889,6 +4735,7 @@ QwErTyUiOpAsDfGhJkLzXcVbNm
 22699(3) = 3 + 5 + 22691
 22699(4) = 2 + 3 + 43 + 22651
 40355(3) = 3 + 139 + 40213
+-------  Partition_function_P.el  -------
 -------  Pascal_matrix_generation.el  -------
 [ [ 1 1 1 1 1 ] [ 0 1 2 3 4 ] [ 0 0 1 3 6 ] [ 0 0 0 1 4 ] [ 0 0 0 0 1 ] ]
 [ [ 1 0 0 0 0 ] [ 1 1 0 0 0 ] [ 1 2 1 0 0 ] [ 1 3 3 1 0 ] [ 1 4 6 4 1 ] ]
@@ -4907,6 +4754,13 @@ QwErTyUiOpAsDfGhJkLzXcVbNm
        1  10  45 120 210 252 210 120  45  10   1
      1  11  55 165 330 462 462 330 165  55  11   1
    1  12  66 220 495 792 924 792 495 220  66  12   1
+-------  Pascal's_triangle@Puzzle.el  -------
+       151
+      81 70
+    40 41 29
+   16 24 17 12
+  5 11 13  4  8
+-------  Password_generator.el  -------
 -------  Pathological_floating_point_problems.el  -------
 --- Task 1 pathologic ---
 3: 18.5000000000
@@ -4927,52 +4781,56 @@ Balance after 25 years: $-2242373258.5701580048
 Balance after 25 years: $0.0399387296732302
 -------  Peano_curve.el  -------
 -------  Penholodigital_squares.el  -------
-Penholodigital squares in base 9:
-3825² = 16328547 3847² = 16523874 4617² = 23875614 
-4761² = 25487631 6561² = 47865231 6574² = 48162537 
-6844² = 53184267 7285² = 58624317 7821² = 68573241 
-8554² = 82314657 
-(10 items)
+10 Penholodigital squares in base 9:
+3825² = 16328547   3847² = 16523874   4617² = 23875614   
+4761² = 25487631   6561² = 47865231   6574² = 48162537   
+6844² = 53184267   7285² = 58624317   7821² = 68573241   
+8554² = 82314657   
 
-Penholodigital squares in base 10:
-11826² = 139854276 12363² = 152843769 12543² = 157326849 
-14676² = 215384976 15681² = 245893761 15963² = 254817369 
-18072² = 326597184 19023² = 361874529 19377² = 375468129 
-19569² = 382945761 19629² = 385297641 20316² = 412739856 
-22887² = 523814769 23019² = 529874361 23178² = 537219684 
-23439² = 549386721 24237² = 587432169 24276² = 589324176 
-24441² = 597362481 24807² = 615387249 25059² = 627953481 
-25572² = 653927184 25941² = 672935481 26409² = 697435281 
-26733² = 714653289 27129² = 735982641 27273² = 743816529 
-29034² = 842973156 29106² = 847159236 30384² = 923187456 
-(30 items)
+30 Penholodigital squares in base 10:
+11826² = 139854276   12363² = 152843769   12543² = 157326849   
+14676² = 215384976   15681² = 245893761   15963² = 254817369   
+18072² = 326597184   19023² = 361874529   19377² = 375468129   
+19569² = 382945761   19629² = 385297641   20316² = 412739856   
+22887² = 523814769   23019² = 529874361   23178² = 537219684   
+23439² = 549386721   24237² = 587432169   24276² = 589324176   
+24441² = 597362481   24807² = 615387249   25059² = 627953481   
+25572² = 653927184   25941² = 672935481   26409² = 697435281   
+26733² = 714653289   27129² = 735982641   27273² = 743816529   
+29034² = 842973156   29106² = 847159236   30384² = 923187456   
 
-Penholodigital squares in base 11:
-42045² = 165742a893 43152² = 173a652894 44926² = 18792a6453 
-47149² = 1a67395824 47257² = 1a76392485 52071² = 249a758631 
-54457² = 2719634a85 55979² = 286a795314 59597² = 314672a895 
-632a4² = 3671a89245 64069² = 376198a254 68335² = 41697528a3 
-71485² = 46928a7153 81196² = 5a79286413 83608² = 632a741859 
-86074² = 6713498a25 89468² = 7148563a29 91429² = 76315982a4 
-93319² = 795186a234 a3a39² = 983251a764 
-(20 items)
+20 Penholodigital squares in base 11:
+42045² = 165742a893   43152² = 173a652894   44926² = 18792a6453   
+47149² = 1a67395824   47257² = 1a76392485   52071² = 249a758631   
+54457² = 2719634a85   55979² = 286a795314   59597² = 314672a895   
+632a4² = 3671a89245   64069² = 376198a254   68335² = 41697528a3   
+71485² = 46928a7153   81196² = 5a79286413   83608² = 632a741859   
+86074² = 6713498a25   89468² = 7148563a29   91429² = 76315982a4   
+93319² = 795186a234   a3a39² = 983251a764   
 
-Penholodigital squares in base 12:
-117789² = 135b7482a69 16357b² = 23a5b976481 16762b² = 24ab5379861 
-16906b² = 25386749ba1 173434² = 26b859a3714 178278² = 2835ba17694 
-1a1993² = 34a8125b769 1a3595² = 354a279b681 1b0451² = 3824b7569a1 
-1b7545² = 3a5b2487961 2084a9² = 42a1583b769 235273² = 5287ba13469 
-2528b5² = 5b23a879641 25b564² = 62937b5a814 262174² = 63a8527b194 
-285a44² = 73b615a8294 29a977² = 7b9284a5361 2a7617² = 83ab5479261 
-2b0144² = 8617b35a294 307381² = 93825a67b41 310828² = 96528ab7314 
-319488² = 9ab65823714 319a37² = 9b2573468a1 
-(23 items)
+23 Penholodigital squares in base 12:
+117789² = 135b7482a69   16357b² = 23a5b976481   16762b² = 24ab5379861   
+16906b² = 25386749ba1   173434² = 26b859a3714   178278² = 2835ba17694   
+1a1993² = 34a8125b769   1a3595² = 354a279b681   1b0451² = 3824b7569a1   
+1b7545² = 3a5b2487961   2084a9² = 42a1583b769   235273² = 5287ba13469   
+2528b5² = 5b23a879641   25b564² = 62937b5a814   262174² = 63a8527b194   
+285a44² = 73b615a8294   29a977² = 7b9284a5361   2a7617² = 83ab5479261   
+2b0144² = 8617b35a294   307381² = 93825a67b41   310828² = 96528ab7314   
+319488² = 9ab65823714   319a37² = 9b2573468a1   
 
+-------  Penney's_game.el  -------
 -------  Penrose_tiling.el  -------
 -------  Pentagram.el  -------
--------  Percolation+Mean_run_density.el  -------
+-------  Perceptron.el  -------
+-------  Percolation@Mean_cluster_density.el  -------
+-------  Percolation@Mean_run_density.el  -------
+-------  Percolation@Site_percolation.el  -------
 -------  Perfect_numbers.el  -------
-6 28 496 8128 -------  Perfect_shuffle.el  -------
+6
+28
+496
+8128
+-------  Perfect_shuffle.el  -------
 3
 11
 8
@@ -4981,7 +4839,8 @@ Penholodigital squares in base 12:
 10
 300
 -------  Perfect_totient_numbers.el  -------
-3 9 15 27 39 81 111 183 243 255 327 363 471 729 2187 2199 3063 4359 4375 5571 -------  Periodic_table.el  -------
+3 9 15 27 39 81 111 183 243 255 327 363 471 729 2187 2199 3063 4359 4375 5571 
+-------  Periodic_table.el  -------
 Atomic number 1-> 1, 1
 Atomic number 2-> 1, 18
 Atomic number 29-> 4, 11
@@ -4997,6 +4856,8 @@ Atomic number 103-> 9, 18
 Atomic number 113-> 7, 13
 -------  Peripheral_drift_illusion.el  -------
 -------  Perlin_noise.el  -------
+-------  Permutation_test.el  -------
+87.20% 12.80%
 -------  Permutations_by_swapping.el  -------
 [ 1 2 3 ]  1
 [ 2 1 3 ]  -1
@@ -5023,7 +4884,7 @@ AABBBC AABBCB AABCBB AACBBB ABABBC ABABCB ABACBB ABBABC ABBACB ABBBAC ABBBCA ABB
 [ 2 3 1 ]
 [ 3 2 1 ]
 [ 3 1 2 ]
--------  Permutations+Derangements.el  -------
+-------  Permutations@Derangements.el  -------
 [ [ 2 1 4 3 ] [ 2 3 4 1 ] [ 2 4 1 3 ] [ 3 1 4 2 ] [ 3 4 1 2 ] [ 3 4 2 1 ] [ 4 3 2 1 ] [ 4 3 1 2 ] [ 4 1 2 3 ] ]
 counted / calculated
 0: 1 1
@@ -5036,23 +4897,38 @@ counted / calculated
 7: 1854 1854
 8: 14833 14833
 9: 133496 133496
--------  Permutations+Rank_of_a_permutation.el  -------
+-------  Permutations@Rank_of_a_permutation.el  -------
 -------  Permuted_multiples.el  -------
 142857
 -------  Pernicious_numbers.el  -------
 3 5 6 7 9 10 11 12 13 14 17 18 19 20 21 22 24 25 26 28 31 33 34 35 36 
-888888877 888888878 888888880 888888883 888888885 888888886 -------  Phrase_reversals.el  -------
+888888877 888888878 888888880 888888883 888888885 888888886 
+-------  Pfaffian_and_hfaffian.el  -------
+[ [ 0 1 ] [ -1 0 ] ]
+Pfaffian: 1
+Hfaffian: 0
+
+[ [ 0 1 -1 2 ] [ -1 0 3 -4 ] [ 1 -3 0 5 ] [ -2 4 -5 0 ] ]
+Pfaffian: 7
+Hfaffian: 0
+-------  Phrase_reversals.el  -------
 lasrever esarhp edoc attesor
 attesor edoc esarhp lasrever 
 reversal phrase code rosetta -------  Pick_random_element.el  -------
-spring
 -------  Pierpont_primes.el  -------
 2 3 5 7 13 17 19 37 73 97 109 163 193 257 433 487 577 769 1153 1297 1459 2593 2917 3457 3889 10369 12289 17497 18433 39367 52489 65537 139969 147457 209953 331777 472393 629857 746497 786433 839809 995329 1179649 1492993 1769473 1990657 2654209 5038849 5308417 8503057 
 
-2 3 5 7 11 17 23 31 47 53 71 107 127 191 383 431 647 863 971 1151 2591 4373 6143 6911 8191 8747 13121 15551 23327 27647 62207 73727 131071 139967 165887 294911 314927 442367 472391 497663 524287 786431 995327 1062881 2519423 10616831 17915903 18874367 25509167 30233087 -------  Pig_the_dice_game.el  -------
--------  Pinstripe+Display.el  -------
+2 3 5 7 11 17 23 31 47 53 71 107 127 191 383 431 647 863 971 1151 2591 4373 6143 6911 8191 8747 13121 15551 23327 27647 62207 73727 131071 139967 165887 294911 314927 442367 472391 497663 524287 786431 995327 1062881 2519423 10616831 17915903 18874367 25509167 30233087 
+
+-------  Pig_Latin.el  -------
+Ellohay, Orldway!
+Appleway iepay.
+Eenquay andway ickquay.
+-------  Pig_the_dice_game.el  -------
+-------  Pinstripe@Display.el  -------
 -------  Piprimes.el  -------
-0 1 2 2 3 3 4 4 4 4 5 5 6 6 6 6 7 7 8 8 8 8 9 9 9 9 9 9 10 10 11 11 11 11 11 11 12 12 12 12 13 13 14 14 14 14 15 15 15 15 15 15 16 16 16 16 16 16 17 17 18 18 18 18 18 18 19 19 19 19 20 20 21 21 21 21 21 21 -------  Pisano_period.el  -------
+0 1 2 2 3 3 4 4 4 4 5 5 6 6 6 6 7 7 8 8 8 8 9 9 9 9 9 9 10 10 11 11 11 11 11 11 12 12 12 12 13 13 14 14 14 14 15 15 15 15 15 15 16 16 16 16 16 16 17 17 18 18 18 18 18 18 19 19 19 19 20 20 21 21 21 21 21 21 
+-------  Pisano_period.el  -------
 pisanoPrime(2: 2) = 6
 pisanoPrime(3: 2) = 24
 pisanoPrime(5: 2) = 100
@@ -5116,8 +4992,31 @@ pisano(n) for integers 'n' from 1 to 180 are:
  50  36  72 240  60 168 316  78 216 240  48 216 328 120  40 
 168 336  48 364 180  72 264 348 168 400 120 232 132 178 120 
 -------  Plasma_effect.el  -------
+-------  Playfair_cipher.el  -------
+BM OD ZB XD NA BE KU DM UI XM MO UV IF 
+HI DE TH EG OL DI NT HE TR EX ES TU MP 
 -------  Playing_cards.el  -------
 -------  Plot_coordinate_pairs.el  -------
+-------  Poker_hand_analyser.el  -------
+2H 2D 2S KS QD : three-of-a-kind
+2H 5H 7D 8S 9D : high-card
+AH 2D 3S 4S 5S : straight
+2H 3H 2D 3S 3D : full-house
+2H 7H 2D 3S 3D : two-pairs
+2H 7H 7D 7S 7C : four-of-a-kind
+TH JH QH KH AH : straight-flush
+4H 4C KC 5D TC : one-pair
+QC TC 7C 6C 4C : flush
+QC TC 7C 6C QC : invalid
+-------  Polynomial_derivative.el  -------
+5 -> 0
+-3x + 4 -> -3
+5x^2 + 6x - 1 -> 10x + 6
+x^3 - 2x^2 + 3x - 4 -> 3x^2 - 4x + 3
+-x^4 - x^3 + x + 1 -> -4x^3 - 3x^2 + 1
+-------  Polynomial_long_division.el  -------
+[ -27 -9 1 ][ -123 0 0 0 ]
+[ -13 1 ][ -81 16 0 0 ]
 -------  Polynomial_regression.el  -------
 y = 1 + 2x + 3x^2
   0    1   1
@@ -5137,7 +5036,19 @@ y = 1 + 2x + 3x^2
 evil: 0 3 5 6 9 10 12 15 17 18 20 23 24 27 29 30 33 34 36 39 40 43 45 46 48 51 53 54 57 58
 odious: 1 2 4 7 8 11 13 14 16 19 21 22 25 26 28 31 32 35 37 38 41 42 44 47 49 50 52 55 56 59
 -------  Positive_decimal_integers_with_the_digit_1_occurring_exactly_twice.el  -------
-11 101 110 112 113 114 115 116 117 118 119 121 131 141 151 161 171 181 191 211 311 411 511 611 711 811 911 -------  Price_fraction.el  -------
+11 101 110 112 113 114 115 116 117 118 119 121 131 141 151 161 171 181 191 211 311 411 511 611 711 811 911 -------  Powerful_numbers.el  -------
+14 2-powerful numbers <= 10^2: 1 4 8 9 16 ... 49 64 72 81 100 
+20 3-powerful numbers <= 10^3: 1 8 16 27 32 ... 625 648 729 864 1000 
+25 4-powerful numbers <= 10^4: 1 16 32 64 81 ... 5184 6561 7776 8192 10000 
+32 5-powerful numbers <= 10^5: 1 32 64 128 243 ... 65536 69984 78125 93312 100000 
+38 6-powerful numbers <= 10^6: 1 64 128 256 512 ... 559872 746496 823543 839808 1000000 
+46 7-powerful numbers <= 10^7: 1 128 256 512 1024 ... 7558272 8388608 8957952 9765625 10000000 
+52 8-powerful numbers <= 10^8: 1 256 512 1024 2048 ... 60466176 67108864 80621568 90699264 100000000 
+59 9-powerful numbers <= 10^9: 1 512 1024 2048 4096 ... 644972544 725594112 816293376 967458816 1000000000 
+68 10-powerful numbers <= 10^10: 1 1024 2048 4096 8192 ... 7739670528 8589934592 8707129344 9795520512 10000000000 
+-------  Practical_numbers.el  -------
+1 2 4 6 8 12 16 18 20 24 28 30 32 36 40 42 48 54 56 60 64 66 72 78 80 84 88 90 96 100 104 108 112 120 126 128 132 140 144 150 156 160 162 168 176 180 192 196 198 200 204 208 210 216 220 224 228 234 240 252 256 260 264 270 272 276 280 288 294 300 304 306 308 312 320 324 330 
+-------  Price_fraction.el  -------
 0.05 -> 0.10
 0.10 -> 0.18
 0.15 -> 0.26
@@ -5158,6 +5069,7 @@ odious: 1 2 4 7 8 11 13 14 16 19 21 22 25 26 28 31 32 35 37 38 41 42 44 47 49 50
 0.90 -> 0.94
 0.95 -> 0.98
 1.00 -> 1.00
+-------  Price_list_behind_API.el  -------
 -------  Primality_by_trial_division.el  -------
 1
 -------  Primality_by_Wilson's_theorem.el  -------
@@ -5166,13 +5078,13 @@ odious: 1 2 4 7 8 11 13 14 16 19 21 22 25 26 28 31 32 35 37 38 41 42 44 47 49 50
 1 -> 3: 77475 = 7.75%
 1 -> 7: 79453 = 7.95%
 1 -> 9: 50153 = 5.02%
-2 -> 3: 1 = 0.00%
+2 -> 3:     1 = 0.00%
 3 -> 1: 58255 = 5.83%
 3 -> 3: 39668 = 3.97%
-3 -> 5: 1 = 0.00%
+3 -> 5:     1 = 0.00%
 3 -> 7: 72828 = 7.28%
 3 -> 9: 79358 = 7.94%
-5 -> 7: 1 = 0.00%
+5 -> 7:     1 = 0.00%
 7 -> 1: 64230 = 6.42%
 7 -> 3: 68595 = 6.86%
 7 -> 7: 39604 = 3.96%
@@ -5185,6 +5097,16 @@ odious: 1 2 4 7 8 11 13 14 16 19 21 22 25 26 28 31 32 35 37 38 41 42 44 47 49 50
 [ 3 3 3 ]
 [ 5 5 5 9857 ]
 [ 6361 69431 20394401 ]
+-------  Prime_groups,_counting.el  -------
+abcdef: 10
+abcdefg: 25
+-------  Prime_groups.el  -------
+rto
+Not found.
+ecj
+Not found.
+Not found.
+Not found.
 -------  Prime_numbers_of_measurement.el  -------
 First 100:
 1 2 4 5 8 10 14 15 16 21 22 25 26 28 33 34 35 36 38 40 42 46 48 49 50 53 57 60 62 64 65 70 77 80 81 83 85 86 90 91 92 100 104 107 108 116 119 124 127 132 133 137 141 144 145 148 150 151 154 158 159 163 165 172 173 174 175 178 180 182 184 187 188 195 198 201 206 207 208 213 219 221 222 226 228 231 233 236 241 242 245 247 248 253 256 262 266 268 272 274 
@@ -5193,34 +5115,56 @@ One Thousandth: 3165
 -------  Prime_numbers_p_for_which_the_sum_of_primes_less_than_or_equal_to_p_is_prime.el  -------
 2 3 7 13 37 43 281 311 503 541 557 593 619 673 683 733 743 839 881 929 953 -------  Prime_numbers_which_contain_123.el  -------
 1123 1231 1237 8123 11239 12301 12323 12329 12343 12347 12373 12377 12379 12391 17123 20123 22123 28123 29123 31123 31231 31237 34123 37123 40123 41231 41233 44123 47123 49123 50123 51239 56123 59123 61231 64123 65123 70123 71233 71237 76123 81233 81239 89123 91237 98123 -------  Prime_numbers_whose_neighboring_pairs_are_tetraprimes.el  -------
-Primes below 100000 preceeded by a tetraprime pair:
+Primes below 100000 preceeded by a tetraprime pair
 
 8647 15107 20407 20771 21491 23003 23531 24767 24971 27967 29147 33287 34847 36779 42187 42407 42667 43331 43991 46807 46867 51431 52691 52747 53891 54167 58567 63247 63367 69379 71711 73607 73867 74167 76507 76631 76847 80447 83591 84247 86243 87187 87803 89387 93887 97547 97847 98347 99431 
 
-49 31
+Count: 49 -  Count with factor 7: 31
 
-56 1236 6460
+Gaps: min: 56  median: 1208  max: 6460
 
-Primes below 100000 followed by a tetraprime pair:
+Primes below 100000 followed by a tetraprime pair
 
 8293 16553 17389 18289 22153 26893 29209 33409 35509 36293 39233 39829 40493 41809 45589 48109 58393 59629 59753 59981 60493 60913 64013 64921 65713 66169 69221 71329 74093 75577 75853 77689 77933 79393 79609 82913 84533 85853 87589 87701 88681 91153 93889 96017 97381 98453 
 
-46 36
+Count: 46 -  Count with factor 7: 36
 
-112 1460 10284
+Gaps: min: 112  median: 1460  max: 10284
 
-Primes below 1000000 preceeded by a tetraprime pair:
+Primes below 1000000 preceeded by a tetraprime pair
 
-885 503
+Count: 885 -  Count with factor 7: 503
 
-4 756 7712
+Gaps: min: 4  median: 756  max: 7712
 
-Primes below 1000000 followed by a tetraprime pair:
+Primes below 1000000 followed by a tetraprime pair
 
-866 492
+Count: 866 -  Count with factor 7: 492
 
-4 832 10284
+Gaps: min: 4  median: 832  max: 10284
 
+-------  Prime_triangle.el  -------
+ 1  2
+ 1  2  3
+ 1  2  3  4
+ 1  4  3  2  5
+ 1  4  3  2  5  6
+ 1  4  3  2  5  6  7
+ 1  2  3  4  7  6  5  8
+ 1  2  3  4  7  6  5  8  9
+ 1  2  3  4  7  6  5  8  9 10
+ 1  2  3  4  7 10  9  8  5  6 11
+ 1  2  3  4  7 10  9  8  5  6 11 12
+ 1  2  3  4  7  6  5 12 11  8  9 10 13
+ 1  2  3  4  7  6 13 10  9  8 11 12  5 14
+ 1  2  3  4  7  6 13 10  9  8 11 12  5 14 15
+ 1  2  3  4  7  6  5 12 11  8 15 14  9 10 13 16
+ 1  2  3  4  7  6  5 12 11  8  9 10 13 16 15 14 17
+ 1  2  3  4  7  6  5  8  9 10 13 16 15 14 17 12 11 18
+ 1  2  3  4  7  6  5  8  9 10 13 16 15 14 17 12 11 18 19
+ 1  2  3  4  7  6  5  8  9 10 13 16 15 14 17 12 19 18 11 20
+
+ 1  1  1  1  1  2  4  7 24 80 216 648 1304 3392 13808 59448 155464 480728 1588162
 -------  Prime_triplets.el  -------
 (5 7 11) (11 13 17) (17 19 23) (41 43 47) (101 103 107) (107 109 113) (191 193 197) (227 229 233) (311 313 317) (347 349 353) (461 463 467) (641 643 647) (821 823 827) (857 859 863) (881 883 887) (1091 1093 1097) (1277 1279 1283) (1301 1303 1307) (1427 1429 1433) (1481 1483 1487) (1487 1489 1493) (1607 1609 1613) (1871 1873 1877) (1997 1999 2003) (2081 2083 2087) (2237 2239 2243) (2267 2269 2273) (2657 2659 2663) (2687 2689 2693) (3251 3253 3257) (3461 3463 3467) (3527 3529 3533) (3671 3673 3677) (3917 3919 3923) (4001 4003 4007) (4127 4129 4133) (4517 4519 4523) (4637 4639 4643) (4787 4789 4793) (4931 4933 4937) (4967 4969 4973) (5231 5233 5237) (5477 5479 5483) -------  Prime_words.el  -------
 age
@@ -5243,51 +5187,7 @@ age
 3 313 353 373 383 3023 3083 3163 3203 3253 3313 3323 3343 3373 3413 3433 3463 3533 3583 3593 3613 3623 3643 3673 3733 3793 3803 3823 3833 3853 3863 3923 3943 -------  Primes_whose_sum_of_digits_is_25.el  -------
 997 1699 1789 1879 1987 2689 2797 2887 3499 3697 3769 3877 3967 4597 4759 4957 4993 -------  Primes_with_digits_in_nondecreasing_order.el  -------
 2 3 5 7 11 13 17 19 23 29 37 47 59 67 79 89 113 127 137 139 149 157 167 179 199 223 227 229 233 239 257 269 277 337 347 349 359 367 379 389 449 457 467 479 499 557 569 577 599 677 -------  Primes:_n*2^m+1.el  -------
-1 0 2
-2 0 3
-3 1 7
-4 0 5
-5 1 11
-6 0 7
-7 2 29
-8 1 17
-9 1 19
-10 0 11
-11 1 23
-12 0 13
-13 2 53
-14 1 29
-15 1 31
-16 0 17
-17 3 137
-18 0 19
-19 6 1217
-20 1 41
-21 1 43
-22 0 23
-23 1 47
-24 2 97
-25 2 101
-26 1 53
-27 2 109
-28 0 29
-29 1 59
-30 0 31
-31 8 7937
-32 3 257
-33 1 67
-34 2 137
-35 1 71
-36 0 37
-37 2 149
-38 5 1217
-39 1 79
-40 0 41
-41 1 83
-42 0 43
-43 2 173
-44 1 89
-45 2 181
+(1 0 2) (2 0 3) (3 1 7) (4 0 5) (5 1 11) (6 0 7) (7 2 29) (8 1 17) (9 1 19) (10 0 11) (11 1 23) (12 0 13) (13 2 53) (14 1 29) (15 1 31) (16 0 17) (17 3 137) (18 0 19) (19 6 1217) (20 1 41) (21 1 43) (22 0 23) (23 1 47) (24 2 97) (25 2 101) (26 1 53) (27 2 109) (28 0 29) (29 1 59) (30 0 31) (31 8 7937) (32 3 257) (33 1 67) (34 2 137) (35 1 71) (36 0 37) (37 2 149) (38 5 1217) (39 1 79) (40 0 41) (41 1 83) (42 0 43) (43 2 173) (44 1 89) (45 2 181) 
 -------  Primorial_numbers.el  -------
 1
 2
@@ -5321,7 +5221,14 @@ age
 9:[ 1 3 ]
 10:[ 1 2 5 ]
 15120 has 79 proper divisors.
--------  Pseudo-random_numbers+Middle-square_method.el  -------
+-------  Pseudo-random_numbers@Combined_recursive_generator_MRG32k3a.el  -------
+1459213977
+2827710106
+4245671317
+3877608661
+2595287583
+[ 20002 20060 19948 20059 19931 ]
+-------  Pseudo-random_numbers@Middle-square_method.el  -------
 959861
 333139
 981593
@@ -5347,11 +5254,25 @@ qr = [ 7 14 21 28 ]
 q1q2 = [ -56 16 24 26 ]
 q2q1 = [ -56 18 20 28 ]
 q1 != q2
--------  Queue+Definition.el  -------
+-------  Quaternion.el  -------
+q = [ 1 2 3 4 ]
+q1 = [ 2 3 4 5 ]
+q2 = [ 3 4 5 6 ]
+r = 7
+norm(q) = 5.48
+neg(q) = [ -1 -2 -3 -4 ]
+conjugate(q) = [ 1 -2 -3 -4 ]
+q+r = [ 8 2 3 4 ]
+q1+q2 = [ 5 7 9 11 ]
+qr = [ 7 14 21 28 ]
+q1q2 = [ -56 16 24 26 ]
+q2q1 = [ -56 18 20 28 ]
+q1 != q2
+-------  Queue@Definition.el  -------
 2
 5
 7
--------  Queue+Usage.el  -------
+-------  Queue@Usage.el  -------
 -------  Quickselect_algorithm.el  -------
 0
 1
@@ -5366,6 +5287,14 @@ q1 != q2
 -------  Quine.el  -------
 S$ = "print strchar 83 & strchar 36 & strchar 32 & strchar 61 & strchar 32 & strchar 34 & S$ & strchar 34 & strchar 10 & S$"
 print strchar 83 & strchar 36 & strchar 32 & strchar 61 & strchar 32 & strchar 34 & S$ & strchar 34 & strchar 10 & S$
+-------  Quine–McCluskey_algorithm.el  -------
+0X0 X01
+-------  Quoting_constructs.el  -------
+The computer says "Hello world".
+	🙂
+The computer says "Hello world".
+        🙂
+
 -------  Radical_of_an_integer.el  -------
 First 50 radicals: 1 2 3 2 5 6 7 2 3 10 11 6 13 14 15 2 17 6 19 10 21 22 23 6 5 26 3 14 29 30 31 2 33 34 35 6 37 38 39 10 41 42 43 22 15 46 47 6 7 10
 
@@ -5389,7 +5318,7 @@ The first 100 Ramanujan primes are:
 2 11 17 29 41 47 59 67 71 97 101 107 127 149 151 167 179 181 227 229 233 239 241 263 269 281 307 311 347 349 367 373 401 409 419 431 433 439 461 487 491 503 569 571 587 593 599 601 607 641 643 647 653 659 677 719 727 739 751 769 809 821 823 827 853 857 881 937 941 947 967 983 1009 1019 1021 1031 1049 1051 1061 1063 1087 1091 1097 1103 1151 1163 1187 1217 1229 1249 1277 1289 1297 1301 1367 1373 1423 1427 1429 1439 
 
 The 1000th Ramanujan prime is 19403
--------  Ramanujan_primes+twins.el  -------
+-------  Ramanujan_primes@twins.el  -------
 74973
 -------  Ramer-Douglas-Peucker_line_simplification.el  -------
 (0 0) (2 -0.10) (3 5) (7 9) (9 9) 
@@ -5405,14 +5334,89 @@ The 1000th Ramanujan prime is 19403
 [ -6 -3 -2 -1 3 4 5 7 8 9 10 11 14 15 17 18 19 20 ]
 -------  Range_extraction.el  -------
 0-2,4,6-8,11,12,14-25,27-33,35-39
+-------  Range_modifications.el  -------
+start with ""
+add 77 -> 77-77
+add 79 -> 77-77,79-79
+add 78 -> 77-79
+remove 77 -> 78-79
+remove 78 -> 79-79
+remove 79 -> 
+
+start with "1-3,5-5"
+add 1 -> 1-3,5-5
+remove 4 -> 1-3,5-5
+add 7 -> 1-3,5-5,7-7
+add 8 -> 1-3,5-5,7-8
+add 6 -> 1-3,5-8
+remove 7 -> 1-3,5-6,8-8
+
+start with "1-5,10-25,27-30"
+add 26 -> 1-5,10-30
+add 9 -> 1-5,9-30
+add 7 -> 1-5,7-7,9-30
+remove 26 -> 1-5,7-7,9-25,27-30
+remove 9 -> 1-5,7-7,10-25,27-30
+remove 7 -> 1-5,10-25,27-30
+-------  Ranking_methods.el  -------
+Standard Ranking
+  1 - 44 Solomon
+  2 - 42 Jason
+  2 - 42 Errol
+  4 - 41 Garry
+  4 - 41 Bernard
+  4 - 41 Barry
+  7 - 39 Stephen
+
+Modified Ranking
+  1 - 44 Solomon
+  3 - 42 Jason
+  3 - 42 Errol
+  6 - 41 Garry
+  6 - 41 Bernard
+  6 - 41 Barry
+  7 - 39 Stephen
+
+Dense Ranking
+  1 - 44 Solomon
+  2 - 42 Jason
+  2 - 42 Errol
+  3 - 41 Garry
+  3 - 41 Bernard
+  3 - 41 Barry
+  4 - 39 Stephen
+
+Ordinal Ranking
+  1 - 44 Solomon
+  2 - 42 Jason
+  3 - 42 Errol
+  4 - 41 Garry
+  5 - 41 Bernard
+  6 - 41 Barry
+  7 - 39 Stephen
+
+Fractional Ranking
+  1 - 44 Solomon
+  2.50 - 42 Jason
+  2.50 - 42 Errol
+  5 - 41 Garry
+  5 - 41 Bernard
+  5 - 41 Barry
+  7 - 39 Stephen
+
 -------  Rare_numbers.el  -------
+-------  Raster_bars.el  -------
 -------  Rate_counter.el  -------
+-------  Rational_calculator.el  -------
+18 * -6 / 12 + 20 / 3 = -7/3
+abs (@ * -6 / -2) = 7
 -------  Read_a_specific_line_from_a_file.el  -------
 Line 7
 -------  Real_constants_and_functions.el  -------
 3.14
 1.41
 3
+2.30
 20
 1
 1024
@@ -5439,11 +5443,37 @@ Th Qck Brwn Fx Jmpd vr th Lzy Dg's Bck
 1 -> 
 -------  Repeat_a_string.el  -------
 hahahahaha
+-------  Resistance_calculator.el  -------
+Ohm	Volt	Ampere	Watt	Network tree
+--------------------------------------------
+10	18	1.80	32.40	+
+4	7.20	1.80	12.96	| *
+8	7.20	0.90	6.48	| | +
+4	3.60	0.90	3.24	| | | *
+8	3.60	0.45	1.62	| | | | +
+4	1.80	0.45	0.81	| | | | | *
+12	1.80	0.15	0.27	| | | | | | +
+4	0.60	0.15	0.09	| | | | | | | *
+12	0.60	0.05	0.03	| | | | | | | | +
+10	0.50	0.05	0.03	| | | | | | | | | r
+2	0.10	0.05	0.00	| | | | | | | | | r
+6	0.60	0.10	0.06	| | | | | | | | r
+8	1.20	0.15	0.18	| | | | | | | r
+6	1.80	0.30	0.54	| | | | | | r
+4	1.80	0.45	0.81	| | | | | r
+8	3.60	0.45	1.62	| | | | r
+4	3.60	0.90	3.24	| | | r
+8	7.20	0.90	6.48	| | r
+6	10.80	1.80	19.44	| r
 -------  Resistance_network_calculator.el  -------
 10.00
 1.50
 1.86
 180
+-------  Resistor_mesh.el  -------
+Nodes a: 12 b: 68
+
+Resistance = 1.60899124173073 Ohm
 -------  Return_multiple_values.el  -------
 Sum: 12
 Difference: 2
@@ -5452,6 +5482,12 @@ olleh
 -------  Reverse_the_gender_of_a_string.el  -------
 He was a soul stripper. He took her heart!
 She was a soul stripper. She took his heart!
+-------  Reverse_the_order_of_lines_in_a_text_file_while_preserving_the_contents_of_each_line.el  -------
+                            --- Will Rodgers
+
+until you can find a rock."
+   saying  'Nice Doggy'
+ "Diplomacy is the art of
 -------  Reverse_words_in_a_string.el  -------
  ------------ Fire and Ice --------- 
   
@@ -5463,46 +5499,29 @@ She was a soul stripper. She took his heart!
  ... last paragraph elided ... 
   
 ----------------------- Robert Frost 
+-------  Rhonda_numbers.el  -------
+Base 4:  10206 11935 12150 16031 45030 94185 113022 114415 191149 244713 
+Base 6:  855 1029 3813 5577 7040 7304 15104 19136 35350 36992 
+Base 8:  1836 6318 6622 10530 14500 14739 17655 18550 25398 25956 
+Base 9:  15540 21054 25331 44360 44660 44733 47652 50560 54944 76857 
+Base 10:  1568 2835 4752 5265 5439 5664 5824 5832 8526 12985 
+Base 12:  560 800 3993 4425 4602 4888 7315 8296 9315 11849 
+Base 14:  11475 18655 20565 29631 31725 45387 58404 58667 59950 63945 
+Base 15:  2392 2472 11468 15873 17424 18126 19152 20079 24388 30758 
+Base 16:  1000 1134 6776 15912 19624 20043 20355 23946 26296 29070 
 -------  Riordan_numbers.el  -------
 First 32 Riordan numbers:
-1
-0
-1
-1
-3
-6
-15
-36
-91
-232
-603
-1585
-4213
-11298
-30537
-83097
-227475
-625992
-1730787
-4805595
-13393689
-37458330
-105089229
-295673994
-834086421
-2358641376
-6684761125
-18985057351
-54022715451
-154000562758
-439742222071
-1257643249140
+1 0 1 1 3 6 15 36 91 232 603 1585 4213 11298 30537 83097 227475 625992 1730787 4805595 13393689 37458330 105089229 295673994 834086421 2358641376 6684761125 18985057351 54022715451 154000562758 439742222071 1257643249140 
+-------  RIPEMD-160.el  -------
+b3be159860842cebaa7174c8fff0aa9e50a5199f
 -------  Rock-paper-scissors.el  -------
--------  Roman_numerals+Decode.el  -------
+-------  Rodrigues’_rotation_formula.el  -------
+[ 2.23 1.40 -8.37 ]
+-------  Roman_numerals@Decode.el  -------
 1990
 2008
 1666
--------  Roman_numerals+Encode.el  -------
+-------  Roman_numerals@Encode.el  -------
 MCMXC
 MMVIII
 MDCLXVI
@@ -5528,7 +5547,41 @@ round 7:  1:6  7:5  8:4  9:3  10:2  11:12
 round 8:  1:5  6:4  7:3  8:2  9:12  10:11  
 round 9:  1:4  5:3  6:2  7:12  8:11  9:10  
 round 10:  1:3  4:2  5:12  6:11  7:10  8:9  
-round 11:  1:2  3:12  4:11  5:10  6:9  7:8  -------  RPG_attributes_generator.el  -------
+round 11:  1:2  3:12  4:11  5:10  6:9  7:8  -------  Routh–Hurwitz_stability_criterion.el  -------
+--- Stable: s^3+6s^2+11s+6 ---
+
+Routh-Hurwitz Table:
+     1 |     11
+     6 |      6
+    10
+     6
+System is STABLE
+Roots of the polynomial:
+    -1
+    -3
+    -2
+--------------------------------------------------
+--- Unstable: s^3-6s^2+11s-6 ---
+
+Routh-Hurwitz Table:
+     1 |     11
+    -6 |     -6
+    10
+    -6
+System is UNSTABLE with      3 pole(s)
+Roots of the polynomial:
+     3
+     1
+     2
+--------------------------------------------------
+-------  RPG_attributes_generator.el  -------
+-------  RSA_code.el  -------
+Plain:     Rosetta Code
+Encoded:   548387738888690439837273
+Encrypted: 1792858888863262390681546276081480173855331
+
+Decrypted: 548387738888690439837273
+Decoded:   Rosetta Code
 -------  Run-length_encoding.el  -------
 WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWBWWWWWWWWWWWWWW
 12W 1B 12W 3B 24W 1B 14W
@@ -5550,7 +5603,8 @@ first 30 ruth-aaron numbers (factors):
 5 8 15 77 125 714 948 1330 1520 1862 2491 3248 4185 4191 5405 5560 5959 6867 8280 8463 10647 12351 14587 16932 17080 18490 20450 24895 26642 26649 
 
 first 30 ruth-aaron numbers (divisors):
-5 24 49 77 104 153 369 492 714 1682 2107 2299 2600 2783 5405 6556 6811 8855 9800 12726 13775 18655 21183 24024 24432 24880 25839 26642 35456 40081 -------  Safe_and_Sophie_Germain_primes.el  -------
+5 24 49 77 104 153 369 492 714 1682 2107 2299 2600 2783 5405 6556 6811 8855 9800 12726 13775 18655 21183 24024 24432 24880 25839 26642 35456 40081 
+-------  Safe_and_Sophie_Germain_primes.el  -------
 2 3 5 11 23 29 41 53 83 89 113 131 173 179 191 233 239 251 281 293 359 419 431 443 491 509 593 641 653 659 683 719 743 761 809 911 953 1013 1019 1031 1049 1103 1223 1229 1289 1409 1439 1451 1481 1499 -------  Safe_primes_and_unsafe_primes.el  -------
 First 35 safe primes:
 5 7 11 23 47 59 83 107 167 179 227 263 347 359 383 467 479 503 563 587 719 839 863 887 983 1019 1187 1283 1307 1319 1367 1439 1487 1523 1619 
@@ -5559,13 +5613,13 @@ There are 30657 safe primes below 10000000
 
 First 40 unsafe primes:
 2 3 13 17 19 29 31 37 41 43 53 61 67 71 73 79 89 97 101 103 109 113 127 131 137 139 149 151 157 163 173 181 191 193 197 199 211 223 229 233 
-There are 74174 unsafe primes below 1000000
-There are 633922 unsafe primes below 10000000
+There are 74174 safe primes below 1000000
+There are 633922 safe primes below 10000000
 -------  Sailors,_coconuts_and_a_monkey_problem.el  -------
 5: 3121
 6: 233275
 -------  Sattolo_cycle.el  -------
--------  Scope+Function_names_and_labels.el  -------
+-------  Scope@Function_names_and_labels.el  -------
 3
 4
 -------  Search_a_list.el  -------
@@ -5586,6 +5640,8 @@ B000300
 -------  Selectively_replace_multiple_instances_of_a_character_within_a_string.el  -------
 AErBcadCbFD
 -------  Self_numbers.el  -------
+-------  Self-contained_numbers.el  -------
+31 83 293 347 671 19151 2025797 
 -------  Self-describing_numbers.el  -------
 1210
 2020
@@ -5601,48 +5657,14 @@ diva avid
 -------  SEND_+_MORE_=_MONEY.el  -------
 9567 + 1085 = 10652
 -------  Sequence_of_non-squares.el  -------
-2
-3
-5
-6
-7
-8
-10
-11
-12
-13
-14
-15
-17
-18
-19
-20
-21
-22
-23
-24
-26
-27
+2 3 5 6 7 8 10 11 12 13 14 15 17 18 19 20 21 22 23 24 26 27 
 No squares found
 -------  Sequence_of_primes_by_trial_division.el  -------
 [ 2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 ]
 -------  Sequence:_smallest_number_greater_than_previous_term_with_exactly_n_divisors.el  -------
-1 2 4 6 16 18 64 66 100 112 1024 1035 4096 4288 4624 -------  Sequence:_smallest_number_with_exactly_n_divisors.el  -------
-1
-2
-4
-6
-16
-12
-64
-24
-36
-48
-1024
-60
-4096
-192
-144
+1 2 4 6 16 18 64 66 100 112 1024 1035 4096 4288 4624 
+-------  Sequence:_smallest_number_with_exactly_n_divisors.el  -------
+[ 1 2 4 6 16 12 64 24 36 48 1024 60 4096 192 144 ]
 -------  Set_puzzle.el  -------
 -------  Set_right-adjacent_bits.el  -------
 n = 2, width = 4
@@ -5690,6 +5712,10 @@ result: 011110000000111100000011110000011110000111100011110011110111111111
 (5 11 17 23 29) 
 48627 unsexy primes
 ... 999853 999863 999883 999907 999917 999931 999961 999979 999983 1000003 
+-------  SHA-1.el  -------
+48c98f7e5a6e736d790ab740dfc3f51a61abe2b5
+-------  SHA-256.el  -------
+764faf5c61ac315f1497f9dfa542713965b785e5cc2f707d6468d7d1124cdfcf
 -------  Shape-Machine.el  -------
 18.428571428571416 (after 231 iterations)
 -------  Shift_list_elements_to_left_by_3.el  -------
@@ -5743,6 +5769,45 @@ abdcabdab
 11111113 123456832098769
 -------  Show_the_epoch.el  -------
 1970-01-01 01:00:00
+-------  Shuffle_groups.el  -------
+First 20 shuffle groups:
+ 1 [1035 3]
+ 2 [1089 9]
+ 3 [1359 7]
+ 4 [1386 6]
+ 5 [1782 4]
+ 6 [2178 4]
+ 7 [2475 3]
+ 8 [10035 3]
+ 9 [10089 9]
+ 10 [10449 9]
+ 11 [10899 9]
+ 12 [10989 9]
+ 13 [11688 7]
+ 14 [11883 7]
+ 15 [12375 3]
+ 16 [12903 7]
+ 17 [13029 7]
+ 18 [13359 7]
+ 19 [13449 7]
+ 20 [13599 7]
+
+First shuffle group with more than 4 witnesses
+ 145 [142857 2 3 4 5 6]
+
+For the first 145 shuffle groups, there are:
+  1  with 5 witness(es)
+  1  with 2 witness(es)
+143  with 1 witness(es)
+
+First shuffle group with exactly 3 witnesses
+ 809 [1402857 2 3 5]
+
+For the first 809 shuffle groups, there are:
+  1  with 5 witness(es)
+  1  with 3 witness(es)
+  9  with 2 witness(es)
+798  with 1 witness(es)
 -------  Sierpinski_arrowhead_curve.el  -------
 -------  Sierpinski_carpet.el  -------
 -------  Sierpinski_curve.el  -------
@@ -5765,33 +5830,9 @@ abdcabdab
   * *     * *     * *     * * 
  *   *   *   *   *   *   *   * 
 * * * * * * * * * * * * * * * * 
--------  Sierpinski_triangle+Graphical.el  -------
+-------  Sierpinski_triangle@Graphical.el  -------
 -------  Sieve_of_Eratosthenes.el  -------
-2
-3
-5
-7
-11
-13
-17
-19
-23
-29
-31
-37
-41
-43
-47
-53
-59
-61
-67
-71
-73
-79
-83
-89
-97
+2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 
 -------  Sieve_of_Pritchard.el  -------
 [ 2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 101 103 107 109 113 127 131 137 139 149 ]
 -------  Sign_of_an_integer_(signum).el  -------
@@ -5816,6 +5857,31 @@ abdcabdab
 -------  Smallest_enclosing_circle_problem.el  -------
 -------  Smallest_multiple.el  -------
 232792560
+-------  Smallest_numbers.el  -------
+9 1 3 5 2 4 4 3 7 9 10 11 5 19 22 26 8 17 16 19 9 8 13 7 17 4 17 3 11 18 13 5 23 17 18 7 17 15 9 18 16 17 9 7 12 28 6 23 9 24 23 
+-------  Smallest_power_of_6_whose_decimal_expansion_contains_n.el  -------
+0 10077696
+1 1
+2 216
+3 36
+4 46656
+5 46656
+6 6
+7 7776
+8 2176782336
+9 1296
+10 10077696
+11 2821109907456
+12 1296
+13 13060694016
+14 6140942214464815497216
+15 101559956668416
+16 216
+17 60466176
+18 470184984576
+19 21936950640377856
+20 170581728179578208256
+21 216
 -------  Smallest_square_that_begins_with_n.el  -------
 1 25 36 4 529 64 729 81 9 100 1156 121 1369 144 1521 16 1764 1849 196 2025 2116 225 2304 2401 25 2601 2704 289 2916 3025 3136 324 3364 3481 35344 36 3721 3844 3969 400 41209 4225 4356 441 45369 4624 4761 484 49 -------  Smarandache_prime-digital_sequence.el  -------
 2 3 5 7 23 37 53 73 223 227 233 257 277 337 353 373 523 557 577 727 733 757 773 2237 2273 
@@ -5851,10 +5917,48 @@ abdcabdab
      4 24 21  3  6   
        18 11 14      
            5         
+-------  Solve_a_Numbrix_puzzle.el  -------
+ 49 50 51 52 53 54 75 76 81
+ 48 47 46 45 44 55 74 77 80
+ 37 38 39 40 43 56 73 78 79
+ 36 35 34 41 42 57 72 71 70
+ 31 32 33 14 13 58 59 68 69
+ 30 17 16 15 12 61 60 67 66
+ 29 18 19 20 11 62 63 64 65
+ 28 25 24 21 10  1  2  3  4
+ 27 26 23 22  9  8  7  6  5
+
+  9 10 13 14 19 20 63 64 65
+  8 11 12 15 18 21 62 61 66
+  7  6  5 16 17 22 59 60 67
+ 34 33  4  3 24 23 58 57 68
+ 35 32 31  2 25 54 55 56 69
+ 36 37 30  1 26 53 74 73 70
+ 39 38 29 28 27 52 75 72 71
+ 40 43 44 47 48 51 76 77 78
+ 41 42 45 46 49 50 81 80 79
+
 -------  Solve_equations_with_substitution_method.el  -------
 [ -2 5 ]
 -------  Solve_hanging_lantern_problem.el  -------
 60
+-------  Solve_the_no_connection_puzzle.el  -------
+[ 3 4 7 1 8 2 5 6 ]
+[ 3 5 7 1 8 2 4 6 ]
+[ 3 6 7 1 8 2 4 5 ]
+[ 3 6 7 1 8 2 5 4 ]
+[ 4 3 2 8 1 7 6 5 ]
+[ 4 5 2 8 1 7 6 3 ]
+[ 4 5 7 1 8 2 3 6 ]
+[ 4 6 7 1 8 2 3 5 ]
+[ 5 3 2 8 1 7 6 4 ]
+[ 5 4 2 8 1 7 6 3 ]
+[ 5 4 7 1 8 2 3 6 ]
+[ 5 6 7 1 8 2 3 4 ]
+[ 6 3 2 8 1 7 5 4 ]
+[ 6 3 2 8 1 7 4 5 ]
+[ 6 4 2 8 1 7 5 3 ]
+[ 6 5 2 8 1 7 4 3 ]
 -------  Solve_triangle_solitaire_puzzle.el  -------
 
 ┏━━━━━━━━━┓
@@ -5960,6 +6064,30 @@ abdcabdab
 -------  Sort_an_integer_array.el  -------
 [ 1 2 2 3 4 ]
 -------  Sort_an_outline_at_every_level.el  -------
+alpha
+    epsilon
+    iota
+    theta
+zeta
+    beta
+    delta
+    gamma
+        kappa
+        lambda
+        mu
+
+zeta
+    gamma
+        mu
+        lambda
+        kappa
+    delta
+    beta
+alpha
+    theta
+    iota
+    epsilon
+
 -------  Sort_disjoint_sublist.el  -------
 [ 7 0 5 4 3 2 1 6 ]
 -------  Sort_numbers_lexicographically.el  -------
@@ -5973,52 +6101,131 @@ abdcabdab
 (from the "Wizard of OZ")
 bears, oh my!
 lions, tigers, and
--------  Sorting_algorithms+Bogosort.el  -------
--------  Sorting_algorithms+Bubble_sort.el  -------
+-------  Sorting_algorithms@Bead_sort.el  -------
+[ 1 4 8 16 25 33 38 53 59 69 69 71 100 ]
+-------  Sorting_algorithms@Bogosort.el  -------
+-------  Sorting_algorithms@Bubble_sort.el  -------
 [ 1 1 5 7 12 14 19 25 ]
--------  Sorting_Algorithms+Circle_Sort.el  -------
+-------  Sorting_algorithms@Circle_sort.el  -------
 [ -7 -6 -5 -4 -3 -2 -1 0 1 2 3 4 5 6 7 ]
--------  Sorting_algorithms+Cocktail_sort.el  -------
+-------  Sorting_algorithms@Cocktail_sort_with_shifting_bounds.el  -------
+[ 1 4 8 16 25 33 38 53 59 69 69 71 100 ]
+-------  Sorting_algorithms@Cocktail_sort.el  -------
 [ 1 2 2 5 6 6 7 8 9 14 15 97 ]
--------  Sorting_algorithms+Comb_sort.el  -------
+-------  Sorting_algorithms@Comb_sort.el  -------
 [ 0 4 5 8 14 18 20 31 33 44 62 70 73 75 76 78 81 82 84 88 ]
--------  Sorting_algorithms+Counting_sort.el  -------
--------  Sorting_algorithms+Cycle_sort.el  -------
+-------  Sorting_algorithms@Counting_sort.el  -------
+-------  Sorting_algorithms@Cycle_sort.el  -------
 [ 0 4 5 8 14 18 20 31 33 44 62 70 73 75 76 78 81 82 84 88 ]
--------  Sorting_algorithms+Gnome_sort.el  -------
+-------  Sorting_algorithms@Gnome_sort.el  -------
 [ 4 5 26 27 29 44 55 72 77 92 ]
--------  Sorting_algorithms+Heapsort.el  -------
+-------  Sorting_algorithms@Heapsort.el  -------
 [ 4 5 26 27 29 44 55 72 77 92 ]
--------  Sorting_algorithms+Insertion_sort.el  -------
+-------  Sorting_algorithms@Insertion_sort.el  -------
 [ 4 5 26 27 29 44 55 72 77 92 ]
--------  Sorting_algorithms+Merge_sort.el  -------
+-------  Sorting_algorithms@Merge_sort.el  -------
 [ 4 5 26 27 29 44 55 72 77 92 ]
--------  Sorting_algorithms+Pancake_sort.el  -------
+-------  Sorting_algorithms@Pancake_sort.el  -------
 [ 6 7 2 1 8 9 5 3 4 ]
 [ 1 2 3 4 5 6 7 8 9 ]
--------  Sorting_algorithms+Permutation_sort.el  -------
+-------  Sorting_algorithms@Patience_sort.el  -------
+[ -30 -20 1 6 9 10 18 ]
+-------  Sorting_algorithms@Permutation_sort.el  -------
 [ 0 1 2 3 4 5 6 7 8 9 ]
--------  Sorting_algorithms+Quicksort.el  -------
+-------  Sorting_algorithms@Quicksort.el  -------
 [ 4 5 26 27 29 44 55 72 77 92 ]
--------  Sorting_algorithms+Radix_sort.el  -------
+-------  Sorting_algorithms@Radix_sort.el  -------
 [ 4 5 26 27 29 44 55 72 77 92 ]
--------  Sorting_algorithms+Selection_sort.el  -------
+-------  Sorting_algorithms@Selection_sort.el  -------
 [ 4 5 26 27 29 44 55 72 77 92 ]
--------  Sorting_algorithms+Shell_sort.el  -------
+-------  Sorting_algorithms@Shell_sort.el  -------
 [ -12 -5 0 3 4 4 7 8 9 ]
--------  Sorting_algorithms+Stooge_sort.el  -------
--------  Sorting_algorithms+Strand_sort.el  -------
+-------  Sorting_algorithms@Stooge_sort.el  -------
+-------  Sorting_algorithms@Strand_sort.el  -------
 [ 1 1 2 3 3 5 6 7 ]
 -------  Soundex.el  -------
 S532
 E251
 S532
 E251
+-------  Sparkline_in_unicode.el  -------
+[ 1 2 3 4 5 6 7 8 7 6 5 4 3 2 1 ]
+▁▂▃▄▅▆▇█▇▆▅▄▃▂▁
+
+[ 1.50 0.50 3.50 2.50 5.50 4.50 7.50 6.50 ]
+▂▁▄▃▆▅█▇
+
+[ 0 1 19 20 ]
+▁▁██
+
+[ 0 999 4000 4999 7000 7999 ]
+▁▁▅▅██
+
 -------  Special_divisors.el  -------
-1 2 3 4 5 6 7 8 9 11 13 17 19 22 23 26 27 29 31 33 37 39 41 43 44 46 47 53 55 59 61 62 66 67 69 71 73 77 79 82 83 86 88 89 93 97 99 101 103 107 109 113 121 127 131 137 139 143 149 151 157 163 167 169 173 179 181 187 191 193 197 199 -------  Special_neighbor_primes.el  -------
+1 2 3 4 5 6 7 8 9 11 13 17 19 22 23 26 27 29 31 33 37 39 41 43 44 46 47 53 55 59 61 62 66 67 69 71 73 77 79 82 83 86 88 89 93 97 99 101 103 107 109 113 121 127 131 137 139 143 149 151 157 163 167 169 173 179 181 187 191 193 197 199 -------  Special_factorials.el  -------
+First 9 super factorials:
+1 1 2 12 288 34560 24883200 125411328000 5056584744960000 
+
+First 7 hyper factorials:
+1 1 4 108 27648 86400000 4031078400000 
+
+First 10 alternating factorials:
+0 1 1 5 19 101 619 4421 35899 326981 
+
+First 5 exponential factorials:
+0 1 2 9 262144 
+
+Inverse factorial:
+1 -> 0
+2 -> 2
+6 -> 3
+24 -> 4
+120 -> 5
+720 -> 6
+5040 -> 7
+40320 -> 8
+362880 -> 9
+3628800 -> 10
+119 -> no solution
+-------  Special_neighbor_primes.el  -------
 (2 3) (3 5) (5 7) (7 11) (11 13) (13 17) (19 23) (29 31) (31 37) (41 43) (43 47) (61 67) (67 71) (73 79) -------  Special_pythagorean_triplet.el  -------
-200 375 425
--------  Spinning_rod_animation+Text.el  -------
+31875000
+-------  Specific_characters.el  -------
+[ 2 1 0 ]
+-------  Spelling_of_ordinal_numbers.el  -------
+first
+second
+third
+fourth
+fifth
+eleventh
+sixty-fifth
+one hundredth
+one hundred first
+two hundred seventy-second
+twenty-three thousand four hundred fifty-sixth
+eight quadrillion seven trillion six billion five million four thousand third
+-------  Sphenic_numbers.el  -------
+Sphenic numbers less than 1000:
+30 42 66 70 78 102 105 110 114 130 138 154 165 170 174 
+182 186 190 195 222 230 231 238 246 255 258 266 273 282 285 
+286 290 310 318 322 345 354 357 366 370 374 385 399 402 406 
+410 418 426 429 430 434 435 438 442 455 465 470 474 483 494 
+498 506 518 530 534 555 561 574 582 590 595 598 602 606 609 
+610 615 618 627 638 642 645 646 651 654 658 663 665 670 678 
+682 705 710 715 730 741 742 754 759 762 777 782 786 790 795 
+805 806 814 822 826 830 834 854 861 874 885 890 894 897 902 
+903 906 915 935 938 942 946 957 962 969 970 978 986 987 994 
+
+Sphenic triplets less than 10000:
+[1309-1311] [1885-1887] [2013-2015] 
+[2665-2667] [3729-3731] [5133-5135] 
+[6061-6063] [6213-6215] [6305-6307] 
+[6477-6479] [6853-6855] [6985-6987] 
+[7257-7259] [7953-7955] [8393-8395] 
+[8533-8535] [8785-8787] [9213-9215] 
+[9453-9455] [9821-9823] [9877-9879] 
+-------  Spinning_rod_animation@Text.el  -------
 -------  Spiral_matrix.el  -------
   0  1  2  3  4
  15 16 17 18  5
@@ -6048,6 +6255,8 @@ g, HHH, 5, YY, ++, ///, \
 287129523414791 has factors 6059887 47381993
 Number 9007199254740931 is too big
 9007199254740931 was not factored.
+-------  Square_root_by_hand.el  -------
+14142135623730950488016887242096980785696718753769480731766797379907324784621070388503875343276415727350138462309122970249248360558507372126441214970999358314132226659275055927557999505011527820605714701095599716059702745345968620147285174186408891986095523292304843087143214508397626036279952514079896872533965463318088296406206152583523950547457502877599617298355752203375318570113543746034084988471603868999706990048150305440277903164542478230684929369186215805784631115966687130130156185689872372
 -------  Square-free_integers.el  -------
 From 1 to 145:
 1 2 3 5 6 7 10 11 13 14 15 17 19 21 22 23 26 29 30 31 33 34 35 37 38 39 41 42 43 46 47 51 53 55 57 58 59 61 62 65 66 67 69 70 71 73 74 77 78 79 82 83 85 86 87 89 91 93 94 95 97 101 102 103 105 106 107 109 110 111 113 114 115 118 119 122 123 127 129 130 131 133 134 137 138 139 141 142 143 145 
@@ -6127,7 +6336,8 @@ Unstable: hope and bob
 -------  Stair-climbing_puzzle.el  -------
 -------  Start_from_a_main_routine.el  -------
 Hello from main!
--------  Statistics+Basic.el  -------
+-------  Statistics@Basic.el  -------
+-------  Statistics@Normal_distribution.el  -------
 -------  Steady_squares.el  -------
 1 * 1 = 1
 5 * 5 = 25
@@ -6164,7 +6374,8 @@ t0 = 1.0 : no answer
 11 | 1 3 3 3 3 4 4 4 5 5 5 6 6 6 6 7 7 7 7 8 8 9 9
 12 | 0 0 1 1 2 2 3 4 4 4 5 5 5 6 7 7 7 7 8 8
 13 | 1 2 3 9
-14 | 1 6-------  Stern-Brocot_sequence.el  -------
+14 | 1 6
+-------  Stern-Brocot_sequence.el  -------
 Task 2: 1 1 2 1 3 2 3 1 4 3 5 2 5 3 4 
 
 Task 3:
@@ -6212,6 +6423,10 @@ Unsigned Stirling numbers of the second kind:
 0 1 511 9330 34105 42525 22827 5880 750 45 1 
 0 1 1023 28501 145750 246730 179487 63987 11880 1155 55 1 
 0 1 2047 86526 611501 1379400 1323652 627396 159027 22275 1705 66 1 
+-------  Straddling_checkerboard.el  -------
+In the winter 1965/we were hungry/just barely alive
+851250658510769169969669562650650702563524767622663912037028673288640
+INTHEWINTER1965/WEWEREHUNGRY/JUSTBARELYALIVE
 -------  Strange_numbers.el  -------
 130 131 135 136 138 141 142 146 147 149 161 163 164 168 169 181 183 185 186 202 203 205 207 241 242 246 247 249 250 252 253 257 258 270 272 274 275 279 292 294 296 297 302 303 305 307 313 314 316 318 350 352 353 357 358 361 363 364 368 369 381 383 385 386 413 414 416 418 420 424 425 427 429 461 463 464 468 469 470 472 474 475 479 492 494 496 497 -------  Strange_plus_numbers.el  -------
 111 112 114 116 120 121 123 125 129 141 143 147 149 161 165 167 202 203 205 207 211 212 214 216 230 232 234 238 250 252 256 258 292 294 298 302 303 305 307 320 321 323 325 329 341 343 347 349 383 385 389 411 412 414 416 430 432 434 438 470 474 476 492 494 498 -------  Strange_unique_prime_triplets.el  -------
@@ -6243,6 +6458,15 @@ EasyLang
 -------  Strip_a_set_of_characters_from_a_string.el  -------
 Sh ws  soul strppr. Sh took my hrt!
 -------  Strip_block_comments.el  -------
+
+ function subroutine() {
+  a =  b + c ;
+ }
+ 
+
+ 
+  function something() {
+  }
 -------  Strip_comments_from_a_string.el  -------
 Regular string.
 With a hash.
@@ -6251,7 +6475,7 @@ With a semicolon.
 No comment.
 -------  Strip_control_codes_and_extended_characters_from_a_string.el  -------
 Hell world
--------  Strip_whitespace_from_a_string+Top_and_tail.el  -------
+-------  Strip_whitespace_from_a_string@Top_and_tail.el  -------
 Hello world.
     Hello world.
 Hello world.
@@ -6266,6 +6490,8 @@ First 37: 3 7 13 19 23 31 43 47 61 73 83 89 103 109 113 131 139 151 167 181 193 
 Count lower 10e6: 37780
 Count lower 10e7: 321750
 
+-------  Sturmian_word.el  -------
+01001010010010100101001001010010
 -------  Sub-unit_squares.el  -------
  1 36 3136 24336 5973136-------  Subleq.el  -------
 Hello, world!
@@ -6273,13 +6499,10 @@ Hello, world!
 archbishop balm bonnet brute centipede cobol covariate departure deploy diophantine efferent elysee eradicate escritoire exorcism fiat filmy flatworm infra isis mincemeat moresby mycenae speakeasy -------  Substitution_cipher.el  -------
 dqnnQ YQbnx
 Hello world
+-------  Substring_primes.el  -------
+2 3 5 7 23 37 53 73 373 
 -------  Substring.el  -------
-09:18
-09:18:40
-Hallo Österreich
-Ös
-reich
--------  Substring+Top_and_tail.el  -------
+-------  Substring@Top_and_tail.el  -------
 Easylan
 asylang
 asylan
@@ -6340,9 +6563,21 @@ F(1,3,3) = 35
 9 6 7  4 1 5  3 2 8  
 2 5 3  6 9 8  4 1 7  
 
+-------  Suffixation_of_decimal_numbers.el  -------
+87,654,321 : 87.654M
+-998,877,665,544,332,211,000 3 : -998.878E
++112,233 0 : +112K
+16,777,216 1 : 16.8M
+456,789,100,000,000 2 : 456.79T
+456,789,100,000,000 5 base:2 : 415.44727Ti
+456,789,100,000.000e+00 0 : 457G
++16777216 base:2 : +16Mi
+1.2e101 : 12googol
 -------  Sum_and_product_of_an_array.el  -------
 Sum: 84
 Product: 2793000
+-------  Sum_and_product_puzzle.el  -------
+17 (4+13)
 -------  Sum_digits_of_an_integer.el  -------
 1
 10
@@ -6443,11 +6678,32 @@ Show the ten highest numbers that can be expressed
 162: 70241
 -------  Summation_of_primes.el  -------
 142913828922
+-------  Sunflower_fractal.el  -------
+-------  Super-d_numbers.el  -------
+2: 19 31 69 81 105 106 107 119 127 131
+3: 261 462 471 481 558 753 1036 1046 1471 1645
+4: 1168 4972 7423 7752 8431 10267 11317 11487 11549 11680
+5: 4602 5517 7539 12955 14555 20137 20379 26629 32767 35689
+6: 27257 272570 302693 323576 364509 502785 513675 537771 676657 678146
 -------  Super-Poulet_numbers.el  -------
 341 1387 2047 2701 3277 4033 4369 4681 5461 7957 8321 10261 13747 14491 15709 18721 19951 23377 31417 31609 
 
 109 1016801
 -------  Superellipse.el  -------
+-------  Superpermutation_minimisation.el  -------
+superperm(0) len = 0
+superperm(1) len = 1
+superperm(2) len = 3
+superperm(3) len = 9
+superperm(4) len = 33
+superperm(5) len = 153
+superperm(6) len = 873
+superperm(7) len = 5913
+superperm(8) len = 46233
+superperm(9) len = 409113
+superperm(10) len = 4037913
+superperm(11) len = 43954713
+-------  Sutherland-Hodgman_polygon_clipping.el  -------
 -------  Sylvester's_sequence.el  -------
 2
 3
@@ -6464,7 +6720,6 @@ Show the ten highest numbers that can be expressed
 -------  Symmetric_difference.el  -------
 [ "Serena" "Jim" ]
 -------  System_time.el  -------
-2025-05-01 09:19:22
 -------  Tau_function.el  -------
 1 2 2 3 2 4 2 4 3 4 2 6 2 4 4 5 2 6 2 6 4 4 2 8 3 4 4 6 2 8 2 6 4 4 4 9 2 4 4 8 2 8 2 6 6 4 2 10 3 6 4 6 2 8 4 8 4 4 2 12 2 4 6 7 4 8 2 6 4 8 2 12 2 4 6 6 4 8 2 10 5 4 2 12 4 4 4 8 2 12 4 6 4 4 4 12 2 6 6 9 -------  Tau_number.el  -------
 1 2 8 9 12 18 24 36 40 56 60 72 80 84 88 96 104 108 128 132 136 152 156 180 184 204 225 228 232 240 248 252 276 288 296 328 344 348 360 372 376 384 396 424 441 444 448 450 468 472 480 488 492 504 516 536 560 564 568 584 600 612 625 632 636 640 664 672 684 708 712 720 732 776 792 804 808 824 828 852 856 864 872 876 880 882 896 904 936 948 972 996 1016 1040 1044 1048 1056 1068 1089 1096 -------  Taxicab_numbers.el  -------
@@ -6692,6 +6947,14 @@ Three french hens
 Two turtle doves and
 A partridge in a pear tree.
 
+-------  Three_word_location.el  -------
+Latitude: 28.3852
+Longitude: -81.5638
+
+Three words: W18497 W11324 W01322
+
+Latitude: 28.3852
+Longitude: -81.5638
 -------  Thue-Morse.el  -------
 0
 01
@@ -6703,14 +6966,11 @@ A partridge in a pear tree.
 01101001100101101001011001101001100101100110100101101001100101101001011001101001011010011001011001101001100101101001011001101001
 -------  Tic-tac-toe.el  -------
 -------  Time_a_function.el  -------
-5000000050000000
-0.57
-5000000050000000
-0.80
 -------  Tokenize_a_string_with_escaping.el  -------
 [ "one|uno" "" "three^^" "four^|cuatro" "" ]
 -------  Tokenize_a_string.el  -------
-Hello.How.Are.You.Today.-------  Top_rank_per_group.el  -------
+Hello.How.Are.You.Today
+-------  Top_rank_per_group.el  -------
 D050 47000 John Rappl
 D050 21900 Nathan Adams
 
@@ -6722,6 +6982,33 @@ D190 29900 Timothy Grove
 
 D202 49500 Rich Holcomb
 D202 27800 Claire Buckman
+-------  Topological_sort.el  -------
+std
+synopsys
+ieee
+std_cell_lib
+dware
+dw02
+gtech
+dw01
+ramlib
+des_system_lib
+dw03
+dw04
+dw05
+dw06
+dw07
+-------  Topswops.el  -------
+1: 0
+2: 1
+3: 2
+4: 4
+5: 7
+6: 10
+7: 16
+8: 22
+9: 30
+10: 38
 -------  Total_circles_area.el  -------
 -------  Totient_function.el  -------
   N Prim Phi
@@ -6791,6 +7078,31 @@ preorder: 1 2 4 7 5 3 6 8 9
 inorder: 7 4 2 5 1 8 6 9 3
 postorder: 7 4 5 2 8 9 6 3 1
 level-order: 1 2 3 4 5 6 7 8
+-------  Triangular_numbers.el  -------
+Triangular:
+[ 0 1 3 6 10 15 21 28 36 45 55 66 78 91 105 120 136 153 171 190 210 231 253 276 300 325 351 378 406 435 ]
+
+Tetrahedral:
+[ 0 1 4 10 20 35 56 84 120 165 220 286 364 455 560 680 816 969 1140 1330 1540 1771 2024 2300 2600 2925 3276 3654 4060 4495 ]
+
+Pentatopic:
+[ 0 1 5 15 35 70 126 210 330 495 715 1001 1365 1820 2380 3060 3876 4845 5985 7315 8855 10626 12650 14950 17550 20475 23751 27405 31465 35960 ]
+
+12-Simplex:
+[ 0 1 13 91 455 1820 6188 18564 50388 125970 293930 646646 1352078 2704156 5200300 9657700 17383860 30421755 51895935 86493225 141120525 225792840 354817320 548354040 834451800 1251677700 1852482996 2707475148 3910797436 5586853480 ]
+
+Roots of 7140
+119 34.00 18.88
+
+Roots of 21408696
+6543 503.56 149.06
+
+Roots of 26728085384
+231205.41 5432.00 893.44
+
+Roots of 14545501785001
+5393607.16 44355.78 4321
+
 -------  Trigonometric_functions.el  -------
 0.7071 0.7071
 0.7071 0.7071
@@ -6849,8 +7161,37 @@ level-order: 1 2 3 4 5 6 7 8
 -------  Truncatable_primes.el  -------
 998443
 739399
+-------  Truth_table.el  -------
+Enter postfix Boolean expressions.
+Operators: & | ! ^
+Variables: single letters except T/F
+Empty line = exit
+
+Boolean expression: 
+A  B  AB^
+=========
+F  F  F
+F  T  T
+T  F  T
+T  T  F
+
+Boolean expression: 
+A  B  C  ABC^|
+==============
+F  F  F  F
+F  F  T  T
+F  T  F  T
+F  T  T  F
+T  F  F  T
+T  F  T  T
+T  T  F  T
+T  T  T  T
+
+Boolean expression: 
 -------  Twelve_statements.el  -------
 [ 1 0 1 1 0 1 1 0 0 0 1 0 ]
+-------  Twin_primes_whose_sum_is_square_number.el  -------
+(17 19) (71 73) (881 883) (1151 1153) (2591 2593) (3527 3529) (4049 4051) (15137 15139) (20807 20809) (34847 34849) (46817 46819) (69191 69193) (83231 83233) (103967 103969) (112337 112339) (149057 149059) (176417 176419) (179999 180001) (206081 206083) (281249 281251) (362951 362953) (388961 388963) (438047 438049) (472391 472393) (478241 478243) (538721 538723) (649799 649801) (734471 734473) (808991 808993) (960497 960499) (1080449 1080451) (1143071 1143073) (1152161 1152163) (1254527 1254529) (1566449 1566451) (1685447 1685449) (1808801 1808803) (1960199 1960201) (1972097 1972099) (2268449 2268451) (2411207 2411209) (2544767 2544769) (2558321 2558323) (2681927 2681929) (2836961 2836963) (3516551 3516553) (3612671 3612673) (3693761 3693763) (3841991 3841993) (3959297 3959299) (4164497 4164499) (4339457 4339459) (4464071 4464073) (4536071 4536073) (4792607 4792609) (5385761 5385763) (5664977 5664979) (6118001 6118003) (6329681 6329683) (6415361 6415363) (6986321 6986323) (7166897 7166899) (7746047 7746049) (7793351 7793353) (8128511 8128513) (8694449 8694451) (8819999 8820001) (9305297 9305299) (9750527 9750529) 
 -------  Twin_primes.el  -------
 twin prime pairs < 10 : 2
 twin prime pairs < 100 : 8
@@ -6922,6 +7263,19 @@ aɣc
 a\uDD1Ec --> error: unexpected low surrogate code point
 a\uD834c --> error: unexpected end
 a\uD834\u263Ac --> error: expected low surrogate code point
+-------  Unicode_strings.el  -------
+4
+你 20320
+好 22909
+  32
+😀 128512
+2
+😀
+你好 😀
+🇮🇹
+2
+🇮 127470
+🇹 127481
 -------  Unique_characters_in_each_string.el  -------
 1 2 3 a b c -------  Unique_characters.el  -------
 156bgstz-------  Universal_Turing_machine.el  -------
@@ -6966,10 +7320,28 @@ Steps: 47176870
 [ 8 1 8 7 7 8 8 4 1 8 1 3 ]
 [ 7 0 6 4 6 6 7 4 3 0 3 0 ]
 [ 6 5 3 4 8 3 5 4 0 4 3 5 ]
+-------  Upside-down_numbers.el  -------
+First fifty upside-downs:
+5 19 28 37 46 55 64 73 82 91 159 258 357 456 555 654 753 852 951 1199 1289 1379 1469 1559 1649 1739 1829 1919 2198 2288 2378 2468 2558 2648 2738 2828 2918 3197 3287 3377 3467 3557 3647 3737 3827 3917 4196 4286 4376 4466 
+
+500th : 494616
+5000th : 56546545
+50000th : 6441469664
+500000th : 729664644183
+5000000th : 82485246852682
+-------  URL_decoding.el  -------
+https://bn.wikipedia.org/wiki/রোসেটা_কোড
 -------  URL_encoding.el  -------
-http%3A%2F%2Ffoo%20bar%2F
+https%3A%2F%2Fbn%2Ewikipedia%2Eorg%2Fwiki%2F%E0%A6%B0%E0%A7%8B%E0%A6%B8%E0%A7%87%E0%A6%9F%E0%A6%BE%5F%E0%A6%95%E0%A7%8B%E0%A6%A1
 -------  Useless_instructions.el  -------
-1 2 3 1 2 3 -------  User_input+Text.el  -------
+1 2 3 1 2 3 -------  User_input@Text.el  -------
+-------  UTF-8_encode_and_decode.el  -------
+A  ->  [ 65 ]  ->  A
+ö  ->  [ 195 182 ]  ->  ö
+Ж  ->  [ 208 150 ]  ->  Ж
+€  ->  [ 226 130 172 ]  ->  €
+𝄞  ->  [ 240 157 132 158 ]  ->  𝄞
+你好 😊  ->  [ 228 189 160 229 165 189 32 240 159 152 138 ]  ->  你好 😊
 -------  Validate_International_Securities_Identification_Number.el  -------
 US0378331005 is valid
 US0373831005 is invalid
@@ -7031,11 +7403,131 @@ easylang.online
 [ 3 4 ]
 [ 55 77 ]
 [ 2.50 3.50 ]
--------  Verify_distribution_uniformity+Naive.el  -------
+-------  Verhoeff_algorithm.el  -------
+Check digit calculations for '236'
+
+ i  nᵢ  p[i,nᵢ]  c
+------------------
+ 0  0      0     0
+ 1  6      3     3
+ 2  3      3     1
+ 3  2      1     2
+
+inv[2] = 3
+
+The check digit for '236' is '3'.
+Validation calculations for '2363'
+
+ i  nᵢ  p[i,nᵢ]  c
+------------------
+ 0  3      3     3
+ 1  6      3     1
+ 2  3      3     4
+ 3  2      1     0
+
+The validation for '2363' is correct.
+Validation calculations for '23639'
+
+ i  nᵢ  p[i,nᵢ]  c
+------------------
+ 0  9      9     9
+ 1  3      6     3
+ 2  6      6     9
+ 3  3      6     3
+ 4  2      5     8
+
+The validation for '23639' is incorrect.
+Check digit calculations for '12345'
+
+ i  nᵢ  p[i,nᵢ]  c
+------------------
+ 0  0      0     0
+ 1  5      8     8
+ 2  4      7     1
+ 3  3      6     7
+ 4  2      5     2
+ 5  1      2     4
+
+inv[4] = 1
+
+The check digit for '12345' is '1'.
+Validation calculations for '123451'
+
+ i  nᵢ  p[i,nᵢ]  c
+------------------
+ 0  1      1     1
+ 1  5      8     9
+ 2  4      7     2
+ 3  3      6     8
+ 4  2      5     3
+ 5  1      2     0
+
+The validation for '123451' is correct.
+Validation calculations for '1234519'
+
+ i  nᵢ  p[i,nᵢ]  c
+------------------
+ 0  9      9     9
+ 1  1      5     4
+ 2  5      9     8
+ 3  4      0     8
+ 4  3      3     5
+ 5  2      8     2
+ 6  1      7     9
+
+The validation for '1234519' is incorrect.
+
+The check digit for '123456789012' is '0'.
+
+The validation for '1234567890120' is correct.
+
+The validation for '12345678901209' is incorrect.
+-------  Verify_distribution_uniformity@Naive.el  -------
 -------  Vibrating_rectangles.el  -------
 -------  Vigenère_cipher.el  -------
 WMCEEIKLGRPIFVMEUGXQPWQVIOIAVEYXUEKFKBTALVXTGAFXYEVKPAGY
 BEWARETHEJABBERWOCKMYSONTHEJAWSTHATBITETHECLAWSTHATCATCH
+-------  Vigenère_cipher@Cryptanalysis.el  -------
+Fit   Key
+2.56  E <--- best so far
+2.02  EC <--- best so far
+2.25  TEE
+1.66  THEC <--- best so far
+1.99  EEEPU
+1.80  TCECEC
+0.84  THECSAS <--- best so far
+1.38  TNQGAHET
+1.67  VEIDSEGNT
+1.48  ECEGAGQEDS
+1.37  TNLUSRXPDAJ
+1.05  XLECTHQGTHEC
+1.16  LLJTDGFNOTENR
+0.13  THECHESHIRECAT <--- best so far
+1.29  XNTOOEEXDTGQTNH
+0.92  TJTSAEETIXHPXHNE
+0.83  AZRAXUHGJLREEXIEE
+1.23  VNIFEPALEPTSXSEXUC
+0.92  FTCAITCSLVTEZDUDEHS
+0.81  EQXGAHWTTQECEWUGXHNS
+
+Best key: THECHESHIRECAT
+Decrypted text:
+THISWASTHEPOEMTHATALICEREADJABBERWOCKYTWASBRILLIGANDTHESLITHYTOVESDIDGYREANDGIMBLEINTHEWABEALLMIMSYWERETHEBOROGOVESANDTHEMOMERATHSOUTGRABEBEWARETHEJABBERWOCKMYSONTHEJAWSTHATBITETHECLAWSTHATCATCHBEWARETHEJUBJUBBIRDANDSHUNTHEFRUMIOUSBANDERSNATCHHETOOKHISVORPALSWORDINHANDLONGTIMETHEMANXOMEFOEHESOUGHTSORESTEDHEBYTHETUMTUMTREEANDSTOODAWHILEINTHOUGHTANDASINUFFISHTHOUGHTHESTOODTHEJABBERWOCKWITHEYESOFFLAMECAMEWHIFFLINGTHROUGHTHETULGEYWOODANDBURBLEDASITCAMEONETWOONETWOANDTHROUGHANDTHROUGHTHEVORPALBLADEWENTSNICKERSNACKHELEFTITDEADANDWITHITSHEADHEWENTGALUMPHINGBACKANDHASTTHOUSLAINTHEJABBERWOCKCOMETOMYARMSMYBEAMISHBOYOFRABJOUSDAYCALLOOHCALLAYHECHORTLEDINHISJOYTWASBRILLIGANDTHESLITHYTOVESDIDGYREANDGIMBLEINTHEWABEALLMIMSYWERETHEBOROGOVESANDTHEMOMERATHSOUTGRABEITSEEMSVERYPRETTYSHESAIDWHENSHEHADFINISHEDITBUTITSRATHERHARDTOUNDERSTAND
+-------  Vile_and_Dopey_numbers.el  -------
+1 3 4 5 7 9 11 12 13 15 16 17 19 20 21 23 25 27 28 29 31 33 35 36 37 
+
+2 6 8 10 14 18 22 24 26 30 32 34 38 40 42 46 50 54 56 58 62 66 70 72 74 
+
+2:	1	1
+4:	3	1
+8:	5	3
+16:	11	5
+32:	21	11
+64:	43	21
+128:	85	43
+256:	171	85
+512:	341	171
+1024:	683	341
 -------  Vogel's_approximation_method.el  -------
 [ [ 0 0 50 0 0 ] [ 30 0 20 0 10 ] [ 0 20 0 30 0 ] [ 0 0 0 0 50 ] ]
 Total cost: 3100
@@ -7076,6 +7568,7 @@ Walsh matrix of order 4
   1  1 -1 -1 -1 -1  1  1 -1 -1  1  1  1  1 -1 -1
   1 -1 -1  1 -1  1  1 -1 -1  1  1 -1  1 -1 -1  1
 
+-------  War_card_game.el  -------
 -------  Wasteful,_equidigital_and_frugal_numbers.el  -------
 First 50 Wasteful numbers: 
 
@@ -7186,6 +7679,27 @@ ball was her favorite plaything.’
 mathematician
 -------  Words_from_neighbour_ones.el  -------
 applicate
+-------  World_Cup_group_stage.el  -------
+POINTS       0   1   2   3   4   5   6   7   8   9
+--------------------------------------------------
+1st place    0   0   0   1  14 148 152 306   0 108
+2nd place    0   0   4  33 338 172 164  18   0   0
+3rd place    0  18 136 273 290   4   8   0   0   0
+4th place  108 306 184 125   6   0   0   0   0   0
+-------  Worthwhile_task_shaving.el  -------
+           |                How Often You Do the Task
+Shaved-off | 50/Day     5/Day      Daily      Weekly     Monthly    Yearly
+-----------------------------------------------------------------------------
+1 Second   | 1 Day      2 Hours    30 Minutes 4 Minutes  1 Minute   5 Seconds  
+5 Seconds  | 5 Days     12 Hours   2 Hours    21 Minutes 5 Minutes  25 Seconds 
+30 Seconds | 4 Weeks    3 Days     15 Hours   2 Hours    30 Minutes 2 Minutes  
+1 Minute   | 2 Months   6 Days     1 Day      4 Hours    1 Hour     5 Minutes  
+5 Minutes  | 10 Months  4 Weeks    6 Days     21 Hours   5 Hours    25 Minutes 
+30 Minutes |            6 Months   5 Weeks    5 Days     1 Day      2 Hours    
+1 Hour     |                       2 Months   10 Days    2 Days     5 Hours    
+6 Hours    |                                  2 Months   2 Weeks    1 Day      
+1 Day      |                                  8 Months   8 Weeks    5 Days     
+-------  Xiaolin_Wu's_line_algorithm.el  -------
 -------  Yellowstone_sequence.el  -------
 First 30 values in the yellowstone sequence:
 [ 1 2 3 4 9 8 15 14 5 6 25 12 35 16 7 10 21 20 27 22 39 11 13 33 26 45 28 51 32 17 ]
@@ -7214,6 +7728,23 @@ First 30 values in the yellowstone sequence:
  20 101010
 -------  Zero_to_the_zero_power.el  -------
 1
+-------  Zhang-Suen_thinning_algorithm.el  -------
+ #################                   #############       
+     #          #                    #                   
+     #          #                  ###                   
+     #          #                 ##                     
+     #          #                #                       
+     #          #                #                       
+     #          #                #                       
+     ############               #                        
+     #          #               #                        
+     #          #                #                       
+     #          #                #                       
+     #          #                #                       
+     #           #                ##                     
+     #           #                 ####                 #
+     #           #                    #                 #
+ ########     ####### ######         ############# ######
 -------  Zig-zag_matrix.el  -------
   0  1  5  6 14 15
   2  4  7 13 16 25

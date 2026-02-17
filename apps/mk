@@ -463,13 +463,13 @@ button:enabled:hover {background-color:#07d}
 
 <canvas id=canv1 style="float:right;width:150px;height:150px"></canvas>
 
-An easy online programming language and development environment with tutorials. For teaching and learning programming, but not only.
+An easy browser-based programming language with integrated graphics. For teaching and learning programming, but not only.
 
 <p>
 <a class=start href="/ide/">Programming IDE</a>
 <p>
 
-The browser-based development environment with tab completion, debugger and tutorials. It can be used offline.
+The browser-based development environment with tab completion, debugger, and tutorials. Get started right away. Once launched online, it can then be used offline.
 </p>
 
 <a class=start href="/run/">Code runner</a>

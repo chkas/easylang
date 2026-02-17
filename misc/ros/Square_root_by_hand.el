@@ -31,19 +31,19 @@ func[] bnadds a[] c .
    return r[]
 .
 func[] bnsub a[] b[] .
-   for i = 1 to len a[]
-      ai = a[i]
-      bi = 0
-      if i <= len b[] : bi = b[i]
-      bi += c
+   len r[] len a[]
+   for i = 1 to len r[]
+      v = 0
+      if i <= len b[] : v = b[i]
+      h = a[i] - v - c
       c = 0
-      if bi > ai
-         ai += 10000000
+      if h < 0
+         h += 10000000
          c = 1
       .
-      r[] &= ai - bi
+      r[i] = h
    .
-   while r[$] = 0 : len r[] -1
+   while len r[] > 1 and r[$] = 0 : len r[] -1
    return r[]
 .
 func$ str bn[] .
