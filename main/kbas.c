@@ -100,19 +100,22 @@ typedef struct node ND;
 
 static char cod;
 
-//#define BLSZ 256
-#define BLSZ 512
-//#define BLSZ 1024
+#define BLSZ 511
+
+ND dummy_nd;
 ND progmem0[BLSZ + 1];
 
 ND* progmem = progmem0;
+ND* lib_progmem;
 ND* ndnxt;
 
 ND* mknd(void) {
-	if (!cod) return progmem;
+	if (!cod) return &dummy_nd;
 	if (ndnxt >= progmem + BLSZ - 2) {
 //		fprintf(stderr, "increase memory\n");
 		ND* nd = malloc((BLSZ + 1) * sizeof(ND));
+//?
+//memset(nd, 0, (BLSZ + 1) * sizeof(ND));
 		progmem[BLSZ].ex = nd;
 		progmem = nd;
 		progmem[BLSZ].ex = NULL;
@@ -121,11 +124,13 @@ ND* mknd(void) {
 	return ndnxt++;
 }
 ND* mkndx(void) {
-	if (!cod) return progmem + 1;
+	if (!cod) return &dummy_nd;
 	return ndnxt++;
 }
 S void code_free() {
 	ND* nd = progmem0[BLSZ].ex;
+
+	if (lib_progmem) nd = lib_progmem[BLSZ].ex;
 
 	while (nd) {
 		ND* h = nd[BLSZ].ex;
@@ -133,9 +138,15 @@ S void code_free() {
 		free(nd);
 		nd = h;
 	}
-	progmem = progmem0;
+	if (lib_progmem) {
+		progmem = lib_progmem;
+		ndnxt = progmem + BLSZ;
+	}
+	else {
+		progmem = progmem0;
+		ndnxt = progmem;
+	}
 	progmem[BLSZ].ex = NULL;
-	ndnxt = progmem;
 }
 
 
@@ -163,14 +174,16 @@ const char* tabstrs[] =
 	":= :in :to :range0 ", ":to :downto :step "
 };
 
-static char is_tab;
+static byte is_tab;
+static byte is_setlib;
+
 static int caret_pos;
 
 #include "klex.h"
 #include "kfunc.h"
 #include "kwasm.h"
 
-static char is_enter;
+static byte is_enter;
 
 #include "kparse.h"
 
@@ -453,12 +466,15 @@ void make_tabbuf(char* ts) {
 	codestr[codestrln] = 0;
 }
 
+static ND* lib_nd;
+
 extern int parse(char* str, int opt, int caret) {
 
-//pr("parse sizeof(ARR) %d", sizeof(ARR));
-
-//extern int parse(const char* str, int opt, int caret) {
+	//pr("parse %d", opt);
 	char ts[12];
+
+	is_setlib = (opt & 32);
+
 	syntax_high = (opt & 2);
 	if (syntax_high) {
 		bold1 = "<b>";
@@ -478,7 +494,7 @@ extern int parse(char* str, int opt, int caret) {
 
 	is_tab = 0;
 	char tabchar = 0;
-	if (opt & 1) {
+	if (opt & 1) {		// tab
 		//pr("slen  %d", slen);
 		is_tab = 1;
 		int h = slen - 1;
@@ -507,14 +523,24 @@ extern int parse(char* str, int opt, int caret) {
 	if (tok == t_eof && is_enter) errorx(ERR_CMD0);
 
 	ND* sq0 = parse_sequ0();
-	proc_p->start = sq0;
 
+	if (lib_nd) {
+		lib_nd->next = sq0;
+	}
+	else {
+		proc_p->start = sq0;
+	}
+	if (is_setlib) {
+		ND* nd = proc_p->start;
+		while (nd->next) nd = nd->next;
+		lib_nd = nd;
+	}
 	if (tok != t_eof || is_enter) errorx(ERR_CMD1);
 
-	if (wasm) {
+	//if (wasm) {
+	if (wasm && cod) {
 		if (errn || fastfunc_errline != -1) {
-			free(wasm);
-			wasm = NULL;
+			wasm_clean();
 		}
 		else build_fastfuncs();
 	}
@@ -570,11 +596,11 @@ extern int parse(char* str, int opt, int caret) {
 	}
 
 	if (opt & 16) {		// strict mode
-		struct proc* pr = proc_p;
-		while (pr < proc_p + proc_len) {
-			struct vname *vn = pr->vname_p;
-			if (pr->vname_p) {	// because NULL + 0 is UB
-				while (vn < pr->vname_p + pr->vname_len) {
+		struct proc* p = proc_p;
+		while (p < proc_p + proc_len) {
+			struct vname *vn = p->vname_p;
+			if (p->vname_p) {	// because NULL + 0 is UB
+				while (vn < p->vname_p + p->vname_len) {
 					if (vn->typ <= VAR_NUMARRARR && vn->access != RW) {
 						if (vn->access == RD) error_pos("never set", vn->srcpos);
 						else error_pos("never used", vn->srcpos);
@@ -583,11 +609,11 @@ extern int parse(char* str, int opt, int caret) {
 					vn += 1;
 				}
 			}
-			if (pr->start == NULL && pr != proc_p) {
-				error_pos("not implemented", pr->varcnt[0]);
+			if (p->start == NULL && p != proc_p) {
+				error_pos("not implemented", p->varcnt[0]);
 				return codestrln;
 			}
-			pr += 1;
+			p += 1;
 		}
 	}
 
@@ -610,6 +636,16 @@ extern int parse(char* str, int opt, int caret) {
 			seq.animate || seq.timer) {
 		mask |= 8;
 	}
+
+	if (is_setlib) {
+		lib_cstrs_len = cstrs_len;
+		lib_proc_len = proc_len;
+		lib_procdecl_len = procdecl_len;
+		lib_progmem = progmem;
+		lib_procp_vname_len = proc_p->vname_len;
+		lib_wasmi = wasmi;
+		lib_fastfuncn = fastfuncn;
+	}
 	return -mask;
 }
 
@@ -622,8 +658,21 @@ extern int caret(void) {
 	return caret_pos;
 }
 
-extern void k_free(void) {
-	free_rt();
+extern void kfunc(int id) {
+	if (id == 0) {
+		free_rt();
+	}
+	else if (id == 1) {
+		// unset lib
+		lib_nd = NULL;
+		lib_cstrs_len = 0;
+		lib_proc_len = 0;
+		lib_procdecl_len = 0;
+		lib_progmem = 0;
+		lib_wasmi = 0;
+		lib_fastfuncn = 0;
+		parse_clean();
+	}
 }
 
 static const char* progname = "";

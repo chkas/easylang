@@ -94,7 +94,7 @@ pre b{font-weight:500}
 pre s{text-decoration:none;font-weight:500}
 pre u{text-decoration:none}
 
-#dbg {
+.botTxt {
 	margin:0px;
 	margin-top:2px;
 	width:calc(100% - 10px);
@@ -212,7 +212,7 @@ h3{background:#9df;color:#000}
 #docx{background:#f0f8ff}
 .tut pre{background:#fff}
 #inp{background:#fff}
-#dbg{background:#f0f8ff;color:#000}
+.botTxt{background:#f0f8ff;color:#000}
 tt{border-color:#ccc;background:#fff;color:#000}
 
 pre i{color:#088}
@@ -288,7 +288,7 @@ button:enabled{background:#555;color:#fff}
 button:hover:enabled{background:#999}
 button:active:enabled{background:#bbb}
 #dbgBtn.act{background:#aaa}
-#dbg{background:#222;color:#ddd}
+.botTxt{background:#222;color:#ddd}
 .lnk:hover{background:#666}
 select{background:#333;color:#eee}
 select:hover:enabled{background:#999}
@@ -315,7 +315,7 @@ h3{background:#ccc;color:#444}
 #docx{background:#eee}
 .tut pre{background:#f8f8f8}
 #inp{background:#fff}
-#dbg{background:#eee;color:#000}
+#botTxt{background:#eee;color:#000}
 tt{border-color:#ccc;background:#fff;color:#000}
 
 pre i{color:#088}
@@ -410,6 +410,7 @@ function chngTheme() {
 				<div id=urlBtn>▣ Code URL</div>
 				<div id=url3Btn>▣ Mail URL</div>
 				<div id=dbgBtn>Debug</div>
+				<div id=libBtn>Library</div>
 				<div id=strictBtn>Strict mode ✓</div>
 			</div>
 		</div>
@@ -431,8 +432,17 @@ function chngTheme() {
 		</select>
 	</span>
 	<span id=dbgcls class=close></span>
-	<textarea id=dbg readonly spellcheck=false></textarea>
+	<textarea id=dbgTxt class=botTxt readonly spellcheck=false></textarea>
 	</span>
+
+	<span id=libSpn style=display:none>
+		&nbsp;Library
+		<button id=libSetBtn>Set</button>
+		<button id=libSaveBtn style=display:none>Save</button>
+		<span id=libcls class=close></span>
+		<textarea id=libTxt class=botTxt readonly spellcheck=false></textarea>
+	</span>
+
 </div>
 
 <div id=outcol>

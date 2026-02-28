@@ -12,4 +12,5 @@ if test -f $f; then
 	rm $f
 fi
 zip -qr $f easylang/apps/ easylang/progs easylang/misc/ easylang/run/ easylang/main/ easylang/native/ easylang/readme.md easylang/vers.txt easylang/mk
+ln -fs $f easylang_backup.zip
 

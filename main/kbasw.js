@@ -75,6 +75,7 @@ function runx(dbg = 0) {
 	}
 	catch(e) {
 		update()
+		console.log(e)
 		postMessage(['print', "" + e])
 		postMessage(['exit'])
 		return
@@ -102,7 +103,9 @@ onmessage = function(e) {
 	}
 	else if (cmd == "stop_ping") {
 		cancelTimer()
-		Module.ccall("k_free", "null", null, null)
+		//Module.ccall("k_free", "null", null, null)
+		// rt_free
+		Module.ccall("kfunc", "null", ["int"], [ 0 ])
 		postMessage(["stop_pong"])
 	}
 	else if (cmd == "init") {
@@ -120,11 +123,22 @@ onmessage = function(e) {
 		sysTable.set(3, Module._xtrafunc);
 	}
 	else if (cmd == "run") {
-		if (parse_errchk(d) < 0) runx(d[2] >> 8)
+		// ide-run -> kaRun
+		if (parse_errchk(d) < 0) {
+			runx(d[2] >> 8)
+		}
 	}
 	else if (cmd == "runx") {
+		// easyrun
 		var res = parse_errchk(d)
+		if (d[2] & 32) {
+			// set lib
+			//console.log("runx setlib")
+			postMessage(["notrun"])
+			return
+		}
 		if (d[3] == -1 && res < 0) {
+			// d[3] != -1 -> need runxr
 			runx(0)
 		}
 	}
@@ -139,7 +153,8 @@ onmessage = function(e) {
 		postMessage(["ide", "src_nl", src, res, pos, err])
 	}
 	else if (cmd == "formatID") {
-		Module.ccall("parse", "int", ["string", "int", "int"], [d[1], 6, 0])
+		Module.ccall("parse", "int", ["string", "int", "int"], [d[1], d[3], 0])
+		//Module.ccall("parse", "int", ["string", "int", "int"], [d[1], 6, 0])
 		var src = Module.ccall("format", "string", null, null)
 		postMessage(["ide", "src2", src, d[2]])
 	}
@@ -156,6 +171,13 @@ onmessage = function(e) {
 	}
 	else if (cmd == "done") {
 		cancelTimer()
+	}
+//	else if (cmd == "runca") {
+//		var res = Module.ccall("parse", "int", ["string", "int", "int"], [d[1], 0, -1])
+//		runx(0)
+//	}
+	else if (cmd == "msg" && d[1] == "libunset") {
+		Module.ccall("kfunc", "null", ["int"], [ 1 ])
 	}
 }
 

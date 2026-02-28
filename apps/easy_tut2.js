@@ -99,6 +99,11 @@ span.high {background-color:#faa}
   display: flex;
   flex-direction: column;
 }
+.flexl {
+  display: flex;
+  align-items: flex-start;
+}
+
 `
 document.body.appendChild(style)
 
@@ -152,6 +157,10 @@ function tutMsgFunc(msg, d) {
 		}
 		else {
 			stopped()
+			if (tut.libpre) {
+				actBtn = tut.libpre.btn
+				codeRun(tut.libpre, null, null, 34)
+			}
 		}
 	}
 	else if (msg == "input") {
@@ -178,14 +187,21 @@ function tutMsgFunc(msg, d) {
 		pres[d[1]].height = pres[d[1]].style.height
 	}
 	else if (msg == "src") {
-	//if (msg == "src") {
 		msg = "src_tut"
 		actBtn.pre.offsetHeight
 		actBtn.pre.style.height = ""
 	}
     codeMsgF(msg, d)
-
 	if (msg == "src_tut") {
+		if (actBtn.islib) {
+			actBtn.disabled = false
+			actBtn.textContent = "Unset"
+			actBtn.pre.contentEditable = false
+			tut.libpre = actBtn.pre
+			actBtn = null
+			return
+		}
+
 		isActive = true
 		var h = -d[1]
 
@@ -358,13 +374,62 @@ function tutUpd() {
 			var c = ca.getContext("2d")
 			c.clearRect(0, 0, 800, 800)
 			tut.appendChild(ca)
-			easyrun(s.substring(s.indexOf("\n") + 1), ca)
+			//easyrun(s.substring(s.indexOf("\n") + 1), ca)
+			easyrun(s.substring(s.indexOf("\n") + 1), ca, null, -1, 0)
 		}
 		else if (s.startsWith("~")) {
 			var b = create("pre")
 			b.setAttribute("translate", "no")
-			b.appendChild(document.createTextNode(s.substring(k)))
+			b.appendChild(document.createTextNode(s.substring(1)))
+			//b.appendChild(document.createTextNode(s.substring(k)))
 			tut.appendChild(b)
+		}
+		else if (s.startsWith("#lib")) {
+			var pre = create("pre")
+			codeInit(pre, runCB, stopped)
+			pre.style.width = "70vw"
+			pre.contentEditable = false
+
+			pre.textContent = s
+			kaFormat(s.substring(4), pres.push(pre) - 1, 34)
+			tut.libpre = pre
+
+			var btn = create("button")
+			btn.pre = pre
+			pre.btn = btn
+			btn.islib = true
+			btn.textContent = "Unset"
+			btn.onclick = function() {
+				if (this.disabled) return
+				this.run = "btn"
+				prevBtn = actBtn
+				actBtn = this
+				if (actBtn.textContent == "Unset") {
+					kaMsg("libunset")
+					actBtn.pre.contentEditable = true
+					tut.libpre = null
+					actBtn.textContent = "Set"
+					actBtn = null
+				}
+				else {
+					this.disabled = true
+					codeRun(actBtn.pre, null, null, 34)
+				}
+			}
+
+			var flex = create("div")
+			flex.className = "flexl"
+
+			flex.appendChild(pre)
+			flex.appendChild(btn)
+
+
+			tut.appendChild(flex)
+
+
+
+			//tut.appendChild(pre)
+			//tut.appendChild(btn)
 		}
 		else {
 			var pre = create("pre")
@@ -373,13 +438,13 @@ function tutUpd() {
 			kaFormat(s, pres.push(pre) - 1)
 
 			var btn = create("button")
-			btn.innerHTML = "Run"
+			btn.textContent = "Run"
 			btn.onclick = function() {
 				this.run = "btn"
 				runClick(this)
 			}
 			var btn2 = create("button")
-			btn2.innerHTML = "Stop"
+			btn2.textContent = "Stop"
 			btn2.className = "stop"
 			btn2.onclick = function() {
 				stop()
@@ -438,6 +503,7 @@ function runClick(btn) {
 }
 
 function runCB(inp) {
+	if (inp.btn.islib) return
 	inp.btn.run = "key"
 	runClick(inp.btn)
 }

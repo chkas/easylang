@@ -49,7 +49,7 @@ var expnd = eid("expnd")
 var dbgBtn = eid("dbgBtn")
 var dbgSpn = eid("dbgSpn")
 var trSpn = eid("trSpn")
-var dbg = eid("dbg")
+var dbgTxt = eid("dbgTxt")
 var stepBtn = eid("stepBtn")
 var step2Btn = eid("step2Btn")
 var step3Btn = eid("step3Btn")
@@ -60,6 +60,14 @@ var strictBtn = eid("strictBtn")
 var themeBtn = eid("themeBtn")
 var fontp = eid("fontp")
 var fontm = eid("fontm")
+
+var libBtn = eid("libBtn")
+var libSpn = eid("libSpn")
+var libSetBtn = eid("libSetBtn")
+var libSaveBtn = eid("libSaveBtn")
+var libcls = eid("libcls")
+var libTxt = eid("libTxt")
+
 var chngTheme = window["chngTheme"]
 
 var txt_header = window["txt_header"]
@@ -137,9 +145,13 @@ dbgBtn.onclick = function() {
 	dbgShow(!isVisible(dbgSpn))
 	hide(hamcnt)
 }
-dbgcls.onclick = function() {
-	dbgShow(false)
+libBtn.onclick = function() {
+	libShow(!isVisible(libSpn))
+	hide(hamcnt)
 }
+dbgcls.onclick = function() { dbgShow(false) }
+libcls.onclick = function() { libShow(false) }
+
 function showurl(t) {
 	out.value = t
 	hide(hamcnt)
@@ -275,12 +287,13 @@ function tutUpd() {
 	tut.appendChild(fr)
 }
 
-function runCode(code, caret) {
-	dbg.value = ""
+function runCode0(code, opt, caret) {
+	dbgTxt.value = ""
 	tailSrc = null
 	stepBtn.disabled = true
 	showRun(false)
-	var opt = 256 + 2
+	//?? opt += 256 + 2
+	opt += 2		// syntax highlight
 	if (strictMode) opt += 16
 	if (canv.width != 800) {
 		canv.width = 800
@@ -288,6 +301,11 @@ function runCode(code, caret) {
 		canvInit();
 	}
 	kaRun(code, opt, caret)
+}
+
+function runCode(code, caret) {
+	installingLib = false
+	runCode0(code, 0, caret)
 }
 
 var codeToRun
@@ -348,7 +366,6 @@ function loadClick(btn, istut) {
 		loadBtn = null
 	}, 3000)
 }
-
 var delBtn
 
 function delClick(btn) {
@@ -410,6 +427,17 @@ function storeUpd() {
 		appendTxt(pre, st.substring(0, ind))
 
 		var btn
+		if (k.slice(-1) == "l") {
+			btn = create("button")
+			btn.className = "tut"
+			btn.textContent = "Set lib"
+			btn.ref = k
+
+			btn.onclick = function() {
+				librClick(this)
+			}
+			fr.appendChild(btn)
+		}
 		if (runBtn) {
 			btn = create("button")
 			btn.className = "tut"
@@ -843,7 +871,7 @@ function tmove(e) {
 	e.pageX = e.touches[0].pageX
 	dragmove(e)
 }
-function store() {
+function save() {
 	removeCnd()
 	var sec = Math.floor(Date.now() / 1000)
 	window.localStorage["k" + sec] = inp.textContent
@@ -951,7 +979,7 @@ inp.onkeydown = function(e) {
 		}
 		else if (k == 83) {		// s
 			e.preventDefault()
-			if (!stBtn.disabled) store()
+			if (!stBtn.disabled) save()
 		}
 		else if (k == 70) {		// f
 			e.preventDefault()
@@ -1319,6 +1347,11 @@ function prepOut(mode) {
 function gotSrc(src, res, pos) {
 	inp.innerHTML = src
 	setCaret(pos, false)
+	if (installingLib) {
+		show(libSaveBtn)
+		libTxt.value = inp.textContent
+		libSetBtn.textContent = "Unset"
+	}
 	prepOut(-res)
 }
 
@@ -1342,7 +1375,7 @@ function showRun(on = true) {
 }
 function ideMsgFunc(msg, d) {
 	if (msg == "output") {
-		dbg.value = d[0]
+		dbgTxt.value = d[0]
 	}
 	else if (msg == "ready") {
 		ready()
@@ -1382,7 +1415,7 @@ function ideMsgFunc(msg, d) {
 		gotSrcNl(d[0], d[1], d[2], d[3])
 	}
 	else if (msg == "src2") {
-		pres[d[1]].innerHTML = d[0]
+		if (d[1] != 0) pres[d[1]].innerHTML = d[0]
 	}
 	else if (msg == "selline") {
 		removeCnd()
@@ -1431,7 +1464,7 @@ window.addEventListener("keydown", function(e) {
 
 function runDebug() {
 	removeCnd()
-	dbg.value = ""
+	dbgTxt.value = ""
 	var h = dbgSel.selectedIndex
 	if (h == 0 && !window["sab"]) h = 1
 	if (h == 0) {
@@ -1470,8 +1503,51 @@ step3Btn.onclick = function() {
 	stepNoti(2)
 }
 
+function librClick(btn) {
+	libShow(true)
+	//runCode0(window.localStorage[btn.ref], 32, 0)
+	kaFormat(window.localStorage[btn.ref], -1, 32)
+	libSetBtn.textContent = "Unset"
+	libTxt.value = window.localStorage[btn.ref]
+}
+
+var installingLib
+libSaveBtn.onclick = function() {
+	var sec = Math.floor(Date.now() / 1000)
+	window.localStorage["k" + sec + "l"] = libTxt.value
+	hide(libSaveBtn)
+	storeUpd()
+}
+
+libSetBtn.onclick = function() {
+	if (libSetBtn.textContent == "Set") {
+		if (runBtn.disabled || !runBtn.run) return
+		removeCnd()
+		installingLib = true
+		runCode0(inp.textContent, 32, getCaret())
+	}
+	else {
+		hide(libSaveBtn)
+		libTxt.value = null
+		libSetBtn.textContent = "Set"
+		kaMsg("libunset")
+	}
+}
+function libShow(on) {
+	if (on) {
+		hide(dbgSpn)
+		inp.style.height = "calc(70% - 36px)"
+		show(libSpn)
+	}
+	else {
+		hide(libSpn)
+		inp.style.height = "calc(100% - 38px)"
+	}
+}
+
 function dbgShow(on) {
 	if (on) {
+		hide(libSpn)
 		inp.style.height = "calc(70% - 36px)"
 		show(dbgSpn)
 	}
@@ -1497,7 +1573,7 @@ tab3.onclick = function() {
 
 runBtn.disabled = true
 runBtn.onclick = runx
-stBtn.onclick = store
+stBtn.onclick = save
 
 var initDone
 var initTut
@@ -1523,7 +1599,14 @@ function ready() {
 		else doTutChng()
 		out.value = infostr
 	}
-	tryRunCode()
+	else {
+		if (libTxt.value) {
+			kaFormat(libTxt.value, -1, 32)
+		}
+		else {
+			tryRunCode()
+		}
+	}
 }
 
 function saveit() {

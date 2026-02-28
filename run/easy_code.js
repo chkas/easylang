@@ -335,12 +335,12 @@ function preKey(pre, e) {
 
 var outcd
 
-function codeRun(pre, canv, out = null) {
+function codeRun(pre, canv, out = null, opt = 2) {
 	outcd = out
 	inp = pre
 	removeCnd()
 	easystop()
-	easyrun(pre.textContent, canv, out, codeCaret())
+	easyrun(pre.textContent, canv, out, codeCaret(), opt)
 }
 function codeEdited() {
 	var h = edited

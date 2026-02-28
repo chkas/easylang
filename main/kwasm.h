@@ -16,14 +16,16 @@
 
 #ifdef __EMSCRIPTEN__
 
-
-static byte* wasm = NULL;
-static ushort wasm_len = 0;
+static byte* wasm;
+static ushort wasm_len;
 
 static ushort wasmi;
 static ushort wvar;
 static ushort wvara;
 static byte fastfuncn;
+
+static ushort lib_wasmi;
+static byte lib_fastfuncn;
 
 static void we(byte b) {
 	if (wasmi >= wasm_len) {
@@ -56,10 +58,12 @@ static void wei64(long long v) {
 
 static ND* nd_stat;
 
-int fastfunc_errline;
+static int fastfunc_errline;
+static byte mf_error;
 
 static void mf_err(const char* s) {
-	fastfuncn = 0;
+	//fastfuncn = 0;
+	mf_error = 1;
 	if (fastfunc_errline == -1) {
 		fastfunc_errline = getline_nd(nd_stat);
 		pr("fastfunc error:%s line:%d", s, fastfunc_errline);
@@ -1062,6 +1066,7 @@ static void mf_sequ(ND* nd) {
 
 static void parse_fastfunc(void) {
 
+	mf_error = 0;
 	// parameter
 	byte nparm;
 
@@ -1083,8 +1088,8 @@ static void parse_fastfunc(void) {
 		must_cleanup = 1;
 	}
 	if (wasm == NULL) {
-		wasm = _realloc(NULL, 1000);
 		wasm_len = 1000;
+		wasm = _realloc(NULL, wasm_len);
 		wasmi = 0;
 		fastfuncn = 0;
 	}
@@ -1123,7 +1128,8 @@ static void parse_fastfunc(void) {
 
 	mf_sequ(proc->start->bxnd);
 
-	if (fastfuncn == 0) {
+	if (mf_error) {
+		fastfuncn -= 1;
 		// error
 		goto cleanup;
 	}
@@ -1152,7 +1158,6 @@ static void parse_fastfunc(void) {
 	}
 	we(W_END);
 
-
 	ushort h = wasmi - 2 - fstart;
 
 	if (h >= 16384 - 3) {
@@ -1163,15 +1168,15 @@ static void parse_fastfunc(void) {
 	wasm[fstart] = (h & 127) | 128;
 	wasm[fstart + 1] = h >> 7;
 
-	//printf("fastfunc %s - size %d\n", proc->name, h);
+	//pr("fastfunc-%d %s - size %d", fastfuncn, proc->name, h);
 	return;
 
 cleanup:
-
-	free(wasm);
-	wasm = NULL;
+	if (lib_fastfuncn == 0) {
+		free(wasm);
+		wasm = NULL;
+	}
 }
-
 
 static int emleb(byte* out, uint v) {
 	int n = 0;
@@ -1355,14 +1360,24 @@ static void build_fastfuncs(void) {
 		});
 
 	}, wasmhd, k, wasm, wasmi);
-	free(wasm);
-	wasm = NULL;
+	
+	if (!is_setlib && !lib_fastfuncn) {
+		free(wasm);
+		wasm = NULL;
+	}
 }
 
 static void wasm_clean(void) {
+	if (lib_fastfuncn == 0) {
+		fastfuncn = 0;
+		free(wasm);
+		wasm = NULL;
+	}
+	else {
+		wasmi = lib_wasmi;
+		fastfuncn = lib_fastfuncn;
+	}
 	fastfunc_errline = -1;
-	free(wasm);
-	wasm = NULL;
 	EM_ASM({
 		fastinst = null
 	});

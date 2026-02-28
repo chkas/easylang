@@ -17,44 +17,26 @@ to encrypt and decrypt the data. This key must be kept secret.
 
 + XOR encryption with a repeating key is simple, but not secure.
 
-proc str2arr s$ &ar[] .
-   # array 32 bit - even length padding
-   ar[] = [ ]
-   i = 0x100000000
-   for c$ in strchars s$
-      if i = 0x100000000
-         ar[] &= 0
-         i = 1
-      .
-      ar[len ar[]] += strcode c$ * i
-      i *= 256
-   .
-   if len ar[] mod 2 = 1 : ar[] &= 0
+func[] arr s$ .
+   for c$ in strchars s$ : ar[] &= strcode c$
+   return ar[]
 .
-proc arr2str ar[] &s$ .
-   s$ = ""
-   for n in ar[] : for i = 1 to 4
-      s$ &= strchar (n mod 256)
-      n = n div 256
-   .
+func$ str ar[] .
+   for n in ar[] : s$ &= strchar n
+   return s$
 .
-proc xorcrypt key &in[] &out[] .
-   out[] = [ ]
-   for i = 1 to len in[]
-      out[] &= bitxor in[i] key
-   .
+func[] xorcrypt key[] in[] .
+   for i = 1 to len in[] : out[] &= bitxor in[i] key[i mod1 4]
+   return out[]
 .
 msg$ = "Hi Alice. We have a surprise birthday party for Trudy. Bob"
-str2arr msg$ msg[]
+key[] = [ 23 12 120 231 ]
 #
-secrkey = 18238004
-#
-xorcrypt secrkey msg[] encr[]
+encr[] = xorcrypt key[] arr msg$
 print encr[]
 print ""
-xorcrypt secrkey encr[] r[]
-arr2str r[] s$
-print s$
+msg[] = xorcrypt key[] encr[]
+print str msg[]
 
 * Cracking XOR
 
@@ -65,46 +47,41 @@ a character are varied independently until they
 "fit" the data they decrypt - a text, for example,
 contains many letters and spaces.
 
-proc arr2str ar[] &s$ .
-   s$ = ""
-   for n in ar[] : for i = 1 to 4
-      s$ &= strchar (n mod 256)
-      n = n div 256
-   .
+func$ str ar[] .
+   for n in ar[] : s$ &= strchar n
+   return s$
 .
-proc xorcrypt key &in[] &out[] .
-   out[] = [ ]
-   for i = 1 to len in[]
-      out[] &= bitxor in[i] key
-   .
+func[] xorcrypt key[] in[] .
+   for i = 1 to len in[] : out[] &= bitxor in[i] key[i mod1 4]
+   return out[]
 .
-proc crack_xor in[] .
-   len k[] 4
-   for ki = 1 to 4 : for b = 0 to 255
-      k[ki] = b
-      key = k[1] + 0x100 * k[2] + 0x10000 * k[3] + 0x1000000 * k[4]
-      xorcrypt key in[] out[]
-      m = 0
-      for i = 1 to len out[] - 1
-         h = (bitshift out[i] ((ki - 1) * -8)) mod 256
-         if h >= 97 and h <= 122 or h >= 65 and h <= 90 or h = 32 or h = 46
-            m += 1
-         elif h > 127 or h < 31
-            m -= 20
+func val h .
+   if h >= 97 and h <= 122 or h = 32 : return 3
+   if h >= 65 and h <= 90 : return 1
+   if h < 32 or h > 127 : return -10
+   return 0
+.
+proc crack_xor encr[] .
+   len key[] 4
+   for ki = 1 to 4
+      max = 0
+      for b = 0 to 255
+         key[ki] = b
+         out[] = xorcrypt key[] encr[]
+         sum = 0
+         for i = ki step 4 to len out[] : sum += val out[i]
+         if sum > max
+            max = sum
+            maxb = b
          .
       .
-      if m >= len out[] * 4 div 5
-         print "Partial key " & ki & " : " & b
-         xorcrypt key in[] out[]
-         arr2str out[] s$
-         print s$
-         print ""
-         break 1
-      .
+      key[ki] = maxb
+      print "Partial key " & key[]
+      print str xorcrypt key[] encr[]
+      print ""
    .
-   print "Key: " & key
 .
-encr[] = [ 3493208956 4101317464 4097927706 3883344404 4251347537 4101514325 2977393232 3781443399 4100268870 3816761364 4034011712 4033243725 2976857670 2976130386 4116920416 4183976525 4063639901 4286523227 4031081043 4116987712 4097192789 4168625986 3208129882 4084795412 ]
+encr[] = [ 95 101 88 166 123 101 27 130 57 44 47 130 55 100 25 145 114 44 25 199 100 121 10 151 101 101 11 130 55 110 17 149 99 100 28 134 110 44 8 134 101 120 1 199 113 99 10 199 67 126 13 131 110 34 88 165 120 110 ]
 crack_xor encr[]
 
 * Block Cipher
@@ -117,28 +94,27 @@ crack_xor encr[]
 
 + Encryption is done by the basic operations rotation, XOR and addition with the key as parameter in several rounds. For decryption, these steps must be performed in reverse order.
 
-proc str2arr s$ &ar[] .
+func$ str ar[] .
+   for n in ar[] : for i = 1 to 4
+      s$ &= strchar (n mod 256)
+      n = n div 256
+   .
+   return s$
+.
+func[] arr s$ .
    # array 32 bit - even length padding
-   ar[] = [ ]
    i = 0x100000000
    for c$ in strchars s$
       if i = 0x100000000
          ar[] &= 0
          i = 1
       .
-      ar[len ar[]] += strcode c$ * i
+      ar[$] += strcode c$ * i
       i *= 256
    .
    if len ar[] mod 2 = 1 : ar[] &= 0
+   return ar[]
 .
-proc arr2str ar[] &s$ .
-   s$ = ""
-   for n in ar[] : for i = 1 to 4
-      s$ &= strchar (n mod 256)
-      n = n div 256
-   .
-.
-#
 proc rot k &x &y .
    x = bitor bitshift x -8 bitshift x 24
    x += y
@@ -146,18 +122,18 @@ proc rot k &x &y .
    y = bitor bitshift y 3 bitshift y -29
    y = bitand bitxor y x 0xffffffff
 .
-global spkb[] .
-proc sp_prepkey0 a b .
+func[] sp_prepkey0 a b .
    spkb[] = [ b ]
    for i = 0 to 24
       rot i a b
       spkb[] &= b
    .
+   return spkb[]
 .
-proc sp_prepkey key .
+func[] sp_prepkey key .
    a = key div 0x100000000
    b = key mod 0x100000000
-   sp_prepkey0 a b
+   return sp_prepkey0 a b
 .
 proc rotrev k &x &y .
    y = bitxor y x
@@ -166,10 +142,8 @@ proc rotrev k &x &y .
    x = (x - y) mod 0x100000000
    x = bitand bitor bitshift x 8 bitshift x -24 0xffffffff
 .
-#
-proc sp_encr key &in[] &out[] .
-   sp_prepkey key
-   out[] = [ ]
+func[] sp_encr key in[] .
+   spkb[] = sp_prepkey key
    for i = 1 step 2 to len in[]
       x = in[i]
       y = in[i + 1]
@@ -177,10 +151,10 @@ proc sp_encr key &in[] &out[] .
       out[] &= x
       out[] &= y
    .
+   return out[]
 .
-proc sp_decr key &in[] &out[] .
-   sp_prepkey key
-   out[] = [ ]
+func[] sp_decr key in[] .
+   spkb[] = sp_prepkey key
    for i = 1 step 2 to len in[]
       x = in[i]
       y = in[i + 1]
@@ -188,25 +162,22 @@ proc sp_decr key &in[] &out[] .
       out[] &= x
       out[] &= y
    .
+   return out[]
 .
 msg$ = "Hi Alice. We have a surprise birthday party for Trudy. Bob"
-str2arr msg$ msg[]
-#
 secrkey = 18238004
 #
-sp_encr secrkey msg[] encr[]
+encr[] = sp_encr secrkey arr msg$
 print encr[]
 print ""
-sp_decr secrkey encr[] r[]
-arr2str r[] s$
-print s$
+r[] = sp_decr secrkey encr[]
+print str r[]
 #
 #
 print ""
 print "ECB demo:"
 msg$ = "Hi Bob! Hi Joe! Hi Bob! "
-str2arr msg$ msg[]
-sp_encr 1234567890 msg[] encr[]
+encr[] = sp_encr 1234567890 arr msg$
 print encr[]
 
 * Cipher Block Chaining
@@ -221,44 +192,33 @@ This can be avoided by using a random IV to which the first block is
 XORed. This IV must be transmitted (or stored) together with the ciphertext.
 Conveniently, it is added as the first block.
 
-proc str2arr s$ &ar[] .
+func$ str ar[] .
+   for n in ar[] : for i = 1 to 4
+      s$ &= strchar (n mod 256)
+      n = n div 256
+   .
+   return s$
+.
+func[] arr s$ .
    # array 32 bit - even length padding
-   ar[] = [ ]
    i = 0x100000000
    for c$ in strchars s$
       if i = 0x100000000
          ar[] &= 0
          i = 1
       .
-      ar[len ar[]] += strcode c$ * i
+      ar[$] += strcode c$ * i
       i *= 256
    .
    if len ar[] mod 2 = 1 : ar[] &= 0
+   return ar[]
 .
-proc arr2str ar[] &s$ .
-   s$ = ""
-   for n in ar[] : for i = 1 to 4
-      s$ &= strchar (n mod 256)
-      n = n div 256
-   .
-.
-#
 proc rot k &x &y .
    x = bitor bitshift x -8 bitshift x 24
    x += y
    x = bitand bitxor x k 0xffffffff
    y = bitor bitshift y 3 bitshift y -29
    y = bitand bitxor y x 0xffffffff
-.
-global spkb[] .
-proc sp_prepkey key .
-   a = key div 0x100000000
-   b = key mod 0x100000000
-   spkb[] = [ b ]
-   for i = 0 to 24
-      rot i a b
-      spkb[] &= b
-   .
 .
 proc rotrev k &x &y .
    y = bitxor y x
@@ -267,9 +227,21 @@ proc rotrev k &x &y .
    x = (x - y) mod 0x100000000
    x = bitand bitor bitshift x 8 bitshift x -24 0xffffffff
 .
-#
-proc sp_encr key &in[] &out[] .
-   sp_prepkey key
+func[] sp_prepkey0 a b .
+   spkb[] = [ b ]
+   for i = 0 to 24
+      rot i a b
+      spkb[] &= b
+   .
+   return spkb[]
+.
+func[] sp_prepkey key .
+   a = key div 0x100000000
+   b = key mod 0x100000000
+   return sp_prepkey0 a b
+.
+func[] sp_encr key in[] .
+   spkb[] = sp_prepkey key
    x = random 0x100000000
    y = random 0x100000000
    out[] = [ x y ]
@@ -280,10 +252,10 @@ proc sp_encr key &in[] &out[] .
       out[] &= x
       out[] &= y
    .
+   return out[]
 .
-proc sp_decr key &in[] &out[] .
-   sp_prepkey key
-   out[] = [ ]
+func[] sp_decr key in[] .
+   spkb[] = sp_prepkey key
    for i = 3 step 2 to len in[]
       x = in[i]
       y = in[i + 1]
@@ -291,24 +263,23 @@ proc sp_decr key &in[] &out[] .
       out[] &= bitxor x in[i - 2]
       out[] &= bitxor y in[i - 1]
    .
+   return out[]
 .
-msg$ = "Hi Alice. We have planned a surprise birthday party for Trudy this coming Saturday evening. Bob"
-str2arr msg$ msg[]
+msg$ = "Hi Alice. We have a surprise birthday party for Trudy. Bob"
 #
 secrkey = 18238004
 #
-sp_encr secrkey msg[] encr[]
+encr[] = sp_encr secrkey arr msg$
 print encr[]
 print ""
-sp_decr secrkey encr[] r[]
-arr2str r[] s$
-print s$
+r[] = sp_decr secrkey encr[]
+print str r[]
+#
 #
 print ""
 print "CBC demo:"
 msg$ = "Hi Bob! Hi Joe! Hi Bob! "
-str2arr msg$ msg[]
-sp_encr 1234567890 msg[] encr[]
+encr[] = sp_encr 1234567890 arr msg$
 print encr[]
 
 * Brute Force
@@ -319,30 +290,19 @@ print encr[]
 
 + To shorten the search time in this example, we start the key search near the key.
 
-proc arr2str ar[] &s$ .
-   s$ = ""
+func$ str ar[] .
    for n in ar[] : for i = 1 to 4
       s$ &= strchar (n mod 256)
       n = n div 256
    .
+   return s$
 .
-#
 proc rot k &x &y .
    x = bitor bitshift x -8 bitshift x 24
    x += y
    x = bitand bitxor x k 0xffffffff
    y = bitor bitshift y 3 bitshift y -29
    y = bitand bitxor y x 0xffffffff
-.
-global spkb[] .
-proc sp_prepkey key .
-   a = key div 0x100000000
-   b = key mod 0x100000000
-   spkb[] = [ b ]
-   for i = 0 to 24
-      rot i a b
-      spkb[] &= b
-   .
 .
 proc rotrev k &x &y .
    y = bitxor y x
@@ -351,9 +311,21 @@ proc rotrev k &x &y .
    x = (x - y) mod 0x100000000
    x = bitand bitor bitshift x 8 bitshift x -24 0xffffffff
 .
-proc sp_decr key &in[] &out[] .
-   sp_prepkey key
-   out[] = [ ]
+func[] sp_prepkey0 a b .
+   spkb[] = [ b ]
+   for i = 0 to 24
+      rot i a b
+      spkb[] &= b
+   .
+   return spkb[]
+.
+func[] sp_prepkey key .
+   a = key div 0x100000000
+   b = key mod 0x100000000
+   return sp_prepkey0 a b
+.
+func[] sp_decr key in[] .
+   spkb[] = sp_prepkey key
    for i = 3 step 2 to len in[]
       x = in[i]
       y = in[i + 1]
@@ -361,12 +333,13 @@ proc sp_decr key &in[] &out[] .
       out[] &= bitxor x in[i - 2]
       out[] &= bitxor y in[i - 1]
    .
+   return out[]
 .
 func istext out[] .
    for n in out[] : for j = 1 to 4
       b = n mod 256
       n = n div 256
-      if b > 1 and b < 32 or b > 126: return 0
+      if b > 0 and b < 32 or b > 126 : return 0
    .
    return 1
 .
@@ -381,9 +354,9 @@ proc brute_force start in[] &key .
          .
          write "."
       .
-      sp_decr key in0[] out[]
+      out[] = sp_decr key in0[]
       if istext out[] = 1
-         sp_decr key in[] out[]
+         out[] = sp_decr key in[]
          if istext out[] = 1
             print ""
             return
@@ -395,9 +368,7 @@ encr[] = [ 2995282530 3231593157 2262435520 1455743690 2239111503 754144163 1776
 #
 brute_force 17000000 encr[] key
 print "key: " & key
-sp_decr key encr[] r[]
-arr2str r[] s$
-print s$
+print str sp_decr key encr[]
 
 + Who can crack this secret message?
 
@@ -409,26 +380,26 @@ print s$
 
 + We use this to generate a 53-bit key from a variable-length text key. The data is then encrypted with our easy-to-use block cipher in CBC mode - which doesn't go wrong as easily as stream ciphers.
 
-proc str2arr s$ &ar[] .
+func$ str ar[] .
+   for n in ar[] : for i = 1 to 4
+      s$ &= strchar (n mod 256)
+      n = n div 256
+   .
+   return s$
+.
+func[] arr s$ .
    # array 32 bit - even length padding
-   ar[] = [ ]
    i = 0x100000000
    for c$ in strchars s$
       if i = 0x100000000
          ar[] &= 0
          i = 1
       .
-      ar[len ar[]] += strcode c$ * i
+      ar[$] += strcode c$ * i
       i *= 256
    .
    if len ar[] mod 2 = 1 : ar[] &= 0
-.
-proc arr2str ar[] &s$ .
-   s$ = ""
-   for n in ar[] : for i = 1 to 4
-      s$ &= strchar (n mod 256)
-      n = n div 256
-   .
+   return ar[]
 .
 proc rot k &x &y .
    x = bitor bitshift x -8 bitshift x 24
@@ -437,19 +408,6 @@ proc rot k &x &y .
    y = bitor bitshift y 3 bitshift y -29
    y = bitand bitxor y x 0xffffffff
 .
-global spkb[] .
-proc sp_prepkey0 a b .
-   spkb[] = [ b ]
-   for i = 0 to 24
-      rot i a b
-      spkb[] &= b
-   .
-.
-proc sp_prepkey key .
-   a = key div 0x100000000
-   b = key mod 0x100000000
-   sp_prepkey0 a b
-.
 proc rotrev k &x &y .
    y = bitxor y x
    y = bitand bitor bitshift y -3 bitshift y 29 0xffffffff
@@ -457,8 +415,21 @@ proc rotrev k &x &y .
    x = (x - y) mod 0x100000000
    x = bitand bitor bitshift x 8 bitshift x -24 0xffffffff
 .
-proc sp_encr key &in[] &out[] .
-   sp_prepkey key
+func[] sp_prepkey0 a b .
+   spkb[] = [ b ]
+   for i = 0 to 24
+      rot i a b
+      spkb[] &= b
+   .
+   return spkb[]
+.
+func[] sp_prepkey key .
+   a = key div 0x100000000
+   b = key mod 0x100000000
+   return sp_prepkey0 a b
+.
+func[] sp_encr key in[] .
+   spkb[] = sp_prepkey key
    x = random 0x100000000
    y = random 0x100000000
    out[] = [ x y ]
@@ -469,10 +440,10 @@ proc sp_encr key &in[] &out[] .
       out[] &= x
       out[] &= y
    .
+   return out[]
 .
-proc sp_decr key &in[] &out[] .
-   sp_prepkey key
-   out[] = [ ]
+func[] sp_decr key in[] .
+   spkb[] = sp_prepkey key
    for i = 3 step 2 to len in[]
       x = in[i]
       y = in[i + 1]
@@ -480,13 +451,14 @@ proc sp_decr key &in[] &out[] .
       out[] &= bitxor x in[i - 2]
       out[] &= bitxor y in[i - 1]
    .
+   return out[]
 .
 func genkey s$ .
-   str2arr s$ b[]
+   b[] = arr s$
    for i = 1 step 2 to len b[] - 1
       xp = x
       yp = y
-      sp_prepkey0 b[i] b[i + 1]
+      spkb[] = sp_prepkey0 b[i] b[i + 1]
       for j = 1 to 26 : rot spkb[j] x y
       x = bitxor x xp
       y = bitxor y yp
@@ -495,14 +467,13 @@ func genkey s$ .
    return x + y mod 2097152 * 0x100000000
 .
 #
-msg$ = "Hello Alice. We're planning a surprise party for Trudy next weekend. Kind regards, Bob"
-str2arr msg$ msg[]
-sp_encr genkey "That is a very long password!!" msg[] encr[]
+msg[] = arr "Hello Alice. We're planning a surprise party for Trudy next weekend. Kind regards, Bob"
+key = genkey "That is a very long password!!"
+print key
+encr[] = sp_encr key msg[]
 print encr[]
 print ""
-sp_decr genkey "That is a very long password!!" encr[] r[]
-arr2str r[] s$
-print s$
+print str sp_decr key encr[]
 
 * Counter Mode
 
@@ -520,13 +491,13 @@ the encrypted data.
 actual counter can also be combined with a start value in a
 different way (XOR, concatenate).
 
-proc bytes2str ar[] &s$ .
-   s$ = ""
-   for b in ar[] : s$ &= strchar b
+func[] arr s$ .
+   for c$ in strchars s$ : ar[] &= strcode c$
+   return ar[]
 .
-proc str2bytes s$ &b[] .
-   b[] = [ ]
-   for c$ in strchars s$ : b[] &= strcode c$
+func$ str ar[] .
+   for n in ar[] : s$ &= strchar n
+   return s$
 .
 proc rot k &x &y .
    x = bitor bitshift x -8 bitshift x 24
@@ -535,8 +506,7 @@ proc rot k &x &y .
    y = bitor bitshift y 3 bitshift y -29
    y = bitand bitxor y x 0xffffffff
 .
-global spkb[] .
-proc sp_prepkey key .
+func[] sp_prepkey key .
    a = key div 0x100000000
    b = key mod 0x100000000
    spkb[] = [ b ]
@@ -544,10 +514,10 @@ proc sp_prepkey key .
       rot i a b
       spkb[] &= b
    .
+   return spkb[]
 .
-proc sp_ctrmode key ctr &in[] &out[] .
-   sp_prepkey key
-   out[] = [ ]
+func[] sp_ctrmode key ctr in[] .
+   spkb[] = sp_prepkey key
    for i = 1 to len in[]
       m = (i - 1) mod 8
       if m = 0
@@ -564,28 +534,29 @@ proc sp_ctrmode key ctr &in[] &out[] .
       .
       out[] &= bitxor in[i] h
    .
+   return out[]
 .
-msg$ = "Hi Alice. We have a surprise birthday party for Trudy. Bob"
-str2bytes msg$ msg[]
-#
+msg[] = arr "Hi Alice. We have a surprise birthday party for Trudy. Bob"
 secrkey = 18238004
 counter = 1423
 #
-sp_ctrmode secrkey counter msg[] encr[]
+encr[] = sp_ctrmode secrkey counter msg[]
 print encr[]
 print ""
-sp_ctrmode secrkey counter encr[] r[]
-bytes2str r[] s$
-print s$
+print str sp_ctrmode secrkey counter encr[]
 
 * The counter is important in counter mode.
 
 + Bob and Alice exchange secret messages. A fatal mistake
 happens to them doing so.
 
-proc str2bytes s$ &b[] .
-   b[] = [ ]
-   for c$ in strchars s$ : b[] &= strcode c$
+func[] arr s$ .
+   for c$ in strchars s$ : ar[] &= strcode c$
+   return ar[]
+.
+func$ str ar[] .
+   for n in ar[] : s$ &= strchar n
+   return s$
 .
 proc rot k &x &y .
    x = bitor bitshift x -8 bitshift x 24
@@ -594,8 +565,7 @@ proc rot k &x &y .
    y = bitor bitshift y 3 bitshift y -29
    y = bitand bitxor y x 0xffffffff
 .
-global spkb[] .
-proc sp_prepkey key .
+func[] sp_prepkey key .
    a = key div 0x100000000
    b = key mod 0x100000000
    spkb[] = [ b ]
@@ -603,10 +573,10 @@ proc sp_prepkey key .
       rot i a b
       spkb[] &= b
    .
+   return spkb[]
 .
-proc sp_ctrmode key ctr &in[] &out[] .
-   sp_prepkey key
-   out[] = [ ]
+func[] sp_ctrmode key ctr in[] .
+   spkb[] = sp_prepkey key
    for i = 1 to len in[]
       m = (i - 1) mod 8
       if m = 0
@@ -623,8 +593,8 @@ proc sp_ctrmode key ctr &in[] &out[] .
       .
       out[] &= bitxor in[i] h
    .
+   return out[]
 .
-#
 secrkey = 418785432574
 counter = 0
 #
@@ -637,8 +607,7 @@ msg$[] &= "Hi Bob. Well, what do you say we meet at the mall tomorrow midday? Al
 msg$[] &= "Hi Alice. Good idea. Well then see you tomorrow. Have a nice evening. Bob"
 #
 for i = 1 to len msg$[]
-   str2bytes msg$[i] msg[]
-   sp_ctrmode secrkey counter msg[] encr[]
+   encr[] = sp_ctrmode secrkey counter arr msg$[i]
    print encr[]
    print ""
 .
@@ -655,66 +624,51 @@ c[][] &= [ 234 165 225 65 201 168 255 208 114 54 233 57 32 134 254 49 209 214 20
 c[][] &= [ 234 165 225 66 202 163 178 149 4 115 220 48 127 134 192 121 219 204 135 210 16 87 58 58 35 157 207 100 162 118 188 237 12 75 243 152 196 67 138 34 84 236 197 160 122 218 72 221 164 51 131 83 114 198 76 203 104 216 83 237 178 194 209 194 49 230 33 124 231 65 81 243 ]
 c[][] &= [ 234 165 225 65 201 168 255 208 125 54 247 51 60 194 151 120 222 221 198 152 95 32 38 57 58 157 200 109 190 56 235 251 73 67 182 132 223 22 203 34 27 245 194 183 40 216 94 159 232 91 150 74 122 137 95 153 105 198 16 229 251 195 195 198 38 176 111 90 165 8 112 249 131 ]
 #
-proc bytes2str ar[] &s$ .
-   s$ = ""
+func$ str ar[] .
    for b in ar[] : s$ &= strchar b
+   return s$
 .
-proc crack_xor &key[] .
-   key[] = [ ]
-   for pos = 1 to 66
-      max = 1
-      maxcnt = 0
-      for b = 0 to 0xff
-         out[] = [ ]
-         for i = 1 to len c[][]
-            out[] &= bitxor c[i][pos] b
-         .
-         m = 0
-         for o in out[]
-            o$ = strchar o
-            if o >= 65 and o <= 90
-               m += 3
-            elif o >= 97 and o <= 122
-               m += 6
-            elif o < 32
-               m -= 5
-            .
-            if o$ = "e"
-               m += 3
-            elif o$ = "a" or o$ = "t"
-               m += 2
-            elif o$ = "n" or o$ = "o" or o$ = "r" or o$ = "s" or o$ = "i" or o$ = "h" or o$ = "i"
-               m += 1
-            elif o$ = " "
-               m += 9
-            elif o$ = "."
-               m += 6
-            elif o$ = "k" or o$ = "v" or o$ = "b"
-               m -= 1
-            elif o$ = "z" or o$ = "x" or o$ = "q" or o$ = "j"
-               m -= 2
-            .
-         .
-         if m >= max
-            maxcnt += 1
-            if m > max
-               maxcnt = 1
-               max = m
-               maxb = b
-            .
-         .
+func val h .
+   h$ = strchar h
+   if strpos "bmxzgpf" h$ <> 0 : return 0
+   if strpos "qjvk" h$ <> 0 : return -1
+   if strpos "aetsr " h$ <> 0 : return 6
+   if h >= 97 and h <= 122 : return 4
+   if h >= 65 and h <= 90 or h$ = "." : return 2
+   if h >= 32 and h < 128 : return -6
+   return -20
+.
+func findvertkey pos .
+   len out[] len c[][]
+   len cnt[] 256
+   for r = 1 to len c[][] : cnt[c[r][pos]] += 1
+   for i = 0 to 255 : dif += if cnt[i] > 0
+   if dif <= 2 : return -1
+   for b = 0 to 0xff
+      m = 0
+      for i = 1 to len c[][]
+         out[i] = bitxor c[i][pos] b
+         m += val out[i]
       .
-      if maxcnt = 1
-         key[] &= maxb
-      else
-         key[] &= -1
+      if m >= max
+         max = m
+         maxb = b
       .
    .
+   if max > 20 : return maxb
+   return -1
 .
-crack_xor key[]
+func[] crack_xor .
+   minlen = 9999
+   for i to len c[][] : minlen = lower minlen len c[i][]
+   for pos = 1 to minlen
+      key[] &= findvertkey pos
+   .
+   return key[]
+.
+key[] = crack_xor
 #
 proc decrypt encr[] key[] .
-   out[] = [ ]
    for i = 1 to len key[]
       if key[i] <> -1
          out[] &= bitxor encr[i] key[i]
@@ -722,8 +676,7 @@ proc decrypt encr[] key[] .
          out[] &= strcode "_"
       .
    .
-   bytes2str out[] s$
-   print s$
+   print str out[]
    print ""
 .
 for i = 1 to len c[][] : decrypt c[i][] key[]
@@ -747,18 +700,15 @@ c[][] &= [ 234 165 225 65 201 168 255 208 114 54 233 57 32 134 254 49 209 214 20
 c[][] &= [ 234 165 225 66 202 163 178 149 4 115 220 48 127 134 192 121 219 204 135 210 16 87 58 58 35 157 207 100 162 118 188 237 12 75 243 152 196 67 138 34 84 236 197 160 122 218 72 221 164 51 131 83 114 198 76 203 104 216 83 237 178 194 209 194 49 230 33 124 231 65 81 243 ]
 c[][] &= [ 234 165 225 65 201 168 255 208 125 54 247 51 60 194 151 120 222 221 198 152 95 32 38 57 58 157 200 109 190 56 235 251 73 67 182 132 223 22 203 34 27 245 194 183 40 216 94 159 232 91 150 74 122 137 95 153 105 198 16 229 251 195 195 198 38 176 111 90 165 8 112 249 131 ]
 #
-proc str2bytes s$ &ar[] .
-   ar[] = [ ]
-   for c$ in strchars s$
-      ar[] &= strcode c$
-   .
-.
-proc bytes2str ar[] &s$ .
-   s$ = ""
+func$ str ar[] .
    for b in ar[] : s$ &= strchar b
+   return s$
+.
+func[] arr s$ .
+   for c$ in strchars s$ : ar[] &= strcode c$
+   return ar[]
 .
 proc decrypt encr[] key[] .
-   out[] = [ ]
    for i = 1 to len key[]
       if key[i] <> -1
          out[] &= bitxor encr[i] key[i]
@@ -766,14 +716,11 @@ proc decrypt encr[] key[] .
          out[] &= strcode "_"
       .
    .
-   bytes2str out[] s$
-   print s$
+   print str out[]
    print ""
 .
 print ""
-txt$ = "______ __ We are going to have a surprise birthday party for Trudy."
-str2bytes txt$ b[]
-key[] = [ ]
+b[] = arr "______ __ We are going to have a surprise birthday party for Trudy."
 for i = 1 to len b[]
    if b[i] = strcode "_"
       key[] &= -1
@@ -786,7 +733,7 @@ for i = 1 to len c[][] : decrypt c[i][] key[]
 + Trudy did not crack the key, but only found the bit sequence that was used multiple times to XOR the data. This reuse compromised the security completely.
 
 + This attack also works with other stream ciphers if you use the same
-key, or the same (key,counter) pair, for encrypting different inputs.
+key, or the same (key-counter) pair, for encrypting different inputs.
 `
 
 function hook() {

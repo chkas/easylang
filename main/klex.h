@@ -153,7 +153,7 @@ static char* spc = nlspc + 1;
 static short sequ_level;
 
 static void space_add() {
-	if (sequ_level < 15) strcpy(spc + sequ_level * INDENT, "    ");
+	if (sequ_level < 15) strcpy(spc + sequ_level * INDENT, "   ");
 	sequ_level += 1;
 }
 static void space_sub() {
@@ -276,7 +276,6 @@ void error2line(const char* s, int pos) {
 }
 #endif
 static int line2pos_html(int line) {
-	//kc
 	int pos = 0;
 	int l = 1;
 	int stat = 0;
@@ -729,13 +728,16 @@ static void nexttok() {
 }
 
 // -------------------------------------------------------------------------------
-//#define UMO (ushort)-1
-
 static char* cstrs_p;
 static unsigned cstrs_len;
+static unsigned lib_cstrs_len;
 
 static void cstrs_free() {
-	if (cstrs_p) {
+	if (lib_cstrs_len) {
+		cstrs_p = _realloc(cstrs_p, lib_cstrs_len);
+		cstrs_len = lib_cstrs_len;
+	}
+	else {
 		free(cstrs_p);
 		cstrs_p = NULL;
 		cstrs_len = 0;
@@ -743,12 +745,12 @@ static void cstrs_free() {
 }
 
 static uint cstrs_add(const char* s) {
-	ushort l = strlen(s) + 2;
-	cstrs_p = (char*)_realloc(cstrs_p, cstrs_len + l);
+	ushort le = strlen(s) + 2;
+	cstrs_p = (char*)_realloc(cstrs_p, cstrs_len + le);
 	*(cstrs_p + cstrs_len) = 0;
 	strcpy(cstrs_p + cstrs_len + 1, s);
-	cstrs_len += l;
-	return cstrs_len - l;
+	cstrs_len += le;
+	return cstrs_len - le;
 }
 // --------------------------------------------------------
 
@@ -782,8 +784,13 @@ struct procdecl {
 
 static struct proc* proc_p;
 static ushort proc_len;
+static ushort lib_proc_len;
+static ushort lib_procp_vname_len;
+static ushort lib_procdecl_len;
+
 static struct procdecl* procdecl;
 static ushort procdecl_len;
+// kc todo
 
 //---------------------------------------------------------------
 
@@ -824,17 +831,39 @@ static struct proc* proc_add(const char* name) {
 static void proc_free(void) {
 
 	if (proc_p == NULL) return;
-	struct proc *p = proc_p;
+
+	struct proc *p = proc_p  + lib_proc_len;
 	while (p < proc_p + proc_len) {
 		free(p->vname_p);
 		p += 1;
 	}
-	free(proc_p);
-	proc_p = NULL;
-	proc_len = 0;
-	free(procdecl);
-	procdecl = NULL;
-	procdecl_len = 0;
+	if (lib_proc_len) {
+		if (proc_p->vname_len > lib_procp_vname_len) {
+			proc_p->vname_len = lib_procp_vname_len;
+			proc_p->vname_p = _realloc(proc_p->vname_p, lib_procp_vname_len);
+		}
+		if (proc_len > lib_proc_len) {
+			proc_p = _realloc(proc_p, lib_proc_len * sizeof(struct proc));
+			proc_len = lib_proc_len;
+		}
+	}
+	else {
+		free(proc_p);
+		proc_p = NULL;
+		proc_len = 0;
+	}
+
+	if (lib_procdecl_len) {
+		if (procdecl_len > lib_procdecl_len) {
+			procdecl = _realloc(procdecl, lib_procdecl_len * sizeof(struct procdecl));
+			procdecl_len = lib_procdecl_len;
+		}
+	}
+	else {
+		free(procdecl);
+		procdecl = NULL;
+		procdecl_len = 0;
+	}
 }
 
 static struct {
@@ -997,6 +1026,8 @@ static byte in_index;
 
 static void wasm_clean(void);
 
+//todo lib
+
 static void parse_clean() {
 	in_index = 0;
 	freecodestr();
@@ -1016,14 +1047,10 @@ static void parse_clean() {
 	wasm_clean();
 }
 
-// S ND** nd_doll;
-
 static void parse_prepare(char* str, int slen) {
 	parse_str = str;
 
 	parse_clean();
-
-	//nd_doll = NULL;
 
 	code_utf8len = 0;
 	spc[0] = 0;
@@ -1040,8 +1067,12 @@ static void parse_prepare(char* str, int slen) {
 
 	codestrspc = slen + slen / 2;
 	codestr = _realloc(NULL, codestrspc + 1);
-	proc = proc_add("_GLOBAL_");
-
+#if 0
+	proc = proc_get("_GLOBAL_");
+	if (proc == NULL) proc = proc_add("_GLOBAL_");
+#else
+	if (proc_len == 0) proc = proc_add("_GLOBAL_");
+#endif
 	seq.mouse_down = NULL;
 	seq.mouse_up = NULL;
 	seq.mouse_move = NULL;

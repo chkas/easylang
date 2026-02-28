@@ -696,19 +696,6 @@ S double op_bitshift(ND* nd) {
     }
 }
 
-/*
-S double op_bitshift(ND* nd) {
-	llong a = (llong)numf(nd->le);
-	int b = numf(nd->ri);
-	//if (b >= 0) return (a << b) & 9007199254740991;
-	if (b >= 0) {
-		if (a >= 0) return (a << b) & 9007199254740991;
-		return a << b;
-	}
-	else return a >> (-b);
-}
-*/
-
 // ------------------------------------
 
 S double time_start;

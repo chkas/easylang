@@ -41,10 +41,6 @@ gcircle x + 16 85 3.5
 
 +de Zuerst schauen wir uns die Befehle an, mit denen Grafiken auf dem Bildschirm erstellt werden können.
 
-+ *gcircle <x> <y> <r>* draws a filled circle at the specified position with the specified radius.
-
-+de *gcircle <x> <y> <r>* zeichnet einen gefüllten Kreis an der angegebenen Position mit dem angegebenen Radius.
-
 gcircle 10 30 1
 gcircle 50 50 1
 
@@ -52,13 +48,9 @@ gcircle 50 50 1
 
 +de Wir zeichnen einen kleinen Kreis mit *Radius=1* an der Position *x=10 y=30*, das ist 10 von links und 30 von unten, und einen an der Position *x=50 y=50* - das ist in der Mitte der Zeichenfläche.
 
-+ Then we connect these two points with a line.
++ Then we connect these two points (10/30 und 50/50) with a line.
 
-+de Dann verbinden wir diese beiden Punkte mit einer Linie.
-
-+ *gline <x1> <y1> <x2> <y2>* draws a line between the points at *x1/y1* and *x2/y2*.
-
-+de *gline <x1> <y1> <x2> <y2>* zeichnet eine Linie zwischen den Punkten *x1/y1* and *x2/y2*.
++de Dann verbinden wir diese beiden Punkte (10/30 und 50/50) mit einer Linie.
 
 gcircle 10 30 1
 gcircle 50 50 1
@@ -114,11 +106,11 @@ gline 30 20 30 40
 
 -
 
-+ *grect <x> <y> <w> <h>* draws a filled rectangle. The parameters specify the *x* and *y* position, the *width* and the *height*.
++ *grect* draws a filled rectangle. The parameters specify the *x* and *y* position, the *width* and the *height*.
 
 + Most graphic commands begin with a *g* for *graphic*, so *grect* therefore stands for *graphic rectangle*.
 
-+de *grect <x> <y> <w> <h>* zeichnet ein gefülltes Rechteck. Die Parameter geben die *x*- und *y*-Position, die *Breite* und die *Höhe* an.
++de *grect* zeichnet ein gefülltes Rechteck. Die Parameter geben die *x*- und *y*-Position, die *Breite* und die *Höhe* an.
 
 +de Die meisten Grafikbefehle beginnen mit einem *g* für *Grafik*, *grect* steht also für *Grafisches Rechteck*.
 
@@ -147,9 +139,9 @@ gcircle 18 26 1
 gtext 35 22 "50"
 gtext 59 37 "30"
 
-+ *gcolor <rgb>* sets the drawing color. *900*, for example, is red, *990* yellow and *444* grey.
++ *gcolor* sets the drawing color. *900*, for example, is red, *990* yellow and *444* grey.
 
-+de *gcolor <rgb>* setzt die Zeichenfarbe. *900* ist zum Beispiel rot, *990* gelb und *444* grau.
++de *gcolor* setzt die Zeichenfarbe. *900* ist zum Beispiel rot, *990* gelb und *444* grau.
 
 gcolor 990
 gcircle 70 80 10
@@ -219,11 +211,11 @@ grect 60 30 10 10
 gtextsize 8
 gtext 5 85 "MY HOUSE"
 
-+ *gtext <x> <y> <txt>* writes a text at the specified position on the drawing area.
++ *gtext* writes a text at the specified position on the drawing area.
 
 + *gpolygon [x1 y1 x2 y2 ..]* draws a filled polygon, for example a triangle, with the specified coordinates.
 
-+de *gtext <x> <y> <txt>* schreibt einen Text an die angegebene Position auf der Zeichenfläche.
++de *gtext* schreibt einen Text an die angegebene Position auf der Zeichenfläche.
 
 +de *gpolygon [x1 y1 x2 y2 ..]* zeichnet ein gefülltes Polygon, zum Beispiel ein Dreieck, mit den angegebenen Koordinaten.
 
@@ -245,9 +237,9 @@ gtext 5 85 "MY HOUSE"
 
 -
 
-+ *glinewidth <w>* sets the line width. The lines are rounded at the ends.
++ *glinewidth* sets the line width. The lines are rounded at the ends.
 
-+de *glinewidth <w>* stellt die Linienstärke ein. Die Linien sind an den Enden abgerundet.
++de *glinewidth* stellt die Linienstärke ein. Die Linien sind an den Enden abgerundet.
 
 gcircle 10 80 2
 #

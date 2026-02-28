@@ -13,10 +13,13 @@ const WORKER = "easyw.js"
 */
 
 window["kaRun"] = kaRun
+//window["kaRunca"] = kaRunca
 window["kaFormat"] = kaFormat
 window["kaTab"] = kaTab
 window["kaStop"] = kaStop
 window["kaRunning"] = kaRunning
+window["kaMsg"] = kaMsg
+
 window["easykey"] = easykey
 window["easyrun"] = easyrun
 window["easyrunxr"] = easyrunxr
@@ -49,8 +52,8 @@ function setCanv(ca) {
 	}
 }
 
-function easyrun(prog, ca = null, out = null, caret = -1) {
-	eProg.push([prog, ca, out, caret])
+function easyrun(prog, ca = null, out = null, caret = -1, opt = 2) {
+	eProg.push([prog, ca, out, caret, opt])
 	if (initState == 0) {
 		easyinit(eProg[0][1])
 	}
@@ -66,10 +69,12 @@ function tryrun() {
 		eOut = h[2]
 		if (eOut) eOut.value = ""
 		isRunning = true
-		worker.postMessage(["runx", h[0], 2, h[3]])
+		worker.postMessage(["runx", h[0], h[4], h[3]])
+		//worker.postMessage(["runx", h[0], 2, h[3]])
 	}
 }
 function easyrunxr() {
+	isRunning = true
 	worker.postMessage(["runxr"])
 }
 
@@ -99,15 +104,21 @@ function kaRun(s, opt = 0, pos = -1) {
 function kaTab(s) {
 	worker.postMessage(["tab", s])
 }
-function kaFormat(s, id = null) {
+function kaFormat(s, id = null, opt = 6) {
 	if (id == null) {
 		worker.postMessage(["format", s])
 	}
 	else {
-		if (worker) worker.postMessage(["formatID", s, id ])
+		if (worker) worker.postMessage(["formatID", s, id, opt ])
 	}
 }
-
+/*
+function kaRunca(s, canv) {
+	setCanv(canv)
+	canvInit()
+	if (worker) worker.postMessage(["runca", s])
+}
+*/
 var pingT
 
 function stopSleep() {
@@ -663,6 +674,9 @@ function workerMessage(event) {
 		isRunning = false
 		msgFunc("error")
 		break
+	case "notrun":
+		isRunning = false
+		break
 	default:
 		console.log("internal error: 1, " + d);
 	}
@@ -776,6 +790,9 @@ function easyinit(ca, out = null, msg_func = null) {
 
 function easykey(s) {
 	worker.postMessage(["key", 2, s])
+}
+function kaMsg(s) {
+	worker.postMessage(["msg", s])
 }
 
 function sabNotify(a, b) {
