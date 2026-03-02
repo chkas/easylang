@@ -13,7 +13,6 @@ const WORKER = "easyw.js"
 */
 
 window["kaRun"] = kaRun
-//window["kaRunca"] = kaRunca
 window["kaFormat"] = kaFormat
 window["kaTab"] = kaTab
 window["kaStop"] = kaStop
@@ -441,11 +440,12 @@ function sound(vals) {
 var isMouseDown = false
 
 function workerStarted() {
-	window["sab"] = null
 	if (typeof SharedArrayBuffer == "function") {
-		window["sab"] = new SharedArrayBuffer(112)
+		//window["sab"] = new SharedArrayBuffer(112)
+		window["sab"] = new SharedArrayBuffer(1024)
 	}
 	else {
+		window["sab"] = null
 		console.log("Warning: SharedArrayBuffer not available")
 	}
 	worker.postMessage(["init", window["sab"], navigator.language.substring(0, 2)])
@@ -607,6 +607,12 @@ function workerMessage(event) {
 		break
 	case "sound":
 		sound(d[1])
+		break
+	case "storeget":
+		storeGet(d[1])
+		break
+	case "storeput":
+		storePut(d[1], d[2])
 		break
 	case "init":
 		nlsaved = false
@@ -814,6 +820,21 @@ function easyinp(s) {
 	}
 	sabNotify(1, 1)
 }
+
+function storeGet(k) {
+	var v = window.localStorage["s" + k]
+	if (!v) v = ""
+	var vw = new Uint16Array(window["sab"])
+	vw[4] = v.length + 1
+	for (var i = 0; i < v.length; i++) {
+		vw[i + 5] = v.charCodeAt(i)
+	}
+	sabNotify(1, 1)
+}
+function storePut(k, v) {
+	window.localStorage["s" + k] = v
+}
+
 
 if (window["easyscript"]) {
 	var ca = window["easycanv"]

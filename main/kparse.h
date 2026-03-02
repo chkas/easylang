@@ -86,37 +86,39 @@ S ND* parse_strarrex(void);
 S ND* parse_strarrarrex(void);
 
 struct str (*strf[])(ND*) = {
-	op_input, op_sysfunc, op_keyb_key, op_strchar, op_time_str, op_strjoin, op_substr
+	op_sysfunc, op_storeget, op_input, op_keyb_key, op_strchar, op_time_str, op_strjoin, op_substr
 };
 
 S ND* parse_strfunc(void) {
 
 	ND* nd = mknd();
 	csb_tok_nt();
-	nd->strf = strf[tokpr - t_input];
+	nd->strf = strf[tokpr - t_sysfunc];
 
 	if (tokpr >= t_strchar && tokpr <= t_timestr) {
 		cs_spc();
 		nd->le = parse_fac();
 	}
-	else if (tokpr == t_substr) {
-		ND* ndx = mkndx();
-		cs_spc();
-		nd->le = parse_strex();
-		cs_spc();
-		nd->ri = parse_fac();
-		cs_spc();
-		ndx->ex = parse_fac();
+	else if (tokpr >= t_strjoin) {
+		if (tokpr == t_substr) {
+			ND* ndx = mkndx();
+			cs_spc();
+			nd->le = parse_strex();
+			cs_spc();
+			nd->ri = parse_fac();
+			cs_spc();
+			ndx->ex = parse_fac();
+		}
+		else { // strjoin
+			cs_spc();
+			nd->le = parse_strarrex();
+			cs_spc();
+			nd->ri = parse_strterm();
+		}
 	}
-	else if (tokpr == t_sysfunc) {
+	else if (tokpr <= t_storeget) {
 		cs_spc();
-		nd->le = parse_strex();
-	}
-	else if (tokpr == t_strjoin) {
-		cs_spc();
-		nd->le = parse_strarrex();
-		cs_spc();
-		nd->ri = parse_strterm();
+		nd->le = parse_strterm();
 	}
 	else if (tokpr == t_keyb_key) {
 		// kc
@@ -2442,7 +2444,7 @@ S void parse_funcproc(void) {
 
 
 S void (*vftb[])(ND*) = {
-	op_print, op_write,
+	op_print, op_write, op_storeput,
 	op_sleep, op_timer, op_textsize, op_linewidth, op_co_rotate, op_co_scale,
 	op_color, op_background, op_mouse_cursor, op_random_seed,
 	op_lineto, op_co_translate, op_numfmt,
@@ -2452,7 +2454,7 @@ S void (*vftb[])(ND*) = {
 	op_sound, op_polygon, op_curve,
 };
 S char vfprop[] = {
-	8, 8,
+	8, 8, 0,
 	0, 0, 1, 1, 1, 1,
 	1, 1, 1, 0,
 	1, 1, 0,
@@ -2629,8 +2631,13 @@ S ND* parse_stat(void) {
 				nd->vf = vftb[h];
 				prog_props |= vfprop[h];
 			}
-			if (tokpr <= t_write) {
+			if (tokpr <= t_storeput) {
+				int t = tokpr;
 				nd->le = parse_strex();
+				if (t >= t_storeput) {
+					cs_spc();
+					nd->ri = parse_strex();
+				}
 			}
 			else if (tokpr <= t_gcircseg) {
 				int t = tokpr;

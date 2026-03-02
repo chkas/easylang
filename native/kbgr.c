@@ -681,6 +681,9 @@ void gr_info(int h) {}
 void gr_key_sync(char* buf) {
 	buf[0] = 0;
 }
+void gr_storeget(char* buf, const char* s) {}
+void gr_storeput(const char* s, const char* v) {}
+
 
 #ifdef RUN
 

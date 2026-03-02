@@ -177,3 +177,12 @@ static void gr_polygon(double* val, int len) {
 	}
 	EM_ASM(push([5, list]));
 }
+
+static void gr_storeget(char* buf, const char* s) {
+	*buf = 0;
+	input_str = buf;
+	EM_ASM_({ storeget(UTF8ToString($0))}, s);
+}
+static void gr_storeput(const char* s, const char* v) {
+	EM_ASM_({ storeput(UTF8ToString($0), UTF8ToString($1))}, s, v);
+}

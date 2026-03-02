@@ -1415,7 +1415,7 @@ function ideMsgFunc(msg, d) {
 		gotSrcNl(d[0], d[1], d[2], d[3])
 	}
 	else if (msg == "src2") {
-		if (d[1] != 0) pres[d[1]].innerHTML = d[0]
+		pres[d[1]].innerHTML = d[0]
 	}
 	else if (msg == "selline") {
 		removeCnd()

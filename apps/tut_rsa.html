@@ -305,22 +305,6 @@ func[] factor n .
    .
    return p[]
 .
-func[] rsaenc n[] m$ .
-   for c$ in strchars m$
-      h = strcode c$ - 28
-      if h <= 9 : mn$ &= 0
-      mn$ &= h
-   .
-   return bnpowmod bn mn$ [ 65537 ] n[]
-.
-func$ rsadec n[] d[] enc[] .
-   m2[] = bnpowmod enc[] d[] n[]
-   mn$ = bns m2[]
-   for i = 1 step 2 to len mn$
-      m$ &= strchar (number substr mn$ i 2 + 28)
-   .
-   return m$
-.
 func[][] genrsakey .
    write "."
    p[] = factor 75
@@ -337,11 +321,38 @@ func[][] genrsakey .
 k[][] = genrsakey
 n[] = k[1][]
 print "Public key: " & bns n[]
+storeput "rsa-publ" bns n[]
 print ""
 d[] = k[2][]
-#
+storeput "rsa-priv" bns d[]
+
+-
+
++ Encryption is done with the public key and decryption with the private key.
+
+func[] rsaenc n[] m$ .
+   for c$ in strchars m$
+      h = strcode c$ - 28
+      if h <= 9 : mn$ &= 0
+      mn$ &= h
+   .
+   return bnpowmod bn mn$ [ 65537 ] n[]
+.
+func$ rsadec n[] d[] enc[] .
+   m2[] = bnpowmod enc[] d[] n[]
+   mn$ = bns m2[]
+   for i = 1 step 2 to len mn$
+      m$ &= strchar (number substr mn$ i 2 + 28)
+   .
+   return m$
+.
+n[] = bn storeget "rsa-publ"
+print "Public key: " & bns n[]
+print ""
 enc[] = rsaenc n[] "This is for my eyes only."
 print "Encrypted with public key: " & bns enc[]
+#
+d[] = bn storeget "rsa-priv"
 print ""
 print "Decrypted with private key: " & rsadec n[] d[] enc[]
 `

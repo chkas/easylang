@@ -1662,6 +1662,20 @@ S STR op_input(ND* nd) {
 	}
 	return str(buf);
 }
+S STR op_storeget(ND* nd) {
+	char buf[1024];
+	STR s = strf(nd->le);
+	gr_storeget(buf, str_ptr(&s));
+	str_free(&s);
+	return str(buf);
+}
+S void op_storeput(ND* nd) {
+	STR k = strf(nd->le);
+	STR v = strf(nd->ri);
+	gr_storeput(str_ptr(&k), str_ptr(&v));
+	str_free(&k);
+	str_free(&v);
+}
 
 S void op_print(ND* nd) {
 	STR s = strf(nd->le);
@@ -1947,7 +1961,7 @@ void evt_func(int id, const char* v) {
 	}
 #ifdef __EMSCRIPTEN__
 	else if (id == 5) {
-		// input
+		// input, storeget?
 		*input_str = 0;
 		strncat(input_str, v, 1024);
 	}

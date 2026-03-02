@@ -240,3 +240,21 @@ function step() {
 	Module.ccall("evt_func", "null", ["int"], [10 + vw[2]])
 }
 
+function storeget(s) {
+	if (sab == null) {
+		errmsg("Error: 'storeget' needs 'SharedArrayBuffer' in browser\n")
+		return
+	}
+	postMessage(["storeget", s])
+	var vw = new Int32Array(sab)
+	Atomics.wait(vw, 1, 0)
+	Atomics.store(vw, 1, 0)
+	vw = new Uint16Array(sab)
+
+	var s = String.fromCharCode.apply(null, vw.slice(5, vw[4] + 4))
+	Module.ccall("evt_func", "null", ["int", "string"], [5, s])
+}
+function storeput(k, v) {
+	postMessage(["storeput", k, v])
+}
+

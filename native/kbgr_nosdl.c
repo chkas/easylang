@@ -80,4 +80,6 @@ char gr_input(char* buf) {
 void gr_exit(void) { exit(1); }
 void gr_step(void) {}
 void gr_info(int h) {}
+void gr_storeget(char* buf, const char* s) {}
+void gr_storeput(const char* s, const char* v) {}
 

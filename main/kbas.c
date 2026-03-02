@@ -285,7 +285,7 @@ void atab_numfuncs(char* ts, short l) {
 	}
 }
 void atab_strfuncs(char* ts, short l) {
-	for (byte t = t_input; t <= t_substr; t++) {
+	for (byte t = t_sysfunc; t <= t_substr; t++) {
 		apptab(tokstr[t], ts, l);
 	}
 }
