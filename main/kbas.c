@@ -643,8 +643,10 @@ extern int parse(char* str, int opt, int caret) {
 		lib_procdecl_len = procdecl_len;
 		lib_progmem = progmem;
 		lib_procp_vname_len = proc_p->vname_len;
+#ifdef __EMSCRIPTEN__
 		lib_wasmi = wasmi;
 		lib_fastfuncn = fastfuncn;
+#endif
 	}
 	return -mask;
 }
@@ -669,8 +671,10 @@ extern void kfunc(int id) {
 		lib_proc_len = 0;
 		lib_procdecl_len = 0;
 		lib_progmem = 0;
+#ifdef __EMSCRIPTEN__
 		lib_wasmi = 0;
 		lib_fastfuncn = 0;
+#endif
 		parse_clean();
 	}
 }
@@ -681,9 +685,6 @@ extern int exec(int opt, const char* args) {
 
 //	pr("exec %lu", sizeof(struct str));
 
-#ifndef __EMSCRIPTEN__
-	srand((int)(long long)(sys_time() * 1000));
-#endif
 	freecodestr();
 	rt.args = args;
 	init_rt();
