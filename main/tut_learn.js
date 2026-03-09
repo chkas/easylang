@@ -366,7 +366,7 @@ print "What is " & a & " * " & b & " ?"
 x = number input
 print x
 if a * b = x
-   print "Thats wright 🙂"
+   print "Thats right 🙂"
 else
    print "Thats wrong 🙁"
 end

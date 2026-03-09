@@ -702,7 +702,7 @@ S ND* parse_ex(void) {
 
 S ND* parse_lstr(void) {
 	ND* nd = mknd();
-	char buf[256];
+	char buf[512];
 	int i = 0;
 	byte esc = 0;
 	while (1) {
@@ -714,7 +714,7 @@ S ND* parse_lstr(void) {
 			if  (c == 't') c = '\t';
 			else if  (c == 'n') c = '\n';
 		}
-		if (i < 255) buf[i++] = c;
+		if (i < 511) buf[i++] = c;
 		else error("string too long");
 	}
 	buf[i] = 0;
@@ -722,7 +722,7 @@ S ND* parse_lstr(void) {
 	cs("\"");
 	if (esc == 0) csi(buf);
 	else {
-		char buf2[512];
+		char buf2[1024];
 		i = 0;
 		int j = 0;
 		while (buf[i] != 0) {

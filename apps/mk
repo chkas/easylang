@@ -714,7 +714,7 @@ cat <<xxx
 <p>
 <p><a href="/apps/tut_blackj.html?$vers">Blackjack - Probabilties, Card Counting</a>
 <p><a href="/apps/tut_cipher.html?$vers">Symmetric Cipher - What can you do wrong with it</a>
-<p><a href="/apps/tut_rsa.html?$vers">RSA - A simple demo</a>
+<p><a href="/apps/tut_publk.html?$vers">Public-Key-Cryptography  - Simple demos</a>
 
 <h3>Technical</h3>
 
