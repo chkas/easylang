@@ -444,6 +444,7 @@ function codeMsgF(msg, d) {
 var runCB
 
 function runx() {
+	undoAdd(inp, codeCaret())
 	if (runCB) runCB(inp)
 }
 

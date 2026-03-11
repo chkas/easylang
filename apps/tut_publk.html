@@ -14,89 +14,62 @@ txt_tutor=`* Public-key cryptography
 
 + It is based on the concept that a public key can be freely distributed, while a private key must be kept secret.
 
-* RSA
+* Diffie-Hellman (DH)
 
-+ Directly supports encryption and digital signatures.
-
-+ The trick is that breaking RSA would require factoring a huge number, which is extremely hard.
-
-+ This lets anyone send you secret messages only you can read.
-
-+ You can also use RSA to sign messages so others know they really came from you.
-
-##35
-gcolor 644
-gcircle 20 84 15
-gcolor 464
-gcircle 65 84 15
-gcolor 666
-gcircle 14.5 80 5
-gcircle 25.5 80 5
-gcolor 888
-gtextsize 5
-gtextsize 4
-gtext 12 78 "13"
-gtext 23 78 "11"
-gtext 12 88 "Private"
-gtext 57 88 "Public"
-gtext 62 80 "143"
-
-* RSA demo with small numbers
-
-+ First, we need two prime numbers. In this example, the prime numbers are 3 digits long. For RSA to be secure, they must be at least 300 digits long.
-
-+ These numbers remain secret, as they form the private key. The decryption key can be derived directly from these factors.
-
-+ The public key is the product of these numbers. The product is used for encryption. Unlike with large numbers, the factors of small numbers are easy to find.
-
-func isprim n .
-   i = 2
-   while i <= sqrt n
-      if n mod i = 0 : return 0
-      i += 1
-   .
-   return 1
+##60
+sysconf topleft
+proc arrow c x y l .
+   gcolor c
+   gline x y x + l y
+   x += l
+   s = sign l
+   gline x y x - 3 * s y + 2
+   gline x y x - 3 * s y - 2
 .
-func genfactor .
-   p = 100 + random 895
-   while isprim p = 0 : p += 1
-   return p
-.
-proc extgcd a b &x &y .
-   if b = 0
-      x = 1
-      y = 0
-   else
-      extgcd b (a mod b) x1 y1
-      x = y1
-      y = x1 - (a div b) * y1
+proc box c x y txt$[] .
+   gcolor c
+   grect x y 43 len txt$[] * 8
+   gcolor 000
+   gtextsize 6
+   x += 3
+   y += 3
+   gtext x y txt$[1]
+   y += 10
+   gtextsize 4
+   for i = 2 to len txt$[]
+      gtext x y txt$[i]
+      y += 7
    .
 .
-func modinv e phi .
-   extgcd e phi x y
-   return x mod phi
-.
-proc genrsakey &n &d .
-   p = genfactor
-   q = genfactor
-   n = p * q
-   phi = (p - 1) * (q - 1)
-   d = modinv 65537 phi
-.
-genrsakey n d
-print "Public key n: " & n
-storeput "rsa-n" n
-storeput "rsa-d" d
+txt$[] = [ "Alice" ]
+txt$[] &= "Secret: a = 17"
+txt$[] &= "A = 2^a mod 29"
+txt$[] &= "Public: A = 21"
+txt$[] &= ""
+txt$[] &= "k = B^a mod 29"
+txt$[] &= "k = 4"
+box 557 2 5 txt$[]
+#
+txt$[] = [ "Bob" ]
+txt$[] &= "Secret: b = 10"
+txt$[] &= "B = 2^b mod 29"
+txt$[] &= "Public: B = 9"
+txt$[] &= ""
+txt$[] &= "k = A^b mod 29"
+txt$[] &= "k = 4"
+box 575 55 5 txt$[]
+#
+arrow 557 45 37 10
+arrow 575 55 43 -10
+gcolor 000
+gtext 47 33 "A"
+gtext 49 39 "B"
 
--
++ Diffie-Hellman allows two participants to create a shared secret using modular exponentiation: each one raises a number to a secret exponent using very large numbers and takes the result modulo a large prime. Because of the discrete logarithm problem - it’s extremely hard to recover the hidden exponent - an attacker cannot determine the shared secret even if all exchanged values are visible.
 
-+ Encryption is done with the public key *n* with *msg ^ 65536 mod n*
++ DH demo with small numbers
 
-+ For decryption you need also the private key *d*: *emsg ^ d mod n*
-
-n = number storeget "rsa-n"
-d = number storeget "rsa-d"
-func mpow b e m .
+func expmod b e m .
    r = 1
    while e > 0
       if e mod 2 = 1 : r = (r * b) mod m
@@ -105,42 +78,51 @@ func mpow b e m .
    .
    return r
 .
-msg = 12345
-enc = mpow msg 65537 n
-print "Encrypted: " & enc
+g = 2
+m = 29
 #
-dec = mpow enc d n
-print "Decrypted: " & dec
+# Bob
+b = 10
+B = expmod g b m
+print "B: " & B
+#
+a = 17
+A = expmod g a m
+print "A: " & A
+print ""
+#
+#
+# Bob
+k = expmod A b m
+print k
+#
+# Alice
+k = expmod B a m
+print k
 
-* Breaking RSA
++ Modular exponential calculations can be done manually as follows
 
-+ To break RSA, we only need to factorize the public key into its prime factors. Which is trivial with this short key, of course.
+~ 2^10 mod 29 = ((2^5 mod 29) * (2^5 mod 29)) mod 29 = (3*3) mod 29 = 9
 
-n = number storeget "rsa-n"
-print "Public key n: " & n
-proc extgcd a b &x &y .
-   if b = 0
-      x = 1
-      y = 0
-   else
-      extgcd b (a mod b) x1 y1
-      x = y1
-      y = x1 - (a div b) * y1
+* Breaking DH
+
++ To crack the private DH key, you can simply try all possible private keys - that is, apply the modular exponential function - until you obtain the known public key. With such small numbers, this is easy.
+
+func expmod b e m .
+   r = 1
+   while e > 0
+      if e mod 2 = 1 : r = (r * b) mod m
+      b = (b * b) mod m
+      e = e div 2
+   .
+   return r
+.
+for a = 1 to 29
+   if expmod 2 a 29 = 21
+      print a
+      break 1
    .
 .
-func modinv e phi .
-   extgcd e phi x y
-   return x mod phi
-.
-p = 3
-while n mod p <> 0
-   p += 2
-.
-q = n div p
-print "p:" & p
-print "q:" & q
-d = modinv 65537 ((p - 1) * (q - 1))
-print "d:" & d
 
 * Big number functions
 
@@ -303,7 +285,7 @@ func[] bndiv a[] n[] .
    result[][] = bndivmod a[] n[]
    return result[1][]
 .
-func[] bnpowmod base[] exp[] m[] .
+func[] bnexpmod base[] exp[] m[] .
    r[] = [ 1 ]
    b[] = bnmod base[] m[]
    e[] = exp[]
@@ -348,7 +330,7 @@ func bnprim n[] k .
    .
    for i = 1 to k
       a[] = bnrandr n[]
-      x[] = bnpowmod a[] d[] n[]
+      x[] = bnexpmod a[] d[] n[]
       if bncmp x[] [ 1 ] <> 0 and bncmp x[] nm1[] <> 0
          for r = 1 to s - 1
             x[] = bnmul x[] x[]
@@ -397,8 +379,179 @@ func[] bnmodinv a[] n[] .
 a[] = bn "12345678901234567890"
 sq[] = bnmul a[] a[]
 print bns sq[]
+print bns bndiv sq[] a[]
 
 -
+
++ The following DH demo uses a modulus of 1024 bits (309 decimal digits). It is not known to have been broken yet, but it is no longer considered secure.
+
++ Alice chooses a random 48-digit number. This is her private key *a*. *p* is the modulus, which is a fixed 309-digit number. She calculates the public key *A* from the private key using: *2 ^ a mod p*.
+
++ This operation is easy to calculate, whereas the reverse operation - the discrete logarithm for large numbers - is practically impossible to calculate. This means that Alice's public key *A* cannot be used to deduce *a*.
+
+p[] = bn "179769313486231590770839156793787453197860296048756011706444423684197180216158519368947833795864925541502180565485980503646440548199239100050792877003355816639229553136239076508735759914822574862575007425302077447712589550957937778424442426617334727629299387668709205606050270810842907692932019128194467627007"
+g[] = [ 2 ]
+#
+a[] = bnrand 48
+storeput "dh-a" bns a[]
+#
+A[] = bnexpmod g[] a[] p[]
+storeput "dh-A" bns A[]
+print "Public-Alice: " & bns A[]
+
++ Bob does the same as Alice to choose his private key and derive the public part of it.
+
++ Then, using Alice's public key and his private key, he calculates the secret session key using the formula *A ^ b mod p*.
+
+p[] = bn "179769313486231590770839156793787453197860296048756011706444423684197180216158519368947833795864925541502180565485980503646440548199239100050792877003355816639229553136239076508735759914822574862575007425302077447712589550957937778424442426617334727629299387668709205606050270810842907692932019128194467627007"
+g[] = [ 2 ]
+#
+b[] = bnrand 48
+B[] = bnexpmod g[] b[] p[]
+print "Public-Bob: " & bns B[]
+storeput "dh-B" bns B[]
+print ""
+A[] = bn storeget "dh-A"
+secr[] = bnexpmod A[] b[] p[]
+print "Common secret: " & bns secr[]
+
++ Similarly, Alice calculates *B ^ a mod p* and, remarkably, obtains the same session key.
+
+p[] = bn "179769313486231590770839156793787453197860296048756011706444423684197180216158519368947833795864925541502180565485980503646440548199239100050792877003355816639229553136239076508735759914822574862575007425302077447712589550957937778424442426617334727629299387668709205606050270810842907692932019128194467627007"
+a[] = bn storeget "dh-a"
+B[] = bn storeget "dh-B"
+secr[] = bnexpmod B[] a[] p[]
+print "Common secret: " & bns secr[]
+
+* RSA
+
++ RSA is a public-key system based on modular exponentiation, like Diffie-Hellman, but adds a second one-way function: the difficulty of factoring a large number into its prime factors.
+
++ This combination makes it computationally practical impossible to recover the private key for very large numbers.
+
++ Unlike DH, RSA can be used directly for both encryption and digital signatures.
+
+##35
+gcolor 644
+gcircle 20 84 15
+gcolor 464
+gcircle 65 84 15
+gcolor 666
+gcircle 14.5 80 5
+gcircle 25.5 80 5
+gcolor 888
+gtextsize 5
+gtextsize 4
+gtext 12 78 "13"
+gtext 23 78 "11"
+gtext 12 88 "Private"
+gtext 57 88 "Public"
+gtext 62 80 "143"
+
+* RSA demo with small numbers
+
++ First, we need two prime numbers. In this example, the prime numbers are 3 digits long. For RSA to be secure, they must be at least 300 digits long.
+
++ These numbers remain secret, as they form the private key. The decryption key can be derived directly from these factors.
+
++ The public key is the product of these numbers. The product is used for encryption. Unlike with large numbers, the factors of small numbers are easy to find.
+
+func isprim n .
+   i = 2
+   while i <= sqrt n
+      if n mod i = 0 : return 0
+      i += 1
+   .
+   return 1
+.
+func genfactor .
+   repeat
+      p = 100 + random 895
+      until isprim p = 1
+   .
+   return p
+.
+proc extgcd a b &x &y .
+   if b = 0
+      x = 1
+      y = 0
+   else
+      extgcd b (a mod b) x1 y1
+      x = y1
+      y = x1 - (a div b) * y1
+   .
+.
+func modinv e phi .
+   extgcd e phi x y
+   return x mod phi
+.
+proc genrsakey &n &d .
+   p = genfactor
+   q = genfactor
+   n = p * q
+   phi = (p - 1) * (q - 1)
+   d = modinv 65537 phi
+.
+genrsakey n d
+print "Public key n: " & n
+storeput "rsa-n" n
+storeput "rsa-d" d
+
+-
+
++ Encryption is done using *modular exponentiation* with the formula *msg ^ 65536 mod n*, where *msg* is the message to be encrypted and *n* is the public key.
+
++ For decryption you additionally need the private key *d*: *emsg ^ d mod n*
+
+n = number storeget "rsa-n"
+d = number storeget "rsa-d"
+func expmod b e m .
+   r = 1
+   while e > 0
+      if e mod 2 = 1 : r = (r * b) mod m
+      b = (b * b) mod m
+      e = e div 2
+   .
+   return r
+.
+msg = 12345
+enc = expmod msg 65537 n
+print "Encrypted: " & enc
+#
+dec = expmod enc d n
+print "Decrypted: " & dec
+
++ The *expmod* function implements an efficient algorithm for modular exponentiation.
+
+* Breaking RSA
+
++ To break RSA, we "only" need to factorize the public key into its prime factors. Which is trivial with this short key, of course.
+
+n = number storeget "rsa-n"
+print "Public key n: " & n
+proc extgcd a b &x &y .
+   if b = 0
+      x = 1
+      y = 0
+   else
+      extgcd b (a mod b) x1 y1
+      x = y1
+      y = x1 - (a div b) * y1
+   .
+.
+func modinv e phi .
+   extgcd e phi x y
+   return x mod phi
+.
+p = 3
+while n mod p <> 0
+   p += 2
+.
+q = n div p
+print "p:" & p
+print "q:" & q
+d = modinv 65537 ((p - 1) * (q - 1))
+print "d:" & d
 
 * RSA with big numbers
 
@@ -413,11 +566,15 @@ print bns sq[]
 + In our example, we use 100 digits for the factors.
 
 func[] genfactor n .
-   p[] = bnrand n
-   if p[1] mod 2 = 0 : p[1] += 1
-   while bnprim p[] 20 = 0
-      write "."
-      p[] = bnadd p[] [ 2 ]
+   repeat
+      repeat
+         write "."
+         p[] = bnrand n
+         p[1] = bitxor p[1] 1
+         until bnprim p[] 20 = 1
+      .
+      pm1[] = bnsub p[] [ 1 ]
+      until bnmod pm1[] [ 65537 ] <> [ 0 ]
    .
    print ""
    return p[]
@@ -448,7 +605,7 @@ func[] rsaenc n[] m$ .
       if h <= 9 : mn$ &= 0
       mn$ &= h
    .
-   return bnpowmod bn mn$ [ 65537 ] n[]
+   return bnexpmod bn mn$ [ 65537 ] n[]
 .
 n[] = bn storeget "rsa-publ"
 print "Public key: " & bns n[]
@@ -460,7 +617,7 @@ storeput "rsa-enc" bns enc[]
 + Decryption is done with the private key *d* with *emsg ^ d mod n*
 
 func$ rsadec n[] d[] enc[] .
-   m2[] = bnpowmod enc[] d[] n[]
+   m2[] = bnexpmod enc[] d[] n[]
    mn$ = bns m2[]
    for i = 1 step 2 to len mn$
       m$ &= strchar (number substr mn$ i 2 + 28)
@@ -472,7 +629,7 @@ d[] = bn storeget "rsa-priv"
 enc[] = bn storeget "rsa-enc"
 print "Decrypted with private key: " & rsadec n[] d[] enc[]
 
-+ In practice, a random secret key is (was) encrypted, which is (was) then used to encrypt and decrypt the data, as symmetric cryptography is much faster.
++ In practice, a random secret key is encrypted, which is then used to encrypt and decrypt the data, as symmetric cryptography is much faster.
 
 + But actually, RSA is no longer used for encryption, only for digital signatures.
 
@@ -492,7 +649,7 @@ func[] rsa_sign d[] n[] m$ .
       if h <= 9 : mn$ &= 0
       mn$ &= h
    .
-   return bnpowmod bn mn$ d[] n[]
+   return bnexpmod bn mn$ d[] n[]
 .
 n[] = bn storeget "rsa-publ"
 d[] = bn storeget "rsa-priv"
@@ -507,7 +664,7 @@ print "Signed: " & msg$
 + But what we do know is that if we can decrypt it, the message was encoded with the corresponding private key. Only the author can do this, and it has not been changed since it was signed.
 
 func$ rsa_verify n[] m[] .
-   m2[] = bnpowmod m[] [ 65537 ] n[]
+   m2[] = bnexpmod m[] [ 65537 ] n[]
    mn$ = bns m2[]
    for i = 1 step 2 to len mn$
       m$ &= strchar (number substr mn$ i 2 + 28)
@@ -519,53 +676,13 @@ n[] = bn storeget "rsa-publ"
 msg$ = rsa_verify n[] msg[]
 print "Verified: " & msg$
 
-* Diffie-Hellman (DH)
+* Perfect Forward Secrecy
 
-+ DH does not encrypt or sign itself. Instead, it enables two parties to derive a shared secret over an insecure channel. This shared secret is then used as a symmetric key for a cipher such as *AES*.
++ Current state of the art: DH is used for key exchange. RSA is used to sign the exchanged DH public keys. The public and private Diffie-Hellman keys are only temporary and are deleted after the shared secret key has been calculated.
 
-+ The following demo uses a 1024-bit (309 decimal digits) modulus, which is no longer considered secure.
++ This achieves *PFS* (Perfect Forward Secrecy), which means that even if someone steals a server's long-term key - this is the RSA key - they still cannot decrypt old messages.
 
 -
-
-+ Alice chooses a random 48-digit number. This is her private key *a*. *p* is the modulus, which is a fixed 309-digit number. She calculates the public key *A* from the private key using: *2 ^ a mod p*.
-
-+ This operation is easy to calculate, whereas the reverse operation - the discrete logarithm for large numbers - is practically impossible to calculate. This means that Alice's public key *A* cannot be used to deduce *a*.
-
-p[] = bn "179769313486231590770839156793787453197860296048756011706444423684197180216158519368947833795864925541502180565485980503646440548199239100050792877003355816639229553136239076508735759914822574862575007425302077447712589550957937778424442426617334727629299387668709205606050270810842907692932019128194467627007"
-g[] = [ 2 ]
-#
-a[] = bnrand 48
-storeput "dh-a" bns a[]
-#
-A[] = bnpowmod g[] a[] p[]
-storeput "dh-A" bns A[]
-print "Public-Alice: " & bns A[]
-
-+ Bob does the same as Alice to choose his private key and derive the public part of it.
-
-+ Then, using Alice's public key and his private key, he calculates the secret session key using the formula *A ^ b mod p*.
-
-p[] = bn "179769313486231590770839156793787453197860296048756011706444423684197180216158519368947833795864925541502180565485980503646440548199239100050792877003355816639229553136239076508735759914822574862575007425302077447712589550957937778424442426617334727629299387668709205606050270810842907692932019128194467627007"
-g[] = [ 2 ]
-#
-b[] = bnrand 48
-B[] = bnpowmod g[] b[] p[]
-print "Public-Bob: " & bns B[]
-storeput "dh-B" bns B[]
-print ""
-A[] = bn storeget "dh-A"
-secr[] = bnpowmod A[] b[] p[]
-print "Common secret: " & bns secr[]
-
-+ Similarly, Alice calculates *B ^ a mod p* and, remarkably, obtains the same session key.
-
-p[] = bn "179769313486231590770839156793787453197860296048756011706444423684197180216158519368947833795864925541502180565485980503646440548199239100050792877003355816639229553136239076508735759914822574862575007425302077447712589550957937778424442426617334727629299387668709205606050270810842907692932019128194467627007"
-a[] = bn storeget "dh-a"
-B[] = bn storeget "dh-B"
-secr[] = bnpowmod B[] a[] p[]
-print "Common secret: " & bns secr[]
-
-+ Current state of the art: DH is used for key exchange. RSA is used to sign the exchanged DH public keys. The public and private Diffie-Hellman keys are only temporary and can be deleted after the shared secret key has been calculated.
 
 + Instead of DH or RSA, methods using elliptic curves are often used today, which allow for shorter key lengths.
 `

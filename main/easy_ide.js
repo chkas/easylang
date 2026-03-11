@@ -896,7 +896,6 @@ function undoAdd(t, c = 0) {
 var enterTime = 0
 function enter() {
 	if (Date.now() - enterTime < 300) {
-		if (undoChanged) undoAdd(inp.textContent)
 		runx()
 		return
 	}
@@ -1445,7 +1444,9 @@ function runx() {
 	if (runBtn.disabled) return
 	if (runBtn.run) {
 		removeCnd()
-		runCode(inp.textContent, getCaret())
+		var code = inp.textContent
+		if (undoChanged) undoAdd(code)
+		runCode(code, getCaret())
 	}
 	else doStop()
 }
