@@ -1259,8 +1259,7 @@ function gotSrcErr(src, res, pos, err) {
 // ------------------
 
 function selectLine(sel, car) {
-	var ln = 1
-	var nd, uNd, nNd, n
+	var ln = 1, nd, uNd, nNd, n, s, i;
 	for (nd = inp.firstChild; nd; nd = nd.nextSibling) {
 		if (nd.nodeName == "U") {
 			while (nd.firstChild) inp.insertBefore(nd.firstChild, nd)
@@ -1270,8 +1269,8 @@ function selectLine(sel, car) {
 	}
 	for (nd = inp.firstChild; nd; nd = nNd) {
 		nNd = nd.nextSibling
-		var s = nd.nodeValue
-		var i = -2
+		s = nd.nodeValue
+		i = -2
 		if (s) {
 			if (sel == 1 && ln == 1 && !uNd) i = -1
 			else {

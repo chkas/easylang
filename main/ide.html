@@ -1,29 +1,151 @@
 <!doctype html>
 <html lang=en>
-<title>IDE</title>
+<head>
+
 <meta charset=utf-8>
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="description" content="easy browser based educational programming language to learn programming">
-<meta name="theme-color" content="#aaa">
-<link rel="icon" href="icon.png" type="image/x-png">
-<link rel="manifest" href="mfst.json">
+<meta name=viewport content=width=device-width,initial-scale=1.0>
+<meta name=description content=easy browser based educational programming language to learn programming>
+<meta name=theme-color content=#f0f8ff>
+<title>IDE</title>
+<link rel=icon href=icon.png type=image/x-png>
+<link rel=manifest href=mfst.json>
 
 <style>
-html {height:calc(100% - 2px);width:100%}
+:root {
+	--bg:#f0f8ff;
+	--fg:#000;
+	--panel:#fff;
+	--panel-muted:#f0f8ff;
+	--border:#888;
+	--code-fg:#000;
+	--code-bg:#fff;
+	--accent:#4af;
+	--accent-hover:#18e;
+	--btn-fg:#fff;
+	--btn-dis-bg:#e8f0f8;
+	--btn-dis-fg:#aaa;
+	--tab-en-bg:#f0f8ff;
+	--tab-en-fg:#888;
+	--tab-en-hover:#e0e8ef;
+	--tab-act-bg:#bdf;
+	--tab-act-fg:#000;
+	--drag-bg:#bdf;
+	--syn-i:#088;
+	--syn-b:#920;
+	--syn-s:#080;
+	--syn-u-fg:#000;
+	--syn-u-bg:#fdd;
+	--link:#000;
+	--link-hover-bg:#9df;
+	--scr-track:#e8f0f8;
+	--scr-thumb:#bdf;
+	--highlight:#e88;
+	--mn-bg:var(--accent);
+	--mn-fg:#fff;
+	--mn-hover-bg:#18e;
+	--hdr-bg:#9df;
+	--hdr-fg:#000;
+}
+
+.theme-grey {
+	--bg:#ddd;
+	--fg:#000;
+	--panel:#eee;
+	--panel-muted:#eee;
+	--border:#666;
+	--code-fg:#000;
+	--code-bg:#fff;
+	--accent:#ccc;
+	--btn-fg:#000;
+	--btn-dis-bg:#ddd;
+	--btn-dis-fg:#aaa;
+	--tab-en-bg:#ccc;
+	--tab-en-fg:#888;
+	--tab-en-hover:#ddd;
+	--tab-act-bg:#eee;
+	--tab-act-fg:#000;
+	--drag-bg:#ddd;
+	--syn-i:#088;
+	--syn-b:#920;
+	--syn-s:#080;
+	--syn-u-fg:#000;
+	--syn-u-bg:#fdd;
+	--link:#000;
+	--link-hover-bg:#ccc;
+	--scr-track:#aaa;
+	--scr-thumb:#ccc;
+	--highlight:#e88;
+	--mn-bg:#ddd;
+	--mn-fg:#000;
+	--mn-hover-bg:#bbb;
+	--hdr-bg:#ccc;
+	--hdr-fg:#444;
+}
+
+.theme-dark {
+	--bg:#333;
+	--fg:#fff;
+	--panel:#222;
+	--panel-muted:#222;
+	--border:#666;
+	--code-fg:#ddd;
+	--code-bg:#000;
+	--accent:#555;
+	--accent-hover:#999;
+	--btn-fg:#fff;
+	--btn-dis-bg:#444;
+	--btn-dis-fg:#777;
+	--tab-en-bg:#444;
+	--tab-en-fg:#888;
+	--tab-en-hover:#222;
+	--tab-act-bg:#222;
+	--tab-act-fg:#eee;
+	--drag-bg:#777;
+	--syn-i:#9d9;
+	--syn-b:#fc9;
+	--syn-s:#9cf;
+	--syn-u-fg:#fff;
+	--syn-u-bg:#a44;
+	--link:#fff;
+	--link-hover-bg:#444;
+	--scr-track:#222;
+	--scr-thumb:#666;
+	--highlight:#d77;
+	--mn-bg:#333;
+	--mn-fg:#fff;
+	--mn-hover-bg:#555;
+	--hdr-bg:#444;
+	--hdr-fg:#fff;
+}
+</style>
+
+<style>
+html {
+	height:calc(100% - 2px);
+	width:100%;
+}
 body {
 	height:100%;
-	font:normal normal normal .95em/1.45 Arial,sans-serif;
-	margin:2px 0px 0px 0px;
+	font:normal normal normal .95em/1.45 Arial, sans-serif;
+	margin:2px 0 0 0;
 	overflow:hidden;
+	background:var(--bg);
+	color:var(--fg);
 }
-h3 {padding:4px;padding-left:12px;font-size:15px}
-
-hr {border:1px solid #888;margin-top:6px;margin-bottom:6px}
-
+h3 {
+	padding:4px 12px;
+	font-size:15px;
+	background:var(--hdr-bg);
+	color:var(--hdr-fg);
+}
+hr {
+	border:1px solid var(--border);
+	margin:6px 0;
+}
 #container {
 	height:100%;
 	width:100%;
-	display:inline-flex
+	display:inline-flex;
 }
 #col1 {
 	float:left;
@@ -35,23 +157,25 @@ hr {border:1px solid #888;margin-top:6px;margin-bottom:6px}
 	float:left;
 	height:100%;
 	width:33vw;
-	margin-right:4px
+	margin-right:4px;
 }
 #outcol {
 	float:left;
 	height:100%;
 	width:33vw;
-	display: flex;
-	flex-direction: column;
+	display:flex;
+	flex-direction:column;
 }
+
 #docx {
 	overflow-y:scroll;
 	height:calc(100% - 30px);
-	border:1px solid #888;
-	padding-left:12px;
-	padding-right:12px;
-	outline:none
+	border:1px solid var(--border);
+	padding:0 12px;
+	outline:none;
+	background:var(--panel-muted);
 }
+
 .drag {
 	float:left;
 	height:20px;
@@ -60,40 +184,51 @@ hr {border:1px solid #888;margin-top:6px;margin-bottom:6px}
 	border:1px solid #999;
 	border-radius:6px;
 	margin-bottom:2px;
+	background:var(--drag-bg);
 }
+
 #tutchng {
 	margin-top:12px;
 	float:left;
 	margin-right:8px;
 }
-input {font:normal normal normal 13px/1.1 monospace;}
-pre {
-	font:normal normal normal 14px/1.3 monospace;
-	border:1px solid #888;
-	border-radius:8px;
-	white-space:pre-wrap;
-	word-wrap:break-word
+input {
+	font:normal normal normal 13px/1.1 monospace;
 }
 
-.tut hr {margin-bottom:16px}
-.tut pre {
-	margin-left:2px;
-	margin-right:2px;
-	margin-top:0px;
-	padding:5px
+pre {
+	font:normal normal normal 14px/1.3 monospace;
+	border:1px solid var(--border);
+	border-radius:8px;
+	white-space:pre-wrap;
+	word-wrap:break-word;
 }
+
+.tut hr {
+	margin-bottom:16px;
+}
+.tut pre {
+	margin:0 2px 0 2px;
+	padding:5px;
+	background:var(--panel);
+}
+
 #inp {
-	margin:0px;
+	margin:0;
 	width:calc(100% - 10px);
 	height:calc(100% - 36px);
 	overflow:auto;
 	padding:4px;
 	outline:none;
-	white-space:pre
+	white-space:pre;
+	background:var(--code-bg);
+	color:var(--code-fg);
 }
-pre b{font-weight:500}
-pre s{text-decoration:none;font-weight:500}
-pre u{text-decoration:none}
+
+pre b {font-weight:500;color:var(--syn-b)}
+pre s {text-decoration:none;font-weight:500;color:var(--syn-s)}
+pre i {color:var(--syn-i)}
+pre u {text-decoration:none;color:var(--syn-u-fg);background:var(--syn-u-bg)}
 
 .botwin {
 	height:30%;
@@ -101,7 +236,7 @@ pre u{text-decoration:none}
 	flex-direction:column;
 	margin-top:2px;
 }
-#replSpn { height:22px; }
+#replSpn {height:22px}
 
 .botHeader {
 	display:flex;
@@ -109,42 +244,53 @@ pre u{text-decoration:none}
 	gap:6px;
 }
 .botTxt {
-	flex: 1;
-	margin:0px;
+	flex:1;
+	margin:0;
 	margin-top:2px;
 	width:calc(100% - 10px);
-	height:calc(100% - 3em );
+	height:calc(100% - 3em);
 	font:normal normal normal 13px/1.2 monospace;
 	resize:none;
-	border:1px solid #888;
+	border:1px solid var(--border);
 	padding:2px;
 	border-radius:5px;
-	outline:none
+	outline:none;
+	background:var(--panel-muted);
+	color:var(--fg);
 }
 
-tt {border:solid 1px;padding:1px;font-size:120%}
+tt {
+	border:solid 1px var(--border);
+	padding:1px;
+	font-size:120%;
+	background:var(--panel);
+	color:var(--fg);
+}
 
 #out {
 	font:normal normal normal 14px/1.3 monospace;
 	resize:none;
-	border:1px solid #888;
+	border:1px solid var(--border);
 	width:calc(100% - 4px);
 	padding:2px;
 	border-radius:5px;
 	outline:none;
 	flex:1;
-	/* white-space:pre; */
+	background:var(--panel-muted);
+	color:var(--fg);
 }
-canvas { display:inline }
+
+canvas {display:inline }
 #canv {
-	border:1px solid #888;
+	border:1px solid var(--border);
 	width:100%;
 	aspect-ratio:1;
 	color:#000;
 	background:#fff;
 	vertical-align:top;
-	margin-top:1px
+	margin-top:1px;
 }
+
 select {
 	padding:2px 3px;
 	font-size:13px;
@@ -154,32 +300,29 @@ select {
 	appearance:none;
 	-moz-appearance:none;
 	-webkit-appearance:none;
-	outline:none
+	outline:none;
+	background:var(--accent);
+	color:var(--btn-fg);
 }
+select:hover:enabled {background:var(--accent-hover)}
+
 button {
 	padding:4px 5px;
-	margin:0px 0px 0px 0px;
-	border:0px;
+	margin:0;
+	border:0;
 	border-radius:8px;
 	font-size:13px;
 	outline:none;
+	background:var(--accent);
+	color:var(--btn-fg);
 }
 button:enabled {cursor:pointer}
+button:hover:enabled {background:var(--accent-hover)}
+button:disabled {background:var(--btn-dis-bg);color:var(--btn-dis-fg);cursor:default}
 
-button.tut {
-	margin-right:3px;
-	margin-left:0px;
-	margin-top:1px;
-	float:right;
-	font-size:12px;
-}
-button.del {
-	margin-right:1px;
-	margin-left:0px;
-	margin-top:1px;
-	float:right;
-	font-size:12px;
-}
+button.tut {margin-right:3px;margin-left:0;margin-top:1px;float:right;font-size:12px}
+button.del {margin-right:1px;margin-left:0;margin-top:1px;float:right;font-size:12px}
+
 .tabd {overflow:hidden}
 button.tab  {
 	float:left;
@@ -187,310 +330,186 @@ button.tab  {
 	margin-bottom:-4px;
 	margin-top:2px;
 	margin-right:-10px;
-	border-radius:0px;
+	border-radius:0;
 	border-top-left-radius:12px;
 	border-top-right-radius:12px;
 	position:relative;
 	z-index:1;
-	border:1px solid #888
+	border:1px solid var(--border);
 }
-button.tab:disabled {z-index:10}
+button.tab:enabled {background:var(--tab-en-bg);color:var(--tab-en-fg)}
+button.tab:hover:enabled {background:var(--tab-en-hover)}
+button.tab:disabled {background:var(--tab-act-bg);color:var(--tab-act-fg);z-index:10}
+
 #expnd {font-size:12px}
 
 .lnk {cursor:pointer;text-decoration:underline}
-*{scrollbar-width:auto}
-::-webkit-scrollbar{width:10px;height:10px}
-::-webkit-scrollbar-corner{background:rgba(0,0,0,0)}
+* {scrollbar-width:auto}
+::-webkit-scrollbar {width:10px;height:10px}
+::-webkit-scrollbar-corner {background:rgba(0,0,0,0)}
+::-webkit-scrollbar-track {background:var(--scr-track)}
+::-webkit-scrollbar-thumb {background:var(--scr-thumb)}
 
-#hamdiv{float:right; margin:2px; margin-right:10px}
-#hambtn{border-radius:4px;padding:1px;cursor:pointer}
-.hamb {border-radius:2px;width:14px;height:1px;margin:4px}
-#hamcnt{position:absolute;min-width:80px;box-shadow:0px 8px 16px 0px rgba(0,0,0,0.2);z-index:1}
-#hamcnt div{padding:8px;font-size:12px;cursor:pointer}
+#hamdiv {float:right;margin:2px;margin-right:10px}
+#hambtn {border-radius:4px;padding:1px;cursor:pointer;background:var(--mn-bg);border:1px solid var(--border)}
+.hamb {border-radius:2px;width:14px;height:1px;margin:4px;background:var(--btn-fg)}
+#hamcnt {position:absolute;min-width:80px;box-shadow:0px 8px 16px 0px rgba(0,0,0,0.2);z-index:1;background:var(--mn-bg);color:var(--mn-fg)}
+#hamcnt div {padding:8px;font-size:12px;cursor:pointer}
+#hamcnt div:hover {background:var(--mn-hover-bg)}
 
-.close{cursor:pointer;margin:4px;margin-left:auto;width:16px;height:16px;opacity:0.4}
-.close:hover{opacity: 1;}
-.close:before, .close:after{position: absolute;content: ' ';height: 17px;width:2px}
-.close:before{transform:rotate(45deg)}
-.close:after{transform:rotate(-45deg)}
+.close {cursor:pointer;margin:4px;margin-left:auto;width:16px;height:16px;opacity:0.6;position:relative}
+.close:hover {opacity:1}
+.close:before, .close:after {position:absolute;content:' ';height:17px;width:2px;background:var(--fg)}
+.close:before {transform:rotate(45deg)}
+.close:after {transform:rotate(-45deg)}
+
 canvas.run {outline-style:solid;outline-color:#a00;outline-width:1px}
 
-.close:before,.close:after{background:#333}
-#hambtn:hover{background:#18e}
-#hambtn{background:#4af}
-.hamb{background:#fff}
-#hamcnt{background:#4af;color:#fff}
-#hamcnt div:hover{background:#18e}
-
-body{background:#f0f8ff;color:#000}
-h3{background:#9df;color:#000}
-#docx{background:#f0f8ff}
-.tut pre{background:#fff}
-#inp{background:#fff}
-.botTxt{background:#f0f8ff;color:#000}
-tt{border-color:#ccc;background:#fff;color:#000}
-
-pre i{color:#088}
-pre b{color:#920}
-pre s{color:#080}
-pre u{color:#000;background:#fdd}
-::selection {color:#000;background:#bbb}
-#out{background:#f0f8ff;color:#000}
-button.tab:enabled{background:#f0f8ff;color:#888}
-button.tab:hover:enabled{background:#e0e8ef}
-button.tab:disabled{background:#bdf;color:#000}
-.drag{background:#bdf}
-
-button:disabled{background:#e8f0f8;color:#aaa;cursor:default}
-button:hover:enabled {background:#18e}
-button:enabled{background:#4af;color:#fff}
-
-.lnk:hover{background:#9df}
-select{background:#4af;color:#fff}
-select:hover:enabled{background:#18e}
-.high{background:#e88}
-a{color:#000}
-a:hover{background:#9df}
-::-webkit-scrollbar-track{background:#e8f0f8}
-::-webkit-scrollbar-thumb{background:#bdf}
+::selection {color:var(--fg);background:#bbb}
+a {color:var(--link)}
+a:hover {background:var(--link-hover-bg)}
+.lnk:hover {background:var(--link-hover-bg)}
+.high {background:var(--highlight)}
 </style>
 
 <script>
-var theme
-function setTheme(th) {
-	var thcolor = document.querySelector('meta[name="theme-color"]')
-	var col = "#cef"
-	if (theme != null) {
-		document.head.removeChild(theme)
-		theme = null
-		window.localStorage.removeItem("xtheme")
-	}
-	if (th != null) {
-		theme = document.createElement('style');
-		if (th == "dark") {
-			col = "#444"
-			theme.innerHTML = `
-.close:before,.close:after{background:#fff}
-#hambtn:hover{ background:#999; }
-#hambtn{background:#444;border:1px solid #666}
-.hamb {background:#fff}
-#hamcnt{background:#333}
-#hamcnt div:hover{background:#555;}
+(function() {
+	var metaTheme = document.querySelector('meta[name=theme-color]')
 
-body{background:#333;color:#fff}
-h3{background:#444;color:#fff}
-#docx{background:#111}
-.drag{background:#777}
-#inp{ background:#000}
-
-pre i{color:#9d9}
-pre b{color:#fc9}
-pre s{color:#9cf}
-pre u{color:#fff;background:#a44}
-::selection {color:#fff;background:#bbb}
-
-.tut pre{ background:#333}
-tt{background:#555;color:#efe;border-color:#888}
-#out{ background:#222;color:#ddd}
-button{border-color:#888;color:#fff}
-button.tab:enabled{background:#444;color:#888}
-button.tab:hover:enabled{background:#222}
-button.tab:disabled{background:#222;color:#eee}
-
-button:disabled{background:#444;color:#777}
-button:enabled{background:#555;color:#fff}
-
-button:hover:enabled{background:#999}
-button:active:enabled{background:#bbb}
-#dbgBtn.act{background:#aaa}
-.botTxt{background:#222;color:#ddd}
-.lnk:hover{background:#666}
-select{background:#333;color:#eee}
-select:hover:enabled{background:#999}
-.high{background:#d77}
-*{scrollbar-color:auto}
-a{color:#fff}
-a:hover{background:#444}
-::-webkit-scrollbar-track{background:#222}
-::-webkit-scrollbar-thumb{background:#666}
-`
+	function applyTheme(theme) {
+		var root = document.documentElement
+		root.classList.remove('theme-grey','theme-dark')
+		if (theme === 'grey') root.classList.add('theme-grey')
+		if (theme === 'dark') root.classList.add('theme-dark')
+		localStorage.setItem('xtheme', theme)
+		if (metaTheme) {
+			var bg = getComputedStyle(root).getPropertyValue('--bg').trim() || '#f0f8ff'
+			metaTheme.setAttribute('content', bg)
 		}
-		else {
-			col = "#ddd"
-			theme.innerHTML = `
-.close:before,.close:after{background: #333}
-#hambtn:hover{ background:#bbb; }
-#hambtn{background:#ddd;border:1px solid #999}
-.hamb{background:#000}
-#hamcnt{background:#eee;color:#000}
-#hamcnt div:hover{background:#ddd;}
-
-body{background:#ccc;color:#000}
-h3{background:#ccc;color:#444}
-#docx{background:#eee}
-.tut pre{background:#f8f8f8}
-#inp{background:#fff}
-#botTxt{background:#eee;color:#000}
-tt{border-color:#ccc;background:#fff;color:#000}
-
-pre i{color:#088}
-pre b{color:#920}
-pre s{color:#080}
-pre u{color:#000;background:#fdd}
-::selection {color:#000;background:#bbb}
-
-#out{background:#eee;color:#000}
-button{border-color:#aaa;background:#ddd;color:#000}
-button.tab:enabled{background:#ccc;color:#888}
-button.tab:hover:enabled{background:#ddd}
-button.tab:disabled{background:#eee;color:#000}
-button.tab:enabled{color:#888}
-.drag{background:#ddd}
-button:disabled{background:#ddd;color:#aaa}
-button:enabled{background:#ddd;color:#000}
-
-button:hover:enabled {background:#bbb}
-button:active:enabled {background:#999}
-
-#dbgBtn.act{background:#aaa}
-.lnk:hover {background:#ccc}
-select{background:#eee;color:#000}
-select:hover:enabled {background:#ddd}
-.high{background:#e88}
-a{color:#000}
-a:hover{background:#ccc}
-::-webkit-scrollbar-track{background:#aaa}
-::-webkit-scrollbar-thumb{background:#ccc}
-`
-		}
-		document.head.appendChild(theme)
-		window.localStorage.setItem("xtheme", th)
 	}
-	if (thcolor) thcolor.setAttribute('content', col)
-}
-setTheme(window.localStorage["xtheme"])
 
-function chngTheme() {
-	var th = window.localStorage["xtheme"]
-	if (th == null) th = "grey";
-	else if (th == "grey") th = "dark";
-	else th = null;
-	setTheme(th);
-}
+	window.chngTheme = function() {
+		var cur = localStorage.getItem('xtheme')
+		var next = (cur === 'light') ? 'grey' : (cur === 'grey') ? 'dark' : 'light'
+		applyTheme(next)
+	}
+
+	applyTheme(localStorage.getItem('xtheme'))
+})()
 </script>
+</head>
 
-<div id=container style=display:none>
+<body>
 
-<div id=col1>
-	<div class=lnk id=notiUpd style=display:none>Click here to update to new version<br><br></div>
-	<div id=tabs class=tabd>
-		<button id=expnd style=display:none;float:left>▶</button>
-		<button class=tab id=tab1 style=z-index:3>Tutor</button>
-		<button class=tab id=tab2 style=z-index:2>Saved</button>
-		<button class=tab id=tab3 style=display:none;z-index:1>Edit</button>
-		<button class=tab id=tab4 style=display:none;z-index:0>Out</button>
-		<canvas id=dragb class=drag style=float:right></canvas>
-	</div>
-	<div id=docx tabindex=0>
-		<div>
-			<button id=tutchng style=display:none>Back</button>
-			<span id=tut class=tut></span>
-			<button id=tutchng2 style=display:none>Back</button>
-			<span id=tutinf></span>
+<div id=container style="display:none">
+	<div id=col1>
+		<div class=lnk id=notiUpd style="display:none">Click here to update to new version<br><br></div>
+		<div id=tabs class=tabd>
+			<button id=expnd style="display:none;float:left">▶</button>
+			<button class=tab id=tab1 style="z-index:3">Tutor</button>
+			<button class=tab id=tab2 style="z-index:2">Saved</button>
+			<button class=tab id=tab3 style="display:none;z-index:1">Edit</button>
+			<button class=tab id=tab4 style="display:none;z-index:0">Out</button>
+			<canvas id=dragb class=drag style=float:right></canvas>
 		</div>
-
-		<div style=display:none>
-			<p>Programs can be stored locally within the browser
-			<p><span id=storage class=tut></span>
-		</div>
-	</div>
-</div>
-
-<div id=incol>
-	<div id=btns>
-		<button id=runBtn style="margin-left:32px">Run</button>
-		<button id=stBtn>Save</button>
-
-		<div id=hamdiv>
-			<div id=hambtn>
-				<div class=hamb></div>
-				<div class=hamb></div>
-				<div class=hamb></div>
+		<div id=docx tabindex=0>
+			<div>
+				<button id=tutchng style="display:none">Back</button>
+				<span id=tut class=tut></span>
+				<button id=tutchng2 style="display:none">Back</button>
+				<span id=tutinf></span>
 			</div>
-			<div id=hamcnt style=display:none;z-index:1>
-				<div id=fontp>Font +</div>
-				<div id=fontm>Font -</div>
-				<div id=themeBtn>Theme</div>
-				<div id=url2Btn>▣ App URL</div>
-				<div id=urlBtn>▣ Code URL</div>
-				<div id=url3Btn>▣ Mail URL</div>
-				<div id=dbgBtn>Debug</div>
-				<div id=libBtn>Library</div>
-				<div id=replMn>Replace</div>
-				<div id=strictBtn>Strict mode ✓</div>
+			<div style="display:none">
+				<p>Programs can be stored locally within the browser</p>
+				<p><span id=storage class=tut></span></p>
 			</div>
 		</div>
 	</div>
 
-	<pre id=inp contenteditable=true ondrop="return false" style=font-size:15px></pre>
+	<div id=incol>
+		<div id=btns>
+			<button id=runBtn style="margin-left:32px">Run</button>
+			<button id=stBtn>Save</button>
 
-	<span id=dbgSpn class=botwin style=display:none>
-		<div class=botHeader>
-			<button id=stepBtn>Trace</button>
-			<button id=step2Btn style=display:none>Over</button>
-			<button id=step3Btn style=display:none>Out</button>
-			<span id=trSpn>
-				<select id=dbgSel>
-					<option selected>Steps</option>
-					<option>Slow</option>
-					<option>Medium</option>
-					<option>Fast</option>
-					<option>Faster</option>
-				</select>
-			</span>
-			<span id=dbgcls class=close></span>
-		</div>
-		<textarea id=dbgTxt class=botTxt readonly spellcheck=false></textarea>
-	</span>
-
-	<span id=libSpn class=botwin style=display:none>
-
-		<div class=botHeader>
-			<span>&nbsp;Library</span>
-			<button id=libSetBtn>Set</button>
-			<button id=libSaveBtn style="display:none">Save</button>
-			<span id=libcls class=close></span>
+			<div id=hamdiv>
+				<div id=hambtn>
+					<div class=hamb></div>
+					<div class=hamb></div>
+					<div class=hamb></div>
+				</div>
+				<div id=hamcnt style="display:none;z-index:1">
+					<div id=fontp>Font +</div>
+					<div id=fontm>Font -</div>
+					<div id=themeBtn>Theme</div>
+					<div id=url2Btn>▣ App URL</div>
+					<div id=urlBtn>▣ Code URL</div>
+					<div id=url3Btn>▣ Mail URL</div>
+					<div id=dbgBtn>Debug</div>
+					<div id=libBtn>Library</div>
+					<div id=replMn>Replace</div>
+					<div id=strictBtn>Strict mode ✓</div>
+				</div>
+			</div>
 		</div>
 
-		<textarea id=libTxt class=botTxt readonly spellcheck=false></textarea>
-	</span>
+		<pre id=inp contenteditable ondrop="return false" style="font-size:15px"></pre>
 
-	<span id=replSpn class=botwin style=display:none>
-		<div class=botHeader>
-			&nbsp;<input id=replFrom size=8>&nbsp;➔&nbsp;
-			<input id=replTo size=8>
-			<button id=replBtn>Replace</button>
-			<span id=replcls class=close></span>
-		</div>
-	</span>
-
-</div>
-
-<div id=outcol>
-	<div>
-		<canvas id=dragb2 class=drag style=margin-right:20px></canvas>
-		<span id=labinp style=display:none>
-			<input type=text id=input enterkeyhint=done maxlength=50 style="width:calc(100% - 100px)">
+		<span id=dbgSpn class=botwin style="display:none">
+			<div class=botHeader>
+				<button id=stepBtn>Trace</button>
+				<button id=step2Btn style="display:none">Over</button>
+				<button id=step3Btn style="display:none">Out</button>
+				<span id=trSpn>
+					<select id=dbgSel>
+						<option selected>Steps</option>
+						<option>Slow</option>
+						<option>Medium</option>
+						<option>Fast</option>
+						<option>Faster</option>
+					</select>
+				</span>
+				<span id=dbgcls class=close></span>
+			</div>
+			<textarea id=dbgTxt class=botTxt readonly spellcheck=false></textarea>
 		</span>
-		<button id=fullBtn style=display:none;float:right>Full</button>
-	</div>
-	<canvas id=canv style=display:none></canvas>
-	<textarea id=out readonly spellcheck=false></textarea>
-</div>
 
+		<span id=libSpn class=botwin style="display:none">
+			<div class=botHeader>
+				<span>&nbsp;Library</span>
+				<button id=libSetBtn>Set</button>
+				<button id=libSaveBtn style="display:none">Save</button>
+				<span id=libcls class=close></span>
+			</div>
+			<textarea id=libTxt class=botTxt readonly spellcheck=false></textarea>
+		</span>
+
+		<span id=replSpn class=botwin style="display:none">
+			<div class=botHeader>
+				&nbsp;<input id=replFrom size=8>&nbsp;➔&nbsp;
+				<input id=replTo size=8>
+				<button id=replBtn>Replace</button>
+				<span id=replcls class=close></span>
+			</div>
+		</span>
+	</div>
+
+	<div id=outcol>
+		<div>
+			<canvas id=dragb2 class=drag style="margin-right:20px"></canvas>
+			<span id=labinp style="display:none">
+				<input id=input enterkeyhint=done maxlength=50 style="width:calc(100% - 100px)">
+			</span>
+			<button id=fullBtn style="display:none;float:right">Full</button>
+		</div>
+		<canvas id=canv style="display:none"></canvas>
+		<textarea id=out readonly spellcheck=false></textarea>
+	</div>
 </div>
 
 <script src=tut_id.js></script>
 <script src=easy.js></script>
 <script src=qrcode.js></script>
 <script src=easy_ide.js></script>
+
+</body>
+</html>
