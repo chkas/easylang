@@ -68,6 +68,13 @@ var libSaveBtn = eid("libSaveBtn")
 var libcls = eid("libcls")
 var libTxt = eid("libTxt")
 
+var replMn = eid("replMn")
+var replSpn = eid("replSpn")
+var replFrom = eid("replFrom")
+var replTo = eid("replTo")
+var replBtn = eid("replBtn")
+var replcls = eid("replcls")
+
 var chngTheme = window["chngTheme"]
 
 var txt_header = window["txt_header"]
@@ -149,8 +156,14 @@ libBtn.onclick = function() {
 	libShow(!isVisible(libSpn))
 	hide(hamcnt)
 }
+replMn.onclick = function() {
+	replShow(!isVisible(replSpn))
+	hide(hamcnt)
+}
+
 dbgcls.onclick = function() { dbgShow(false) }
 libcls.onclick = function() { libShow(false) }
+replcls.onclick = function() { replShow(false) }
 
 function showurl(t) {
 	out.value = t
@@ -1534,9 +1547,41 @@ libSetBtn.onclick = function() {
 		kaMsg("libunset")
 	}
 }
+replBtn.onclick = function() {
+	var fr = replFrom.value
+	if (!fr) return
+	var to = replTo.value
+	var code = inp.textContent
+	undoAdd(code)
+	inp.textContent = code.split(fr).join(to)
+}
+
+replTo.addEventListener("keydown", function (e) {
+	if (e.keyCode == 13) replBtn.click()
+	else if (e.keyCode == 9) {
+		replFrom.focus()
+		e.preventDefault()
+	}
+});
+
+function replShow(on) {
+	if (on) {
+		hide(dbgSpn)
+		hide(libSpn)
+		inp.style.height = "calc(100% - 66px)"
+		show(replSpn)
+		replFrom.focus()
+	}
+	else {
+		hide(replSpn)
+		inp.style.height = "calc(100% - 38px)"
+	}
+}
+
 function libShow(on) {
 	if (on) {
 		hide(dbgSpn)
+		hide(replSpn)
 		inp.style.height = "calc(70% - 36px)"
 		show(libSpn)
 	}
@@ -1549,6 +1594,7 @@ function libShow(on) {
 function dbgShow(on) {
 	if (on) {
 		hide(libSpn)
+		hide(replSpn)
 		inp.style.height = "calc(70% - 36px)"
 		show(dbgSpn)
 	}
