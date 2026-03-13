@@ -38,7 +38,7 @@
 	--scr-track:#e8f0f8;
 	--scr-thumb:#bdf;
 	--highlight:#e88;
-	--mn-bg:var(--accent);
+	--mn-bg:#4af;
 	--mn-fg:#fff;
 	--mn-hover-bg:#18e;
 	--hdr-bg:#9df;
@@ -51,8 +51,6 @@
 	--panel:#eee;
 	--panel-muted:#eee;
 	--border:#666;
-	--code-fg:#000;
-	--code-bg:#fff;
 	--accent:#ccc;
 	--btn-fg:#000;
 	--btn-dis-bg:#ddd;
@@ -63,12 +61,6 @@
 	--tab-act-bg:#eee;
 	--tab-act-fg:#000;
 	--drag-bg:#ddd;
-	--syn-i:#088;
-	--syn-b:#920;
-	--syn-s:#080;
-	--syn-u-fg:#000;
-	--syn-u-bg:#fdd;
-	--link:#000;
 	--link-hover-bg:#ccc;
 	--scr-track:#aaa;
 	--scr-thumb:#ccc;
@@ -104,7 +96,6 @@
 	--syn-s:#9cf;
 	--syn-u-fg:#fff;
 	--syn-u-bg:#a44;
-	--link:#fff;
 	--link-hover-bg:#444;
 	--scr-track:#222;
 	--scr-thumb:#666;
@@ -377,8 +368,8 @@ a:hover {background:var(--link-hover-bg)}
 	function applyTheme(theme) {
 		var root = document.documentElement
 		root.classList.remove('theme-grey','theme-dark')
-		if (theme === 'grey') root.classList.add('theme-grey')
-		if (theme === 'dark') root.classList.add('theme-dark')
+		if (theme == 'grey') root.classList.add('theme-grey')
+		else if (theme == 'dark') root.classList.add('theme-dark')
 		localStorage.setItem('xtheme', theme)
 		if (metaTheme) {
 			var bg = getComputedStyle(root).getPropertyValue('--bg').trim() || '#f0f8ff'
